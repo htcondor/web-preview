@@ -1,0 +1,24 @@
+This directory contains files that one could use as a "code skeleton"
+for their project.  The files included are:
+
+
+Makefile	: You'll have to edit this, of course...
+README		: This file
+user_driver.C	: - Derived class of the MWDriver
+user_driver.h	: --/
+user_task.C	: - Derived class of the MWTask - your 'definition' of a task.
+user_task.h	: --/
+user_worker.C	: - Derived from MWWorker - how to do your work. 
+user_worker.h	: --/
+mastermain.C	: Where 'main()' resides for the master.  Little else.
+workermain.C	: Ditto for the worker.
+in_master	: Input to your master.
+submit_pvm	: A sample submit file for condor.
+work_steps-HOWTO: If your application uses "work steps", look here.
+
+There is ample documentation inside each file...
+
+Note that this is a MINIMAL description of an implementation.  To 
+get an idea of the full functionality of the MW software, read 
+the documentation!
+

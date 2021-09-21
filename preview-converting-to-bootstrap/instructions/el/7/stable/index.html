@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HTCondor - Install Instructions - EL7 Stable</title>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <meta name="description" content="HTCondor Homepage">
+        
+            <meta name="robots" content="noindex">
+        
+        <script src="/web-preview/preview-converting-to-bootstrap/assets/js/sitewide.js" type="text/javascript"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="/web-preview/preview-converting-to-bootstrap/assets/js/sitewide.js" type="text/javascript"></script>
+
+<script src="/web-preview/preview-converting-to-bootstrap/assets/js/bootstrap.js" type="text/javascript"></script>
+
+
+        <link href="/web-preview/preview-converting-to-bootstrap/assets/css/style.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+        
+        
+            <meta name="robots" content="noindex">
+        
+    </head>
+<body class="bg-light">
+
+    <!-- For non-visual user agents: -->
+    <div id="top"><a href="#main-copy" hidden>Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+    <div id="main-copy" class="container-md bg-white w-auto pt-0 pb-4">
+        <script>
+    (function() {
+        var cx = '010754594835990937497:xijuwhbknew';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+    })();
+</script>
+<div id="header" class="mb-4" class="bg-white">
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                <div class="container-fluid ps-0 pe-0">
+                    <a href="/web-preview/preview-converting-to-bootstrap/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-converting-to-bootstrap/assets/images/CondorTitle.gif" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <gcse:searchbox-only></gcse:searchbox-only>
+    </div>
+</div>
+        <h1>Install Instructions</h1>
+
+<!-- Page body -->
+
+<h3>EL7 (Red Hat Enterprise Linux 7, CentOS 7, Scientific Linux 7)</h3>
+<ol>
+    <li>
+        Setup the repositories
+        <ol type="a">
+            <li>
+                Install EPEL repository (as the root user or use sudo)
+                <pre>yum install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm</pre>
+            </li>
+            <li>
+                Install the HTCondor repository (as the root user or use sudo)
+                <pre>yum install -y https://research.cs.wisc.edu/htcondor/repo/8.8/el7/release/htcondor-release-8.8-1.el7.noarch.rpm</pre>
+            </li>
+        </ol>
+    </li>
+    <li>
+        Install HTCondor (as the root user or use sudo)
+        <pre>yum install -y minicondor # or condor</pre>
+        The minicondor is preconfigured for a single node pool.
+        The condor package, for a multi-node pool, requires additional configuration to become functional - please <a href="https://htcondor.readthedocs.io/en/latest/admin-manual/quick-start-condor-pool.html?highlight=quick%20start#quick-start-setting-up-an-htcondor-pool">see the HTCondor Manual</a>.
+    </li>
+    <li>
+        Start it running (as the root user or use sudo)
+        <pre>systemctl start condor # starts HTCondor now via systemd, or do "condor_master" without systemd
+systemctl enable condor # Make HTCondor start automatically via systemd when booting</pre>
+    </li>
+    <li>
+        Check that it is running (as a normal user)
+        <pre>condor_q # Should list out the jobs in the pool</pre>
+        <pre>condor_status # Should list out the nodes in the pool</pre>
+        You may also check HTCondor's systemd status (as the root user or use sudo)
+        <pre>systemctl status condor</pre>
+    </li>
+</ol>
+
+<p>
+    Instructions on how to install other Linux distributions can be found on the <a href="/web-preview/preview-converting-to-bootstrap/instructions">Install Instructions page</a>.
+</p>
+
+    </div>
+    <div id="footer" class="bg-light mt-4 mb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+    </div>
+</body>
+</html>
