@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>DAGMan</title>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <meta name="description" content="HTCondor Homepage">
+        
+            <meta name="robots" content="noindex">
+        
+        <script src="/web-preview/preview-converting-to-bootstrap/assets/js/sitewide.js" type="text/javascript"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script src="/web-preview/preview-converting-to-bootstrap/assets/js/sitewide.js" type="text/javascript"></script>
+
+<script src="/web-preview/preview-converting-to-bootstrap/assets/js/bootstrap.js" type="text/javascript"></script>
+
+
+        <link href="/web-preview/preview-converting-to-bootstrap/assets/css/style.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+        
+        
+            <meta name="robots" content="noindex">
+        
+    </head>
+<body class="bg-light">
+
+    <!-- For non-visual user agents: -->
+    <div id="top"><a href="#main-copy" hidden>Skip to main content.</a></div>
+
+    <!-- ##### Header ##### -->
+    <div id="main-copy" class="container-md bg-white w-auto pt-0 pb-4">
+        <script>
+    (function() {
+        var cx = '010754594835990937497:xijuwhbknew';
+        var gcse = document.createElement('script');
+        gcse.type = 'text/javascript';
+        gcse.async = true;
+        gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+            '//www.google.com/cse/cse.js?cx=' + cx;
+        var s = document.getElementsByTagName('script')[0];
+        s.parentNode.insertBefore(gcse, s);
+    })();
+</script>
+<div id="header" class="mb-4" class="bg-white">
+    <div class="row">
+        <div class="col-12">
+            <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                <div class="container-fluid ps-0 pe-0">
+                    <a href="/web-preview/preview-converting-to-bootstrap/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-converting-to-bootstrap/assets/images/CondorTitle.gif" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-converting-to-bootstrap/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <gcse:searchbox-only></gcse:searchbox-only>
+    </div>
+</div>
+        <h1>DAGMan</h1>
+<hr noshade>
+<p>
+DAGMan (Directed Acyclic Graph Manager) is a meta-scheduler for
+HTCondor.  It manages dependencies between jobs at a higher level than
+the HTCondor Scheduler.
+</p>
+
+<p>
+A directed acyclic graph (DAG) can be used to represent a set of
+programs where the input, output, or execution of one or more programs
+is dependent on one or more other programs. The programs are nodes
+(vertices) in the graph, and the edges (arcs) identify the
+dependencies. HTCondor finds machines for the execution of programs, but
+it does not schedule programs (jobs) based on dependencies. The
+Directed Acyclic Graph Manager (DAGMan) is a meta-scheduler for HTCondor
+jobs. DAGMan submits jobs to HTCondor in an order represented by a DAG
+and processes the results. An input file defined prior to submission
+describes the DAG, and a HTCondor submit description file for each
+program in the DAG is used by HTCondor.
+</p>
+
+<p>
+Each node (program) in the DAG needs its own HTCondor submit description
+file. As DAGMan submits jobs to HTCondor, it uses a single HTCondor log
+file to enforce the ordering required for the DAG. The DAG itself is
+defined by the contents of a DAGMan input file. DAGMan is responsible
+for scheduling, recovery, and reporting for the set of programs
+submitted to HTCondor.
+</p>
+
+<h2> DAGMan Documentation </h2>
+
+<p>
+HTCondor is fully documented in the <a href="https://htcondor.readthedocs.io/en/latest">HTCondor manual</a>.
+<!-- Note:  the link below will break if the manual sections change! -->
+The <a href="https://htcondor.readthedocs.io/en/latest/users-manual/dagman-workflows.html">
+DAGMan Workflows section</a>
+describes DAGMan in great detail.
+</p>
+
+<h2> Downloading DAGMan </h2>
+
+<p>
+DAGMan is part of the HTCondor software, which can be downloaded
+<a href="http://research.cs.wisc.edu/htcondor/downloads">here</a>.
+</p>
+
+    </div>
+    <div id="footer" class="bg-light mt-4 mb-4">
+    <div class="container">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+    </div>
+</body>
+</html>

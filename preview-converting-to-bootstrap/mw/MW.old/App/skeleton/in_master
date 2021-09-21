@@ -1,0 +1,4 @@
+The contents of this file become stdin for the master.
+Somewhere in here you'll probably want the name of the 
+worker executable (assuming you didn't hardcode it, but
+we all know that would be wrong...:-) )
