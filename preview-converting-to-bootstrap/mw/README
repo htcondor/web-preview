@@ -1,0 +1,14 @@
+This directory is for MW's web presence.  HTCondor people have access
+to it, as does Jeff Linderoth (linderot@msc.anl.gov), as he is one
+of the people working on MW.  
+
+The directory MW/ is a checkout of the MW workspace.  Keep it current!
+
+The file MW.tar.gz is created by a simple 'tar cvf MW.tar MW/' command.
+Keep this as current as the MW/ directory!
+
+After checking out the MW files, do a 'make doc' in the main directory
+and in the example-fib/ driectory.  We want the documentation current
+as well....
+
+- Mike Yoder, Dec 7th, 1999

@@ -1,0 +1,235 @@
+<pre>
+Hello all,
+
+This is an email to bring everyone up to date on the state of the MW
+software project.  The major advances since the metaNEOS III meeting in
+June are
+
+-- The MWHomePage:  www.cs.wisc.edu/condor/mw
+
+-- Support for multiple architecture jobs
+
+-- Faster acquiring of resources, and logic for quickly meeting a user
+   defined target number of resources.
+
+
+
+Every once in a while, Jeff Linderoth gets bored and proceeds to
+engage Mike Yoder in a series of long emails about the state of the MW
+software and what things should be done next.  This time, Steve and
+Jean-Pierre have chimed in, and below is the result of these
+discussions.  We are interested in feedback on these ideas and other
+ideas for what to do with the MW package.
+
+
+MW TODO List discussions
+------------------------
+
+TOPIC: MWUseIt
+--------------
+
+I) More people need to start using MW.  Especially if we could find
+   some users in the non-optimization community.  This will help drive
+   development and improvements of the code.
+
+
+DISCUSSION
+----------
+We think that some publicity, perhaps at Supercomputing 99, and from
+the paper we are writing, will help us increase our user base.  Of
+course, we need to be careful what we wish for, since an increased user
+community menas more support for the software is required.
+
+We also think that the creation of "MWFiles" communication might help:
+What is "MWFiles" you ask?
+
+"MW-files is going to be a significant re-write, and will be the first MW
+port to a new platform.  For communication purposes, we'll use shared
+files.  The workers will all be STANDARD universe condor jobs.  The master
+will be able to keep tabs on the workers through reading the user log file
+and seeing messages in the shared files.  You'll get checkpointing of the
+workers for free.  Heck, you can even get checkpointing of the *master*
+for free...
+Sanjeev is now working on the shared files communication, and pretty soon
+we'll hack away at MW and do the port."
+
+As for potentially interested parties, Steve W suggests the following:
+
+"Let's think about other numerical-type applications people that
+we could interest in this. I guess we are after M-W apps in which
+the Master is not vacuous, but not too complex either.
+
+1) Would the code-crackers that have used condor in the past be
+   interested? 
+
+2) I could chase up some PCx users who are not optimization
+   researchers - one guy from Fermilab is calling it to solve 10,000
+   more or less independent problems. 
+
+3) There are still a lot of optimization apps to mine also, e.g. the
+   support vector machine area. "
+
+
+After some further discussion, we may even try to interest a PDE
+person here at Argonne to use this for domain decomposition
+approaches.  These applications would certainly "push the envelope" as
+far as master-worker is concerned.
+
+
+MWUseIt
+-------
+(II) Especially useful would be more
+     experiments with gliding in or flocking in combination with MW. 
+
+All MWUsers are especially encouraged to try out these facilities.
+(The MW Developers included!!)
+
+
+TOPIC: MWFileDescriptors
+------------------------
+(I) On SOLARIS, MW currently is limited to roughly 120 workers.  The true
+    maximum number depends on the operating system imposed limit on
+    the number of open file descriptors.  We are seeking suggestions
+    on how to break through this barrier.  
+
+
+DISCUSSION
+----------
+Current thoughts are
+
+a) The file descriptor limit is actually is in the HTCondor/PVM
+   component of MW, so once MW is ported to other resource
+   management/message passing systems, this problem will go
+   away. 
+
+b) Linux seems to allow 1024 open file descriptors, so running the
+   master on a Linux machine would allow us to use many more workers.
+   A Linux port of HTCondor/PVM and MW is under way.
+
+
+
+TOPIC: MWList
+-------------
+We should re-write all the lists in MWDriver.  Right now, it's all
+home-rolled linked lists.  The plan is to make a templated 
+MWList type, and use it for both MWTasks ands MWWorkers.
+
+Cons: - It's work.
+      - Not certain that we can do *everything* we do now very easily
+Pros: - Easier maintainability.  
+
+
+DISCUSSION
+----------
+For some applications, we can imagine that we wouldn't want to store the
+tasks in a list at all.  Instead, we would want them in a heap, MWKeyed on
+whatever magical function the user has provided for us.  Is allowing
+the user the increased efficiency of a heap worth the effort?
+
+One of the advantages of having abstract list (or heap) code is so
+that the workers can be as easily sorted as the tasks.  We think it is
+important to also allow the users (or for MW to automatically) to be
+able to rank the workers according to the speed or "reliability" of a
+machine.  Already in the WorkerID class are statistics about how often
+the machine has gone down during this computation as well as machine
+information about its speed and memory available.
+
+All of this list/heap stuff should be hidden from the application
+programmer. 
+
+
+TOPIC: MWScheduling
+-------------------
+
+(I) If have the ability to sort the worker lists, then we can consider
+    ways to automate" the scheduling process in MW.
+    One example, if the user specified a relative "hardness"
+    as part of a task, then MW could truly try to match hard tasks
+    with fast machines and easy tasks with slow machines.  WoDi kept
+    some statistics of this sort for computations that were done in
+    "work cycles".  This could also be done, with MW, but right now we
+    have no application that really *needs* this functionality.
+
+DISCUSSION
+----------
+
+We are looking for MW applications that could use this functionality.
+
+
+TOPIC: MWSharedMemory
+---------------------
+
+(I) Perhaps a "shared memory" port of MW.  Is this something that
+    enough people would use?  
+
+(I) Once people start using glide-in and obtaining Globus resources,
+    many more SMP machines will be used. How to best get MW to harness
+    the power of SMP machines.  
+
+
+DISCUSSION
+----------
+
+Some alternatives... 
+
+a) Get condor/PVM to work with SMP machines, then MW would work
+
+b) Use MW/Files
+
+c) It's probably about a one year project, but a port of MW to use the
+   Globus facilities would be something nice to do.
+
+d) A thread-based port of MW.
+
+
+DISCUSSION
+----------
+One of the goals of the MW's port to using shares files for
+communication should be to define a clean (hopefully complete) API for
+the resource management and messaging passing layers that it
+requires. Since MW is in some sense "middleware", it would be really
+nice to have well-defined interface for both the application
+programmers and the low-level resource management programmers.
+
+(The definition of this interface is being undertaken by Sanjeev and
+Mike, and by itself generated another long thread of emails between
+Jeff and Mike.)
+
+
+
+TOPIC: MWStatistics
+-------------------
+
+(I) MW should keep some statistics about the level of "congestion" at
+   the master.  Max length of PVM message queue?  Others?  The
+   computer science types can suggest things here.
+
+(IA) As another cool thing to do along these lines, it might be possible
+     to "Jumpshotize" MW, so that users (for free) could see the
+     communication and execution of their runs.  Getting jumpshot's
+     profiling tools to work in a HTCondor pool might be a big hassle
+
+
+DISCUSSION
+----------
+
+We don't know for sure, but we think that getting Jumpshot to work in
+an environment where machines are constantly going down might be a
+large undertaking.  The consenus is that a performance diagnostic tool
+for MW would be nice.
+
+Once upon a time, Mike wrote a program that would turn an MW run into
+a GIF, so perhaps this could be revisited.  
+
+
+MWTheEnd
+--------
+If you have made it this far, thank you for reading this lengthy
+discussion.  We are quite interested in feedback from the metaneos
+group about directions that MW might go.
+
+
+Best regards,
+-the MWTeam
+</pre>
+

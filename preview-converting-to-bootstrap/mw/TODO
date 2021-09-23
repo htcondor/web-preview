@@ -1,0 +1,407 @@
+
+MWTODO Discussion List
+----------------------
+
+**********************************************************************
+CATEGORY I -- MWFiles
+**********************************************************************
+
+----------------------------------------------------------------------
+
+ITEM: How can we make MW (files?) more robust?
+
+PRIORITY: MOUNT EVEREST HIGH.
+
+DISCUSSION:
+
+-- I have not gotten a large (300 worker) MWFiles job to run
+   successfully for more than about 12 hours, with seemingly different
+   items causing the failure each time. 
+
+-- I wish I could point to specific things that, if fixed, would make
+   MWFiles work.    Here are a few possibilities...
+
+     ** Some leak of file descriptors?
+
+     ** Shadow and Schedd crashes.  Why?  
+
+     ** Events not being written into logs? 
+
+     ** Are there file systems issues that lead to messages not being
+        passed correctly?  (read/writes from files failing)
+
+-- Are these problems artifacts of trying to run with MWFiles and
+   getting errors induced by the file_system/remote_system_calls
+   /MW/complex_application_code/condor_daemons combination?
+   Just too many pieces of complex, breakable code built on top of and
+   interacting with one another?
+
+-- I am going to run some larger PVM-based jobs to see if some of the
+   problems we are experiencing are due to trying to do file-based
+   communication, or simply an artifact of the increased scale of
+   resources.  We've had many PVM-based jobs run for days without
+   problems -- but all with around 100 workers or so.
+
+
+???  What is the future of MWFiles ???
+
+-- There seem to be a lot of hurdles to clear before I would suggest
+   that any user try to use it for themselves.  It's been very
+   painful.  
+
+
+-- For most of our codes the only real advantage to using MWFiles is that
+   we can use all the processors of an SMP machine.  Is it still
+   impossible for PVM jobs to similarly utilize the processors? 
+
+-- This is of course a very "ill-defined" TODO list item, but at the
+   very least, we must decide on whether doing file based
+   communication is robust enough to warrant further development, and
+   if so, what is the best way to go about trying to track down bugs
+   and fix them.    
+
+----------------------------------------------------------------------
+
+ITEM: Improved (and corrected) host_addlogic() without copying worker
+      executables to spool.
+
+PRIORITY: VERY HIGH.
+
+DISCUSSION:  
+
+-- Only if we decide to continue development on MWFiles. 
+
+-- Make it more like PVM's host_addlogic() 
+
+----------------------------------------------------------------------
+
+ITEM:  Meaningful CPU time statistics across workers checkpoint in
+       MW-File?
+
+PRIORITY: MEDIUM.  
+
+DISCUSSION:
+
+-- People would like to get some feel for the amount of CPU time their
+   application is using, but this problem goes away if we disable
+   worker checkpoints, which Sanjeev told us how to do yesterday. 
+
+----------------------------------------------------------------------
+
+ITEM: Need a way for users to declare in external files, "worker"
+      submit file information.
+
+PRIORITY: LOW.
+
+DISCUSSION:
+   
+-- Should MW just put "master" submit information into the worker
+   submit files?
+
+
+----------------------------------------------------------------------
+
+ITEM: Some system calls are trapped on some operating systems
+      (or is it HTCondor versions?), and not on others?
+
+PRIORITY: MEDIUM.
+
+DISCUSSION:
+
+-- For the current get_machine_info() function to work, we need
+   to have a reliable hostname that is passed back from the worker. 
+
+-- Should MWFiles use the IP address in log and try a gethostbyaddr()?
+
+
+----------------------------------------------------------------------
+
+**********************************************************************
+CATEGORY II -- MW Distribution
+**********************************************************************
+ 
+ITEM: MW distribution clean-up and re-arrangement
+
+PRIORITY: HIGH
+
+DISCUSSION:
+
+-- If we expect people to us it, we need to definitely clean up the
+   MWCode and make a distribution. 
+
+-- How the distribution should look?  A suggestion...
+ 
+ 		     MW
+                    ****
+ 	(MWDriver, MWTask, MWWorker ...)
+ 
+ CommRm		Apps		Add-ons
+ *******	****		*******
+ Files		Example		MWXML stuff
+ HTCondor-PVM	Skeleton	iMW stuff
+ Independent
+
+
+
+-- How should applications be distributed?  Most optimization codes rely
+   on too many external libraries to be good candidates to be included
+   in the distribution?
+
+
+-- How does XML output and iMW fit into the picture?   Should be
+   included in th ebase distribution?
+
+
+----------------------------------------------------------------------
+
+ITEM: Improved and Additional MW Documentation
+
+PRIORITY: MEDIUM-LOW
+
+DISCUSSION: 
+
+-- We were thinking of writing an MW tutorial.  Step-by-step
+   instructions as to how somehow would get started.  A potential
+   outline:
+ 
+ 	- how to config/install a HTCondor Pool
+ 	- how to get started with HTCondor. 
+ 	- how to config/install MW
+ 	- how to get started with MW. 
+ 	- how to run example.
+ 	- how to write your own MW application 
+ 		- defining Tasks, Master, Worker
+ 		- steps to go parallel (try first independent mode 
+ 				and then move parallel etc...)
+ 		- using MW API
+ 		- MW advanced functionalities
+
+        - how to port MW to use another RM layer
+
+
+----------------------------------------------------------------------
+
+ITEM:  The Death of Fibonacci
+
+PRIORITY:  MEDIUM-HIGH
+
+DISCUSSION:
+
+-- We need a better example application to include in the
+   distribution.  Something simple, but that is quasi-useful and would
+   demonstrate (most of) MW's features.
+
+-- Compute digits of PI?   
+   Something Monte-Carlo?
+   Raytracing?
+
+----------------------------------------------------------------------
+
+
+**********************************************************************
+CATEGORY III -- Smallish MW Code Issues
+**********************************************************************
+
+----------------------------------------------------------------------
+
+ITEM:   Move INDEPENDENT code to its own RMComm class
+
+PRIORITY:  Low
+
+DISCUSSION:
+
+-- The code is fairly unreadable now with all the ifdefs.
+
+----------------------------------------------------------------------
+
+ITEM:   Move get_machine_info() to MWRmComm class
+
+PRIORITY:  MEDIUM-HIGH
+
+DISCUSSION:  
+
+-- Since we wrote it up in the paper as such, we'd better do
+   it before the reviewers try to download the code?  :-)
+
+----------------------------------------------------------------------
+
+ITEM: Make get_machine_info() work for flocked hosts.
+
+PRIORITY: MEDIUM
+
+DISCUSSION: 
+
+-- get_machine_info() relies on condor_status <name> to get
+   information.   Instead we must query the pools in FLOCKED_HOSTS 
+
+----------------------------------------------------------------------
+
+ITEM: Implement a broadcast in the RMComm Layers
+
+PRIORITY: MEDIUM
+
+DISCUSSION:
+
+-- FATCOP (for one) would be able to make nice use of such a feature. 
+
+----------------------------------------------------------------------
+
+ITEM: Put constants and such into a namespace
+
+PRIORITY: MARIANNAS TRENCH LOW
+
+DISCUSSION:
+
+-- We've got bigger fish to fry
+
+----------------------------------------------------------------------
+ 
+**********************************************************************
+CATEGORY IV -- Big (future?) potential projects
+
+These are mostly discussion items at this point.
+
+**********************************************************************
+
+ITEM: How to make MWDriver scheduling interact with RMComm scheduling?
+
+PRIORITY:  ??
+
+DISCUSSION:
+
+-- Sanjeev said
+
+    "We can make MW layer interact with RM layer in asking some
+     characteristics of resources. These could then be used to make
+     distribution of tasks. Thus the decision of which reource is
+     handled the next task will be a combo of user specified 
+     requirements and RM layer inputs."
+
+-- I don't see how to define such as interaction in an abstract way.
+
+-- Here is one example in which our applications could make use
+   of flexible Class Ad features.  We may only want to run on machines
+   that advertized that they had a license for particular software
+   product (CPLEX).
+
+
+----------------------------------------------------------------------
+
+ITEM: A Heirarchical MW
+
+PRIORITY:  ?? 
+
+DISCUSSION:
+
+-- This is a way to try to get around scalability problems, and in
+   the long run is no doubt a good idea.
+
+-- My feeling is that we should try to fix what we have first (or
+   least understand why what we have *doesn't* work)
+
+-- It seems that most scalability problems we are experiencing are
+   operating system induced -- not really contention problems at the
+   master.   I think many of our algorithms could scale much
+   higher!
+
+
+----------------------------------------------------------------------
+
+ITEM: Other MWRMComm ports
+
+PRIORITY:  ??
+
+DISCUSSION:
+ 
+-- Globus tools
+
+-- "Regular" PVM
+
+-- "Thread based" for SMPs?
+
+-- Others?
+
+----------------------------------------------------------------------
+
+ITEM: Data Parallel Support and Features
+
+PRIORITY: ??
+
+DISCUSSION:
+
+-- Dan Bienstock's application could probably use something along
+   these lines.
+
+-- To me, it's not clear whether one should be trying to run data
+   parallel applications in such a fault-ridden environment like
+   HTCondor 
+
+-- How is Meta Voelker getting along?
+
+
+----------------------------------------------------------------------
+
+
+**********************************************************************
+
+CATEGORY V -- The MWTodo List Archives.  
+
+??? How many of these should be dropped altogether ???
+
+**********************************************************************
+
+----------------------------------------------------------------------
+
+ITEM: Pretty pictures
+
+PRIORITY: LOW
+
+DISCUSSION:
+
+-- Either SLOG or the Wisconcin variation thereof. See
+   MWWorkerID::lprintf(). 
+
+----------------------------------------------------------------------
+
+ITEM: Congestion Information
+
+PRIORITY: VERY LOW
+
+DISCUSSION:
+
+-- MW(RMComm) should keep some statistics about the level of
+   "congestion" at the master.  Max length of PVM message queue?
+   Others?  Total bytes packed/unpacked?  
+
+----------------------------------------------------------------------
+ITEM: List management
+
+PRIORITY: MEDIUM?
+
+DISCUSSION.
+ 
+-- Implement a templated link list?  Or some other 
+	 
+-- Keep track of the largest the task pool ever was.
+ 
+--  What if I want access to the tasks in my task list.
+    For example, I may get a "result" back that says, you no longer
+    need to do any tasks with property "A".  There's no good way to
+    implement this in MW right now.- 
+
+Sanjeev says
+
+	"I think basically we should export some todo list management
+         functions to Application layer. How about exporting a Mapcar
+         function of list manupulation to application layer which
+         looks something like 
+
+	int mapcar ( (void *s)(int), void *data ) 
+
+        where in the function s will be acted upon by each member of
+        the list. "
+
+
+
+
+

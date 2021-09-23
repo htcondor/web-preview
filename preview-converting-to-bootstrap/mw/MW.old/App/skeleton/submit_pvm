@@ -1,0 +1,39 @@
+# This a sample submit file.  You'll want to type
+# 'condor_submit submit_pvm' to submit this file to condor...
+
+# Now we're in the pvm universe
+universe = PVM
+
+# The name of our (master) executable
+Executable     = my_master
+
+# Max image size (meg)
+Image_Size     = 4
+
+# We'll 'require' 4 meg of memory.
++MemoryRequirements = 4
+
+# This goes into stdin for the master.
+Input   = in_master
+
+# Set the output of this job to go to out_master
+Output  = out_master
+
+# Set the stderr of this job to go to out_worker.  It is named 
+# out_worker because the output of the workers is directed to stderr
+Error   = out_worker
+
+# Keep a log in case of problems.
+Log = work.log
+
+# Only start out with one machine; add more ourselves
+machine_count = 1..1
+
+# Send it away!
+Queue
+
+
+
+
+
+
