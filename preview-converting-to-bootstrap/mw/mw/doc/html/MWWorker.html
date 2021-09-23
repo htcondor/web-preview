@@ -1,0 +1,207 @@
+<html><head><TITLE>MWWorker</TITLE></head>
+<body>
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif></A>  class  MWWorker  </H2><BLOCKQUOTE>
+This is the worker class that performs the tasks in the
+opportunistic condor environment
+</BLOCKQUOTE>
+<hr>
+ <h2> Inheritance:</h2>
+<APPLET CODE="ClassGraph.class" WIDTH=600 HEIGHT=95>
+<param name=classes value="CMWWorker,MMWWorker.html,Cuser_worker,Muser_worker.html,CWorker_Fib,MWorker_Fib.html">
+<param name=before value="M,M|_,Mr_">
+<param name=after value="M,M,M">
+<param name=indent value="0,0,0">
+<param name=arrowdir value="down">
+</APPLET>
+<hr>
+
+<DL>
+<DL>
+<DT><h3>Public Fields</h3><DD><DT><A HREF="#DOC.29.9"> <IMG BORDER=0 SRC=icon1.gif></A> static  MWRMComm*  <B>RMC</B> </B>
+ <DD><I>Our RM / Comm class.  Used here only for communication.</I>
+<DT><A HREF="#DOC.29.12"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>workingTask</B> </B>
+ <DD><I>information from the master</I>
+</DL><DL>
+<DT><h3>Public Methods</h3><DD><DT><A HREF="#DOC.29.8"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>go</B>( int argc, char *argv[] ) </B>
+ <DD><I>Giddyap!</I>
+<DT><A HREF="#DOC.29.6"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>MWWorker</B>() </B>
+ <DD><I>Default constructor</I>
+<DT><A HREF="#DOC.29.7"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <B>~MWWorker</B>() </B>
+ <DD><I>Default Destructor</I>
+</DL><DL>
+<DT><h3>Protected Fields</h3><DD><DT><A HREF="#DOC.29.13"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>mach_name</B>[64] </B>
+ <DD><I>The name of the machine the worker is running on.</I>
+<DT><A HREF="#DOC.29.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>master</B> </B>
+ <DD><I>The task ID of the master - used for sending messages.</I>
+</DL><DL>
+<DT><h3>Protected Methods</h3><DD><DT><A HREF="#DOC.29.14"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  double  <B>benchmark</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>Run a benchmark, given an MWTASK </I>
+<DT><A HREF="#DOC.29.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>execute_task</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>This function performs the actions that happen
+once the Worker finds out there is a task to do</I>
+<DT><A HREF="#DOC.29.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>pack_worker_initinfo</B>() </B>
+ <DD><I>
+Here we might in the future pack some useful information about
+the specific machine on which we're running</I>
+<DT><A HREF="#DOC.29.16"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>suicide</B>() </B>
+ <DD><I>Die!!!!!!</I>
+<DT><A HREF="#DOC.29.17"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>timeval_to_double</B>( struct timeval t ) </B>
+ <DD><I>Given a timeval, return a double </I>
+<DT><A HREF="#DOC.29.15"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>unpack_driver_task_data</B>( void ) </B>
+ <DD><I>
+If you have some driver data that you would like to use on the
+worker in order to execute the task, you should unpack it here</I>
+<DT><A HREF="#DOC.29.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>unpack_init_data</B>() </B>
+ <DD><I>
+This unpacks the initial data that is sent to the worker
+once the master knows that he has started</I>
+<DT><A HREF="#DOC.29.5"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>worker_mainloop</B>() </B>
+ <DD><I>
+This sits in a loop in which it asks for work from the master
+and does the work</I>
+<DT><A HREF="#DOC.29.4"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>worker_setup</B>() </B>
+ <DD><I>
+This is run before the worker_mainloop()</I>
+</DL><DL>
+<DT><h3>Protected</h3><DD><DT><A HREF="#DOC.29.11"> <IMG BORDER=0 SRC=icon1.gif></A>  <B></B> </B>
+ <DD><I>The task instance that a worker will use for packing/unpacking </I>
+</DL></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+This is the worker class that performs the tasks in the
+opportunistic condor environment.  It is an oppressed worker class
+in that in simply executes the tasks given to it and reports the
+results back to the master.  <TT>:-)</tt><P>Capitalist stooges who wish to create an application
+must derive a class from this class, and implement the following
+two methods<P><UL>
+<LI> unpack_init_data()
+<LI> execute_task()
+</UL><P>
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="MWWorker">
+<A NAME ="DOC.29.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  MWWorker()</B></TT>
+<DD>Default constructor
+<DL></DL><P>
+<A NAME="~MWWorker">
+<A NAME ="DOC.29.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  ~MWWorker()</B></TT>
+<DD>Default Destructor
+<DL></DL><P>
+<A NAME="go">
+<A NAME ="DOC.29.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  go( int argc, char *argv[] )</B></TT>
+<DD>Giddyap!
+<DL></DL><P>
+<A NAME="RMC">
+<A NAME ="DOC.29.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> static  MWRMComm*  RMC</B></TT>
+<DD>Our RM / Comm class.  Used here only for communication.
+<DL></DL><P>
+<A NAME="master">
+<A NAME ="DOC.29.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  master</B></TT>
+<DD>The task ID of the master - used for sending messages.
+<DL></DL><P>
+<A NAME="">
+<A NAME ="DOC.29.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  </B></TT>
+<DD>The task instance that a worker will use for packing/unpacking 
+<DL></DL><P>
+<A NAME="workingTask">
+<A NAME ="DOC.29.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  workingTask</B></TT>
+<DD>information from the master
+<DL></DL><P>
+<A NAME="mach_name">
+<A NAME ="DOC.29.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  mach_name[64]</B></TT>
+<DD>The name of the machine the worker is running on.
+<DL></DL><P>
+<A NAME="pack_worker_initinfo">
+<A NAME ="DOC.29.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  pack_worker_initinfo()</B></TT>
+<DD>
+Here we might in the future pack some useful information about
+the specific machine on which we're running.  Right now,
+all workers are equal, and we pass only the hostname.<P>There must be a "matching" unpack_worker_initinfo() in
+the MWDriver class.
+<DL></DL><P>
+<A NAME="unpack_init_data">
+<A NAME ="DOC.29.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  unpack_init_data()</B></TT>
+<DD>
+This unpacks the initial data that is sent to the worker
+once the master knows that he has started.<P>There must be a "matching" pack_worker_init_data() in
+the MWDriver class derived for your application.
+
+<DL></DL><P>
+<A NAME="execute_task">
+<A NAME ="DOC.29.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  execute_task( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>This function performs the actions that happen
+once the Worker finds out there is a task to do.
+You will need to cast the MWTask * to a pointer of the Task type
+derived for your application.  For example<P><PRE>
+      Task_Fib *dt = dynamic_cast&lt;Task_Fib *&gt; ( t );
+      assert( dt );     
+      </pre>    
+
+<DL></DL><P>
+<A NAME="benchmark">
+<A NAME ="DOC.29.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  double  benchmark( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>Run a benchmark, given an MWTASK 
+<DL></DL><P>
+<A NAME="unpack_driver_task_data">
+<A NAME ="DOC.29.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  unpack_driver_task_data( void )</B></TT>
+<DD>
+If you have some driver data that you would like to use on the
+worker in order to execute the task, you should unpack it here
+<DL></DL><P>
+<A NAME="worker_setup">
+<A NAME ="DOC.29.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWReturn.html">MWReturn</A>  worker_setup()</B></TT>
+<DD>
+This is run before the worker_mainloop().  It prints a message 
+that the worker has been spawned, sends the master an INIT
+message, and awaits a reply from the master, upon which 
+it calls  unpack_init_data().
+
+<DL></DL><P>
+<A NAME="worker_mainloop">
+<A NAME ="DOC.29.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  worker_mainloop()</B></TT>
+<DD>
+This sits in a loop in which it asks for work from the master
+and does the work.  Maybe we should name this class GradStudent.
+<TT>:-)</tt>
+<DL></DL><P>
+<A NAME="suicide">
+<A NAME ="DOC.29.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  suicide()</B></TT>
+<DD>Die!!!!!!
+<DL></DL><P>
+<A NAME="timeval_to_double">
+<A NAME ="DOC.29.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  timeval_to_double( struct timeval t )</B></TT>
+<DD>Given a timeval, return a double 
+<DL></DL><P></DL>
+<hr>
+<DL><DT><B>Direct child classes:
+</B><DD><A HREF="user_worker.html"> user_worker </A><br>
+<A HREF="Worker_Fib.html"> Worker_Fib </A><br>
+</DL>
+<DL><DT><B>Author:</B><DD>Mike Yoder, modified by Jeff Linderoth and Jean-Pierre Goux 
+<DT><B>See Also:</B><DD><!1><A HREF="MWDriver.html">MWDriver</A>
+<br><!2><A HREF="MWWorker.html#DOC.29.6">MWWorker</A>
+<br></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>

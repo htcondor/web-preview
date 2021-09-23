@@ -1,0 +1,50 @@
+These are the changes Jeff made to clean up the distribution
+
+1) Remove the ifdefs from the top of MWDriver.C
+
+This code is in the RMCOMM class itself.  This class is responsible
+for creating and initializing the static member of the MWDriver and
+MWWorker, and MWTask classes.
+
+
+Premise --
+RMComm developers should *not* have to touch the MW code.  Just do
+what we tell them to!!!
+
+(So why is independent different from this?)
+
+Independent is different because you only want to have ONE process.
+Therefore the code muct be able to "change context" between the master
+and worker processes.
+
+You will have to keep the code in MWDriver and MWWorker 
+	(or have different versions)
+
+
+
+
+Changes on 6/30 
+
+Fixed bug.  RMComm should not call processExec() if requirements is NULL
+
+Changing some spelling errors and ambiguous messages of Sanjeev
+
+Changed logic in MWFiles so that if target_num_workers was not reasonable, things would still run.  
+
+
+9/7/00
+
+Jeff was a bum and didn't write down any of the other numerous changes
+that he made while Sanjeev was gone.
+
+
+A few just recent ones that he can remember.
+
+-- Signal handling.  User can kill _INT the master, and it will
+   checkpoint and coredump.
+
+-- addSortedTasks()
+
+-- A few little bugs and suggestions to make things work with Basney's
+   new and much improved condor_shadow.pvm
+

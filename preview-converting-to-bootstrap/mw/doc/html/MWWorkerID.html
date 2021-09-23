@@ -1,0 +1,675 @@
+<html><head><TITLE>MWWorkerID</TITLE></head>
+<body>
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif></A>  class  MWWorkerID  </H2><BLOCKQUOTE>
+
+This class keeps an identification of the worker application
+useful for the driver class
+</BLOCKQUOTE>
+<hr>
+
+<DL>
+<DL>
+<DT><h3>Public Fields</h3><DD><DT><A HREF="#DOC.24.31"> <IMG BORDER=0 SRC=icon1.gif></A>  enum  <!1><A HREF="MWworker_states.html">MWworker_states</A> <B>currentState</B> </B>
+ <DD><I>The state of the worker.</I>
+<DT><A HREF="#DOC.24.33"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>networkLatency</B> </B>
+ <DD><I>Variables regarding the nw bandwidth.</I>
+<DT><A HREF="#DOC.24.30"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>runningtask</B> </B>
+ <DD><I>The task running on this worker.  NULL if there isn't one.</I>
+</DL><DL>
+<DT><h3>Public Methods</h3><DD><DT><A HREF="#DOC.24.20"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_arch</B>() </B>
+ <DD><I>Get this worker's arch class</I>
+<DT><A HREF="#DOC.24.28"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_bench_result</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.22"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_exec_class</B>( ) </B>
+ <DD><I>Gets the exec_class</I>
+<DT><A HREF="#DOC.24.24"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_executable</B>( ) </B>
+ <DD><I>returns the executable name</I>
+<DT><A HREF="#DOC.24.12"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_id1</B>() </B>
+ <DD><I>Return primary id of this worker</I>
+<DT><A HREF="#DOC.24.13"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_id2</B>() </B>
+ <DD><I>Return secondard id of this worker</I>
+<DT><A HREF="#DOC.24.17"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>get_machine_info</B>() </B>
+ <DD><I>Get the current machine information</I>
+<DT><A HREF="#DOC.24.1"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_vid</B>() </B>
+ <DD><I>Return the virtual id</I>
+<DT><A HREF="#DOC.24.29"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>getNetworkConnectivity</B>( double &amp;t ) </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.26"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>is_doomed</B>() </B>
+ <DD><I>returns TRUE if mark_for_removal was called previously</I>
+<DT><A HREF="#DOC.24.18"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>machine_name</B>() </B>
+ <DD><I>Returns a pointer to the machine's name</I>
+<DT><A HREF="#DOC.24.25"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>mark_for_removal</B>() </B>
+ <DD><I>Mark this worker so that when the task completes it will exit</I>
+<DT><A HREF="#DOC.24.10"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>MWWorkerID</B>() </B>
+ <DD><I>Default constructor</I>
+<DT><A HREF="#DOC.24.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>printself</B>( int level = 40 ) </B>
+ <DD><I>Print out a description of this worker</I>
+<DT><A HREF="#DOC.24.19"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_arch</B>( int a ) </B>
+ <DD><I>Set this worker's arch class</I>
+<DT><A HREF="#DOC.24.27"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_bench_result</B>( double bres ) </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.21"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_exec_class</B>( int num ) </B>
+ <DD><I>Sets the exec_class</I>
+<DT><A HREF="#DOC.24.23"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_executable</B>( char *exec ) </B>
+ <DD><I>Sets the executable</I>
+<DT><A HREF="#DOC.24.14"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_id1</B>( int i ) </B>
+ <DD><I>Set primary id</I>
+<DT><A HREF="#DOC.24.15"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_id2</B>( int i ) </B>
+ <DD><I>Set secondary id</I>
+<DT><A HREF="#DOC.24.16"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_machine_name</B>( char * ) </B>
+ <DD><I>Set the machine's name</I>
+<DT><A HREF="#DOC.24.32"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>setState</B>( <!1><A HREF="MWworker_states.html">MWworker_states</A> st ) </B>
+ <DD><I>Set the state of the worker</I>
+<DT><A HREF="#DOC.24.7"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>timeval_to_double</B>( struct timeval t ) </B>
+ <DD><I>A helper function</I>
+<DT><A HREF="#DOC.24.11"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <B>~MWWorkerID</B>() </B>
+ <DD><I>Default destructor</I>
+</DL><DL>
+<DT><h3>Public</h3><DD><DT><A HREF="#DOC.24.9"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>A Special Printf</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.9.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>lprintf</B>( int vid, double now, char *fmt, ... ) </B>
+ <DD><I>The log printf - use it to print ONE log event</I>
+<DT><A HREF="#DOC.24.9.2"> <IMG BORDER=0 SRC=icon1.gif></A> static  char*  <B>ulv_filename</B> </B>
+ <DD><I>The name of the ulv log file</I>
+<DT><A HREF="#DOC.24.9.3"> <IMG BORDER=0 SRC=icon1.gif></A> static  FILE*  <B>lfp</B> </B>
+ <DD><I>The log file fp.</I>
+
+</DL>
+<DT><A HREF="#DOC.24.4"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Checkpointing Call</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.4.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>ckpt_stats</B>( double *up, double *working, double *susp, double *cpu, double *norm, double* s_bench, int* n_bench ) </B>
+ <DD><I>Return the relevant stats info for this worker.</I>
+
+</DL>
+<DT><A HREF="#DOC.24.6"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Private Data... </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.6.3"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>mach_name</B>[64] </B>
+ <DD><I>The machine name of the worker</I>
+<DT><A HREF="#DOC.24.6.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>id1</B> </B>
+ <DD><I>A "primary" identifier of this machine.  (Was pvmd_tid)</I>
+<DT><A HREF="#DOC.24.6.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>id2</B> </B>
+ <DD><I>A "secondary" identifier of this machine.  (Was user_tid)</I>
+<DT><A HREF="#DOC.24.6.1"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>virtual_id</B> </B>
+ <DD><I>A "virtual" number for this worker</I>
+<DT><A HREF="#DOC.24.6.6"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>arch</B> </B>
+ <DD><I>This worker's arch class</I>
+<DT><A HREF="#DOC.24.6.7"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>exec_class</B> </B>
+ <DD><I>This is the exec_class</I>
+<DT><A HREF="#DOC.24.6.8"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>executable_name</B> </B>
+ <DD><I>This is the executable_name</I>
+<DT><A HREF="#DOC.24.6.9"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>doomed</B> </B>
+ <DD><I>TRUE if marked for removal, FALSE otherwise	</I>
+<DT><A HREF="#DOC.24.6.10"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>bench_result</B> </B>
+ <DD><I>The results of the benchmarking process.</I>
+<DT><A HREF="#DOC.24.6.11"> <IMG BORDER=0 SRC=icon1.gif></A>  enum  <!1><A HREF="MWworker_states.html">MWworker_states</A> <B>state</B> </B>
+ <DD><I>The state of this worker.</I>
+<DT><A HREF="#DOC.24.6.2"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Time information </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.6.2.1"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>start_time</B> </B>
+ <DD><I>The time that this worker started.</I>
+<DT><A HREF="#DOC.24.6.2.2"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>total_time</B> </B>
+ <DD><I>The total time that this worker ran for.</I>
+<DT><A HREF="#DOC.24.6.2.3"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>last_event</B> </B>
+ <DD><I>The time of the last 'event'.</I>
+<DT><A HREF="#DOC.24.6.2.4"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>total_suspended</B> </B>
+ <DD><I>The time spent in the suspended state</I>
+<DT><A HREF="#DOC.24.6.2.5"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>total_working</B> </B>
+ <DD><I>The time spent working</I>
+<DT><A HREF="#DOC.24.6.2.6"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>cpu_while_working</B> </B>
+ <DD><I>The cpu usage while working</I>
+<DT><A HREF="#DOC.24.6.2.7"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>benchmarked_cpu_working_time</B> </B>
+ <DD><I>The benchmarked (weighted) cpu working time</I>
+<DT><A HREF="#DOC.24.6.2.8"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>normalized_cpu_working_time</B> </B>
+ <DD><I>The benchmarked (normalized) cpu working time</I>
+<DT><A HREF="#DOC.24.6.2.9"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>sum_benchmark</B> </B>
+ <DD><I>The sum of the benchmark values for that vid</I>
+<DT><A HREF="#DOC.24.6.2.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>num_benchmark</B> </B>
+ <DD><I>The number of the benchmark values for that vid</I>
+
+</DL>
+
+</DL>
+<DT><A HREF="#DOC.24.3"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Statistics Collection Calls</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.3.1"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.4">bool</A>  <B>isIdle</B>() </B>
+ <DD><I>Returns true if this worker is idle.</I>
+<DT><A HREF="#DOC.24.3.2"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.4">bool</A>  <B>isSusp</B>() </B>
+ <DD><I>Returns true if this worker is suspended.</I>
+<DT><A HREF="#DOC.24.3.3"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>started</B>() </B>
+ <DD><I>This should be called when the master becomes aware of the 
+existence of this worker</I>
+<DT><A HREF="#DOC.24.3.4"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>benchmark</B>() </B>
+ <DD><I>Called when the worker is doing the benchmarking task</I>
+<DT><A HREF="#DOC.24.3.5"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>benchmarkOver</B>() </B>
+ <DD><I>Called when the worker has done the benchmarking task</I>
+<DT><A HREF="#DOC.24.3.6"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>gottask</B>( int tasknum ) </B>
+ <DD><I>Called when this worker gets a task.</I>
+<DT><A HREF="#DOC.24.3.7"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>completedtask</B>( double wall_time = 0.0, double cpu_time = 0.0 ) </B>
+ <DD><I>Called when this worker just finished the task it was working on.</I>
+<DT><A HREF="#DOC.24.3.8"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>suspended</B>() </B>
+ <DD><I>Called when the worker becomes suspended</I>
+<DT><A HREF="#DOC.24.3.9"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>resumed</B>() </B>
+ <DD><I>Called when the worker resumes.</I>
+<DT><A HREF="#DOC.24.3.10"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>ended</B>() </B>
+ <DD><I>Send flowers...this is called when the worker dies.</I>
+
+</DL>
+<DT><A HREF="#DOC.24.8"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Virtual Id Helpers </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.8.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_vid</B>( int i ) </B>
+ <DD><I>Set virtual id</I>
+<DT><A HREF="#DOC.24.8.2"> <IMG BORDER=0 SRC=icon1.gif></A> static  int*  <B>vids</B> </B>
+ <DD><I>vids[i] is 1 if virtual id i is taken, 0 if not.</I>
+<DT><A HREF="#DOC.24.8.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_next_vid</B>() </B>
+ <DD><I>Returns the lowest available virtual id; also sets it as used.</I>
+<DT><A HREF="#DOC.24.8.4"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>release_vid</B>( int vid ) </B>
+ <DD><I>Returns a virtual id to the pool</I>
+
+</DL>
+<DT><A HREF="#DOC.24.5"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Worker Information</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.24.5.1"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>Arch</B>[64] </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.2"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>OpSys</B>[64] </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.3"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>CondorLoadAvg</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.4"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>LoadAvg</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Memory</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.6"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Cpus</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.7"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>VirtualMemory</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.8"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Disk</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.9"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>KFlops</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Mips</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.11"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_total_time</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.12"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_last_event</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.13"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_total_suspended</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.24.5.14"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_total_working</B>() </B>
+ <DD><I></I>
+
+</DL>
+</DL></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+
+This class keeps an identification of the worker application
+useful for the driver class.  It also keeps statistical information
+that is useful to the stats class.  This information will be used at
+the end of a run.
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="MWWorkerID">
+<A NAME ="DOC.24.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  MWWorkerID()</B></TT>
+<DD>Default constructor
+<DL></DL><P>
+<A NAME="~MWWorkerID">
+<A NAME ="DOC.24.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  ~MWWorkerID()</B></TT>
+<DD>Default destructor
+<DL></DL><P>
+<A NAME="get_id1">
+<A NAME ="DOC.24.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_id1()</B></TT>
+<DD>Return primary id of this worker
+<DL></DL><P>
+<A NAME="get_id2">
+<A NAME ="DOC.24.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_id2()</B></TT>
+<DD>Return secondard id of this worker
+<DL></DL><P>
+<A NAME="get_vid">
+<A NAME ="DOC.24.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_vid()</B></TT>
+<DD>Return the virtual id.  This is an int starting at zero and
+increasing by one with each worker.  When a worker dies, this
+number can be reused by a worker that joins us. 
+<DL></DL><P>
+<A NAME="set_id1">
+<A NAME ="DOC.24.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_id1( int i )</B></TT>
+<DD>Set primary id
+<DL></DL><P>
+<A NAME="set_id2">
+<A NAME ="DOC.24.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_id2( int i )</B></TT>
+<DD>Set secondary id
+<DL></DL><P>
+<A NAME="set_machine_name">
+<A NAME ="DOC.24.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_machine_name( char * )</B></TT>
+<DD>Set the machine's name
+<DL></DL><P>
+<A NAME="get_machine_info">
+<A NAME ="DOC.24.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  get_machine_info()</B></TT>
+<DD>Get the current machine information
+<DL></DL><P>
+<A NAME="machine_name">
+<A NAME ="DOC.24.18">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  machine_name()</B></TT>
+<DD>Returns a pointer to the machine's name
+<DL></DL><P>
+<A NAME="set_arch">
+<A NAME ="DOC.24.19">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_arch( int a )</B></TT>
+<DD>Set this worker's arch class
+<DL></DL><P>
+<A NAME="get_arch">
+<A NAME ="DOC.24.20">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_arch()</B></TT>
+<DD>Get this worker's arch class
+<DL></DL><P>
+<A NAME="set_exec_class">
+<A NAME ="DOC.24.21">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_exec_class( int num )</B></TT>
+<DD>Sets the exec_class
+<DL></DL><P>
+<A NAME="get_exec_class">
+<A NAME ="DOC.24.22">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_exec_class( )</B></TT>
+<DD>Gets the exec_class
+<DL></DL><P>
+<A NAME="set_executable">
+<A NAME ="DOC.24.23">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_executable( char *exec )</B></TT>
+<DD>Sets the executable
+<DL></DL><P>
+<A NAME="get_executable">
+<A NAME ="DOC.24.24">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_executable( )</B></TT>
+<DD>returns the executable name
+<DL></DL><P>
+<A NAME="mark_for_removal">
+<A NAME ="DOC.24.25">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  mark_for_removal()</B></TT>
+<DD>Mark this worker so that when the task completes it will exit
+<DL></DL><P>
+<A NAME="is_doomed">
+<A NAME ="DOC.24.26">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  is_doomed()</B></TT>
+<DD>returns TRUE if mark_for_removal was called previously
+<DL></DL><P>
+<A NAME="set_bench_result">
+<A NAME ="DOC.24.27">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_bench_result( double bres )</B></TT>
+<DL></DL><P>
+<A NAME="get_bench_result">
+<A NAME ="DOC.24.28">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_bench_result()</B></TT>
+<DL></DL><P>
+<A NAME="getNetworkConnectivity">
+<A NAME ="DOC.24.29">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  getNetworkConnectivity( double &amp;t )</B></TT>
+<DL></DL><P>
+<A NAME="runningtask">
+<A NAME ="DOC.24.30">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  runningtask</B></TT>
+<DD>The task running on this worker.  NULL if there isn't one.
+<DL></DL><P>
+<A NAME="currentState">
+<A NAME ="DOC.24.31">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  enum  <!1><A HREF="MWworker_states.html">MWworker_states</A> currentState</B></TT>
+<DD>The state of the worker.
+<DL></DL><P>
+<A NAME="setState">
+<A NAME ="DOC.24.32">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  setState( <!1><A HREF="MWworker_states.html">MWworker_states</A> st )</B></TT>
+<DD>Set the state of the worker
+<DL></DL><P>
+<A NAME="printself">
+<A NAME ="DOC.24.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  printself( int level = 40 )</B></TT>
+<DD>Print out a description of this worker
+<DL><DT><B>Parameters:</B><DD><B>level</B> -  The debug level to use <br></DL><P>
+<A NAME="Statistics Collection Calls">
+<A NAME ="DOC.24.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Statistics Collection Calls</B></TT>
+<DD>
+These methods are called when events happen to workers.
+<DL></DL><P><DL>
+
+<A NAME="isIdle">
+<A NAME ="DOC.24.3.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.4">bool</A>  isIdle()</B></TT>
+<DD>Returns true if this worker is idle.
+<DL></DL><P>
+<A NAME="isSusp">
+<A NAME ="DOC.24.3.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.4">bool</A>  isSusp()</B></TT>
+<DD>Returns true if this worker is suspended.
+<DL></DL><P>
+<A NAME="started">
+<A NAME ="DOC.24.3.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  started()</B></TT>
+<DD>This should be called when the master becomes aware of the 
+existence of this worker
+<DL></DL><P>
+<A NAME="benchmark">
+<A NAME ="DOC.24.3.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  benchmark()</B></TT>
+<DD>Called when the worker is doing the benchmarking task
+<DL></DL><P>
+<A NAME="benchmarkOver">
+<A NAME ="DOC.24.3.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  benchmarkOver()</B></TT>
+<DD>Called when the worker has done the benchmarking task
+<DL></DL><P>
+<A NAME="gottask">
+<A NAME ="DOC.24.3.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  gottask( int tasknum )</B></TT>
+<DD>Called when this worker gets a task.
+<DL></DL><P>
+<A NAME="completedtask">
+<A NAME ="DOC.24.3.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  completedtask( double wall_time = 0.0, double cpu_time = 0.0 )</B></TT>
+<DD>Called when this worker just finished the task it was working on.
+<DL></DL><P>
+<A NAME="suspended">
+<A NAME ="DOC.24.3.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  suspended()</B></TT>
+<DD>Called when the worker becomes suspended
+<DL></DL><P>
+<A NAME="resumed">
+<A NAME ="DOC.24.3.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  resumed()</B></TT>
+<DD>Called when the worker resumes.
+<DL></DL><P>
+<A NAME="ended">
+<A NAME ="DOC.24.3.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  ended()</B></TT>
+<DD>Send flowers...this is called when the worker dies.
+<DL></DL><P></DL>
+
+<A NAME="Checkpointing Call">
+<A NAME ="DOC.24.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Checkpointing Call</B></TT>
+<DD>
+Yes, each instance of a MWWorkerID needs to be able to checkpoint
+itself.  Why?  It has to store statistics information on itself.
+It never has to read them in, though, because stats that we write
+out here wind up being read in by the stats class when we restart.
+<DL></DL><P><DL>
+
+<A NAME="ckpt_stats">
+<A NAME ="DOC.24.4.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  ckpt_stats( double *up, double *working, double *susp, double *cpu, double *norm, double* s_bench, int* n_bench )</B></TT>
+<DD>Return the relevant stats info for this worker.
+<DL></DL><P></DL>
+
+<A NAME="Worker Information">
+<A NAME ="DOC.24.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Worker Information</B></TT>
+<DD>This is now collected from condor_status.  It's the work of 
+one of JP's students... <P>Note that this Arch is different from arch.  This one is 
+what condor claims its arch is to the outside world. 
+<DL></DL><P><DL>
+
+<A NAME="Arch">
+<A NAME ="DOC.24.5.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  Arch[64]</B></TT>
+<DL></DL><P>
+<A NAME="OpSys">
+<A NAME ="DOC.24.5.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  OpSys[64]</B></TT>
+<DL></DL><P>
+<A NAME="CondorLoadAvg">
+<A NAME ="DOC.24.5.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  CondorLoadAvg</B></TT>
+<DL></DL><P>
+<A NAME="LoadAvg">
+<A NAME ="DOC.24.5.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  LoadAvg</B></TT>
+<DL></DL><P>
+<A NAME="Memory">
+<A NAME ="DOC.24.5.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Memory</B></TT>
+<DL></DL><P>
+<A NAME="Cpus">
+<A NAME ="DOC.24.5.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Cpus</B></TT>
+<DL></DL><P>
+<A NAME="VirtualMemory">
+<A NAME ="DOC.24.5.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  VirtualMemory</B></TT>
+<DL></DL><P>
+<A NAME="Disk">
+<A NAME ="DOC.24.5.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Disk</B></TT>
+<DL></DL><P>
+<A NAME="KFlops">
+<A NAME ="DOC.24.5.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  KFlops</B></TT>
+<DL></DL><P>
+<A NAME="Mips">
+<A NAME ="DOC.24.5.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Mips</B></TT>
+<DL></DL><P>
+<A NAME="get_total_time">
+<A NAME ="DOC.24.5.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_total_time()</B></TT>
+<DL></DL><P>
+<A NAME="get_last_event">
+<A NAME ="DOC.24.5.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_last_event()</B></TT>
+<DL></DL><P>
+<A NAME="get_total_suspended">
+<A NAME ="DOC.24.5.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_total_suspended()</B></TT>
+<DL></DL><P>
+<A NAME="get_total_working">
+<A NAME ="DOC.24.5.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_total_working()</B></TT>
+<DL></DL><P></DL>
+
+<A NAME="Private Data... ">
+<A NAME ="DOC.24.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Private Data... </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="mach_name">
+<A NAME ="DOC.24.6.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  mach_name[64]</B></TT>
+<DD>The machine name of the worker
+<DL></DL><P>
+<A NAME="id1">
+<A NAME ="DOC.24.6.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  id1</B></TT>
+<DD>A "primary" identifier of this machine.  (Was pvmd_tid)
+<DL></DL><P>
+<A NAME="id2">
+<A NAME ="DOC.24.6.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  id2</B></TT>
+<DD>A "secondary" identifier of this machine.  (Was user_tid)
+<DL></DL><P>
+<A NAME="virtual_id">
+<A NAME ="DOC.24.6.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  virtual_id</B></TT>
+<DD>A "virtual" number for this worker.  Assigned starting at 
+0 and working upwards by one.  Also, when a worker dies, 
+this number can get taken over by another worker 
+<DL></DL><P>
+<A NAME="arch">
+<A NAME ="DOC.24.6.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  arch</B></TT>
+<DD>This worker's arch class
+<DL></DL><P>
+<A NAME="exec_class">
+<A NAME ="DOC.24.6.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  exec_class</B></TT>
+<DD>This is the exec_class
+<DL></DL><P>
+<A NAME="executable_name">
+<A NAME ="DOC.24.6.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  executable_name</B></TT>
+<DD>This is the executable_name
+<DL></DL><P>
+<A NAME="doomed">
+<A NAME ="DOC.24.6.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  doomed</B></TT>
+<DD>TRUE if marked for removal, FALSE otherwise	
+<DL></DL><P>
+<A NAME="bench_result">
+<A NAME ="DOC.24.6.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  bench_result</B></TT>
+<DD>The results of the benchmarking process.
+<DL></DL><P>
+<A NAME="state">
+<A NAME ="DOC.24.6.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  enum  <!1><A HREF="MWworker_states.html">MWworker_states</A> state</B></TT>
+<DD>The state of this worker.
+<DL></DL><P>
+<A NAME="Time information ">
+<A NAME ="DOC.24.6.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Time information </B></TT>
+<DD>Note that all time information is really stored as a double.
+We use gettimeofday() internally, and convert the result to 
+a double.  That way, we don't have to mess around with the
+struct timeval... 
+<DL></DL><P><DL>
+
+<A NAME="start_time">
+<A NAME ="DOC.24.6.2.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  start_time</B></TT>
+<DD>The time that this worker started.
+<DL></DL><P>
+<A NAME="total_time">
+<A NAME ="DOC.24.6.2.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  total_time</B></TT>
+<DD>The total time that this worker ran for.
+<DL></DL><P>
+<A NAME="last_event">
+<A NAME ="DOC.24.6.2.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  last_event</B></TT>
+<DD>The time of the last 'event'.
+<DL></DL><P>
+<A NAME="total_suspended">
+<A NAME ="DOC.24.6.2.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  total_suspended</B></TT>
+<DD>The time spent in the suspended state
+<DL></DL><P>
+<A NAME="total_working">
+<A NAME ="DOC.24.6.2.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  total_working</B></TT>
+<DD>The time spent working
+<DL></DL><P>
+<A NAME="cpu_while_working">
+<A NAME ="DOC.24.6.2.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  cpu_while_working</B></TT>
+<DD>The cpu usage while working
+<DL></DL><P>
+<A NAME="benchmarked_cpu_working_time">
+<A NAME ="DOC.24.6.2.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  benchmarked_cpu_working_time</B></TT>
+<DD>The benchmarked (weighted) cpu working time
+<DL></DL><P>
+<A NAME="normalized_cpu_working_time">
+<A NAME ="DOC.24.6.2.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  normalized_cpu_working_time</B></TT>
+<DD>The benchmarked (normalized) cpu working time
+<DL></DL><P>
+<A NAME="sum_benchmark">
+<A NAME ="DOC.24.6.2.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  sum_benchmark</B></TT>
+<DD>The sum of the benchmark values for that vid
+<DL></DL><P>
+<A NAME="num_benchmark">
+<A NAME ="DOC.24.6.2.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  num_benchmark</B></TT>
+<DD>The number of the benchmark values for that vid
+<DL></DL><P></DL>
+</DL>
+
+<A NAME="timeval_to_double">
+<A NAME ="DOC.24.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  timeval_to_double( struct timeval t )</B></TT>
+<DD>A helper function...struct timeval-&gt;double. 
+<DL></DL><P>
+<A NAME="Virtual Id Helpers ">
+<A NAME ="DOC.24.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Virtual Id Helpers </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="set_vid">
+<A NAME ="DOC.24.8.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_vid( int i )</B></TT>
+<DD>Set virtual id
+<DL></DL><P>
+<A NAME="vids">
+<A NAME ="DOC.24.8.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> static  int*  vids</B></TT>
+<DD>vids[i] is 1 if virtual id i is taken, 0 if not.
+<DL></DL><P>
+<A NAME="get_next_vid">
+<A NAME ="DOC.24.8.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_next_vid()</B></TT>
+<DD>Returns the lowest available virtual id; also sets it as used.
+<DL></DL><P>
+<A NAME="release_vid">
+<A NAME ="DOC.24.8.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  release_vid( int vid )</B></TT>
+<DD>Returns a virtual id to the pool
+<DL></DL><P></DL>
+
+<A NAME="A Special Printf">
+<A NAME ="DOC.24.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  A Special Printf</B></TT>
+<DD>Used to make output for John Bent's ulv program... 
+<DL></DL><P><DL>
+
+<A NAME="lprintf">
+<A NAME ="DOC.24.9.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  lprintf( int vid, double now, char *fmt, ... )</B></TT>
+<DD>The log printf - use it to print ONE log event.  It will 
+automagically add the "..." delimiter for you. 
+<DL></DL><P>
+<A NAME="ulv_filename">
+<A NAME ="DOC.24.9.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> static  char*  ulv_filename</B></TT>
+<DD>The name of the ulv log file
+<DL></DL><P>
+<A NAME="lfp">
+<A NAME ="DOC.24.9.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> static  FILE*  lfp</B></TT>
+<DD>The log file fp.
+<DL></DL><P></DL>
+
+<A NAME="networkLatency">
+<A NAME ="DOC.24.33">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  networkLatency</B></TT>
+<DD>Variables regarding the nw bandwidth.
+<DL></DL><P></DL>
+<hr>
+ <DL><DT><B>This class has no child classes.</B></DL>
+<DL></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>

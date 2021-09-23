@@ -1,0 +1,65 @@
+<html><head><TITLE>Table of Contents</TITLE></head><BODY>
+
+<H1>Table of contents</H1>
+<H2>General</H2>
+<UL>
+<LI>
+<A HREF="Introduction..html">Introduction.</A>
+<LI>
+<A HREF="MWPrintf.html">MWPrintf</A>
+<UL>
+</UL>
+</UL>
+<H2>Classes</H2>
+<UL>
+<LI><A HREF="MWDriver.html">MWDriver</A> <I>This class is responsible for managing an application in an 
+opportunistic environment</I>
+<LI><A HREF="MWStatistics.html">MWStatistics</A> <I>This class serves as a holder for worker classes before they go to die</I>
+<LI><A HREF="MWTask.html">MWTask</A> <I>
+This the class that represents a unit of work</I>
+<LI><A HREF="MWWorker.html">MWWorker</A> <I>This is the worker class that performs the tasks in the
+opportunistic condor environment</I>
+<LI><A HREF="MWWorkerID.html">MWWorkerID</A> <I>
+This class keeps an identification of the worker application
+useful for the driver class</I>
+</UL>
+<H2>Functions, Macros</H2>
+<UL>
+<LI><!2><A HREF="#DOC.17">benchmark_result</A> <I>This is the function allowing the workers to be sorted by benchmarkresult</I>
+<LI><!2><A HREF="#DOC.16">kflops</A> <I>This is the function allowing the workers to be sorted by KFlops</I>
+<LI><!2><A HREF="MWPrintf.html#DOC.25.2">MWprintf</A> <I>A regular printf, with debugging level</I>
+<LI><A HREF="set_MWprintf_level.html">set_MWprintf_level</A> <I>Set the debug level for the MWprintf function</I>
+</UL>
+<H2>Variables</H2>
+<UL>
+<LI><!2><A HREF="#DOC.4">bool</A> <I>If defined ( DUMB_COMPILER ), we typedef bool to int.</I>
+<LI><!2><A HREF="#DOC.5">MW_MAX_WORKERS</A> <I>An upper limit on the number of workers -- so we can allocated arrays
+to keep statistics </I>
+<LI><!2><A HREF="#DOC.21">MWTask</A> <I>A forward reference; needed to define the MWWorkerID class.</I>
+<LI><A HREF="MWworker_statenames.html">MWworker_statenames</A> <I>This static array is used to hold strings that represent the
+MWworker_states</I>
+</UL>
+<H2>Macros</H2>
+<UL>
+<LI><!2><A HREF="#DOC.1">FALSE</A> <I>FALSE is defined as 0</I>
+<LI><!2><A HREF="#DOC.9">MWKey</A> <I>This is the "key" by which the task list can be managed.</I>
+<LI><!2><A HREF="#DOC.2">TRUE</A> <I>TRUE is defined as 1</I>
+<LI><!2><A HREF="#DOC.3">UNDEFINED</A> <I>UNDEFINED is defined as -1</I>
+</UL>
+<H2>Enums, Unions, Structs</H2>
+<UL>
+<LI><A HREF="MWMachineOrderingPolicy.html">MWMachineOrderingPolicy</A> <I>Tasks are always assigned to he first "IDLE" machine</I>
+<LI><A HREF="MWmessages.html">MWmessages</A> <I>
+A list of the message tags that the Master-Worker application
+will send and receive</I>
+<LI><A HREF="MWReturn.html">MWReturn</A> <I>Possible return values from many virtual functions </I>
+<LI><A HREF="MWSuspensionPolicy.html">MWSuspensionPolicy</A> <I>The suspension policy to use - What do we do when it happens? </I>
+<LI><A HREF="MWTaskAdditionMode.html">MWTaskAdditionMode</A> <I>The ways in which tasks may be added to the list</I>
+<LI><A HREF="MWTaskRetrievalMode.html">MWTaskRetrievalMode</A> <I>The ways in which tasks may be removed from the list</I>
+<LI><A HREF="MWworker_states.html">MWworker_states</A> <I>
+This is a list of the states in which a worker can be</I>
+</UL>
+<I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>

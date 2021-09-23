@@ -1,0 +1,85 @@
+#######################################################################
+#
+#  Makefile for the fibonacci example application
+#
+#######################################################################
+
+# Turn off default suffixes
+.SUFFIXES:
+.SUFFIXES: .C .o
+
+SHELL = /bin/sh
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+includedir = @include_dir@
+libdir = @libdir@
+bindir = @bindir@
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+
+CXX = @CXX@
+CPPFLAGS = @CPPFLAGS@
+CXXFLAGS = @CXXFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+INSTALL = @INSTALL@
+
+VPATH = @srcdir@
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+
+# Put here where the MW includes and libraries will be...
+MWDIR=/p/condor/workspaces/sanjeevk/trunk/src/mw/
+
+# The user puts this or configure -- It would be nice if configure did it.
+CONDOR_DIR = /unsup/condor
+CONDORPVM_DIR = /p/condor/workspaces/pvm/pvm3.4.2
+PVM_ARCH = LINUX
+SOCKET_LIB = #-lsocket -lnsl
+
+CXX = g++
+CXXFLAGS = -g
+INCL = -I$(MWDIR)/include
+
+
+# Now some macros
+MASTERSRC   = Driver-fib.C Task-fib.C MasterMain-fib.C
+WORKERSRC   = Worker-fib.C Task-fib.C WorkerMain-fib.C
+
+MASTEROBJ      = $(MASTERSRC:.C=.o)
+WORKEROBJ      = $(WORKERSRC:.C=.o)
+
+# Now the targets
+
+all:	file-based condorpvm-based
+
+file-based: filemaster fileworker
+
+condorpvm-based: condorpvmmaster condorpvmworker
+
+filemaster: $(MASTEROBJ)
+	$(CXX) -o masterfib-file $(CXXFLAGS) $(LDFLAGS) $(MASTEROBJ)\
+	-L$(MWDIR)/lib   -lMWfilemaster -lMW -L$(CONDOR_DIR)/lib -lcondorapi -lnss_files -lnss_dns -lresolv -lc
+
+fileworker: $(WORKEROBJ)
+	$(CXX) -o workerfib-file $(CXXFLAGS) $(LDFLAGS) $(WORKEROBJ) \
+		-L$(MWDIR)/lib -lMWfileworker  -lMW  -L$(CONDOR_DIR)/lib -lcondorapi -lnss_files -lnss_dns -lresolv -lc
+
+condorpvmmaster: $(MASTEROBJ)
+	$(CXX) -o masterfib-condorpvm $(MASTEROBJ) \
+	-L$(MWDIR)/lib   -lMWcondorpvmmaster -lMW \
+	-L$(CONDORPVM_DIR)/lib/$(PVM_ARCH) -lpvm3 $(SOCKET_LIB)
+
+condorpvmworker: $(WORKEROBJ)
+	$(CXX) -o workerfib-condorpvm $(WORKEROBJ) \
+	-L$(MWDIR)/lib   -lMWcondorpvmworker -lMW \
+	-L$(CONDORPVM_DIR)/lib/$(PVM_ARCH) -lpvm3 $(SOCKET_LIB)
+
+clean:
+	rm -f $(MASTEROBJ) $(WORKEROBJ)
+
+
+# default rule
+.C.o:
+	${CXX} -c ${CPPFLAGS} ${CXXFLAGS} $(INCL) $<
