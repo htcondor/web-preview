@@ -1,0 +1,753 @@
+<html><head><TITLE>MWFileRC</TITLE></head>
+<body>
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif></A>  class  MWFileRC : public MWRMComm </H2><BLOCKQUOTE>
+
+A Resource Management and Communication class that uses Condor 
+for underlying support of resource managament
+</BLOCKQUOTE>
+<hr>
+ <h2> Inheritance:</h2>
+<APPLET CODE="ClassGraph.class" WIDTH=600 HEIGHT=65>
+<param name=classes value="MMWRMComm,M,CMWFileRC,MMWFileRC.html">
+<param name=before value="M,M">
+<param name=after value="Md_,M">
+<param name=indent value="0,1">
+<param name=arrowdir value="down">
+</APPLET>
+<hr>
+
+<DL>
+<DL>
+<DT><h3>Public Methods</h3><DD><DT><A HREF="#DOC.3.19"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>CheckLogFilesRunning</B>( ) </B>
+ <DD><I>Always get the last result </I>
+<DT><A HREF="#DOC.3.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_finished_worker</B>( int i ) </B>
+ <DD><I>Handle a message from the worker </I>
+<DT><A HREF="#DOC.3.7"> <IMG BORDER=0 SRC=icon1.gif></A> NUM_FILE_TYPES  <B>MWFileRC</B>( <!2><A HREF="#DOC.9">bool</A> val, int id ) </B>
+ <DD><I>Constructor </I>
+<DT><A HREF="#DOC.3.8"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>~MWFileRC</B>() </B>
+ <DD><I>Destructor </I>
+</DL><DL>
+<DT><h3>Public</h3><DD><DT><A HREF="#DOC.3.1"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>A. Resource Management Routines</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.3.1.1"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>setup</B>( int argc, char *argv[], int *mytid, int *mastertid ) </B>
+ <DD><I>Initialises</I>
+<DT><A HREF="#DOC.3.1.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>exit</B>( int exitval ) </B>
+ <DD><I>Shutdown</I>
+<DT><A HREF="#DOC.3.1.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>init_beginning_workers</B>( int *nworkers, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> ***workers ) </B>
+ <DD><I>Initialize workers if already some have started up </I>
+<DT><A HREF="#DOC.3.1.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>start_worker</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>This function is actually a misonomer</I>
+<DT><A HREF="#DOC.3.1.6"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>removeWorker</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>This function removes a existing worker </I>
+<DT><A HREF="#DOC.3.1.7"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>hostaddlogic</B>( int *w ) </B>
+ <DD><I>Figure out whether or not to generate a new worker depending on
+whether new requests have been made </I>
+<DT><A HREF="#DOC.3.1.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>config</B>( int *, int *, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *** ) </B>
+ <DD><I>A dummy function</I>
+<DT><A HREF="#DOC.3.1.8"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>read_RMstate</B>( FILE *fp = NULL ) </B>
+ <DD><I>A routine for reading in the MW-File state at the time 
+of checkpointing</I>
+<DT><A HREF="#DOC.3.1.9"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>write_RMstate</B>( FILE *fp = NULL ) </B>
+ <DD><I>A routine for writing in the MW-File state at the time 
+of checkpointing</I>
+
+</DL>
+<DT><A HREF="#DOC.3.2"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>B. Communication Routines</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.3.2.1"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>initsend</B>( int useless = 0 ) </B>
+ <DD><I>Initialize the send buffer </I>
+<DT><A HREF="#DOC.3.2.2"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>send</B>( int toWhom, int msgtag ) </B>
+ <DD><I>Send function </I>
+<DT><A HREF="#DOC.3.2.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>recv</B>( int fromWhom, int msgtag ) </B>
+ <DD><I>Recv function </I>
+<DT><A HREF="#DOC.3.2.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>bufinfo</B>( int buf_id, int *len, int *tag, int *sending_host ) </B>
+ <DD><I>Get some info about the recv buffer </I>
+<DT><A HREF="#DOC.3.2.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( char *bytes, int nitem, int stride = 1 ) </B>
+ <DD><I>pack some bytes</I>
+<DT><A HREF="#DOC.3.2.6"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( float *f, int nitem, int stride = 1 ) </B>
+ <DD><I>float</I>
+<DT><A HREF="#DOC.3.2.7"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( double *d, int nitem, int stride = 1 ) </B>
+ <DD><I>double</I>
+<DT><A HREF="#DOC.3.2.8"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( int *i, int nitem, int stride = 1 ) </B>
+ <DD><I>int</I>
+<DT><A HREF="#DOC.3.2.9"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( unsigned int *ui, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned int</I>
+<DT><A HREF="#DOC.3.2.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( short *sh, int nitem, int stride = 1 ) </B>
+ <DD><I>short</I>
+<DT><A HREF="#DOC.3.2.11"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( unsigned short *ush, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned short</I>
+<DT><A HREF="#DOC.3.2.12"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( long *l, int nitem, int stride = 1 ) </B>
+ <DD><I>long</I>
+<DT><A HREF="#DOC.3.2.13"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( unsigned long *ul, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned long</I>
+<DT><A HREF="#DOC.3.2.14"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>pack</B>( char *str ) </B>
+ <DD><I>string</I>
+<DT><A HREF="#DOC.3.2.15"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( char *bytes, int nitem, int stride = 1 ) </B>
+ <DD><I>Unpack some bytes</I>
+<DT><A HREF="#DOC.3.2.16"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( float *f, int nitem, int stride = 1 ) </B>
+ <DD><I>float</I>
+<DT><A HREF="#DOC.3.2.17"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( double *d, int nitem, int stride = 1 ) </B>
+ <DD><I>double</I>
+<DT><A HREF="#DOC.3.2.18"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( int *i, int nitem, int stride = 1 ) </B>
+ <DD><I>int</I>
+<DT><A HREF="#DOC.3.2.19"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( unsigned int *ui, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned int</I>
+<DT><A HREF="#DOC.3.2.20"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( short *sh, int nitem, int stride = 1 ) </B>
+ <DD><I>short</I>
+<DT><A HREF="#DOC.3.2.21"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( unsigned short *ush, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned short</I>
+<DT><A HREF="#DOC.3.2.22"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( long *l, int nitem, int stride = 1 ) </B>
+ <DD><I>long</I>
+<DT><A HREF="#DOC.3.2.23"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( unsigned long *ul, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned long</I>
+<DT><A HREF="#DOC.3.2.24"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>unpack</B>( char *str ) </B>
+ <DD><I>string</I>
+
+</DL>
+</DL><DL>
+<DT><h3>Private Fields</h3><DD><DT><A HREF="#DOC.3.46"> <IMG BORDER=0 SRC=icon1.gif></A>  struct  FileWorker <B>*fileWorkers</B> </B>
+ <DD><I>An array of the number of workers </I>
+<DT><A HREF="#DOC.3.37"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>actual_task</B> </B>
+ <DD><I>The actual task that is being executed </I>
+<DT><A HREF="#DOC.3.49"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>CHECKLOG_FREQ</B> </B>
+ <DD><I>This determines with what frequency should we check the log files</I>
+<DT><A HREF="#DOC.3.58"> <IMG BORDER=0 SRC=icon1.gif></A> long  long  <B>checksum</B> </B>
+ <DD><I>The checksum calculated </I>
+<DT><A HREF="#DOC.3.40"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>control_directory</B>[256] </B>
+ <DD><I>The control directory the master reads for all resource 
+management functions</I>
+<DT><A HREF="#DOC.3.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>current_num_workers</B> </B>
+ <DD><I>The number of workers that were present</I>
+<DT><A HREF="#DOC.3.6"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>cyclePosition</B> </B>
+ <DD><I>This is a variable that keeps the cycle in effect</I>
+<DT><A HREF="#DOC.3.35"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>expected_number</B> </B>
+ <DD><I>The expected number of the next message </I>
+<DT><A HREF="#DOC.3.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>FileRCID</B> </B>
+ <DD><I>The value is the id that the worker gets</I>
+<DT><A HREF="#DOC.3.56"> <IMG BORDER=0 SRC=icon1.gif></A> int*  <B>hostadd_reqs</B> </B>
+ <DD><I>A variable array keeping track of how many have been requested </I>
+<DT><A HREF="#DOC.3.57"> <IMG BORDER=0 SRC=icon1.gif></A> int**  <B>hostaddind_reqs</B> </B>
+ <DD><I>A variable to keep track of which of each have been requested </I>
+<DT><A HREF="#DOC.3.42"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>init_file</B>[256] </B>
+ <DD><I>The init file </I>
+<DT><A HREF="#DOC.3.39"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>input_directory</B>[256] </B>
+ <DD><I>The directory where the master has to send the work </I>
+<DT><A HREF="#DOC.3.3"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.9">bool</A>  <B>isMaster</B> </B>
+ <DD><I>The bool indicates the mode of the RC instance 
+a true value means that it is a master and a false means that 
+it is a worker</I>
+<DT><A HREF="#DOC.3.36"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>master_expected_number</B> </B>
+ <DD><I>The expected_number of the next message that the master is
+expecting </I>
+<DT><A HREF="#DOC.3.53"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>MasterUp</B> </B>
+ <DD><I>Internal variable that is init to what the worker has to 
+send to the upper layer in case of a master wakeup</I>
+<DT><A HREF="#DOC.3.44"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>max_num_workers</B> </B>
+ <DD><I>An integer corresponding to the number of fileWorkers struct
+that we had/have as the maximum;</I>
+<DT><A HREF="#DOC.3.41"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>moment_worker_file</B>[256] </B>
+ <DD><I>The file in the control directory that will contain the momentary
+number of workers</I>
+<DT><A HREF="#DOC.3.51"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>msgTag</B> </B>
+ <DD><I>The tag of the message that just came in	</I>
+<DT><A HREF="#DOC.3.38"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>output_directory</B>[256] </B>
+ <DD><I>The directory where all the workers have to send their output </I>
+<DT><A HREF="#DOC.3.48"> <IMG BORDER=0 SRC=icon1.gif></A> List*  <B>recvList</B> </B>
+ <DD><I>A list of all the items that are received </I>
+<DT><A HREF="#DOC.3.47"> <IMG BORDER=0 SRC=icon1.gif></A> List*  <B>sendList</B> </B>
+ <DD><I>A list of all the items that are sent in a send after a series of 
+packs</I>
+<DT><A HREF="#DOC.3.55"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>subId</B> </B>
+ <DD><I>A variable to keep track of submit files </I>
+<DT><A HREF="#DOC.3.43"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>submitted_num_workers</B> </B>
+ <DD><I>The number of submitted workers </I>
+<DT><A HREF="#DOC.3.50"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>turnNo</B> </B>
+ <DD><I>This keeps the track of how many cycles were made</I>
+<DT><A HREF="#DOC.3.52"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>whomRecv</B> </B>
+ <DD><I>The message came from whom 	</I>
+<DT><A HREF="#DOC.3.59"> <IMG BORDER=0 SRC=icon1.gif></A> long  <B>worker_timeout</B> </B>
+ <DD><I>The worker timeout in minutes </I>
+<DT><A HREF="#DOC.3.54"> <IMG BORDER=0 SRC=icon1.gif></A> int*  <B>workerArch</B> </B>
+ <DD><I>A variable array helping in choosing the next arch to chose from </I>
+<DT><A HREF="#DOC.3.45"> <IMG BORDER=0 SRC=icon1.gif></A> FileRCEvent*  <B>workerEvents</B> </B>
+ <DD><I>An array of message tags to be sent to the upper layers
+as to what tag has to be sent with the event associated with this 
+worker</I>
+</DL><DL>
+<DT><h3>Private Methods</h3><DD><DT><A HREF="#DOC.3.20"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>CheckLogFilesResuscicate</B>( ) </B>
+ <DD><I>Is Called when we are recovering from a crash </I>
+<DT><A HREF="#DOC.3.32"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>ChoseArchNum</B>() </B>
+ <DD><I>Get a architecture number </I>
+<DT><A HREF="#DOC.3.26"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>do_spawn</B>( int numworkers, int arch ) </B>
+ <DD><I>Create a worker </I>
+<DT><A HREF="#DOC.3.25"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>GetCondorId</B>( char *lgfile, int *cId, int *pId ) </B>
+ <DD><I>Find the condor_ID of the worker with this log file </I>
+<DT><A HREF="#DOC.3.23"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>GetCounter</B>( char *file1, char *file2 ) </B>
+ <DD><I>Another helping routine </I>
+<DT><A HREF="#DOC.3.24"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>GetMasterExpectedNumber</B>( char *file ) </B>
+ <DD><I>Another helping routine </I>
+<DT><A HREF="#DOC.3.22"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>GetWorkerCounter</B>( char *file ) </B>
+ <DD><I>The helping routine for resuscicate </I>
+<DT><A HREF="#DOC.3.14"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_executing_worker</B>( int i ) </B>
+ <DD><I>Called when the worker starts executing first </I>
+<DT><A HREF="#DOC.3.13"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_killed_worker</B>( int i ) </B>
+ <DD><I>Is Called when a task is dead </I>
+<DT><A HREF="#DOC.3.16"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_master_executing</B>() </B>
+ <DD><I>Is called when the worker detects that the master has 
+come up</I>
+<DT><A HREF="#DOC.3.11"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_resumed_worker</B>( int i ) </B>
+ <DD><I>Is Called when a host is resumed </I>
+<DT><A HREF="#DOC.3.12"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_suspended_worker</B>( int i ) </B>
+ <DD><I>Is Called when a host is suspended </I>
+<DT><A HREF="#DOC.3.15"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_transited_worker</B>( int i ) </B>
+ <DD><I>Called in no_checkpoint mode </I>
+<DT><A HREF="#DOC.3.17"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>handle_work</B>( int msgtag ) </B>
+ <DD><I>Is Called when a message is received by the worker</I>
+<DT><A HREF="#DOC.3.33"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>inform_target_num_workers</B>( ) </B>
+ <DD><I>Information by the upper layer </I>
+<DT><A HREF="#DOC.3.34"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>InitStructures</B>( ) </B>
+ <DD><I>A function that inits some internal structures </I>
+<DT><A HREF="#DOC.3.31"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.9">bool</A>  <B>IsComplete</B>( int i ) </B>
+ <DD><I>Determine whether worker i has sent a message </I>
+<DT><A HREF="#DOC.3.27"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>killWorker</B>( int i ) </B>
+ <DD><I>Kill a worker </I>
+<DT><A HREF="#DOC.3.29"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>master_recv</B>( int fromWhom, int msgtag ) </B>
+ <DD><I>Master receive </I>
+<DT><A HREF="#DOC.3.21"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>resuscicate</B>( ) </B>
+ <DD><I>The main resuscicate function </I>
+<DT><A HREF="#DOC.3.28"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>setup_notifies</B>( int worker_id ) </B>
+ <DD><I>Notify various events </I>
+<DT><A HREF="#DOC.3.30"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>worker_recv</B>( int fromWhom, int msgtag ) </B>
+ <DD><I>Worker receive </I>
+</DL><DL>
+<DT><h3>Private</h3><DD><DT><A HREF="#DOC.3.18"> <IMG BORDER=0 SRC=icon1.gif></A>  <B></B> </B>
+ <DD><I>Polls the log files to see some changes </I>
+<DT><A HREF="#DOC.3.9"> <IMG BORDER=0 SRC=icon1.gif></A>  <B></B> </B>
+ <DD><I>Some private functions </I>
+</DL></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+
+A Resource Management and Communication class that uses Condor 
+for underlying support of resource managament. Some crude inter-process 
+communication is provided using the userlog feature of Condor.
+resource management.
+
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="MWFileRC">
+<A NAME ="DOC.3.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> NUM_FILE_TYPES  MWFileRC( <!2><A HREF="#DOC.9">bool</A> val, int id )</B></TT>
+<DD>Constructor 
+<DL></DL><P>
+<A NAME="~MWFileRC">
+<A NAME ="DOC.3.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  ~MWFileRC()</B></TT>
+<DD>Destructor 
+<DL></DL><P>
+<A NAME="A. Resource Management Routines">
+<A NAME ="DOC.3.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  A. Resource Management Routines</B></TT>
+<DD>
+Here we implement the pure virtual functions found in 
+ur parent class, MWRMComm.
+<DL></DL><P><DL>
+
+<A NAME="setup">
+<A NAME ="DOC.3.1.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  setup( int argc, char *argv[], int *mytid, int *mastertid )</B></TT>
+<DD>Initialises. Depending on whether it is master or worker instance
+it initializes all the internal variables. 
+<DL></DL><P>
+<A NAME="exit">
+<A NAME ="DOC.3.1.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  exit( int exitval )</B></TT>
+<DD>Shutdown. Kills all the workers if it is master 
+<DL></DL><P>
+<A NAME="init_beginning_workers">
+<A NAME ="DOC.3.1.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  init_beginning_workers( int *nworkers, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> ***workers )</B></TT>
+<DD>Initialize workers if already some have started up 
+<DL></DL><P>
+<A NAME="start_worker">
+<A NAME ="DOC.3.1.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  start_worker( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>This function is actually a misonomer. It DOES NOT spawn a new
+worker. Rather it just inits the structure that is passed on to 
+it 
+<DL></DL><P>
+<A NAME="removeWorker">
+<A NAME ="DOC.3.1.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  removeWorker( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>This function removes a existing worker 
+<DL></DL><P>
+<A NAME="hostaddlogic">
+<A NAME ="DOC.3.1.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  hostaddlogic( int *w )</B></TT>
+<DD>Figure out whether or not to generate a new worker depending on
+whether new requests have been made 
+<DL></DL><P>
+<A NAME="config">
+<A NAME ="DOC.3.1.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  config( int *, int *, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *** )</B></TT>
+<DD>A dummy function. For the sake of conformity with the Pvm 
+<DL></DL><P>
+<A NAME="read_RMstate">
+<A NAME ="DOC.3.1.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  read_RMstate( FILE *fp = NULL )</B></TT>
+<DD>A routine for reading in the MW-File state at the time 
+of checkpointing
+<DL></DL><P>
+<A NAME="write_RMstate">
+<A NAME ="DOC.3.1.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  write_RMstate( FILE *fp = NULL )</B></TT>
+<DD>A routine for writing in the MW-File state at the time 
+of checkpointing
+<DL></DL><P></DL>
+
+<A NAME="B. Communication Routines">
+<A NAME ="DOC.3.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  B. Communication Routines</B></TT>
+<DD>
+Unlike MWPvmRC, the communication routines are non-trivial 
+because Condor provides no inter-process comminucation.
+Thus we use files for communication. So a send is essentially
+a file write operation and a recv is a file-read operation.
+We maintain 2 lists:- The sendList and recvList for taking 
+care of what is to be written/read to/from the files. As in
+pvm a user beings by calling initsend which creates a new list.
+Calls to pack insert into the list what is being packed. And
+finally a send writes the entire thing into a file 
+identified by the destination. Corresponding things happpen
+in recv.
+<DL></DL><P><DL>
+
+<A NAME="initsend">
+<A NAME ="DOC.3.2.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  initsend( int useless = 0 )</B></TT>
+<DD>Initialize the send buffer 
+<DL></DL><P>
+<A NAME="send">
+<A NAME ="DOC.3.2.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  send( int toWhom, int msgtag )</B></TT>
+<DD>Send function 
+<DL></DL><P>
+<A NAME="recv">
+<A NAME ="DOC.3.2.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  recv( int fromWhom, int msgtag )</B></TT>
+<DD>Recv function 
+<DL></DL><P>
+<A NAME="bufinfo">
+<A NAME ="DOC.3.2.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  bufinfo( int buf_id, int *len, int *tag, int *sending_host )</B></TT>
+<DD>Get some info about the recv buffer 
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( char *bytes, int nitem, int stride = 1 )</B></TT>
+<DD>pack some bytes
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( float *f, int nitem, int stride = 1 )</B></TT>
+<DD>float
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( double *d, int nitem, int stride = 1 )</B></TT>
+<DD>double
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( int *i, int nitem, int stride = 1 )</B></TT>
+<DD>int
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( unsigned int *ui, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned int
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( short *sh, int nitem, int stride = 1 )</B></TT>
+<DD>short
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( unsigned short *ush, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned short
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( long *l, int nitem, int stride = 1 )</B></TT>
+<DD>long
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( unsigned long *ul, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned long
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.3.2.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  pack( char *str )</B></TT>
+<DD>string
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( char *bytes, int nitem, int stride = 1 )</B></TT>
+<DD>Unpack some bytes
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( float *f, int nitem, int stride = 1 )</B></TT>
+<DD>float
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( double *d, int nitem, int stride = 1 )</B></TT>
+<DD>double
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.18">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( int *i, int nitem, int stride = 1 )</B></TT>
+<DD>int
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.19">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( unsigned int *ui, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned int
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.20">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( short *sh, int nitem, int stride = 1 )</B></TT>
+<DD>short
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.21">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( unsigned short *ush, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned short
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.22">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( long *l, int nitem, int stride = 1 )</B></TT>
+<DD>long
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.23">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( unsigned long *ul, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned long
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.3.2.24">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  unpack( char *str )</B></TT>
+<DD>string
+<DL></DL><P></DL>
+
+<A NAME="">
+<A NAME ="DOC.3.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  </B></TT>
+<DD>Some private functions 
+<DL></DL><P>
+<A NAME="handle_finished_worker">
+<A NAME ="DOC.3.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_finished_worker( int i )</B></TT>
+<DD>Handle a message from the worker 
+<DL></DL><P>
+<A NAME="handle_resumed_worker">
+<A NAME ="DOC.3.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_resumed_worker( int i )</B></TT>
+<DD>Is Called when a host is resumed 
+<DL></DL><P>
+<A NAME="handle_suspended_worker">
+<A NAME ="DOC.3.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_suspended_worker( int i )</B></TT>
+<DD>Is Called when a host is suspended 
+<DL></DL><P>
+<A NAME="handle_killed_worker">
+<A NAME ="DOC.3.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_killed_worker( int i )</B></TT>
+<DD>Is Called when a task is dead 
+<DL></DL><P>
+<A NAME="handle_executing_worker">
+<A NAME ="DOC.3.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_executing_worker( int i )</B></TT>
+<DD>Called when the worker starts executing first 
+<DL></DL><P>
+<A NAME="handle_transited_worker">
+<A NAME ="DOC.3.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_transited_worker( int i )</B></TT>
+<DD>Called in no_checkpoint mode 
+<DL></DL><P>
+<A NAME="handle_master_executing">
+<A NAME ="DOC.3.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_master_executing()</B></TT>
+<DD>Is called when the worker detects that the master has 
+come up
+<DL></DL><P>
+<A NAME="handle_work">
+<A NAME ="DOC.3.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  handle_work( int msgtag )</B></TT>
+<DD>Is Called when a message is received by the worker
+<DL></DL><P>
+<A NAME="">
+<A NAME ="DOC.3.18">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  </B></TT>
+<DD>Polls the log files to see some changes 
+<DL></DL><P>
+<A NAME="CheckLogFilesRunning">
+<A NAME ="DOC.3.19">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  CheckLogFilesRunning( )</B></TT>
+<DD>Always get the last result 
+<DL></DL><P>
+<A NAME="CheckLogFilesResuscicate">
+<A NAME ="DOC.3.20">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  CheckLogFilesResuscicate( )</B></TT>
+<DD>Is Called when we are recovering from a crash 
+<DL></DL><P>
+<A NAME="resuscicate">
+<A NAME ="DOC.3.21">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  resuscicate( )</B></TT>
+<DD>The main resuscicate function 
+<DL></DL><P>
+<A NAME="GetWorkerCounter">
+<A NAME ="DOC.3.22">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  GetWorkerCounter( char *file )</B></TT>
+<DD>The helping routine for resuscicate 
+<DL></DL><P>
+<A NAME="GetCounter">
+<A NAME ="DOC.3.23">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  GetCounter( char *file1, char *file2 )</B></TT>
+<DD>Another helping routine 
+<DL></DL><P>
+<A NAME="GetMasterExpectedNumber">
+<A NAME ="DOC.3.24">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  GetMasterExpectedNumber( char *file )</B></TT>
+<DD>Another helping routine 
+<DL></DL><P>
+<A NAME="GetCondorId">
+<A NAME ="DOC.3.25">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  GetCondorId( char *lgfile, int *cId, int *pId )</B></TT>
+<DD>Find the condor_ID of the worker with this log file 
+<DL></DL><P>
+<A NAME="do_spawn">
+<A NAME ="DOC.3.26">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  do_spawn( int numworkers, int arch )</B></TT>
+<DD>Create a worker 
+<DL></DL><P>
+<A NAME="killWorker">
+<A NAME ="DOC.3.27">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  killWorker( int i )</B></TT>
+<DD>Kill a worker 
+<DL></DL><P>
+<A NAME="setup_notifies">
+<A NAME ="DOC.3.28">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  setup_notifies( int worker_id )</B></TT>
+<DD>Notify various events 
+<DL></DL><P>
+<A NAME="master_recv">
+<A NAME ="DOC.3.29">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  master_recv( int fromWhom, int msgtag )</B></TT>
+<DD>Master receive 
+<DL></DL><P>
+<A NAME="worker_recv">
+<A NAME ="DOC.3.30">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  worker_recv( int fromWhom, int msgtag )</B></TT>
+<DD>Worker receive 
+<DL></DL><P>
+<A NAME="IsComplete">
+<A NAME ="DOC.3.31">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.9">bool</A>  IsComplete( int i )</B></TT>
+<DD>Determine whether worker i has sent a message 
+<DL></DL><P>
+<A NAME="ChoseArchNum">
+<A NAME ="DOC.3.32">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  ChoseArchNum()</B></TT>
+<DD>Get a architecture number 
+<DL></DL><P>
+<A NAME="inform_target_num_workers">
+<A NAME ="DOC.3.33">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  inform_target_num_workers( )</B></TT>
+<DD>Information by the upper layer 
+<DL></DL><P>
+<A NAME="InitStructures">
+<A NAME ="DOC.3.34">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  InitStructures( )</B></TT>
+<DD>A function that inits some internal structures 
+<DL></DL><P>
+<A NAME="isMaster">
+<A NAME ="DOC.3.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.9">bool</A>  isMaster</B></TT>
+<DD>The bool indicates the mode of the RC instance 
+a true value means that it is a master and a false means that 
+it is a worker.
+We need to make it a tristate as somtimes an RC can be both
+a master and a worker.
+<DL></DL><P>
+<A NAME="FileRCID">
+<A NAME ="DOC.3.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  FileRCID</B></TT>
+<DD>The value is the id that the worker gets. For master it is
+of no use.
+<DL></DL><P>
+<A NAME="expected_number">
+<A NAME ="DOC.3.35">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  expected_number</B></TT>
+<DD>The expected number of the next message 
+<DL></DL><P>
+<A NAME="master_expected_number">
+<A NAME ="DOC.3.36">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  master_expected_number</B></TT>
+<DD>The expected_number of the next message that the master is
+expecting 
+<DL></DL><P>
+<A NAME="actual_task">
+<A NAME ="DOC.3.37">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  actual_task</B></TT>
+<DD>The actual task that is being executed 
+<DL></DL><P>
+<A NAME="output_directory">
+<A NAME ="DOC.3.38">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  output_directory[256]</B></TT>
+<DD>The directory where all the workers have to send their output 
+<DL></DL><P>
+<A NAME="input_directory">
+<A NAME ="DOC.3.39">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  input_directory[256]</B></TT>
+<DD>The directory where the master has to send the work 
+<DL></DL><P>
+<A NAME="control_directory">
+<A NAME ="DOC.3.40">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  control_directory[256]</B></TT>
+<DD>The control directory the master reads for all resource 
+management functions
+<DL></DL><P>
+<A NAME="moment_worker_file">
+<A NAME ="DOC.3.41">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  moment_worker_file[256]</B></TT>
+<DD>The file in the control directory that will contain the momentary
+number of workers
+<DL></DL><P>
+<A NAME="init_file">
+<A NAME ="DOC.3.42">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  init_file[256]</B></TT>
+<DD>The init file 
+<DL></DL><P>
+<A NAME="current_num_workers">
+<A NAME ="DOC.3.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  current_num_workers</B></TT>
+<DD>The number of workers that were present. This is an internal
+variable that will be used for copying the entire thing when 
+the target number changes. This is the number that will be maintained close to 
+target_num_workers.
+<DL></DL><P>
+<A NAME="submitted_num_workers">
+<A NAME ="DOC.3.43">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  submitted_num_workers</B></TT>
+<DD>The number of submitted workers 
+<DL></DL><P>
+<A NAME="max_num_workers">
+<A NAME ="DOC.3.44">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  max_num_workers</B></TT>
+<DD>An integer corresponding to the number of fileWorkers struct
+that we had/have as the maximum;
+<DL></DL><P>
+<A NAME="workerEvents">
+<A NAME ="DOC.3.45">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> FileRCEvent*  workerEvents</B></TT>
+<DD>An array of message tags to be sent to the upper layers
+as to what tag has to be sent with the event associated with this 
+worker
+<DL></DL><P>
+<A NAME="*fileWorkers">
+<A NAME ="DOC.3.46">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  struct  FileWorker *fileWorkers</B></TT>
+<DD>An array of the number of workers 
+<DL></DL><P>
+<A NAME="sendList">
+<A NAME ="DOC.3.47">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> List*  sendList</B></TT>
+<DD>A list of all the items that are sent in a send after a series of 
+packs
+<DL></DL><P>
+<A NAME="recvList">
+<A NAME ="DOC.3.48">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> List*  recvList</B></TT>
+<DD>A list of all the items that are received 
+<DL></DL><P>
+<A NAME="cyclePosition">
+<A NAME ="DOC.3.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  cyclePosition</B></TT>
+<DD>This is a variable that keeps the cycle in effect. The receive
+of ours goes in cycles to ensure fairness to the messages from all
+the slaves.
+<DL></DL><P>
+<A NAME="CHECKLOG_FREQ">
+<A NAME ="DOC.3.49">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  CHECKLOG_FREQ</B></TT>
+<DD>This determines with what frequency should we check the log files
+<DL></DL><P>
+<A NAME="turnNo">
+<A NAME ="DOC.3.50">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  turnNo</B></TT>
+<DD>This keeps the track of how many cycles were made
+<DL></DL><P>
+<A NAME="msgTag">
+<A NAME ="DOC.3.51">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  msgTag</B></TT>
+<DD>The tag of the message that just came in	
+<DL></DL><P>
+<A NAME="whomRecv">
+<A NAME ="DOC.3.52">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  whomRecv</B></TT>
+<DD>The message came from whom 	
+<DL></DL><P>
+<A NAME="MasterUp">
+<A NAME ="DOC.3.53">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  MasterUp</B></TT>
+<DD>Internal variable that is init to what the worker has to 
+send to the upper layer in case of a master wakeup
+<DL></DL><P>
+<A NAME="workerArch">
+<A NAME ="DOC.3.54">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int*  workerArch</B></TT>
+<DD>A variable array helping in choosing the next arch to chose from 
+<DL></DL><P>
+<A NAME="subId">
+<A NAME ="DOC.3.55">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  subId</B></TT>
+<DD>A variable to keep track of submit files 
+<DL></DL><P>
+<A NAME="hostadd_reqs">
+<A NAME ="DOC.3.56">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int*  hostadd_reqs</B></TT>
+<DD>A variable array keeping track of how many have been requested 
+<DL></DL><P>
+<A NAME="hostaddind_reqs">
+<A NAME ="DOC.3.57">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int**  hostaddind_reqs</B></TT>
+<DD>A variable to keep track of which of each have been requested 
+<DL></DL><P>
+<A NAME="checksum">
+<A NAME ="DOC.3.58">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> long  long  checksum</B></TT>
+<DD>The checksum calculated 
+<DL></DL><P>
+<A NAME="worker_timeout">
+<A NAME ="DOC.3.59">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> long  worker_timeout</B></TT>
+<DD>The worker timeout in minutes 
+<DL></DL><P></DL>
+<hr>
+ <DL><DT><B>This class has no child classes.</B></DL>
+<DL></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>

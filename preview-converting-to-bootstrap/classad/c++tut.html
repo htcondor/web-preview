@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<!--
+-     DON'T EDIT THIS!
+-     It's a generated page, you need to edit the source and rebuild
+-     git clone /afs/cs.wisc.edu/p/condor/repository/condor-web.git
+-     cd condor-web
+-     &lt;edit pages under src&gt;
+-     git add
+-     git commit
+-     git push
+-     ./generate_html --live
+-->
+<html>
+
+<head>
+    <!-- Elements common to many pages -->
+    <meta charset="UTF-8"/>
+    <meta name="description" content="HTCondor Homepage"/>
+    <link rel="stylesheet" type="text/css" href="https://research.cs.wisc.edu/htcondor/prosimii-screen.css"
+          media="screen, tv, projection" title="Default"/>
+    <!-- javascript used throughout the site -->
+    <script src="https://research.cs.wisc.edu/htcondor/sitewide.js" type="text/javascript"></script>
+
+    <!-- Items for specific pages -->
+    <title>HTCondor - ClassAds Programming Tutorial (C++)</title>
+
+</head>
+
+<body>
+<!-- For non-visual user agents: -->
+<div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+<div id="container">
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+        <div class="midHeader">
+            <div class="iconHeader">
+                <a href="https://research.cs.wisc.edu/htcondor/index.html"><img
+                        src="https://research.cs.wisc.edu/htcondor/images/white_bird_logo.png"
+                        alt="HTCondor High Throughput Computing" height="75"></a>
+            </div>
+
+            <div class="navAndSearch">
+                <div class="navBar">
+                    <span class="doNotDisplay">Navigation:</span>
+                    <a href="https://research.cs.wisc.edu/htcondor/index.html">Home</a> |
+                    <a href="https://research.cs.wisc.edu/htcondor/new.html">News</a> |
+                    <a href="https://research.cs.wisc.edu/htcondor/downloads/">Download</a> |
+                    <a href="https://research.cs.wisc.edu/htcondor/publications.html">Publications</a> |
+                    <a href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                </div>
+
+                <div class="searchForm">
+                    <script>
+                        (function () {
+                            var cx = '010754594835990937497:xijuwhbknew';
+                            var gcse = document.createElement('script');
+                            gcse.type = 'text/javascript';
+                            gcse.async = true;
+                            gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                                '//www.google.com/cse/cse.js?cx=' + cx;
+                            var s = document.getElementsByTagName('script')[0];
+                            s.parentNode.insertBefore(gcse, s);
+                        })();
+                    </script>
+                    <gcse:searchbox-only></gcse:searchbox-only>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ##### Main Copy ##### -->
+
+    <div id="main-copy">
+
+
+        <!-- Page body -->
+        <link rel="stylesheet" href="tutorial.css" type="text/css">
+        <div style="text-align: center">
+            <h1>ClassAds Programming Tutorial (C++)</h1>
+            Edited by Alain Roy (HTCondor Team), January 2005<br>
+            Originally by Rajesh Raman (HTCondor Team), June 2000
+        </div
+        <p>
+            This document is a tutorial for programming the C++ ClassAds library developed
+            for the <a href="http://research.cs.wisc.edu/htcondor/">HTCondor system</a>. Although
+            classads were developed for HTCondor, they are applicable in many general
+            contexts. The classad libraries are available as standalone packages
+            independent of HTCondor. For a general introduction to the concept of classads,
+            please read this <a href="http://research.cs.wisc.edu/htcondor/doc/hpdc98.ps">paper
+        </a>.
+        </p>
+        <p>
+            This document is an informal tutorial. For an in-depth description of
+            the ClassAd language, see
+            <a href="http://research.cs.wisc.edu/htcondor/classad/refman/">
+                the reference manual</a>. If there is a discrepancy between this
+            tutorial and the reference manual, then the reference manual is
+            correct. If there is a discrepancy between the code and the reference
+            manual, the reference manual is correct and there is a bug in the
+            code.
+        </p>
+        <p>
+            For detailed documentation on the C++ ClassAd API, see the
+            <a href="http://research.cs.wisc.edu/htcondor/classad/c++doc/index.html">
+                API documentation</a>.
+        </p>
+
+        <h2>Table of Contents</h2>
+
+        <table>
+            <tr>
+                <td valign="top">
+                    <ol>
+
+                        <li><a href="#descr">Informal Language Description</a>
+                            <ol>
+                                <li><a href="#syntax">Syntax and Evaluation Semantics</a>
+                                    <ol>
+                                        <li><a href="#literals">Literals</a>
+                                        <li><a href="#classads">ClassAds</a>
+                                        <li><a href="#attrrefs">Attribute References</a>
+                                        <li><a href="#operators">Operators</a>
+                                        <li><a href="#lists">Lists</a>
+                                        <li><a href="#fncalls">Function Calls</a>
+                                    </ol>
+                                <li><a href="#examples">Examples</a>
+                            </ol>
+                </td>
+                <td valign="top">
+                    <ol start="2">
+                        <li><a href="#api">The C++ ClassAd API</a>
+                            <ol>
+                                <li><a href="#prelim">Preliminary</a>
+                                <li><a href="#create_classad">Creating ClassAds</a>
+                                <li><a href="#create">Creating Expressions</a>
+                                <li><a href="#insert">Inserting Expressions into ClassAds</a>
+                                <li><a href="#remove">Removing Expressions from ClassAds</a>
+                                <li><a href="#lookup">Looking up Expressions in ClassAds</a>
+                                <li><a href="#eval">Evaluating Expressions</a>
+                                <li><a href="#match">Testing Matches</a>
+                                <li><a href="#display">Displaying and Transporting Expressions and
+                                    Values</a>
+                                <li><a href="#XML">XML ClassAds</a>
+                            </ol>
+                    </ol>
+            </tr>
+        </table>
+
+        <h2><a name="descr">1. Informal Language Description</a></h2>
+        A classad is a structure that contains a set of named
+        expressions. Think of it as an attribute-value list that does not have
+        a scheme constraining the list of attributes. The
+        expressions are very similar to their counterparts in C, but are more general:
+        <ul>
+            <li> The classad language has a richer set of types: in addition to
+                traditional scalar C types (integer, real, boolean), the classad
+                language provides the following primitive types (undefined, error, string,
+                absolute time, relative time).
+
+            <li> The semantics of expressions is defined so that evaluation is
+                well-defined in all circumstances, such as multiplying an integer
+                and a string, using an attribute which does not exist, etc. (The
+                results in the above two cases are the <b>error</b> and
+                <b>undefined</b> values respectively.)
+
+            <li> Expressions may contain classads and lists of expressions.
+
+            <li> A rich set of built-in functions is included for many tasks such as
+                getting the current time of day, pattern matching, type
+                conversions, etc.
+
+        </ul>
+
+        <h3><a name="syntax">1.1. Syntax and Evaluation Semantics</a></h3>
+        <h4><a name="literals">1.1.1. Literals</a></h4>
+        Literals are atomic expressions which represent single scalar values.
+        <dl>
+            <dt>Integers</dt>
+            <dd> 7, 0x1a, 0666, -33</dd>
+            <dt>Reals</dt>
+            <dd> 3.14, -2.718, 1e+5, 1M, 2.3G.<br>(Note: The suffixes B, K,
+                M, G and T indicate bytes, kilobytes, megabytes, gigabytes and
+                terabytes respectively. The numeric prefix is converted to a real and
+                multiplied by the appropriate power of 2.)
+            </dd>
+            <dt>Strings</dt>
+            <dd>"aaa", "BBB", "a\t\&quot;" (escape characters are
+                supported; see K&amp;R p.38)
+            </dd>
+            <dt>Booleans</dt>
+            <dd>false, true</dd>
+            <dt>Absolute Time</dt>
+            <dd>absTime("2005-01-13T08:17:00-06:00")</dd>
+            <dt>Relative Time</dt>
+            <dd>relTime("-5:00")</dd>
+            <dt>Undefined</dt>
+            <dd>undefined (single value)</dd>
+            <dt>Error</dt>
+            <dd>error (single value)</dd>
+        </dl>
+
+        <h4><a name="classads">1.1.2 ClassAds</a></h4>
+        ClassAds have the following syntax:
+        <pre>  [ id0 = expr0 ; id1 = expr1 ; ... ; idn = exprn ]</pre>
+        where each id is a valid identifier and each expr is an expression.
+        Identifiers begin with an alphabetic character or an underscore,
+        and are followed with any number of alphabetic, numeric, or underscore
+        characters. Identifiers are case-insensitive, but
+        case-preserving. That is, if you refer to "Rank" or "rANK", it refers
+        to the same attribute, but it will print with the same case that it
+        was created with.
+        </p>
+        <p>
+            Since classads are themselves expressions, classads can be
+            hierarchically nested, as illustrated in the following example.
+        <pre>  [ a = 7 ; b = "foo" ; c = [ a = -1 ; b = "bar" ] ]</pre>
+        The outermost classad is referred to the <em>root scope</em>. Every other
+        classad is contained in its <em>parent scope</em>, which is the unique
+        classad that immediately contains the classad in question.
+
+        <p>
+            Classads are self-evaluating structures: a classad "expression" evaluates
+            to a classad "value."
+        </p>
+
+        <h4><a name="attrrefs">1.1.3. Attribute References</a></h4>
+        Attribute references are analogous to variable references in C++
+        expressions, but are more sophisticated. Attribute references have three
+        forms:
+        <ol>
+            <li>The first variant <em>attr</em> evaluates to the value of the bound
+                expression in the attribute named <em>attr</em>. If no such attribute
+                exists in the current scope, succeeding parent scopes are searched. If
+                no attribute is found, the result of the evaluation is the
+                <b>undefined</b> value.
+
+            <li>The second variant <em>.attr</em> is similar to the first variant,
+                but looks up <em>only</em> the root scope. If the named attribute
+                does not exist in the root scope, the result is the <b>undefined</b>
+                value.
+
+            <li>The third variant <em>expr.attr</em> first evaluates the
+                expression <em>expr</em>, which must evaluate to a classad value. The
+                search for the expression begins in the scope of the evaluated classad
+                value, and then proceeds as in the first variant. If the expression
+                itself evaluated to <b>undefined</b>, the result is <b>undefined</b>.
+                Otherwise, if the expression neither evaluated to a classad or
+                <b>undefined</b>, the result is <b>error</b>.
+        </ol>
+        The following references are special built-ins:
+        <ol>
+            <li>The attribute <em>self</em> evaluates to the closest classad that
+                encloses the attribute reference.
+            <li>The reference <em>parent</em> evaluates to the parent scope of the
+                classad containing the reference. (This evaluates to <b>undefined</b>
+                for the root scope.)
+            <li>The reference <em>root</em> evaluates to the root scope of the
+                evaluation.
+        </ol>
+
+        <h4><a name="operators">1.1.4. Operators</a></h4>
+        The classad language provides almost all the operators of C: the only
+        operators not supported are assignment and pointer operators. In general,
+        operators are <em>strict</em> with respect to <b>undefined</b> and
+        <b>error</b>, so if any operand is <b>undefined (error)</b>, the result is
+        also <b>undefined (error)</b>.
+
+        <p>The following important points must be noted:
+        <ol>
+            <li>The operators <tt>is</tt> and <tt>isnt</tt> are like <tt>==</tt>
+                and <tt>!=</tt>, but they are not strict. I.e., they test the "is
+                identical to" predicate, and always return either <b>true</b> or
+                <b>false</b>.
+
+            <li>String comparison is case-sensitive only when comparing with the
+                <tt>is</tt> and <tt>isnt</tt> operators, and case-insensitive in all other
+                contexts.
+
+            <li>The ternary conditional operator <tt>?:</tt> is strict only in the
+                selector expression.
+
+            <li>The logical operators <tt>||</tt> (OR) and
+                <tt>&amp;&amp;</tt> (AND) are
+                non-strict. Their truth tables are supplied below.
+                <table border="0">
+                    <tr>
+                        <td>
+                            <table border="1">
+                                <tr>
+                                    <td>&amp; &amp; (AND)</td>
+                                    <td>F</td>
+                                    <td>T</td>
+                                    <td>U</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>F</td>
+                                    <td>F</td>
+                                    <td>F</td>
+                                    <td>F</td>
+                                    <td>F</td>
+                                </tr>
+                                <tr>
+                                    <td>T</td>
+                                    <td>F</td>
+                                    <td>T</td>
+                                    <td>U</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>U</td>
+                                    <td>F</td>
+                                    <td>U</td>
+                                    <td>U</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>E</td>
+                                    <td>E</td>
+                                    <td>E</td>
+                                    <td>E</td>
+                                    <td>E</td>
+                                </tr>
+                            </table>
+                        </td>
+
+                        <td>
+                            <table border="1">
+                                <tr>
+                                    <td>|| (OR)</td>
+                                    <td>F</td>
+                                    <td>T</td>
+                                    <td>U</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>F</td>
+                                    <td>F</td>
+                                    <td>T</td>
+                                    <td>U</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>T</td>
+                                    <td>T</td>
+                                    <td>T</td>
+                                    <td>T</td>
+                                    <td>T</td>
+                                </tr>
+                                <tr>
+                                    <td>U</td>
+                                    <td>U</td>
+                                    <td>T</td>
+                                    <td>U</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>E</td>
+                                    <td>E</td>
+                                    <td>E</td>
+                                    <td>E</td>
+                                    <td>E</td>
+                                </tr>
+                            </table>
+                        </td>
+                </table>
+                Operations with values not in the above table evaluate to <b>error</b>.
+        </ol>
+
+        <h4><a name="lists">1.1.5. Lists</a></h4>
+        The classad language allows lists of expressions to be constructed. The
+        syntax for list specification is:
+        <pre> { e1, e2 ... , en } </pre>
+        where
+        each 'e' is an expression. Components of lists may be accessed via the
+        subscript operator as in:
+        <pre>{ 10, "foo", -3.14 }[0] </pre>
+        which evaluates
+        to the integer value 10.
+
+        <h4><a name="fncalls">1.1.6. Function Calls</a></h4>
+        The classad language provides a rich set of built-in functions. User-defined
+        functions may not be defined. However, additional functions may easily be
+        added if access to the library source code is available.
+        <p>
+            The syntax of a function call is
+        <pre>name( arg0, arg1, ... , argn )</pre>
+        As with operators, most functions are strict with respect to <b>undefined</b>
+        and <b>error</b> on all arguments. However, some functions are non-strict.
+        The name of the function is case-insensitive. The supported set of functions
+        are:
+        <table class="darklight">
+            <tr class=dark>
+                <td colspan=2><b>Type predicates (Non-Strict)</b></td>
+            </tr>
+            <tr>
+                <td>isUndefined(V)</td>
+                <td>True if and only if V is the <b>undefined</b> value.</td>
+            </tr>
+            <tr>
+                <td>isError(V)</td>
+                <td>True if and only if V is the <b>error</b> value.</td>
+            </tr>
+            <tr>
+                <td>isString(V)</td>
+                <td>True if and only if V is a string value.</td>
+            </tr>
+            <tr>
+                <td>isList(V)</td>
+                <td>True if and only if V is a list value.</td>
+            </tr>
+            <tr>
+                <td>isClassad(V)</td>
+                <td>True if and only if V is a classad value.</td>
+            </tr>
+            <tr>
+                <td>isBoolean(V)</td>
+                <td>True if and only if V is a boolean value.</td>
+            </tr>
+            <tr>
+                <td>isAbsTime(V)</td>
+                <td>True if and only if V is an absolute time value.</td>
+            </tr>
+            <tr>
+                <td>isRelTime(V)</td>
+                <td>True if and only if V is a relative time value.</td>
+            </tr>
+
+            <tr class="dark">
+                <td colspan=2><b>List Membership</b></td>
+            </tr>
+            <tr>
+                <td>member(V,L)</td>
+                <td>True if and only if scalar value V is a member of the list L
+                </td>
+            </tr>
+            <tr>
+                <td>identicalMember(V,L)</td>
+                <td>Like Member, but uses <tt>is</tt> for comparison
+                    instead of <tt>==</tt>. Not strict on first argument.
+            </tr>
+
+            <tr class="dark">
+                <td colspan=2><b>Time</b></td>
+            </tr>
+            <tr>
+                <td>time()</td>
+                <td>Returns the current Coordinated Universal
+                    Time, in seconds since midnight January 1, 1970.
+                </td>
+            <tr>
+                <td>currentTime()</td>
+                <td>Get current time as an absolute time</td>
+            </tr>
+            <tr>
+                <td>timeZoneOffset()</td>
+                <td>Get time zone offset as a relative
+                    time
+                </td>
+            </tr>
+            <tr>
+                <td>dayTime()</td>
+                <td>Get current time as relative time since
+                    midnight.
+                </td>
+            </tr>
+            <tr>
+                <td>splitTime(T)</td>
+                <td>Creates a ClassAd with each component
+                    of the time (absolute or relative) as an element of the
+                    ClassAd</a>
+            <tr>
+                <td>formatTime(T, S)</td>
+                <td>Formats an absolute time
+                    according the the strftime-style format. See the reference manual
+                    for details.
+
+            <tr class="dark">
+                <td colspan=2><b>String Functions</b></td>
+            </tr>
+            <tr>
+                <td>strcat(V1, ... , Vn)</td>
+                <td>Concatenates string representations
+                    of values V1 through Vn
+                </td>
+            </tr>
+            <tr>
+                <td>toUpper(S)</td>
+                <td>Converts the string S to uppercase</td>
+            </tr>
+            <tr>
+                <td>toLower(S)</td>
+                <td>Converts the string S to lowercase</td>
+            </tr>
+            <tr>
+                <td>substr(S,offset [,len])</td>
+                <td>Returns substring of S. Negative
+                    offsets and lengths count from the end of the string.
+                </td>
+            </tr>
+            <tr>
+                <td>regexp(P,S)</td>
+                <td>Checks if S matches pattern P (both args
+                    must be strings). For details on the options other than "i"
+                    for case-insensitive matching, see the reference manual.
+                </td>
+            </tr>
+
+            <tr class="dark">
+                <td colspan=2><b>Type Conversion Functions</b></td>
+            </tr>
+            <tr>
+                <td>int(V)</td>
+                <td>Converts V to an integer. Time values are
+                    converted to number of seconds, strings are parsed, bools are mapped
+                    to 0 or 1. Other values result in <b>error</b>.
+                </td>
+            </tr>
+            <tr>
+                <td>real(V)</td>
+                <td>Similar to int(V), but to a real value.</td>
+            </tr>
+            <tr>
+                <td>string(V)</td>
+                <td>Converts V to its string
+                    representation
+                </td>
+            </tr>
+            <tr>
+                <td>bool(V)</td>
+                <td>Converts V to a boolean value. Empty strings, and
+                    zero values converted to <b>false</b>; non-empty strings and non-zero
+                    values converted to <b>true</b>.
+                </td>
+            </tr>
+            <tr>
+                <td>absTime(V)</td>
+                <td>Converts V to an absolute time. Numeric values
+                    treated as seconds past UNIX epoch, strings parsed as
+                    necessary. See the reference manual for details.
+                </td>
+            </tr>
+            <tr>
+                <td>relTime(V)</td>
+                <td>Converts V to an relative time. Numeric values
+                    treated as number of seconds, strings parsed as necessary. See the
+                    reference manual for details.
+                </td>
+            </tr>
+
+            <tr class="dark">
+                <td colspan=2><b>Mathematical Functions</b></td>
+            </tr>
+            <tr>
+                <td>floor(N)</td>
+                <td>Floor of numeric value N</td>
+            </tr>
+            <tr>
+                <td>ceiling(N)</td>
+                <td>Ceiling of numeric value N</td>
+            </tr>
+            <tr>
+                <td>round(N)</td>
+                <td>Rounded value of numeric value N</td>
+            </tr>
+            <tr>
+                <td>random(N)></td>
+                <td>If N is an integer, the result is an
+                    integer random number R in the range 0 <= R < N. If N is a real
+                    number, the result is a real random number in the same range.If N
+                    is anything else, the result is an error.
+
+
+        </table>
+
+        <h3><a name="examples">1.2. Examples</a></h3>
+        Consider the following classad
+        <pre>
+	[
+	   a = 17;
+	   b = "foo";
+	   c = { "x", "y", 3*a };
+	   d = [
+	          a = 23;
+		  b = 15;
+		  c = []
+		  d = .a;
+	       ]
+	   e = '00:15:00';
+	]
+</pre>
+        We now provide a few example expressions, and their resulting values when
+        evaluated in the context of the above classad.
+        <table border="1">
+            <tr>
+                <td>Expression</td>
+                <td>Result</td>
+            </tr>
+            <tr>
+                <td>a</td>
+                <td>17</td>
+            </tr>
+            <tr>
+                <td>strcat(b, "bar", a)</td>
+                <td>"foobar17"</td>
+            </tr>
+            <tr>
+                <td>x</td>
+                <td>undefined</td>
+            </tr>
+            <tr>
+                <td>x+10</td>
+                <td>undefined</td>
+            </tr>
+            <tr>
+                <td>x || true</td>
+                <td>true</td>
+            <tr>
+            <tr>
+                <td>d.a</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>d.b</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>d.self</td>
+                <td>[ a = 23 ; b = 15 ; c = [] ; d = .a ]</td>
+            </tr>
+            <tr>
+                <td>d.c</td>
+                <td>[]</td>
+            </tr>
+            <tr>
+                <td>d.c.parent</td>
+                <td>[ a = 23 ; b = 15 ; c = [] ; d = .a ]</td>
+            </tr>
+            <tr>
+                <td>d.c.a</td>
+                <td>23</td>
+            </tr>
+            <tr>
+                <td>d.parent.c</td>
+                <td>{ "x", "y", 3*a }</td>
+            </tr>
+            <tr>
+                <td>d.parent.c[2]</td>
+                <td>51</td>
+            </tr>
+            <tr>
+                <td>d.d</td>
+                <td>17</td>
+            </tr>
+            <tr>
+                <td>e*4</td>
+                <td>'01:00:00'</td>
+            </tr>
+        </table>
+
+        <h2><a name="api">2. The C++ ClassAd API</a></h2>
+        The primary activities associated with ``programming'' classads are
+        constructing, evaluating and displaying expressions.
+
+        <h3><a name="prelim">2.1. Preliminary</a></h3>
+        <ul>
+            <li> Your code must be compiled with g++.
+            <li> The classad package's include directory must be made accessible via
+                the -I flag to the compiler.
+            <li> Code which uses the classad code must include the "classad_distribution.h"
+                header file.
+            <li> The code must be linked in with the libclassad.a library.
+            <li> The convention is that methods return true on success and false on
+                failure.
+            <li> On error, the integer variable HTCondorErrno contains an error code,
+                and the STL string variable HTCondorErrMsg contains the cause of error.
+                (For your information, the library uses STL extensively.)
+            <li> The ClassAd library is not thread-safe.
+        </ul>
+
+        <h3><a name="create_classad">2.2 Creating ClassAds</a></h3>
+        <p>
+            ClassAds are really a special case of expressions, so the next section
+            will explain how to create ClassAds. However, since ClassAds are often
+            the primary concern of programmers that use the ClassAd library, we
+            will explain them separately here.
+        </p>
+        <h4>2.2.1 Parsing ClassAds</h4>
+        <p>
+            The most common method to create ClassAds is with the ClassAd
+            parser. The parser can take text input (a string, a file, or a stream)
+            and convert it to a ClassAd. The parser is encapsulated in the
+            ClassAdParser class, which can be found in source.h. Normally you
+            won't need to include source.h directly, since it is included by
+            classad_distribution.h.
+        </p>
+        <p>
+            The ClassAdParser has two prototypical ways of creating a ClassAd,
+            though there are several variants with each method. For this tutorial,
+            we'll create ClassAds from strings: the variants merely let you
+            construct the ClassAds from different sources.
+        </p>
+        <p>
+            <b>Method One: Return a string</b><br>
+        <pre>
+string         classad_string = "[a = 1; b = \&quot;Cardini\&quot;]";
+ClassAd        *classad;
+ClassAdParser  parser;
+
+classad = parser.ParseClassAd(classad_string, true);
+</pre>
+        In this example, true is passed to ParseClassAd to indicate that no
+        extra text follows the ClassAd. If it does, it will return an
+        error. If you legitimately may have extra text after a ClassAd, pass
+        false instead. If the parsing fails, NULL will be returned. You own
+        the ClassAd, so it is up to you to <b>delete</b> it when you are
+        finished with it.
+        </p><p>
+        <b>Method Two: Fill in a ClassAd</b><br>
+        <pre>
+string         classad_string = "[a = 1; b = \&quot;Cardini\&quot;]";
+ClassAd        classad;
+ClassAdParser  parser;
+bool           success.
+
+success = parser.ParseClassAd(classad_string, classad, true);
+</pre>
+        In this example, the classad is filled in directly. If the ClassAd
+        already contains attributes, they are cleared. You could also
+        allocated the ClassAd with <b>new</b> and pass it as *classad, if you
+        prefer.
+        </p>
+
+        <h4>2.2.1 Creating ClassAds manually</h4>
+        <p>
+            If you prefer, you can create and empty ClassAd, then fill it up with
+            expressions that you insert on the fly.. Here is an example:
+        <pre>
+ClassAd  *classad;
+
+classad = new ClassAd;
+
+// Insert a = 1
+classad->InsertAttr("a", 1);
+// Insert b = "Cardini"
+classad->InsertAttr("b", "Cardini");
+</pre>
+
+        <h3><a name="create">2.3 Creating expressions</a></h3>
+        All ClassAd expressions are sub-classed from the ExprTree abstract
+        class, which defines a standard interface for all expressions. The specific
+        kinds of expressions (e.g., Literals, FunctionCalls, etc.) are derived from
+        ExprTree, and have protected constructors. With the exception of ClassAd, all
+        other expressions can only be explicitly constructed via their static factory
+        methods.
+
+        <p>However, users rarely directly invoke factory methods since expressions may
+            usually be constructed through more convenient means. Expressions can be
+            created in three ways.
+        <ol>
+            <li> As previously mentioned, they can be explicitly created via their
+                factory methods. This is usually only convenient for creating
+                literals, especially time values. For example:
+                <pre>
+ExprTree *now        = Literal::MakeAbsTime(); // current time value
+ExprTree *past       = Literal::MakeAbsTime("1999-01-13T09:00:00-0600");
+ExprTree *tenMinutes = Literal::MakeRelTime(600); // in seconds
+</pre>
+                The Literal::MakeRelTime() factory also has a variant which accepts two
+                time_t values and constructs the interval between their values. If -1
+                is passed for either argument, the current time is used in that place.
+
+            <li> The same ClassAdParser that can create ClassAds from strings
+                can also create any other kind of expression from a string. There
+                are fewer variations of ParseExpression than ParseClassAd. An example:
+                <pre>
+ClassAdParser	parser;
+ExprTree	*tree;
+ClassAd		*ad;
+
+if( !( tree = parser.ParseExpression( "10 * 17 / foo.bar" ) ) ||
+    !( ad = parser.ParseClassAd( "[ a=3 ; b=5 ]" ) ) ) {
+    // error
+    ...
+} else {
+    ad->Insert("c", tree);
+}
+</pre>
+
+            <li> Most classad expressions are simple literals which are used as
+                attributes in classads. These expressions may be implicitly created by
+                simply inserting values into a classad.
+                <pre>
+	ClassAd		ad;
+
+	if( !ad.InsertAttr( "Memory", 128, Value::M_FACTOR )|| // Memory=128M
+		!ad.InsertAttr( "Name", "foo.cs.wisc.edu" ) ||     // Name="foo.cs.wisc.edu"
+		!ad.InsertAttr( "IsBlue", false ) ) {	           // IsBlue=false
+			// error
+			...
+		}
+	}
+</pre>
+        </ol>
+
+        <h3><a name="insert">2.4. Inserting Expressions into ClassAds</a></h3>
+        Expressions are inserted into a classad via the Insert method.
+        <pre>
+ExprTree	*now;
+ClassAd		ad;
+
+if( !( now = Literal::MakeAbsTime() ) ||
+    !(ad.Insert( "CurrentTime", now ) ) ) {
+    // error
+    ...
+}
+</pre>
+        If a similarly named expression (case-insensitive) already exists in
+        the ad, the old expression is deleted, and the new expression takes
+        its place. Once inserted, the storage associated with the expression
+        is adopted by the classad---<b>do not deallocate the storage of the
+        expression yourself</b>. If you will need direct access to the
+        expression after you insert it, use the Copy() method first to make a
+        private copy as follows:
+        <pre>
+ExprTree *original_expression, *private_copy;
+
+...
+// Assume original_expression has been created
+private_copy = original_expression-&gt;Copy( );
+
+// Now we insert the original_copy
+ad.Insert( "foo", original_copy);
+
+// At this point, we shouldn't delete the original_copy
+// because it is owned by the ClassAd, but we can manipulate
+// the private_copy as much as we like.
+</pre>
+
+        <h3><a name="remove">2.5 Removing expressions from ClassAds</a></h3>
+        Expressions may be removed from a Classad in two ways:
+        <ol>
+            <li> The Delete method removes an expression from the classad, and
+                deallocates the storage associated with the expression.
+            <li> The Remove method removes an expression from the classad, and
+                returns the expression to the user <b>without</b> deallocating its
+                storage.
+        </ol>
+        <pre>
+ClassAd		ad;
+
+if( !ad.InsertAttr( "foo", 10 ) || !ad.InsertAttr( "bar", 20 ) ) {
+    // error
+    ...
+}
+
+if( !ad.Delete( "foo" ) ) {
+    // attr not found in ad
+}
+
+ExprTree *tree = ad.Remove( "bar" );
+
+// "tree" is now yours (NULL if ad had no "bar")
+...
+
+delete tree;
+</pre>
+
+        <h3><a name="lookup">2.6 Looking Up Expressions in ClassAds</a></h3>
+        <p>
+            Once expressions have been inserted into classads they may be looked up with
+            the Lookup() method. The method returns the expression (or NULL if no such
+            attribute exists in the classad), but the expression still belongs to the
+            classad. Thus, the expression must not be deallocated, or its parent scope
+            reset.
+        <pre>
+ClassAd	ad;
+ExprTree	*tree;
+
+ad.InsertAttr( "foo", 10 );
+tree = ad.Lookup( "foo" );
+</pre>
+        If the classad being used is nested in another classad, the LookupInScope()
+        method may be used to test if the expression exists in the classad, or any
+        of its parent scopes. Often you will prefer to evaluate expressions
+        instead of looking them up. See below for more details.
+        </p><p>
+
+        <p>
+            Expressions in the classad may also be enumerated by means of an iterator
+            as illustrated below.
+        <pre>
+ClassAd	ad;
+
+...
+// assume the ad is filled with attributes
+ClassAdUnParser unp;
+string          buffer;
+
+ClassAdIterator	itr;
+string          attrName;
+const ExprTree  *attrExpr;
+
+
+itr.Initialize( ad );
+while( !itr.IsAfterLast( ) ) {
+	itr.CurrentAttribute( attrName, attrExpr );
+	buffer += attrName + " = ";
+	unp.Unparse( buffer, attrExpr );
+	buffer += "  ";
+
+	itr.NextAttribute( attrName, attrExpr );
+}
+</pre>
+        </p><p>
+        You can also use STL-style iterators to iterate through a ClassAd.
+        <pre>
+ClassAd	ad;
+
+...
+// assume the ad is filled with attributes
+
+ClassAd::iterator iter;
+
+iter = ad->begin();
+while (iter != ad->end()) {
+    string    name = iter->first;
+    ExprTree *tree = iter->second;
+    ...
+    iter++;
+}
+</pre>
+
+
+        <h3><a name="eval">2.7 Evaluating Expressions</a></h3>
+        Expressions can only be evaluated in the context of a classad. The result of
+        an evaluation is a Value object, which has several methods defined to obtain
+        the type and result of the evaluation.
+
+        <p> Expressions already in the classad may be evaluated via the EvaluateAttr()
+            method.
+        <pre>
+ClassAd		ad;
+Value		val;
+int		fooVal;
+
+if( !ad.InsertAttr( "foo" ,10 ) || !ad.EvaluateAttr( "foo", val ) ) {
+    // error
+    ...
+}
+
+
+if( !val.IsIntegerValue( fooVal ) ) {
+    // enh???
+}
+</pre>
+        In the above example, the result of the evaluation was already expected to be
+        an integer. Thus, the following shortcut may be used.
+        <pre>
+if( !ad.EvaluateAttrInt( "foo", fooVal ) ) {
+    // eval error, or not an int
+    ...
+}
+</pre>
+        Similar convenience methods exist for all the other types.
+        </p>
+
+        <p>Expressions which have not been inserted into the classad may be evaluated
+            in the context of the classad via the EvaluateExpr() method. However, the
+            expression must be notified of the scope that it is being evaluated in, as
+            illustrated in the following example. (Return values are not checked to keep
+            the example brief.)
+        </p>
+        <pre>
+ClassAd       ad;
+ClassAdParser parser;
+ExprTree      *tree;
+Value         val;
+
+ad.InsertAttr( "foo", 10 );
+ad.InsertAttr( "bar", 20 );
+tree = parser.ParseExpression( "foo - bar" );
+
+tree-&gt;SetParentScope( &amp;ad );	// to be evaluated in the context of ad
+ad.EvaluateExpr( tree, val );		// now evaluate the expression
+</pre>
+
+        <h3><a name="match">2.8 Testing Matches</a></h3>
+        Testing for a match between two classads is performed by evaluating the
+        "Requirements" expressions of the two classads in an evaluation environment
+        that maps the "other" attribute to the match candidate. The classad language
+        is powerful enough to represent this evaluation environment as a classad.
+        In the API, the MatchClassAd object provides this functionality.
+
+        <p>The MatchClassAd object extends a classad by providing two additional
+            functionalities:
+        <ol>
+            <li>It defines two scopes (left and right), which may be filled with
+                the ReplaceLeftAd() and ReplaceRightAd() calls. Since these calls will
+                delete the classad previously occupying that position, you may wish to
+                first RemoveLeftAd() and/or RemoveRightAd().
+
+            <li>The MatchClassAd object also defines the following convenience
+                attributes: symmetricMatch, leftMatchesRight, rightMatchesLeft,
+                leftRankValue and rightRankValue.
+        </ol>
+        Thus, to test two classads for a match, proceed as follows:
+        <pre>
+MatchClassAd	mad;
+ClassAd		*mach, *job;
+
+...
+// assume mach and job are two valid classads
+
+// the following is not necessary if no ads were inserted
+mad.RemoveLeftAd( );
+mad.RemoveRightAd( );
+
+// insert the two ads into the context
+mad.ReplaceLeftAd( mach );
+mad.ReplaceRightAd( job );
+
+// test
+bool 	match
+if( !mad.EvaluateAttrBool( "symmetricMatch" match ) || !match ) {
+    // they don't like each other
+    ...
+} else {
+    // they like each other
+    ...
+}
+</pre>
+
+        For your information, the MatchClassAd sets itself up as follows:
+        <pre>
+[
+   symmetricMatch   = leftMatchesRight &amp;&amp; rightMatchesLeft;
+   leftMatchesRight = adcr.ad.requirements;
+   rightMatchesLeft = adcl.ad.requirements;
+   leftRankValue    = adcl.ad.rank;
+   rightRankValue   = adcr.ad.rank;
+   adcl             =
+           [
+               other    = .adcr.ad;
+               my       = ad;       // for HTCondor backwards compatibility
+               target   = other;    // for HTCondor backwards compatibility
+               ad       =
+                  [
+                      // the ``left'' match candidate goes here
+                  ]
+           ];
+       adcr             =
+           [
+               other    = .adcl.ad;
+               my       = ad;       // for HTCondor backwards compatibility
+               target   = other;    // for HTCondor backwards compatibility
+               ad       =
+                  [
+                      // the ``right'' match candidate goes here
+                  ]
+           ];
+]
+</pre>
+
+        <h3><a name="display">2.9 Displaying and Transporting Expressions and
+            Values</a></h3>
+        <p>
+            ClassAds, expressions and values are displayed by first "unparsing" them
+            into STL strings and then printing them to the screen. The same mechanism
+            is used to transport classads over the network: they are first unparsed
+            into a string which is transported over the network, and then parsed back
+            by the receiver.
+        </p>
+        <p>
+            Unparsing is performed by the ClassAdUnParser object. The interface is
+            straightforward.
+        <pre>
+ClassAdUnParser	unp;
+ExprTree	*tree;
+ClassAd		ad;
+Value		val;
+
+...
+// assume tree, ad, val need to be unparsed
+
+string	buffer1, buffer2, buffer3;
+
+unp.Unparse( buffer1, tree );
+unp.Unparse( buffer2, &amp;ad );
+unp.Unparse( buffer3, val );
+</pre>
+
+        A more sophisticated unparser called PrettyPrint is also available. The
+        pretty printer can indent classads and lists, and display parenthesized
+        expressions with the minimal number of required parentheses.
+        <pre>
+PrettyPrint	pp;
+ExprTree	*tree;
+ClassAd		ad;
+Value		val;
+
+...
+// assume tree, ad, val need to be unparsed
+
+string	buffer1, buffer2, buffer3;
+
+pp.Unparse( buffer1, tree );
+pp.Unparse( buffer2, &amp;ad );
+pp.Unparse( buffer3, val );
+</pre>
+
+        <h3><a name="XML">XML Classads</a></h3>
+        <p>
+            ClassAds can be displayed and parsed in XML as well as the native
+            format used above. For example, a ClassAd in XML format might look
+            like this:
+        <pre>
+&lt;?xml version="1.0"?&gt;
+&lt;c&gt;
+&lt;a n=\"A\"&gt;&lt;s&gt;Alain Aslag Roy&lt;/s&gt;&lt;/a&gt;
+&lt;a n=\"B\"&gt;&lt;i&gt;3&lt;/i&gt;&lt;/a&gt;
+&lt;/c>
+</pre>
+        </p><p>
+        They are parsed and printed similarly to the native format described
+        above. To parse an XML ClassAd you use the ClassAdXMLParser class:
+        <pre>
+ClassAdXMLParser  parser;
+ClassAd           *classad;
+string            xml = ... // The ClassAd
+
+classad = parser.ParseClassAd(xml);
+</pre>
+        </p><p>
+        To print out a ClassAd in XML format you use the ClassAdXMLUnParser
+        class:
+        <pre>
+ClassAd             *classad;
+ClassAdXMLUnParser  unparser;
+string              printed_classad;
+
+// Assume classad is already created
+
+unparser.SetCompactSpacing(false);
+unparser.Unparse(printed_classad, classad);
+</pre>
+
+    </div>
+
+    <!-- ##### Footer ##### -->
+
+    <div id="footer">
+        For comments or questions about this website, please
+        <a href="mailto:htcondor-admin@cs.wisc.edu">email htcondor-admin@cs.wisc.edu</a><br/>
+        This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative
+        Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a
+            href="https://path-cc.io/">PATh Project</a>. <br/>
+        <script type="text/javascript">
+            document.write("Updated &raquo; " + lastMod(document.lastModified))
+        </script>
+    </div>
+
+
+</div> <!-- end of div#container -->
+</body>
+</html>

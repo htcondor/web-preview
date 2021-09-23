@@ -1,0 +1,194 @@
+<!DOCTYPE html> 
+<!-- 
+-     DON'T EDIT THIS!
+-     It's a generated page, you need to edit the source and rebuild
+-     git clone /afs/cs.wisc.edu/p/condor/repository/condor-web.git
+-     cd condor-web
+-     &lt;edit pages under src&gt;
+-     git add
+-     git commit
+-     git push
+-     ./generate_html --live
+-->
+<html>
+
+<head>
+    <!-- Elements common to many pages -->
+    <meta charset="UTF-8" />
+    <meta name="description" content="HTCondor Homepage" />
+    <link rel="stylesheet" type="text/css" href="https://research.cs.wisc.edu/htcondor/prosimii-screen.css" media="screen, tv, projection" title="Default" />
+	<!-- javascript used throughout the site -->
+    <script src="https://research.cs.wisc.edu/htcondor/sitewide.js" type="text/javascript"></script>
+     
+    <!-- Items for specific pages -->
+    <title>HTCondor - Interactive Master-Worker</title>
+    
+  </head>
+
+  <body>
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+      <div id="container">
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+    	<div class="midHeader">
+	  <div class="iconHeader">
+	    <a href="https://research.cs.wisc.edu/htcondor/index.html"><img src="https://research.cs.wisc.edu/htcondor/images/white_bird_logo.png" alt="HTCondor High Throughput Computing" height="75"></a>
+	  </div>
+       
+       <div class="navAndSearch">
+    	<div class="navBar">
+  	  <span class="doNotDisplay">Navigation:</span>
+	  <a href="https://research.cs.wisc.edu/htcondor/index.html">Home</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/new.html">News</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/downloads/">Download</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/publications.html">Publications</a> |
+	  <a href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+	</div>
+
+	<div class="searchForm" >
+<script>
+  (function() {
+    var cx = '010754594835990937497:xijuwhbknew';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+	</div>
+	</div>
+	</div>
+</div>
+
+    <!-- ##### Main Copy ##### -->
+
+    <div id="main-copy">
+
+
+<!-- Page body -->
+<center>
+<h2>
+IMW:&nbsp;Interactive Master-Worker Style Parallel Data Analysis Tool on
+the Grid</h2></center>
+
+<center>by the Department of Computer Sciences, University of Wisconsin
+- Madison
+<br>04/16/2002</center>
+
+<h2>
+Motivation</h2>
+The task of analyzing huge amount of data residing at different locations
+can be greatly eased by the Grid. First, the analyzing tools can be executed
+on machines close to the data, without incurring the cost of moving raw
+data around; second, the computing and I/O&nbsp;resources provided by the
+Grid can be utilized to perform the analysis task in parallel, which leads
+much shorter experiment turn-around time; third, the various services provided
+by the Grid infrastructure can simply to the job of managing distributed
+resources. In order to fully exploit such opportunities, we are implementing
+a framework to build interactive parallel data analysis tools on the Grid
+- IMW.
+<br>&nbsp;
+<h2>
+Our Approach</h2>
+Data analysis tasks lend themselves naturally to master-worker style parallel
+processing, with its special requirements on user-interaction, visualization
+and data locality support. Previously, we've developed a framework called
+MW [1] to support master-worker style parallel applications on meta-computing
+environments like HTCondor and Globus. It has been widely used and helped
+solve some really hard computational problems [2]. MW&nbsp;has a layered
+architecture to encapsulate the functionalities of underlying resource
+manager and communication mechanisms, it also provides portability across
+different underlying infrastructures. It exposes a set of simple APIs to
+ease the application programmers' work.
+<p>IMW&nbsp;is based on our experiences of developing MW, it has been rewritten
+(mostly in Java) to
+<ol>
+<li>
+add support of user interaction and computation steering;</li>
+
+<li>
+directly support data analyzing tasks, such as, histogram and parallel
+execution of scripts;</li>
+
+<li>
+provide a lightweight Java implementation to ease porting and maintenance.</li>
+</ol>
+The current prototype divides the system into&nbsp; three different components:
+<ol>
+<li>
+a client that interacts with human user and controls the analysis task;</li>
+
+<li>
+a master that manages the analysis task by decomposing the whole task into
+smaller pieces and assign them to many workers in parallel;</li>
+
+<li>
+workers that get commands from the master and returns the result.</li>
+</ol>
+Different components communicate with each other using Socket. HTCondor,
+as the resource manager, is used to gather worker hosts, spawn worker processes,
+and report dynamic worker changes such as worker exit, suspension/resume,
+etc. Fault-tolerance can be achieved by user-provided checkpoint functions,
+to save partially completed result and recover after restart.
+<br>&nbsp;
+<h2>
+Status and Future Work</h2>
+The bare-bone IMW&nbsp;prototype is working now, which can execute shell
+scripts in parallel, and handles the worker dynamic changes. More work
+needs to be done to add features and make it easy-to-use.
+<p>After providing the basic functionality of parallel data analysis and
+user interaction, we can also exploit two other tools developed at University
+of Wisconsin.
+<ol>
+<li>
+DEVise:&nbsp;DEVise is an environment for data exploration and visualization
+written in, with flexible data selection and layout mechanisms. By using
+DEVise as an visualization frontend, IMW's GUI&nbsp;development can be
+greatly simplified, while it still provides customizable histogram support.</li>
+
+<li>
+ClassAds:&nbsp;Classads are used by HTCondor to describe resources and task
+requirements. It would be a powerful tool for IMW&nbsp;to describe the
+data category and analysis requirement, so that analyzing processes can
+be directed and run on machines that exploit data locality and equipped
+with sufficient resources.</li>
+</ol>
+
+<h2>
+References</h2>
+[1] Jeff Linderoth, Sanjeev Kulkarni, Jean-Pierre Goux, and Michael Yoder,
+"An Enabling Framework for Master-Worker Applications on the
+<br>&nbsp;&nbsp;&nbsp; Computational Grid", Proceedings of the Ninth IEEE
+Symposium on High Performance Distributed Computing (HPDC9), Pittsburgh,
+Pennsylvania,
+<br>&nbsp;&nbsp;&nbsp; August 2000, pp 43-50.
+<p>[2] S. J. Wright, "Solving optimization problems on computational grids,"
+November, 2000. Optima 65, May, 2001.
+
+    </div>
+
+    <!-- ##### Footer ##### -->
+
+    <div id="footer">
+        For comments or questions about this website, please
+	<a href="mailto:htcondor-admin@cs.wisc.edu">email htcondor-admin@cs.wisc.edu</a><br />
+	This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+      <script type="text/javascript">
+	      document.write("Updated &raquo; "+lastMod(document.lastModified))
+      </script>
+    </div>
+
+
+
+    </div> <!-- end of div#container -->
+  </body>
+</html>
+

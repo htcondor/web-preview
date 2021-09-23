@@ -1,0 +1,142 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<HTML>
+<head>
+<TITLE>Matrix Multiplication Description</TITLE>
+</head>
+<BODY BGCOLOR="#FFFFFF" TEXT="#000000" alink="#ff0000">
+<HR NOSHADE>
+
+<CENTER> <h1>Matrix Multiplication Example (matmul)</h1> </CENTER>
+
+<h3>What is this example all about?</h3>
+
+<p>
+In this example, we want to multiply two large matrices A and B to form
+a result C, by distributing
+A and B to each worker, and having each task evaluate a slice of rows from
+the product C. 
+
+</p>
+
+<h3>Task</h3>
+
+<p>
+The task is in the file Task-Matmul.C.  This is the class Task_Matmul
+which is derived from MWTask.
+</p>
+
+<p>
+Each task is defined by two integers startRow and endRow, which
+specify the range of row indices in the result matrix C that will be
+computed by this task. Thus this task computes (endRow-startRow+1)
+rows of the product.
+</p>
+
+<p>
+The master makes up a list of tasks, trying to balance the load evenly
+between all specified tasks. (There should be no more than one row
+difference between any two tasks.)
+</p>
+
+<p>
+To distribute a task the master will call pack_work().  In our case we
+pack just startRow and endRow.  At the worker end, the worker will
+call unpack_work() and download whatever is passed on from the master
+(in this case, just the two integers) into a new Task structure. The
+routine execute_task() executes the task (that is, computes rows
+startRow through endRow of the product matrix) and stores the results
+in the results pointer of the task. The call pack_results() in the
+worker packs the results to be shipped back to the master. In our case
+we ship the computed matrix rows.  On the master side unpack_results()
+will be used to get whatever was shipped over.
+</p>
+
+<h3>Master</h3>
+
+<p>
+The master is the class Driver_Matmul in Driver-Matmul.C which is
+instantiated from the MWDriver class. The main data items in this
+class are the three matrices A, B, and C together with their
+dimensions.
+</p>
+
+<p>
+The get_userinfo() function reads information about the names of the
+worker executables (up to 5 are allowed), the architecture on which
+each one should execute, and the dimensions of the matrices A and
+B. This information should be stored in an ASCII file; for the correct
+format, see the README file and the input file examples included with
+the distribution. This function also sets the class variables
+num_tasks (which defines the total number of tasks) and
+target_num_workers (which defines the number of workers that MW
+requests for performing the computation). It calls a routine
+set_target_num_workers() to start acquiring these workers.
+</p>
+
+<p>
+The next important function is the setup_initial_tasks(). This routine
+defines the quantities startRow and endRow that define each task,
+dividing the work approximately equally between the num_tasks
+tasks. These tasks are stored on a task list.
+</p>
+
+<p>
+In essence the above two functions will constitute the setup part of
+MW. After setup_initial_tasks is done, MW knows how many tasks are
+there and what are those tasks. It also knows how many workers to get.
+It starts acquiring workers and stocking each of them with initial
+data, which in our case consists of the matrices A and
+B. Subsequently, it sends tasks to these workers, each consisting of
+the range of rows in the product matrix C.
+</p>
+
+<p>
+When each  workers completes its task, MW gets the results and calls the
+function act_on_completed_task().  In  our case,  this function
+simply stores the results in the appropriate rows of the C data structure,
+but in other applications it could do much more (such as create
+new tasks).
+</p>
+
+<p>
+Finally printresults which will be called at the end of everything,
+prints out some information about the results, including the full
+matrix C, provided that the print parameter is set to a sufficiently
+high value (95 or above).
+</p>
+
+<h3>The Worker</h3>
+
+<p>
+The worker (the entity which actually does the work) is 
+implemente as the class Worker_Matmul in the file
+file Worker-Matmul.C. It is derived from the base class MWWorker.
+</p>
+
+<p>
+The main data structures in the worker are the two matrices A and B that it
+stores.
+</p>
+
+<p>
+When the worker first starts up it gets initial data from the
+master. This is processed in unpack_init_data(). In our case the
+master sends the matrices A and B. Thus we store the two matrices in
+this function.
+</p>
+
+<p>
+When a worker gets a task to execute, MW will call the function
+execute_task(). This will contain the task that has to be computed
+upon. In our case a task will contain the startRow and the endRow and
+we have to compute these rows of matrix C. The execution takes place
+and we store the results in that task itself.
+</p>
+
+
+
+
+</BODY>
+</HTML>
+
