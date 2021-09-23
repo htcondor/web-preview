@@ -31,13 +31,13 @@
 <body class="vh-100 d-flex flex-column">
 
 <!-- For non-visual user agents: -->
-<a href="#main-copy" hidden>Skip to main content.</a>
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
 
-<div id="header" class="mb-4 container">
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
-                <div class="container-fluid ps-0 pe-0">
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
                     <a href="/web-preview/preview-converting-to-bootstrap/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-converting-to-bootstrap/assets/images/CondorTitle.gif" style="border:0"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -61,25 +61,25 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        
+        <div class="row">
+            
 
 <script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
 <div class="gcse-searchbox-only"></div>
 
 
+        </div>
     </div>
-</div>
+</header>
 <main id="main-copy" tabindex="-1">
-    <div class="container">
+    <div class="container mb-4">
     <div id="news-container" class="row">
     <div class="col-12">
         <h1>HTCondor used by Google and Fermilab for a 160k-core cluster</h1>
-        <h2 class="newsDate">December 15, 2016</h2>
+        <h4 class="text-muted">December 15, 2016</h4>
         
         <p><p>At SC16, the HTCondor Team, Google, and Fermilab demonstrated a 160k-core cloud-based elastic compute cluster.  This cluster uses resources from the Google Cloud Platform provisioned and managed by HTCondor as part of Fermilab’s HEPCloud facility. The following  <a href="https://cloudplatform.googleblog.com/2016/11/Google-Cloud-HEPCloud-and-probing-the-nature-of-Nature.html">article</a> gives more information on this compute cluster, and discusses how the bursty nature of computational demands is making the use of cloud resources increasingly important for scientific computing. Find out more information about the Google Cloud Platform <a href="https://cloud.google.com/">here</a>.</p>
 </p>
@@ -91,8 +91,8 @@
 
 </div>
 </main>
-<div id="footer" class="bg-light pt-4 pb-4 mt-auto">
-    <div class="container">
+<div id="footer" class="border-top">
+    <div class="container py-4 mt-auto">
         <div class="row">
             <div class="col text-center">
                 For comments or questions about this website, please email

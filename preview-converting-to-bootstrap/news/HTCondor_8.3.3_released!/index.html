@@ -31,13 +31,13 @@
 <body class="vh-100 d-flex flex-column">
 
 <!-- For non-visual user agents: -->
-<a href="#main-copy" hidden>Skip to main content.</a>
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
 
-<div id="header" class="mb-4 container">
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
-                <div class="container-fluid ps-0 pe-0">
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
                     <a href="/web-preview/preview-converting-to-bootstrap/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-converting-to-bootstrap/assets/images/CondorTitle.gif" style="border:0"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -61,25 +61,25 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        
+        <div class="row">
+            
 
 <script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
 <div class="gcse-searchbox-only"></div>
 
 
+        </div>
     </div>
-</div>
+</header>
 <main id="main-copy" tabindex="-1">
-    <div class="container">
+    <div class="container mb-4">
     <div id="news-container" class="row">
     <div class="col-12">
         <h1>HTCondor 8.3.3 released!</h1>
-        <h2 class="newsDate">February 19, 2015</h2>
+        <h4 class="text-muted">February 19, 2015</h4>
         
         <p><p>The HTCondor team is pleased to announce the release of HTCondor 8.3.3. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.2.7 stable release. This new version contains: the ability to encrypt a job’s directory on Linux execute hosts; enhancements to EC2 grid universe jobs; a more efficient query protocol, including the ability to query the condor_schedd daemon’s autocluster set. A complete list of new features and fixed bugs can be found in the <a href="manual/v8.3.3/10_3Development_Release.html">Version History</a>. HTCondor 8.3.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 </p>
@@ -91,8 +91,8 @@
 
 </div>
 </main>
-<div id="footer" class="bg-light pt-4 pb-4 mt-auto">
-    <div class="container">
+<div id="footer" class="border-top">
+    <div class="container py-4 mt-auto">
         <div class="row">
             <div class="col text-center">
                 For comments or questions about this website, please email

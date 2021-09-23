@@ -31,13 +31,13 @@
 <body class="vh-100 d-flex flex-column">
 
 <!-- For non-visual user agents: -->
-<a href="#main-copy" hidden>Skip to main content.</a>
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
 
-<div id="header" class="mb-4 container">
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
-                <div class="container-fluid ps-0 pe-0">
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
                     <a href="/web-preview/preview-converting-to-bootstrap/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-converting-to-bootstrap/assets/images/CondorTitle.gif" style="border:0"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -61,25 +61,25 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        
+        <div class="row">
+            
 
 <script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
 <div class="gcse-searchbox-only"></div>
 
 
+        </div>
     </div>
-</div>
+</header>
 <main id="main-copy" tabindex="-1">
-    <div class="container">
+    <div class="container mb-4">
     <div id="news-container" class="row">
     <div class="col-12">
         <h1>One HTCondor pool delivers over an ExaFLOP hour cost-effectively for IceCube</h1>
-        <h2 class="newsDate">February 13, 2020</h2>
+        <h4 class="text-muted">February 13, 2020</h4>
         
         <p><p>The article <a href="https://www.linkedin.com/pulse/cost-effective-exaflop-hour-clouds-icecube-igor-sfiligoi/">“A cost effective ExaFLOP hour in the Clouds for IceCube”</a> discusses how an existing HTCondor pool was augmented with resources dynamically acquired  from AWS, Azure, Google, Open Science Grid, and on-prem resources to perform science for the <a href="https://icecube.wisc.edu/">IceCube</a> project.  The objective, on top of (obviously) the science output, was to demonstrate how much compute can someone integrate during a regular working day, using only the two most cost effective SKUs for each Cloud provider.</p>
 </p>
@@ -91,8 +91,8 @@
 
 </div>
 </main>
-<div id="footer" class="bg-light pt-4 pb-4 mt-auto">
-    <div class="container">
+<div id="footer" class="border-top">
+    <div class="container py-4 mt-auto">
         <div class="row">
             <div class="col text-center">
                 For comments or questions about this website, please email

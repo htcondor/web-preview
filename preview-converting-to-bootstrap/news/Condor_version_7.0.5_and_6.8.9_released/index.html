@@ -31,13 +31,13 @@
 <body class="vh-100 d-flex flex-column">
 
 <!-- For non-visual user agents: -->
-<a href="#main-copy" hidden>Skip to main content.</a>
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
 
-<div id="header" class="mb-4 container">
-    <div class="row">
-        <div class="col-12">
-            <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
-                <div class="container-fluid ps-0 pe-0">
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
                     <a href="/web-preview/preview-converting-to-bootstrap/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-converting-to-bootstrap/assets/images/CondorTitle.gif" style="border:0"></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
@@ -61,25 +61,25 @@
                             </li>
                         </ul>
                     </div>
-                </div>
-            </nav>
+                </nav>
+            </div>
         </div>
-    </div>
-    <div class="row">
-        
+        <div class="row">
+            
 
 <script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
 <div class="gcse-searchbox-only"></div>
 
 
+        </div>
     </div>
-</div>
+</header>
 <main id="main-copy" tabindex="-1">
-    <div class="container">
+    <div class="container mb-4">
     <div id="news-container" class="row">
     <div class="col-12">
         <h1>Condor version 7.0.5 and 6.8.9 released</h1>
-        <h2 class="newsDate">October  7, 2008</h2>
+        <h4 class="text-muted">October  7, 2008</h4>
         
         <p><p>The Condor Team announces the release of Condor 7.0.5.  This release contains many bug fixes and some improvements to error handling of Local Universe jobs. Note that some of the bug fixes are security-related; therefore, we recommend sites either upgrade Condor, or restrict permissions on who is allowed to submit Condor jobs to trusted users. Bug fixes that are security related are clearly marked in the Bugs Fixed section of the  <a href="manual/latest-stable/9_Version_History.html">Release Notes</a>, with a description of the potential security impact. The Condor Project believes in the full disclosure of information, and therefore  <a href="security/">  publishes complete vulnerability details</a>. However, in order to give an adequate upgrade window for production installations, we will delay posting the full vulnerability details fixed in this release for 30 days (until the week of November 3rd 2008). In addition, we took just the security bug fixes in v7.0.5 and back-ported them to v6.8; this effort has been released as version 6.8.9. Binaries for both releases, as well as sources for v7.0.5, are available from  <a href="downloads/">our Downloads page</a>.</p>
 </p>
@@ -91,8 +91,8 @@
 
 </div>
 </main>
-<div id="footer" class="bg-light pt-4 pb-4 mt-auto">
-    <div class="container">
+<div id="footer" class="border-top">
+    <div class="container py-4 mt-auto">
         <div class="row">
             <div class="col text-center">
                 For comments or questions about this website, please email
