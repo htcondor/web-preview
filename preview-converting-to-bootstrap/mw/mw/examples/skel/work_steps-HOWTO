@@ -1,0 +1,154 @@
+This file is a reference for those of you who are going to write an
+application using "work steps".  By this, I mean that you create a 
+set of tasks, farm them out to workers, get all the results back, and
+then based on those results, make a new batch of tasks, send them 
+out, etc, etc.  This is easy to implement in the MWDriver framework.
+
+A diagram of work steps might look like this:
+
+              +-------+
+              | Start |
+              +-------+
+                  |
+                  | <---------------------\
+                  |                       |
+   +-----------------------------+        |
+   | Split up work; make n tasks |        |
+   +-----------------------------+        |
+                / | \                     |
+              / / | \ \                   |
+           /   /  |  \   \                |
+    +--+ +--+ +--+ +--+      +--+         |
+    |T0| |T1| |T2| |T3| ...  |Tn|         |
+    +--+ +--+ +--+ +--+      +--+         |
+           \   \  |  /   /                |
+              \ \ | / /                   |
+                \ | /                     |
+    +--------------------------+          |
+    | Collect results of tasks |          |
+    +--------------------------+          |
+                  |                       |
+                  |                       |
+      +----------------------+            |
+      | Do some computation; |            |
+      | decide if we're done |            |
+      +----------------------+            |
+                  |                       |
+                  |                       |
+              +-------+  No               |
+              | Done? |-------------------/
+              +-------+
+                  |
+                  | Yes
+                  |
+               +-----+
+               | End |
+               +-----+
+
+In a more code-like representation, we can say:
+
+do {
+	split up the work;
+	for ( int i=0 ; i < n ; i++ ) {
+		farm out task n to a worker
+	}
+	collect the work from the workers
+	do some computation
+	decide if we're done
+} while ( we are not done with computation );
+
+Mapping this onto the MWDriver framework is not a difficult matter.
+The first thing to realize is that the MWDriver must always have tasks
+to work on when it begins.  Therefore, we must give the first set of
+tasks to the MWDriver upon startup.  This is done in setup_initial_tasks().
+
+void
+YourDriverClass::setup_initial_tasks( int *n_init, MWTask ***init_tasks ) {
+
+	/* Generate the first round of tasks.  This is the 
+	   first iteration of "split up the work".  */
+
+	/* In order to do this, you pass back the number of 
+	   tasks you've made and the tasks themselves through
+	   the n_init and init_tasks pointers */
+
+	*n_init = number_of_tasks;
+	
+	/* Make a temporary array of pointers to tasks */
+	*init_tasks = new MWTask*[num_tasks];
+
+	/* Now fill this array */
+	for ( int i=0 ; i<num_tasks ; i++ ) {
+		(*init_tasks)[i] = new YourTaskClass;
+		/* put data into your task class here */
+	}
+}
+
+Now that you've "primed" the MWDriver, it's ready to go.  After 
+each task is completed, it will call your act_on_completed_task()
+function.  The idea is to keep track of how many tasks have
+finished, and to take action after all the tasks in a work
+step have completed.
+
+void
+YourDriverClass::act_on_completed_task( MWTask *t ) {
+
+	/* We must keep track of the number of tasks that 
+	   have been done in this work step.  We'll use	a
+	   static variable; you could just use a class 
+	   member. */
+
+	static int num_done = 0;	
+    
+	/* This is a slightly annoying MWDriver artifact:  you'll 
+	   get an MWTask a a parameter and you must cast it to 
+	   be a Task of your type (YourTaskClass). */
+
+	YourTaskClass *ytc = dynamic_cast<YourTaskClass *> ( t );
+
+	/* now you take the task (ytc) and use it.  This is the 
+	   "Collect results of task" phase.  This may mean doing a 
+	   calculation with the results, or you may wish to store
+	   all the tasks in the work step until the work step
+	   is complete. */	
+
+	num_done++;
+	if ( num_done == n ) {
+		/* Where n is the number of tasks in a work step.
+		   Here, we discover that we're at the end of the 
+		   work step, and have to go through the steps:
+		   "do some computation" and "decide if we're done"
+		   stages. */
+
+		/* Since the MWDriver quits when it has no more tasks
+		   to do, we can just return here and we'll be done! */
+		if ( we_are_done ) {
+			return;
+		}
+		
+		/* Since we're not done here, add n more tasks to the
+		   MWDriver.  */
+		
+		MWTask **newtasks = new MWTask*[n];
+		for ( int i=0 ; i<n ; i++ ) {
+			newtasks[i] = new YourTaskClass;
+			/* fill in newtasks[i] here */
+		}
+
+		/* Now that we've made the tasks, give them to the 
+		   MWDriver to use. */
+
+		addTasks( n, newTasks );
+		delete [] newtasks; /* We don't need this anymore */
+
+		/* Reset this to zero for the next batch... */
+		num_done = 0;
+	}
+}
+
+
+This example can be easily expanded to cover any sort of "nested 
+work step" concept you can develop.
+
+
+

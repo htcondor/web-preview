@@ -1,0 +1,81 @@
+#######################################################################
+#
+#  Makefile for Condor-PVM based RMComm 
+#
+#######################################################################
+
+# Turn off default suffixes
+.SUFFIXES:
+.SUFFIXES: .C .o
+
+SHELL = /bin/sh
+
+prefix = @prefix@
+exec_prefix = @exec_prefix@
+includedir = @include_dir@
+libdir = @libdir@
+bindir = @bindir@
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+
+#PVM_ROOT = /p/condor/workspaces/pvm/pvm3.4.2
+PVM_ROOT = @PVM_ROOT@
+
+CXX = @CXX@
+CPPFLAGS = @CPPFLAGS@ -I../ -I../.. -I$(PVM_ROOT)/include
+CXXFLAGS = @CXXFLAGS@
+LDFLAGS = @LDFLAGS@
+LIBS = @LIBS@
+DEFS = @DEFS@
+
+VPATH = @srcdir@
+srcdir = @srcdir@
+top_srcdir = @top_srcdir@
+
+
+
+MASTERSRC = ${srcdir}/../MWRMComm.C \
+	${srcdir}/MWCondorPvmRC.C
+
+MASTEROBJ = MWRMComm.o\
+	MWCondorPvmRCM.o
+
+WORKERSRC = ../MWRMComm.C \
+	MWCondorPvmRC.C
+
+WORKEROBJ = MWRMComm.o\
+	MWCondorPvmRCW.o
+
+
+#
+# The targets
+#
+
+all: mwcondorpvmmaster mwcondorpvmworker
+
+mwcondorpvmmaster: $(MASTEROBJ)
+	ar cr libMWcondorpvmmaster.a $(MASTEROBJ)
+	ranlib libMWcondorpvmmaster.a
+
+mwcondorpvmworker: $(WORKEROBJ)
+	ar cr libMWcondorpvmworker.a $(WORKEROBJ)
+	ranlib libMWcondorpvmworker.a
+
+clean:
+	rm -f $(MASTEROBJ) $(WORKEROBJ)
+
+distclean:
+	rm -f *~ Makefile libMWcondorpvmmaster.a libMWcondorpvmworker.a
+
+MWCondorPvmRCM.o: MWCondorPvmRC.C MWCondorPvmRC.h
+	$(CXX) $(DEFS) -DPVM_MASTER $(CPPFLAGS) $(CXXFLAGS) $(INCLS) -c MWCondorPvmRC.C -o MWCondorPvmRCM.o
+
+MWCondorPvmRCW.o: MWCondorPvmRC.C MWCondorPvmRC.h
+	$(CXX) $(DEFS) $(CPPFLAGS) $(CXXFLAGS) $(INCLS) -c MWCondorPvmRC.C -o MWCondorPvmRCW.o
+
+MWRMComm.o: ../MWRMComm.C ../MWRMComm.h
+	${CXX} ${DEFS} ${CPPFLAGS} ${CXXFLAGS} $(INCLS) -c ../MWRMComm.C
+
+.C.o:
+	${CXX} -c ${DEFS} ${CPPFLAGS} ${CXXFLAGS} $(INCLS) $<
+
