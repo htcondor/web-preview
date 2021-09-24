@@ -69,29 +69,29 @@
     <div class="container mb-4">
     <h1>Grid Ascii Helper Protocol</h1>
 <hr noshade>
-<p><img src="/web-preview/preview-converting-to-bootstrap/assets/images/GAHP_logo.jpg" align="right" height="239" /></p>
+<img src="/web-preview/preview-converting-to-bootstrap/assets/images/GAHP_logo.jpg" align="right" height="239" />
 
-<h2>Introduction</h2>
+<H2>Introduction</H2>
 
-<p>
+<P>
     The object of the Grid ASCII Helper Protocol (GAHP) is to allow the
     use of the client library or package of a grid or cloud service via
     a simple ASCII-based protocol. A process which implements GAHP is
     referred to as a GAHP server. GAHP is designed to handle both
     synchronous (blocking) and asynchronous (non-blocking) calls.
-</p>
+</P>
 
-<p>
+<P>
     The first GAHP specification focused on the GRAM and GASS grid
     services of the Globus Toolkit. Later GAHP specifications were
     then developed to communicate with other grid and cloud
     services.
 
-</p>
+</P>
 
-<h2> Why GAHP? </h2>
+<H2> Why GAHP? </H2>
 
-<p>
+<P>
     Although most grid and cloud services provide client libraries or
     modules in various languages that can be incorporated directly into
     applications that wish to use those services, there are several
@@ -112,17 +112,17 @@
     client module available in the language of the application wishing
     to use the service. With a GAHP server, langauage choice is
     immaterial.
-</p>
+</P>
 
-<p>
+<P>
     GAHP facilitates the construction of multi-tier systems.  A first
     tier client can easily send ASCII commands via a socket (perhaps
     securely via an SSH or SSL tunnel) to a second tier running a GAHP
     server, allowing grid or cloud services to be consolidated at the
     second or third tier with minimal effort.
-</p>
+</P>
 
-<p>
+<P>
     Furthermore, GAHP, like many other simple ASCII-based protocols,
     supports the concept of component-based development independent of
     the software language used with minimal complexity. When a grid
@@ -132,21 +132,21 @@
     subsequently utilize a GAHP server written in C, Java, or Perl --
     and said GAHP server could be running locally or as a daemon on a
     remote host.
-</p>
+</P>
 
-<h2>Downloads</h2>
+<H2>Downloads</H2>
 
-<p>There are several GAHP protocols available, each designed to communicate with
-a specific remote job submission system. At the time of this writing they are:</p>
+There are several GAHP protocols available, each designed to communicate with
+a specific remote job submission system. At the time of this writing they are:
 <ul>
-<li><b>Globus 2 GAHP</b> (the original GAHP). The GT2 GAHP protocol spec is <a href="gahp_protocol.txt">here</a>.</li>
-<li><b>Globus 3.2 GAHP</b>. The GT3.2 GAHP protocol spec is <a href="gt3_gahp_protocol.txt">here</a>.</li>
+<li><b>Globus 2 GAHP</b> (the original GAHP). The GT2 GAHP protocol spec is <a href="gahp_protocol.txt">here</A>.</li>
+<li><b>Globus 3.2 GAHP</b>. The GT3.2 GAHP protocol spec is <a href="gt3_gahp_protocol.txt">here</A>.</li>
 <li><b>Globus 4 GAHP</b>. <i>Spec coming soon</i></li>
 <li><b>C-GAHP</b> (HTCondor GAHP). The C-GAHP protocol spec is <a href="cgahp_protocol.txt">here</a></li>
 <li><b>BLAHP</b> (from INFN). The BLAHP protocol spec is <a href="blahp_protocol.txt">here</a></li>
 <li><b>EC2 GAHP</b> (Amazon's Elastic Compute Cloud). The EC2 GAHP protocol spec is <a href="ec2_gahp_protocol.txt">here</a></li>
 <li><b>GCE GAHP</b> (Google Compute Engine). The GCE GAHP protocol spec is <a href="gce_gahp_protocol.txt">here</a></li>
-<li><b>Azure GAHP</b> (Microsoft Azure Cloud). The Azure GAHP protocol spec is <a href="azure_gahp_protocol.txt">here</a><br />
+<li><b>Azure GAHP</b> (Microsoft Azure Cloud). The Azure GAHP protocol spec is <a href="azure_gahp_protocol.txt">here</a><br>
   Documentation from Microsoft:
   <ul>
   <li><a href="AzureGAHPCommands.docx">Azure GAHP Commands</a></li>
@@ -157,20 +157,22 @@ a specific remote job submission system. At the time of this writing they are:</
 <p>
 
 	The HTCondor Project at University of Wisconsin-Madison has developed the following GAHP server implementations:
-<table border="1">
-<tr><th>Name</th><th>Grid system</th><th>Implemenation</th><th>Availability</th><th>Source Code</th></tr>
-<tr><td>GT2 GAHP</td><td>Globus 2 GRAM</td><td>C</td><td>HTCondor 6.4.*</td><td><a href="http://research.cs.wisc.edu/htcondor/gahp/gahp_server-src.tar">Source code</a></td></tr>
-<tr><td>GT3.2 GAHP</td><td>Globus 3.2 WS GRAM</td><td>Java</td><td>HTCondor 6.7.* </td><td><a href="gt3.2-gahp.tar">Source code</a></td></tr>
-<tr><td>GT4 GAHP</td><td>Globus 4 WS GRAM</td><td>Java</td><td>TBA (or by <a href="mailto:htcondor-admin@cs.wisc.edu">request</a>)</td><td>&nbsp;</td></tr>
-<tr><td>C-GAHP</td><td>HTCondor</td><td>C++</td><td>HTCondor 6.7.9</td><td><a href="http://research.cs.wisc.edu/htcondor/gahp/cgahp_src.tar">Source code</a></td></tr>
-<tr><td>Unicore GAHP</td><td>UNICORE</td><td>Java</td><td>HTCondor 6.9.x+</td><td><a href="http://research.cs.wisc.edu/htcondor/gahp/ugahp060314.tar.gz">Gzipped Tar Source code</a></td></tr>
-<tr><td>EC2 GAHP</td><td>Elastic Compute Cloud</td><td>C++</td><td>HTCondor 7.1.x</td><td><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/dir?d=src/ec2_gahp">Source code</a></td></tr>
-<tr><td>GCE GAHP</td><td>Google Compute Engine</td><td>C++</td><td>HTCondor 8.1.4</td><td><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/dir?d=src/gce_gahp">Source code</a></td></tr>
-<tr><td>Azure GAHP</td><td>Azure Cloud</td><td>Python</td><td>HTCondor 8.7.x</td><td><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/dir?d=src/azure_gahp">Source code</a></td></tr>
+<div class="responsive-table">
+    <TABLE class="table" border="1">
+        <TR><TH>Name</TH><TH>Grid system</TH><TH>Implemenation</TH><TH>Availability</TH><TH>Source Code</TH></TR>
+        <TR><TD>GT2 GAHP</TD><TD>Globus 2 GRAM</TD><TD>C</TD><TD>HTCondor 6.4.*</TD><TD><a href="http://research.cs.wisc.edu/htcondor/gahp/gahp_server-src.tar">Source code</A></TD></TR>
+        <TR><TD>GT3.2 GAHP</TD><TD>Globus 3.2 WS GRAM</TD><TD>Java</TD><TD>HTCondor 6.7.* </TD><TD><A href="gt3.2-gahp.tar">Source code</a></TD></TR>
+        <TR><TD>GT4 GAHP</TD><TD>Globus 4 WS GRAM</TD><TD>Java</TD><TD>TBA (or by <a href="mailto:htcondor-admin@cs.wisc.edu">request</a>)</TD><TD>&nbsp;</TD></TR>
+        <TR><TD>C-GAHP</TD><TD>HTCondor</TD><TD>C++</TD><TD>HTCondor 6.7.9</TD><TD><a href="http://research.cs.wisc.edu/htcondor/gahp/cgahp_src.tar">Source code</A></TD></TR>
+        <TR><TD>Unicore GAHP</TD><TD>UNICORE</TD><TD>Java</TD><TD>HTCondor 6.9.x+</TD><TD><a href="http://research.cs.wisc.edu/htcondor/gahp/ugahp060314.tar.gz">Gzipped Tar Source code</A></TD></TR>
+        <TR><TD>EC2 GAHP</TD><TD>Elastic Compute Cloud</TD><TD>C++</TD><TD>HTCondor 7.1.x</TD><TD><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/dir?d=src/ec2_gahp">Source code</A></TD></TR>
+        <TR><TD>GCE GAHP</TD><TD>Google Compute Engine</TD><TD>C++</TD><TD>HTCondor 8.1.4</TD><TD><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/dir?d=src/gce_gahp">Source code</A></TD></TR>
+        <TR><TD>Azure GAHP</TD><TD>Azure Cloud</TD><TD>Python</TD><TD>HTCondor 8.7.x</TD><TD><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/dir?d=src/azure_gahp">Source code</A></TD></TR>
+    </TABLE>
+</div>
 
-</table>
 
-<p>
+<P>
 
 	The National Computing Science Alliance (NCSA) has developed a GAHP
 	server written in pure Java, using the Java CoG.  Any platform with a
@@ -179,10 +181,9 @@ a specific remote job submission system. At the time of this writing they are:</
 	for up-to-date information about this Java CoG-based GAHP server.
 
 <p>
-Our collaborators at <a href="http://www.infn.it/">INFN</a> have developed a GAHP server (unoficially called BLAHP) for submitting to PBS &amp; LSF schedulers. Please contact Francesco Prelz (<a href="mailto:Francesco.Prelz@mi.infn.it">Francesco.Prelz@mi.infn.it</a>) for more info.
+Our collaborators at <a href="http://www.infn.it/">INFN</A> have developed a GAHP server (unoficially called BLAHP) for submitting to PBS & LSF schedulers. Please contact Francesco Prelz (<a href="mailto:Francesco.Prelz@mi.infn.it">Francesco.Prelz@mi.infn.it</a>) for more info.
 </p>
 
-</p></p>
 
 </div>
 </main>
