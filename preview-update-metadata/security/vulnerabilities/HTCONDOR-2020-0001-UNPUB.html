@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>
+HTCONDOR-2020-0001
+</title>
+<link type="text/css" rel="stylesheet" href="/assets/css/vulnerabilities.css">
+</head>
+<body>
+
+    <span class='leftlogo'><a href="https://research.cs.wisc.edu/htcondor/"><img width="150" alt="U of Wisconsin logo" src="uw_logo_h_4c.gif" class="noborder" height="54"></a></span>
+
+<h1>
+    HTCONDOR-2020-0001
+</h1>
+<hr>
+<table width='100%' summary='whole page'>
+<tr>
+    <td width='25%'><p class='h'>Summary:</p></td>
+    <td class='sv'><p class='v'>&nbsp;</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+        A piece of secret information is written in the clear to the STARTD_HISTORY file.  An attacker could use this secret information to control the slot of another user, including running their own code as that user.
+        <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-18823">CVE-2019-18823</a>
+    </p></td>
+</tr>
+<tr><td colspan='2'>
+<br><table class='sumtable' width='100%' summary='short values'>
+<tr>
+<th width='20%'>Component</th>
+<th width='20%'>Vulnerable Versions</th>
+<th width='20%'>Platform</th>
+<th width='20%'>Availability</th>
+<th width='20%'>Fix Available</th>
+</tr>
+<tr>
+<td class='sv'>condor_startd</td>
+<td class='sv'>All before 8.8.8 (stable) and 8.9.6 (devel)</td>
+<td class='sv'>all</td>
+<td class='sv'>not known to be publicly exploited</td>
+<td class='sv'>8.8.8, 8.9.6</td>
+</tr>
+<tr>
+<th width='20%'>Status</th>
+<th width='20%'>Access Required</th>
+<th width='20%'>Host Type Required</th>
+<th width='20%'>Effort Required</th>
+<th width='20%'>Impact/Consequences</th>
+</tr>
+<tr>
+<td class='sv'>Verified</td>
+<td class='sv'>login access to an execute machine or the ability to submit a job</td>
+<td class='sv'>execute hosts that are not configured to use authentication or use match password authentication</td>
+<td class='sv'>high</td>
+<td class='sv'>high</td>
+</tr>
+<tr>
+<th width='20%'>Fixed Date</th>
+<th width='20%'>Credit</th>
+</tr>
+<tr>
+<td class='sv'>2020-03-01</td>
+<td class='sv'>Todd Tannenbaum</td>
+</tr>
+</table>
+</td></tr>
+<tr>
+    <td width='25%'><p class='h'>Access Required:</p></td>
+	<td class='sv'><p class='v'>
+	</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+	Be able to read a world-readable file on an execute machine.  Even if a user does not have login access to the execute machine, the attacker can submit a job and that job can then look at the STARTD_HISTORY on the machine where it executes.  Execute machines configured to require a strong credential-based authentication method (e.g. authentication method such as pool password, SSL, Kerberos, GSI, or TOKEN) and have match password authentication disabled are not vulnerable.
+    </p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Effort Required:</p></td>
+    <td class='sv'><p class='v'>high</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+        A thorough understanding of the HTCondor code and the ability to write custom tools is required to exploit this vulnerability.  Also, the pool must be using host-based authorization or have match password authentication enabled (the default) to be vulnerable.  If authentication has been set up for the pool and match password authentication is disabled, the attacker would also need to gain access to the condor credentials.
+    </p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Impact/Consequences:</p></td>
+    <td class='sv'><p class='v'>high</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+	Using the secret information, they could then manipulate another user's running job, including evicting that job or replacing that job with one that executes the attacker's own code.  This could possibly allow the attacker to get access to the user's job data files which may contain sensitive information.  Pools that are not configured to use daemon-to-daemon authentication or have match password authentication enabled (the default) are vulnerable.
+</p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Workaround:</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+        Disable STARTD_HISTORY, which is on by default.  You can do this by adding "STARTD_HISTORY=" in your condor_config file.
+<p>	Alternatively, the administrator can configure authentication for daemon-to-daemon communications and disable match password authentication.  To disable match password authentication, add "SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION=False" to your condor_config file. See the security section of the manual for more information about configuring daemon-to-daemon authentication. Be advised that disabling match password authentication can put significant extra load on the submit machines of a large pool (thousands of nodes).
+<p> After installing updated binaries or working around the issue, you should restart HTCondor.  The secret written to the log will no longer be relevant and you do not need to scrub or delete the log.
+    </p></td>
+</tr>
+
+<tr>
+    <td width='25%'><p class='h'>Full Details:</p></td>
+    <td class='sv'>
+	Embargoed until future notice.
+    </td>
+</tr>
+
+</table>
+
+</body>
+</html>
+
