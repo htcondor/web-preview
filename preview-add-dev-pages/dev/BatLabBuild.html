@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Bat Lab Build</title>
+
+    <script src="/web-preview/preview-add-dev-pages/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-add-dev-pages/assets/js/bootstrap.js" type="text/javascript"></script>
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-add-dev-pages/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-add-dev-pages/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-add-dev-pages/assets/images/CondorTitle.gif" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-dev-pages/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-dev-pages/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-dev-pages/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-dev-pages/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Bat Lab Build</h1>
+<hr noshade>
+<div id="content">
+ This is for the new BATLab (submit-*.batlab.org).  For the obsolete, pre-2012 BATLab (nmi-s00*.cs.wisc.edu), see
+ <span class="wiki">
+  <a href="/dev/NmiBuild" title="Nmi Build">
+   NmiBuild
+  </a>
+ </span>
+ .
+ <p>
+  <span class="section">
+   <h2>
+    Building a HTCondor workspace in NMI
+   </h2>
+  </span>
+  <p>
+   <span class="subsection">
+    <h3>
+     Automatically from Linux
+    </h3>
+   </span>
+   <p>
+    Try /afs/cs.wisc.edu/u/a/d/adesmet/bin/submit-workspace .  Run it from the top of your workspace.  You'll want to have public-key authentication configured for the current primary BaTLab submit host.  You'll be asked for your private key password once at the start.  The script will create a directory on the remote side named after the branch and the current date and time.  The script does
+    <em>
+     not
+    </em>
+    delete the copy after it's no longer necessary; remember to clean up occasionally.
+    <p>
+     Just in case, the script is attached.
+     <p>
+      If things go wrong, fall back to "Manually from Linux," below.  The script is basically implementing those steps.
+      <p>
+       <span class="subsection">
+        <h3>
+         Manually from Linux
+        </h3>
+       </span>
+       <p>
+        Here is a common scenario: You would like to do a build on some platform or set of platforms in order to ensure that you haven't broken the build process. What are your options? You could check in the code and wait for the nightly builds, but you may well break the build and receive fifty lashes with a wet noodle. A better solution is to
+        <strong>
+         not
+        </strong>
+        check in your code, but use NMI to build it on any platform that you like.
+        <p>
+         Before you start, make sure that you have an account on batlab.chtc.wisc.edu.
+         <p>
+          From your usual machine,
+          <p>
+           <div class="code">
+            <pre class="code">
+  % ssh batlab.chtc.wisc.edu mkdir workspace
+  % exit
+  % cd to top of clone(CONDOR_SRC)
+  % git write-tree
+  % git archive xxxxxx(hash created by git write-tree) | ssh batlab.chtc.wisc.edu cd workspace '&amp;&amp;' tar xf -
+For Windows execute below command,
+  % git archive xxxxxx(hash created by git write-tree) | ssh USERNAME@batlab.chtc.wisc.edu cd workspace ; tar xf -
+
+</pre>
+           </div>
+           <p>
+            Then, log into batlab.chtc.wisc.edu, and run the following commands
+            <p>
+             <div class="code">
+              <pre class="code">
+  % cd workspace
+  % cd nmi_tools
+  % ./condor_nmi_submit --build --git --workspace=../ --platforms=all --notify-fail-only --desc="A Description"
+</pre>
+             </div>
+             <p>
+              If you're trying to build something older than 7.7, you'll need to do the following before the condor_nmi_submit. It's not necessary for 7.7 and later.
+              <div class="code">
+               <pre class="code">
+  % git --git-dir=/space/git/CONDOR_DOC.git archive origin/master | tar xf -
+</pre>
+              </div>
+              <p>
+               Some important options:
+               <p>
+                <ul>
+                 <li>
+                  <code>
+                   --without-tests
+                  </code>
+                  suppresses the automatic submission of tests when the build is done.
+                  <li>
+                   <code>
+                    --platforms
+                   </code>
+                   takes a comma separated list of platforms. "all" is a good default. For a list of available platforms, see "Platforms" below.  You must specify the platforms you want.  (This is a change from the old BATLab.)  You can find a list of available platforms at
+                   <a class="external" href="http://batlab.chtc.wisc.edu/nmi/pool/status">
+                    http://batlab.chtc.wisc.edu/nmi/pool/status
+                   </a>
+                   , look for "Pool usage by platform" in the left column. At the moment (2014-10-30) the set of platforms that we do nightly and rolling builds on is:
+                   <ul>
+                    <li>
+                     x86_64_Debian0,x86_64_Debian6,x86_64_Debian7,x86_64_Fedora19,x86_64_Fedora20,x86_64_MacOSX7,x86_64_MacOSX8,x86_64_RedHat5,x86_64_RedHat6,x86_64_RedHat7,x86_64_SL6,x86_64_Solaris11,x86_64_Ubuntu10,x86_64_Ubuntu12,x86_64_Ubuntu14,x86_64_Windows7,x86_64_Windows8,x86_RedHat5,x86_RedHat6,x86_SL5
+                    </li>
+                   </ul>
+                   <li>
+                    <code>
+                     --use-externals-cache
+                    </code>
+                    uses cached externals to speed the build.
+                    <strong>
+                     May not work in new BATLab.
+                    </strong>
+                    If you're testing a new external, do
+                    <strong>
+                     not
+                    </strong>
+                    use this option.
+                    <li>
+                     <code>
+                      --release-only
+                     </code>
+                     builds the dynamic binaries, but doesn't package or return them. If you're just doing a compile test and don't need the binaries, this will speed the build by about 45 minutes. If you need to generate a package to give to a user (or to submit for testing), omit this option.
+                     <li>
+                      <code>
+                       --desc
+                      </code>
+                      specifies a description that appears in the NMI web pages and can help identify your build.
+                      <li>
+                       <code>
+                        --workspace=../
+                       </code>
+                       is the location of your workspace.
+                       <strong>
+                        Warning:
+                       </strong>
+                       due to a bug in condor_nmi_submit, as of 2006-02-14 the only valid option is "
+                       <code>
+                        ../
+                       </code>
+                       " as given in the example.
+                       <li>
+                        <code>
+                         --append 'append_requirements=Machine!="exec3.batlab.org"'
+                        </code>
+                        Blacklist exec3 from the hosts you will build on.
+{endcode}
+                       </li>
+                      </li>
+                     </li>
+                    </li>
+                   </li>
+                  </li>
+                 </li>
+                </ul>
+                <p>
+                 The script has a couple of other options. run condor_nmi_submit without options for a summary.
+                 <p>
+                  <span class="section">
+                   <h2>
+                    Checking your build's status
+                   </h2>
+                  </span>
+                  <p>
+                   <ul>
+                    <li>
+                     <a class="external" href="http://batlab.chtc.wisc.edu/results/">
+                      HTCondor-specific status page
+                     </a>
+                     (Maintained by  at  (Maintained by Scot K. as of 2012-01).
+                     <li>
+                      <a class="external" href="http://batlab.chtc.wisc.edu/nmi/results/overview">
+                       Metronome status page
+                      </a>
+                      (Maintained by Todd M. as of 2012-01.)
+                     </li>
+                    </li>
+                   </ul>
+                   <h3>
+                    Attachments:
+                   </h3>
+                   <blockquote>
+                    <ul>
+                     <li>
+                      <a href="attach_get/855/submit-workspace">
+                       submit-workspace
+                      </a>
+                      1821 bytes added by adesmet on 2014-Nov-18 19:30:15 UTC.
+                      <br/>
+                      Script to automatically submit a workspace build to BaTLab
+                      <br/>
+                     </li>
+                    </ul>
+                   </blockquote>
+                  </p>
+                 </p>
+                </p>
+               </p>
+              </p>
+             </p>
+            </p>
+           </p>
+          </p>
+         </p>
+        </p>
+       </p>
+      </p>
+     </p>
+    </p>
+   </p>
+  </p>
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
