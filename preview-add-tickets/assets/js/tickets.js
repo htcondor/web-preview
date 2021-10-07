@@ -52,12 +52,9 @@ async function populate_search() {
         return
     }
 
-    results = idx.search(query)
+    let results = idx.search(query).slice(0, 5)
 
-    let results_shown = 0
     for (const result of results) {
-
-        if(results_shown > 5){break}else{results_shown++}
 
         let new_result_node = document.createElement("div")
         search_results.appendChild(new_result_node)
