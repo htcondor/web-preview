@@ -1,0 +1,471 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.10.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.tj.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/diff2html.css">
+<link rel="alternate stylesheet"
+      title="prosimii-screen"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/prosimii-screen.css">
+<link rel="alternate stylesheet"
+      title="Default Stylesheet"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac_default.css">
+<link rel="alternate" type="application/rss+xml"
+   title="HTCondorWiki Timeline Feed" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/timeline.rss">
+<link rel="index" title="Index" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/index">
+<link rel="search" title="Search" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/search">
+<link rel="help" title="Help"
+   href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=CvstracDocumentation">
+<title>HTCondorWiki: Ticket #1831</title>
+<script type="text/javascript">
+  function setFocus() {
+    var firstForm, e;
+    if ( document.forms && (firstForm = document.forms[0]) ) {
+      if      ( (e = firstForm.elements["u"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["t"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["s"]) && e.type == "text" ) e.focus();
+    }
+  }
+</script>
+</head>
+<body onload="setFocus()">
+<div id="header">
+<div class="midHeader">
+<div class="iconHeader">
+<a href="https://www.cs.wisc.edu/condor"><img src="https://research.cs.wisc.edu/htcondor/images/HTCondor_wiki_logo_small.png" alt="HTCondor High Throughput Computing" border=0></a>
+</div>
+</div>
+</div><div id="header">
+<h1 id="title">
+Ticket #1831
+</h1>
+<p id="identity">
+<a href="honeypot"><notatag arg="meaningless"></a>
+<a href="login?nxp=/index.cgi/tktview%3Ftn%3D1831" title="Log in">Not logged in</a>
+</p>
+<ul id="navigation">
+<li><a href="dir">Browse</a></li>
+<li><a href="wiki?p=CvstracTicket">Help</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="reportlist">Reports</a></li>
+<li><a href="search?t=1">Search</a></li>
+<li><a href="timeline">Timeline</a></li>
+<li><a href="wiki">Wiki</a></li>
+</ul>
+<ul id="action">
+<li><a href="tkthistory?tn=1831" rel="nofollow">History</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Ticket #1831: Take advantage of cgroups-based capabilities on new Linux platforms</h2>
+<blockquote>
+To finish the integration of this work, these milestone need to happen:
+<ul>
+<li>Read up and understand CGroups.
+<li>Add the libcgroup external.
+<li>Successfully apply and test the patch.
+<li>Ensure the discovery of the cgroup feature works on all of our platforms.
+</ul>
+
+<p>This work had been done and is committed.
+
+<p><hr>
+I would like to explore the integration of cgroups and Condor.  For those unfamiliar with cgroups, I think some of the best comprehensive background documentation is provided by Redhat:
+<a class="external" href="http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/index.html">http://docs.redhat.com/docs/en-US/Red_Hat_Enterprise_Linux/6/html/Resource_Management_Guide/index.html</a>
+
+<p>In short, cgroups are a kernel-level construct which provides the functionality of the condor_procd.  I have two short-term goals:
+<ol>
+<li>Improved accuracy for process accounting for memory and CPU usage.
+<li>Improved accuracy for job killing.
+Both can be done to be basically 100% accurate - the current procd methodology is heuristic-based, and can be error prone.  Current best-practice is dedicated accounts or GID tracking, but neither are as transparent as cgroups.
+</ol>
+
+<p>After examining the procd and starter code, I think these are also doable, short-term goals.  I'd like to do this without replacing the procd or even disabling the current functionality (ideally, should be kept as a fallback if cgroups fail).  My current thinking is to use  libcgroups to assist in the cgroup creation and manipulation (adding a new dependency for cmake).  The starter (some combination of VanillaProc::StartJob and OsProc::StartJob) would be responsible for creating the cgroup and launching the parent process.  The procd would register the new process family as before, but get a new command for enabling tracking based upon a cgroup's name.  The process family will become associated with the most-specific cgroup of the root PID.  There will be a CGroupTracker somewhat equivalent to the current <span class="wiki"><a title="Group Tracker"
+class="missing"
+  href="wiki?p=GroupTracker">GroupTracker</a></span>
+
+<p>When the <span class="wiki"><a title="Proc Family"
+class="missing"
+  href="wiki?p=ProcFamily">ProcFamily</a></span> is associated with a cgroup, the aggregate_usage functions and spree functions will be replaced by their cgroups equivalent (falling back to the current implementations if the cgroups-enabled one failed).  So, most of the control flow for process startup, monitoring, and shutdown will remain the same; this seems especially important as there's quite a bit of functionality in the procd.
+
+<p>On the outset, the most daunting part of the implementation is a new external for libcgroups.  I think the procd and starter code changes are otherwise relatively benign.
+
+<p>If we can start with these changes, there are some more imaginative cgroup-related goals:
+<ol>
+<li>cpuset'ing.  Limit the group of processes to a specific CPU.
+<li>Managing I/O bandwidth for the condor execute directory device.  Prevents a process from affecting others by hitting the disk hard.
+<li>Private namespaces.  Provide a private PID and/or filesystem namespace.  Jobs running under the same unix account wouldn't be able to kill each other's processes or write into each other's execute directory.  Would also allow a per-job /tmp.  Somewhat deep voodoo, but would allow sites like Purdue to run all jobs as unix user nobody without worrying about the security implications.
+</ol>
+
+<p>Thoughts?  I'd characterize the approach as:
+<ol>
+<li>Use libcgroups instead of manipulating the filesystem.
+<li>Start with a small modification to the procd.
+<li>Contain the worst-case scenario if the cgroup-based methods fail.</ol>
+</blockquote>
+
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=1831">Append remarks</a>]
+</td></tr></table></td></tr></table>
+<h3>Remarks:</h3>
+<blockquote>
+<em>2011-Jan-07 13:05:49 by tannenba:</em> <br>
+
+Thanks Brain, this will be great!
+
+<p>Added Pete (psilord) to the list of folks getting email re changes to this ticket. Pete is the resident procd expert, I want him to chime in on the proposed approach.
+
+<p>Upon reading the above, one concern I had is part mentioning changes to the starter VanillaProc::StartJob and OsProc::StartJob methods.  In theory, the <em>only</em> changes should be to classes procapi, maybe also the procd, maybe also killfamily. The starter should not care about the mechanism by which a tree of process is being tracked (be it via group ids, cookie strings in the environment, cgroups, process table snapshots, windows jobobjects, whoatever). Also note that Condor relies on tracking groups of processes in many places, not just the starter - for example the master tracks all processes beneath it, the schedd tracks trees representing scheduler/local universe jobs.
+
+<p><hr>
+<em>2011-Jan-07 13:58:28 by bbockelm:</em> <br>
+
+So, I am to the point where I have enough of a patch put together that Pete can see my approach.  Currently, I'm only exposing this through the condor_procd/procd_ctl interface.  Basically, the <span class="wiki"><a title="Proc Family Monitor"
+class="missing"
+  href="wiki?p=ProcFamilyMonitor">ProcFamilyMonitor</a></span> has been taught how to associate a given <span class="wiki"><a title="Proc Family"
+class="missing"
+  href="wiki?p=ProcFamily">ProcFamily</a></span> with a cgroup, and I extended this new command to proc_family_io.cpp.
+
+<p>Todd: I would prefer to keep the starter somewhat involved - it at least must explicitly asked for cgroups (mimics how tracking groups are done currently).  However, we can put the cgroup creation logic into the procd.  I don't think it alters the architecture too much.
+
+<p>Hopefully I can code drop the first cgroup-based <span class="wiki"><a title="Proc Family"
+class="missing"
+  href="wiki?p=ProcFamily">ProcFamily</a></span> tracking patch later today... I want to get at least a few of the statistics working first.
+
+<p><hr>
+<em>2011-Jan-09 23:19:57 by bbockelm:</em> <br>
+
+Ok, see the attached cgroups_procd2.patch.  It should be ready for others to look at it.  It is integrated into both the condor_starter and the procd_ctl.
+
+<p><hr>
+<em>2011-Jan-25 13:32:03 by psilord:</em> <br>
+
+Ok, I've had a small chance to look at the work in this ticket. The approach seems reasonable.
+
+<p><hr>
+<em>2011-Feb-03 11:48:57 by bbockelm:</em> <br>
+
+Hi Pete,
+
+<p>Anything I can do to help this ticket along?
+
+<p>Brian
+
+<p><hr>
+<em>2011-Mar-28 11:42:32 by tannenba:</em> <br>
+
+<strong>Initial Code Review Feedback</strong>
+
+<p><ol>
+<li>The algorithm &quot;freezes&quot; all the pids in the family before sending a signal, apparently in order to send the signal atomically to the group.  This is good. However, the question is what to do if the cgroup call to freeze all the pids fails (which can happen if the process is in certain specific states).  One solution would be when the procd to send the SIGCONT or SIGKILL signal to the family, it then checks again to be certain all processes are stopped or killed. If not, then repeat. After repeating more than X times, propagate failure to the caller (which would then likely email the admin, etc). Note this issue is not specific to cgroups, but if the procd behaved this way, then we'd have an answer re what to do if cgroups fails to freeze all pids.
+
+<p><li>Code style issue - use curly braces around conditional clauses, even if they are only one line. We do this to help ensure merges don't have unexpected side effects.
+</ol>
+
+<p><hr>
+<em>2011-Apr-05 16:16:58 by psilord:</em> <br>
+
+I got preempted by the compressed ckpt in stduniv problem. So this got moved on week into the future.
+
+<p><hr>
+<em>2011-Apr-15 14:08:11 by psilord:</em> <br>
+
+I was looking at this ticket, but then a zombie bug happened for another ticket, so pushing this a few more days into the future.
+
+<p><hr>
+<em>2011-Apr-19 12:08:34 by tannenba:</em> <br>
+
+Goal is for Pete to review latest/final patch and merge codebase for v7.7.0 by 4/29/11. Pete, we'll need a child ticket for documentation and regression tests.
+
+<p><hr>
+<em>2011-May-02 10:54:35 by psilord:</em> <br>
+
+Ok, today I'm going to review version 5 of the patch for this feature. I believe it'll pass review without comments and then I'll commit it into the master ASAP.
+
+<p><hr>
+<em>2011-May-05 11:47:17 by psilord:</em> <br>
+
+I applied the patch to the master in my local workspace, and it cleanly applied. While building it, I found some problems in the cmake goo with the cgroup external. So, I checked in what Brian did strictly as attributed to him, and am doing additional patches which fix the rest of the problems.
+
+<p><hr>
+<em>2011-May-05 16:37:08 by psilord:</em> <br>
+
+I have completed the work for this ticket. I committed version 5 of the patch
+as it existed and attributed it to Brian to the commit.
+
+<p>I found that the libcgroup external cmake code needed a bit of work for this to compile in a non-proper fashion. I made the fixes which also included making the libcgroup build produce a static library for linking.
+
+<p>It built on my machine, so good enough to check it into master. :)</blockquote>
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=1831">Append remarks</a>]
+</td></tr></table></td></tr></table>
+
+
+<h3>Properties:</h3>
+
+<blockquote>
+<table>
+<tr>
+  <td align="right">Type:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>enhance&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Last&nbsp;Change:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-May-05 16:38</b></td>
+</tr>
+<tr>
+  <td align="right">Status:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>resolved</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Created:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-Jan-04 08:18</b></td>
+</tr>
+<tr>
+  <td align="right">Fixed&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070700&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Broken&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Priority:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Subsystem:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Assigned&nbsp;To:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>psilord&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Derived From:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>
+  &nbsp;
+  </b></td>
+</tr>
+<tr>
+  <td align="right">Creator:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>bbockelm&nbsp;</b></td>
+<td></td>
+  <td align="right">Rust:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Customer Group:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>other&nbsp;</b></td>
+<td></td>
+  <td align="right">Visibility:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>public&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Notify:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>matt@cs.wisc.edu, tstclair@redhat.com, psilord@cs.wisc.edu, tannenba@cs.wisc.edu, dan@hep.wisc.edu&nbsp;</b></td>
+<td></td>
+  <td align="right">Due Date:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>20110505&nbsp;</b></td>
+</tr>
+</table>
+</blockquote>
+<h3>Derived Tickets:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=19" class="abandoned"
+title="Loop when killing process families"
+>#19</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+Loop when killing process families</td></tr>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=2014" class="new"
+title="Allow PrivSep to work with PID namespaces"
+>#2014</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+Allow <span class="wiki"><a title="Priv Sep"
+  href="wiki?p=PrivSep">PrivSep</a></span> to work with PID namespaces</td></tr>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=2120" class="resolved"
+title="Cgroup feature should be documented in manual for 7.7.x series."
+>#2120</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+Cgroup feature should be documented in manual for 7.7.x series.</td></tr>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=2121" class="new"
+title="CGroup pid tracking must have regression tests"
+>#2121</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+CGroup pid tracking must have regression tests</td></tr>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=2652" class="resolved"
+title="procd pegging cpu when running a lot of short lived jobs."
+>#2652</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+procd pegging cpu when running a lot of short lived jobs.</td></tr>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=4259" class="review"
+title="examine &quot;.throttle.io_service_bytes&quot; instead of &quot;.io_service_bytes&quot;"
+>#4259</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+examine &quot;.throttle.io_service_bytes&quot; instead of &quot;.io_service_bytes&quot;</td></tr>
+</table>
+<h3>Related Check-ins:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">2012-Jan-31 12:58</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=30036">[30036]</a></span>: Edit of new documentation on cgroups; addition of defn of config knob BASE_CGROUP; correction of defn of config knob PROCD_LOG; version history item to point to the new documentation. ===GT=== <span class="ticket"><a href="tktview?tn=2120" class="resolved"
+title="Cgroup feature should be documented in manual for 7.7.x series."
+>#2120</a></span> ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span>  (By Karen Miller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-20 21:31</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21951">[21951]</a></span>: ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span> This patch fixes an issue where cgroups isn't enabled in the kernel but the procd thought it was just unmounted.  (By Peter Keller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-06 10:05</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21800">[21800]</a></span>: ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span> Turned off libcgroup building on RHEL3 since that feature will definitely not work there.  (By Peter Keller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-05 16:27</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21797">[21797]</a></span>: ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span> Altered the build of the libcgroup external to: Build only on Linux Produce a statially linked library.  (By Peter Keller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-05 16:26</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21796">[21796]</a></span>: ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span> libcgroup should only be attempted upon not windows machines.  (By Peter Keller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-05 10:52</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21795">[21795]</a></span>: ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span> Fixed a bug where a libcgroup.a dependency was not properly rendered for the condor_procapi build.  (By Peter Keller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-05 10:13</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21793">[21793]</a></span>: ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span> This is the final patch from Brian Bockelman which implements cgroups on linux for the condor_procd. In building the patch, I've found some build errors which I'll fix in subsequent patches. ===VersionHistory=== When Condor can utilize the CGroup functionality in Linux, the accuracy of&nbsp;[...]
+ (By Brian Bockelman )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-Jan-25 14:11</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=25828">[25828]</a></span>: Added man pages for condor_procd, procd_ctl, and gidd_alloc. ===GT=== <span class="ticket"><a href="tktview?tn=1831" class="resolved"
+title="Take advantage of cgroups-based capabilities on new Linux platforms"
+>#1831</a></span>  (By Peter Keller )</td></tr>
+</table>
+<h3>Attachments:</h3>
+<blockquote>
+<ul>
+<li><a href="attach_get/263/cgroups_procd.patch">cgroups_procd.patch</a>
+38324 bytes added by bbockelm on 2011-Jan-08 04:33:56 UTC.
+<br>
+Here's the first set of code.  This adds the external (although I've only tested with PROPER + libcgroup 0.37 RPM).
+
+<p>NOTE NOTE NOTE: libcgroup has a glibc error in versions prior to 0.37.  You will likely need to download the Fedora 15 RPM or install it yourself.  I used this build: <a class="external" href="http://koji.fedoraproject.org/koji/buildinfo?buildID=209020">http://koji.fedoraproject.org/koji/buildinfo?buildID=209020</a> .  Obviously, you also need to be on a recent kernel (meaning Fedora 12 or higher)
+
+<p>This code can attach a cgroup to a process family, track its processes via cgroup, track its resource usage, and reliably kill things.  If you want to see something impressive, try using condor_procd to track a &quot;make -j4&quot; on the condor source directory.  Where the original procd only thinks there was 1s of user CPU (due to the number of lots of short lived processes), this successfully was able to calculate the true user+system CPU, about 300s combined for my desktop.
+
+<p>This code does <strong>not</strong> do the creation or the population of the cgroups themselves (although I've now poked inside libcgroup enough it should be easy work... save something for tomorrow!).  You have to do this by hand.
+
+<p>For a demo, create a cgroup named &quot;/condor&quot; for the memory, cpuacct, and freezer subsystem.  Add the a user's shell to it:
+<div class="verbatim">
+<PRE>
+mkdir -p /cgroups/{memory,cpuacct,freezer}
+mount -t cgroup -ocpuacct cpuacct /cgroups/cpuacct
+mount -t cgroup -omemory memory /cgroups/memory
+mount -t cgroup -ofreezer freezer /cgroups/freezer
+mkdir -p /cgroups/{memory,cpuacct,freezer}/condor
+echo "&lt;user shell pid>" > /cgroups/memory/condor/tasks
+echo "&lt;user shell pid>" > /cgroups/cpuacct/condor/tasks
+echo "&lt;user shell pid>" > /cgroups/freezer/condor/tasks
+</PRE></div>
+
+In the user's shell, do a &quot;make -j4&quot;.  Then, switch back to the root shell with the upgraded condor_procd and procd_ctl:
+<div class="verbatim">
+<PRE>
+condor_procd -A /tmp/procd_pipe -L /dev/stderr -P &lt;user shell pid> &
+procd_ctl -A /tmp/procd_pipe TRACK_BY_ASSOCIATED_CGROUP /condor
+procd_ctl -A /tmp/procd_pipe GET_USAGE
+procd_ctl -A /tmp/procd_pipe SUSPEND_FAMILY
+</PRE></div>
+
+
+<p>Viola!  Assuming you haven't just uncovered a new bug, this should perfectly track memory and CPU usage, as well as prove to be more adept at sending signals to processes (no race conditions when giving a process tree a signal!).<br>
+<li><a href="attach_get/264/cgroups_procd2.patch">cgroups_procd2.patch</a>
+54774 bytes added by bbockelm on 2011-Jan-10 05:16:25 UTC.
+<br>
+Here's a more complete patch.  Major additions in functionality are:
+
+<p><ol>
+<li>Integration into the condor_starter.  Added a parameter named BASE_CGROUP, and the procd will create the new process inside $BASE_CGROUP/job_$CLUSTER_$PROC.
+<li>Added intelligence to the memory statistics (make sure memory migrates when adding a new cgroup).
+<li>Cleanup of cgroups after the <span class="wiki"><a title="Proc Family"
+class="missing"
+  href="wiki?p=ProcFamily">ProcFamily</a></span> is done with them if the procd was the one to create the cgroup originally.
+</ol>
+
+<p>As before, feel free to take it out for a spin.  No known issues, no remaining TODOs.<br>
+<li><a href="attach_get/308/cgroups_procd_v3.patch">cgroups_procd_v3.patch</a>
+57039 bytes added by bbockelm on 2011-Mar-30 17:53:13 UTC.
+<br>
+<ul>
+<li>Explicitly detect the case where the kernel cannot guarantee atomic signal delivery.  This is logged, but we currently don't do anything with this information.  However, when <span class="ticket"><a href="tktview?tn=19" class="abandoned"
+title="Loop when killing process families"
+>#19</a></span> lands, this will be easy to integrate.
+<li>Fixed the comment about curly brackets.  I think I fixed up all the relevant cases.
+<li>(IMPORTANT) Explicitly null-terminate the cgroup name sent over pipe.  Previously, it was possible to get trash at the end of the string.
+</ul>
+
+<p>REMINDER: due to an upstream bug, you don't want to run this for libcgroup &lt; 0.37.  That version used sprintf incorrectly and could cause statistics collection to not function.  The procd fell back correctly, dropped an error message... but what's the point if you don't have statistics?  AFAICT, the older version isn't dangerous: just not as useful.<br>
+<li><a href="attach_get/322/cgroups_procd_v4.patch">cgroups_procd_v4.patch</a>
+64296 bytes added by bbockelm on 2011-Apr-13 13:38:05 UTC.
+<br>
+Latest version of the patch attached.  Only change is that block I/O statistics will be read if they are available.<br>
+<li><a href="attach_get/340/cgroups_procd_v5.patch">cgroups_procd_v5.patch</a>
+64510 bytes added by bbockelm on 2011-Apr-30 19:16:15 UTC.
+<br>
+This version of the patch fixes an issue in building without libcgroup (one of the functions wasn't properly ifdef'd out in procd_ctl).<br>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="footer" style="text-align:right">
+<p>
+This work is supported by NSF under Cooperative Agreement OAC-2030508 as part of the <a href="https://path-cc.io/"> PATh Project</a>. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the NSF. Site built using <a href="about">CVSTrac</a>.
+</div>
+</body></html>
