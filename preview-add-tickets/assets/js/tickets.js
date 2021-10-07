@@ -30,7 +30,7 @@ function create_results_html(ticket){
     let html =  "<div id='search-card' class='card'>" +
                     "<div class='card-body'>" +
                         "<div class='card-title'>" +
-                            "<a onclick='get_ticket_and_populate(" + ticket.id + ")'>" + ticket.title + "</a>" +
+                            "<a href='/ticket?ticket=" + ticket.id + "' onclick='get_ticket_and_populate_wrapper(" + ticket.id + "); return false;'>" + ticket.title + "</a>" +
                         "</div>" +
                     "</div>" +
                 "</div>"
@@ -54,7 +54,11 @@ async function populate_search() {
 
     results = idx.search(query)
 
+    let results_shown = 0
     for (const result of results) {
+
+        if(results_shown > 5){break}else{results_shown++}
+
         let new_result_node = document.createElement("div")
         search_results.appendChild(new_result_node)
 
@@ -73,12 +77,24 @@ async function get_ticket(id){
     return json
 }
 
+let get_ticket_and_populate_wrapper = (id) => {
+    get_ticket_and_populate(id)
+    return false;
+}
+
 async function get_ticket_and_populate(id){
     let ticket = await get_ticket(id)
     populate_page(ticket)
 }
 
-var populate_page = (ticket) => {
+let clear_search = () => {
+    document.getElementById("ticket-search").value = ""
+    document.getElementById("search-results").innerHTML = ""
+}
+
+let populate_page = (ticket) => {
+    clear_search()
+
     document.getElementById("ticket").hidden = true
 
     // Title
