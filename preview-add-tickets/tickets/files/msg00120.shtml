@@ -1,0 +1,196 @@
+<!-- MHonArc v2.6.15 -->
+<!--X-Subject: Re: [Condor&#45;users] 7.8 Upgrade Issues -->
+<!--X-From-R13: Tenaprfpb Bvresrqrevpv <scvresrqNfgfpv.rqh> -->
+<!--X-Date: Thu, 19 Jul 2012 13:07:01 &#45;0500 -->
+<!--X-Message-Id: BDEC1FAC2C8C734E93DAB14E45B823E42D263E38@EXCHMAIL1.stsci.edu -->
+<!--X-Content-Type: multipart/mixed -->
+<!--X-Reference: E2C0E2B7&#45;7307&#45;43CB&#45;B9B8&#45;DEFE223CE62F@stsci.edu -->
+<!--X-Reference: 4FE3422D.2010208@cs.wisc.edu -->
+<!--X-Derived: gzJ_qryzMQ0X.gz -->
+<!--X-Head-End-->
+<!doctype html public "-//W3C//DTD HTML//EN">
+<html>
+<head>
+<title>Re: [Condor-users] 7.8 Upgrade Issues</title>
+<link rel="stylesheet" type="text/css" href="/styles/stylesheet.css">
+<link rev="made" href="mailto:fpierfed@xxxxxxxxx">
+</head>
+<body>
+<div class="navbar">
+<table border=0 width="100%">
+  <tr>
+    <td align=left>
+	<font FACE="Helvetica,Arial">
+
+	<center>
+	<H1>Mailing List Archives</H1>
+	<H2>Public Access</H2>
+	</center>
+	</font>
+    </td>
+    <th>
+
+	 
+	 <div align=left>
+	 <font FACE="Helvetica,Arial">
+	 <a href="http://www.wisc.edu/">UW&nbsp;Madison</a> <br>
+	 <a href="http://www.cs.wisc.edu/">Computer&nbsp;Sciences&nbsp;Department</a> <br>
+	 <a
+	 href="http://www.cs.wisc.edu/csl/">Computer&nbsp;Systems&nbsp;Lab</a>
+
+	 <br>
+	 </font>
+	</div>
+    </th>
+    <td>
+	<a href="http://www.cs.wisc.edu/csl">
+
+	<img alt="[Computer Systems Lab]" align=right border=0
+	src="https://www-auth.cs.wisc.edu/pics/csl_logo.gif"></a>
+    </td>
+  </tr>
+</table>
+</div>
+
+
+<br>
+<!--X-Body-Begin-->
+<!--X-User-Header-->
+<!--X-User-Header-End-->
+<!--X-TopPNI-->
+<hr>
+[<a href="msg00119.shtml">Date Prev</a>][<a href="msg00121.shtml">Date Next</a>][<a href="msg00117.shtml">Thread Prev</a>][<a href="msg00182.shtml">Thread Next</a>][<a href="index.shtml#00120">Date Index</a>][<a href="threads.shtml#00120">Thread Index</a>]
+<!--X-TopPNI-End-->
+<!--X-MsgBody-->
+<!--X-Subject-Header-Begin-->
+<h1>Re: [Condor-users] 7.8 Upgrade Issues</h1>
+<hr>
+<!--X-Subject-Header-End-->
+<!--X-Head-of-Message-->
+<ul>
+<li><em>Date</em>: Thu, 19 Jul 2012 18:01:03 +0000</li>
+<li><em>From</em>: Francesco Pierfederici &lt;<a href="mailto:fpierfed@DOMAIN.HIDDEN">fpierfed@xxxxxxxxx</a>&gt;</li>
+<li><em>Subject</em>: Re: [Condor-users] 7.8 Upgrade Issues</li>
+</ul>
+<!--X-Head-of-Message-End-->
+<!--X-Head-Body-Sep-Begin-->
+<hr>
+<!--X-Head-Body-Sep-End-->
+<!--X-Body-of-Message-->
+
+
+
+<div class="BodyFragment"><font size="2"><span style="font-size:10pt;">
+<div class="PlainText">Hi Todd,<br>
+<br>
+Sorry for the delay in answering: I was on travel with little internet access.<br>
+<br>
+I have investigated the issue further and it seems that the behavior I am seeing can be traced to the Starter taking a long time to quit and a new job being assigned to the same slot in the mean time. In those cases the Shadow waits for 20 seconds and then
+ gives up. The corresponding job is then set to Idle (from Running).<br>
+<br>
+With 7.6.1 I always got:<br>
+03/02/12 14:30:01 Process exited, pid=22818, status=0<br>
+03/02/12 14:30:01 Returning from CStarter::JobReaper()<br>
+03/02/12 14:30:02 Got SIGQUIT.&nbsp; Performing fast shutdown.<br>
+03/02/12 14:30:02 ShutdownFast all jobs.<br>
+03/02/12 14:30:02 **** condor_starter (condor_STARTER) pid 22813 EXITING WITH STATUS 0<br>
+<br>
+With 7.8.1 I often get:<br>
+06/19/12 17:20:11 Process exited, pid=9255, status=0<br>
+06/19/12 17:20:11 Got SIGQUIT.&nbsp; Performing fast shutdown.<br>
+06/19/12 17:20:11 ShutdownFast all jobs.<br>
+06/19/12 17:20:37 Got SIGTERM. Performing graceful shutdown.<br>
+06/19/12 17:20:37 ShutdownGraceful all jobs.<br>
+06/19/12 17:20:37 **** condor_starter (condor_STARTER) pid 9188 EXITING WITH STATUS 0<br>
+<br>
+This likely has to do with using job hooks, since when I do not I get the normal behavior. In both cases (i.e. with and without job hooks) I do get the weird &quot;job 0 of a cluster runs while the others wait a few seconds&quot; behavior which I do not understand.<br>
+<br>
+Anyway, I have made a somewhat self contained test case. The content of the &quot;copy_to_tmp&quot; folder should be copied to /tmp with the exception of the job hook, which should be placed somewhere else. My hook config looks like this:<br>
+<br>
+TEST_HOOK_PREPARE_JOB&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = /jwstsw/version/development/bin/test_job_hook.py<br>
+TEST_HOOK_JOB_EXIT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = /jwstsw/version/development/bin/test_job_hook.py<br>
+TEST_HOOK_UPDATE_JOB_INFO&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; = /jwstsw/version/development/bin/test_job_hook.py<br>
+<br>
+<br>
+Thanks!<br>
+Francesco<br>
+<br>
+</div>
+</span></font></div>
+<div class="BodyFragment"><font size="2"><span style="font-size:10pt;">
+<div class="PlainText"><br>
+<br>
+<br>
+<br>
+<br>
+On Jun 21, 2012, at 11:47 AM, Todd Tannenbaum wrote:<br>
+<br>
+&gt; On 6/20/2012 8:40 PM, Francesco Pierfederici wrote:<br>
+&gt;&gt; Hi,<br>
+&gt;&gt; <br>
+&gt;&gt; I just upgraded a small development cluster from 7.6.1 to 7.8.1 using the YUM repository. I noticed two things:<br>
+&gt;&gt; <br>
+&gt;&gt; 1. The upgrade wiped my local configs (both condor_config.local and all the files in /etc/condor/config.d/). Not a big deal to me, but something worth considering for future releases.<br>
+&gt;&gt; <br>
+&gt;&gt; 2. I am now seeing a lot more jobs in idle state than before. I am running a test DAG which at some point starts a cluster of 4 jobs. 3 of them start (jobs 1, 2, 3) while job 0 stays idle and is picked up at a later negotiation cycle. The next node in the
+ DAG is then scheduled and stays idle for several negotiation cycles before being executed.<br>
+&gt;&gt; <br>
+&gt;&gt; Am I doing something wrong or is there some configuration knob I should be looking into? I attach my config file as well as the Negotiator log, in case it helps.<br>
+&gt;&gt; <br>
+&gt;&gt; <br>
+&gt;&gt; Thanks!<br>
+&gt;&gt; Francesco<br>
+&gt;&gt; <br>
+&gt; <br>
+&gt; Is there a small test case you can send along to reproduce the problem?&nbsp; For instance, re the above, are those the only four jobs submitted? Could you share submit file(s) that reproduce the problem at your site?<br>
+&gt; <br>
+&gt; thanks<br>
+&gt; Todd<br>
+<br>
+</div>
+</span></font></div>
+
+
+<p><strong>Attachment:
+<a href="gzJ_qryzMQ0X.gz" ><tt>test.tar.gz</tt></a></strong><br>
+<em>Description:</em> test.tar.gz</p>
+
+<!--X-Body-of-Message-End-->
+<!--X-MsgBody-End-->
+<!--X-Follow-Ups-->
+<hr>
+<ul><li><strong>Follow-Ups</strong>:
+<ul>
+<li><strong><a name="00182" href="msg00182.shtml">Re: [Condor-users] 7.8 Upgrade Issues</a></strong>
+<ul><li><em>From:</em> Alan De Smet</li></ul></li>
+</ul></li></ul>
+<!--X-Follow-Ups-End-->
+<!--X-References-->
+<!--X-References-End-->
+<!--X-BotPNI-->
+<ul>
+<li>Prev by Date:
+<strong><a href="msg00119.shtml">Re: [Condor-users] Group quota expressions</a></strong>
+</li>
+<li>Next by Date:
+<strong><a href="msg00121.shtml">[Condor-users] Question about using Condor in a non-Grid environment</a></strong>
+</li>
+<li>Previous by thread:
+<strong><a href="msg00117.shtml">[Condor-users] Linting Condor scripts</a></strong>
+</li>
+<li>Next by thread:
+<strong><a href="msg00182.shtml">Re: [Condor-users] 7.8 Upgrade Issues</a></strong>
+</li>
+<li>Index(es):
+<ul>
+<li><a href="index.shtml#00120"><strong>Date</strong></a></li>
+<li><a href="threads.shtml#00120"><strong>Thread</strong></a></li>
+</ul>
+</li>
+</ul>
+
+<!--X-BotPNI-End-->
+<!--X-User-Footer-->
+<!--X-User-Footer-End-->
+</body>
+</html>
