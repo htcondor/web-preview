@@ -1,0 +1,194 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.10.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.tj.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/diff2html.css">
+<link rel="alternate stylesheet"
+      title="prosimii-screen"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/prosimii-screen.css">
+<link rel="alternate stylesheet"
+      title="Default Stylesheet"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac_default.css">
+<link rel="alternate" type="application/rss+xml"
+   title="HTCondorWiki Timeline Feed" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/timeline.rss">
+<link rel="index" title="Index" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/index">
+<link rel="search" title="Search" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/search">
+<link rel="help" title="Help"
+   href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=CvstracDocumentation">
+<title>HTCondorWiki: Ticket #2750</title>
+<script type="text/javascript">
+  function setFocus() {
+    var firstForm, e;
+    if ( document.forms && (firstForm = document.forms[0]) ) {
+      if      ( (e = firstForm.elements["u"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["t"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["s"]) && e.type == "text" ) e.focus();
+    }
+  }
+</script>
+</head>
+<body onload="setFocus()">
+<div id="header">
+<div class="midHeader">
+<div class="iconHeader">
+<a href="https://www.cs.wisc.edu/condor"><img src="https://research.cs.wisc.edu/htcondor/images/HTCondor_wiki_logo_small.png" alt="HTCondor High Throughput Computing" border=0></a>
+</div>
+</div>
+</div><div id="header">
+<h1 id="title">
+Ticket #2750
+</h1>
+<p id="identity">
+<a href="honeypot"><notatag arg="meaningless"></a>
+<a href="login?nxp=/index.cgi/tktview%3Ftn%3D2750" title="Log in">Not logged in</a>
+</p>
+<ul id="navigation">
+<li><a href="dir">Browse</a></li>
+<li><a href="wiki?p=CvstracTicket">Help</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="reportlist">Reports</a></li>
+<li><a href="search?t=1">Search</a></li>
+<li><a href="timeline">Timeline</a></li>
+<li><a href="wiki">Wiki</a></li>
+</ul>
+<ul id="action">
+<li><a href="tkthistory?tn=2750" rel="nofollow">History</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Ticket #2750: Fix clang and other warning from MacOS build</h2>
+<blockquote>
+All the cool platforms are doing it, let's set -Werror on Mac OS X.
+
+<p>Patch to come.  Needs review.</blockquote>
+
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=2750">Append remarks</a>]
+</td></tr></table></td></tr></table>
+<h3>Remarks:</h3>
+<blockquote>
+<em>2012-Jan-09 11:19:39 by gthain:</em> <br>
+
+Brian:  if I apply this patch, the condor_master segfaults on starts up macos.  I don't have a gdb handy on my mac platform -- are you sure this is the full diff?
+
+<p><hr>
+<em>2012-Jan-09 11:40:07 by bbockelm:</em> <br>
+
+I think it's the full diff, but not quite ready.  Give me some time to debug and I'll bump the ticket when I figure out the issue.
+
+<p>My dev environment is 10.6; what is NMI?
+
+<p><hr>
+<em>2012-Jan-31 19:19:59 by gthain:</em> <br>
+
+new nmi is 10.7</blockquote>
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=2750">Append remarks</a>]
+</td></tr></table></td></tr></table>
+
+
+<h3>Properties:</h3>
+
+<blockquote>
+<table>
+<tr>
+  <td align="right">Type:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>enhance&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Last&nbsp;Change:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2014-Aug-07 12:22</b></td>
+</tr>
+<tr>
+  <td align="right">Status:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>resolved</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Created:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2012-Jan-07 20:34</b></td>
+</tr>
+<tr>
+  <td align="right">Fixed&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070902&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Broken&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Priority:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>4&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Subsystem:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Assigned&nbsp;To:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Derived From:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>
+  &nbsp;
+  </b></td>
+</tr>
+<tr>
+  <td align="right">Creator:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>bbockelm&nbsp;</b></td>
+<td></td>
+  <td align="right">Rust:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Customer Group:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>other&nbsp;</b></td>
+<td></td>
+  <td align="right">Visibility:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>public&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Notify:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>bbockelm@cse.unl.edu&nbsp;</b></td>
+<td></td>
+  <td align="right">Due Date:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+</table>
+</blockquote>
+<h3>Related Check-ins:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">2012-Oct-04 20:07</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=33593">[33593]</a></span>: Fix clang warnings - hidden overloaded virtual functions. <span class="ticket"><a href="tktview?tn=2750" class="resolved"
+title="Fix clang and other warning from MacOS build"
+>#2750</a></span>  (By Brian Bockelman )</td></tr>
+<tr><td valign="top" width=160 align="right">2012-Oct-04 20:07</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=33594">[33594]</a></span>: More clang-based Mac OS X warnings fixes. <span class="ticket"><a href="tktview?tn=2750" class="resolved"
+title="Fix clang and other warning from MacOS build"
+>#2750</a></span>  (By Brian Bockelman )</td></tr>
+</table>
+<h3>Attachments:</h3>
+<blockquote>
+<ul>
+<li><a href="attach_get/521/osx_warnings.patch">osx_warnings.patch</a>
+15443 bytes added by bbockelm on 2012-Jan-08 02:34:58 UTC.
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="footer" style="text-align:right">
+<p>
+This work is supported by NSF under Cooperative Agreement OAC-2030508 as part of the <a href="https://path-cc.io/"> PATh Project</a>. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the NSF. Site built using <a href="about">CVSTrac</a>.
+</div>
+</body></html>
