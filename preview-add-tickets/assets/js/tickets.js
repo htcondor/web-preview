@@ -17,7 +17,7 @@ function get_url_ticket(){
 }
 
 async function set_up_search_bar(){
-    let idx_data = await fetch("/assets/data/search_indexes/ticket_index.json")
+    let idx_data = await fetch("../assets/data/search_indexes/ticket_index.json")
     let idx_json = await idx_data.json()
 
     idx = lunr.Index.load(idx_json)
@@ -70,7 +70,7 @@ async function populate_search() {
 // This code is to populate the ticket elements
 async function get_ticket(id){
 
-    let file_path = "/assets/data/tickets/" + id + ".json"
+    let file_path = "../assets/data/tickets/" + id + ".json"
 
     results = await fetch(file_path)
     json = await results.json()
