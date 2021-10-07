@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.10.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.tj.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/diff2html.css">
+<link rel="alternate stylesheet"
+      title="prosimii-screen"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/prosimii-screen.css">
+<link rel="alternate stylesheet"
+      title="Default Stylesheet"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac_default.css">
+<link rel="alternate" type="application/rss+xml"
+   title="HTCondorWiki Timeline Feed" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/timeline.rss">
+<link rel="index" title="Index" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/index">
+<link rel="search" title="Search" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/search">
+<link rel="help" title="Help"
+   href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=CvstracDocumentation">
+<title>HTCondorWiki: Ticket #2501</title>
+<script type="text/javascript">
+  function setFocus() {
+    var firstForm, e;
+    if ( document.forms && (firstForm = document.forms[0]) ) {
+      if      ( (e = firstForm.elements["u"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["t"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["s"]) && e.type == "text" ) e.focus();
+    }
+  }
+</script>
+</head>
+<body onload="setFocus()">
+<div id="header">
+<div class="midHeader">
+<div class="iconHeader">
+<a href="https://www.cs.wisc.edu/condor"><img src="https://research.cs.wisc.edu/htcondor/images/HTCondor_wiki_logo_small.png" alt="HTCondor High Throughput Computing" border=0></a>
+</div>
+</div>
+</div><div id="header">
+<h1 id="title">
+Ticket #2501
+</h1>
+<p id="identity">
+<a href="honeypot"><notatag arg="meaningless"></a>
+<a href="login?nxp=/index.cgi/tktview%3Ftn%3D2501" title="Log in">Not logged in</a>
+</p>
+<ul id="navigation">
+<li><a href="dir">Browse</a></li>
+<li><a href="wiki?p=CvstracTicket">Help</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="reportlist">Reports</a></li>
+<li><a href="search?t=1">Search</a></li>
+<li><a href="timeline">Timeline</a></li>
+<li><a href="wiki">Wiki</a></li>
+</ul>
+<ul id="action">
+<li><a href="tkthistory?tn=2501" rel="nofollow">History</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Ticket #2501: clean up glexec job proxy</h2>
+<blockquote>
+When glexec is invoked, it creates a copy of the job proxy.  This proxy is not used by Condor, because we go out of our way to override X509_USER_PROXY so that the job uses the copy of the proxy managed by Condor.  It is important to use the copy managed by Condor in order to make sure the job gets updates to the proxy.
+
+<p>Condor should try to make sure the copy of the job proxy made by glexec is cleaned up.  Perhaps the condor glexec job wrapper could just delete it.  In versions of glexec that support disabling its creation, that could be done instead.
+
+<p>Here is some more information from an email by Mischa:
+
+<p>The create_target_proxy was indeed added after 0.6.8, in the 0.8 to be
+precise. We realized that the proxy creation behaviour in version 0.6
+and below was arbitrary and indeterministic: sometimes the payload would
+be trying to use the pilot proxy, often there just wasn't a proxy due to
+internal errors. We then decided to fix this and decided how to do it.
+That's described on
+<a class="external" href="https://www.nikhef.nl/pub/projects/grid/gridwiki/index.php/Proxy_file_handling_in_gLExec">https://www.nikhef.nl/pub/projects/grid/gridwiki/index.php/Proxy_file_handling_in_gLExec</a>
+This was implemented in 0.7, but we realized that the target proxy
+should be made optional. In the 0.8 it is still written by default but
+now made optional. If you are sure the payload doesn't need a proxy (no
+data access etc.) you can switch it off. The default proxy is a copy of
+the payload proxy (GLEXEC_CLIENT_CERT) owned by the target user in /tmp
+with a random name. The X509_USER_PROXY in the payload environment is
+explicitly set to that location.
+You have a point that if gLExec itself determined the target proxy name
+it probably could safely remove it (in linger mode). When the target
+filename is explicitly set (via GLEXEC_TARGET_PROXY) it might not be
+good, since the proxy might be reused by a next payload job. That was
+originally the motivation not to remove it, we probably should
+reconsider that. Once the epilogue-functionality is there (should be in
+the next release, before the end of this calendar year) I think that
+would be the right place to clean it.</blockquote>
+
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=2501">Append remarks</a>]
+</td></tr></table></td></tr></table>
+<h3>Remarks:</h3>
+<blockquote>
+<em>2011-Oct-05 16:07:59 by danb:</em> <br>
+
+Brian found that setting GLEXEC_TARGET_PROXY to the path of the proxy managed by Condor was an effective way to avoid a leaked proxy.  Since glexec just copies the proxy rather than delegating it, this results in the proxy being overwritten with an identical copy, which should be harmless.  Since this issue applies to both the case where the job is launched and the case where various other helper scripts are run, the solution needed to apply to both <code>GLExecPrivSepHelper::run_script()</code> and <code>GLExecPrivSepHelper::create_process()</code>.  Since there was no convenient way to modify the environment in <code>run_script()</code> I chose to do all the environment manipulation in the glexec helper scripts, including the helper script used to launch the job.</blockquote>
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=2501">Append remarks</a>]
+</td></tr></table></td></tr></table>
+
+
+<h3>Properties:</h3>
+
+<blockquote>
+<table>
+<tr>
+  <td align="right">Type:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>enhance&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Last&nbsp;Change:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-Nov-22 09:33</b></td>
+</tr>
+<tr>
+  <td align="right">Status:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>resolved</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Created:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-Sep-26 14:33</b></td>
+</tr>
+<tr>
+  <td align="right">Fixed&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070703&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Broken&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070600&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Priority:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>4&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Subsystem:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Assigned&nbsp;To:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>danb&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Derived From:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>
+  &nbsp;
+  </b></td>
+</tr>
+<tr>
+  <td align="right">Creator:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>danb&nbsp;</b></td>
+<td></td>
+  <td align="right">Rust:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Customer Group:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>cms&nbsp;</b></td>
+<td></td>
+  <td align="right">Visibility:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>public&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Notify:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>isfiligoi@ucsd.edu,dan@hep.wisc.edu,burt@fnal.gov,zmiller@cs.wisc.edu&nbsp;</b></td>
+<td></td>
+  <td align="right">Due Date:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+</table>
+</blockquote>
+<h3>Related Check-ins:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">2011-Sep-30 17:09</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=27563">[27563]</a></span>: Documented fix for glexec cleaning up the proxy. ===GT=== <span class="ticket"><a href="tktview?tn=2501" class="resolved"
+title="clean up glexec job proxy"
+>#2501</a></span> ===VersionHistory:Complete===  (By Dan Bradley )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-Sep-30 17:07</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=27562">[27562]</a></span>: Make sure glexec does not leave behind copies of the proxy in /tmp. <span class="ticket"><a href="tktview?tn=2501" class="resolved"
+title="clean up glexec job proxy"
+>#2501</a></span>  (By Dan Bradley )</td></tr>
+</table>
+</div>
+</div>
+<div id="footer" style="text-align:right">
+<p>
+This work is supported by NSF under Cooperative Agreement OAC-2030508 as part of the <a href="https://path-cc.io/"> PATh Project</a>. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the NSF. Site built using <a href="about">CVSTrac</a>.
+</div>
+</body></html>

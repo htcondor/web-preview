@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.10.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.tj.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/diff2html.css">
+<link rel="alternate stylesheet"
+      title="prosimii-screen"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/prosimii-screen.css">
+<link rel="alternate stylesheet"
+      title="Default Stylesheet"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac_default.css">
+<link rel="alternate" type="application/rss+xml"
+   title="HTCondorWiki Timeline Feed" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/timeline.rss">
+<link rel="index" title="Index" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/index">
+<link rel="search" title="Search" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/search">
+<link rel="help" title="Help"
+   href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=CvstracDocumentation">
+<title>HTCondorWiki: Ticket #1705</title>
+<script type="text/javascript">
+  function setFocus() {
+    var firstForm, e;
+    if ( document.forms && (firstForm = document.forms[0]) ) {
+      if      ( (e = firstForm.elements["u"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["t"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["s"]) && e.type == "text" ) e.focus();
+    }
+  }
+</script>
+</head>
+<body onload="setFocus()">
+<div id="header">
+<div class="midHeader">
+<div class="iconHeader">
+<a href="https://www.cs.wisc.edu/condor"><img src="https://research.cs.wisc.edu/htcondor/images/HTCondor_wiki_logo_small.png" alt="HTCondor High Throughput Computing" border=0></a>
+</div>
+</div>
+</div><div id="header">
+<h1 id="title">
+Ticket #1705
+</h1>
+<p id="identity">
+<a href="honeypot"><notatag arg="meaningless"></a>
+<a href="login?nxp=/index.cgi/tktview%3Ftn%3D1705" title="Log in">Not logged in</a>
+</p>
+<ul id="navigation">
+<li><a href="dir">Browse</a></li>
+<li><a href="wiki?p=CvstracTicket">Help</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="reportlist">Reports</a></li>
+<li><a href="search?t=1">Search</a></li>
+<li><a href="timeline">Timeline</a></li>
+<li><a href="wiki">Wiki</a></li>
+</ul>
+<ul id="action">
+<li><a href="tkthistory?tn=1705" rel="nofollow">History</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Ticket #1705: RFE: Advertise some additional performance-related negotiator stats</h2>
+<blockquote>
+<div class="verbatim">
+<PRE>
+From email by Matt Farrellee:
+
+=============================================
+All daemons should report MonitorSelf* attributes, covering uptime, cpu
+usage, memory usage, etc.
+
+I'd like to see a few more stats coming from the Collector, Negotiator,
+and Schedd. From the Collector, information about command rates, e.g.
+invalidations or misses. The Negotiator can report information about how
+many jobs and/or slots were involved in a negotiation cycle. For the
+Schedd, information about completion rates based on
+EnteredCurrentStatus, CompletionDate and JobFinishedHookDone. Also,
+statistics on condor_shadow exit codes, both absolute values and rates.
+Possibly information about expensive fs operations, such as fsync.
+============================================
+</PRE></div>
+</blockquote>
+
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=1705">Append remarks</a>]
+</td></tr></table></td></tr></table>
+<h3>Remarks:</h3>
+<blockquote>
+<em>2010-Oct-11 17:46:49 by eje:</em> <br>
+
+<div class="verbatim">
+<PRE>
+Currently, new stats from candidate patch are:
+
+// ending time for neg cycle (sec since big bang)
+LastNegotiationCycleEnd0 = 1286400981
+
+// time from end of previous cycle to end of this cycle (sec)
+LastNegotiationCyclePeriod0 = 34
+
+// durations of the four phases (sec)
+LastNegotiationCyclePhase1Duration0 = 0
+LastNegotiationCyclePhase2Duration0 = 2
+LastNegotiationCyclePhase3Duration0 = 0
+LastNegotiationCyclePhase4Duration0 = 2
+
+// total slots incoming
+LastNegotiationCycleTotalSlots0 = 40
+// total slots after trimming
+LastNegotiationCycleTrimmedSlots0 = 40
+// total slots after filtering by GROUP_DYNAMIC_MACH_CONSTRAINT
+LastNegotiationCycleCandidateSlots0 = 40
+
+// number of schedulers spoken to
+LastNegotiationCycleNumSchedulers0 = 1
+// number of idle jobs (across all schedulers spoken to)
+LastNegotiationCycleNumIdleJobs0 = 120
+// number of job requests returned for consideration
+LastNegotiationCycleNumJobsConsidered0 = 21
+
+// match rate over duration of this cycle (jobs / sec)
+LastNegotiationCycleMatchRate0 = 5.000000
+
+// match rate over period (jobs / sec)
+// This is effective match rate since end of previous cycle
+LastNegotiationCycleMatchRateSustained0 = 0.588235
+</PRE></div>
+
+
+<p><hr>
+<em>2010-Oct-13 14:20:28 by danb:</em> <br>
+
+Hi Erik,
+
+<p>Thanks for the patch.  A couple comments:
+
+<p>You changed the minimum range for NEGOTIATION_CYCLE_STATS_LENGTH from 1 to 0 in the call to param_integer().  You did not change the entry in the param table (param_info.in).  The intended and documented behavior was for the special value 0 to indicate that no stats should be published.  I don't imagine that anyone will ever need to turn it off, so I'm not going to throw a fit if you ignore me, but if you do, please update the param table and the documentation.
+
+<p>It is customary in Condor code to always uses {}'s for if statements.  In a couple places you did not.  Although I find the use of {}'s ugly in some cases, there is an advantage to uniformity of style.
+
+<p>I assume you will document the new attributes that you added in the Condor manual or at least send a description of them to Karen.
+
+<p>Cheers,<br>
+
+--Dan
+
+<p><hr>
+<em>2010-Oct-14 11:45:33 by eje:</em> <br>
+
+I posted a patch to address feedback.  Also, I'll make sure that descriptions for new stats make it into the documentation.
+<hr>
+<em>2011-Jan-27 14:50:47 by danb:</em> <br>
+
+Bulk change of target version from v070505 to v070506 using ./ticket-target-mover.
+
+<p><hr>
+<em>2011-Feb-01 16:16:42 by danb:</em> <br>
+
+Erik,
+
+<p>Sorry for the long delay.  I read over the patch.  I don't spot any problems.  The patch no longer applies cleanly to the master branch.  Go ahead and rebase the patch and push it.  If you would like me to push the rebased patch, that's fine too.
+
+<p>--Dan
+<hr>
+<em>2011-Feb-01 16:20:02 by tannenba:</em> <br>
+
+Bulk change of target version from v070506 to NULL using ./ticket-target-mover.
+
+<p><hr>
+Hi Dan,  this patch has actually been subsumed by latest patch for <span class="ticket"><a href="tktview?tn=1393" class="resolved"
+title="Implement tiered groups and hierarchical fairshare"
+>#1393</a></span>, so I'm marking this ticket as &quot;abandoned.&quot;
+-Erik</blockquote>
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=1705">Append remarks</a>]
+</td></tr></table></td></tr></table>
+
+
+<h3>Properties:</h3>
+
+<blockquote>
+<table>
+<tr>
+  <td align="right">Type:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>enhance&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Last&nbsp;Change:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-Feb-02 09:57</b></td>
+</tr>
+<tr>
+  <td align="right">Status:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>abandoned</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Created:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2010-Oct-11 17:44</b></td>
+</tr>
+<tr>
+  <td align="right">Fixed&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070506&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Broken&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Priority:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Subsystem:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>Daemons&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Assigned&nbsp;To:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>eje&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Derived From:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>
+  &nbsp;
+  </b></td>
+</tr>
+<tr>
+  <td align="right">Creator:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>eje&nbsp;</b></td>
+<td></td>
+  <td align="right">Rust:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Customer Group:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>other&nbsp;</b></td>
+<td></td>
+  <td align="right">Visibility:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>public&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Notify:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>eje@redhat.com, matt@cs.wisc.edu&nbsp;</b></td>
+<td></td>
+  <td align="right">Due Date:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+</table>
+</blockquote>
+<h3>Attachments:</h3>
+<blockquote>
+<ul>
+<li><a href="attach_get/235/new_neg_stats_uw.patch">new_neg_stats_uw.patch</a>
+20464 bytes added by eje on 2010-Oct-11 22:45:34 UTC.
+<br>
+Candidate patch for 7.5 series, advertises several new requested statistics in negotiator ad<br>
+<li><a href="attach_get/237/new_neg_stats_uw.patch2">new_neg_stats_uw.patch2</a>
+20082 bytes added by eje on 2010-Oct-14 16:44:01 UTC.
+<br>
+<div class="verbatim">
+<PRE>
+Updated patch: 
+*) restores num-cycle-stats minimum to zero -- code has existing hack to prevent segfault when parameter is zero
+*) used condor-standard braces for if statements
+</PRE></div>
+
+<br>
+<li><a href="attach_get/238/new_neg_stats_doc_uw.patch">new_neg_stats_doc_uw.patch</a>
+6690 bytes added by eje on 2010-Oct-14 19:15:05 UTC.
+<br>
+Patch to update manual with new negotiator ad stats.<br>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="footer" style="text-align:right">
+<p>
+This work is supported by NSF under Cooperative Agreement OAC-2030508 as part of the <a href="https://path-cc.io/"> PATh Project</a>. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the NSF. Site built using <a href="about">CVSTrac</a>.
+</div>
+</body></html>

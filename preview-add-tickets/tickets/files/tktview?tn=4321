@@ -1,0 +1,186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.10.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.tj.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/diff2html.css">
+<link rel="alternate stylesheet"
+      title="prosimii-screen"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/prosimii-screen.css">
+<link rel="alternate stylesheet"
+      title="Default Stylesheet"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac_default.css">
+<link rel="alternate" type="application/rss+xml"
+   title="HTCondorWiki Timeline Feed" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/timeline.rss">
+<link rel="index" title="Index" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/index">
+<link rel="search" title="Search" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/search">
+<link rel="help" title="Help"
+   href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=CvstracDocumentation">
+<title>HTCondorWiki: Ticket #4321</title>
+<script type="text/javascript">
+  function setFocus() {
+    var firstForm, e;
+    if ( document.forms && (firstForm = document.forms[0]) ) {
+      if      ( (e = firstForm.elements["u"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["t"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["s"]) && e.type == "text" ) e.focus();
+    }
+  }
+</script>
+</head>
+<body onload="setFocus()">
+<div id="header">
+<div class="midHeader">
+<div class="iconHeader">
+<a href="https://www.cs.wisc.edu/condor"><img src="https://research.cs.wisc.edu/htcondor/images/HTCondor_wiki_logo_small.png" alt="HTCondor High Throughput Computing" border=0></a>
+</div>
+</div>
+</div><div id="header">
+<h1 id="title">
+Ticket #4321
+</h1>
+<p id="identity">
+<a href="honeypot"><notatag arg="meaningless"></a>
+<a href="login?nxp=/index.cgi/tktview%3Ftn%3D4321" title="Log in">Not logged in</a>
+</p>
+<ul id="navigation">
+<li><a href="dir">Browse</a></li>
+<li><a href="wiki?p=CvstracTicket">Help</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="reportlist">Reports</a></li>
+<li><a href="search?t=1">Search</a></li>
+<li><a href="timeline">Timeline</a></li>
+<li><a href="wiki">Wiki</a></li>
+</ul>
+<ul id="action">
+<li><a href="tkthistory?tn=4321" rel="nofollow">History</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Ticket #4321: Enable use of larger UDP (safesock) fragment size</h2>
+<blockquote>
+Very large pools using a multi-tier collector setup, such as US CMS, can observe problems where the top-level parent collector cannot keep-up with incoming updates from child collectors.  A significant contributor to this problem was the fragmentation of UDP datagrams, as <span class="wiki"><a title="Safe Sock"
+class="missing"
+  href="wiki?p=SafeSock">SafeSock</a></span> was hard-coded to always fragment into 1000 byte packets.  As a result, when the kernel incoming UDP buffer started to fill up, complete messages would rarely make it because one or more fragments would not make it into the buffer.  To demonstrate this phenomenon, see the graph below with results from an experiment where an increasing number of streams each sent 40 updates per second. UDP with 1k fragments peaks at 22 streams at 850 hertz, then the hertz nose dives rapidly once the incoming UDP receive buffer does not have enough free space to hold the incoming fragments.  The collector does a lot of work but rarely is able to reassemble a complete message. TCP and UDP w/ 16k MTU perform about the same - most importantly, they do not self-destruct when overloaded.  Instead, they continue to perform at their peak of ~1000 hertz.
+<img src="attach_get/831/performance.png" alt="performance.png">
+One solution would be to use TCP updates, but that could cause the child collectors to block sending updates to the parent (which is a concern esp if the child collectors are acting as CCB brokers).
+
+<p>Thus for this ticket we will remove the hard-coded 1000-byte fragmentation size and introduce two new knobs:
+
+<p><ol>
+<li><code>UDP_LOOPBACK_FRAGMENT_SIZE</code> is used when connecting to the loopback interface (i.e. IPv4 address 127.0.0.1 or the IPv6 equal) and defaults to the largest allowable safesock message size, which is currently ~60k
+<li><code>UDP_NETWORK_FRAGMENT_SIZE</code> is used when connecting to an address other than the loopback, and defaults to 1000</ol>
+</blockquote>
+
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=4321">Add remarks</a>]
+</td></tr></table></td></tr></table>
+<h3>Remarks:</h3>
+<blockquote>
+</blockquote>
+
+<h3>Properties:</h3>
+
+<blockquote>
+<table>
+<tr>
+  <td align="right">Type:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>enhance&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Last&nbsp;Change:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2014-May-21 11:46</b></td>
+</tr>
+<tr>
+  <td align="right">Status:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>resolved</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Created:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2014-Apr-18 09:25</b></td>
+</tr>
+<tr>
+  <td align="right">Fixed&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v080106&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Broken&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Priority:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>1&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Subsystem:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>DaemonsCM&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Assigned&nbsp;To:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>tannenba&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Derived From:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>
+  &nbsp;
+  </b></td>
+</tr>
+<tr>
+  <td align="right">Creator:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>tannenba&nbsp;</b></td>
+<td></td>
+  <td align="right">Rust:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Customer Group:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>cms&nbsp;</b></td>
+<td></td>
+  <td align="right">Visibility:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>public&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Notify:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>isfiligoi@ucsd.edu&nbsp;</b></td>
+<td></td>
+  <td align="right">Due Date:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+</table>
+</blockquote>
+<h3>Related Check-ins:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">2014-May-21 11:41</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=40198">[40198]</a></span>: Document for UDP fragmentation knobs. <span class="ticket"><a href="tktview?tn=4321" class="resolved"
+title="Enable use of larger UDP (safesock) fragment size"
+>#4321</a></span>  (By Todd Tannenbaum )</td></tr>
+<tr><td valign="top" width=160 align="right">2014-Apr-18 09:31</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=39976">[39976]</a></span>: Enable larger UDP (safesock) fragmentation sizes. <span class="ticket"><a href="tktview?tn=4321" class="resolved"
+title="Enable use of larger UDP (safesock) fragment size"
+>#4321</a></span> Add knobs UDP_LOOPBACK_FRAGMENT_SIZE used when going to the loopback interface (default to largest message size, currently 60k), and UDP_NETWORK_FRAGMENT_SIZE when going to any non-loopback address (default to 1000 bytes as before). Note these are&nbsp;[...]
+ (By Todd Tannenbaum )</td></tr>
+</table>
+<h3>Attachments:</h3>
+<blockquote>
+<ul>
+<li><a href="attach_get/831/performance.png">performance.png</a>
+28706 bytes added by tannenba on 2014-Apr-18 19:42:57 UTC.
+<br>
+Collector performance graph for ticket <span class="ticket"><a href="tktview?tn=4321" class="resolved"
+title="Enable use of larger UDP (safesock) fragment size"
+>#4321</a></span><br>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="footer" style="text-align:right">
+<p>
+This work is supported by NSF under Cooperative Agreement OAC-2030508 as part of the <a href="https://path-cc.io/"> PATh Project</a>. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the NSF. Site built using <a href="about">CVSTrac</a>.
+</div>
+</body></html>
