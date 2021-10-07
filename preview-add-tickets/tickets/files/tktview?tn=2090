@@ -1,0 +1,270 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.10.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac.tj.css">
+<link rel="stylesheet" type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/diff2html.css">
+<link rel="alternate stylesheet"
+      title="prosimii-screen"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/prosimii-screen.css">
+<link rel="alternate stylesheet"
+      title="Default Stylesheet"
+      type="text/css" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/cvstrac_default.css">
+<link rel="alternate" type="application/rss+xml"
+   title="HTCondorWiki Timeline Feed" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/timeline.rss">
+<link rel="index" title="Index" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/index">
+<link rel="search" title="Search" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/search">
+<link rel="help" title="Help"
+   href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=CvstracDocumentation">
+<title>HTCondorWiki: Ticket #2090</title>
+<script type="text/javascript">
+  function setFocus() {
+    var firstForm, e;
+    if ( document.forms && (firstForm = document.forms[0]) ) {
+      if      ( (e = firstForm.elements["u"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["t"]) && e.type == "text" ) e.focus();
+      else if ( (e = firstForm.elements["s"]) && e.type == "text" ) e.focus();
+    }
+  }
+</script>
+</head>
+<body onload="setFocus()">
+<div id="header">
+<div class="midHeader">
+<div class="iconHeader">
+<a href="https://www.cs.wisc.edu/condor"><img src="https://research.cs.wisc.edu/htcondor/images/HTCondor_wiki_logo_small.png" alt="HTCondor High Throughput Computing" border=0></a>
+</div>
+</div>
+</div><div id="header">
+<h1 id="title">
+Ticket #2090
+</h1>
+<p id="identity">
+<a href="honeypot"><notatag arg="meaningless"></a>
+<a href="login?nxp=/index.cgi/tktview%3Ftn%3D2090" title="Log in">Not logged in</a>
+</p>
+<ul id="navigation">
+<li><a href="dir">Browse</a></li>
+<li><a href="wiki?p=CvstracTicket">Help</a></li>
+<li><a href="index">Home</a></li>
+<li><a href="login">Login</a></li>
+<li><a href="reportlist">Reports</a></li>
+<li><a href="search?t=1">Search</a></li>
+<li><a href="timeline">Timeline</a></li>
+<li><a href="wiki">Wiki</a></li>
+</ul>
+<ul id="action">
+<li><a href="tkthistory?tn=2090" rel="nofollow">History</a></li>
+</ul>
+</div>
+<div id="content">
+<h2>Ticket #2090: Warn if VARS values are overwritten</h2>
+<blockquote>
+Dimitri at BMRB just ran into a problem where his DAG was failing because he accidentally did this:
+
+<p><pre>
+  job job1 ...
+  vars job1 ...
+  job job2 ...
+  vars job1 ...
+</pre>
+
+<p>(note job1 instead of job2 in the second vars line).
+
+<p>Anyhow, I'm thinking that we should print a warning if this happens; and then when the -strict option is implemented, it could become a fatal error if the strictness level is high enough.</blockquote>
+
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=2090">Append remarks</a>]
+</td></tr></table></td></tr></table>
+<h3>Remarks:</h3>
+<blockquote>
+<em>2011-May-18 12:49:13 by nwp:</em> <br>
+
+Note here that -strict flag is <span class="ticket"><a href="tktview?tn=1755" class="resolved"
+title="Have a -strict flag that turns some warnings into fatal errors"
+>#1755</a></span>
+
+<p><hr>
+<em>2011-Jun-03 12:24:39 by wenger:</em> <br>
+
+V7_7-warn_if_vars_values_are_overwritten-branch (from Nathan)
+
+<p><hr>
+<em>2011-Jun-07 14:58:39 by wenger:</em> <br>
+
+Looks good -- go ahead and merge this to the trunk.  (Just make sure to also add a note to the version history.)
+
+<p><hr>
+<em>2011-Jun-07 21:16:03 by nwp:</em> <br>
+
+Version history added.  I noticed some remarks above about using the -strict flag here, but this merge ignores the existence of the -strict flag.  Merged to trunk and ticket resolved.</blockquote>
+<table align="right" style="margin: 0 10px;" cellpadding=2 border=0>
+<tr><td bgcolor="#a0b5f4" class="border1">
+<table width="100%" border=0 cellpadding=4 cellspacing=0>
+<tr bgcolor="#d0d9f4" class="bkgnd1">
+<td valign="top" align="left">
+[<a href="tktappend?tn=2090">Append remarks</a>]
+</td></tr></table></td></tr></table>
+
+
+<h3>Properties:</h3>
+
+<blockquote>
+<table>
+<tr>
+  <td align="right">Type:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>enhance&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Last&nbsp;Change:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-Sep-08 16:03</b></td>
+</tr>
+<tr>
+  <td align="right">Status:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>resolved</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Created:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>2011-Apr-26 09:29</b></td>
+</tr>
+<tr>
+  <td align="right">Fixed&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070700&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Broken&nbsp;Version:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>v070600&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Priority:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>3&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Subsystem:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>Dag&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Assigned&nbsp;To:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>nwp&nbsp;</b></td>
+<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+  <td align="right">Derived From:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>
+  &nbsp;
+  </b></td>
+</tr>
+<tr>
+  <td align="right">Creator:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>wenger&nbsp;</b></td>
+<td></td>
+  <td align="right">Rust:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Customer Group:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>other&nbsp;</b></td>
+<td></td>
+  <td align="right">Visibility:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>public&nbsp;</b></td>
+</tr>
+<tr>
+  <td align="right">Notify:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>wenger@cs.wisc.edu&nbsp;</b></td>
+<td></td>
+  <td align="right">Due Date:</td>
+  <td bgcolor="#d0d0d0" class="bkgnd3"><b>&nbsp;</b></td>
+</tr>
+</table>
+</blockquote>
+<h3>Derived Tickets:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=2255" class="resolved"
+title="The DAGMan strict flag should apply to multiple vars definitions"
+>#2255</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+The DAGMan strict flag should apply to multiple vars definitions</td></tr>
+<tr><td valign="top" width=160 align="right">
+<span class="ticket"><a href="tktview?tn=2256" class="resolved"
+title="Multiple vars definitions go into the vars list"
+>#2256</a></span></td>
+<td valign="center" width=30 align="center">
+<span class="icon ptr1">&nbsp;</span></td>
+<td valign="top" align="left">
+Multiple vars definitions go into the vars list</td></tr>
+</table>
+<h3>Related Check-ins:</h3>
+<table cellspacing=0 border=0 cellpadding=0>
+<tr><td valign="top" width=160 align="right">2011-Jun-20 14:14</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=22233">[22233]</a></span>: Overwrite variables if there are multiple definitions ===GT=== <span class="ticket"><a href="tktview?tn=2256" class="resolved"
+title="Multiple vars definitions go into the vars list"
+>#2256</a></span> ===VersionHistory=== In <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span>, we alerted the user if there were multiple definitions of a variable in a DAGman file. Here, we explicitly overwrite the old value.  (By Nathan W. Panike )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-Jun-20 12:43</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=22232">[22232]</a></span>: Strict flag applies to multiple VAR definitions ===GT:Fixed=== <span class="ticket"><a href="tktview?tn=2255" class="resolved"
+title="The DAGMan strict flag should apply to multiple vars definitions"
+>#2255</a></span> ===VersionHistory=== When <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span> was written, there was no strict flag. Now the strict flag is used to terminate DAGman if a variable is defined multiple times.  (By Nathan W. Panike )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-Jun-20 11:43</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=26133">[26133]</a></span>: completing documentation for gittrac <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span>, warning issued if multiple VARS macronamed definitions exist for same node  (By Karen Miller )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-23 08:39</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21954">[21954]</a></span>: Give more information in warning If the DAG is overwriting variables, we should tell the user where the problem is. ===GT=== <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span>  (By Nathan W. Panike )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-19 15:19</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=26105">[26105]</a></span>: Add version history about overwriting VARS in DAGman This is gittrac <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span>  (By Nathan W. Panike )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-19 15:08</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21917">[21917]</a></span>: Take out a printf It does not get written to the terminal ===GT=== <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span> ===VersionHistory=== If you overwrite the VARS value in a DAG submit file, DAGman will write a warning to the log.  (By Nathan W. Panike )</td></tr>
+<tr><td valign="top" width=160 align="right">2011-May-19 14:43</td>
+<td valign="top" width=30 align="center">
+<span class="icon dot">&nbsp;</span></td>
+<td valign="top" align="left"> 
+Check-in <span class="chng"><a href="chngview?cn=21915">[21915]</a></span>: Warn if vars are overwritten ===GT=== <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span> In parsing, we can see if variables are overwritten. We could make this an error in a -strict case, but there is only so much hand-holding that we should do  (By Nathan W. Panike )</td></tr>
+</table>
+<h3>Attachments:</h3>
+<blockquote>
+<ul>
+<li><a href="attach_get/351/2090-test.tgz">2090-test.tgz</a>
+361 bytes added by nwp on 2011-May-19 19:57:26 UTC.
+<br>
+Here is a test case for <span class="ticket"><a href="tktview?tn=2090" class="resolved"
+title="Warn if VARS values are overwritten"
+>#2090</a></span>.<br>
+</ul>
+</blockquote>
+</div>
+</div>
+<div id="footer" style="text-align:right">
+<p>
+This work is supported by NSF under Cooperative Agreement OAC-2030508 as part of the <a href="https://path-cc.io/"> PATh Project</a>. Any opinions, findings, and conclusions or recommendations expressed in this material are those of the author(s) and do not necessarily reflect the views of the NSF. Site built using <a href="about">CVSTrac</a>.
+</div>
+</body></html>
