@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Quick And Dirty Gcb</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Quick And Dirty Gcb</h1>
+<div id="content">
+ This is an incomplete draft.  GCB is no longer part of HTCondor; this is only preserved for historic purposes.
+ <p>
+  GCB, or Generic Connection Brokering, allows HTCondor installations behind firewalls and NATs to communicate with machines on the other side.  Two sets of machines behind different firewalls can even communicate.
+ </p>
+ <p>
+  (It is possible to put large holes in your firewall or NAT to allow incoming and outgoing connections instead of using GCB.)
+ </p>
+ <p>
+  For example, assume that you have existing use of GCB brokers on the machines
+192.168.0.101, 192.168.0.102, and 192.168.0.103.
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <strong>
+    TODO
+   </strong>
+   Document standing up the GCB brokers
+  </li>
+  <li>
+   The following goes in your HTCondor configuration file.  These setting must be visible to all HTCondor machines that need to use the GCB broker.  If a daemon communicates with machines outside of your firewall or NAT for any reason, it will need GCB configured.
+   <div class="code">
+    <pre class="code"># Turn on GCB
+# Note: this automatically turns on BIND_ALL_INTERFACES.
+NET_REMAP_ENABLE=TRUE
+
+# The only valid option is GCB here.
+NET_REMAP_SERVICE = GCB
+
+# IP addresses of GCB brokers.  Also add it to $(ETC)/GCB-routing-table,
+# or else GCB routed connections will be unnecessarily slow.
+NET_REMAP_INAGENT = 192.168.0.101, 192.168.0.102, 192.168.0.103
+
+# This is used to determine which IP addresses are GCB brokers, potentially
+# allowing us to be more clever and avoid the broker.
+NET_REMAP_ROUTE = $(ETC)/GCB-routing-table
+
+# This is used to identify machines that can route to each other without
+# hitting any NATs, firewalls, or the like.  This lets us skip GCB entirely in
+# these circumstances.  It's an arbitrary string used in comparisons; it only
+# needs to be unique among all daemons talking to this pool.
+PRIVATE_NETWORK_NAME = my.network.example.internal
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Create a GCB-routing-table containing the following:
+   <div class="code">
+    <pre class="code"># All GCB broker addresses set in NET_REMAP_INAGENT should be
+# listed here with "/32 GCB" appended.  This significantly
+# improves local scalability.  It is safe to list brokers you are
+# not using.
+
+192.168.0.100
+192.168.0.101
+192.168.0.102
+192.168.0.103
+192.168.0.104
+192.168.0.105
+</pre>
+   </div>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

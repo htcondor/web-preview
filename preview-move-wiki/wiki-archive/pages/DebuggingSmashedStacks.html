@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Debugging Smashed Stacks</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Debugging Smashed Stacks</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Debugging Smashed Stacks
+  </h2>
+ </span>
+ <p>
+  Debugging a smashed stack can be difficult because the backtrace is nearly useless. A few tips:
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  The Zen of Core Files
+ </h3>
+ <p>
+  (Section added Aug 1, 2006, adesmet)
+ </p>
+ <p>
+  Pete's core dump technique for finding buffer overruns on the stack:
+ </p>
+ <p>
+  Check the actual addresses in the backtrace. If a few stack frames in a row fail to have the high bit set in any of the bytes of the address, chances are that an ASCII string has walked off the end of the buffer. An example from a real core dump:
+ </p>
+ <div class="code">
+  <pre class="code">#0  0x0818d216 in WriteCoreDump ()
+#1  0x0817db6c in linux_sig_coredump ()
+#2  0xffffe500 in ?? ()
+#3  0x0000000b in ?? ()
+#4  0x00000063 in ?? ()
+#5  0x00000000 in ?? ()
+#6  0x0000002b in ?? ()
+#7  0x0000002b in ?? ()
+#8  0x0854f47c in ?? ()
+#9  0x08554aa8 in ?? ()
+#10 0xffff8ed8 in ?? ()
+#11 0xffff8ed8 in ?? ()
+#12 0x00000330 in ?? () from /lib/libm.so.6
+#13 0x00002c0c in ?? () from /lib/libm.so.6
+#14 0xffff8f80 in ?? ()
+#15 0x2e303956 in ?? ()
+#16 0x0000000e in ?? ()
+#17 0x00000004 in ?? ()
+#18 0x0819e716 in List&lt;char&gt;::AtEnd ()
+#19 0x0819dee3 in List&lt;char&gt;::Next ()
+#20 0x081fd963 in GenericQuery::makeQuery ()
+#21 0x65646f6e in ?? ()
+#22 0x2e303932 in ?? ()
+#23 0x7361646c in ?? ()
+#24 0x7469632d in ?? ()
+#25 0x67696c2e in ?? ()
+#26 0x61632e6f in ?? ()
+#27 0x6365746c in ?? ()
+#28 0x64652e68 in ?? ()
+#29 0x00292275 in ?? ()
+#30 0x30323735 in ?? ()
+#31 0x2e303330 in ?? ()
+#32 0x08540030 in ?? ()
+#33 0x0062f8b8 in ?? ()
+#34 0x084b3800 in vtable for Daemon ()
+#35 0x00000000 in ?? ()
+#36 0x00000000 in ?? ()
+#37 0x00000000 in ?? ()
+#38 0x0ac87610 in ?? ()
+#39 0x00000000 in ?? ()
+#40 0x00000000 in ?? ()
+#41 0x00000000 in ?? ()
+#42 0x00000000 in ?? ()
+#43 0x00000001 in ?? ()
+#44 0x00000000 in ?? ()
+#45 0x0ac8c020 in ?? ()
+</pre>
+ </div>
+ If you think you might have this case, "strings core" can give some clues. After that, open the core file in less. Jump to the end (G), At the very end, or near it you'll find the environment. Jump backward a few pages (Ctrl+B) looking for a large string. That's probably the string responsible for overflowing the buffer on the stack.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  gcc's -fstack-protector
+ </h3>
+ <p>
+  (Section added Aug 1, 2006, adesmet)
+ </p>
+ <p>
+  Greg Thain offers the following on August 1, 2006:
+ </p>
+ <p>
+  Gcc 4.1 has a new option that can help find these much, much faster. There's a new option, -fstack-protector, which puts a guard word on the stack of each function that has an array on the stack, and checks the guard at function exit. If the guard has changed, it asserts right then and there, before returning. This means that even though the stack is garbage, the innermost frame is still visible and debuggable in gcc. It also means that most buffer overflow attacks won't work.
+ </p>
+ <p>
+  I've fixed a bunch of the HTCondor source code to allow us to compile with this new gcc, but not all of the source code -- in particular, not the externals. Still, all of the daemons can be compiled with this option.
+ </p>
+ <p>
+  We can't just switch to this new gcc because of standard universe and the externals, but I'd recommend to folks that if you suspect a stack buffer overflow, and are sending a debug binary out to a user, that you recompile with this option, it leaves a slime trail of awesomeness in its wake.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

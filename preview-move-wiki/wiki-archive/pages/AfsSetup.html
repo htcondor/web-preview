@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Afs Setup</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Afs Setup</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Installation
+  </h2>
+ </span>
+ <span class="subsection">
+  <h3>
+   Ubuntu
+  </h3>
+ </span>
+ Follow the instructions at
+ <a class="external" href="http://tig.csail.mit.edu/wiki/TIG/OpenAFSOnUbuntuLinux">
+  this location
+ </a>
+ to install AFS on Ubuntu machines(If installation fails, update all the packages and retry. Sometimes, after a recent kernel upgrade the module compilation may break because the community needs some time to upgrade the AFS modules in Ubuntu's repository. In that case you can try booting up an older kernel and retrying all the steps)
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Centos 6
+ </h3>
+ Follow the instructions in section "Installing OpenAFS Client" from
+ <a class="external" href="http://wiki.openafs.org/InstallingOpenAFSonRHEL/">
+  this page
+ </a>
+ . Before installing AFS we need to make sure that:
+ <p>
+ </p>
+ <ul>
+  <li>
+   Kerberos is installed, the instructions for installing kerberos are on the same page.
+   <p>
+   </p>
+  </li>
+  <li>
+   We have added the repository definition for OpenAFS RPM packages for RHEL 6 that are available on the OpenAFS website
+  </li>
+ </ul>
+ <p>
+  # rpm -i
+  <a class="external" href="http://openafs.org/dl/openafs/${version}/openafs-release-rhel-${version}-1.noarch.rpm">
+   http://openafs.org/dl/openafs/${version}/openafs-release-rhel-${version}-1.noarch.rpm
+  </a>
+ </p>
+ <p>
+  where &lt;version&gt; is the OpenAFS version you wish to install, e.g. "1.6.10".
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Centos 7
+ </h3>
+ RPMs for AFS are not available on Centos 7 and even the OpenAFS repository does not host them. So we need to compile from source rpm packages.
+ <p>
+  The source rpms for AFS version 1.6.15 can be downloaded from
+  <a class="external" href="http://openafs.org/dl/openafs/1.6.15/openafs-1.6.15-1.src.rpm.el5">
+   here
+  </a>
+ </p>
+ <p>
+  Before going ahead make sure that your system has kernel-headers for compiling kernel modules(if you have already compiled HTCondor on the machine below commands should be enough to install all the dependencies, except 1 perl package which needs to be installed.)
+ </p>
+ <p>
+  yum install -y dkms gcc
+ </p>
+ <p>
+  And finally run the following command as root to generate RPMS for all the kernel and user-space AFS utilities:
+ </p>
+ <p>
+  # rpmbuild --rebuild -bb --define 'build_userspace 1' --define 'build_modules 1' openafs-&lt;version&gt;-1.src.rpm
+ </p>
+ <p>
+  The RPMs will be generated in /root/rpmbuild/RPMS/x86_64 (depending on your arch)
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Configuration
+ </h2>
+ Most of the configuration is automatic. The AFS default Cell will be automatically configured if the hostname is correct. We only need to change the Kerberos settings in /etc/krb5.conf
+ <p>
+  To get the Kerberos configuration login to one of the CSL machines and copy the /etc/krb5.conf to the machine you are configuring. AFS service can be started by running the following command (on both Ubuntu and Centos):
+ </p>
+ <p>
+  # sudo service afsd start
+ </p>
+ <p>
+  Once the service starts successfully you should be able to see some directories listed in /afs
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Logging In
+ </h2>
+ Once the AFS starts you need to login with AFS credentials to get full access to the file system. To do this run the following command on the shell:
+ <p>
+  # klog.krb5
+ </p>
+ <p>
+  This command will work if your Username for HTCondor Lab machines and CSL lab machines is same, and prompt you for a password, please enter your CS password here(not HTCondor Lab machine login password) on being prompted. If your username is not same, please check the man page of klog.krb5 on how to proceed and update this wiki.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

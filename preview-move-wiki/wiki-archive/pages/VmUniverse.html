@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Vm Universe</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Vm Universe</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Introduction
+  </h2>
+ </span>
+ Comprehensive design outline of the vm-universe, your one stop shopping location for all things virtual in HTCondor.  For a breakdown of the current work that is being done, please see Ticket
+ <span class="ticket">
+  <a class="stalled" href="tktview?tn=883" title="VM universe refactor">
+   #883
+  </a>
+ </span>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Related Tickets
+ </h2>
+ Ticket
+ <span class="ticket">
+  <a class="stalled" href="tktview?tn=883" title="VM universe refactor">
+   #883
+  </a>
+ </span>
+ : VM universe refactor
+ <br/>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Goals and Objectives
+ </h2>
+ The vm-universe gives HTCondor the ability to run virtual machines as a "job", these vm's can either run a dedicated task, spin up extra resources (which can be added to the existing pool), create a virtual pool.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Requirements
+ </h2>
+ <span class="subsection">
+  <h3>
+   Engineering/Design Requirements
+  </h3>
+ </span>
+ <ul>
+  <li>
+   (E1) The VM gahp should be made as lightweight and minimalistic as possible.
+   <p>
+   </p>
+  </li>
+  <li>
+   (E2) The VM Gahp shall support a pluggable hypervisor mechanism to allow for multiple technolgies.  Primary support will be for libvirt - which can support most if not all hypervisors which one would care about.
+   <p>
+   </p>
+  </li>
+  <li>
+   (E3) Support for multiple CPU's and hard disks (needs further description) of what running a N-CPU job actually means on the host machine.
+   <p>
+   </p>
+  </li>
+  <li>
+   (E4) Support for multiple network interfaces. These mutliple network interfaces may use different types of networking. Also a network interface may be present but disabled ( virtualization equivalent of no cable plugged in ).
+   <p>
+   </p>
+  </li>
+  <li>
+   (E5) Support for running multiple virtual machines and/or hypervisors from a single execute node.
+   <p>
+   </p>
+  </li>
+  <li>
+   (E6) Administrators can allow/override/reject any virtual machine requirement requests. via script which "could" xsl transform the incoming xml (e.g. limit memory size, reject MAC address settings, etc.)
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Functional/Behavioral Requirements
+ </h3>
+ <span class="subsubsection">
+  <h4>
+   Initialization
+  </h4>
+ </span>
+ <ul>
+  <li>
+   (TBD) shall support the following networking capabilities
+   <ul>
+    <li>
+     Tunneling the network interface? (ssh to my job).
+    </li>
+    <li>
+     Bridged networking interfaces (assign a MAC address).
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Discovery &amp; Advertising
+ </h4>
+ <ul>
+  <li>
+   (F1) The VM-Gahp shall support discovery of a machines vm-capabilities and subsequently advertise that information in the machine classad.
+   <ul>
+    <li>
+     VM_TYPES := script-managed, libvirt-managed
+    </li>
+    <li>
+     VM_HYPERVISORS := xen, vmware, virtualbox, kvm etc (populated by discovery)
+    </li>
+    <li>
+     VM_&lt;HyperVisor&gt;_ATTR_&lt;name&gt; (for hypervisor specific capabilities)
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   (TBD) Reporting of NUM_CPUS, HD, &amp; MEMORY? SLOTS?
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Submission
+ </h4>
+ <p>
+ </p>
+ <ul>
+  <li>
+   (F2) Submit side processing of different hypervisor specific vm formats need to be defined. This should be capable of building the VM's requirements and populating the classad. {Consensus still needed on what all goes into the classad. ?? }
+   <ul>
+    <li>
+     Shall support submission of libvirt compatible .xml files
+     <ul>
+      <li>
+       Can this be a frontend (e.g. condor_libvirt_submit) that generates the appropriate job submission file for HTCondor? Similar front ends could be developed for other formats (e.g. condor_ovf_submit).
+      </li>
+     </ul>
+    </li>
+    <li>
+     VM_TYPE=script-managed, libvirt-managed (support multiple ones?)
+    </li>
+    <li>
+     VM_HYPERVISOR=xen,vmware,... (support multiple ones?)
+    </li>
+    <li>
+     VM_ATTR_&lt;name&gt;=... (for generic attributes like memory, cpus, etc.)
+    </li>
+    <li>
+     VM_&lt;HyperVisor&gt;_ATTR_&lt;name&gt;=... (for hypervisor specific attributes)
+     <ul>
+      <li>
+       Can this be open ended? Leave it up to the vm manager to decide what to do with attributes that are unknown? How is this information reported back to the user?
+      </li>
+     </ul>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   (TBD) Shall support shared folders.
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Matching
+ </h4>
+ <ul>
+  <li>
+   (F3) The gahp will only manage a single virtual machine at a time. Functionality should be handed off to libvirt / script where ever possible.
+   <p>
+   </p>
+  </li>
+  <li>
+   (F4) Post matching, the script / libvirt should support a verification stage which checks to see if the vm's requirement is in accordance with what the classad claims it to be.
+   <p>
+   </p>
+  </li>
+  <li>
+   (TBD) authentication
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Running
+ </h4>
+ <p>
+ </p>
+ <ul>
+  <li>
+   (TBD) gahp reporting
+   <ul>
+    <li>
+     Memory, cycles, etc.
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   (TBD) Checkpointing and migrating
+   <ul>
+    <li>
+     what requirements get "peg'd?"
+    </li>
+    <li>
+     define actions (pause, resume, stop ...)
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Testability of Requirements
+ </h3>
+ <ul>
+  <li>
+   TBD Matrix which outlines F#, E# and how/if it is testable
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Design Choices and "Views"
+ </h2>
+ <span class="subsection">
+  <h3>
+   Logical Design View
+  </h3>
+ </span>
+ <div class="blockquote">
+  <table width="95%">
+   <tbody>
+    <tr>
+     <td>
+     </td>
+     <td>
+      The Design View captures the classes, interfaces, and patterns that describe the representation of the problem domain and how the software will be built to address it.  The design view almost always uses class diagrams, object diagrams, activity diagrams, composite structure diagrams, and sequence diagrams to convey the design of a system.  The design view typically doesn't address how the system will be implemented or executed.
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Deployment View
+ </h3>
+ <div class="blockquote">
+  <table width="95%">
+   <tbody>
+    <tr>
+     <td>
+     </td>
+     <td>
+      The Deployment View captures how a system is configured, installed, and executed.  It often consists of component diagrams, deployment diagrams, and interaction diagrams.   The Deployment View also captures how the physical layout of the hardware communicates to execute the system.
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Implementation View
+ </h3>
+ <div class="blockquote">
+  <table width="95%">
+   <tbody>
+    <tr>
+     <td>
+     </td>
+     <td>
+      The Implementation View emphasizes the components, files, and resources used by the system.  Typically the Implementation View focuses on the configuration management of a system; what components depend on what, what source files implement what classes, etc.  Implementation views almost always use one or more component diagrams and may include interaction diagrams, statechart diagrams, and composite structure diagrams.
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Process View
+ </h3>
+ <div class="blockquote">
+  <table width="95%">
+   <tbody>
+    <tr>
+     <td>
+     </td>
+     <td>
+      The Process View of a system is intended to capture concurrency, performance, and scalability information, which shows how the system will behave at runtime.  The process view often uses some form of interaction diagrams and activity diagrams.
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Use Case Senarios (Tie views together)
+ </h2>
+ <ul>
+  <li>
+   Libvirt submission &amp; Run
+   <p>
+   </p>
+  </li>
+  <li>
+   Script submission &amp; Run
+   <ul>
+    <li>
+     User specifies VM_TYPE=script-managed VM_HYPERVISOR=virtualbox in their job submission file (as well as additional VM requirements). On the startd/vm_gahp side, a script matching the VM_HYPERVISOR value needs to exist.
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Pause &amp; Resume
+   <p>
+   </p>
+  </li>
+  <li>
+   Terminating a Job
+   <p>
+   </p>
+  </li>
+  <li>
+   Libvirt is a hypervisor abstraction layer. This means, libvirt can manage virtual machines intended for different hypervisors while giving a uniform, hypervisor independent interface to the interacting user/application. While HTCondor interfaces with libvirt, this interface as of now is not hypervisor independent. Ideally, HTCondor should be able to use libvirt to manage virtual machines intended for any hypervisor that libvirt supports, even if it is one that was not previously supported by libvirt while the HTCondor installation was being coded.
+   <p>
+   </p>
+  </li>
+  <li>
+   Libvirt being a hypervisor abstraction layer, can also be viewed as a hypervisor. Libvirt has it's virtual machine description format which is a libvirt xml file. HTCondor users must therefore be given an option where they may submit a libvirt xml virtual machine description to HTCondor. HTCondor must be capable of accepting this input and running the virtual machine on behalf of the user using libvirt.
+   <p>
+   </p>
+  </li>
+  <li>
+   The "actions" that the HTCondor vm-gahp performs on a virtual machine that it manages is finite and enumerable. (At times, not all hypervisors would support all of these actions). This motivates a use case where third parties are given the flexibility to develop support for previously unsupported hypervisors on HTCondor. This can be achieved through supporting the option of a script callout with the virtual machine and the action as parameters. In this case, the script becomes the black box, that interfaces the hypervisor with HTCondor.
+   <ul>
+    <li>
+     allow the user to submit such a script along with the virtual machine ??
+     <ul>
+      <li>
+       I don't think users should be allowed to submit a virtual machine manager script. I think that violates the administrative controls of the resource owner. Of course a user could try to submit a vanilla job that launches a virtual machine and it would be up to the resource owner to allow/disallow such an option.
+      </li>
+     </ul>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   The case of the user not caring about the choice of hypervisor: many hypervisors these days support the vmware standard vmdk disk images. Likewise, another incarnation of virtualization that is gaining popularity is virtual appliances which may be run on several different hypervisors. The user may be allowed to submit such hypervisor independent virtual machines in which case HTCondor should pick the hypervisor for the jobs.
+   <ul>
+    <li>
+     See submission functional behavior. One way to support this is to allow for the user to specify a list of types and hypervisors that can be used. Maybe add a special "any" wildcard or have the absence of VM_TYPE and VM_HYPERVISOR indicate "I don't care." I have a feeling that leaving out VM_TYPE and VM_HYPERVISOR would lead to more user errors, however.
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   A collection of virtual machine configurations and disk configurations may be pre-deployed/staged in the pool. One possibility is to allow a vm universe job specification to refer to a pre-deployed virtual machine and provide a secondary disk containing job specific data.
+   <p>
+   </p>
+  </li>
+  <li>
+   Note on Ticket
+   <span class="ticket">
+    <a class="new" href="tktview?tn=1023" title="[RFE] Provide a means to get console dumps for VMs">
+     #1023
+    </a>
+   </span>
+   for
+   <span class="wiki">
+    <a class="missing" "VirtualBox" title="Virtual Box">
+     VirtualBox
+    </a>
+   </span>
+   . This can be supported with VirtualBox's VBoxHeadless --capture option. Not sure what other hypervisors provide.
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Links
+ </h2>
+ <ul>
+  <li>
+   <a class="external" href="http://libvirt.org/">
+    http://libvirt.org/
+   </a>
+  </li>
+  <li>
+   <a class="external" href="http://www.virtualbox.org/">
+    http://www.virtualbox.org/
+   </a>
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Raw Thoughts, Ideas, and Questions (Migrate to above later)
+ </h2>
+ <p>
+ </p>
+ <ul>
+  <li>
+   Script managed virtual machines are provided job class ads specifying the virtual machine universe job to be run. The script is responsible for parsing the class ad, making any modifications to the ad necessary to meet administrative requirements, and carry out the specified vm_gahp command (e.g., start, preempt, checkpoint, etc.). Commands may be executed, rejected, modified, or not-implemented.
+   <ul>
+    <li>
+     Should these status codes be returned to the user?
+    </li>
+    <li>
+     If a classad is modified, should the user be notified? Should the user receive indications of what was modified? What are the security implications of providing that information?
+    </li>
+   </ul>
+  </li>
+  <li>
+   An interesting side effect of script managed virtual machine is that it is relatively straight forward to override and fill in attributes in any arbitrary way. For example, it would be possible for a script implementation to call out to a MAC address and IP address management system to assign MAC and IP addresses to machines. Some care is needed to recover if the script is unable to gather all the information necessary to launch a virtual machine.
+   <ul>
+    <li>
+     That would be very useful. The problem of brokering and assigning MAC addresses would be simple. However, that of IP address management needs more pondering since the only fathomable way to do it is to have some kind of a daemon which speaks the DHCP language.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Also note, "scripts" is a fairly loose term. It is entirely possible to implement scripts in compiled languages like C or C++, Java, or traditional scripting languages.
+  </li>
+  <li>
+   Do VM universe jobs interact with job hooks or job wrappers? If so, how?
+   <ul>
+    <li>
+     Within the current code, there's only two hooks that I can think of as pertinent: the job router hooks and the starter hooks. For both, there's no functionality support required from th part of the script / libvirt.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Supporting multiple CDROM and Floppy images, and checking and disabling use of the cdrom/floppy device on the execute host?
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

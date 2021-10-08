@@ -1,8 +1,6 @@
 // Generate idx using command at root:
 // echo "$(cat assets/data/search_documents/ticket_search.json)" | node assets/js/build_ticket_index.js > assets/data/search_indexes/ticket_index.json
 
-
-
 var lunr = require('lunr'),
     stdin = process.stdin,
     stdout = process.stdout,
@@ -20,6 +18,7 @@ stdin.on('end', function () {
 
     var idx = lunr(function () {
         this.ref("id")
+        this.field("id")
         this.field("title")
         this.field("remarks")
         this.field("type")

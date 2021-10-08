@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How To Avoid Job Restarts</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Avoid Job Restarts</h1>
+<div id="content">
+ Known to work with version 7.4.0
+ <p>
+  By default, HTCondor manages jobs under the assumption that the user wants them to be run as many times as necessary in order to successfully finish.  If all goes well, this means the job will only run once.  However, various failures can require that the job be restarted in order to succeed.  Examples of such failures include:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   execute machine crashes while job is running
+  </li>
+  <li>
+   submit machine crashes while job is running and does not reconnect to job before the job lease expires
+  </li>
+  <li>
+   job is evicted by condor_vacate, PREEMPT, or is preempted by another job
+  </li>
+  <li>
+   output files from job fail to be transferred back to submit machine
+  </li>
+  <li>
+   input files fail to be transferred
+  </li>
+  <li>
+   network failures between execute and submit machine
+  </li>
+ </ul>
+ <p>
+  In some cases, it is desired that jobs
+  <em>
+   not
+  </em>
+  be restarted.  The user wants HTCondor to try to run the job once, and if this attempt fails for any reason, it should not make a second attempt.  To achieve this, the following can be put in the job's submit file:
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre>requirements = NumJobStarts == 0
+periodic_remove = JobStatus == 1 &amp;&amp; NumJobStarts &gt; 0
+</pre>
+ </div>
+ <p>
+  Note that this does not
+  <em>
+   guarantee
+  </em>
+  that HTCondor will only start the job once.  The
+  <code>
+   NumJobStarts
+  </code>
+  job attribute is updated shortly after the job starts running.  Various types of failures can result in the job starting without this attribute being updated (e.g. network failure between submit and execute machine).  By setting SHADOW_LAZY_QUEUE_UPDATE=false, the window of time between the job starting and the update of
+  <code>
+   NumJobStarts
+  </code>
+  can be decreased, but this still does not provide a guarantee that the job will never be started more than once.  This policy is therefore to start the job at least once, and, with best effort but no strong guarantee, not more than once.  As usual, HTCondor
+  <em>
+   does
+  </em>
+  provide a strong guarantee that the job is never running more than once at the same time.
+ </p>
+ <p>
+  Instead of
+  <span class="wiki">
+   <a class="missing" "NumJobStarts" title="Num Job Starts">
+    NumJobStarts
+   </a>
+  </span>
+  , you can flag off of several over attributes that are incremented when a job starts up:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <span class="wiki">
+    <a class="missing" "NumShadowStarts" title="Num Shadow Starts">
+     NumShadowStarts
+    </a>
+   </span>
+   - Incremented when the condor_shadow starts, but before the job has started.  Guarantees that a job will run at most once, but it a problem occurs between the shadow starting and the job starting, the job will never run.
+  </li>
+  <li>
+   <span class="wiki">
+    <a class="missing" "NumJobMatches" title="Num Job Matches">
+     NumJobMatches
+    </a>
+   </span>
+   -
+  </li>
+  <li>
+   <span class="wiki">
+    <a class="missing" "JobRunCount" title="Job Run Count">
+     JobRunCount
+    </a>
+   </span>
+   -
+  </li>
+ </ul>
+ <p>
+  Search terms: run once and only once, one, single
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

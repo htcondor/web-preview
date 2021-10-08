@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Language Aware Grepping With Clang Query</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Language Aware Grepping With Clang Query</h1>
+<div id="content">
+ <strong>
+  clang-query
+ </strong>
+ is a tool that performs tree pattern matching against a C++ parse tree.  As such, it is useful for finding call sites in the condor code.  Consider the following problem.  We want to find all the places in the source code where vector::reserve is called.  We can't just grep for "reserve", as other classes have methods named reserve.  In the worst case, there may even be a #define for reserve, further obfuscating the call sites.
+ <p>
+  Prerequisites include
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Installation of clang
+  </li>
+  <li>
+   Existing of a compile_commands.json file in the root of the condor source tree.  Note that cmake can produce this, and the default "configure_uw" script includes the command to generate this as a side-effect of compiling.
+  </li>
+  <li>
+   An in-source build.  I'm sure there's a way to work around this, but I haven't found it.
+  </li>
+ </ol>
+ <p>
+  Given the above, clang-query can find source code matches when run like this
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">clang-query -f file_with_pattern source_file.cpp
+</pre>
+ </div>
+ <p>
+  The magic, of course, is in the pattern.  Here is an example pattern that finds all calls to "reserve" from the vector class"
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">let bind-root true
+let m1 cxxMemberCallExpr( callee(cxxMethodDecl(hasName("reserve"))), thisPointerType(namedDecl(hasName("vector"))))
+m m1
+</pre>
+ </div>
+ <p>
+  In theory, clang-query can take an arbitrary number of source file arguments, but in my experience, it crashes after some large number, so I feed it files one at a time, grepping them out of the compile_commands.json database, like so
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">grep '"file":' compile_commands.json  | tr -d '"' | awk '{print $2}' | xargs -n 1 clang-query -f findVectors
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

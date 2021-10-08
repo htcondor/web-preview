@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How To Insert Class Ad Into Machine Ads</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Insert Class Ad Into Machine Ads</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to insert custom ClassAd attributes into a machine ad
+  </h2>
+ </span>
+ <p>
+  Known to work with HTCondor version: 7.0
+ </p>
+ <p>
+  In the following exapmles, a custom
+  <span class="quote">
+   ClassAd
+  </span>
+  attribute named
+  <em>
+   MachineOwner
+  </em>
+  is created with the value "chemistry".  You can use whatever attribute name you want, but avoid conflicting with attribute names used by HTCondor.  See the manual or run
+ </p>
+ <div class="code">
+  <pre class="code">condor_status -long</pre>
+ </div>
+ on a machine to see the attributes that are there.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to insert custom ClassAd attributes in a machine ad via the config file
+ </h3>
+ <p>
+  Using the config file to insert a custom machine attribute is particularly
+appropriate for static attribute values that do not change often - if your attribute value is dynamic, see below.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">MachineOwner = "chemistry"
+STARTD_ATTRS = $(STARTD_ATTRS) MachineOwner
+</pre>
+ </div>
+ <p>
+  If you want different values for different slots within the same machine, do this:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">SLOT1_MachineOwner = "chemistry"
+SLOT2_MachineOwner = "physics"
+
+STARTD_ATTRS = $(STARTD_ATTRS) MachineOwner
+</pre>
+ </div>
+ <p>
+  <strong>
+   Alternate
+  </strong>
+  .  If you are using HTCondor 8.3.8 or later, you can set different attributes in different slot
+  <strong>
+   types
+  </strong>
+  . This makes configuration simpler when the number of slots (and thus the slot id's) is not fixed, but varies based on some other configuration value such as NUM_CPUS
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">NUM_SLOTS_TYPE_1 = 2
+NUM_SLOTS_TYPE_2 = $(NUM_CPUS) - $(NUM_SLOTS_TYPE_1)
+
+STARTD_ATTRS = MachineOwner $(STARTD_ATTRS)
+
+SLOT_TYPE_1_MachineOwner = "chemistry"
+SLOT_TYPE_2_MachineOwner = "physics"
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to insert custom ClassAd attributes in a machine ad via a script
+ </h3>
+ <p>
+  You can insert dynamic attributes that are periodically updated from a script.  Here's an example of what you put in the HTCondor configuration file to periodically call a script:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">STARTD_CRON_JOBLIST = kernel
+STARTD_CRON_kernel_PREFIX = kernel_
+STARTD_CRON_kernel_EXECUTABLE = /path/to/kernel
+STARTD_CRON_kernel_PERIOD = 1h
+STARTD_CRON_kernel_MODE = periodic
+STARTD_CRON_kernel_RECONFIG = false
+STARTD_CRON_kernel_KILL = true
+STARTD_CRON_kernel_ARGS =
+</pre>
+ </div>
+ <p>
+  The script named 'kernel' could add some attributes that give information about the system kernel.  For example, it could output something like the following:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">version = "2.6.9-55.0.12.ELsmp"
+bigmem = FALSE
+hugemem = FALSE
+</pre>
+ </div>
+ <p>
+  Given the configuration above, this would result in
+  <span class="quote">
+   ClassAd
+  </span>
+  attributes being added to the machine
+  <span class="quote">
+   ClassAd
+  </span>
+  with the following names: kernel_version, kernel_bigmem, and kernel_hugemem.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to insert a custom ClassAd attribute into a machine ad from the Windows registry
+ </h3>
+ <p>
+  New in 7.5.6: A list of windows registry keys may be specified in the configuration file to be published in the machine
+  <span class="quote">
+   ClassAd
+  </span>
+  . Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">STARTD_PUBLISH_WINREG = \
+ Perl_BinDir = HKLM\Software\Perl\BinDir; \
+ Kerberos_Version = HKLM\SOFTWARE\MIT\Kerberos\Client\CurrentVersion\VersionString
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

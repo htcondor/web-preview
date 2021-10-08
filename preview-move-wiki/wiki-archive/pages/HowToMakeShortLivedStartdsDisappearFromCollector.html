@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How To Make Short Lived Startds Disappear From Collector</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Make Short Lived Startds Disappear From Collector</h1>
+<div id="content">
+ By default, HTCondor assumes that condor_startd daemons are relatively stable and long lived.  A condor_startd, representing a machine, will show up in the collector, and thus be visible in the output of condor_status after the first time it sends an update to the collector.  The condor_startd will then send periodic updates to the collector every time the condor_startd state changes,  when the value of the
+ <code>
+  START
+ </code>
+ expression changes, and at periodic intervals even when there are no changes.  This periodic interval is controlled by the configuration variable
+ <code>
+  UPDATE_INTERVAL
+ </code>
+ , which defaults to 300 seconds (5 minutes).
+ <p>
+  If the collector has not received an update from a particular condor_startd in a fixed amount of time, it identifies that condor_startd
+  <span class="wiki">
+   <a class="missing" "ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  as stale, causing the collector to discard the
+  <span class="wiki">
+   <a class="missing" "ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  , and that condor_startd no longer shows up in the collector or in the output of condor_status.  More important, that machine cannot be matched to jobs.  This allows HTCondor to gracefully disconnect from machines, even when there is a network outage or other interruption, where the condor_startd does not get an opportunity to send notice that it is going away.  The stale interval is controlled by the collector's configuration variable
+  <code>
+   CLASSAD_LIFETIME
+  </code>
+  , with a default value of 900 seconds (15 minutes).  The same effect may be specified for a specific condor_startd in its local configuration; set the machine
+  <span class="wiki">
+   <a class="missing" "ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  attribute
+  <code>
+   ClassAdLifetime
+  </code>
+  , as this configuration example shows:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">ClassAdLifeTime = 180
+STARTD_ATTRS = ClassAdLifeTime
+</pre>
+ </div>
+ <p>
+  Some sites will have condor_startd daemons that come and go frequently.  This is the case for those launched in the cloud, inside Virtual Machines, or in the case of Glidein.  For these cases, the default 15 minute staleness timer value can be too long. A condor_startd can exit, but the central manager will not know, and thus the central manager will still try to send jobs to it, lowering throughput.  If the condor_startd is shut down in a controlled way with the condor_off command, condor_startd will attempt the send an invalidate request to the collector. If successful, the central manager will remove the condor_startd from the pool immediately.  However, in these environments, it is not always possible to know when the underlying system will pull the plug on the condor_startd.
+ </p>
+ <p>
+  If your pool is such a site, it is recommended to decrease the interval set for the staleness timer.
+ </p>
+ <p>
+  For the advanced user, the condor_advertise command with the INVALIDATE_AD option can also be used to force the removal of the
+  <span class="wiki">
+   <a class="missing" "ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  from the collector.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

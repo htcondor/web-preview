@@ -1,0 +1,29 @@
+diff --git a/src/condor_procd/CMakeLists.txt b/src/condor_procd/CMakeLists.txt
+index df2d726..f93e554 100644
+--- a/src/condor_procd/CMakeLists.txt
++++ b/src/condor_procd/CMakeLists.txt
+@@ -30,9 +30,9 @@ endif(WINDOWS)
+ condor_daemon(procd "${ProcdRmvElements}" "procapi;utils;${PROCD_WIN_LINK_LIBS}" "${C_SBIN}" OFF)
+ 
+ if (LINUX AND WANT_FULL_DEPLOYMENT)
+-       condor_exe( procd_ctl "procd_ctl.cpp" ${C_SBIN} "${CONDOR_TOOL_LIBS};${PCRE_FOUND};${OPENSSL_FOUND};${KRB5_FOUND};${COREDUMPER_FOUND}" OFF)
++       condor_exe( procd_ctl "procd_ctl.cpp;${ProcClientElements}" "${C_SBIN}" "condorapi;utils;${PCRE_FOUND}" OFF)
+ 
+-       condor_exe( gidd_alloc "gidd_alloc.cpp" ${C_SBIN} "${CONDOR_TOOL_LIBS};${PCRE_FOUND};${OPENSSL_FOUND};${KRB5_FOUND};${COREDUMPER_FOUND}" OFF)
++       condor_exe( gidd_alloc "gidd_alloc.cpp" ${C_SBIN} "" OFF)
+ endif(LINUX AND WANT_FULL_DEPLOYMENT)
+ 
+ condor_static_lib(procd_client "${ProcClientElements}")
+diff --git a/src/condor_procd/procd_ctl.cpp b/src/condor_procd/procd_ctl.cpp
+index 9ddf4b6..660ed12 100644
+--- a/src/condor_procd/procd_ctl.cpp
++++ b/src/condor_procd/procd_ctl.cpp
+@@ -107,7 +107,7 @@ main(int argc, char* argv[])
+                }
+ 
+                // This is the failure case if we manage to pass all checks above.
+-               fprintf(stderr, "error: Don't understand option %s\n", cmd_argv);
++               fprintf(stderr, "error: Don't understand option %s\n", cmd_argv[0]);
+                list_commands();
+                return 1;
+        }
