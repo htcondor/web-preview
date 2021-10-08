@@ -27,7 +27,7 @@ async function set_up_search_bar(){
 }
 
 function create_results_html(ticket){
-    let html =  "<div id='search-card' class='card'>" +
+    let html =  "<div id='search-card' class='result card'>" +
                     "<div class='card-body'>" +
                         "<div class='card-title'>" +
                             "<a href='/ticket?ticket=" + ticket.id + "' onclick='get_ticket_and_populate_wrapper(" + ticket.id + "); return false;'>" + ticket.title + "</a>" +

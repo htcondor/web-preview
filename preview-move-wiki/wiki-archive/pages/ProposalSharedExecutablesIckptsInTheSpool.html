@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -72,7 +73,7 @@
 <div id="content">
  The ticket
  <span class="ticket">
-  <a class="defer" href="tktview?tn=31" title="Avoid thousands of copies of same file in SPOOL">
+  <a class="defer" href="../../tickets/?ticket=31" title="Avoid thousands of copies of same file in SPOOL">
    #31
   </a>
  </span>
@@ -141,7 +142,7 @@
   <li>
    condor_submit: Calculate a hash of the executable.  Insert it into the job's
    <span class="wiki">
-    <a class="missing" "ClassAd" title="Class Ad">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAd" title="Class Ad">
      ClassAd
     </a>
    </span>
@@ -186,7 +187,7 @@
   <li>
    condor_schedd: Take a list of things to include; for v1 it will be "CmdHashMD5".  Encode the attribute/value list of those things into a string that is a valid filename.  See 'Escaping algorithm' below.  Store this as
    <span class="wiki">
-    <a class="missing" "CmdHash" title="Cmd Hash">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
      CmdHash
     </a>
    </span>
@@ -209,7 +210,7 @@
   <li>
    condor_schedd: Escape $(Owner) per the algorithm below.  The hash path is now "$SPOOL/exe-$EscapedOwner-$CmdHash".  It will look something like "/home/condor/spool/exe-adesmet-CmdHashMD5-d41d8cd98f00b204e9800998ecf8427e".  If you don't have a
    <span class="wiki">
-    <a class="missing" "CmdHash" title="Cmd Hash">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
      CmdHash
     </a>
    </span>
@@ -303,61 +304,61 @@
  <p>
   The
   <span class="wiki">
-   <a class="missing" "CmdHash" title="Cmd Hash">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
     CmdHash
    </a>
   </span>
   is a
   <span class="wiki">
-   <a class="missing" "ClassAd" title="Class Ad">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAd" title="Class Ad">
     ClassAd
    </a>
   </span>
   , or at least a partial
   <span class="wiki">
-   <a class="missing" "ClassAd" title="Class Ad">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAd" title="Class Ad">
     ClassAd
    </a>
   </span>
   serialized into a string. The resulting string must be a valid
   <span class="wiki">
-   <a class="missing" "ClassAd" title="Class Ad">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAd" title="Class Ad">
     ClassAd
    </a>
   </span>
   string, and a valid file name on every operating system HTCondor supports (forbidden characters include, but are not limited to: ":/\").  We'll also need to reserve one or more characters to indicate escaped characters and to delimit between fields and records.  Furthermore, the resulting
   <span class="wiki">
-   <a class="missing" "CmdHash" title="Cmd Hash">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
     CmdHash
    </a>
   </span>
   should be reasonably short, to avoid path limits and to keep sysadmins happy.  It would be nice if it could also not look too much like line noise.  No two different
   <span class="wiki">
-   <a class="missing" "ClassAds" title="Class Ads">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAds" title="Class Ads">
     ClassAds
    </a>
   </span>
   should ever generate the same
   <span class="wiki">
-   <a class="missing" "CmdHash" title="Cmd Hash">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
     CmdHash
    </a>
   </span>
   , however, two identical
   <span class="wiki">
-   <a class="missing" "ClassAds" title="Class Ads">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAds" title="Class Ads">
     ClassAds
    </a>
   </span>
   must generate the same
   <span class="wiki">
-   <a class="missing" "CmdHash" title="Cmd Hash">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
     CmdHash
    </a>
   </span>
   .  Reversability of the
   <span class="wiki">
-   <a class="missing" "CmdHash" title="Cmd Hash">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
     CmdHash
    </a>
   </span>
@@ -485,13 +486,13 @@
  <p>
   The directions above specify that there is a list of "things" that end up in the
   <span class="wiki">
-   <a class="missing" "CmdHash" title="Cmd Hash">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
     CmdHash
    </a>
   </span>
   .  For V1 this is a hard coded list, probably of CmdHashMD5.  However, we can put the list into the hands of the user or administrator.  The user might set
   <span class="wiki">
-   <a class="missing" "CmdHashComponents" title="Cmd Hash Components">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHashComponents" title="Cmd Hash Components">
     CmdHashComponents
    </a>
   </span>
@@ -589,7 +590,7 @@
   <li>
    Stops a user from shooting himself in the foot.  Changing your
    <span class="wiki">
-    <a class="missing" "CmdHash" title="Cmd Hash">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
      CmdHash
     </a>
    </span>
@@ -600,7 +601,7 @@
   <li>
    Helps the admin identify what's in his SPOOL.  If the
    <span class="wiki">
-    <a class="missing" "CmdHash" title="Cmd Hash">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
      CmdHash
     </a>
    </span>
@@ -611,7 +612,7 @@
   <li>
    We can hard code to prepend "exe-$EscapedOwner" to the list of "things".  This means the filename is an exact match for the
    <span class="wiki">
-    <a class="missing" "CmdHash" title="Cmd Hash">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
      CmdHash
     </a>
    </span>
@@ -622,7 +623,7 @@
   <li>
    We may someday stop having ickpt files (see "Future work" above). If the user can change his own
    <span class="wiki">
-    <a class="missing" "CmdHash" title="Cmd Hash">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CmdHash" title="Cmd Hash">
      CmdHash
     </a>
    </span>

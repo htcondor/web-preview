@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -159,8 +160,7 @@ VM -&gt; Settings -&gt; Options Tab -&gt; Shared Folders -&gt; Add
  <p>
  </p>
  <pre>   c:\scratch\pkg760&gt; cd Temp\bin
-   c:\scratch\pkg760&gt; @for %I in (*.dll *.exe) do @link -dump -imports %I | findstr /i "90D"
-</pre>
+   c:\scratch\pkg760&gt; @for %I in (*.dll *.exe) do @link -dump -imports %I | findstr /i href="/web-preview/preview-move-wiki/wiki-archive/pages/90D" </pre>
  <p>
   There is a script called testfordebugcrt.bat in the VM that contains the
   <code>

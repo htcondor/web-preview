@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -106,7 +107,7 @@ NEGOTIATOR_POST_JOB_RANK, so that the job's RANK expression doesn't come into pl
   By default, when the condor negotiator matches a partitionable slot to a job, it
 gives the whole partitionable slot to the schedd to use for as many jobs as possible.  This creates a depth-first kind of pool filling, one where jobs tend to be packed as much as possible on the fewest number of machines.  The best way to turn this off is to disable the schedd-side partitionable slot splitting.  The downside of this change is that each machine can only match one new job per negotiation cycle.  Also, if
   <span class="wiki">
-   <a class="missing" "ConsumptionPolicy" title="Consumption Policy">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ConsumptionPolicy" title="Consumption Policy">
     ConsumptionPolicy
    </a>
   </span>

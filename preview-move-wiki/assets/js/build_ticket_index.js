@@ -1,5 +1,7 @@
 // Generate idx using command at root:
 // echo "$(cat assets/data/search_documents/ticket_search.json)" | node assets/js/build_ticket_index.js > assets/data/search_indexes/ticket_index.json
+//
+// ticket_search.json contains the json of just space delimited text that occurs in the ticket organized by category
 
 var lunr = require('lunr'),
     stdin = process.stdin,

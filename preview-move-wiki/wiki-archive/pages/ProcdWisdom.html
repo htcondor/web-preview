@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -129,19 +130,19 @@
  <p>
   The ProcD was born out of the
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
   project. The idea was that while most root-enabled things could be accomplished with a stateless root-owned setuid binary (the condor_root_switchboard), our process family tracking code needed a root-running daemon. In hindsight, I think this may have been a mistake (see ticket
   <span class="ticket">
-   <a class="abandoned" href="tktview?tn=110" title="Change ProcD to run without root privilege">
+   <a class="abandoned" href="../../tickets/?ticket=110" title="Change ProcD to run without root privilege">
     #110
    </a>
   </span>
   ). Even without the ProcD's supposed benefit for
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -150,13 +151,13 @@
  <p>
   There are some important consequences of the ProcD's
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
   heritage. The fact that the ProcD is included in the "trusted" portion of the
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -172,7 +173,7 @@
  <p>
   The ProcD uses named pipe IPC for communication with its clients. This is true on both UNIX and Windows, though what "named pipe" means is wildly different in the two contexts. Most of the differences are hidden away in the LocalClient/LocalServer classes in the ProcD. The main user-visible difference is how named pipes are actually named. On UNIX, they exist as nodes in the file system. On Windows, they use a separate namespace. Ticket
   <span class="ticket">
-   <a class="new" href="tktview?tn=292" title="Ensure ProcD named pipe uniqueness on Windows">
+   <a class="new" href="../../tickets/?ticket=292" title="Ensure ProcD named pipe uniqueness on Windows">
     #292
    </a>
   </span>
@@ -181,7 +182,7 @@
  <p>
   The ProcD relies on OS-level authorization mechanisms to ensure that only HTCondor can make requests of it. On Windows, everything is running as SYSTEM so this is simple. On UNIX, the ProcD runs as root but it must allow access to HTCondor deamons that may not be root (think
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -197,25 +198,25 @@
  <p>
   Access to the ProcD from other HTCondor code is provided via
   <span class="wiki">
-   <a class="missing" "DaemonCore" title="Daemon Core">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/DaemonCore" title="Daemon Core">
     DaemonCore
    </a>
   </span>
   . Create_Process has a parameter of type
   <span class="wiki">
-   <a class="missing" "FamilyInfo" title="Family Info">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/FamilyInfo" title="Family Info">
     FamilyInfo
    </a>
   </span>
   that can be used when the created process should be registered as a subfamily with the ProcD. The
   <span class="wiki">
-   <a class="missing" "FamilyInfo" title="Family Info">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/FamilyInfo" title="Family Info">
     FamilyInfo
    </a>
   </span>
   struct contains information regarding the maximum acceptable snapshot interval and what tracking methods to use. After the Create_Process call, the ProcD's services are accessible via other call into
   <span class="wiki">
-   <a class="missing" "DaemonCore" title="Daemon Core">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/DaemonCore" title="Daemon Core">
     DaemonCore
    </a>
   </span>
@@ -224,31 +225,31 @@
  <p>
   Each daemon can be configured to either use the ProcD for process tracking or to use the old school
   <span class="wiki">
-   <a class="missing" "KillFamily" title="Kill Family">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/KillFamily" title="Kill Family">
     KillFamily
    </a>
   </span>
   class. The reason is that when the ProcD is enabled and it crashes, any daemon using it will EXCEPT. Early on in the ProcD's existence this happened to several of the Master daemons in our CS pool, which was enough to get the old
   <span class="wiki">
-   <a class="missing" "KillFamily" title="Kill Family">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/KillFamily" title="Kill Family">
     KillFamily
    </a>
   </span>
   code back as an alternative. The
   <span class="wiki">
-   <a class="missing" "ProcFamilyInterface" title="Proc Family Interface">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ProcFamilyInterface" title="Proc Family Interface">
     ProcFamilyInterface
    </a>
   </span>
   ,
   <span class="wiki">
-   <a class="missing" "ProcFamilyProxy" title="Proc Family Proxy">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ProcFamilyProxy" title="Proc Family Proxy">
     ProcFamilyProxy
    </a>
   </span>
   , and
   <span class="wiki">
-   <a class="missing" "ProxFamilyDirect" title="Prox Family Direct">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ProxFamilyDirect" title="Prox Family Direct">
     ProxFamilyDirect
    </a>
   </span>
@@ -257,7 +258,7 @@
  <p>
   A HTCondor daemon configured to use a ProcD will share the ProcD of its parent if one is available. Environment variables are used to communicate whether this is the case. See the
   <span class="wiki">
-   <a class="missing" "ProcFamilyProxy" title="Proc Family Proxy">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ProcFamilyProxy" title="Proc Family Proxy">
     ProcFamilyProxy
    </a>
   </span>
@@ -266,13 +267,13 @@
  <p>
   A HTCondor daemon configured to use the ProcD will start it on-demand. Specifically, the first call to DaemonCore::Create_Process with a non-NULL
   <span class="wiki">
-   <a class="missing" "FamilyInfo" title="Family Info">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/FamilyInfo" title="Family Info">
     FamilyInfo
    </a>
   </span>
   argument will result in the ProcD being spawned. Alternatively, a daemon can force the ProcD to be started with a call to DaemonCore::Proc_Family_Init. The SchedD does this since it never calls Create_Process with a non-NULL
   <span class="wiki">
-   <a class="missing" "FamilyInfo" title="Family Info">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/FamilyInfo" title="Family Info">
     FamilyInfo
    </a>
   </span>
@@ -288,7 +289,7 @@
  <p>
   Oh yeah, then there's the
   <span class="wiki">
-   <a "OsgProcd" title="Osg Procd">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/OsgProcd" title="Osg Procd">
     OsgProcd
    </a>
   </span>

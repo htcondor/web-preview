@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -72,7 +73,7 @@
 <div id="content">
  This page contains strategies for managing GPUs for HTCondor versions prior to 8.1.4.  If you are using 8.1.4 an later the strategy described in
  <span class="wiki">
-  <a "HowToManageGpus" title="How To Manage Gpus">
+  <a href="/web-preview/preview-move-wiki/wiki-archive/pages/HowToManageGpus" title="How To Manage Gpus">
    HowToManageGpus
   </a>
  </span>
@@ -91,13 +92,13 @@
  <p>
   HTCondor matches execute nodes (described by
   <span class="wiki">
-   <a class="missing" "ClassAds" title="Class Ads">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAds" title="Class Ads">
     ClassAds
    </a>
   </span>
   ) to jobs (also described by
   <span class="wiki">
-   <a class="missing" "ClassAds" title="Class Ads">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAds" title="Class Ads">
     ClassAds
    </a>
   </span>
@@ -109,7 +110,7 @@
   <li>
    Advertise the GPU: Configure HTCondor so that execute nodes include information about available GPUs in their
    <span class="wiki">
-    <a class="missing" "ClassAd" title="Class Ad">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAd" title="Class Ad">
      ClassAd
     </a>
    </span>
@@ -125,7 +126,7 @@
  <p>
   This technique builds on the techniques in
   <span class="wiki">
-   <a "HowToReserveSlotForSpecialJobs" title="How To Reserve Slot For Special Jobs">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/HowToReserveSlotForSpecialJobs" title="How To Reserve Slot For Special Jobs">
     How to reserve a slot or machine for special jobs
    </a>
   </span>
@@ -269,7 +270,7 @@ This is
   ,
 previous known as
   <span class="wiki">
-   <a class="missing" "HawkEye" title="Hawk Eye">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/HawkEye" title="Hawk Eye">
     HawkEye
    </a>
   </span>
@@ -307,19 +308,19 @@ STARTD_CRON_GPUINFO2_SLOTS = 2
  <p>
   $(MODULES)/get-gpu-info will be invoked twice, once for each of the two possible GPUs.  (You can support more by copying the above entries and increasing the integers.
   <span class="ticket">
-   <a class="new" href="tktview?tn=2196" title="Run same classad daemon hook (hawkeye/cron) once per slot">
+   <a class="new" href="../../tickets/?ticket=2196" title="Run same classad daemon hook (hawkeye/cron) once per slot">
     #2196
    </a>
   </span>
   , if implemented, may allow for a simpler configuration.) get-gpu-info will be passed the device ID to probe (0 or 1).  The output should be a
   <span class="wiki">
-   <a class="missing" "ClassAd" title="Class Ad">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAd" title="Class Ad">
     ClassAd
    </a>
   </span>
   ; entries will have GPU_ prepended, then they will be added to to slot
   <span class="wiki">
-   <a class="missing" "ClassAds" title="Class Ads">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAds" title="Class Ads">
     ClassAds
    </a>
   </span>

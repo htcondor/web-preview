@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -193,8 +194,7 @@ SLOT1_SUSPEND  = False
 SLOT2_START    = TARGET.IsSuspensionJob =?= true
 SLOT2_CONTINUE = slot1_State =?= "Unclaimed" || slot1_State =?= "Owner"
 SLOT2_PREEMPT  = FALSE
-SLOT2_SUSPEND  = slot1_State =?= "Claimed"
-</pre>
+SLOT2_SUSPEND  = slot1_State =?= href="/web-preview/preview-move-wiki/wiki-archive/pages/Claimed" </pre>
  </div>
  <p>
   To submit a suspension job, you could put something like the following in your submit file:

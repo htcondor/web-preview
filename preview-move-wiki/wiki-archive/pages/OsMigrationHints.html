@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -146,13 +147,13 @@ requirements = ((OpSysMajor == 7) || (OpSysMajor == 6))
  <p>
   However, there are a couple of problems with that.  The first problem is defaulting.  When a has requirements that don't mention
   <span class="wiki">
-   <a class="missing" "OpSysMajor" title="Op Sys Major">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/OpSysMajor" title="Op Sys Major">
     OpSysMajor
    </a>
   </span>
   , the submit side needs to add in a clause picking one.  This is what condor_submit does today with
   <span class="wiki">
-   <a class="missing" "OpSys" title="Op Sys">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/OpSys" title="Op Sys">
     OpSys
    </a>
   </span>
@@ -162,13 +163,13 @@ requirements = ((OpSysMajor == 7) || (OpSysMajor == 6))
   </strong>
   , though ugly with the new submit transforms.  We can simulate this today in config which looks for the string
   <span class="wiki">
-   <a class="missing" "OpSysMajor" title="Op Sys Major">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/OpSysMajor" title="Op Sys Major">
     OpSysMajor
    </a>
   </span>
   in requirements, and if it is there, we can assume that the job is correctly selecting a version.  One can construct all kinds of expressions for which this isn't true, but it should work in practice, as it does for
   <span class="wiki">
-   <a class="missing" "OpSys" title="Op Sys">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/OpSys" title="Op Sys">
     OpSys
    </a>
   </span>
@@ -234,13 +235,13 @@ AmTransformed = true
  <p>
   Note that relying on a regexp match of an
   <span class="wiki">
-   <a class="missing" "UnParse" title="Un Parse">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/UnParse" title="Un Parse">
     UnParse
    </a>
   </span>
   is suboptimal.  We can then implement in 8.7.x a classad
   <span class="wiki">
-   <a class="missing" "ContainsAttr" title="Contains Attr">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ContainsAttr" title="Contains Attr">
     ContainsAttr
    </a>
   </span>
@@ -249,7 +250,7 @@ AmTransformed = true
  <p>
   These expressions simplify the Requirements expression, and obey the principle of least surprise for our users -- when they request a
   <span class="wiki">
-   <a class="missing" "OpSysMajorVer" title="Op Sys Major Ver">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/OpSysMajorVer" title="Op Sys Major Ver">
     OpSysMajorVer
    </a>
   </span>

@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -153,7 +154,7 @@ The fact that I may need to move from one node to another is just a nuisance.
   f) The user must be able to reduce the number of resources requested on an existing handle.
    Furthermore, the user must be able to specify how to pick the victims. While I do not want to be prescriptive, the obvious choices are "
   <span class="wiki">
-   <a class="missing" "NotRunning" title="Not Running">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/NotRunning" title="Not Running">
     NotRunning
    </a>
   </span>
@@ -240,7 +241,7 @@ The question is now: What do I need to do on the client. And in particular, a sp
      HTCondor-G is free to label any local job as running, as long as the sum of them is the same as the number obtained from the Service, and it is deterministic.
      Similarly, HTCondor-G should label the right number of local jobs as "Waiting"... i.e. using an appropriate
   <span class="wiki">
-   <a class="missing" "GridStatus" title="Grid Status">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/GridStatus" title="Grid Status">
     GridStatus
    </a>
   </span>
@@ -254,7 +255,7 @@ The question is now: What do I need to do on the client. And in particular, a sp
   VI)  If a user removes a job from the queue, HTCondor-G will decrease the number requested on the existing handle (see (f)).
      If the job was idle at the time, the victim type is "
   <span class="wiki">
-   <a class="missing" "NotRunning" title="Not Running">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/NotRunning" title="Not Running">
     NotRunning
    </a>
   </span>

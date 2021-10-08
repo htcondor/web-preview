@@ -22,6 +22,9 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+        <link href="/web-preview/preview-move-wiki/assets/css/search_bar.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -73,12 +76,15 @@
 <main id="main-copy" tabindex="-1">
     <div class="container mb-4">
     <h2>Ticket Archive</h2>
-<div class="row">
+<div class="row mb-4">
     <div class="col-6">
-        <div id="search-bar" hidden>
+        <div id="search-bar" class="search-bar" hidden>
             <div class="input-group input-group-lg">
                 <span class="input-group-text" id="inputGroup-sizing-lg">Search Tickets</span>
                 <input id="ticket-search" type="text" class="form-control" aria-describedby="inputGroup-sizing-lg">
+            </div>
+            <div id="results-dropdown" class="results-dropdown w-100">
+                <div id="search-results" class="mb-4"></div>
             </div>
         </div>
         <div id="search-loading">
@@ -96,7 +102,8 @@
     </div>
 </div>
 
-<div id="search-results" class="mb-4"></div>
+
+
 
 <div id="ticket" class="" hidden>
     <h2 id="title"></h2>

@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -81,7 +82,7 @@
  <p>
   (Information on why this was necessary is at
   <span class="ticket">
-   <a class="new" href="tktview?tn=3747" title="DMTCP checkpoints can't handle being moved">
+   <a class="new" href="../../tickets/?ticket=3747" title="DMTCP checkpoints can't handle being moved">
     #3747
    </a>
   </span>
@@ -97,13 +98,13 @@
  <p>
   Moving jobs between different processors can cause the jobs to crash because of incompatibilities.  For example, if your job checkpoints on a system that uses SSE4, glibc will cache that information and use SSE4 optimized code paths. If you then move to a machine lacking that support, the next time you call into such a function (including many common string routines) the job will crash.  We're working on an easier solution (See
   <span class="ticket">
-   <a class="defer" href="tktview?tn=3753" title="DMTCP checkpoint resumes must require original CheckpointPlatform">
+   <a class="defer" href="../../tickets/?ticket=3753" title="DMTCP checkpoint resumes must require original CheckpointPlatform">
     #3753
    </a>
   </span>
   ) but for now you if you have a CPU-heterogenous pool, you'll need to use your job's Requirements to check the
   <span class="wiki">
-   <a class="missing" "CheckpointPlatform" title="Checkpoint Platform">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/CheckpointPlatform" title="Checkpoint Platform">
     CheckpointPlatform
    </a>
   </span>
@@ -322,7 +323,7 @@ software include:
  <p>
   See
   <span class="wiki">
-   <a "DmtcpCondorDev" title="Dmtcp Condor Dev">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/DmtcpCondorDev" title="Dmtcp Condor Dev">
     DmtcpCondorDev
    </a>
   </span>

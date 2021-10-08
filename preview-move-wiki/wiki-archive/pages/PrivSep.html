@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -81,7 +82,7 @@
  <p>
   This page will serve as my brain dump of all things
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -89,7 +90,7 @@
  </p>
  <p>
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -98,7 +99,7 @@
  <p>
   For a single HTCondor instance to have both (multi-user) submit-side and execute-side functionality either
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -107,13 +108,13 @@
  <p>
   One other quirk is that
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
   requires HTCondor's EXECUTE directory to be "trusted" according to Jim Kupsch's trusted path algorithm. This means that the EXECUTE directory and all its parent directories must be root-owned and only writable by root. It's a reasonable requirement but it differs from how HTCondor normally works so it's something to watch out for when moving from non-PrivSep to
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -129,7 +130,7 @@
  <p>
   PrivSep's architecture is pretty simple. Only a small portion of the actual HTCondor code requires root privileges. For now, that includes the condor_root_switchboard and condor_procd programs. (See
   <span class="ticket">
-   <a class="abandoned" href="tktview?tn=110" title="Change ProcD to run without root privilege">
+   <a class="abandoned" href="../../tickets/?ticket=110" title="Change ProcD to run without root privilege">
     #110
    </a>
   </span>
@@ -138,7 +139,7 @@
  <p>
   The ProcD provides operations relevant to tracking, monitoring, and controlling processes and is described in more detail on the
   <span class="wiki">
-   <a "ProcdWisdom" title="Procd Wisdom">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/ProcdWisdom" title="Procd Wisdom">
     ProcdWisdom
    </a>
   </span>
@@ -167,7 +168,7 @@
  <p>
   In our execute-side
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>
@@ -217,13 +218,13 @@
  <p>
   See the
   <span class="wiki">
-   <a "GlexecWisdom" title="Glexec Wisdom">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/GlexecWisdom" title="Glexec Wisdom">
     GlexecWisdom
    </a>
   </span>
   page for information on how HTCondor can use glexec to provide functionality similar to
   <span class="wiki">
-   <a "PrivSep" title="Priv Sep">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/PrivSep" title="Priv Sep">
     PrivSep
    </a>
   </span>

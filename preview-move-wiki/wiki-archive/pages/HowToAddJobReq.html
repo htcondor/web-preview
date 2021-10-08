@@ -18,6 +18,7 @@
     
 
     <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
 
 </head>
 <body class="vh-100 d-flex flex-column">
@@ -81,7 +82,7 @@
  <p>
   To have some jobs preferentially run on some machines instead of others, see
   <span class="wiki">
-   <a "HowToSteerJobs" title="How To Steer Jobs">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/HowToSteerJobs" title="How To Steer Jobs">
     How to steer jobs towards more desirable machines
    </a>
   </span>
@@ -125,8 +126,7 @@ STARTD_ATTRS = $(STARTD_ATTRS) IsAppInstallerMachine
  <p>
  </p>
  <div class="code">
-  <pre class="code">START = ($(START)) &amp;&amp; TARGET.Owner == "appinstaller"
-</pre>
+  <pre class="code">START = ($(START)) &amp;&amp; TARGET.Owner == href="/web-preview/preview-move-wiki/wiki-archive/pages/appinstaller" </pre>
  </div>
  <p>
   Instead of altering the configuration to modify APPEND_REQUIREMENTS for each and every job's requirements
