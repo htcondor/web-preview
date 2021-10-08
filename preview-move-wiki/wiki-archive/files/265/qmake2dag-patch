@@ -1,0 +1,1319 @@
+diff --git a/Makefile.am b/Makefile.am
+index 92acdc2..2c2e854 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -31,7 +31,7 @@ endif
+ 
+ SUBDIRS =	glob config po doc $(MAYBE_W32)
+ 
+-bin_PROGRAMS =	make
++bin_PROGRAMS =	qmake2dag
+ 
+ if USE_CUSTOMS
+   remote =	remote-cstms.c
+@@ -40,23 +40,23 @@ else
+ endif
+ 
+ 
+-make_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c \
++qmake2dag_SOURCES =	ar.c arscan.c commands.c default.c dir.c expand.c file.c \
+ 		function.c getopt.c getopt1.c implicit.c job.c main.c \
+ 		misc.c read.c remake.c $(remote) rule.c signame.c \
+-		strcache.c variable.c version.c vpath.c hash.c
++		strcache.c variable.c version.c vpath.c hash.c qmake2dag.c
+ 
+-EXTRA_make_SOURCES = vmsjobs.c remote-stub.c remote-cstms.c
++EXTRA_qmake2dag_SOURCES = vmsjobs.c remote-stub.c remote-cstms.c
+ 
+ noinst_HEADERS = commands.h dep.h filedef.h job.h make.h rule.h variable.h \
+-		debug.h getopt.h gettext.h hash.h
++		debug.h getopt.h gettext.h hash.h qmake2dag.h
+ 
+-make_LDADD =	@LIBOBJS@ @ALLOCA@ $(GLOBLIB) @GETLOADAVG_LIBS@ @LIBINTL@
++qmake2dag_LDADD =	@LIBOBJS@ @ALLOCA@ $(GLOBLIB) @GETLOADAVG_LIBS@ @LIBINTL@
+ # Only process if target is MS-Windows
+ if WINDOWSENV
+-    make_LDADD += $(W32LIB)
++    qmake2dag_LDADD += $(W32LIB)
+ endif
+ 
+-man_MANS =	make.1
++man_MANS =	qmake2dag.1
+ 
+ DEFS =		-DLOCALEDIR=\"$(localedir)\" -DLIBDIR=\"$(libdir)\" -DINCLUDEDIR=\"$(includedir)\" @DEFS@
+ 
+diff --git a/dep.h b/dep.h
+index c27423b..5d433ab 100644
+--- a/dep.h
++++ b/dep.h
+@@ -39,6 +39,7 @@ struct dep
+     const char *name;
+     const char *stem;
+     struct file *file;
++    unsigned int count;
+     unsigned int changed : 8;
+     unsigned int ignore_mtime : 1;
+     unsigned int staticpattern : 1;
+diff --git a/file.c b/file.c
+index 0a4edb2..118a1cc 100644
+--- a/file.c
++++ b/file.c
+@@ -146,6 +146,8 @@ lookup_file (const char *name)
+    new record so it should be constant or in the strcache etc.
+  */
+ 
++/* To keep track of the files for DAGman */
++int filecount;
+ struct file *
+ enter_file (const char *name)
+ {
+@@ -184,7 +186,7 @@ enter_file (const char *name)
+   new = xcalloc (sizeof (struct file));
+   new->name = new->hname = name;
+   new->update_status = -1;
+-
++  new->count = filecount++;
+   if (HASH_VACANT (f))
+     {
+       new->last = new;
+diff --git a/filedef.h b/filedef.h
+index 0a621b9..a585608 100644
+--- a/filedef.h
++++ b/filedef.h
+@@ -72,6 +72,7 @@ struct file
+ 	cs_finished		/* Commands finished.  */
+       } command_state ENUM_BITFIELD (2);
+ 
++    unsigned int count;
+     unsigned int precious:1;	/* Non-0 means don't delete file on quit */
+     unsigned int low_resolution_time:1;	/* Nonzero if this file's time stamp
+ 					   has only one-second resolution.  */
+diff --git a/job.c b/job.c
+index aacfb84..d0150d9 100644
+--- a/job.c
++++ b/job.c
+@@ -26,7 +26,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
+ #include "commands.h"
+ #include "variable.h"
+ #include "debug.h"
+-
++#include "qmake2dag.h"
+ #include <string.h>
+ 
+ /* Default shell to use.  */
+@@ -823,6 +823,7 @@ reap_children (int block, int err)
+                      Also, start_remote_job may need state set up
+                      by start_remote_job_p.  */
+                   c->remote = start_remote_job_p (0);
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+                   start_job_command (c);
+                   /* Fatal signals are left blocked in case we were
+                      about to put that child on the chain.  But it is
+@@ -1021,6 +1022,9 @@ set_child_handler_action_flags (int set_handler, int set_alarm)
+    for calling `unblock_sigs', once the new child is safely on the chain so
+    it can be cleaned up in the event of a fatal signal.  */
+ 
++extern void walk_deps(struct dep*);
++extern char* condor_include;
++extern char* condor_universe;
+ static void
+ start_job_command (struct child *child)
+ {
+@@ -1034,8 +1038,46 @@ start_job_command (struct child *child)
+   char *argv;
+ #else
+   char **argv;
++  FILE* jobfp;
+ #endif
+-
++  char nodename[256];
++  char fnodename[256];
++  if(child && child->file){
++	  snprintf(nodename,256,"QM%05d",child->file->count);
++	  qm2d_insert(child->file->count);
++  } else {
++	fprintf(stderr,"***FILE does not have a COUNT***\n");
++	fprintf(stderr,"Stop NOW.");
++	_exit(1);
++  }	
++  snprintf(fnodename,256,"%s.condor",nodename);
++  jobfp=fopen(fnodename,"w"); 
++  if(!jobfp) {
++	fprintf(stderr,"Cannot open %s.\n",fnodename);
++	fprintf(stderr,"Stop NOW.");
++	_exit(1);
++  }	
++  fprintf(jobfp,"output = %s.out.$(cluster)\n",nodename);
++  fprintf(jobfp,"error = %s.err.$(cluster)\n",nodename);
++  fprintf(jobfp,"log = M2DAG.log\n");
++/* This next line could be problematic if layouts change */
++  fprintf(jobfp,"universe = %s\n",condor_universe);
++  fprintf(jobfp,"notification = NEVER\n");
++#if 0
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
++  fprintf(stderr,"Let's walk the dependencies\n");
++  if(child && child->file)
++    fprintf(stderr,"We are making \"%s\", index %d\n",child->file->name,child->file->count);
++  if(child && child->file && !child->file->deps)
++    fprintf(stderr,"\tNo dependencies.\n");
++#endif
++  if(child && child->file && child->file->deps){
++	fprintf(jobfp,"# transfer_input_files =");
++	qm2d_walk_deps(jobfp,child->file->deps);
++	/* This next part adds children to the dependencies */
++	/* It does not add children to our current child */
++	qm2d_add_children(child->file->count,child->file->deps);
++  }
+   /* If we have a completely empty commandset, stop now.  */
+   if (!child->command_ptr)
+     goto next_command;
+@@ -1080,6 +1122,51 @@ start_job_command (struct child *child)
+     argv = construct_command_argv (p, &end, child->file,
+ 				   child->file->cmds->lines_flags[child->command_line - 1],
+ 				   &child->sh_batch_file);
++do {
++	char** pp;
++	struct variable *sh=lookup_variable ("SHELL",5);
++
++	pp=&argv[1];
++	if(strcmp(sh->value,argv[0])==0) { /* We are using a shell script */
++		char shname[16];
++		FILE* shfp;
++		fprintf(jobfp,"executable = %s.sh\n",nodename);
++		snprintf(shname,16,"%s.sh",nodename);
++		shfp=fopen(shname,"w");
++		fprintf(shfp,"#!%s\n",argv[0]);
++		if(*pp) ++pp; /* Avoids "-c" */
++		while(*pp){
++			fprintf(shfp," %s\n",*pp);
++			++pp;
++		}
++		fclose(shfp);
++		chmod(shname,0755);
++	} else {
++		fprintf(jobfp, "executable = %s\n",argv[0]);
++		if(*pp){
++			fprintf(jobfp,"arguments =");
++			while(*pp){
++				fprintf(jobfp," \"%s\"",*pp);
++				++pp;
++			}
++		}
++		fprintf(jobfp,"\n");
++	}
++} while(0);
++  fprintf(jobfp,"# should_transfer_files = YES\n");
++  fprintf(jobfp,"# when_to_transfer_files = ON_EXIT\n");
++  fprintf(jobfp,"# transfer_output_files = %s\n",child->file->name); 
++  if(condor_include) {
++	FILE* cifp;
++	char ch;
++	cifp=fopen(condor_include,"r");
++	while(fread(&ch,1,1,cifp))
++		fwrite(&ch,1,1,jobfp);
++	fclose(cifp);
++  }
++  fprintf(jobfp,"queue\n");
++  fclose(jobfp);
++  jobfp=0;
+ #endif
+     if (end == NULL)
+       child->command_ptr = NULL;
+@@ -1126,8 +1213,10 @@ start_job_command (struct child *child)
+       execute_by_shell = 0;   /* in case construct_command_argv sets it */
+ #endif
+       /* This line has no commands.  Go to the next.  */
+-      if (job_next_command (child))
++      if (job_next_command (child)) {
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+ 	start_job_command (child);
++	}
+       else
+ 	{
+ 	  /* No more commands.  Make sure we're "running"; we might not be if
+@@ -1143,9 +1232,10 @@ start_job_command (struct child *child)
+      can log the working directory before the command's own error messages
+      appear.  */
+ 
++#if 0
+   message (0, (just_print_flag || (!(flags & COMMANDS_SILENT) && !silent_flag))
+ 	   ? "%s" : (char *) 0, p);
+-
++#endif
+   /* Tell update_goal_chain that a command has been started on behalf of
+      this target.  It is important that this happens here and not in
+      reap_children (where we used to do it), because reap_children might be
+@@ -1279,6 +1369,7 @@ start_job_command (struct child *child)
+       child->remote = 0;
+ 
+ #ifdef VMS
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+       if (!child_execute_job (argv, child)) {
+         /* Fork failed!  */
+         perror_with_name ("vfork", "");
+@@ -1301,6 +1392,7 @@ start_job_command (struct child *child)
+ 	CLOSE_ON_EXEC (job_rfd);
+ 
+       /* Never use fork()/exec() here! Use spawn() instead in exec_command() */
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+       child->pid = child_execute_job (child->good_stdin ? 0 : bad_stdin, 1,
+                                       argv, child->environment);
+       if (child->pid < 0)
+@@ -1345,6 +1437,7 @@ start_job_command (struct child *child)
+             setrlimit (RLIMIT_STACK, &stack_limit);
+ #endif
+ 
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+ 	  child_execute_job (child->good_stdin ? 0 : bad_stdin, 1,
+                              argv, child->environment);
+ 	}
+@@ -1516,6 +1609,9 @@ start_waiting_job (struct child *c)
+     }
+ 
+   /* Start the first command; reap_children will run later command lines.  */
++#if 0
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
++#endif
+   start_job_command (c);
+ 
+   switch (f->command_state)
+@@ -1558,7 +1654,14 @@ new_job (struct file *file)
+   struct child *c;
+   char **lines;
+   unsigned int i;
+-
++  
++#if 0
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
++  fprintf(stderr,"cmds->ncommand_lines=%d\n",cmds->ncommand_lines);
++  if(cmds)
++    for(i=0;i<cmds->ncommand_lines;++i)
++      fprintf(stderr,"***%s***\n",cmds->command_lines[i]);
++#endif
+   /* Let any previously decided-upon jobs that are waiting
+      for the load to go down start before this new one.  */
+   start_waiting_jobs ();
+@@ -1981,6 +2084,7 @@ child_execute_job (int stdin_fd, int stdout_fd, char **argv, char **envp)
+   int save_stdout = (stdout_fd != 1) ? dup (1): 1;
+ 
+   /* < 0 only if dup() failed */
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+   if (save_stdin < 0)
+     fatal (NILF, _("no more file handles: could not duplicate stdin\n"));
+   if (save_stdout < 0)
+diff --git a/main.c b/main.c
+index c6989e3..1dbffbf 100644
+--- a/main.c
++++ b/main.c
+@@ -25,7 +25,7 @@ this program.  If not, see <http://www.gnu.org/licenses/>.  */
+ #include "rule.h"
+ #include "debug.h"
+ #include "getopt.h"
+-
++#include "qmake2dag.h"
+ #include <assert.h>
+ #ifdef _AMIGA
+ # include <dos/dos.h>
+@@ -293,6 +293,12 @@ struct variable shell_var;
+ 
+ char cmd_prefix = '\t';
+ 
++/* qmake2dag variables */
++struct stringlist* _condor_universe_ = 0;
++char* condor_universe;
++struct stringlist* _condor_include_ = 0;
++char* condor_include;
++
+ 
+ /* The usage output.  We write it this way to make life easier for the
+    translators, especially those trying to translate to right-to-left
+@@ -377,6 +383,7 @@ static const struct command_switch switches[] =
+   {
+     { 'b', ignore, 0, 0, 0, 0, 0, 0, 0 },
+     { 'B', flag, &always_make_set, 1, 1, 0, 0, 0, "always-make" },
++    { 'c', filename, &_condor_include_,1,1,0,0,0, "condor-include" },
+     { 'C', filename, &directories, 0, 0, 0, 0, 0, "directory" },
+     { 'd', flag, &debug_flag, 1, 1, 0, 0, 0, 0 },
+     { CHAR_MAX+1, string, &db_flags, 1, 1, 0, "basic", 0, "debug" },
+@@ -414,6 +421,7 @@ static const struct command_switch switches[] =
+     { 'S', flag_off, &keep_going_flag, 1, 1, 0, 0, &default_keep_going_flag,
+       "no-keep-going" },
+     { 't', flag, &touch_flag, 1, 1, 1, 0, 0, "touch" },
++    { 'u', filename, &_condor_universe_,1,1,0,0,0, "universe" },
+     { 'v', flag, &print_version_flag, 1, 1, 0, 0, 0, "version" },
+     { CHAR_MAX+3, string, &verbosity_flags, 1, 1, 0, 0, 0,
+       "verbosity" },
+@@ -512,7 +520,7 @@ int not_parallel;
+    warning at the end of the run. */
+ 
+ int clock_skew_detected;
+-
++
+ /* Mask of signals that are being caught with fatal_error_signal.  */
+ 
+ #ifdef	POSIX
+@@ -1275,6 +1283,9 @@ main (int argc, char **argv, char **envp)
+         fprintf(stderr, _("done sleep(30). Continuing.\n"));
+   }
+ #endif
++	condor_universe = _condor_universe_ ? _condor_universe_->list[0]:
++		"standard"; 
++	condor_include = _condor_include_ ? _condor_include_->list[0]:0;
+ 
+   decode_debug_flags ();
+ 
+@@ -1688,6 +1699,8 @@ main (int argc, char **argv, char **envp)
+ 
+   /* Decode switches again, in case the variables were set by the makefile.  */
+   decode_env_switches (STRING_SIZE_TUPLE ("MAKEFLAGS"));
++  job_slots=1;
++  just_print_flag=1;
+ #if 0
+   decode_env_switches (STRING_SIZE_TUPLE ("MFLAGS"));
+ #endif
+@@ -2165,6 +2178,7 @@ main (int argc, char **argv, char **envp)
+ 	       termination. */
+ 	    int pid;
+ 	    int status;
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
+ 	    pid = child_execute_job (0, 1, nargv, environ);
+ 
+ 	    /* is this loop really necessary? */
+@@ -2278,7 +2292,10 @@ main (int argc, char **argv, char **envp)
+ 
+   {
+     int status;
+-
++    FILE* fp;
++#if 0
++  fprintf(stderr,"Now in %s, " __FILE__ ":%d.\n",__func__,__LINE__);
++#endif
+     switch (update_goal_chain (goals))
+     {
+       case -1:
+@@ -2299,7 +2316,11 @@ main (int argc, char **argv, char **envp)
+       default:
+         abort ();
+     }
+-
++    if((fp=fopen("M2DAG.dag","w"))!=0){
++	qm2d_dump(fp);
++	fclose(fp);
++    }
++	 
+     /* If we detected some clock skew, generate one last warning */
+     if (clock_skew_detected)
+       error (NILF,
+@@ -3183,7 +3204,9 @@ die (int status)
+       remote_cleanup ();
+ 
+       /* Remove the intermediate files.  */
++#if 0
+       remove_intermediates (0);
++#endif
+ 
+       if (print_data_base_flag)
+ 	print_data_base ();
+diff --git a/make.1 b/make.1
+deleted file mode 100644
+index c76ce25..0000000
+--- a/make.1
++++ /dev/null
+@@ -1,359 +0,0 @@
+-.TH MAKE 1 "22 August 1989" "GNU" "LOCAL USER COMMANDS"
+-.SH NAME
+-make \- GNU make utility to maintain groups of programs
+-.SH SYNOPSIS
+-.B "make "
+-[
+-.B \-f
+-.I makefile
+-] [ options ] ... [ targets ] ...
+-.SH WARNING
+-This man page is an extract of the documentation of GNU
+-.IR make .
+-It is updated only occasionally, because the GNU project does not use nroff.
+-For complete, current documentation, refer to the Info file
+-.B make.info
+-which is made from the Texinfo source file
+-.BR make.texi .
+-.SH DESCRIPTION
+-.LP
+-The purpose of the
+-.I make
+-utility is to determine automatically which
+-pieces of a large program need to be recompiled, and issue the commands to
+-recompile them.
+-The manual describes the GNU implementation of
+-.IR make ,
+-which was written by Richard Stallman and Roland McGrath, and is
+-currently maintained by Paul Smith.
+-Our examples show C programs, since they are most common, but you can use
+-.I make
+-with any programming language whose compiler can be run with a
+-shell command.
+-In fact,
+-.I make
+-is not limited to programs.
+-You can use it to describe any task where some files must be
+-updated automatically from others whenever the others change.
+-.LP
+-To prepare to use
+-.IR make ,
+-you must write a file called the
+-.I makefile
+-that describes the relationships among files in your program, and the
+-states the commands for updating each file.
+-In a program, typically the executable file is updated from object
+-files, which are in turn made by compiling source files.
+-.LP
+-Once a suitable makefile exists, each time you change some source files,
+-this simple shell command:
+-.sp 1
+-.RS
+-.B make
+-.RE
+-.sp 1
+-suffices to perform all necessary recompilations.
+-The
+-.I make
+-program uses the makefile data base and the last-modification times
+-of the files to decide which of the files need to be updated.
+-For each of those files, it issues the commands recorded in the data base.
+-.LP
+-.I make
+-executes commands in the
+-.I makefile
+-to update
+-one or more target
+-.IR names ,
+-where
+-.I name
+-is typically a program.
+-If no
+-.B \-f
+-option is present,
+-.I make
+-will look for the makefiles
+-.IR GNUmakefile ,
+-.IR makefile ,
+-and
+-.IR Makefile ,
+-in that order.
+-.LP
+-Normally you should call your makefile either
+-.I makefile
+-or
+-.IR Makefile .
+-(We recommend
+-.I Makefile
+-because it appears prominently near the beginning of a directory
+-listing, right near other important files such as
+-.IR  README .)
+-The first name checked,
+-.IR GNUmakefile ,
+-is not recommended for most makefiles.
+-You should use this name if you have a makefile that is specific to GNU
+-.IR make ,
+-and will not be understood by other versions of
+-.IR make .
+-If
+-.I makefile
+-is `\-', the standard input is read.
+-.LP
+-.I make
+-updates a target if it depends on prerequisite files
+-that have been modified since the target was last modified,
+-or if the target does not exist.
+-.SH OPTIONS
+-.sp 1
+-.TP 0.5i
+-.BR \-b , " \-m"
+-These options are ignored for compatibility with other versions of
+-.IR make .
+-.TP 0.5i
+-.BR \-B , " \-\-always\-make"
+-Unconditionally make all targets.
+-.TP 0.5i
+-\fB\-C\fR \fIdir\fR, \fB\-\-directory\fR=\fIdir\fR
+-Change to directory
+-.I dir
+-before reading the makefiles or doing anything else.
+-If multiple
+-.B \-C
+-options are specified, each is interpreted relative to the
+-previous one:
+-.BR "\-C " /
+-.BR "\-C " etc
+-is equivalent to
+-.BR "\-C " /etc.
+-This is typically used with recursive invocations of
+-.IR make .
+-.TP 0.5i
+-.B \-d
+-Print debugging information in addition to normal processing.
+-The debugging information says which files are being considered for
+-remaking, which file-times are being compared and with what results,
+-which files actually need to be remade, which implicit rules are
+-considered and which are applied---everything interesting about how
+-.I make
+-decides what to do.
+-.TP 0.5i
+-.BI \-\-debug "[=FLAGS]"
+-Print debugging information in addition to normal processing.
+-If the
+-.I FLAGS
+-are omitted, then the behavior is the same as if
+-.B \-d
+-was specified.
+-.I FLAGS
+-may be
+-.I a
+-for all debugging output (same as using
+-.BR \-d ),
+-.I b
+-for basic debugging,
+-.I v
+-for more verbose basic debugging,
+-.I i
+-for showing implicit rules,
+-.I j
+-for details on invocation of commands, and
+-.I m
+-for debugging while remaking makefiles.
+-.TP 0.5i
+-.BR \-e , " \-\-environment\-overrides"
+-Give variables taken from the environment precedence
+-over variables from makefiles.
+-.TP 0.5i
+-\fB\-f\fR \fIfile\fR, \fB\-\-file\fR=\fIfile\fR, \fB\-\-makefile\fR=\fIFILE\fR
+-Use
+-.I file
+-as a makefile.
+-.TP 0.5i
+-.BR \-i , " \-\-ignore\-errors"
+-Ignore all errors in commands executed to remake files.
+-.TP 0.5i
+-\fB\-I\fR \fIdir\fR, \fB\-\-include\-dir\fR=\fIdir\fR
+-Specifies a directory
+-.I dir
+-to search for included makefiles.
+-If several
+-.B \-I
+-options are used to specify several directories, the directories are
+-searched in the order specified.
+-Unlike the arguments to other flags of
+-.IR make ,
+-directories given with
+-.B \-I
+-flags may come directly after the flag:
+-.BI \-I dir
+-is allowed, as well as
+-.BI "\-I " dir.
+-This syntax is allowed for compatibility with the C
+-preprocessor's
+-.B \-I
+-flag.
+-.TP 0.5i
+-\fB\-j\fR [\fIjobs\fR], \fB\-\-jobs\fR[=\fIjobs\fR]
+-Specifies the number of
+-.I jobs
+-(commands) to run simultaneously.
+-If there is more than one
+-.B \-j
+-option, the last one is effective.
+-If the
+-.B \-j
+-option is given without an argument,
+-.IR make
+-will not limit the number of jobs that can run simultaneously.
+-.TP 0.5i
+-.BR \-k , " \-\-keep\-going"
+-Continue as much as possible after an error.
+-While the target that failed, and those that depend on it, cannot
+-be remade, the other dependencies of these targets can be processed
+-all the same.
+-.TP 0.5i
+-\fB\-l\fR [\fIload\fR], \fB\-\-load\-average\fR[=\fIload\fR]
+-Specifies that no new jobs (commands) should be started if there are
+-others jobs running and the load average is at least
+-.I load
+-(a floating-point number).
+-With no argument, removes a previous load limit.
+-.TP 0.5i
+-.BR \-L , " \-\-check\-symlink\-times"
+-Use the latest mtime between symlinks and target.
+-.TP 0.5i
+-.BR \-n , " \-\-just\-print" , " \-\-dry\-run" , " \-\-recon"
+-Print the commands that would be executed, but do not execute them (except in
+-certain circumstances).
+-.TP 0.5i
+-\fB\-o\fR \fIfile\fR, \fB\-\-old\-file\fR=\fIfile\fR, \fB\-\-assume\-old\fR=\fIfile\fR
+-Do not remake the file
+-.I file
+-even if it is older than its dependencies, and do not remake anything
+-on account of changes in
+-.IR file .
+-Essentially the file is treated as very old and its rules are ignored.
+-.TP 0.5i
+-.BR \-p , " \-\-print\-data\-base"
+-Print the data base (rules and variable values) that results from
+-reading the makefiles; then execute as usual or as otherwise
+-specified.
+-This also prints the version information given by the
+-.B \-v
+-switch (see below).
+-To print the data base without trying to remake any files, use
+-.B make
+-.B \-p
+-.BI \-f /dev/null.
+-.TP 0.5i
+-.BR \-q , " \-\-question"
+-``Question mode''.
+-Do not run any commands, or print anything; just return an exit status
+-that is zero if the specified targets are already up to date, nonzero
+-otherwise.
+-.TP 0.5i
+-.BR \-r , " \-\-no\-builtin\-rules"
+-Eliminate use of the built\-in implicit rules.
+-Also clear out the default list of suffixes for suffix rules.
+-.TP 0.5i
+-.BR \-R , " \-\-no\-builtin\-variables"
+-Don't define any built\-in variables.
+-.TP 0.5i
+-.BR \-s , " \-\-silent" , " \-\-quiet"
+-Silent operation; do not print the commands as they are executed.
+-.TP 0.5i
+-.BR \-S , " \-\-no\-keep\-going" , " \-\-stop"
+-Cancel the effect of the
+-.B \-k
+-option.
+-This is never necessary except in a recursive
+-.I make
+-where
+-.B \-k
+-might be inherited from the top-level
+-.I make
+-via MAKEFLAGS or if you set
+-.B \-k
+-in MAKEFLAGS in your environment.
+-.TP 0.5i
+-.BR \-t , " \-\-touch"
+-Touch files (mark them up to date without really changing them)
+-instead of running their commands.
+-This is used to pretend that the commands were done, in order to fool
+-future invocations of
+-.IR make .
+-.TP 0.5i
+-.BR \-v , " \-\-version"
+-Print the version of the
+-.I make
+-program plus a copyright, a list of authors and a notice that there
+-is no warranty.
+-.TP 0.5i
+-.BR \-w , " \-\-print\-directory"
+-Print a message containing the working directory
+-before and after other processing.
+-This may be useful for tracking down errors from complicated nests of
+-recursive
+-.I make
+-commands.
+-.TP 0.5i
+-.B \-\-no\-print\-directory
+-Turn off
+-.BR \-w ,
+-even if it was turned on implicitly.
+-.TP 0.5i
+-\fB\-W\fR \fIfile\fR, \fB\-\-what\-if\fR=\fIfile\fR, \fB\-\-new\-file\fR=\fIfile\fR, \fB\-\-assume\-new\fR=\fIfile\fR
+-Pretend that the target
+-.I file
+-has just been modified.
+-When used with the
+-.B \-n
+-flag, this shows you what would happen if you were to modify that file.
+-Without
+-.BR \-n ,
+-it is almost the same as running a
+-.I touch
+-command on the given file before running
+-.IR make ,
+-except that the modification time is changed only in the imagination of
+-.IR make .
+-.TP 0.5i
+-.B \-\-warn\-undefined\-variables
+-Warn when an undefined variable is referenced.
+-.SH "EXIT STATUS"
+-GNU
+-.I make
+-exits with a status of zero if all makefiles were successfully parsed
+-and no targets that were built failed.  A status of one will be returned
+-if the
+-.B \-q
+-flag was used and
+-.I make
+-determines that a target needs to be rebuilt.  A status of two will be
+-returned if any errors were encountered.
+-.SH "SEE ALSO"
+-.I "The GNU Make Manual"
+-.SH BUGS
+-See the chapter `Problems and Bugs' in
+-.IR "The GNU Make Manual" .
+-.SH AUTHOR
+-This manual page contributed by Dennis Morse of Stanford University.
+-It has been reworked by Roland McGrath.  Further updates contributed by
+-Mike Frysinger.
+-.SH "COPYRIGHT"
+-Copyright (C) 1992, 1993, 1996, 1999, 2007 Free Software Foundation, Inc.
+-This file is part of GNU
+-.IR make .
+-.LP
+-GNU Make is free software; you can redistribute it and/or modify it under the
+-terms of the GNU General Public License as published by the Free Software
+-Foundation; either version 3 of the License, or (at your option) any later
+-version.
+-.LP
+-GNU Make is distributed in the hope that it will be useful, but WITHOUT ANY
+-WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+-A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
+-.LP
+-You should have received a copy of the GNU General Public License along with
+-this program.  If not, see
+-.IR http://www.gnu.org/licenses/ .
+diff --git a/qmake2dag.1 b/qmake2dag.1
+new file mode 100644
+index 0000000..c76ce25
+--- /dev/null
++++ b/qmake2dag.1
+@@ -0,0 +1,359 @@
++.TH MAKE 1 "22 August 1989" "GNU" "LOCAL USER COMMANDS"
++.SH NAME
++make \- GNU make utility to maintain groups of programs
++.SH SYNOPSIS
++.B "make "
++[
++.B \-f
++.I makefile
++] [ options ] ... [ targets ] ...
++.SH WARNING
++This man page is an extract of the documentation of GNU
++.IR make .
++It is updated only occasionally, because the GNU project does not use nroff.
++For complete, current documentation, refer to the Info file
++.B make.info
++which is made from the Texinfo source file
++.BR make.texi .
++.SH DESCRIPTION
++.LP
++The purpose of the
++.I make
++utility is to determine automatically which
++pieces of a large program need to be recompiled, and issue the commands to
++recompile them.
++The manual describes the GNU implementation of
++.IR make ,
++which was written by Richard Stallman and Roland McGrath, and is
++currently maintained by Paul Smith.
++Our examples show C programs, since they are most common, but you can use
++.I make
++with any programming language whose compiler can be run with a
++shell command.
++In fact,
++.I make
++is not limited to programs.
++You can use it to describe any task where some files must be
++updated automatically from others whenever the others change.
++.LP
++To prepare to use
++.IR make ,
++you must write a file called the
++.I makefile
++that describes the relationships among files in your program, and the
++states the commands for updating each file.
++In a program, typically the executable file is updated from object
++files, which are in turn made by compiling source files.
++.LP
++Once a suitable makefile exists, each time you change some source files,
++this simple shell command:
++.sp 1
++.RS
++.B make
++.RE
++.sp 1
++suffices to perform all necessary recompilations.
++The
++.I make
++program uses the makefile data base and the last-modification times
++of the files to decide which of the files need to be updated.
++For each of those files, it issues the commands recorded in the data base.
++.LP
++.I make
++executes commands in the
++.I makefile
++to update
++one or more target
++.IR names ,
++where
++.I name
++is typically a program.
++If no
++.B \-f
++option is present,
++.I make
++will look for the makefiles
++.IR GNUmakefile ,
++.IR makefile ,
++and
++.IR Makefile ,
++in that order.
++.LP
++Normally you should call your makefile either
++.I makefile
++or
++.IR Makefile .
++(We recommend
++.I Makefile
++because it appears prominently near the beginning of a directory
++listing, right near other important files such as
++.IR  README .)
++The first name checked,
++.IR GNUmakefile ,
++is not recommended for most makefiles.
++You should use this name if you have a makefile that is specific to GNU
++.IR make ,
++and will not be understood by other versions of
++.IR make .
++If
++.I makefile
++is `\-', the standard input is read.
++.LP
++.I make
++updates a target if it depends on prerequisite files
++that have been modified since the target was last modified,
++or if the target does not exist.
++.SH OPTIONS
++.sp 1
++.TP 0.5i
++.BR \-b , " \-m"
++These options are ignored for compatibility with other versions of
++.IR make .
++.TP 0.5i
++.BR \-B , " \-\-always\-make"
++Unconditionally make all targets.
++.TP 0.5i
++\fB\-C\fR \fIdir\fR, \fB\-\-directory\fR=\fIdir\fR
++Change to directory
++.I dir
++before reading the makefiles or doing anything else.
++If multiple
++.B \-C
++options are specified, each is interpreted relative to the
++previous one:
++.BR "\-C " /
++.BR "\-C " etc
++is equivalent to
++.BR "\-C " /etc.
++This is typically used with recursive invocations of
++.IR make .
++.TP 0.5i
++.B \-d
++Print debugging information in addition to normal processing.
++The debugging information says which files are being considered for
++remaking, which file-times are being compared and with what results,
++which files actually need to be remade, which implicit rules are
++considered and which are applied---everything interesting about how
++.I make
++decides what to do.
++.TP 0.5i
++.BI \-\-debug "[=FLAGS]"
++Print debugging information in addition to normal processing.
++If the
++.I FLAGS
++are omitted, then the behavior is the same as if
++.B \-d
++was specified.
++.I FLAGS
++may be
++.I a
++for all debugging output (same as using
++.BR \-d ),
++.I b
++for basic debugging,
++.I v
++for more verbose basic debugging,
++.I i
++for showing implicit rules,
++.I j
++for details on invocation of commands, and
++.I m
++for debugging while remaking makefiles.
++.TP 0.5i
++.BR \-e , " \-\-environment\-overrides"
++Give variables taken from the environment precedence
++over variables from makefiles.
++.TP 0.5i
++\fB\-f\fR \fIfile\fR, \fB\-\-file\fR=\fIfile\fR, \fB\-\-makefile\fR=\fIFILE\fR
++Use
++.I file
++as a makefile.
++.TP 0.5i
++.BR \-i , " \-\-ignore\-errors"
++Ignore all errors in commands executed to remake files.
++.TP 0.5i
++\fB\-I\fR \fIdir\fR, \fB\-\-include\-dir\fR=\fIdir\fR
++Specifies a directory
++.I dir
++to search for included makefiles.
++If several
++.B \-I
++options are used to specify several directories, the directories are
++searched in the order specified.
++Unlike the arguments to other flags of
++.IR make ,
++directories given with
++.B \-I
++flags may come directly after the flag:
++.BI \-I dir
++is allowed, as well as
++.BI "\-I " dir.
++This syntax is allowed for compatibility with the C
++preprocessor's
++.B \-I
++flag.
++.TP 0.5i
++\fB\-j\fR [\fIjobs\fR], \fB\-\-jobs\fR[=\fIjobs\fR]
++Specifies the number of
++.I jobs
++(commands) to run simultaneously.
++If there is more than one
++.B \-j
++option, the last one is effective.
++If the
++.B \-j
++option is given without an argument,
++.IR make
++will not limit the number of jobs that can run simultaneously.
++.TP 0.5i
++.BR \-k , " \-\-keep\-going"
++Continue as much as possible after an error.
++While the target that failed, and those that depend on it, cannot
++be remade, the other dependencies of these targets can be processed
++all the same.
++.TP 0.5i
++\fB\-l\fR [\fIload\fR], \fB\-\-load\-average\fR[=\fIload\fR]
++Specifies that no new jobs (commands) should be started if there are
++others jobs running and the load average is at least
++.I load
++(a floating-point number).
++With no argument, removes a previous load limit.
++.TP 0.5i
++.BR \-L , " \-\-check\-symlink\-times"
++Use the latest mtime between symlinks and target.
++.TP 0.5i
++.BR \-n , " \-\-just\-print" , " \-\-dry\-run" , " \-\-recon"
++Print the commands that would be executed, but do not execute them (except in
++certain circumstances).
++.TP 0.5i
++\fB\-o\fR \fIfile\fR, \fB\-\-old\-file\fR=\fIfile\fR, \fB\-\-assume\-old\fR=\fIfile\fR
++Do not remake the file
++.I file
++even if it is older than its dependencies, and do not remake anything
++on account of changes in
++.IR file .
++Essentially the file is treated as very old and its rules are ignored.
++.TP 0.5i
++.BR \-p , " \-\-print\-data\-base"
++Print the data base (rules and variable values) that results from
++reading the makefiles; then execute as usual or as otherwise
++specified.
++This also prints the version information given by the
++.B \-v
++switch (see below).
++To print the data base without trying to remake any files, use
++.B make
++.B \-p
++.BI \-f /dev/null.
++.TP 0.5i
++.BR \-q , " \-\-question"
++``Question mode''.
++Do not run any commands, or print anything; just return an exit status
++that is zero if the specified targets are already up to date, nonzero
++otherwise.
++.TP 0.5i
++.BR \-r , " \-\-no\-builtin\-rules"
++Eliminate use of the built\-in implicit rules.
++Also clear out the default list of suffixes for suffix rules.
++.TP 0.5i
++.BR \-R , " \-\-no\-builtin\-variables"
++Don't define any built\-in variables.
++.TP 0.5i
++.BR \-s , " \-\-silent" , " \-\-quiet"
++Silent operation; do not print the commands as they are executed.
++.TP 0.5i
++.BR \-S , " \-\-no\-keep\-going" , " \-\-stop"
++Cancel the effect of the
++.B \-k
++option.
++This is never necessary except in a recursive
++.I make
++where
++.B \-k
++might be inherited from the top-level
++.I make
++via MAKEFLAGS or if you set
++.B \-k
++in MAKEFLAGS in your environment.
++.TP 0.5i
++.BR \-t , " \-\-touch"
++Touch files (mark them up to date without really changing them)
++instead of running their commands.
++This is used to pretend that the commands were done, in order to fool
++future invocations of
++.IR make .
++.TP 0.5i
++.BR \-v , " \-\-version"
++Print the version of the
++.I make
++program plus a copyright, a list of authors and a notice that there
++is no warranty.
++.TP 0.5i
++.BR \-w , " \-\-print\-directory"
++Print a message containing the working directory
++before and after other processing.
++This may be useful for tracking down errors from complicated nests of
++recursive
++.I make
++commands.
++.TP 0.5i
++.B \-\-no\-print\-directory
++Turn off
++.BR \-w ,
++even if it was turned on implicitly.
++.TP 0.5i
++\fB\-W\fR \fIfile\fR, \fB\-\-what\-if\fR=\fIfile\fR, \fB\-\-new\-file\fR=\fIfile\fR, \fB\-\-assume\-new\fR=\fIfile\fR
++Pretend that the target
++.I file
++has just been modified.
++When used with the
++.B \-n
++flag, this shows you what would happen if you were to modify that file.
++Without
++.BR \-n ,
++it is almost the same as running a
++.I touch
++command on the given file before running
++.IR make ,
++except that the modification time is changed only in the imagination of
++.IR make .
++.TP 0.5i
++.B \-\-warn\-undefined\-variables
++Warn when an undefined variable is referenced.
++.SH "EXIT STATUS"
++GNU
++.I make
++exits with a status of zero if all makefiles were successfully parsed
++and no targets that were built failed.  A status of one will be returned
++if the
++.B \-q
++flag was used and
++.I make
++determines that a target needs to be rebuilt.  A status of two will be
++returned if any errors were encountered.
++.SH "SEE ALSO"
++.I "The GNU Make Manual"
++.SH BUGS
++See the chapter `Problems and Bugs' in
++.IR "The GNU Make Manual" .
++.SH AUTHOR
++This manual page contributed by Dennis Morse of Stanford University.
++It has been reworked by Roland McGrath.  Further updates contributed by
++Mike Frysinger.
++.SH "COPYRIGHT"
++Copyright (C) 1992, 1993, 1996, 1999, 2007 Free Software Foundation, Inc.
++This file is part of GNU
++.IR make .
++.LP
++GNU Make is free software; you can redistribute it and/or modify it under the
++terms of the GNU General Public License as published by the Free Software
++Foundation; either version 3 of the License, or (at your option) any later
++version.
++.LP
++GNU Make is distributed in the hope that it will be useful, but WITHOUT ANY
++WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
++A PARTICULAR PURPOSE.  See the GNU General Public License for more details.
++.LP
++You should have received a copy of the GNU General Public License along with
++this program.  If not, see
++.IR http://www.gnu.org/licenses/ .
+diff --git a/qmake2dag.c b/qmake2dag.c
+new file mode 100644
+index 0000000..9967aa7
+--- /dev/null
++++ b/qmake2dag.c
+@@ -0,0 +1,145 @@
++#include "qmake2dag.h"
++#include "make.h"
++#include "dep.h"
++#include "filedef.h"
++#include <stdio.h>
++#include <stdlib.h>
++
++struct qm2d {
++	struct qm2d* next;
++	struct qm2d* children;
++#if 0
++	struct qm2d* parents;
++#endif
++	int count;
++};
++
++static struct qm2d* qm2d_list;
++
++static struct qm2d* qm2d_check_local(int idx,struct qm2d**list)
++{
++	struct qm2d *q, *ret=0;
++	if(list)
++		for(q=*list;q;q=q->next)
++			if(q->count==idx){
++				ret=q;
++				break;
++			}
++	return ret;	
++}
++
++struct qm2d* qm2d_check(int idx)
++{
++	return qm2d_check_local(idx,&qm2d_list);
++}
++
++static int qm2d_insert_local(int idx,struct qm2d** list)
++{
++	struct qm2d* q;
++	int ret=0;
++	if(list && (q=qm2d_check_local(idx,list))==0){
++		q=(struct qm2d*)malloc(sizeof(struct qm2d));
++		if(!q)
++			ret=1;	
++		else{
++			q->count=idx;
++			q->next=*list;
++			*list=q;
++			q->children=0;
++#if 0
++			q->parents=0;
++#endif
++		}
++	}
++	return ret;
++}
++
++int qm2d_insert(int idx)
++{
++	return qm2d_insert_local(idx,&qm2d_list);
++}
++
++#if 0
++static int qm2d_add_parent(int idx,int pidx)
++{
++	int ret=0;
++	struct qm2d* q;
++	if((q=qm2d_check(idx))!=0)
++		qm2d_insert_local(pidx,&q->parents);
++	else ret=1;
++	return ret;
++}
++#endif
++static int qm2d_add_child(int idx,int cidx)
++{
++	int ret=0;
++	struct qm2d* q;
++	if((q=qm2d_check(idx))!=0)
++		qm2d_insert_local(cidx,&q->children);
++	else ret=1;
++	return ret;
++}
++
++int qm2d_add_children(int idx,struct dep* dp)
++{
++	while(dp){
++		if(dp->file)
++			qm2d_add_child(dp->file->count,idx);
++		dp=dp->next;
++	}
++	return 0;
++}
++static void qm2d_delete_local(struct qm2d**list)
++{
++	if(list){
++		struct qm2d* q,*next;
++		for(q=*list;q;q=next){
++			next=q->next;
++			free(q);
++		}
++	}
++}
++
++void qm2d_delete(void)
++{
++	struct qm2d* q,*next;
++	for(q=qm2d_list;q;q=next){
++		next=q->next;
++		qm2d_delete_local(&q->children);
++#if 0
++		qm2d_delete_local(&q->parents);
++#endif
++		free(q);
++	}
++	qm2d_list=0;
++}
++
++void qm2d_dump(FILE* qm2dfp)
++{
++	struct qm2d* q;
++	for(q=qm2d_list;q;q=q->next)
++		fprintf(qm2dfp,"JOB QM%05d QM%05d.condor\n",q->count,q->count);
++	for(q=qm2d_list;q;q=q->next){
++		struct qm2d* child;
++		if(q->children){
++			fprintf(qm2dfp,"PARENT QM%05d CHILD",q->count);
++			for(child=q->children;child;child=child->next)
++				fprintf(qm2dfp," QM%05d",child->count);
++			fprintf(qm2dfp,"\n");	
++		}
++	}
++}
++
++void qm2d_walk_deps(FILE* jobfp,struct dep* dp)
++{
++ 	int count=0;
++	while(dp){
++		if(dp->name)
++			fprintf(jobfp,"%s%s",(count>0)?",":" ",dp->name);
++		else if(dp->file && dp->file->name)
++			fprintf(jobfp,"%s%s",(count>0)?",":" ",dp->file->name);
++		dp = dp->next;
++		count=1;
++	}
++	fprintf(jobfp,"\n");
++}
+diff --git a/qmake2dag.h b/qmake2dag.h
+new file mode 100644
+index 0000000..199d1b7
+--- /dev/null
++++ b/qmake2dag.h
+@@ -0,0 +1,16 @@
++#ifndef SEEN_QMAKE2DAG_H
++#define SEEN_QMAKE2DAG_H
++
++#include <stdio.h>
++struct dep;
++struct qm2d;
++extern FILE* dagfile;
++extern FILE* jobfile;
++
++int qm2d_insert(int idx);
++struct qm2d* qm2d_check(int idx);
++void qm2d_delete(void);
++void qm2d_dump(FILE* qm2dfp);
++void qm2d_walk_deps(FILE* jobfp,struct dep* dp);
++int qm2d_add_children(int idx,struct dep* dp);
++#endif
