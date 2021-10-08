@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Git New Branch Rules</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Git New Branch Rules</h1>
+<div id="content">
+ Below are the rules to be followed for any new branch that you plan to push to HTCondor's central git repository.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Naming your branch
+ </h3>
+ <p>
+  <em>
+   If you don't follow the branch naming convention
+  </em>
+  you risk a grumpy Todd blowing away your branch from the central repository.  If you don't want to risk losing all that work, then follow these branch naming directions!!
+ </p>
+ <p>
+  The convention that must be followed is:
+ </p>
+ <p>
+ </p>
+ <pre>   [new-branch-name] == [old-branch-name without "-branch"]-XXX-branch
+</pre>
+ <p>
+  such that XXX describes the newness.  If you want XXX to contain
+multiple words, separate them with underscores, not hyphens.
+ </p>
+ <p>
+  For example, a branch off of V6_5-branch could be:
+  <code>
+   V6_5-gridmanager_reorg-branch
+  </code>
+ </p>
+ <p>
+  If you're creating a new version of an existing branch, add a "-2"
+   after XXX. If a number is already there in the old version,
+   increment it.
+ </p>
+ <p>
+  Release branches are made for every release of HTCondor when we're
+   almost ready to ship them.  They should be named with the version
+   of HTCondor they hold, for example: "V6_5_3-branch".  We know that
+   any branch name with a 3-number version like that is a release
+   branch for that specific version.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Start from a good foundation
+ </h3>
+ <p>
+  Before you make a branch, you ensure that the parent branch of
+   your new branch builds on ALL our platforms.  Check the nightly
+   build results, or if changes have already been committed today,
+   fire a 1-off build, and make sure it passes on all platforms. If last night's builds are broken, or if new code has already been
+   checked in for the day, you can find the last-working build tag on
+   the branch you care about, and branch from that point.
+ </p>
+ <p>
+  There will be frequent exceptions. Try not to violate this rule too often, and if you do, feel a little bit guilty about it.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Making the branch
+ </h3>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Starting from an existing public branch
+ </h4>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># Lets decide on the name "V7_1-GreatFeature-branch". This means we
+# are going to branch from the end of V7_1-branch, so you should make
+# sure it is known to build on all platforms and pass all tests.
+$ git branch V7_1-GreatFeature-branch V7_1-branch
+
+# Now push that new branch to the central repository so everyone can
+# see it
+$ git push origin V7_1-GreatFeature-branch
+
+# You now have a local and central branch named V7_1-GreatFeature-branch,
+# but the local branch is not tracking the central branch, so "git
+# pull" won't get other peoples changes to the branch. Let's fix that
+# by recreating the local branch so that it tracks the central branch
+$ git branch -f V7_1-GreatFeature-branch origin/V7_1-GreatFeature-branch
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Starting from a private (local) branch
+ </h4>
+ <p>
+  If you have a local/private branch, you can push it up to the master.  If you didn't follow the naming conventions above, you'll need to rename it, which is what the following documents.  This example assumes a local branch named "bname", made off of V7_6-branch.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># Make sure we're on the right branch
+$ git checkout bname
+
+# Rename it to match the name guidelines.
+$ git branch -m V7_6-bname-branch
+
+# First, get it into the main repository
+$ git push origin V7_6-bname-branch
+
+# now rename the local copy to an old version just in case you need it
+$ git branch -m V7_6_bname-branch-old
+
+# Checkout bname from the origin and track it.
+$ git checkout -b bname origin/V7_6-bname-branch
+
+# Now you can delete the bname-old when you are satisfied bname is in the
+# repository and it is happy.
+# git branch -D V7_6-bname-branch-old
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Document the branch name
+ </h3>
+ <p>
+  You must add a description of the new branch at
+  <span class="wiki">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/GitBranchDescriptions" title="Git Branch Descriptions">
+    GitBranchDescriptions
+   </a>
+  </span>
+  . The description should include the name of the person who created or is responsible for the branch, the date, where the new branch came from, what it is for, and any plans for when/where it's going to be merged back into (if we know them).
+ </p>
+ <p>
+  An example for a tag is:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">*3/2/2010 V7_5_1* {linebreak}
+The offical tag for 7.5.1, from the V7_5_1-branch.
+Version string: $CondorVersion: 7.5.1 Mar 1 2010 BuildID: 220663 $
+Original build tag: BUILD-V7_5_1-branch-2010-2-28_2
+</pre>
+ </div>
+ <p>
+  An example for a branch is:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">*3/29/2010 V7_5_2-branch* {linebreak}
+Branch for 7.5.2 release, created from BUILD-trunk-2010-3-27.
+</pre>
+ </div>
+ <p>
+  Please follow the markup style of the nearby entries.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Document merge strategy
+ </h3>
+ <p>
+  If your branch is a major one (say, any branch in the form V7_6-branch or V7_6_3-branch), other developers will need to know what branches should merge where.  Update
+  <span class="wiki">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/SourceCodeBranches" title="Source Code Branches">
+    SourceCodeBranches
+   </a>
+  </span>
+  with the current details.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Fix the version string in your new branch
+ </h3>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  cmake world order
+ </h4>
+ <p>
+  The version string and pre-release tag can be found in the top level /CMakeLists.txt. Look for these lines:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># HTCondor version info
+set(VERSION "7.5.6")
+
+# Set PRE_RELEASE to either a string (i.e. "PRE-RELEASE-UWCS") or OFF
+set(PRE_RELEASE "PRE-RELEASE-UWCS")
+#set(PRE_RELEASE OFF)
+</pre>
+ </div>
+ <p>
+  If you're making a feature branch ("V7_5_6-Neat-things-branch", change PRE_RELEASE to something appropriate ("set(PRE_RELEASE "PRE-RELEASE-UWCS-NEAT-THINGS"). Do
+  <em>
+   not
+  </em>
+  include whitespace in the PRE_RELEASE field.
+ </p>
+ <p>
+  If you're making a branch for a release, be sure to update the VERSION.  When you are building actual release candidates, comment out the PRE_RELEASE line and uncomment the "set(PRE_RELEASE OFF)".
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  old world order
+ </h4>
+ <p>
+  The applies to 7.4 and early 7.5.x releases. It is no longer used, but this is kept just in case we need a new branch, say for an urgent security fix, for 7.2 or 7.4.
+ </p>
+ <p>
+  Once you've got a workspace that has the sticky-bit set pointing to
+   your new branch, you should modify the version string in
+  <a class="file" href="rlog?f=src/condor_utils/condor_version.cpp">
+   /src/condor_utils/condor_version.cpp
+  </a>
+  (Particularly old releases might put it in
+  <a class="file" href="rlog?f=src/condor_c%2B%2B_util/condor_version.C">
+   /src/condor_c++_util/condor_version.C
+  </a>
+  .) to uniquely identify your
+   branch.  What to use for the version number itself depends on your
+   needs and plans.  However, the best thing is to add something that
+   identifies your branch to the "comments" section of the string.
+   For example, if the old version string (on the V6_5-branch) looked
+   something like this:
+ </p>
+ <p>
+ </p>
+ <pre>   static char* CondorVersionString = "$CondorVersion: 6.5.3 " __DATE__ " $";
+</pre>
+ <p>
+  or even:
+ </p>
+ <p>
+ </p>
+ <pre>   static char* CondorVersionString = "$CondorVersion: 6.5.3 " __DATE__ " PRE-RELEASE-UWCS $";
+</pre>
+ <p>
+  you should change it to something like this:
+ </p>
+ <p>
+ </p>
+ <pre>   static char* CondorVersionString = "$CondorVersion: 6.5.3 " __DATE__ " V6_5-PAOLO-BRANCH-PRE-RELEASE-UWCS $";
+</pre>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What about the Manual?
+ </h3>
+ <p>
+  If you're making a release branch, you should
+  <strong>
+   NOT
+  </strong>
+  branch the
+   manual as well.  Instead, you should contact Karen Miller
+   smoler@cs.wisc.edu and ask her to do it, since there are always
+   other merges that should happen before we create the release branch
+   of the manual.  That said, we always want a release branch for the
+   manual, since that's one of the big reasons why we make release
+   branches in the first place.  In other cases, you probably don't
+   want to branch the manual as well, since you'll just be making more
+   work for Karen.  However, if you're actually going to document what
+   you change, you can include the manual.  In this case, you should
+   inform Karen about this so that she can coordinate with you and
+   avoid duplication of effort or other problems.  We merge the manual
+   separately from the rest of the source, so that has to be a
+   consideration, as well.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

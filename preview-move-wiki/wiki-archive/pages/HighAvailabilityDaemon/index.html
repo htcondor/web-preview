@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>High Availability Daemon</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>High Availability Daemon</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   High Availability Daemon
+  </h2>
+ </span>
+ <p>
+  The HAD is intended to create and manage redudant negotiators.  (The collector at the time being stateless, one could simply add additional collectors to the  list in order to create redundancy.)
+ </p>
+ <p>
+  HAD and NEGOTIATOR must both be in DAEMON_LIST, and HAD_CONTROLS must be set to NEGOTIATOR.  (It's possible to have multiple HADs controlling multiple daemons, but they carefully partition themselves from each other.)
+ </p>
+ <p>
+  The master starts the HAD.  If the HAD sends it a CHILD_ON message, it will start the negotiator.  The HAD can turn off its controllee (the negotiator) with CHILD_OFF or CHILD_OFF_FAST messages.  The master kills the HAD when the negotiator dies (for good), since it has no other way to inform it of the problem.
+ </p>
+ <p>
+  HADs find each other via the configuration parameter HAD_LIST.  There's notionally a paper on HAD somewhere that explains the elections in more detail, but the HADs can elect in a pre-specified preference order.  The HADs periodically hold another election to determine if the one who's running the negotiator should change; in this way, missing HADs (and therefore, we presume via the master, missing negotiators) are only implicitly detected.
+ </p>
+ <p>
+  There's an additional subsystem, the replicator, which handles copying the accountant log (or whatever) from the primary HAD [machine] to all the secondary HAD[ machine]s.  There is code in a branch -- one of the two had_replication_fileset branches -- which allows replicators to manage more than one file.  (This might permit them to handle collectors with persistent state, eventually.)  If Nick recalls correctly, one of those branches is code-complete, but the necessarily extensive testing has not been completed.
+ </p>
+ <p>
+  The
+  <code>
+   condor_had
+  </code>
+  directory contains the vast majority of the code; there's very little code in the
+  <code>
+   condor_master
+  </code>
+  directory, none of which Nick has ever had reason to touch.  The HAD itself executes a state machine Nick hadn't gotten around to understanding, and uses
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/ClassAds" title="Class Ads">
+    ClassAds
+   </a>
+  </span>
+  for a few things internally.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Known Problems
+ </h3>
+ <p>
+  The schedd assumes that every collector has a co-located negotiator, which breaks horribly in the presence of HAD, although Nick doesn't recall the details.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
