@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Full Port Log Rhel Seven Sixty Four Bit</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Full Port Log Rhel Seven Sixty Four Bit</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Perform a Clipped Port
+  </h2>
+ </span>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Installed RHEL 7 (in a VM).  To do a network installation, you have to supply not just the mirror URL (including 'http://'), but the path all the way down to the directory which contains the
+   <code>
+    images
+   </code>
+   directory.  I chose a bunch of the development options to simplify thins for myself later.
+  </li>
+  <li>
+   Fetch the HTCondor sources.
+   <div class="code">
+    <pre class="code">git clone ssh://ingwe.cs.wisc.edu/p/condor/repository/CONDOR_SRC</pre>
+   </div>
+  </li>
+  <li>
+   Configure.
+   <div class="code">
+    <pre class="code">mkdir obj
+cd obj
+cmake \
+    -D_DEBUG:BOOL=TRUE \
+    -D_VERBOSE:BOOL=TRUE \
+    -DBUILDID=clipped \
+    -DCONDOR_PACKAGE_BUILD:BOOL=ON \
+    -DCONDOR_STRIP_PACKAGES:BOOL=ON \
+    -DCMAKE_INSTALL_PREFIX:PATH=$(pwd)/../install \
+    ../CONDOR_SRC
+</pre>
+   </div>
+   This may result in complaints.  Fix them (using yum).
+  </li>
+  <li>
+   Build the RPM.
+   <div class="code">
+    <pre class="code">make package</pre>
+   </div>
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Perform a Full Port
+ </h2>
+ <p>
+  Remove and recreate
+  <code>
+   obj
+  </code>
+  ; the following configuration will enable standard universe and allow
+  <code>
+   make install
+  </code>
+  to work, which can simplify testing immensely.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">cmake \
+    -D_DEBUG:BOOL=TRUE \
+    -D_VERBOSE:BOOL=TRUE \
+    -DBUILDID=full \
+    -DUW_BUILD:BOOL=TRUE \
+    -DCMAKE_INSTALL_PREFIX:PATH=$(pwd)/../install \
+    ../CONDOR_SRC
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Preparing a New glibc External
+ </h3>
+ <p>
+  This section follows from
+  <span class="wiki">
+   <a "FullPortLogRhelSixSixtyFourBit" title="Full Port Log Rhel Six Sixty Four Bit">
+    FullPortLogRhelSixSixtyFourBit
+   </a>
+  </span>
+  .  Notes:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   You may need to install
+   <code>
+    glibc-static
+   </code>
+   to complete the reconfiguration after adding the new version of glibc to the externals.
+   <p>
+   </p>
+  </li>
+  <li>
+   The patch enabling static NSS didn't work for this version of glibc, so I had to rewrite it.
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Building the Full Port
+ </h3>
+ <p>
+  After the Debian 7 fixes, this was pretty straightforward.  I looked for GLIBC213 references and added GLIBC217 references everywhere; this time through, I checked both for correctness, as well.  (Found a few a things that were probably superfluous, but not worth the effort of tweaking the #ifdef layout to fix.)  I needed to add some new code to CMake to aid in determination of the platform.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
