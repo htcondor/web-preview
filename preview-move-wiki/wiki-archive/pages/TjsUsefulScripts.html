@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Tjs Useful Scripts</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Tjs Useful Scripts</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   TJ's simple scripts
+  </h2>
+ </span>
+ <span class="subsection">
+  <h3>
+   sort_ads.pl
+  </h3>
+ </span>
+ A script to sort a collection of classads by key without reordering the ads. What it actually does is accumulate lines from stdin until it gets to a blank line, then prints out those lines sorted.
+ <div class="file">
+  <pre class="filelabel">sort_ads.pl</pre>
+  <pre class="file">#!/usr/bin/env perl
+use strict;
+use warnings;
+
+my %ad;
+
+for my $line ( &lt;STDIN&gt; ) {
+  if ($line =~ /^\s*$/) {
+    # print out the previous add sorted by key then reset the hash for a new ad.
+    if (%ad) {
+       for (sort keys %ad) { print $_; }
+       undef %ad;
+    }
+  }
+  $ad{$line} = 1;
+}
+
+# print the last ad sorted by key
+if (%ad) {
+   for (sort keys %ad) { print $_; }
+   undef %ad;
+}
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">condor_status -long | perl sort_ads.pl
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Scripts for building on Windows
+ </h2>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  cmakeit.bat
+ </h3>
+ run this script to create a condor.prj file in the current directory.  Does much the same thing as configure_uw, but works on Windows.  If sources are not in the current directory, it depends on the environment variable GIT_HOME to find them.  This script will refuse to run if the current directory is a git repo.
+Optional arguments are
+ <ul>
+  <li>
+   regen - don't suppress cmake regeneration
+  </li>
+  <li>
+   analyze - enable MSVC static code analysis for the build (take 3x longer)
+  </li>
+  <li>
+   buildid &lt;id&gt; - set the build id
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">cmakeit.bat</pre>
+  <pre class="file">@echo off
+setlocal
+
+set _noregen=-DCMAKE_SUPPRESS_REGENERATION:BOOL=TRUE
+if "%1"=="regen" (
+   shift
+   set _noregen=-DCMAKE_SUPPRESS_REGENERATION:BOOL=FALSE
+)
+
+if "%1"=="analyze" (
+   shift
+   set _analyze=-DMSVC_ANALYZE:BOOL=TRUE
+)
+if "%1"=="noanalyze" (
+   shift
+   set _analyze=-DMSVC_ANALYZE:BOOL=FALSE
+)
+
+if "%1"=="tests" (
+   shift
+   set _test=-DBUILD_TESTING:BOOL=TRUE -DWITH_BOOST:BOOL=TRUE
+)
+if "%1"=="buildid" (
+   set _buildid=-DBUILDID:STRING="%~2"
+   shift
+   shift
+)
+
+if exist .\.git\config goto :nothere
+if exist .gitignore goto :nothere
+
+if exist .\src\condor_utils\condor_api.h (
+  set _src=
+) else (
+  set _src=%GIT_HOME%
+  choice /M "no sources in current dir, use %GIT_HOME%"
+  if errorlevel 2 goto :EOF
+)
+
+set _gen="Visual Studio 11"
+if "%VS_DIR%"=="C:\vs90" set _gen="Visual Studio 9 2008"
+REM set _gen="NMake Makefiles"
+if NOT ~%1==~ set _gen=%1
+
+@echo on
+cmake -LA CMakeLists.txt -G %_gen% %_noregen% %_analyze% %_test% %_buildid% -D_VERBOSE:BOOL=TRUE %_src%
+@goto :EOF
+
+:nothere
+@echo You don't want to run this when the current directory is a git repository.
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">copy cmakeit.bat d:\scratch\build
+set GIT_HOME=d:\scratch\master\CONDOR_SRC
+mkdir d:\scratch\build\master
+cd d:\scratch\build\master
+..\cmakeit
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  rebuild.bat
+ </h3>
+ run this script while in your build directory (the one with condor.sln) to build and/or release HTCondor. Optional arguments are
+ <ul>
+  <li>
+   build - do minimal build, default is full rebuild
+  </li>
+  <li>
+   con|console - send output to console, default is to send it to rebuild.out
+  </li>
+  <li>
+   debug|retail|RelWithDebInfo - set build type, default is retail
+  </li>
+  <li>
+   package|externals|install - build the given target.  ALL_BUILD is the default build target.
+  </li>
+  <li>
+   release [test] - after build, invoke the release.bat script, which will release into release_dir subdir unless the test argument is passed, then it will release into the test subdir.
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">rebuild.bat</pre>
+  <pre class="file">@echo off
+setlocal
+
+for %%I in (wget.exe) do if "%%~f$PATH:I"=="" (
+  echo WGET is not in the path - aborting
+  exit /b 1
+)
+
+if not exist condor.sln (
+  echo There is no Condor.sln file in the current directory
+  echo did you forget to run cmakeit.bat?
+  exit /b 1
+)
+
+set _scriptdir_=%~sdp0
+set _counterrs_=call %~sdp0counterrs.bat
+
+:top
+if "~%1"=="~" goto doit
+goto %1
+
+:debug
+set _bldtype_=Debug
+goto next
+
+:con
+:console
+set _console_=true
+goto next
+
+:build
+set _rebuild_=Build
+goto next
+
+:relwithdebinfo
+:retail
+set _bldtype_=RelWithDebInfo
+goto next
+
+:package
+set _target_=PACKAGE
+goto next
+
+:externals
+set _target_=ALL_EXTERN
+goto next
+
+:install
+set _target_=INSTALL
+goto next
+
+:release
+set _release_=call %_scriptdir_%release.bat
+if "%2"=="test" (
+    set _release_=%_release_% test
+    shift
+)
+if "%_bldtype_%"=="Debug" (
+    set _release_=%_release_% debug
+)
+goto next
+
+:next
+shift
+goto top
+
+:doit
+if ~%_rebuild_%==~ set _rebuild_=Rebuild
+if ~%_bldtype_%==~ set _bldtype_=RelWithDebInfo
+if ~%_target_%==~ set _target_=ALL_BUILD
+set _counterrs_=call %_scriptdir_%counterrs.bat %_rebuild_%.out
+::@echo '%_counterrs_%'
+
+@if NOT "%_console_%"=="true" goto :build_to_log
+@echo on
+devenv condor.sln /%_rebuild_% %_bldtype_% /project %_target_%
+@echo off
+goto :EOF
+
+:build_to_log
+@echo on
+devenv condor.sln /%_rebuild_% %_bldtype_% /project %_target_% &gt; %_rebuild_%.out
+@echo off
+%_counterrs_%
+%_release_%
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">copy rebuild.bat d:\scratch\build
+cd d:\scratch\build\master
+mkdir d:\scratch\build\master\test
+..\rebuild build debug release test
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  counterrs.bat
+ </h3>
+ This script processes the build.out or rebuild.out log produced by rebuild.bat and prints a summary of errors and warnings.
+ <div class="file">
+  <pre class="filelabel">counterrs.bat</pre>
+  <pre class="file">@echo off
+@setlocal
+set infile=%1
+if "%infile%"=="" set infile=Rebuild.out
+set tmpfile=%infile:.out=%_nopre.tmp
+
+:: extract a sorted list of error/warning messages without the "nn&gt;" prefix on the lines.
+grep -E "C[0-9]{4}:" %infile% | awk "{gsub(/^[0-9]+&gt;/,\"\")};1" | sort &gt; %tmpfile%
+
+:: set variables to conain counts of various things.
+for /F %%I in ('grep -E " [C|E][0-3][0-9]{3}" %infile% ^| sort ^| uniq ^| awk "END{print NR}"') do set errs=%%I
+for /F %%I in ('grep -E " C4[0-9]{3}" %infile% ^| sort ^| uniq ^| awk "END{print NR}"') do set warns=%%I
+for /F %%I in ('grep -E " C6[0-9]{3}" %infile% ^| sort ^| uniq ^| awk "END{print NR}"') do set anals=%%I
+for /F %%I in ('grep -E " C6[0-9]{3}" %infile% ^| grep -I -E "\.h" ^| sort ^| uniq ^| awk "END{print NR}"') do set analhs=%%I
+
+set analmsg=
+if NOT "%anals%"=="0" set analmsg=%anals% Analysis warnings
+set analhmsg=
+if NOT "%analhs%"=="0" set analhmsg=^(%analhs% in headers)
+@echo %infile% Raw  : %errs% Errors, %warns% Warnings %analmsg% %analhmsg%
+
+for /F %%I in ('grep -E " [C|E][0-3][0-9]{3}" %tmpfile% ^| sort ^| uniq ^| awk "END{print NR}"') do set errs=%%I
+for /F %%I in ('grep -E " C4[0-9]{3}" %tmpfile% ^| sort ^| uniq ^| awk "END{print NR}"') do set warns=%%I
+for /F %%I in ('grep -E " C6[0-9]{3}" %tmpfile% ^| sort ^| uniq ^| awk "END{print NR}"') do set anals=%%I
+for /F %%I in ('grep -E " C6[0-9]{3}" %tmpfile% ^| grep -I -E "\.h" ^| sort ^| uniq ^| awk "END{print NR}"') do set analhs=%%I
+
+set analmsg=
+if NOT "%anals%"=="0" set analmsg=%anals% Analysis warnings
+set analhmsg=
+if NOT "%analhs%"=="0" set analhmsg=^(%analhs% in headers)
+@echo %infile% Uniq : %errs% Errors, %warns% Warnings %analmsg% %analhmsg%
+
+if not "%errs%"=="0" @grep -E "[0-9]*[1-9]+ error\(s\), [0-9]+ warning\(s\)" %infile%
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">copy counterrs.bat d:\scratch\build
+cd d:\scratch\build\master
+..\rebuild
+..\counterrs rebuild.out
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  release.bat
+ </h3>
+ run this script while in your build directory (the one with condor.sln) to build and/or release HTCondor. Optional arguments are
+ <ul>
+  <li>
+   debug|retail|RelWithDebInfo - set build type, default is retail
+  </li>
+  <li>
+   msi - build an MSI rather than releasing into the release_dir
+  </li>
+  <li>
+   &lt;dir&gt; - set destination directory for release, default is release_dir
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">release.bat</pre>
+  <pre class="file">@echo off
+setlocal
+
+for %%I in (cmake.exe) do if "%%~f$PATH:I"=="" (
+  echo cmake is not in the path - aborting
+  exit /b 1
+)
+
+if not exist cmake_install.cmake (
+  echo There is no cmake_install.cmake file in the current directory
+  echo did you forget to run cmakeit.bat?
+  exit /b 1
+)
+
+set _bldtype_=RelWithDebInfo
+
+if "%1"=="msi" goto msi
+if "~%1"=="~" goto doit
+if "~%1"=="~." set _install_=-DCMAKE_INSTALL_PREFIX=Release
+if NOT "~%1"=="~." set _install_=-DCMAKE_INSTALL_PREFIX=%~sf1
+
+:top
+if "~%2"=="~" goto doit
+goto %2
+
+:debug
+set _bldtype_=Debug
+goto next
+
+:relwithdebinfo
+:retail
+set _bldtype_=RelWithDebInfo
+goto next
+
+:msi
+set _msi_=condor-pre.msi
+goto next
+
+:next
+shift
+goto top
+
+:doit
+if ~%_bldtype_%==~ for /F %%I in ('dir /b all_build.dir') do set _bldtype_=%%I
+
+@echo on
+cmake.exe -DBUILD_TYPE=%_bldtype_% %_install_% -P cmake_install.cmake &gt; release.out
+@echo off
+::@findstr /I /C:"condor_master.exe" release.out
+for /F %%I in ('grep -c Installing release.out') do set /A install_count=%%I - 1
+for /F %%I in ('grep -c Up-to-date release.out') do set /A uptodate_count=%%I + %install_count%
+echo Updated %install_count% of %uptodate_count%
+
+:makemsi
+if "%_msi_%"=="" goto :EOF
+set _msiname_=
+for /f "delims== tokens=3" %%I in ('findstr "condor-" msconfig\wix\xml\condor.xsl') do @set _msiname_=%%~I
+if NOT "%_msiname_%"=="" set _msi_=%_msiname_%.msi
+:: @echo msi is: "%_msi_%"
+if not "%_msi_:~0,6%"=="condor" goto :EOF
+
+:: figure out the release path from the release.out log
+for /f "tokens=3" %%I in ('grep condor_master.exe release.out') do @set _master_=%%~dpI
+set _reldir_=%_master_:\bin\=%
+if not EXIST %_reldir_%\bin\condor_master.exe goto :EOF
+
+@echo makeing msi: %_msi_%
+@echo on
+%_reldir_%\etc\wix\do_wix %_reldir_% %CD%\%_msi_%
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">copy release.bat d:\scratch\build
+cd d:\scratch\build\master
+..\release test
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  prep_for_tests.bat
+ </h3>
+ run this script while in your build directory (the one with condor.sln) to setup a temporary directory to run tests. Optional arguments are
+ <ul>
+  <li>
+   &lt;testdir&gt; - name of the directory to create, defaults to test%random%
+  </li>
+  <li>
+   debug|retail - set build type, default is debug
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">prep_for_tests.bat</pre>
+  <pre class="file">@setlocal
+@echo off
+if "%GIT_HOME%"=="" goto :needhome
+
+set testdir=%1
+if "%testdir%"=="" set testdir=test%random%
+set bldtype=Debug
+if "%2"=="retail" set bldtype=RelWithDebInfo
+
+call :doit "%testdir%" %bldtype%
+goto :EOF
+
+:needhome
+@echo this script requires the GIT_HOME environment variable set to the location of your condor sources
+goto :EOF
+
+:usage
+@echo Usage: %~n0 [^&lt;testdir^&gt;] [debug | retail]
+@echo    creates ^&lt;testdir^&gt; installs condor into it, then builds tests and copies scripts
+@echo    and tests into this directory as well.  it crates setenv.bat in this directory
+@echo    and starts a shell with it so that you can run tests.
+@echo    This script assumes that the current directory is your condor build directory,
+@echo    and that the environment variable GIT_HOME points to the htcondor sources.
+goto :EOF
+
+:doit
+@echo Init tests in %testdir% (%~f1) for %bldtype%
+
+if exist "%testdir%\bin\condor_version.exe" goto :gotbins
+mkdir "%testdir%"
+call %~sdp0release %testdir% %bldtype%
+pushd "%testdir%"
+cscript "%GIT_HOME%\msconfig\init_config.wsf" ETC=etc PERSONAL=Y &gt;init_config.log
+if not exist log\MasterLog mkdir log
+if not exist spool\job_queue.log mkdir spool &amp;&amp; mkdir execute
+popd
+
+:gotbins
+xcopy /Q "%GIT_HOME%\src\condor_tests\*" "%testdir%\condor_tests\"
+xcopy /Q "%GIT_HOME%\src\condor_tests\Check\*" "%testdir%\condor_tests\Check\"
+xcopy /Q "%GIT_HOME%\src\condor_scripts\*.pm" "%testdir%\condor_tests\"
+xcopy /Q "%GIT_HOME%\src\condor_scripts\batch_test.pl" "%testdir%\condor_tests\"
+REM xcopy /Q "%GIT_HOME%\src\condor_examples\*" "%testdir%\condor_examples\"
+
+devenv condor.sln /Build %bldtype% /Project BLD_TESTS
+del /q "src\condor_tests\%bldtype%\sleep.*"
+xcopy /Q "src\condor_tests\list_*"          "%testdir%\condor_tests"
+xcopy /Q "src\condor_tests\%bldtype%\*.exe" "%testdir%\condor_tests"
+xcopy /Q "src\condor_tests\%bldtype%\*.pdb" "%testdir%\condor_tests"
+
+@echo &gt;"%testdir%\setenv.bat" set PATH=%~sf1\bin;%%path%%
+@echo &gt;&gt;"%testdir%\setenv.bat" set CONDOR_CONFIG=%~sf1\condor_config
+@echo &gt;&gt;"%testdir%\setenv.bat" doskey m=mep $*
+@echo &gt;&gt;"%testdir%\setenv.bat" doskey edit=devenv /edit $*
+@echo &gt;&gt;"%testdir%\setenv.bat" doskey home=cd /d "%~f1"
+@cd "%testdir%"
+start cmd /k setenv.bat
+
+goto :EOF
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">copy prep_for_tests.cmd d:\scratch\condor
+cd d:\scratch\condor\master
+..\prep_for_tests test001
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  build_workspace.bat
+ </h3>
+ This script copies a SHA from the current git repository to batlab.chtc.wisc.edu and submits it as a workspace build.  This script depends on a shell script in ~johnkn/workspace on batlab.chtc.wisc.edu. arguments are:
+ <p>
+ </p>
+ <ul>
+  <li>
+   <code>
+    index | &lt;SHA1&gt;
+   </code>
+   The commit to build, "index" means use the SHA from git write-tree
+  </li>
+  <li>
+   <code>
+    &lt;description&gt;
+   </code>
+   (optional) Description for the workspace build
+  </li>
+  <li>
+   <code>
+    all | win | win+ | warn
+   </code>
+   (optional), passed on to submit_workspace script on batlab.chtc.wisc.edu as the platform arguments
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">build_workspace.bat</pre>
+  <pre class="file">@echo off
+@setlocal
+if not exist nmi_tools goto usage
+
+if "%1"=="" goto usage
+if "%1"=="-h" goto usage
+if "%1"=="-help" goto usage
+if "%1"=="/help" goto usage
+
+set sha=%1
+shift
+if "%sha%"=="index" (
+   for /F %%I in ('git write-tree') do (
+      set sha=%%I
+   )
+)
+
+set submit=batlab.chtc.wisc.edu
+set tar=git archive %sha%
+set platforms=all
+
+set dir=wk%RANDOM%
+set dir=%dir: =%
+set arg1=%~1
+if NOT "%arg1:~0,1%" == "-" (
+   set desc=%arg1: =_%
+   set dir=%dir%%arg1:~0,6%
+   shift
+)
+set desc=%desc: =%
+
+if NOT "%1"=="" set platforms=%1
+
+@echo on
+%tar% | plink -2 -i %USERPROFILE%\keys\putty.ppk -l %USERNAME% %submit% cd workspace ; mkdir %dir% ; cd %dir% ; tar xf - ; ../submit_workspace %desc% %platforms%
+@echo off
+goto :EOF
+
+::
+
+
+:usage
+@echo This script must be run from the CONDOR_SRC directory
+@echo Usage: %0 sha1 [description] [all ^| win ^| win+ ^| warn]
+@echo.  send the given sha1 or branch to NMI submit machine as ~/workspace/wk^&lt;rand^&gt;
+@echo.  and then run ~/workspace/build_workspace to build it.
+@echo.  if sha1 is index, then git write-tree is used to generate the sha1
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">copy build_workspace.bat d:\scratch\condor
+cd d:\scratch\condor\master
+..\build_workspace index description all
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  submit_workspace (shell script)
+ </h3>
+ When run from the root of a git clone or archive, submits the current directory as a workspace build or test. arguments are
+ <ul>
+  <li>
+   <code>
+    -test &lt;runid&gt;
+   </code>
+   (optional - must be first) submit a workspace test against the given build id.
+  </li>
+  <li>
+   <code>
+    &lt;description&gt;
+   </code>
+   description of the workspace build/test
+  </li>
+  <li>
+   <code>
+    &lt;platforms&gt;
+   </code>
+   (optional) comma separated list of platforms, or a platform category code. categories are
+   <code>
+    all win fedora deb mac warn fast win+
+   </code>
+   .
+   <code>
+    warn
+   </code>
+   is platforms with that treat warnings as errors (i.e. fedora).
+   <code>
+    fast
+   </code>
+   is platforms that build quickly - fedora, solaris and Win8.
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">submit_workspace</pre>
+  <pre class="file">#!/bin/bash
+
+# args are [-test &lt;runid&gt;] &lt;descrip&gt; [&lt;platforms&gt;]
+function usage
+{
+   echo "Usage: $0 [-test &lt;runid&gt;] &lt;descrip&gt; [&lt;platforms&gt;]"
+   echo "   &lt;platforms&gt; may be comma separated list of NMI platforms or a category"
+   echo "               categories are: all|win|fedora|deb|mac|warn|fast|win+"
+}
+
+
+declare -A plat
+plat[win]="x86_64_Windows7,x86_64_Windows8,x86_64_Windows10"
+plat[fedora]="x86_64_Fedora21,x86_64_Fedora22"
+plat[deb]="x86_64_Debian6,x86_64_Debian7,x86_64_Debian8"
+plat[mac]="x86_64_MacOSX7,x86_64_MacOSX8,x86_64_MacOSX10"
+plat[fast]="${plat["fedora"]},x86_64_Solaris11,x86_64_Windows8"
+plat[warn]="${plat["fedora"]}"
+plat[win+]="${plat["win"]},${plat["fedora"]}"
+plat[all]="all"
+
+# if first arg is -test then second arg must be a runid
+RUNID=""
+TASK="building"
+if [[ "$1" = "-test" ]]
+then
+   if [ -z "$2" ]; then usage; exit 1; fi
+   RUNID="$2"
+   TASK="testing"
+   shift; shift;
+fi
+
+# next arg (description) is required
+if [ -z "$1" ]; then usage; exit 1; fi
+TAG="$1"
+
+PLATFORMS="$2"
+if [[ $2 = "all" || $2 = "win" || $2 = "fedora" || $2 = "deb" || $2 = "mac" || $2 = "fast" || $2 = "win+" ]]
+then
+    PLATFORMS="${plat[$2]}"
+fi
+
+pwd
+if [ -d "nmi_tools" ]
+then
+   echo "$TASK temporary workspace"
+   pushd nmi_tools
+else
+   echo "$TASK main workspace"
+   pushd ~johnkn/workspace/CONDOR_SRC/nmi_tools
+fi
+pwd
+
+if [ -z "$RUNID" ]
+then
+  #./condor_nmi_submit --build --git --notify-fail-only --workspace=.. --desc="$TAG" -platforms="$PLATFORMS"
+  echo ./condor_nmi_submit --build --git --notify-fail-only --workspace=.. --desc=\"$TAG\" -platforms=\"$PLATFORMS\"
+else
+  #./condor_nmi_submit --test --buildid=$RUNID --workspace=.. --desc="$TAG" -platforms="$PLATFORMS" --ignore-missing-platforms --test-sources-from-workspace
+  echo ./condor_nmi_submit --test --buildid=$RUNID --workspace=.. --desc=\"$TAG\" -platforms=\"$PLATFORMS\" --ignore-missing-platforms --test-sources-from-workspace
+fi
+popd
+</pre>
+ </div>
+ Example
+ <div class="term">
+  <pre class="term">cp submit_workspace ~/workspace
+cd ~/workspace/wkNNN
+../submit_workspace queue-stuff all
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
