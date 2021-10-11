@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Using Condor Annex On Chtc</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Using Condor Annex On Chtc</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Introduction
+  </h2>
+ </span>
+ <p>
+  The
+  <code>
+   condor_annex
+  </code>
+  tool rents computational resources from Amazon's cloud service and adds those resources to an HTCondor pool for your jobs to use.  These instructions document how to use
+  <code>
+   condor_annex
+  </code>
+  for CHTC jobs.  Some restrictions apply:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   You will need a log-in on
+   <code>
+    annex-cm.chtc.wisc.edu
+   </code>
+   .  (Ask your research computing facilitator about this.)
+  </li>
+  <li>
+   The jobs you want to run on AWS must have
+   <code>
+    MayUseAWS
+   </code>
+   set.
+  </li>
+  <li>
+   The jobs you want to run on AWS must have
+   <code>
+    WantFlocking
+   </code>
+   set.  This means your jobs will flock!  If you don't know what that means, don't use
+   <code>
+    condor_annex
+   </code>
+   until you've talked to your research computing facilitator.
+  </li>
+  <li>
+   The jobs you want to run on AWS must have
+   <code>
+    requirements
+   </code>
+   which match the resources acquired by
+   <code>
+    condor_annex
+   </code>
+   .  By default, those resources will run an EL6-like operating system, but they won't have
+   <code>
+    OpSysMajorVer
+   </code>
+   set.
+  </li>
+  <li>
+   Intentionally or otherwise, other users of
+   <code>
+    condor_annex
+   </code>
+   on the CHTC may run jobs they don't own, including yours, on their resources.  We're working on a solution to this, but if that possibility worries you, don't use
+   <code>
+    condor_annex
+   </code>
+   for now.
+  </li>
+ </ul>
+ <p>
+  Working with these restrictions will be covered in the following instructions.
+ </p>
+ <p>
+  In these instructions, we've included sample output after the commands.  Lines you should execute start with the dollar sign (
+  <code>
+   $
+  </code>
+  ) character; do not include the dollar sign (
+  <code>
+   $
+  </code>
+  ) when copying the line.
+ </p>
+ <p>
+  We are developing a similar way for CHTC jobs to run on the Cooley cluster at Argonne National Lab:
+  <span class="wiki">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/UsingCooleyAnnexOnChtc" title="Using Cooley Annex On Chtc">
+    UsingCooleyAnnexOnChtc
+   </a>
+  </span>
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Overview
+ </h2>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Prepare to Add Resources for Your Jobs
+   <ol>
+    <li>
+     Grant Access to Your AWS Account
+    </li>
+    <li>
+     Lay the Groundwork in AWS
+    </li>
+    <li>
+     Check the Groundwork
+    </li>
+   </ol>
+  </li>
+  <li>
+   Submit a Test Job
+  </li>
+  <li>
+   Add Resources for Your Jobs
+  </li>
+  <li>
+   Run Jobs on Your Resources
+   <ol>
+    <li>
+     Change a Submit File
+    </li>
+    <li>
+     Edit an Idle Job
+    </li>
+   </ol>
+  </li>
+  <li>
+   Clean Up (optional)
+  </li>
+ </ol>
+ <p>
+  These instructions assume this is the first time you're using
+  <code>
+   condor_annex
+  </code>
+  on CHTC.  You'll want to have two terminal windows open: one for running
+  <code>
+   condor_annex
+  </code>
+  commands (logged into
+  <code>
+   annex-cm.chtc.wisc.edu
+  </code>
+  ) and another for submitting jobs (currently, only
+  <code>
+   submit-4.chtc.wisc.edu
+  </code>
+  is supported).  If you've used
+  <code>
+   condor_annex
+  </code>
+  on CHTC before, skip ahead to section 1.3 ("Check the Set-Up").
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  1 Prepare to Add Resources for Your Jobs
+ </h2>
+ <p>
+  Before you can add resources for your jobs, you must (a) give
+  <code>
+   condor_annex
+  </code>
+  access to your AWS account (so it can rent resources on your behalf) and (b) lay some groundwork for
+  <code>
+   condor_annex
+  </code>
+  at AWS.  We then recommend that you check and make sure that the groundwork was laid properly.  Don't worry, the second and third step have been automated.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  1.1 Grant Access to Your AWS Account
+ </h3>
+ <p>
+  Like you,
+  <code>
+   condor_annex
+  </code>
+  needs an account to use AWS.  You can grant
+  <code>
+   condor_annex
+  </code>
+  access to your account by acquiring a pair security "keys" that function like a user name and password.  Like a user name, the "access key" is (more or less) public information; the corresponding "secret key" is like a password and must be kept a secret.  To help keep both halves secret, you never tell
+  <code>
+   condor_annex
+  </code>
+  the keys themselves; instead, you put each key in its own protected file.
+ </p>
+ <p>
+  To create those two files, execute the following commands on
+  <code>
+   annex-cm.chtc.wisc.edu
+  </code>
+  :
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ mkdir -p ~/.condor
+$ cd ~/.condor
+$ touch publicKeyFile privateKeyFile
+$ chmod 600 publicKeyFile privateKeyFile
+</pre>
+ </div>
+ <p>
+  The last command ensures that no user other than you can read or write to those files.  (Like any other file on CHTC machines, these files will be readable by the CHTC administrative staff.  If that bothers you, contact us for alternatives.)
+ </p>
+ <p>
+  To fill the files you just created, go to the
+  <a class="external" href="https://console.aws.amazon.com/iam/home?region=us-east-1#/users">
+   IAM console
+  </a>
+  ; log in if you need to.  The following instructions assume you are logged in as a user with the privilege to create new users.  (The 'root' user for any account has this privilege; other accounts may as well.)
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Click the "Add User" button.
+  </li>
+  <li>
+   Enter name in the
+   <strong>
+    User name
+   </strong>
+   box; "annex-user" is a fine choice.
+  </li>
+  <li>
+   Click the check box labelled "Programmatic access".
+  </li>
+  <li>
+   Click the button labelled "Next: Permissions".
+  </li>
+  <li>
+   Select "Attach existing policies directly".
+  </li>
+  <li>
+   Type "
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/AdministratorAccess" title="Administrator Access">
+     AdministratorAccess
+    </a>
+   </span>
+   " in the box labelled "Filter".
+  </li>
+  <li>
+   Click the check box on the single line that will appear below (labelled "
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/AdministratorAccess" title="Administrator Access">
+     AdministratorAccess
+    </a>
+   </span>
+   ").
+  </li>
+  <li>
+   Click the "Next: review" button (you may need to scroll down).
+  </li>
+  <li>
+   Click the "Create user" button.
+  </li>
+  <li>
+   From the line labelled "annex-user", copy the value in the column labelled "Access key ID" to
+   <code>
+    publicKeyFile
+   </code>
+   .
+  </li>
+  <li>
+   On the line labelled "annex-user", click the "Show" link in the column labelled "Secret access key"; copy the revealed value to
+   <code>
+    privateKeyFile
+   </code>
+   .
+  </li>
+  <li>
+   Hit the "Close" button.
+  </li>
+ </ol>
+ <p>
+  You have now granted
+  <code>
+   condor_annex
+  </code>
+  access to your AWS account.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  1.2 Lay the Groundwork in AWS
+ </h3>
+ <p>
+  It takes a few minutes for
+  <code>
+   condor_annex
+  </code>
+  to lay the groundwork it needs at AWS.  Since this groundwork doesn't cost you anything to keep around, you can just create it once and forget about it.  Run the following commands on
+  <code>
+   annex-cm.chtc.wisc.edu
+  </code>
+  ; you should still have a terminal window logged in there from the previous step.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex -setup
+Creating configuration bucket (this takes less than a minute)....... complete.
+Creating Lambda functions (this takes about a minute)........ complete.
+Creating instance profile (this takes about two minutes)................... complete.
+Creating security group (this takes less than a minute)..... complete.
+Setup successful.
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  1.3 Check the Groundwork
+ </h3>
+ <p>
+  You can verify at this point (or any later time) that the groundwork was laid successfully by running the following command (also on
+  <code>
+   annex-cm.chtc.wisc.edu
+  </code>
+  ).
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex -check-setup
+Checking for configuration bucket... OK.
+Checking for Lambda functions... OK.
+Checking for instance profile... OK.
+Checking for security group... OK.
+</pre>
+ </div>
+ <p>
+  If you don't see four "OK"s, return to step 1.1 and try again.  If you've done that once already, contact your research computing facilitator for assistance.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  2 Submit a Test Job
+ </h2>
+ <p>
+  It sounds a little strange, but if you submit a test job
+  <em>
+   before
+  </em>
+  you add resources for your jobs, you won't have to wait as long for it to start, which will save you both time and money.  Use a second terminal window to log into
+  <code>
+   submit-4.chtc.wisc.edu
+  </code>
+  and create the following submit file:
+ </p>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">annex-test.submit</pre>
+  <pre class="file">executable              = /bin/sleep
+transfer_executable     = false
+should_transfer_files   = true
+universe                = vanilla
+arguments               = 600
+
+log                     = sleep.log
+
+# You MUST include this when submitting from CHTC to let the annex see the job.
++WantFlocking           = TRUE
+
+# This is required, by default, to run a job in an annex.
++MayUseAWS              = TRUE
+
+# The first clause requires this job to run on EC2; that's what makes it
+# good as a test.  The second clause prevents CHTC from setting a
+# requirement for OpSysMajorVer, allowing this job to run on any.
+requirements            = regexp( ".*\.ec2\.internal", Machine ) &amp;&amp; (TRUE || TARGET.OpSysMajorVer)
+
+queue 1
+</pre>
+ </div>
+ <p>
+  Submit this file to the queue; it won't run until after you've completed the next step.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  3 Add Resources for Your Jobs
+ </h2>
+ <p>
+  Entering the following on
+  <code>
+   annex-cm.chtc.wisc.edu
+  </code>
+  will add resources for your jobs to the pool.  We call the set of resources you added an "annex".  You have to supply a name for each annex you create; the example below uses 'MyFirstAnnex'.  When you run
+  <code>
+   condor_annex
+  </code>
+  , it will print out what it's going to do, and then ask you if that's OK.  You must type 'yes' (and hit enter) at the prompt to start an annex; if you do not,
+  <code>
+   condor_annex
+  </code>
+  will print out instructions about how to change whatever you may not like about what it said it was going to do, and then exit.  The following command adds one resource (an "instance") for one hour; you should increase that if the job you want to run takes longer.  Don't increase the number of resources if you haven't tested your job with
+  <code>
+   condor_annex
+  </code>
+  yet; you can easily add resources after you've verified that everything works.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex -count 1 -annex-name MyFirstAnnex -idle 1 -duration 1
+Will request 1 m4.large on-demand instance for 1 hours.  Each instance will terminate after being idle for 1 hours.
+Is that OK?  (Type 'yes' or 'no'): yes
+Starting annex...
+Annex started.  Its identity with the cloud provider is
+'MyFirstAnnex_f2923fd1-3cad-47f3-8e19-fff9988ddacf'.  It will take about three minutes for the new machines to join the pool.
+</pre>
+ </div>
+ <p>
+  You won't need to know the annex's identity with the cloud provider unless something goes wrong.
+ </p>
+ <p>
+  Before starting the annex,
+  <code>
+   condor_annex
+  </code>
+  will check to make sure that the instances will be able to contact CHTC.  Contact your machine's administrator if
+  <code>
+   condor_annex
+  </code>
+  reports a problem with this step.
+ </p>
+ <p>
+  Otherwise, wait a few minutes and run the following to make sure your annex has started up and joined the pool:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex status -annex MyFirstAnnex
+Name                                OpSys      Arch   State     Activity LoadAv
+
+slot1@ip-172-31-15-209.ec2.internal LINUX      X86_64 Unclaimed Idle      0.000
+slot2@ip-172-31-15-209.ec2.internal LINUX      X86_64 Unclaimed Idle      0.000
+
+               Machines Owner Claimed Unclaimed Matched Preempting  Drain
+
+  X86_64/LINUX        2     0       0         2       0          0      0
+
+         Total        2     0       0         2       0          0      0
+</pre>
+ </div>
+ <p>
+  An annex (by default) will only runs jobs which (a) you submitted and (b) have MayUseAWS set to true.  You can confirm this by running the following command:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex -annex MyFirstAnnex status -af:r START
+(MayUseAWS == true) &amp;&amp; stringListMember(Owner,"tlmiller")
+(MayUseAWS == true) &amp;&amp; stringListMember(Owner,"tlmiller")
+</pre>
+ </div>
+ <p>
+  The
+  <code>
+   tlmiller
+  </code>
+  above should be your username.
+ </p>
+ <p>
+  There are
+  <span class="wiki">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/HowToUseCondorAnnexWithOnDemandInstancesEightSevenFour" title="How To Use Condor Annex With On Demand Instances Eight Seven Four">
+    additional instructions
+   </a>
+  </span>
+  for general annex use.  For now, we'll move on to actually running on your new resource.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  4 Run Jobs on Your Resources
+ </h2>
+ <p>
+  It shouldn't take more than a few minutes from when your new resources join the pool for your test job to start running.  The test job sleeps for ten minutes to make it easier to catch in the running state; you don't need to wait for the test job to finish before testing one of your own jobs.
+ </p>
+ <p>
+  You can make use of the annex resources for your own jobs in two ways: by modifying an existing submit file or by editing jobs already in the queue.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  4.1 Change a Submit File
+ </h3>
+ <p>
+  Be sure to make a backup copy of your submit file before you start changing your submit file. ;)
+ </p>
+ <p>
+  You will need to add the following lines to the submit file (before the queue statement):
+ </p>
+ <div class="verbatim">
+  <pre>+MayUseAWS = TRUE
++WantFlocking = TRUE
+</pre>
+ </div>
+ A reminder: this means these jobs will flock!  For now, you shouldn't use
+ <code>
+  condor_annex
+ </code>
+ if you don't want your jobs flocking.
+ <p>
+  You will also need to modify the
+  <code>
+   requirements
+  </code>
+  line.  The modification has two goals: first, to prevent your jobs from running anywhere other than CHTC or your annex; and second, to allow your job to run on either CHTC or your annex.  To accomplish the first goal, add the following clause to the
+  <code>
+   requirements
+  </code>
+  line, changing "
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/MyFirstAnnex" title="My First Annex">
+    MyFirstAnnex
+   </a>
+  </span>
+  " to the name of your annex, if different:
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre>(AnnexName == "MyFirstAnnex" || TARGET.PoolName == "CHTC")
+</pre>
+ </div>
+ <p>
+  If the phrase "add the following clause" didn't make a lot of sense to you, the new
+  <code>
+   requirements
+  </code>
+  line should like the following, except replacing the text
+  <code>
+   &lt;old-requirements&gt;
+  </code>
+  with everything to the right of the equals sign in the original requirements line.
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre>requirements = (&lt;old-requirements&gt;) &amp;&amp; (AnnexName =?= "MyFirstAnnex" || TARGET.PoolName == "CHTC")
+</pre>
+ </div>
+ <p>
+  As mentioned above, the default operating system for resources acquired by
+  <code>
+   condor_annex
+  </code>
+  does not advertise
+  <code>
+   OpSysMajorVer
+  </code>
+  , but is "like" EL6.  If the old requirements do not mention
+  <code>
+   OpSysMajorVer
+  </code>
+  , add the following clause to the
+  <code>
+   requirements
+  </code>
+  line:
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre>(TRUE || OpSysMajorVer)
+</pre>
+ </div>
+ <p>
+  (This tautology will prevent CHTC's submit nodes from adding a requirement that
+  <code>
+   OpSysMajorVer
+  </code>
+  be 6 or 7.)
+ </p>
+ <p>
+  If the old requirements
+  <em>
+   do
+  </em>
+  mention
+  <code>
+   OpSysMajorVer
+  </code>
+  , the old requirements most likely include a clause of the following form:
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre>OpSysMajorVer == 6
+</pre>
+ </div>
+ <p>
+  Change this clause to the following:
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre>OpSysMajorVer =?= 6
+</pre>
+ </div>
+ <p>
+  If that's
+  <em>
+   not
+  </em>
+  how the old requirements use
+  <code>
+   OpSysMajorVer
+  </code>
+  , ask a research computing facilitator for help.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  4.2 Modify an Idle Job
+ </h3>
+ <p>
+  If you want a job that's already in the queue to run on your AWS resources, you can use the
+  <code>
+   condor_qedit
+  </code>
+  command to make changes much like the ones you would if you were changing a submit file.  However, to make sure your job doesn't flock somewhere you don't want your job to go, you'll need to modify the
+  <code>
+   requirements
+  </code>
+  before you set
+  <code>
+   MayUseAWS
+  </code>
+  and
+  <code>
+   WantFlocking
+  </code>
+  .
+ </p>
+ <p>
+  For these examples, we'll assume your job's ID is 100234.5.
+ </p>
+ <p>
+  You can run
+  <code>
+   condor_q 100234.5 -af:r requirements
+  </code>
+  to examine a queued job's requirements.  When making a change, copy-and-paste the whole thing and sandwich it between single quotes (
+  <code>
+   '
+  </code>
+  ), as in the example below, which assumes your annex is named
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/MyFirstAnnex" title="My First Annex">
+    MyFirstAnnex
+   </a>
+  </span>
+  .
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_q 100234.5 -af:r requirements
+(TARGET.PoolName == "CHTC") &amp;&amp; ((Target.OpSysMajorVer == 6) || (Target.OpSysMajorVer == 7)) &amp;&amp; (OpSysName =!= "Debian") &amp;&amp; (TARGET.Arch == "X86_64") &amp;&amp; (TARGET.OpSys == "LINUX") &amp;&amp; (TARGET.Disk &gt;= RequestDisk) &amp;&amp; (TARGET.Memory &gt;= RequestMemory) &amp;&amp; (TARGET.HasFileTransfer)
+$ condor_qedit 100234.5 requirements '(TARGET.AnnexName == "MyFirstAnnex" || TARGET.PoolName == "CHTC") &amp;&amp; ((Target.OpSysMajorVer =?= 6) || (Target.OpSysMajorVer =?= 7)) &amp;&amp; (OpSysName =!= "Debian") &amp;&amp; (TARGET.Arch == "X86_64") &amp;&amp; (TARGET.OpSys == "LINUX") &amp;&amp; (TARGET.Disk &gt;= RequestDisk) &amp;&amp; (TARGET.Memory &gt;= RequestMemory) &amp;&amp; (TARGET.HasFileTransfer)'
+</pre>
+ </div>
+ <p>
+  Execute the following commands to set
+  <code>
+   MayUseAWS
+  </code>
+  and
+  <code>
+   WantFlocking
+  </code>
+  as required.  (Note that when editing a job in the queue, these attribute names are
+  <em>
+   not
+  </em>
+  preceded by a plus ('
+  <code>
+   +
+  </code>
+  ') sign.)  A reminder: this means these jobs will flock!  For now, you shouldn't use
+  <code>
+   condor_annex
+  </code>
+  if you don't want your jobs flocking.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_qedit 100234.5 MayUseAWS TRUE
+Set attribute "MayUseAWS" for 1 matching jobs.
+$ condor_qedit 100234.5 WantFlocking TRUE
+Set attribute "WantFlocking" for 1 matching jobs.
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  5 Cleaning Up (Optional)
+ </h2>
+ <p>
+  The resources
+  <code>
+   condor_annex
+  </code>
+  rents for you from Amazon will, as we mentioned before, shut themselves down after the duration, or if they're idle for longer than the time-out.  If your jobs all finish early, you can run (on
+  <code>
+   annex-cm.chtc.wisc.edu
+  </code>
+  )
+  <code>
+   condor_annex -annex
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-move-wiki/wiki-archive/pages/MyFirstAnnex" title="My First Annex">
+     MyFirstAnnex
+    </a>
+   </span>
+   off
+  </code>
+  to immediately shut down all the resources you rented.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
