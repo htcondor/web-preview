@@ -1,0 +1,25 @@
+From 345fccdb80f81d7b4ff43b99f83714ddc02d34cb Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 13 Apr 2017 12:58:09 +0100
+Subject: [PATCH 4/6] defrag: explicitly include iterator
+
+This is required for compilation with recent Visual Studio to ensure Inserter is defined.
+---
+ src/defrag/defrag.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/defrag/defrag.h b/src/defrag/defrag.h
+index 2d38567c7d..95937fdf74 100644
+--- a/src/defrag/defrag.h
++++ b/src/defrag/defrag.h
+@@ -20,6 +20,7 @@
+ #ifndef _DEFRAG_H
+ #define _DEFRAG_H
+ 
++#include <iterator>
+ #include <set>
+ #include "condor_common.h"
+ #include "condor_daemon_core.h"
+-- 
+2.13.5
+

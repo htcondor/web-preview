@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>How To Add Job Req</title>
+
+    <script src="/web-preview/preview-move-wiki/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-move-wiki/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-move-wiki/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-move-wiki/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-move-wiki/assets/images/CondorTitle.png" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-move-wiki/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Add Job Req</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to Add Automatic Job Requirements
+  </h2>
+ </span>
+ <p>
+  Known to work with HTCondor version: 7.0
+ </p>
+ <p>
+  To have some jobs preferentially run on some machines instead of others, see
+  <span class="wiki">
+   <a href="/web-preview/preview-move-wiki/wiki-archive/pages/HowToSteerJobs" title="How To Steer Jobs">
+    How to steer jobs towards more desirable machines
+   </a>
+  </span>
+  .  To
+  <strong>
+   require
+  </strong>
+  that specific jobs run on certain machines and not on others,  read on.
+ </p>
+ <p>
+  A user can specify within the job's requirements in the submit description file that the job must run on a specific machine.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">requirements = Machine == "example1.com"
+</pre>
+ </div>
+ <p>
+  As an alternative, the administrator may add requirements in the configuration file. These requirements are automatically inserted for every job.  For example, suppose that jobs from the special user "appinstaller" are to always run on a specific and reserved machine.  The administrator may set that up with the following configuration on the submit machine:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">APPEND_REQUIREMENTS = MY.Owner != "appinstaller" || TARGET.IsAppInstallerMachine =?= True
+</pre>
+ </div>
+ <p>
+  Then, in the local configuration file of the specific and reserved machine, add the following:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">IsAppInstallerMachine = True
+STARTD_ATTRS = $(STARTD_ATTRS) IsAppInstallerMachine
+</pre>
+ </div>
+ <p>
+  With this configuration, user "appinstaller" jobs will only run on the correct machine(s).  If only jobs from "appinstaller" are to run on the specific machine, then the administrator also modifies the configuration such that this machine only starts jobs from the desired owner:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">START = ($(START)) &amp;&amp; TARGET.Owner == href="/web-preview/preview-move-wiki/wiki-archive/pages/appinstaller" </pre>
+ </div>
+ <p>
+  Instead of altering the configuration to modify APPEND_REQUIREMENTS for each and every job's requirements
+(harmlessly in this example), the administrator may modify the user's login environment. HTCondor configuration is also read from the environment by tools such as condor_submit.  User "appinstaller" changes the environment with:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">export _CONDOR_APPEND_REQUIREMENTS=\
+  'MY.Owner != "appinstaller" || TARGET.IsAppInstallerMachine =?= True'
+</pre>
+ </div>
+ <p>
+  Note that this overrides any use of APPEND_REQUIREMENTS within the configuration file.
+ </p>
+ <p>
+  If it is the case the administrator does
+  <strong>
+   not
+  </strong>
+  control the configuration of the submit machine, none of the above options can work.  In that case, do things the ugly way: modify all potential execute machines to reject jobs from user "appinstaller",
+  <strong>
+   except
+  </strong>
+  for the machines that should accept the jobs.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
