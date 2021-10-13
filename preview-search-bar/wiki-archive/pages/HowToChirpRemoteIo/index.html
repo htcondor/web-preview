@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Chirp Remote Io</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Chirp Remote Io</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to do remote IO in vanilla universe with Chirp and Parrot (on CHTC submit node)
+  </h2>
+ </span>
+ <p>
+  The directions below work for the CHTC submit node.
+ </p>
+ <p>
+  One of the neat features of Standard Universe is the ability to do remote IO, meaning, you can read from/write to files in your remote submit folder without the need to transfer them back and forth between the submit- and the execute node.
+ </p>
+ <p>
+  This howto briefly describes how you can do remote IO leveraging the HTCondor-integrated condor_chirp and
+  <a class="external" href="http://www.cse.nd.edu/~ccl/software/parrot/">
+   Parrot
+  </a>
+  . All of this should work with HTCondor versions 7.6.0 and newer.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What is required?
+ </h3>
+ In order to do this, all you need is HTCondor version 7.6.0 or newer and you need
+ <a class="external" href="http://www.cse.nd.edu/~ccl/software/parrot/">
+  Parrot
+ </a>
+ . You will need to have the version matched to your execute node architectures available. It is more convenient to install parrot directly on the execute nodes but you can also transfer it with your job data. A small caveat: Parrot will only work on Linux, which means that your execute machine needs to run some flavor of Linux. Your submit node, however, can run whatever OS that is supported by HTCondor 7.6.0.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to create your submit file?
+ </h3>
+ To have your job do remote IO, all you now need to do is to create a wrapper such that your job can be run under parrot. The easiest way is to have a script such as
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">#!/bin/sh
+######## wrapper.sh ################
+# This script directly passes all
+# its arguments into 'parrot_run'
+####################################
+
+./parrot_run "$@"
+
+</pre>
+ </div>
+ <p>
+  Ultimately, this script will be your job executable and you'll specify your actual program to be run (let's assume its name is 'foo') and its arguments as job args:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">#####################
+#### condor.submit
+#####################
+
+universe = vanilla
+executable = wrapper.sh
+arguments = foo arg1 arg2 arg3
++WantIOProxy = True
+...
+</pre>
+ </div>
+ <p>
+  <code>
+   +WantIOProxy = True
+  </code>
+  will trigger start up of the chirp service which is needed to do remote IO, so make sure you have that in your submit file too.
+ </p>
+ <p>
+  Now, the only thing that is left to know: Remote IO does not just happen in your current working directory as you may be used to from your standard universe jobs. Your submit directory is hidden under
+  <code>
+   /chirp/CONDOR/
+  </code>
+  . So whenever you want to read a file from there or write to there, you'll have to prefix your file name with this path.
+ </p>
+ <p>
+  Example: Your application wants to read the file
+  <code>
+   input/inputRead.dat
+  </code>
+  and write to
+  <code>
+   output/outWrite.dat
+  </code>
+  and you pass these as arguments. Typically you would call
+ </p>
+ <div class="code">
+  <pre class="code">./foo input/inputRead.dat output/outWrite.dat
+</pre>
+ </div>
+ <p>
+  now you will need to pass
+ </p>
+ <div class="code">
+  <pre class="code">./foo /chirp/CONDOR/$ENV(PWD)/input/inputRead.dat /chirp/CONDOR/$ENV(PWD)/output/outWrite.dat
+</pre>
+ </div>
+ <p>
+  This will be easier for you if your application does not have paths encoded statically but rather takes them as arguments (or environment variables).
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Complete submit file example
+ </h3>
+ Last but not least a complete example submit file combining all the mentioned steps:
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">#####################
+#### condor.submit
+#####################
+
+universe = vanilla
+executable = wrapper.sh
+arguments = foo /chirp/CONDOR/$ENV(PWD)/input/inputRead.dat /chirp/CONDOR/$ENV(PWD)/input/inputRead.dat
++WantIOProxy = True
+should_transfer_files = YES
+when_to_transfer_output = ON_EXIT
+
+# in this example we are going to transfer parrot_run with the application
+# and assume it being located in /usr/local
+transfer_input_files = /usr/local/bin/parrot_run,foo
+
+queue
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Additional Resources
+ </h2>
+ <p>
+  Obviously there are a variety of useful things you can do with chirp and parrot. Remote IO is only one of them.
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <a class="external" href="http://www.cse.nd.edu/~ccl/software/parrot/">
+    Parrot's home and user manual
+   </a>
+  </li>
+  <li>
+   <a class="external" href="http://www.cse.nd.edu/~ccl/software/chirp/">
+    Chirp's home and user manual
+   </a>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
