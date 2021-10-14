@@ -1,0 +1,38 @@
+From ee634c1455d72c6587d1862974c9cb3213fe4b2d Mon Sep 17 00:00:00 2001
+From: Brian Lin <brianhlin@gmail.com>
+Date: Tue, 20 Sep 2016 08:58:30 -0500
+Subject: [PATCH] Fix ypbind/nslcd service dependencies
+
+---
+ src/condor_examples/condor.service | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
+
+diff --git a/src/condor_examples/condor.service b/src/condor_examples/condor.service
+index b0f7949..3afe61a 100644
+--- a/src/condor_examples/condor.service
++++ b/src/condor_examples/condor.service
+@@ -1,8 +1,8 @@
+ 
+ [Unit]
+ Description=Condor Distributed High-Throughput-Computing
+-After=syslog.target network.target
+-Wants=network.target
++After=syslog.target network.target ypbind.service nslcd.service
++Wants=network.target ypbind.service nslcd.service
+ # Disabled until HTCondor security fixed.
+ # Requires=condor.socket
+ 
+@@ -20,10 +20,6 @@ NotifyAccess=main
+ KillSignal=SIGKILL
+ LimitNOFILE=16384
+ ControlGroup=/condor
+-Wants=nslcd.service
+-After=nslcd.service
+-Wants=ypbind.service
+-After=ypbind.service
+ 
+ [Install]
+ WantedBy=multi-user.target
+-- 
+2.5.5
+
