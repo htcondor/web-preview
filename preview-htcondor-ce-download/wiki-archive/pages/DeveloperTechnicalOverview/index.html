@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-htcondor-ce-download/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Developer Technical Overview</title>
+
+    <script src="/web-preview/preview-htcondor-ce-download/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-htcondor-ce-download/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-htcondor-ce-download/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-htcondor-ce-download/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-download/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-htcondor-ce-download/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-download/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Developer Technical Overview</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Overview of the HTCondor High Throughput Computing System
+  </h2>
+ </span>
+ <p>
+  Note: This document needs to be updated to reflect changes in the HTCondor system in the 5-10 years since it was written.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What is HTCondor?
+ </h3>
+ <p>
+  HTCondor is a software system that runs on a cluster of workstations to harness wasted CPU cycles. A HTCondor pool consists of any number of machines, of possibly different architectures and operating systems, that are connected by a network. To monitor the status of the individual computers in the cluster, certain HTCondor programs called the HTCondor "daemons" must run all the time. One daemon is called the "master". Its only job is to make sure that the rest of the HTCondor daemons are running. If any daemon dies, the master restarts it. If a daemon continues to die, the master sends mail to a HTCondor administrator and stops trying to start it. Two other daemons run on every machine in the pool, the "startd" and the "schedd". The schedd keeps track of all the jobs that have been submitted on a given machine. The startd monitors information about the machine that is used to decide if it is available to run a HTCondor job, such as keyboard and mouse activity, and the load on the CPU. Since HTCondor only uses idle machines to compute jobs, the startd also notices when a user returns to a machine that is currently running and removes the job.
+ </p>
+ <p>
+  One machine, the "central manager" (CM) keeps track of all the resources and jobs in the pool. All of the schedds and startds of the entire pool report their information to a daemon running on the CM called the "collector". The collector maintains a global view, and can be queried for information about the status of the pool. Another daemon on the CM, the "negotiator", periodically takes information from the collector to find idle machines and match them with waiting jobs. This process is called a "negotiation cycle" and usually happens every five minutes. (See figure 1).
+ </p>
+ <p>
+  Figure 1:
+  <img alt="fig1.gif" src="attach_get/65/fig1.gif"/>
+ </p>
+ <p>
+  Besides the daemons which run on every machine in the pool and the central manager, HTCondor also consists of a number of other programs. These are used to help manage jobs and follow their status, monitor the activity of the entire pool, and gather information about jobs that have been run in the past. These are commonly referred to as the HTCondor "tools".
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What is High-Throughput Computing?
+ </h3>
+ <p>
+  For many scientists, the quality of their research is heavily dependent on computing throughput. It is not uncommon to find problems that require weeks or months of computation to solve. Scientists involved in this type of research need a computing environment that delivers large amounts of computational power over a long period of time. Such an environment is called a High Throughput Computing (HTC) environment. In contrast, High Performance Computing (HPC) environments deliver a tremendous amount of power over a short period of time. HPC environments are often measured in terms of FLoating point OPerations per Second (FLOPS). Many scientists today do not care about FLOPS, their problems are on a much larger scale. These people are concerned with floating point operations per month or year. They are interested in how many jobs they can complete over a long period of time, in other words, a high throughput of jobs.
+ </p>
+ <p>
+  The key to high-throughput is efficient use of available resources. Years ago, the scientific community relied on large mainframe computers to do computational work. A large number of individuals and groups would have to pool their financial resources to afford such a computer. It was not uncommon to find just one such machine at even the largest research institutions. Scientists would have to wait for their turn on the mainframe, and would only have a certain amount of time allotted to them. They had to limit the size of their problems to make sure it would complete in the given time. While this environment was inconvenient for the users, it was very efficient, since the mainframe was busy nearly all the time.
+ </p>
+ <p>
+  As computers became smaller, faster and cheaper, scientists moved away from mainframes and started buying personal computers. An individual or a small group could afford a computing resource that was available whenever they wanted it. It might be slower than the mainframe, but since they had exclusive access, it was worth it. Now, instead of one giant computer for a large institution, there might be hundreds of personal computers. This is an environment of distributed ownership, where individuals throughout the organization own their own resources. The total computational power of the institution as a whole might rise dramatically as a result of such a change, but the resources available to the individual users remained roughly the same. While this environment is more convenient for the users, it is also much less efficient. Many machines sit idle for long periods of time while their users are busy doing other things. (See footnote 1). HTCondor takes these wasted computational resources and turns them into an HTC environment.
+ </p>
+ <p>
+  To achieve the most throughput, HTCondor provides two important functions. Firstly, it makes the available resources more efficient by finding idle machines and putting them to work. Secondly, it expands the resources available to a given user, by functioning well in an environment of distributed ownership.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Why use HTCondor?
+ </h3>
+ <p>
+  First and foremost, HTCondor takes advantage of computing resources that would otherwise be wasted and puts them to good use. Many jobs can be submitted at once, and HTCondor will find idle machines as they become available. In this way, tremendous amounts of computation can be done with very little intervention from the user. Moreover, HTCondor allows users to take advantage of idle machines that they would not otherwise have access to, by providing uniform access to distributively owned resources.
+ </p>
+ <p>
+  HTCondor provides a number of other important features to its users. Code does not have to be modified in any way to take advantage of these benefits, though it must be linked with the HTCondor libraries. Once re-linked, jobs gain two crucial abilities: they can checkpoint and perform remote system calls. These jobs are called "standard" HTCondor jobs. HTCondor also provides a mechanism to run binaries that have not been re-linked, which are called "vanilla" jobs. Vanilla jobs do not gain any of these benefits, but they are still scheduled by HTCondor to run on idle machines. However, since vanilla jobs do not support remote system calls, the mechanism by which HTCondor overcomes distributed ownership, they must operate in an environment of a shared filesystem and common UID space.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What is Checkpointing?
+ </h3>
+ <p>
+  Simply put, checkpointing involves saving all the work a job has done up until a given point. Normally, when performing long-running computations, if a machine crashes, or must be rebooted for an administrative task, all the work that has been done is lost. The job must be restarted from scratch which can mean days, weeks, or even months of computation wasted. With checkpointing, HTCondor ensures that positive progress is always made on jobs, and that you only loose the computation that has been performed since the last checkpoint. HTCondor can be configured to periodically checkpoint, you can issue a command to asynchronously checkpoint a job on any given machine, or you can even call a function within your code to perform a checkpoint as it runs. Checkpointing also happens whenever a job is moved from one machine to another, which is known as "process migration". (See footnote 2).
+ </p>
+ <p>
+  Checkpointing is accomplished by saving all the information about the state of the job to file. This includes all the registers currently in use, a complete memory image, and information about all open file descriptors. This file, called a "checkpoint file", is written to disk. The file can be quite large, since it holds a complete image of the process's virtual memory address space. Normally, the checkpoint file is returned to the machine the job was submitted from. A "checkpoint server" can be installed at a HTCondor pool, which is a single machine where all checkpoints are stored. An administrator can set up a machine with lots of disk space to be a checkpoint server and then individual machines in the pool do not need any additional disk space to hold the checkpoints of jobs they submit.
+ </p>
+ <p>
+  Resources (in particular, machines) are only allocated to HTCondor jobs when they are idle. The individual owners of the machines specify to HTCondor what their definition of idle is. Usually, this involves some combination of the load on the CPU, and the time that the keyboard and mouse have been idle. If a machine is running a HTCondor job and its owner returns, HTCondor must make the machine available to the user again. HTCondor performs a checkpoint of the job and puts it back in the job queue to be matched with another idle machine whenever one is available. When a job with a checkpoint file is matched with a machine, HTCondor starts the job from the state it was in at the time of checkpoint. In this way, the job migrates from one machine to another. As far as the job knows, nothing ever happened, since the entire process is automatic. Checkpointing and process migration even work in a distributively owned computing environment. The job can start up on a machine where its owner has an account, the owner can start to use the machine again, the job will checkpoint, can move to a machine where the owner has no account, and continue to run as though nothing happened. Some long running HTCondor jobs can end up running on dozens of different machines over the course of their time in the HTCondor system.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What happens when a job is submitted to HTCondor?
+ </h3>
+ <p>
+  Every HTCondor job involves three machines. One is the submitting machine, where the job is submitted from. The second is the central manager, which finds an idle machine for that job. The third is the executing machine, the computer that the job actually runs on. In reality, a single machine can perform two or even all three of these roles. In such cases, the submitting machine and the executing machine might actually be the same piece of hardware, but all the mechanisms described here will continue to function as if they were separate machines. The executing machine is often many different computers at different times during the course of the job's life. However, at any given moment, there will either be a single execution machine, or the job will be in the job queue, waiting for an available computer.
+ </p>
+ <p>
+  Every machine in the pool has certain properties: its architecture, operating system, amount of memory, the speed of its CPU, amount of free swap and disk space, and other characteristics. Similarly, every job has certain requirements and preferences. A job must run on a machine with the same architecture and operating system it was compiled for. Beyond that, jobs might have requirements as to how much memory they need to run efficiently, how much swap space they will need, etc. Preferences are characteristics the job owner would like the executing machine to have but which are not absolutely necessary. If no machines that match the preferences are available, the job will still function on another machine. The owner of a job specifies the requirements and preferences of the job when it is submitted. The properties of the computing resources are reported to the central manager by the startd on each machine in the pool. The negotiator's task is not only to find idle machines, but machines with properties that match the requirements of the jobs, and if possible, the job preferences.
+ </p>
+ <p>
+  When a match is made between a job and a machine, the HTCondor daemons on each machine are sent a message by the central manager. The schedd on the submitting machine starts up another daemon, called the "shadow". This acts as the connection to the submitting machine for the remote job, the shadow of the remote job on the local submitting machine. The startd on the executing machine also creates another daemon, the "starter". The starter actually starts the HTCondor job, which involves transferring the binary from the submitting machine. (See figure 2). The starter is also responsible for monitoring the job, maintaining statistics about it, making sure there is space for the checkpoint file, and sending the checkpoint file back to the submitting machine (or the checkpoint server, if one exists). In the event that a machine is reclaimed by its owner, it is the starter that vacates the job from that machine. (See footnote 3).
+ </p>
+ <p>
+  Figure 2:
+  <img alt="fig2.gif" src="attach_get/66/fig2.gif"/>
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How does HTCondor handle distributed ownership?
+ </h3>
+ <p>
+  HTCondor is designed to run on a pool of machines that are distributively owned, in other words, not maintained or administered by a central authority. Individuals with computers on their desks can join a HTCondor pool without an account on any of the other machines in the pool. By agreeing to allow others to use their machines when they are idle, these people gain access to all the idle machines in the pool when they have computations to perform. However, since they have no accounts on the other machines, they can not access the filesystem of the machines where their jobs run. While it is possible that a program could represent its output with a single integer, the return value, this is not generally sufficient. Therefore, HTCondor jobs must have a way to access a filesystem where they can write output files and read input. HTCondor uses remote system calls to provide access to the filesystem on the machine where a job was submitted. All of the system calls that the job makes as it runs are actually executed on the submitting machine. In this way, any files or directories that the owner of the job can access on his or her machine can be accessed by the job as it runs, even when running on a machine where the user has no account.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How Do Remote System Calls Work?
+ </h3>
+ <p>
+  While running on the executing machine, nearly every system call a job performs is caught by HTCondor. This is done by linking the job against the HTCondor library, not the standard C library. The HTCondor library contains function stubs for all the system calls, much like the C library contains function wrappers for the system calls. These stubs send a message back to the shadow, asking it to perform the requested system call. The shadow executes the system call on the submitting machine, takes the result and sends it back to the execution machine. The system call stub inside the HTCondor executable gets the result, and returns control back to the job. (See footnote 4). (See figure 3). From the job's point of view, it made a system call, waited for the system to give it an answer, and continued computation. The job has no idea that the system that performed the call was actually the submit machine, instead of the machine where it is running. In this way, all I/O the job performs is done on the submitting machine, not the executing machine. This is the key to HTCondor's power in overcoming the problems of distributed ownership. HTCondor users only have access to the filesystem on the machine that jobs are submitted from. Jobs can not access the filesystem on the machine where they execute because any system calls that are made to access the filesystem are simply sent back to the submitting machine and executed there.
+ </p>
+ <p>
+  Figure 3:
+  <img alt="fig3.gif" src="attach_get/67/fig3.gif"/>
+ </p>
+ <p>
+  A few system calls are allowed to execute on the local machine. These include sbrk() and its relatives which are functions that allocate more memory to the job. The only resources on the executing machine a HTCondor job has access to are the CPU and memory. Of course, the job can only access memory within its own virtual address space, not the memory of any other process. This is insured by the operating system, not HTCondor.
+ </p>
+ <p>
+  Some system calls are simply not supported by HTCondor. In particular, the fork() system call and its relatives are not supported. These calls create a new process, a copy of the parent process that call them. This would make it far more complicated to checkpoint, and has some serious security implications as well. By repeatedly forking, a process can fill up the machine with processes, resulting in an operating system crash. If a remote job was allowed to crash a machine by HTCondor, no one would join a HTCondor pool. Keeping the owners of machines happy and secure is one of HTCondor's most important tasks, since without their voluntary participation, HTCondor would not have access to their resources.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What UID does HTCondor run as?
+ </h3>
+ <p>
+  In general, a condor user and group should be created on a machine before it is added to a HTCondor pool. While the condor user can have the same UID and GID on all the machines in the pool, it does not need for this to be true. In environments where there is a common condor user across many machines, the home directory of the condor account must be on the local disk of each one, not shared by more than one machine. This home directory holds HTCondor's configuration files and three subdirectories called "spool", "execute" and "log". The spool directory holds the queue of jobs that are currently submitted, all the checkpoints and binaries of jobs that have been submitted but have not yet completed, and a history file containing information about all of the completed jobs. The log directory holds log files for all the daemons. The execute directory will be discussed below. All of these directories are owned by user and group condor, and are group-writable. Many HTCondor tools are binaries that set their GID (setgid) to group condor, so that any user on the machine can manipulate the job queue.
+ </p>
+ <p>
+  HTCondor works most smoothly when it is started up as root. The daemons then all have the ability to switch their real UIDs and effective UIDs at will. When this happens, all the daemons run as root, but normally leave their effective UID and GID to be those of user and group condor. This allows access to the log files without changing their ownership. It also allows access to these files when the condor home directory resides on an NFS server, since root can not normally access NFS files. Before the shadow is created, the schedd switches back to root, so that it can start up the shadow with the UID of the user who submitted the job. Since the shadow runs as the owner of the job, all remote system calls are performed under his or her UID and GID. This ensures that as the HTCondor job executes, it can only access files that its owner could access if it were running locally, without HTCondor. On the executing machine, the starter starts off the job running as user nobody, to help ensure that it can not access any local resources or do any harm. On certain platforms, some daemons must also switch to root to get information about the machine from the kernel, such as how much memory and swap space are in use. A few platforms actually require another HTCondor daemon, the keyboard daemon, "kbdd". The kbdd queries the X server on its machine, to find out information about mouse and keyboard activity under X Windows. This daemon generally must run as root to perform this task.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What if I do not have root access?
+ </h3>
+ <p>
+  HTCondor can also function on some platforms by starting up as user condor. These platforms include Linux and Solaris, where all information about the machine that HTCondor needs is available outside of the kernel and a kbdd is not needed. Since user condor does not have the ability to switch UID or GID, all daemons run as user and group condor. Also, the shadow and actual HTCondor executable run as condor. This means that the remote job can only access the files and directories that are accessible to the condor user on the submitting machine. Owners of jobs have to make their input readable to the condor user. If the job creates output, it must be placed in a directory that is writable by the condor user as well. In practice, this means creating world-writable directories for output from HTCondor jobs. This creates a potential security risk, in that any user on the submitting machine can alter the data, remove it, and do other undesirable things. However, most users can trust the other users on their own machine not to do this.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What directory does a job run in?
+ </h3>
+ <p>
+  When any process runs, it has a notion of its current working directory (cwd), the directory that acts as the base for all filesystem access. Since there are two sides of the HTCondor job, the submit side and the execution side, there are two cwds, respectively. When a job is submitted to HTCondor, the owner specifies what the cwd for it should be. This defaults to the cwd of the user at the point of submission, but can be changed in the file that describes to HTCondor how the job should be run, the "submit file". Many jobs can be submitted at the same time with the same cwd, or different ones for each job. This directory acts as the effective cwd for the entire life of the job, regardless of what machine it runs on. The submit-side cwd is the cwd of the shadow. The shadow changes to this directory before it starts to service requests from the remote job. Since filesystem access for the job goes through the shadow, the cwd of the shadow behaves as the cwd of the job if it were executing without HTCondor. This is the directory of most concern to a user of HTCondor.
+ </p>
+ <p>
+  The HTCondor job on the execution machine also has a cwd. This is set to the execute subdirectory in HTCondor's home directory. This directory is world-writable since a HTCondor job usually runs as user nobody. Normally, the executable would never access this directory, since all I/O system calls are executed by the shadow on the submit machine. However, in the event of a fatal bug in the job that creates a core dump, the cwd on the execute machine needs to be accessible by the job so that it can write the core file. The starter then moves this core file back to the submit machine, and sends a message to the shadow, telling it the job has crashed and to perform any necessary clean up. The shadow sends email to the job owner announcing the crash and providing a pointer to the core file which would then reside in the HTCondor spool directory on the submit machine.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What about Vanilla jobs?
+ </h3>
+ <p>
+  Since vanilla jobs are not linked with the HTCondor library, they are not capable of performing remote system calls. Because of this, they can not access remote filesystems. For a vanilla job to properly function, it must run on a machine with a local filesystem that contains all the input files it will need, and where it can write its output. Normally, this would only be the submit machine, and any machines that had a shared filesystem with it via some sort of network filesystem like NFS or AFS. Moreover, the job must run on a machine where the user has the same UID as on the submit machine, so that it can access those files properly. In a distributively owned computing environment, these are clearly not necessarily properties of every machine in the pool, though they are hopefully properties of some of them. HTCondor defines two attributes of every machine in the pool, the UID domain and filesystem domain. When a vanilla job is submitted, the UID and filesystem domain of the submit machine are added to the job's requirements. The negotiator will only match this job with a machine with the same UID and filesystem domain, ensuring that local filesystem access on the execution machine will be equivalent to filesystem access on the submit machine.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Conclusion
+ </h3>
+ <p>
+  Because of the increasing tendency towards personal computers, more and more computing environments are becoming fragmented and distributively owned. This is resulting in more and more wasted computing power. HTCondor harnesses this power, and turns it into an effective High Throughput Computing environment. By utilizing remote system calls, the HTCondor system provides uniform access to resources in a distributively owned environment. All system calls performed by the job are executed on the machine where the job was submitted. Therefore, for the entire life of the job, regardless of where it is actually running, it has access to the local filesystem of its owner's machine. In this way, HTCondor can pool together resources and make them available to a much larger community. By expanding the resources available to users at any given time, more computing throughput is achieved. This is the key to the quality of research for many scientists today.
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  References
+ </h3>
+ <p>
+  1. Livny, M. and Mutka, M. W., ``The Available Capacity of a Privately Owned Workstation Environment,'' Performance Evaluation, vol. 12, no. 4 pp. 269-284, July, 1991.
+ </p>
+ <p>
+  2. "Checkpointing and Migration of UNIX Processes in the HTCondor Distributed Processing System" Dr Dobbs Journal, February 1995
+ </p>
+ <p>
+  3. Litzkow, M., Livny, M., and Mutka, M. W., ``Condor - A Hunter of Idle Workstations,'' Proceedings of the 8th International Conference of Distributed Computing Systems, pp. 104-111, June, 1988.
+ </p>
+ <p>
+  4. Litzkow, M., ``Remote Unix - Turning Idle Workstations into Cycle Servers,'' Proceedings of Usenix Summer Conference, 1987.
+ </p>
+ <h3>
+  Attachments:
+ </h3>
+ <blockquote>
+  <ul>
+   <li>
+    <a href="attach_get/65/fig1.gif">
+     fig1.gif
+    </a>
+    5894 bytes added by alderman on 2009-Jul-15 20:17:30 UTC.
+    <br/>
+    Figure 1
+    <br/>
+   </li>
+   <li>
+    <a href="attach_get/66/fig2.gif">
+     fig2.gif
+    </a>
+    8418 bytes added by alderman on 2009-Jul-15 20:17:48 UTC.
+    <br/>
+    Figure 2
+    <br/>
+   </li>
+   <li>
+    <a href="attach_get/67/fig3.gif">
+     fig3.gif
+    </a>
+    9746 bytes added by alderman on 2009-Jul-15 20:18:13 UTC.
+    <br/>
+    Figure 3
+    <br/>
+   </li>
+  </ul>
+ </blockquote>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
