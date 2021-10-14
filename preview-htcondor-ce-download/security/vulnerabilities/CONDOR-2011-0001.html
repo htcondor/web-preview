@@ -1,0 +1,94 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>
+CONDOR-2011-0001
+</title>
+<link type="text/css" rel="stylesheet" href="/assets/css/vulnerabilities.css">
+</head>
+<body>
+    
+    <span class='leftlogo'><a href="http://www.cs.wisc.edu/~kupsch/vuln_assessment"><img width="150" alt="U of Wisconsin logo" src="uw_logo_h_4c.gif" class="noborder" height="54"></a></span>
+
+<h1>
+    CONDOR-2011-0001
+</h1>
+<hr>
+<table width='100%' summary='whole page'>
+<tr>
+    <td width='25%'><p class='h'>Summary:</p></td>
+    <td class='sv'><p class='v'>&nbsp;</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+  In some circumstances, Condor may allow connections from hosts that are
+  specifically blacklisted in the DENY_{X} authorization list specified in the
+  condor_config file, where {X} can be any of the authorization levels READ,
+  WRITE, ADMINISTRATOR, DAEMON, CONFIG, IMMEDIATE_FAMILY, or NEGOTIATOR.
+    </p></td>
+</tr>
+<tr><td colspan='2'>
+<br><table class='sumtable' width='100%' summary='short values'>
+<tr>
+<th width='20%'>Component</th>
+<th width='20%'>Vulnerable Versions</th>
+<th width='20%'>Platform</th>
+<th width='20%'>Availability</th>
+<th width='20%'>Fix Available</th>
+</tr>
+<tr>
+<td class='sv'>All condor daemons</td>
+<td class='sv'>all</td>
+<td class='sv'>all</td>
+<td class='sv'>not known to be publicly available</td>
+<td class='sv'>7.6.5</td>
+</tr>
+<tr>
+<th width='20%'>Status</th>
+<th width='20%'>Access Required</th>
+<th width='20%'>Host Type Required</th>
+<th width='20%'>Effort Required</th>
+<th width='20%'>Impact/Consequences</th>
+</tr>
+<tr>
+<td class='sv'>Verified</td>
+<td class='sv'>access to a host that matches an entry in both the DENY_{X} list and the corresponding ALLOW_{X} list.</td>
+<td class='sv'>any</td>
+<td class='sv'>high</td>
+<td class='sv'>low</td>
+</tr>
+<tr>
+<th width='20%'>Fixed Date</th>
+<th width='20%'>Credit</th>
+</tr>
+<tr>
+<td class='sv'>n/a</td>
+<td class='sv'>Condor Test Suite</td>
+</tr>
+</table>
+</td></tr>
+<tr>
+    <td width='25%'><p class='h'>Effort Required:</p></td>
+    <td class='sv'><p class='v'>high</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+  An ordinary user being able to cause the conditions necessary to exploit this
+  vulnerability would be quite rare.
+    </p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Impact/Consequences:</p></td>
+    <td class='sv'><p class='v'>low</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+  The exploit allows a blacklisted host some access to condor resources.  It
+  does not give them any ability beyond what is granted in the ALLOW_{X} lists.
+    </p></td>
+</tr>
+</table>
+
+</body>
+</html>
+

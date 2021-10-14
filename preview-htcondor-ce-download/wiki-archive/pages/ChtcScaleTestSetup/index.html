@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-htcondor-ce-download/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Chtc Scale Test Setup</title>
+
+    <script src="/web-preview/preview-htcondor-ce-download/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-htcondor-ce-download/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-htcondor-ce-download/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-htcondor-ce-download/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-download/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-htcondor-ce-download/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-download/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Chtc Scale Test Setup</h1>
+<div id="content">
+ Our goal was to establish an HTCondor pool with 10,000 EC2 instances.  To conserve cash, but still test the pool at the expected scale, we requested Spot instance types in order of increasing cost (that is, starting with a single core), but configured that startd to always advertise 10 static slots.  Thus, with 10,000 instances, we would have a 100,000-slot pool.
+ <p>
+  The following configuration, excepting the explanatory comments, is identical to the one successfully started &gt; 100,000 12-hour sleep jobs.
+ </p>
+ <p>
+  We used shared port on the submitter and CCB on the execute nodes to minimize port usage on the submitter.  (We used shared port on the execute nodes to simplify security group configuration.)
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  general configuration
+ </h2>
+ <p>
+  I installed "personal condors" from the tarball on e141, e142, and e143.chtc.wisc.edu, in
+  <code>
+   /home/tlmiller/scale-test/install
+  </code>
+  .
+ </p>
+ <p>
+  The following was the same for all three non-AWS machines:
+ </p>
+ <p>
+  <code>
+   --- /home/tlmiller/scale-test/install/etc/condor_config ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre>RELEASE_DIR = /home/tlmiller/scale-test/install
+LOCAL_DIR = /home/tlmiller/scale-test/install/local
+LOCAL_CONFIG_FILE = $(LOCAL_DIR)/condor_config.local
+LOCAL_CONFIG_DIR = $(LOCAL_DIR)/config
+
+# A lock file unique to this installation of HTCondor.
+LOCK = /tmp/condor-lock.0.152549314153479
+
+# My user ID.
+CONDOR_IDS = 20015.20015
+</pre>
+ </div>
+ <p>
+  The local config file was empty on all non-AWS machines:
+ </p>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_FILE) ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre></pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  central manager
+ </h2>
+ <p>
+  The central manager ran a collector tree and the schedd used to for EC2 jobs.
+ </p>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_DIR)/00-cm ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre># We're the central manager.
+DAEMON_LIST = MASTER, COLLECTOR, NEGOTIATOR
+CONDOR_HOST = $(FULL_HOSTNAME)
+
+# Shared-nothing.
+UID_DOMAIN = $(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN = $(FULL_HOSTNAME)
+
+# Security.
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS, PASSWORD
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+SEC_PASSWORD_FILE = $(LOCAL_DIR)/password_file
+ALLOW_WRITE = condor_pool@*/* $(FULL_HOSTNAME) $(IP_ADDRESS) 127.0.0.1
+
+# Primary collector.
+COLLECTOR_NAME = collector
+COLLECTOR_HOST = $(CONDOR_HOST):9999
+
+# These numbers came from CMS scale test set-up.  Not clear if they're right.
+COLLECTOR_MAX_FILE_DESCRIPTORS = 80000
+SHARED_PORT_MAX_FILE_DESCRIPTORS = 80000
+
+# Negotiating once a minute seems like a good balance between responsiveness
+# and load on the schedd.
+NEGOTIATOR_INTERVAL = 60
+
+# Don't ever preempt; don't even think about preempting, because that's slow.
+PREEMPTION_REQUIREMENTS = False
+NEGOTIATOR_CONSIDER_PREEMPTION = False
+
+# There's no need for this, and the negotiator has better things to do
+# with its time.
+NEGOTIATOR_INFORM_STARTD = False
+
+# Scaling tweaks.  Not known if necessary.
+COLLECTOR_QUERY_WORKERS = 16
+</pre>
+ </div>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_DIR)/01-submitter ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre>DAEMON_LIST = $(DAEMON_LIST), SCHEDD
+
+# Given that we only want 10,000 instances, this is probably larger
+# than it really needs to be.
+MAX_JOBS_RUNNING = 20000
+
+# This section is probably irrelevant for an EC2-only submitter.
+JOB_START_DELAY = 2
+JOB_START_COUNT = 50
+JOB_STOP_DELAY = 1
+JOB_STOP_COUNT = 30
+
+# No UDP over the WAN, please.
+SCHEDD_SEND_VACATE_VIA_TCP = True
+
+# I have no idea what this means.
+STARTD_SENDS_ALIVES = True
+
+# We probably don't need any of these for the EC2-only submitter.
+SHARED_PORT_MAX_WORKERS = 1000
+SHADOW_WORKLIFE = 24 * $(HOUR)
+SOCKET_LISTEN_BACKLOG = 1024
+
+# Logging!
+MAX_DEFAULT_LOG = 100 Mb
+EC2_GAHP_DEBUG = D_PERF_TRACE D_SUB_SECOND
+</pre>
+ </div>
+ <p>
+  I repeated the following section 256 times, incrementing each instance of '10000' by one each time.
+ </p>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_DIR)/99-collector-tree ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre># We picked port 10000 as our base port completely arbitrarily.
+COLLECTOR10000 = $(COLLECTOR)
+# We didn't set CONDOR_VIEW_HOST in the base configuration because it caused random delays in the root colletor.  Not sure why.
+COLLECTOR10000_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector10000Log _CONDOR_USE_SHARED_PORT=FALSE _CONDOR_CONDOR_VIEW_HOST=127.0.0.1:9999 "
+COLLECTOR10000_ARGS = -f -p 10000
+DAEMON_LIST = $(DAEMON_LIST), COLLECTOR10000
+# Useless, but shuts up the master.
+COLLECTOR10000_LOG = $(LOG)/10000Log
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  CCB
+ </h2>
+ <p>
+  We dedicated a host to CCB, worried that it would be too much to expect the collector tree to both collect and broker.  (That did not appear to be the case.)
+ </p>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_DIR)/02-ccb ---
+  </code>
+ </p>
+ <p>
+ </p>
+ <div class="verbatim">
+  <pre># We're the CCB host.  We run a full collector tree, because we're lazy.
+DAEMON_LIST = MASTER, COLLECTOR
+CONDOR_HOST = $(FULL_HOSTNAME)
+
+# Shared-nothing.
+UID_DOMAIN = $(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN = $(FULL_HOSTNAME)
+
+# Security.
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS, PASSWORD
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+SEC_PASSWORD_FILE = $(LOCAL_DIR)/password_file
+ALLOW_WRITE = condor_pool@*/* $(FULL_HOSTNAME) $(IP_ADDRESS) 127.0.0.1
+
+# Primary collector
+COLLECTOR_NAME = collector
+COLLECTOR_HOST = $(CONDOR_HOST):9999
+
+# These numbers came from CMS scale test set-up.  Probably not necessary for a CCB-only machine.
+COLLECTOR_MAX_FILE_DESCRIPTORS = 80000
+SHARED_PORT_MAX_FILE_DESCRIPTORS = 80000
+
+# Scaling tweaks.  Not known if necessary.
+COLLECTOR_QUERY_WORKERS = 16
+
+# Collector tree.
+CONDOR_VIEW_HOST = 127.0.0.1:9999
+</pre>
+ </div>
+ <p>
+  We used the full collector-tree set-up for the CCB machine.  This certainly didn't help, but probably didn't hurt, and saved me the effort of writing a new config file.
+ </p>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_DIR)/99-collector-tree) ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre># We picked port 10000 as our base port completely arbitrarily.
+COLLECTOR10000 = $(COLLECTOR)
+# We didn't set CONDOR_VIEW_HOST in the base configuration because it caused random delays in the root colletor.  Not sure why.
+COLLECTOR10000_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector10000Log _CONDOR_USE_SHARED_PORT=FALSE _CONDOR_CONDOR_VIEW_HOST=127.0.0.1:9999 "
+COLLECTOR10000_ARGS = -f -p 10000
+DAEMON_LIST = $(DAEMON_LIST), COLLECTOR10000
+# Useless, but shuts up the master.
+COLLECTOR10000_LOG = $(LOG)/10000Log
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  submitter
+ </h2>
+ <p>
+  We dedicated a machine to being the submit node.  To save memory, we used the 32-bit shadow.  (We had to install an additional 32-bit compatibility library in order to run it without a wrapper script.)  Nonetheless, HTCondor required ~68 of 128 GB of RAM to run all 101,000 jobs, 4 GB of which was the schedd by itself.
+ </p>
+ <p>
+  <code>
+   --- $(LOCAL_CONFIG_DIR)/01-submitter ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre># We're a submitter.
+DAEMON_LIST = MASTER, SCHEDD
+CONDOR_HOST = $(FULL_HOSTNAME)
+
+# Shared-nothing.
+UID_DOMAIN = $(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN = $(FULL_HOSTNAME)
+
+# Security.
+SEC_CLIENT_AUTHENTICATION_METHODS = FS, PASSWORD
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS, PASSWORD
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+SEC_PASSWORD_FILE = $(LOCAL_DIR)/password_file
+ALLOW_WRITE = condor_pool@*/* $(FULL_HOSTNAME) $(IP_ADDRESS) 127.0.0.1
+
+# Primary collector.
+COLLECTOR_HOST = e141.chtc.wisc.edu:9999
+
+# Submitter.
+MAX_JOBS_RUNNING = 101000
+JOB_START_DELAY = 1
+JOB_START_COUNT = 100
+JOB_STOP_DELAY = 1
+JOB_STOP_COUNT = 1000
+
+SCHEDD_SEND_VACATE_VIA_TCP = True
+STARTD_SENDS_ALIVES = True
+
+# This almost certainly doesn't need to be twice the SOCKET_LISTEN_BACKLOG,
+# but it also almost certainly doesn't hurt for it to be larger than
+# necessary.
+SHARED_PORT_MAX_WORKERS = 2048
+
+# Why do we set this?
+SHADOW_WORKLIFE = 24 * $(HOUR)
+
+# How many connections to the schedd's socket-forwarding socket do we
+# allow to stack up?  (Also affects how many connections to the shared
+# port daemon we allow to stack up.)  This has to be a large enough number
+# to handle outbound connection burstiness -- CCB used to split the reverse
+# connections over many ports, but with shared port in the picture, that
+# no longer happens.
+SOCKET_LISTEN_BACKLOG = 1024
+
+# This is huge.  If this is too high, the shared port daemon will be
+# forced to drop reversed CCB connections from the startds on the floor.
+# Setting this to half of SOCKET_LISTEN_BACKLOG seemed to work well.
+MAX_PENDING_STARTD_CONTACTS = 512
+
+# One FD per job for talking to the shadows,
+# plus one FD per job for talking to the startd/starter,
+# plus 1024 FDs for miscellany.
+SCHEDD_MAX_FILE_DESCRIPTORS = 201024
+
+# This is probably massive overkill, but the shadows won't be using FDs
+# in the shared port daemon.
+SHARED_PORT_MAX_FILE_DESCRIPTORS = 101024
+
+# Defaults to 100,000; I wanted a few more in the queue just to show
+# we could.
+MAX_JOBS_PER_OWNER = 200000
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  execute node
+ </h2>
+ <p>
+  I started from the
+  <em>
+   condor_annex
+  </em>
+  base image, removed HTCondor, and installed the version under test from RPMs.  I did not change
+  <code>
+   /etc/condor/condor_config
+  </code>
+  .
+ </p>
+ <p>
+  <code>
+   --- /etc/condor/config.d/annex ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre>DAEMON_LIST = MASTER, STARTD
+
+# Probably not necessary for production.
+STARTD_DEBUG = D_SECURITY D_NETWORK
+
+SEC_CLIENT_AUTHENTICATION_METHODS = FS, PASSWORD
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS, PASSWORD
+SEC_PASSWORD_FILE = /etc/condor/password_file
+ALLOW_OWNER = $(ALLOW_OWNER) condor_pool@*/*
+ALLOW_WRITE = $(ALLOW_WRITE) condor_pool@*/*
+
+# This in effect gives the pool 15 minutes to claim this startd
+# before shutting down.  This wasn't enough in a few cases, but
+# that could be avoided by running more than one schedd or starting
+# fewer jobs at the same time.  It also causes this instance to
+# suicide if the pool runs of jobs, which was the real main point.
+STARTD_NOCLAIM_SHUTDOWN = 900
+# Intended to shut the master down when the startd goes away for
+# more than sixty seconds.  Also shuts the master down if the
+# startd hasn't been started in sixty seconds.
+MASTER.DAEMON_SHUTDOWN_FAST = ( STARTD_StartTime == 0 ) &amp;&amp; ((time() - DaemonStartTime) &gt; 60)
+# The script the shuts the instance down when HTCondor exits.
+MASTER_SHUTDOWN_SHUTDOWN = /etc/condor/shutdown
+# Because we can, mostly.
+ENCRYPT_EXECUTE_DIRECTORY = TRUE
+
+# Take the last quad of the instance's IP address and add it to
+# the base port number to determine which child collector and CCB
+# collector to use.  Note that PORTSTR is in the ClassAd language;
+# the indirection is required because of the way the HTCondor
+# config language parses $INT().
+PORTSTR = 10000 + int(split( "$(IP_ADDRESS)", "." )[3])
+PORTNO = $INT(PORTSTR)
+COLLECTOR_HOST = e141.chtc.wisc.edu:$(PORTNO)
+CCB_ADDRESS = e142.chtc.wisc.edu:$(PORTNO)
+
+# Advertise the instance ID.
+STARTD_ATTRS = $(STARTD_ATTRS) EC2InstanceID
+NUM_CPUS = 10
+CLAIM_WORKLIFE = 24 * $(HOUR)
+</pre>
+ </div>
+ <p>
+  <code>
+   --- /etc/condor/shutdown ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre>#!/bin/sh
+/sbin/shutdown -h now
+</pre>
+ </div>
+ <p>
+  <code>
+   --- /etc/rc.local ---
+  </code>
+ </p>
+ <div class="verbatim">
+  <pre>#!/bin/sh
+#
+# This script will be executed *after* all the other init scripts.
+# You can put your own initialization stuff in here if you don't
+# want to do the full Sys V style init stuff.
+
+touch /var/lock/subsys/local
+
+# The above is from the stock OS installation.
+
+# Create ec2.local, with some information that may be of interest to us.
+echo EC2PublicIP = $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-ipv4) &gt;&gt; /etc/condor/config.d/ec2.local
+echo EC2InstanceID = \"$(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)\" &gt;&gt; /etc/condor/config.d/ec2.local
+
+# HTCondor shouldn't be started by default, but if it is, be sure to fully reconfigure it.
+service condor restart
+
+# Until #5590 becomes available, we have to do this to actually turn the HTCondor master shutdown script on.
+while ! condor_set_shutdown -exec shutdown; do sleep 1; done
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
