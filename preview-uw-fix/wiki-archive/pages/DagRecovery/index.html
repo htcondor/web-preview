@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-uw-fix/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-uw-fix/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-uw-fix/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-uw-fix/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-uw-fix/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-uw-fix/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-uw-fix/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Dag Recovery</title>
+
+    <script src="/web-preview/preview-uw-fix/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-uw-fix/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-uw-fix/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-uw-fix/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-uw-fix/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-uw-fix/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-uw-fix/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Dag Recovery</h1>
+<div id="content">
+ Note: not yet complete!
+ <p>
+  Recovery mode is a mode in which DAGMan "catches up" with what has happened with the node jobs of its DAG before actually submitting any new jobs (it does the "catching up" by reading the user log files of the node jobs).  Basically, we get into recovery mode if a DAG was running and DAGMan exited in a way that didn't create a rescue DAG, and then DAGMan was restarted.  There are two main ways that this can happen:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   condor_hold/condor_release of the condor_dagman job (condor_hold actually kills the condor_dagman process, but leaves the job in the queue; condor_release starts a new DAGMan process, which goes into recovery mode).
+  </li>
+  <li>
+   DAGMan exits without creating a rescue DAG because of something like an assertion.
+  </li>
+ </ul>
+ <p>
+  You can also force DAGMan into recovery mode by creating an appropriate lock file and condor_submitting the .condor.sub file (instead of condor_submit_dagging the DAG file).
+ </p>
+ <p>
+  We figure out whether we're going to go into recovery mode in
+  <code>
+   main_init()
+  </code>
+  in
+  <em>
+   dagman_main.cpp
+  </em>
+  .  After parsing the DAG file(s) and any rescue DAG, we check for the existance of a lock file (
+  <em>
+   foo.dag.lock
+  </em>
+  if the primary DAG file is
+  <em>
+   foo.dag
+  </em>
+  ).  If the lock file exists, we call
+  <code>
+   util_check_lock_file()
+  </code>
+  in
+  <em>
+   dagman_util.cpp
+  </em>
+  .  This attempts to instantiate a
+  <code>
+   ProcessId
+  </code>
+  object from the lock file (this is Joe Meehean's unique PID thing, which tries to avoid the possibility of having a PID refer to the wrong process).  If the process that wrote the lock file is running, we will exit (we don't want to have two instances of the same DAG running at the same time; see the log file section).  If the process that wrote the lock file
+  <em>
+   isn't
+  </em>
+  running, or we weren't able to construct the ProcessID object, we continue.  In that case, we call util_create_lock_file() to write a lock file containing a serialized ProcessID object corresponding to
+  <em>
+   our
+  </em>
+  process.
+ </p>
+ <p>
+  Once we've figured out whether we're in recovery mode,
+  <code>
+   main_init()
+  </code>
+  calls
+  <code>
+   Dag::Bootstrap()
+  </code>
+  .  That does some things that are outside the scope of recovery mode, and then performs the recovery step.  First of all, we turn on caching of
+  <code>
+   dprintf()
+  </code>
+  output (that improves performance significantly -- at least in the past,
+  <code>
+   dprintf()
+  </code>
+  opened and closed the file each time, so that was pretty slow in recovery mode, when you're trying to really write out a lot of stuff quickly).  Then we monitor the log files for all jobs that are ready (there had better be some, or we have a cycle).  Next we call
+  <code>
+   ProcessLogEvents()
+  </code>
+  , which reads the monitored log files.  (more needed here)
+ </p>
+ <p>
+  Things to mention:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   condor_hold actually kills the DAGMan process; condor_release starts a new process (but the same HTCondor ID)
+  </li>
+  <li>
+   lock file (including Joe's Unique PID thing)
+  </li>
+  <li>
+   re-reading node job userlogs
+  </li>
+  <li>
+   FD problems on wide DAGs (throttles don't help us in recovery mode)
+  </li>
+  <li>
+   a bunch of places where we do special stuff in recovery mode
+  </li>
+  <li>
+   recovery mode is totally separate from a rescue DAG; in fact, you can be in recovery mode while running a rescue DAG.
+  </li>
+  <li>
+   recovery mode really places a lot of constraints on the rest of the DAGMan code (e.g., need node names in submit events; inter-submit sleeps if using multiple logs; no macros in log file names for node jobs; probably a bunch more that I can't think of at the moment)
+  </li>
+  <li>
+   when DAGMan exits normally (whether successfully or not) it deletes the lock file
+  </li>
+  <li>
+   caching debug output
+  </li>
+  <li>
+   basically, in recovery mode, we monitor a new log file where we'd submit a new job in "normal" mode
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
