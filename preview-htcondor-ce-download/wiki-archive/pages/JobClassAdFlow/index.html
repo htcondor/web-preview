@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-htcondor-ce-download/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-htcondor-ce-download/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Job Class Ad Flow</title>
+
+    <script src="/web-preview/preview-htcondor-ce-download/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-htcondor-ce-download/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-htcondor-ce-download/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-htcondor-ce-download/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-download/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-htcondor-ce-download/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-download/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-htcondor-ce-download/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Job Class Ad Flow</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Job ClassAd Information Flow in HTCondor
+  </h2>
+ </span>
+ <p>
+  This is a description of how job
+  <span class="quote">
+   ClassAds
+  </span>
+  are exchanged and updated in HTCondor, as of 7.5.6 in the "new" shadow/starter (i.e. everything but standard and grid universes).
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  schedd --&gt; negotiator
+ </h3>
+ <p>
+  During the negotiation cycle, the schedd sends job ads to the negotiator for matchmaking.  $$ references are not expanded (because there is no target ad yet).  The negotiator does not cache this information.  Each job ad is used immediately and then thrown away after attempting to match it.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  schedd --&gt; shadow
+ </h3>
+ <p>
+  The schedd sends the job
+  <span class="quote">
+   ClassAd
+  </span>
+  to the shadow when the shadow starts up.
+ </p>
+ <p>
+  The copy of the job ad given to the shadow contains all of the $$ references expanded.
+ </p>
+ <p>
+  While the shadow exists, it, rather than the schedd, is responsible for evaluating job policy expressions.
+ </p>
+ <p>
+  When condor_qedit modifies the job ad, the schedd updates the shadow's copy of the job ad.  (New in 7.5.6.)
+ </p>
+ <p>
+  Whenever the shadow sends an update of the ad to the schedd, it reads the schedd's value for
+  <code>
+   TimerRemove
+  </code>
+  and updates its own copy of the ad to match it.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  shadow --&gt; startd
+ </h3>
+ <p>
+  The shadow sends a copy of the job ad to the startd at claim activation time.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  shadow --&gt; starter
+ </h3>
+ <p>
+  The shadow sends a copy of the job ad to the starter before startup of the job.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  starter --&gt; shadow
+ </h3>
+ <p>
+  The starter periodically monitors resource usage by the job and sends updates of these attributes to the shadow.  The frequency is controlled by STARTER_UPDATE_INTERVAL (5 minutes) and STARTER_INITIAL_UPDATE_INTERVAL (8s).
+ </p>
+ <p>
+  On suspension or unsuspension, an update is sent immediately.
+ </p>
+ <p>
+  The starter does a final update when the job completes.
+ </p>
+ <p>
+  If any update fails, the starter disconnects from the shadow and retries on reconnect or gives up when killed by the startd due to the claim lease expiring or getting preempted.
+ </p>
+ <p>
+  The attributes which are updated are:
+  <code>
+   RemoteSysCpu
+  </code>
+  ,
+  <code>
+   RemoteUserCpu
+  </code>
+  ,
+  <code>
+   ImageSize
+  </code>
+  ,
+  <code>
+   DiskUsage
+  </code>
+  ,
+  <code>
+   ExceptionHierarchy
+  </code>
+  ,
+  <code>
+   ExceptionName
+  </code>
+  ,
+  <code>
+   ExceptionType
+  </code>
+  ,
+  <code>
+   ExitBySignal
+  </code>
+  ,
+  <code>
+   ExitSignal
+  </code>
+  ,
+  <code>
+   ExitCode
+  </code>
+  ,
+  <code>
+   ExitReason
+  </code>
+  ,
+  <code>
+   JobCoreDumped
+  </code>
+  , and
+  <code>
+   JobState
+  </code>
+  .  (The "Exception" stuff is actually for java universe.)
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  starter --&gt; startd
+ </h3>
+ <p>
+  The starter sends periodic updates to the startd so that the startd can use updated attributes when evaluating its policy.  Failed updates are simply dropped.  The update interval is controlled by the same knobs that control updates from starter to shadow.
+ </p>
+ <p>
+  There is a final update from the starter to the startd when the job is done.  If this fails, it is simply dropped.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  shadow --&gt; schedd
+ </h3>
+ <p>
+  The shadow periodically sends updates to the schedd.  The interval is controlled by the configuration variable SHADOW_QUEUE_UPDATE_INTERVAL (default 15 minutes).  If an update fails, it is simply dropped.
+ </p>
+ <p>
+  The shadow may optionally push some attribute changes immediately instead of waiting for a periodic update.  These attributes are
+  <span class="quote">
+   NumJobStarts
+  </span>
+  and
+  <span class="quote">
+   NumJobReconnects
+  </span>
+  .  SHADOW_LAZY_QUEUE_UPDATE=True disables this behavior by default.
+ </p>
+ <p>
+  When the job is finished, the shadow does a final update to the schedd.  If this update fails, the shadow will wait and retry.  This behavior is controlled by SHADOW_JOB_CLEANUP_RETRY_DELAY (30s) and SHADOW_MAX_JOB_CLEANUP_RETRIES (5).  In case of failure even after all retries have been attempted, the shadow exits with a failure code that causes the job to be requeued and (usually) run again.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  schedd --&gt; history
+ </h3>
+ <p>
+  The schedd dumps the job ad into the (optional) history file when the job leaves the queue.  If this fails, it is simply dropped.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  startd --&gt; history
+ </h3>
+ <p>
+  When a claim is deactivated (i.e. starter exits), the startd writes its copy of the job ad into the startd's (optional) history file.  If this fails, it is simply dropped.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  qedit --&gt; schedd
+ </h3>
+ <p>
+  Updates to the job by condor_qedit (or remote HTCondor-C) are made to the schedd's copy of the job.  The schedd then signals the shadow and gridmanager to pull the updated attributes into their own copies of the ad.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  schedd -&gt; condor_q
+ </h3>
+ <p>
+  condor_q sees the copy of the job ad in the schedd (or quill).  $$ references are not expanded, but extra attributes exist in the ad to indicate what the result of expansion would be (used for reconnect if the schedd restarts while the job is running).
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  schedd -&gt; job_router
+ </h3>
+ <p>
+  job_router follows the schedd's transaction log (job_queue.log) and builds its own in-memory copy of the job queue, using the quill libraries.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
