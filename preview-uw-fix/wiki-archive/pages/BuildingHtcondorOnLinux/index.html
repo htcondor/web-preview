@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-uw-fix/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-uw-fix/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-uw-fix/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-uw-fix/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-uw-fix/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-uw-fix/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-uw-fix/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Building Htcondor On Linux</title>
+
+    <script src="/web-preview/preview-uw-fix/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-uw-fix/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-uw-fix/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-uw-fix/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-uw-fix/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-uw-fix/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-uw-fix/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-uw-fix/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Building Htcondor On Linux</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Overview
+  </h2>
+ </span>
+ <p>
+  As of version 7.5.5, HTCondor uses cmake to configure the build.  For instructions on building HTCondor prior to that, see
+  <span class="wiki">
+   <a href="/web-preview/preview-uw-fix/wiki-archive/pages/BuildingHtcondorOnUnixOld" title="Building Htcondor On Unix Old">
+    BuildingHtcondorOnUnixOld
+   </a>
+  </span>
+  .
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Confirm the build environment
+ </h2>
+ The README.building does a decent job of covering this, but usually
+you'd basically need these revisions, or later: wget-1.9.1, tar 1.14,
+autoconf-2.59.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Space Needed for a Full Build
+ </h3>
+ <p>
+  You may need around 6 Gigs to build a releasable package of HTCondor. If you
+just want to build eveything up to the releasable package, then you might
+need only 3 Gigs or so.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Required Prereqs
+ </h3>
+ One needs, as a good start these revisions, or later, of these tools:
+wget-1.9.1, tar 1.14, autoconf-2.59. If you are on a recent linux-flavor
+machine, building HTCondor is pretty easy, the farther you get into
+the fringe architectures, like ia64 hpux 11, the more prereqs you may
+need. Luckily, the configure output is pretty good about telling you
+about any tools you need to update.
+ <p>
+  From some experimentation, here's a list of pre-requisite RPMs necessary for a UW-style build on SL6 as of version 8.6.0:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   cmake28 (from EPEL)
+  </li>
+  <li>
+   perl
+  </li>
+  <li>
+   gcc
+  </li>
+  <li>
+   gcc-c++
+  </li>
+  <li>
+   gcc-gfortran
+  </li>
+  <li>
+   libicu-devel
+  </li>
+  <li>
+   boost-test
+  </li>
+  <li>
+   boost-devel
+  </li>
+  <li>
+   pcre-devel
+  </li>
+  <li>
+   keyutils-libs-devel
+  </li>
+  <li>
+   krb5-libs
+  </li>
+  <li>
+   openssl-devel
+  </li>
+  <li>
+   uuid-devel
+  </li>
+  <li>
+   uuid-c++-devel
+  </li>
+  <li>
+   libuuid-devel
+  </li>
+  <li>
+   libxml2-devel
+  </li>
+  <li>
+   pam-devel
+  </li>
+  <li>
+   zlib
+  </li>
+  <li>
+   libtool-ltdl-devel
+  </li>
+  <li>
+   libtool
+  </li>
+  <li>
+   glibc-static
+  </li>
+  <li>
+   byacc
+  </li>
+  <li>
+   libX11-devel
+  </li>
+  <li>
+   libcurl-devel
+  </li>
+  <li>
+   perl-Archive-Tar
+  </li>
+  <li>
+   expat-devel
+  </li>
+  <li>
+   python-devel
+  </li>
+  <li>
+   bison
+  </li>
+  <li>
+   flex
+  </li>
+  <li>
+   nss-devel
+  </li>
+  <li>
+   openldap-devel
+  </li>
+  <li>
+   c-ares-devel
+  </li>
+ </ul>
+ <p>
+  For package list for Ubuntu see:
+  <span class="wiki">
+   <a href="/web-preview/preview-uw-fix/wiki-archive/pages/BuildingHtcondorOnUbuntu" title="Building Htcondor On Ubuntu">
+    BuildingHtcondorOnUbuntu
+   </a>
+  </span>
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Getting the source
+ </h2>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Directly from the GIT repository
+ </h3>
+ If you reside on the CSL networks and/or have access to our GIT repository,
+then follow
+ <span class="wiki">
+  <a href="/web-preview/preview-uw-fix/wiki-archive/pages/ManagingCondorSourceTreesWithGit" title="Managing Condor Source Trees With Git">
+   ManagingCondorSourceTreesWithGit
+  </a>
+ </span>
+ up to but not including the
+section entitled
+ <code>
+  Working on a single person project
+ </code>
+ .
+ <p>
+  Ensure you have checked out and are about the build the correct branch you want.
+ </p>
+ <p>
+  If you'd like to perform the full build process, producing the sort of
+package one downloads from our website with the source, then you should
+grab the tarball of man pages
+  <code>
+   make public
+  </code>
+  needs from AFS:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># sitting at the toplevel with src/ config/ externals/ etc....
+% cp /p/condor/workspaces/externals/bundles/man/current/man-current.tar.gz externals/man/current
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  From our download pages
+ </h3>
+ If you are building HTCondor sources from our
+ <a class="external" href="http://www.cs.wisc.edu/condor/downloads-v2/download.pl">
+  download
+ </a>
+ page. Then download the source tarball, it'll have a name similar to
+ <code>
+  condor_src-X.Y.Z-all-all.tar.gz
+ </code>
+ . X.Y.Z represents the version of HTCondor
+for which the source creates.
+ <p>
+  When you untar the source tarball, what you get is remarkably similar to
+what one would check out of GIT and should be directly buildable. You
+will have available in the externals directory the tarball of manual
+pages needed by our packaging scripts.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Externals required for Building
+ </h3>
+ HTCondor may use a sizable collection of externals which implement various feature
+sets for HTCondor. Some examples are Kerberos, PostgreSQL, Globus. HTCondor sources
+include an
+ <code>
+  externals/
+ </code>
+ directory which contains URLs to locate the required
+externals and patches to be applied. There is only a small number of externals
+that HTCondor absolutely requires to build, these are usually quite portable.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Required Prereqs
+ </h3>
+ One needs, as a good start these revisions, or later, of these tools:
+cmake 2.8.3, wget-1.9.1, tar 1.14, autoconf-2.59.  For a more complete list, run
+ <code>
+  nmi_tools/glue/SubmitInfo.pm
+ </code>
+ and look at the listed prereqs for a platform as similar to the one you are using as possible.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Externals required for Building
+ </h3>
+ HTCondor may use a sizable collection of externals which implement various feature
+sets for HTCondor. Some examples are
+ <code>
+  Kerberos
+ </code>
+ ,
+ <code>
+  OpenSSL
+ </code>
+ ,
+ <code>
+  Globus
+ </code>
+ . There are only a small number of externals
+that HTCondor absolutely requires to build; these are usually quite portable.
+There are
+two ways to link with external packages, using the blessed and patched versions of the packages from the UW HTCondor externals collection, or using the native libraries installed on the build machine.  We'll call these the 'UW' way and the 'proper' way.  To get externals the UW way, HTCondor sources
+include an
+ <code>
+  externals/
+ </code>
+ directory which contains URLs to locate the required
+externals and patches to be applied.  To get externals the 'proper' way, you'll need to use your system's package manager to install the necessary development libraries.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Configure your build
+ </h2>
+ <p>
+  See the new build
+  <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/wiki?p=BuildModernization">
+   instructions
+  </a>
+ </p>
+ <p>
+  The common options for configuring HTCondor to be built the 'UW way' are passed to cmake by running
+  <code>
+   configure_uw
+  </code>
+  .  This will configure the build to use the UW externals collection rather than local system libraries.
+ </p>
+ <p>
+  Additional arguments to cmake may be passed on the command line of
+  <code>
+   configure_uw
+  </code>
+  .  On most common platforms, no additional build options are required.  For other platforms, there are several ways to explore the build options:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   ccmake
+  </li>
+  <li>
+   cmake-gui
+  </li>
+  <li>
+   cmake -i
+  </li>
+  <li>
+   Use
+   <code>
+    nmi_tools/glue/SubmitInfo.pm
+   </code>
+   , which shows the build options that are used to build HTCondor on a wide variety of platforms in the NMI build system.
+   <ul>
+    <li>
+     To list the platforms that SubmitInfo.pm knows:
+     <ul>
+      <li>
+       <code>
+        ./nmi_tools/glue/SubmitInfo.pm -l
+       </code>
+      </li>
+     </ul>
+    </li>
+    <li>
+     To list the options for a particular platform
+     <ul>
+      <li>
+       <code>
+        ./nmi_tools/glue/SubmitInfo.pm &lt;
+       </code>
+       <em>
+        platform
+       </em>
+       <code>
+        &gt;
+       </code>
+      </li>
+      <li>
+       Example:
+       <code>
+        ./nmi_tools/glue/SubmitInfo.pm x86_64_opensuse_11.3
+       </code>
+      </li>
+     </ul>
+    </li>
+    <li>
+     You can also specify a regex:
+     <ul>
+      <li>
+       <code>
+        ./nmi_tools/glue/SubmitInfo.pm &lt;
+       </code>
+       <em>
+        /regex/
+       </em>
+       <code>
+        &gt;
+       </code>
+      </li>
+      <li>
+       Example:
+       <code>
+        ./nmi_tools/glue/SubmitInfo.pm /opensuse/
+       </code>
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   To build with the default options for your platform:
+   <div class="code">
+    <pre class="code">./configure_uw
+</pre>
+   </div>
+  </li>
+  <li>
+   If you want to explicitly do a clipped port ('clipped' means no standard universe, no checkpointing, no checkpoint server)
+   <div class="code">
+    <pre class="code">./configure_uw -DCLIPPED:BOOL=ON
+</pre>
+   </div>
+  </li>
+ </ul>
+ <p>
+  <strong>
+   NOTE
+  </strong>
+  :
+ </p>
+ <ul>
+  <li>
+   <strong>
+    For out of source builds
+   </strong>
+   simply make a directory above CONDOR_SRC e.g. 7.5.5 and cd into it, then type:
+   <ul>
+    <li>
+     <strong>
+      UW:
+     </strong>
+     ../CONDOR_SRC/configure_uw ../CONDOR_SRC
+    </li>
+    <li>
+     <strong>
+      Everyone else:
+     </strong>
+     cmake ../CONDOR_SRC
+     <ul>
+      <li>
+       <strong>
+        Development Recommendation:
+       </strong>
+       alias cmake='cmake
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+  <li>
+   Builds by default cache the externals under
+   <code>
+    bld_external/
+   </code>
+   in your build directory. You can change where the externals are installed by setting the environment variable
+   <code>
+    CONDOR_BLD_EXTERNAL_STAGE
+   </code>
+   to point to the desired location. As a given external always builds the same on a given platform, using a single externals location for several build directories can save unnecessary recompilation.
+  </li>
+  <li>
+   You might be interested in other
+   <span class="wiki">
+    <a href="/web-preview/preview-uw-fix/wiki-archive/pages/CmakeBuildOptions" title="Cmake Build Options">
+     CmakeBuildOptions
+    </a>
+   </span>
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Building your source
+ </h2>
+ <p>
+  While there are many targets to
+  <code>
+   make
+  </code>
+  , I will only describe the two that are
+most likely what you want.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  install
+ </h4>
+ <code>
+  make install
+ </code>
+ will make a set of executable binaries and place them in
+ <code>
+  release_dir/
+ </code>
+ . They will be dynamically linked and suitable for testing
+by pointing a $(RELEASE_DIR) at it from a condir_configure file.
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  package
+ </h4>
+ <code>
+  make package
+ </code>
+ will produce packages similar to what you can download from the
+UW download site for the machine upon which you are building.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Running the developer test suite
+ </h2>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Building the tests
+ </h3>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">$ make tests
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Running the tests
+ </h3>
+ <p>
+  See
+  <span class="wiki">
+   <a href="/web-preview/preview-uw-fix/wiki-archive/pages/TestingCondorOnUnix" title="Testing Condor On Unix">
+    TestingCondorOnUnix
+   </a>
+  </span>
+  .
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
