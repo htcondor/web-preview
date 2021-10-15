@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Configure Fair Share</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="" type="text/javascript" async></script>
+    <script src="" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Configure Fair Share</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to configure a user's fair share of the pool
+  </h2>
+ </span>
+ <p>
+  Known to work with HTCondor version: 7.0
+ </p>
+ <p>
+  To see the current priorities and priority factors for users, use the following command:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">condor_userprio -all -allusers
+</pre>
+ </div>
+ <p>
+  To configure things so that user A can use 2x the number of machines as user B based on their user priorities, set user B's priority factor to be 4 times that of user A.  Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">condor_userprio -setfactor B 4.0
+condor_userprio -setfactor A 1.0
+</pre>
+ </div>
+ <p>
+  Why should the priority factor be 4 times instead of 2 times?  Recall that effective priority is the real priority times the priority factor.  A user's fair share of the pool is inversely proportional to their effective priority.  A user's real priority over time tends towards the number of machines they have been using recently.  Working backwards...  At steady state, A's real user priority will be 2x that of user B, because A will be using 2x the number of machines on average.  But we want B's
+  <em>
+   effective
+  </em>
+  priority to be 2x user A's, because that is what will allow A to be claiming 2x the number of machines as B.  This gives the following equations:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">PrioFactorB * RealPriorityB = 2 * PrioFactorA * RealPriorityA
+RealPriorityA/RealPriorityB = 2.0
+
+Therefore ...
+
+PrioFactorB/PrioFactorA = 4.0
+</pre>
+ </div>
+ <p>
+  Note that if your pool uses startd RANK to give some users/jobs high priority on some machines, adjusting the user priority will only have an effect when two users with equal startd RANK are competing.  This is because a match with a higher startd RANK will preempt a match with a lower startd RANK, even if the latter has a higher user priority.
+ </p>
+ <p>
+  This section explained how to manually adjust individual user priority factors.  If you want to automatically adjust priority factors for many users, you may want to take a look at
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/HowToSetUserPriority" title="How To Set User Priority">
+    How to set user priority factors automatically by domain or other username pattern
+   </a>
+  </span>
+  .
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

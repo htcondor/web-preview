@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Htcondor Drone Rpm</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="" type="text/javascript" async></script>
+    <script src="" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Htcondor Drone Rpm</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Background
+  </h2>
+ </span>
+ In a cluster, HTCondor binaries and configuration files are placed on the head node. Worker nodes access these files via shared file system. Thus, drone rpm is designed to install on these worker nodes.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Design
+ </h2>
+ <ol>
+  <li>
+   The head node will install HTCondor by using normal RPM with relocate option.
+  </li>
+  <li>
+   The worker node will install drone rpm which is basically a bunch of scripts that will start HTCondor from shared file system.
+  </li>
+  <li>
+   Condor_master_wrapper is a python script that act like a master but it will copy the master binary to local file system before starting it.  It will also update the master if there is change in the share folder.
+  </li>
+  <li>
+   Profile.d script is provided so that necessary environment variables are set (PATH, CONDOR_CONFIG). Manpath is not set because man will be able to find manpages by itself.
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Implementation
+ </h2>
+ <span class="subsection">
+  <h3>
+   RPM Installation Behavior
+  </h3>
+ </span>
+ <span class="subsubsection">
+  <h4>
+   pre (pre-install)
+  </h4>
+ </span>
+ <ol>
+  <li>
+   Add 'HTCondor' user/group if not exists
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  postinst
+ </h4>
+ <ol>
+  <li>
+   Add HTCondor service (chkconfig --add)
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  preun
+ </h4>
+ <ol>
+  <li>
+   Call init script to stop HTCondor only if we are removing the last instance of HTCondor (not include upgrading). If the init script fails, abort the uninstall
+  </li>
+  <li>
+   Remove HTCondor service (chkconfig --del)
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  postun
+ </h4>
+ <ol>
+  <li>
+   Do nothing
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Package Building
+ </h2>
+ <span class="subsection">
+  <h3>
+   Related Files
+  </h3>
+ </span>
+ <table border="1" cellspacing="0">
+  <tbody>
+   <tr>
+    <td>
+     <strong>
+      File
+     </strong>
+    </td>
+    <td>
+     <strong>
+      Description
+     </strong>
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_scripts/native/SPECS/condor-minimal.spec
+    </td>
+    <td>
+     Spec file
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_scripts/make_native_packages.pl
+    </td>
+    <td>
+     Main script
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_examples/condor.boot.vdt
+    </td>
+    <td>
+     Used for /etc/init.d/condor
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_examples/condor.sh
+    </td>
+    <td>
+     /etc/profile.d/condor.sh
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_examples/condor.csh
+    </td>
+    <td>
+     /etc/profile.d/condor.csh
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_examples/condor.sysconfig
+    </td>
+    <td>
+     Template for sysconfig file
+    </td>
+   </tr>
+   <tr>
+    <td>
+     src/condor_examples/condor.sysconfig.drone.patch
+    </td>
+    <td>
+     Patch for default parameters in Drone RPM
+    </td>
+   </tr>
+  </tbody>
+ </table>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Build Process
+ </h3>
+ After creating normal RPM, make_native_packages.pl will populate the build area with files required for building drone rpm. Then it will invoke rpmbuild to create the package.
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

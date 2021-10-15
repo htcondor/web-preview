@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Using Condor Annex For The First Time Eight Seven One</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="" type="text/javascript" async></script>
+    <script src="" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Using Condor Annex For The First Time Eight Seven One</h1>
+<div id="content">
+ <em>
+  [If you're using v8.7.0, see the
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/UsingCondorAnnexForTheFirstTimeEightSevenZero" title="Using Condor Annex For The First Time Eight Seven Zero">
+    v8.7.0 instructions
+   </a>
+  </span>
+  .  These instructions are for v8.7.1.  If you're using v8.7.2, see the
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/UsingCondorAnnexForTheFirstTimeEightSevenTwo" title="Using Condor Annex For The First Time Eight Seven Two">
+    v8.7.2 instructions
+   </a>
+  </span>
+  .]
+ </em>
+ <p>
+  This guide assumes that you already have an AWS account, as well as a log-in account on a Linux machine with a public address and a system administrator who's willing to open a port for you.  All the terminal commands (shown on a grey background) and file edits (shown on a green background) take place on the Linux machine.  You can perform the web-based steps from wherever is convenient, although it will save you some copying if you can run a browser on the Linux machine.
+ </p>
+ <p>
+  Before using
+  <code>
+   condor_annex
+  </code>
+  for the first time, you'll have to do three things:
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   install a personal Condor
+  </li>
+  <li>
+   prepare your AWS account
+  </li>
+  <li>
+   configure
+   <code>
+    condor_annex
+   </code>
+  </li>
+ </ol>
+ <p>
+  Instructions for each follow.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Install a personal Condor
+ </h2>
+ <p>
+  We recommend that you install a personal condor to make use of
+  <code>
+   condor_annex
+  </code>
+  ; it's simpler to configure that way.
+ </p>
+ <p>
+  These instructions assume that it's OK to create a directory named
+  <code>
+   condor-8.7.1
+  </code>
+  in your home directory; adjust accordingly if you want to install HTCondor somewhere else.
+ </p>
+ <p>
+  Start by
+  <a class="external" href="https://research.cs.wisc.edu/htcondor/downloads/">
+   downloading
+  </a>
+  the 8.7.1 release from the "tarballs" section that matches your Linux version.  (If you don't know your Linux version, ask your system administrator.)  These instructions assume that the file you downloaded is located in your home directory on the Linux machine, so copy it there if necessary.
+ </p>
+ <p>
+  Then do the following:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ mkdir ~/condor-8.7.1; cd ~/condor-8.7.1; mkdir local
+$ tar -z -x -f ~/condor-8.7.1-*-stripped.tar.gz
+$ ./condor-8.7.1-*-stripped/condor_install --local-dir `pwd`/local --make-personal-condor
+$ . ./condor.sh
+$ condor_master
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Testing
+ </h3>
+ <p>
+  Give HTCondor a few seconds to spin up and the try a few commands to make sure the basics are working.  Your output will vary depending on the time of day, the name of your Linux machine, and its core count, but it should generally be pretty similar to the following.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_q
+- Schedd: submit-3.batlab.org : &lt;127.0.0.1:12815?... @ 02/03/17 13:57:35
+OWNER    BATCH_NAME         SUBMITTED   DONE   RUN    IDLE  TOTAL JOB_IDS
+
+0 jobs; 0 completed, 0 removed, 0 idle, 0 running, 0 held, 0 suspended
+$ condor_status -any
+MyType             TargetType         Name
+
+Negotiator         None               NEGOTIATOR
+Collector          None               Personal Condor at 127.0.0.1@submit-3.bat
+Machine            Job                slot1@submit-3.batlab.org
+Machine            Job                slot2@submit-3.batlab.org
+Machine            Job                slot3@submit-3.batlab.org
+Machine            Job                slot4@submit-3.batlab.org
+Machine            Job                slot5@submit-3.batlab.org
+Machine            Job                slot6@submit-3.batlab.org
+Machine            Job                slot7@submit-3.batlab.org
+Machine            Job                slot8@submit-3.batlab.org
+Scheduler          None               submit-3.batlab.org
+DaemonMaster       None               submit-3.batlab.org
+Accounting         none               &lt;none&gt;
+</pre>
+ </div>
+ <p>
+  You should also try to submit a job; create the following file
+ </p>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">~/condor-annex/sleep.submit</pre>
+  <pre class="file">executable = /bin/sleep
+arguments = 600
+queue
+</pre>
+ </div>
+ <p>
+  and submit it:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_submit ~/condor-annex/sleep.submit
+Submitting job(s).
+1 job(s) submitted to cluster 1.
+$ condor_reschedule
+</pre>
+ </div>
+ <p>
+  After a little while:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_q
+
+
+-- Schedd: submit-3.batlab.org : &lt;127.0.0.1:12815?... @ 02/03/17 13:57:35
+OWNER    BATCH_NAME         SUBMITTED   DONE   RUN    IDLE  TOTAL JOB_IDS
+tlmiller CMD: /bin/sleep   2/3  13:56      _      1      _      1 3.0
+
+1 jobs; 0 completed, 0 removed, 0 idle, 1 running, 0 held, 0 suspended
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Configure public interface
+ </h3>
+ <p>
+  The default personal Condor uses the "loopback" interface, which basically just means it won't talk to anyone other than itself.  For
+  <code>
+   condor_annex
+  </code>
+  to work, your personal condor needs to use the Linux machine's public interface.  In most cases, that's as simple as adding the following lines to
+  <code>
+   ~/condor-8.7.1/local/condor_config.local
+  </code>
+  .
+ </p>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">~/condor-8.7.1/local/condor_config.local</pre>
+  <pre class="file">NETWORK_INTERFACE = *
+CONDOR_HOST = $(FULL_HOSTNAME)
+</pre>
+ </div>
+ <p>
+  Restart HTCondor to force the changes to take effect:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_restart
+Sent "Restart" command to local master
+</pre>
+ </div>
+ <p>
+  Repeat the steps under "Testing" to make sure that this configuration works for you, and then proceed onto the next section.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Configure a pool password
+ </h3>
+ <p>
+  In this section, you'll configure your personal Condor to use a pool password.  This is a simple but effective method of securing Condor's communications to AWS.
+ </p>
+ <p>
+  Add the following lines to
+  <code>
+   ~/condor-8.7.1/local/condor_config.local
+  </code>
+  .
+ </p>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">~/condor-8.7.1/local/condor_config.local</pre>
+  <pre class="file">SEC_PASSWORD_FILE = $(LOCAL_DIR)/condor_pool_password
+SEC_DAEMON_INTEGRITY = REQUIRED
+SEC_DAEMON_AUTHENTICATION = REQUIRED
+SEC_DAEMON_AUTHENTICATION_METHODS = PASSWORD
+SEC_NEGOTIATOR_INTEGRITY = REQUIRED
+SEC_NEGOTIATOR_AUTHENTICATION = REQUIRED
+SEC_NEGOTIATOR_AUTHENTICATION_METHODS = PASSWORD
+SEC_CLIENT_AUTHENTICATION_METHODS = FS, PASSWORD
+ALLOW_DAEMON = condor_pool@*
+</pre>
+ </div>
+ <p>
+  You also need to run the following command, which prompts you to enter a password:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_store_cred -c add -f `condor_config_val SEC_PASSWORD_FILE`
+Enter password:
+</pre>
+ </div>
+ <p>
+  Enter a password.
+ </p>
+ <p>
+  (For more details, see
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/HowToEnablePoolPassword" title="How To Enable Pool Password">
+    HowToEnablePoolPassword
+   </a>
+  </span>
+  .)
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Tell HTCondor about the open port
+ </h3>
+ <p>
+  By default, HTCondor will use port 9618.  If the Linux machine doesn't already have HTCondor installed, and the admin is willing to open that port, then you don't have to do anything.  Otherwise, you'll need to add a line like the following to
+  <code>
+   ~/condor-8.7.1/local/condor_config.local
+  </code>
+  , replacing '9618' with whatever port the administrator opened for you.
+ </p>
+ <p>
+ </p>
+ <div class="file">
+  <pre class="filelabel">~/condor-8.7.1/local/condor_config.local</pre>
+  <pre class="file">COLLECTOR_HOST = $(FULL_HOSTNAME):9618
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Activate the new configuration
+ </h3>
+ <p>
+  Force HTCondor to read the new configuration by restarting it:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_restart
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Prepare your AWS account
+ </h2>
+ <p>
+  The
+  <code>
+   condor_annex
+  </code>
+  tool now includes a
+  <code>
+   -setup
+  </code>
+  command which will prepare your AWS account.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Obtaining an Access Key
+ </h3>
+ <p>
+  In order to use AWS,
+  <code>
+   condor_annex
+  </code>
+  needs a pair of security tokens (like a user name and password).  Like a user name, the "access key" is (more or less) public information; the corresponding "secret key" is like a password and must be kept a secret.  To help keep both halves secret,
+  <code>
+   condor_annex
+  </code>
+  (and HTCondor) are never told these keys directly; instead, you tell HTCondor which file to look in to find each one.
+ </p>
+ <p>
+  Create those two files now; we'll tell you how to fill them in shortly.  By convention, these files exist in your
+  <code>
+   ~/.condor
+  </code>
+  directory, which is where
+  <code>
+   condor_annex -setup
+  </code>
+  will store the rest of the data it needs.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ mkdir ~/.condor
+$ cd ~/.condor
+$ touch publicKeyFile
+$ touch privateKeyFile
+$ chmod 600 publicKeyFile privateKeyFile
+</pre>
+ </div>
+ <p>
+  The last command ensures that only you can read or write to those files.
+ </p>
+ <p>
+  To donwload a new pair of security tokens for
+  <code>
+   condor_annex
+  </code>
+  to use, go to the
+  <a class="external" href="https://console.aws.amazon.com/iam/home?region=us-east-1#/users">
+   IAM console
+  </a>
+  ; log in if you need to.  The following instructions assume you are logged in as a user with the privilege to create new users.  (The 'root' user for any account has this privilege; other accounts may as well.)
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Click the "Add User" button.
+  </li>
+  <li>
+   Enter name in the
+   <strong>
+    User name
+   </strong>
+   box; "annex-user" is a fine choice.
+  </li>
+  <li>
+   Click the check box labelled "Programmatic access".
+  </li>
+  <li>
+   Click the button labelled "Next: Permissions".
+  </li>
+  <li>
+   Select "Attach existing policies directly".
+  </li>
+  <li>
+   Type "
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/AdministratorAccess" title="Administrator Access">
+     AdministratorAccess
+    </a>
+   </span>
+   " in the box labelled "Filter".
+  </li>
+  <li>
+   Click the check box on the single line that will appear below (labelled "
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/AdministratorAccess" title="Administrator Access">
+     AdministratorAccess
+    </a>
+   </span>
+   ").
+  </li>
+  <li>
+   Click the "Next: review" button (you may need to scroll down).
+  </li>
+  <li>
+   Click the "Create user" button.
+  </li>
+  <li>
+   From the line labelled "annex-user", copy the value in the column labelled "Access key ID" to
+   <code>
+    publicKeyFile
+   </code>
+   .
+  </li>
+  <li>
+   On the line labelled "annex-user", click the "Show" link in the column labelled "Secret access key"; copy the revealed value to
+   <code>
+    privateKeyFile
+   </code>
+   .
+  </li>
+  <li>
+   Hit the "Close" button.
+  </li>
+ </ol>
+ <p>
+  The 'annex-user' now has full privileges to your account.  We're working on creating a
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CloudFormation" title="Cloud Formation">
+    CloudFormation
+   </a>
+  </span>
+  template that will create a user with only the privileges
+  <code>
+   condor_annex
+  </code>
+  actually needs.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Running the Setup Command
+ </h3>
+ <p>
+  The following command will setup your AWS account.  It will create a number of persistent components, none of which will cost you anything to keep around.  These components can take quite some time to create;
+  <code>
+   condor_annex
+  </code>
+  checks
+each for completion every ten seconds and prints an additional dot (past the first three) when it does so, to let you know that everything's still working.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex -setup
+Creating configuration bucket (this takes less than a minute)....... complete.
+Creating Lambda functions (this takes about a minute)........ complete.
+Creating instance profile (this takes about two minutes)................... complete.
+Creating security group (this takes less than a minute)..... complete.
+Setup successful.
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Checking the Setup
+ </h3>
+ <p>
+  You can verify at this point (or any later time) that the setup procedure completed successfully by running the following command.
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex -check-setup
+Checking for configuration bucket... OK.
+Checking for Lambda functions... OK.
+Checking for instance profile... OK.
+Checking for security group... OK.
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Undoing the Setup Command
+ </h3>
+ <p>
+  There is not as yet a way to undo the setup command automatically, but it won't cost you anything extra to leave your account setup for
+  <code>
+   condor_annex
+  </code>
+  indefinitely.  If, however, you want to be tidy, you may delete the components setup created by going to the
+  <a class="external" href="https://console.aws.amazon.com/cloudformation/home?region=us-east-1#/stacks?filter=active">
+   CloudFormation console
+  </a>
+  and deleting the entries whose names begin with 'HTCondorAnnex-'.  The setup procedure also creates an SSH key pair which may be useful for debugging; the private key was stored in
+  <code>
+   ~/.condor/HTCondorAnnex-KeyPair.pem
+  </code>
+  .  To remove the corresponding public key from your AWS account, go to the
+  <a class="external" href="https://console.aws.amazon.com/ec2/v2/home?region=us-east-1#KeyPairs:sort=keyName">
+   key pair console
+  </a>
+  and delete the 'HTCondorAnnex-KeyPair' key.
+ </p>
+ <p>
+  You're ready to run
+  <code>
+   condor_annex
+  </code>
+  !  Return to
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/HowToUseCondorAnnexWithOnDemandInstancesEightSevenOne" title="How To Use Condor Annex With On Demand Instances Eight Seven One">
+    HowToUseCondorAnnexWithOnDemandInstancesEightSevenOne
+   </a>
+  </span>
+  .
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

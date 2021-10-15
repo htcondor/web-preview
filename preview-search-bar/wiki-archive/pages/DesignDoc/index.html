@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Design Doc</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="" type="text/javascript" async></script>
+    <script src="" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Design Doc</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   HTCondor Design Documents
+  </h2>
+ </span>
+ <p>
+  If your change is an enhancement (new feature) or large bug fix, you will need to author and attach a design document to the ticket page for architecture review and get it approved before code contributions will be accepted. It is typical for a design document to go through several revisions. Although they are generally pithy and to the point (2 or 3 pages is typical), the generation and review of a well thought-out design document can be a time-consuming undertaking.  But we feel it is necessary to ensure the architectural integrity and correctness of the code base, and ultimately the time spent writing a design document is time well-spent.
+ </p>
+ <p>
+  Two to four pages is typical, but could be more
+or less depending on the situation.
+ </p>
+ <p>
+  As of July, 2013, new design documents should be Google Drive documents to ensure they are self-contained, have revision tracking, and reduce the risk of version skew.  See
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/GoogleDriveWisdom" title="Google Drive Wisdom">
+    GoogleDriveWisdom
+   </a>
+  </span>
+  for details on usage.
+ </p>
+ <p>
+  Older design documents are
+  <code>
+   .docx
+  </code>
+  files (either Microsoft Word or
+Open Office/Libre Office) to ensure they are self-contained and to leverage revision tracking as they are passed around for review and refinement.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Outline of a Design Document
+ </h3>
+ <p>
+  A design document has three major sections; each is outlined below. While you can assume that the reader is familiar with pre-existing design and implementation of the code, this is not an email or wiki post - the document itself should be self-contained and able to "make sense" on its own. This is part of the reason we require a separate document outside of the ticket itself. A developer five years from now, who was not involved in a recent string of email discussions or lacks access to pages of ticket remarks, should be able to read the document on its own and gain insight and understanding.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Section One - Overview
+ </h4>
+ Start out by providing information about the motivation - what is the problem, why is it
+important to solve the problem, what is the general approach?  What
+insights led us to the problem, what new understanding is characterized
+in how we will solve it? Try to identify the requirements of the new enhancement, and how were these requirements gathered/identified? If the problem is related to a specific usage scenario or environment, include as salient details about the motivating scenario/environment. Try to keep the implementation details to a bare
+minimum when answering these questions. Instead, think about what the reader will have learned
+after reading your overview about the problem itself and the tradeoffs
+involved in finding a solution.
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Section Two - Architecture of Proposed Solution
+ </h4>
+ The body of the document will describe the general architecture of
+the proposed solution : What components are involved? What is the
+responsibility of each component? How will the components interact? What
+will the final result look like to the end-user? It is good to talk
+about some implementation details here, especially if it enables deeper
+understanding by an informed reader (i.e. "communication will occur via
+a daemonCore command socket" tells a lot to a reader familiar with this
+class). Think about fault tolerance, verification, maintainability, ease
+of use, ease of implementation, backwards-compatibility, code/component
+re-use.
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Section Three - Development Plan
+ </h4>
+ At the end of the document should be a list of development
+Milestones in chronological order.  Each milestone should include a
+best-guess effort estimate; resolution of each milestone should be on
+the order of 1 to 10 days.  If specialized knowledge is required and/or it is not clear that a specific individual(s) will perform the work, you
+are encouraged to explicitly list that and/or give multiple effort
+estimates (e.g. "3 days for someone familiar with DAGMan internals such
+as Kent or Nathan, or 9 days for a different member of the HTCondor core
+development team, or 20 days for someone unfamiliar with the code-base").
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Examples
+ </h3>
+ To help you get a feel for the sort of scope we are looking for, here are a few design document examples:
+ <p>
+ </p>
+ <ul>
+  <li>
+   <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/attach_get/636/GlobalJobPrioV5.doc">
+    Global Job Priorities Design Doc
+   </a>
+   , Ticket
+   <span class="ticket">
+    <a class="resolved" href="../../tickets/?ticket=3218" title="Support JobPrio scope across multiple schedulers">
+     #3218
+    </a>
+   </span>
+  </li>
+  <li>
+   <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/attach_get/572/BoscoFileTransfer_v4.doc">
+    Bosco File Transfer Support Design Doc
+   </a>
+   , Ticket
+   <span class="ticket">
+    <a class="resolved" href="../../tickets/?ticket=2386" title="Add file transfer to BOSCO">
+     #2386
+    </a>
+   </span>
+  </li>
+  <li>
+   <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/attach_get/494/DefragDaemonDesignDoc.docx">
+    Defragmentation Daemon Design Doc
+   </a>
+   , Ticket
+   <span class="ticket">
+    <a class="resolved" href="../../tickets/?ticket=2330" title="support pool defragmentation">
+     #2330
+    </a>
+   </span>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
