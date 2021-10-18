@@ -4,6 +4,6 @@
 
 window.onload = () => {
     const MainSearchBar = new SearchBar("main-search-bar",
-        "{{ 'assets/search/main_index.json' | relative_url }}",
-        "{{ 'assets/search/main_metadata.json' | relative_url }}")
+        "/web-preview/preview-search-bar/assets/search/main_index.json",
+        "/web-preview/preview-search-bar/assets/search/main_metadata.json")
 }
