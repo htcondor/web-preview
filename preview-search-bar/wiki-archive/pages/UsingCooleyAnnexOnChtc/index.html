@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Using Cooley Annex On Chtc</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Using Cooley Annex On Chtc</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Introduction
+  </h2>
+ </span>
+ <p>
+  We are developing a way to run targeted CHTC jobs on the Cooley cluster at ALCF (Argonne Leadership Computing Facility). This is done via "hobble-in", a human-assisted form of glide-in that submits HTCondor startds as user jobs into Cooley's batch scheduler, Cobalt. The setup mimics how the condor annex allocates resources from AWS to run CHTC jobs (
+  <span class="wiki">
+   <a href="/web-preview/preview-search-bar/wiki-archive/pages/UsingCondorAnnexOnChtc" title="Using Condor Annex On Chtc">
+    UsingCondorAnnexOnChtc
+   </a>
+  </span>
+  ).
+ </p>
+ <p>
+  Each machine in Cooley has the following resources:
+ </p>
+ <ul>
+  <li>
+   Two 2.4 GHz Intel Haswell E5-2620 v3 processors (6 cores per CPU, 12 cores total)
+  </li>
+  <li>
+   One NVIDIA Tesla K80 (with two GPUs)
+  </li>
+  <li>
+   384GB RAM, 24 GB GPU RAM (12 GB per GPU)
+  </li>
+  <li>
+   FDR Infiniband interconnect
+  </li>
+  <li>
+   345GB local scratch space
+  </li>
+  <li>
+   Red Hat Enterprise Linux Server release 6.8 (Santiago)
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  User Steps
+ </h2>
+ <p>
+  Similar to other resources outside of CHTC, running on Cooley will not happen by default. Jobs need to meet certain conditions regarding where and how they're submitted.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Required
+ </h3>
+ <p>
+  Jobs that want to be able to run on Cooley need to be submitted to a schedd configured to flock to the CHTC Condor Annex collector. Currently, that means submitting from these machines:
+ </p>
+ <ul>
+  <li>
+   submit-1.chtc.wisc.edu
+  </li>
+  <li>
+   submit-4.chtc.wisc.edu
+  </li>
+ </ul>
+ <p>
+  The jobs' resource requests must not exceed the available resources of a Cooley machine (detailed above).
+ </p>
+ <p>
+  The jobs must indicate that they want to run on resources outside of CHTC and that they're willing to run on Cooley specifically. To do so, the user must add the following lines to their submit file:
+ </p>
+ <div class="code">
+  <pre class="code">+WantFlocking = True
++MayUseCooley = True
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Optional
+ </h3>
+ <p>
+  If the user wants the jobs to run only on Cooley, they can add a clause to the Requirements expression:
+ </p>
+ <div class="code">
+  <pre class="code">requirements = Facility =?= href="/web-preview/preview-search-bar/wiki-archive/pages/Cooley" </pre>
+ </div>
+ <p>
+  If the user wants the jobs to run only on a specific Cooley annex, they can add a different clause to the Requirements expression:
+ </p>
+ <div class="code">
+  <pre class="code">requirements = AnnexName =?= href="/web-preview/preview-search-bar/wiki-archive/pages/Test1" </pre>
+ </div>
+ <p>
+  These two additions to the Requirements expression can be used individually or together.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Staff Steps
+ </h2>
+ <p>
+  Submitting jobs to Cooley is done from the login machines (hostname cooley.alcf.anl.gov) using the Cobalt batch scheduler. Access to theses machines is done via ssh using two-factor authentication. Thus, submission and management of Cooley jobs must be done by a human who has a login account.
+ </p>
+ <p>
+  Before submitting Cooley jobs, a CHTC staff member must configure the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/SoftEnv" title="Soft Env">
+    SoftEnv
+   </a>
+  </span>
+  system so that the proper CUDA libraries can be found by HTCondor and user jobs. To do so, they must create the file
+  <code>
+   ~/.soft.cooley
+  </code>
+  with the following contents:
+ </p>
+ <div class="code">
+  <pre class="code">+mvapich2
++cuda-9.0.176
+@default
+</pre>
+ </div>
+ <p>
+  Once logged into a Cooley login machine, a CHTC staff member can submit a new hobble-in job with a command like this:
+ </p>
+ <div class="code">
+  <pre class="code">% /home/jfrey/hobblein/bin/hobblein_submit 2 24:00:00 Test1 jfrey
+1337326
+%
+</pre>
+ </div>
+ <p>
+  This will submit a hobble-in job that uses 2 machines, runs for 24 hours, has an annex name of Test1, and will only run jobs owned by user jfrey. If the username argument is omitted, then the hobble-in will run jobs from any user.
+ </p>
+ <p>
+  The command will print out the Cobalt job id (1337326 in this case). The status of the job can be checked via Cobalt with this command:
+ </p>
+ <div class="code">
+  <pre class="code">% qstat
+JobID    User   WallTime  Nodes  State    Location
+=======================================================
+1337326  jfrey  00:10:00  2      running  cc024,cc124
+%
+</pre>
+ </div>
+ <p>
+  You can check the status of all jobs you've submitted as well:
+ </p>
+ <div class="code">
+  <pre class="code">% qstat -u jfrey
+JobID    User   WallTime  Nodes  State     Location
+========================================================
+1337314  jfrey  00:10:00  2      exiting   cc028,cc031
+1337326  jfrey  00:10:00  2      starting  cc024,cc124
+%
+</pre>
+ </div>
+ <p>
+  You can also delete a job from Cobalt:
+ </p>
+ <div class="code">
+  <pre class="code">% qdel 1337326
+      Deleted Jobs
+JobID    User
+================
+1337326  jfrey
+%
+</pre>
+ </div>
+ <p>
+  While the hobble-in job is running at Cooley, machine ads will appear in the CHTC annex collector. They can be queried using the annex name specified to hobblein_submit.
+ </p>
+ <div class="code">
+  <pre class="code">% condor_status -pool annex-cm.chtc.wisc.edu -annex Test1
+Name                         OpSys      Arch   State     Activity LoadAv Mem
+
+slot1@cc075.fst.alcf.anl.gov LINUX      X86_64 Unclaimed Idle      0.000 387137
+slot1@cc081.fst.alcf.anl.gov LINUX      X86_64 Unclaimed Idle      0.000 387137
+
+               Machines Owner Claimed Unclaimed Matched Preempting  Drain
+
+  X86_64/LINUX        2     0       0         2       0          0      0
+
+         Total        2     0       0         2       0          0      0
+%
+</pre>
+ </div>
+ <p>
+  The startds can be shut down like with a regular annex. This must be done as the root user on annex-cm.chtc.wisc.edu, due to the current security configuration.
+ </p>
+ <div class="code">
+  <pre class="code"># condor_off -annex Test1
+Sent "Kill-Daemon" command for "master" to master jfrey@cc081.fst.alcf.anl.gov
+Sent "Kill-Daemon" command for "master" to master jfrey@cc075.fst.alcf.anl.gov
+#
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

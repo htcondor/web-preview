@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Yum Repo Mirror</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Yum Repo Mirror</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Mirroring the HTCondor YUM Repository
+  </h2>
+ </span>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Motivation
+ </h3>
+ Some of our collaborators in Europe or other continents would like to keep a locally available mirror for the ease of updating their YUM installs of HTCondor
+in large pools. Since all of the HTCondor YUM repository is already publicly available, there is no enforceability to restrict the mirroring of it. Hence it is made available.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  UW-Madison Server Configuration
+ </h3>
+ This section is information for the HTCondor Team.
+ <p>
+  On
+  <code>
+   parrot.cs.wisc.edu
+  </code>
+  , in the
+  <code>
+   /etc/rsyncd.conf
+  </code>
+  file, you will find these
+configurations. They were set up by the CSL at the HTCondor Team's request and are maintained by the CSL. The HTCondor Team uses the usual channels to communicate with the CSL when this configuration needs changing. There should
+be nothing surprising or confidential in this configuration.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">[condor-yum-development]
+path=/p/condor/public/html/yum/development
+read only = true
+uid=nobody
+gid=nobody
+
+[condor-yum-stable]
+path=/p/condor/public/html/yum/stable
+read only = true
+uid=nobody
+gid=nobody
+
+[condor-yum-repo.d]
+path=/p/condor/public/html/yum/repo.d
+read only = true
+uid=nobody
+gid=nobody
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Mirror Site Actions
+ </h3>
+ This section is information for those wishing to mirror the repository.
+ <p>
+  One would mirror the HTCondor YUM repository with these commands. There are
+large files in this repo and it could take a while to perform the copy.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">&gt; mkdir &lt;path&gt;/yum
+&gt; cd &lt;path&gt;/yum
+&gt; rsync -av rsync://parrot.cs.wisc.edu/condor-yum-development development
+&gt; rsync -av rsync://parrot.cs.wisc.edu/condor-yum-stable stable
+&gt; rsync -av rsync://parrot.cs.wisc.edu/condor-yum-repo.d repo.d
+</pre>
+ </div>
+ <p>
+  The finished directory structure will look like this:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <code>
+    &lt;path&gt;/yum
+   </code>
+   <ul>
+    <li>
+     <code>
+      /development
+     </code>
+     - Contains Development Repositories
+     <ul>
+      <li>
+       <code>
+        /rhel4
+       </code>
+       - The Rhel 4 release of HTCondor
+       <ul>
+        <li>
+         <code>
+          /condor-7.5.-*
+         </code>
+         - The development version RPM files for RHEL4
+        </li>
+        <li>
+         <code>
+          /repodata
+         </code>
+         - The index files for this portion of the repo.
+         <ul>
+          <li>
+           <code>
+            /filelists.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /other.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /primary.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /repomd.xml
+           </code>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+      <li>
+       <code>
+        /rhel5
+       </code>
+       - The Rhel 5 release of HTCondor
+       <ul>
+        <li>
+         <code>
+          /condor-7.5.-*
+         </code>
+         - The development version RPM files for RHEL5
+        </li>
+        <li>
+         <code>
+          /repodata
+         </code>
+         - The index files for this portion of the repo.
+         <ul>
+          <li>
+           <code>
+            /filelists.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /other.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /primary.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /repomd.xml
+           </code>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <code>
+      /stable
+     </code>
+     - Contains Stable Repositories
+     <ul>
+      <li>
+       <code>
+        /rhel4
+       </code>
+       - The Rhel 4 release of HTCondor
+       <ul>
+        <li>
+         <code>
+          /condor-7.4.-*
+         </code>
+         - The stable version RPM files for RHEL4
+        </li>
+        <li>
+         <code>
+          /repodata
+         </code>
+         - The index files for this portion of the repo.
+         <ul>
+          <li>
+           <code>
+            /filelists.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /other.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /primary.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /repomd.xml
+           </code>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+      <li>
+       <code>
+        /rhel5
+       </code>
+       - The Rhel 5 release of HTCondor
+       <ul>
+        <li>
+         <code>
+          /condor-7.4.-*
+         </code>
+         - The stable version RPM files for RHEL5
+        </li>
+        <li>
+         <code>
+          /repodata
+         </code>
+         - The index files for this portion of the repo.
+         <ul>
+          <li>
+           <code>
+            /filelists.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /other.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /primary.xml.gz
+           </code>
+          </li>
+          <li>
+           <code>
+            /repomd.xml
+           </code>
+          </li>
+         </ul>
+        </li>
+       </ul>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <code>
+      /repo.d
+     </code>
+     - Store repo files that describe the yum repo locations
+     <ul>
+      <li>
+       <code>
+        /condor-development-rhel4.repo
+       </code>
+       - A Repo Description File
+      </li>
+      <li>
+       <code>
+        /condor-development-rhel5.repo
+       </code>
+       - A Repo Description File
+      </li>
+      <li>
+       <code>
+        /condor-stable-rhel4.repo
+       </code>
+       - A Repo Description File
+      </li>
+      <li>
+       <code>
+        /condor-stable-rhel5.repo
+       </code>
+       - A Repo Description File
+      </li>
+     </ul>
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p>
+  Now we must modify the repo files to point to the mirrored repository.
+These changes allow YUM requests against the mirror site to get the
+right files from the right place.
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Modify the store repo files to contain the new url to the RPMs. The files
+that must be modified are listed. The attribute which needs changing is the
+   <strong>
+    baseurl
+   </strong>
+   attribute in each of these files. This must point to a fully
+qualified URL at the local mirror site.
+   <ol>
+    <li>
+     <code>
+      &lt;path&gt;/yum/repo.d/condor-development-rhel4.repo
+     </code>
+    </li>
+    <li>
+     <code>
+      &lt;path&gt;/yum/repo.d/condor-development-rhel5.repo
+     </code>
+    </li>
+    <li>
+     <code>
+      &lt;path&gt;/yum/repo.d/condor-stable-rhel4.repo
+     </code>
+    </li>
+    <li>
+     <code>
+      &lt;path&gt;/yum/repo.d/condor-stable-rhel4.repo
+     </code>
+    </li>
+   </ol>
+  </li>
+  <li>
+   Update index files by executing the following commands.  This will
+create/update the index files for each directory.
+   <div class="code">
+    <pre class="code">&gt; cd &lt;path&gt;/yum
+&gt; createrepo stable/rhel4
+&gt; createrepo stable/rhel5
+&gt; createrepo development/rhel4
+&gt; createrepo development/rhel5
+</pre>
+   </div>
+  </li>
+  <li>
+   Optionally create a
+   <code>
+    &lt;path&gt;/yum/index.html
+   </code>
+   web page which describes
+installation directions with links to the mirrored repository. An example
+of such a page is
+   <a class="external" href="http://www.cs.wisc.edu/condor/yum/index.html">
+    here
+   </a>
+   . Once this page is created, its URL should be advertised so people
+can easily find and use the mirror.
+   <strong>
+    Note:
+   </strong>
+   Do not copy the example page verbatim, as it will point to UW-Madison's HTCondor YUM repository!
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Collaborators known to mirror the HTCondor YUM repository
+ </h3>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <span class="wiki">
+    <a href="/web-preview/preview-search-bar/wiki-archive/pages/LigoCollaboration" title="Ligo Collaboration">
+     LigoCollaboration
+    </a>
+   </span>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
