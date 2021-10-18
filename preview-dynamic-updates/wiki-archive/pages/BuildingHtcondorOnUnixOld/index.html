@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-dynamic-updates/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-dynamic-updates/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-dynamic-updates/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-dynamic-updates/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-dynamic-updates/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-dynamic-updates/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-dynamic-updates/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Building Htcondor On Unix Old</title>
+
+    <script src="/web-preview/preview-dynamic-updates/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-dynamic-updates/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-dynamic-updates/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-dynamic-updates/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-dynamic-updates/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-dynamic-updates/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-dynamic-updates/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Building Htcondor On Unix Old</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Overview
+  </h2>
+ </span>
+ <p>
+  These instructions are for building HTCondor versions prior to 7.5.5.  If you want to build HTCondor 7.5.5 or later, see
+  <span class="wiki">
+   <a href="/web-preview/preview-dynamic-updates/wiki-archive/pages/BuildingHtcondorOnUnix" title="Building Htcondor On Unix">
+    BuildingHtcondorOnUnix
+   </a>
+  </span>
+  .
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Configure your build
+ </h2>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  build_init
+ </h4>
+ <div class="code">
+  <pre class="code">% ./build_init
+</pre>
+ </div>
+ <span class="subsubsection">
+  <h4>
+   On "native" platforms
+  </h4>
+ </span>
+ On these platforms, configure should just "work":
+ <ul>
+  <ul>
+   <li>
+    <strong>
+     hppa_hpux_11
+    </strong>
+   </li>
+   <li>
+    <strong>
+     ia64_rhas_3
+    </strong>
+   </li>
+   <li>
+    <strong>
+     ppc64_sles_9
+    </strong>
+   </li>
+   <li>
+    <strong>
+     ppc_aix_5.2-pl5
+    </strong>
+   </li>
+   <li>
+    <strong>
+     ps3_ydl_5.0
+    </strong>
+   </li>
+   <li>
+    <strong>
+     sun4u_sol_5.9
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_64_deb_5.0
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_64_rhap_5
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_64_rhas_3
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_deb_4.0
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_deb_5.0
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_macos_10.4
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_rhap_5
+    </strong>
+   </li>
+   <li>
+    <strong>
+     x86_rhas_3
+    </strong>
+   </li>
+  </ul>
+ </ul>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">% ./configure
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  On "non-native" platforms
+ </h4>
+ On anything other than the above, *but in the same family*--e.g.,
+ia64_rhas_4, you probably want to try and build the most minimal HTCondor
+build possible. Configure will mostly detect the right things about
+the platform identification. If this builds, then you can start turning
+on more feature as you need them and rebuilding.
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">% ./configure  \
+        --disable-proper \
+        --without-globus \
+        --without-krb5 \
+        --disable-full-port \
+        --without-voms \
+        --without-srb \
+        --without-hadoop \
+        --without-postgresql \
+        --without-curl \
+        --with-pcre \
+        --disable-quill \
+        --disable-gcc-version-check \
+        --disable-glibc-version-check \
+        --without-gsoap \
+        --without-glibc \
+        --without-cream \
+        --without-openssl
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  If ./configure has problems identifying your machine
+ </h4>
+ If everything seems to work, but the package name on the tarballs
+are wrong after you build them, then you'll want to use
+--with-platform=*os*-*arch*-*distro* as in
+ <code>
+  --with-platform=linux-ia64-sles8
+ </code>
+ .
+ <p>
+  In the case where
+  <code>
+   ./configure
+  </code>
+  just goes very very wrong, you may have
+to supply more arguments to configure which control deeper compilation
+aspects. These arguments are somewhat fiddly since they often define actual
+preprocessor symbols that the HTCondor code uses for conditional compilation.
+This means that some of these arguments can not be specified arbitrarily.
+It may be possible if you are "close" to a unix family we already support
+that you can select a combination of these that will allow the build to be
+completed.
+ </p>
+ <p>
+  These are:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   --with-arch
+   <em>
+    <span class="quote">
+     &lt;
+    </span>
+    architecture
+    <span class="quote">
+     &gt;
+    </span>
+   </em>
+   This can only be one of:
+   <ul>
+    <li>
+     I386
+    </li>
+    <li>
+     X86_64
+    </li>
+    <li>
+     PPC
+    </li>
+    <li>
+     ALPHA
+    </li>
+    <li>
+     CONDOR_PPC
+    </li>
+    <li>
+     IA64
+    </li>
+    <li>
+     CONDOR_PPC
+    </li>
+    <li>
+     HPPA
+    </li>
+    <li>
+     SUN4X
+    </li>
+    <li>
+     UNKNOWN_ARCH
+    </li>
+   </ul>
+  </li>
+  <li>
+   --with-os
+   <em>
+    <span class="quote">
+     &lt;
+    </span>
+    OS Name
+    <span class="quote">
+     &gt;
+    </span>
+   </em>
+   This can only be one of:
+   <ul>
+    <li>
+     AIX
+    </li>
+    <li>
+     HPUX
+    </li>
+    <li>
+     LINUX
+    </li>
+    <li>
+     SOLARIS
+    </li>
+    <li>
+     DARWIN
+    </li>
+   </ul>
+  </li>
+  <li>
+   --with-kernel
+Mostly arbitrary, I don't think this is extensively used for conditional
+compilation. This will be something like 2.6.9-89.0.7.EL.cernsmp
+if on linux.
+  </li>
+  <li>
+   --with-os_version
+   <em>
+    <span class="quote">
+     &lt;
+    </span>
+    version
+    <span class="quote">
+     &gt;
+    </span>
+   </em>
+   This can only be one of:
+   <ul>
+    <li>
+     OSX_10_4
+    </li>
+    <li>
+     OSX_UNKNOWN
+    </li>
+    <li>
+     AIX5
+    </li>
+    <li>
+     AIXUNKNOWN
+    </li>
+    <li>
+     HPUX10
+    </li>
+    <li>
+     HPUX11
+    </li>
+    <li>
+     SOLARIS26
+    </li>
+    <li>
+     SOLARIS27
+    </li>
+    <li>
+     SOLARIS28
+    </li>
+    <li>
+     SOLARIS29
+    </li>
+    <li>
+     FREEBSD[5-7]
+    </li>
+    <li>
+     LINUX_TAO1
+    </li>
+    <li>
+     LINUX_TAO_UNKNOWN
+    </li>
+    <li>
+     LINUX_YD30
+    </li>
+    <li>
+     LINUX_YD50
+    </li>
+    <li>
+     LINUX_YD_UNKNOWN
+    </li>
+    <li>
+     LINUX_GENTOO1.12.11.1
+    </li>
+    <li>
+     LINUX_GENTOO_UNKNOWN
+    </li>
+    <li>
+     LINUX_FC[1-N]
+    </li>
+    <li>
+     LINUX_RH72
+    </li>
+    <li>
+     LINUX_RH80
+    </li>
+    <li>
+     LINUX_RH9
+    </li>
+    <li>
+     LINUX_SLES81
+    </li>
+    <li>
+     LINUX_SLES9
+    </li>
+    <li>
+     LINUX_SuSE_UNKNOWN
+    </li>
+    <li>
+     LINUX_DEBIAN40
+    </li>
+    <li>
+     LINUX_DEBIAN50
+    </li>
+    <li>
+     LINUX_DEBIAN_UNKNOWN
+    </li>
+    <li>
+     LINUX_UNKNOWN
+    </li>
+   </ul>
+  </li>
+  <li>
+   --with-sysname
+This can be arbitrary.
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Building your source
+ </h2>
+ <p>
+  Before 7.5.5, HTCondor used configure + imake to generate makefiles.
+ </p>
+ <p>
+  While there are many targets to
+  <code>
+   make
+  </code>
+  , I will only describe the two that are
+most likely what you want.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  release
+ </h4>
+ <code>
+  make release
+ </code>
+ will make a set of executable binaries and place them in
+ <code>
+  release_dir/
+ </code>
+ . They will be dynamically linked and suitable for testing
+by pointing a $(RELEASE_DIR) at it from a condir_configure file.
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  public
+ </h4>
+ <code>
+  make public
+ </code>
+ will produce packages similar to what you can download from the
+our download site for the machine upon which you are building. If you ever
+see two or more dashes in a row in the file name, it means they are named wrong
+and you might have to use
+ <code>
+  --with-platform
+ </code>
+ on configure and try again.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Building the tests
+ </h3>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">$ cd src/condor_tests
+$ make
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Running the tests
+ </h3>
+ <div class="code">
+  <pre class="code">$ cd src/condor_tests
+$ ./batch_test -b -c
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Running the tests again
+ </h4>
+ Running the test suite leaves files and directories in the
+ <code>
+  src/condor_tests
+ </code>
+ directory that prevent the tests from running again.  To solve this, either remove and recreate the
+ <code>
+  src/condor_tests
+ </code>
+ directory and build the tests again (as above), or (this doesn't remove everything, but enough to re-run the tests):
+ <div class="code">
+  <pre class="code">$ cd src/condor_tests
+$ rm -fr TestingPersonalCondor
+</pre>
+ </div>
+ After either of these, you can re-run the tests as above.
+ <span class="section">
+  <h2>
+   Running the developer test suite
+  </h2>
+ </span>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Cached Externals
+ </h3>
+ <p>
+  Builds by default cache the externals in /scratch/condor-externals. If you're sharing the machine with others, you may collide and have problems.  Solution, add
+ </p>
+ <div class="code">
+  <pre class="code">-DEXTERNAL_STAGE:PATH=/path/to/a/private/directory
+</pre>
+ </div>
+ to your invocation of configure_uw
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
