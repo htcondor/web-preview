@@ -23,7 +23,7 @@ function SearchBar(id, index_path, metadata_path) {
     this.load_search_bar = async function(){
         await this.load_data()
 
-        this.input_node.setAttribute("placeholder", "Search CHTC")
+        this.input_node.setAttribute("placeholder", "Search HTCondor")
 
         this.input_node.addEventListener("keyup", () => {
             makeDelay(1000)(() => this.populate_search.call(this))
@@ -41,14 +41,22 @@ function SearchBar(id, index_path, metadata_path) {
             this.metadata = JSON.parse(sessionStorage.getItem("main_metadata"))
             if(!this.metadata){
                 this.metadata = await fetch(this.metadata_path).then(data => data.json())
-                sessionStorage.setItem("main_metadata", JSON.stringify(this.metadata))
+                try{
+                    sessionStorage.setItem("main_metadata", JSON.stringify(this.metadata))
+                } catch (error) {
+                    console.error("Metadata Save Resulted in Error:" + error)
+                }
             }
 
             let index = JSON.parse(sessionStorage.getItem("main_index"))
             if(!index){
                 index = await fetch(this.index_path).then(data => data.json())
                 this.idx = lunr.Index.load(index)
-                sessionStorage.setItem("main_index", JSON.stringify(index))
+                try {
+                    sessionStorage.setItem("main_index", JSON.stringify(index))
+                } catch (error) {
+                    console.error("Index Save Resulted in Error:" + error)
+                }
             } else {
                 this.idx = lunr.Index.load(index)
             }
