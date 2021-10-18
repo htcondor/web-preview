@@ -1,0 +1,1 @@
+Sitemap: /web-preview/preview-dynamic-updates/sitemap.xml
