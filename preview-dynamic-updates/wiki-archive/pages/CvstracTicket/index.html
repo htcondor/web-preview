@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-dynamic-updates/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-dynamic-updates/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-dynamic-updates/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-dynamic-updates/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-dynamic-updates/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-dynamic-updates/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-dynamic-updates/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Cvstrac Ticket</title>
+
+    <script src="/web-preview/preview-dynamic-updates/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-dynamic-updates/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-dynamic-updates/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-dynamic-updates/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-dynamic-updates/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-dynamic-updates/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-dynamic-updates/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-dynamic-updates/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Cvstrac Ticket</h1>
+<div id="content">
+ <strong class="three">
+  HTCondor Tickets
+ </strong>
+ <p>
+  A ticket is an object describing and tracking a bug, new feature, project, incident, or action item related to the software development of HTCondor.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Ticket life cycle and status attribute
+ </h3>
+ <p>
+  A newly created ticket has a
+  <em>
+   status
+  </em>
+  attribute of
+  <code>
+   New
+  </code>
+  .  Once a developer is actively working on this ticket, it should be marked as
+  <code>
+   Active
+  </code>
+  . For anything but the most trivial of enhancements or bug fixes, the first step is to write a design document.  Once a design document has been attached to this ticket, the ticket should go to
+  <code>
+   ReviewDesign
+  </code>
+  state until approved - often times this results in a new/edited version of the design document.  After design approval, the ticket will go back to
+  <code>
+   Active
+  </code>
+  while being implemented. If the developer has permission to push directly to the HTCondor git repository, this implementation may happen on a topic branch; if not, the implementation may be attached to the ticket as a patch file or a github fork URL can be placed in the remarks. Once the implementation is complete, the ticket should go to
+  <code>
+   ReviewCode
+  </code>
+  and be re-assigned to another developer for a code review.  The result of this code review will appear in the ticket Remarks and be clearly labeled in bold-face with
+  <strong>
+   CODE REVIEW
+  </strong>
+  .  After review, this ticket is assigned back to the original developer to address any issues identified in the review.  After implementation is complete, the ticket should go into
+  <code>
+   DocPending
+  </code>
+  state until the HTCondor Manual has been updated appropriately, after which the ticket may go to
+  <code>
+   Resolved
+  </code>
+  .  Other less common ticket status values include
+  <code>
+   stalled
+  </code>
+  for a ticket that was active in the past, but is no longer being worked on),
+  <code>
+   pending
+  </code>
+  for a ticket that is awaiting additional input from a third-party (typically more information related to reproducing a bug), and
+  <code>
+   abandoned
+  </code>
+  for a ticket that we will never work on or for a ticket that is a duplicate of a previously existing ticket.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Creating a new ticket
+ </h3>
+ <p>
+  Click on the
+  <a href="tktnew">
+   [Ticket]
+  </a>
+  link at the top of the page. It is very important the the fields of the ticket are assigned proper values, and that the formatting for the fields is strictly followed. When creating a new ticket, most of the fields should be obvious from the desciptions, just be careful about following the formatting conventions as described.  A couple comments on a few fields:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <strong>
+    Title / One-line summary
+   </strong>
+   should be as descriptive as possible since it appears in
+various cross-references, reports, ticket link titles, etc.
+   <p>
+   </p>
+  </li>
+  <li>
+   <strong>
+    Type
+   </strong>
+   should be set to
+   <code>
+    Code Defect
+   </code>
+   for a software bug,
+   <code>
+    Code Enhacement
+   </code>
+   for adding new capabilities or enhancing existing capabilities,
+   <code>
+    Action Item
+   </code>
+   for activities not related to the code (e.g. updating the web site), and finally
+   <code>
+    Support Incident
+   </code>
+   for describing suspicious observed behavior when you are not (yet) sure if the problem is due to a bug. Do not use type
+   <code>
+    Documentation
+   </code>
+   for new tickets.
+   <p>
+   </p>
+  </li>
+  <li>
+   <strong>
+    Priority
+   </strong>
+   describes how quickly the ticket should be resolved, and have special meaning to the HTCondor developers.  Priority 1 is do ahead of everything / fire priority.  Priority 2 means very important, must get done within the next couple releases.  Priority 3 means we should make every effort to get it done in the current development series.  Priority 4 means nobody has thought yet about the priority of this ticket (essentially, this ticket has not yet been triaged). Priority 5 means "idea network" - it is a worthy idea but unknown when (or ever) anything will happen.
+   <p>
+   </p>
+  </li>
+  <li>
+   <strong>
+    Assigned To
+   </strong>
+   identifies the developer responsible for this ticket. This person will automatically get an email whenever this ticket changes. If you do not know who should get the ticket, assign to
+   <code>
+    tannenba
+   </code>
+   and he will re-assign and/or re-prioritize.
+   <p>
+   </p>
+  </li>
+  <li>
+   <strong>
+    Notify
+   </strong>
+   should be a comma separated list of email addresses.  Every time the ticket is updated, the list of addresses in this field will be sent an email summarizing what changed.  Note that the person to who the ticket is
+   <em>
+    Assigned To
+   </em>
+   automatically gets email notifications.
+   <p>
+   </p>
+  </li>
+  <li>
+   <strong>
+    Ticket Number
+   </strong>
+   is unique to each ticket and can be referenced in
+   <span class="wiki">
+    <a href="/web-preview/preview-dynamic-updates/wiki-archive/pages/FormattingWikiPages" title="Formatting Wiki Pages">
+     wiki markup
+    </a>
+   </span>
+   using the
+   <span class="quote">
+    #n
+   </span>
+   syntax.
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Changing ticket status and other updates
+ </h3>
+ <p>
+  Ticket properties including status can be edited by following the
+  <em>
+   Edit
+  </em>
+  link in the ticket
+view. Remarks can be added by following the
+  <em>
+   Add remarks
+  </em>
+  link in the
+  <strong>
+   Remarks
+  </strong>
+  area of a ticket view.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Other properties and functionality
+ </h3>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Related fields
+ </h4>
+ <p>
+  Any
+  <span class="wiki">
+   <a href="/web-preview/preview-dynamic-updates/wiki-archive/pages/CvstracCheckin" title="Cvstrac Checkin">
+    check-ins
+   </a>
+  </span>
+  and
+  <span class="wiki">
+   <a href="/web-preview/preview-dynamic-updates/wiki-archive/pages/CvstracMilestone" title="Cvstrac Milestone">
+    milestones
+   </a>
+  </span>
+  related to the ticket are listed in
+their own sections.
+ </p>
+ <p>
+  Tickets may also have
+  <em>
+   children
+  </em>
+  which reference them in their
+  <strong>
+   Derived From
+  </strong>
+  properties. These child tickets will be listed in a separate section, allowing
+a certain amount of hierarchical project task management.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  History
+ </h4>
+ <p>
+  A separate page containing a full ticket history provides a chronologically
+ordered list of
+  <em>
+   all
+  </em>
+  events associated with a ticket. Property changes,
+remarks, check-ins, attachments, inspections, etc, are all listed here.
+ </p>
+ <p>
+  Changes to certain fields, such as
+  <strong>
+   Description
+  </strong>
+  and
+  <strong>
+   Remarks
+  </strong>
+  are shown in
+  <em>
+   diff
+  </em>
+  style.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Attachments
+ </h4>
+ <p>
+  Arbitrary files may be
+  <span class="wiki">
+   <a href="/web-preview/preview-dynamic-updates/wiki-archive/pages/CvstracAttachment" title="Cvstrac Attachment">
+    attached
+   </a>
+  </span>
+  to tickets. This could include things
+like screenshots, design documents, etc. Attachments are of
+limited size.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Undoing Changes
+ </h4>
+ <p>
+  When in the
+  <em>
+   history
+  </em>
+  view, it's possible to undo changes. A user with
+  <strong>
+   delete
+  </strong>
+  permissions or the user responsible
+for the change can do this within 24 hours while a user with
+  <strong>
+   admin
+  </strong>
+  permissions can do so at any time. An
+  <em>
+   undo
+  </em>
+  link is included at the last item of the history page in this case.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Deleting Tickets
+ </h4>
+ <p>
+  Users with
+  <strong>
+   setup
+  </strong>
+  permissions can always delete
+tickets. Tickets should only be deleted as a last resort. If
+a ticket contains valuable project history, it should instead be closed.
+ </p>
+ <p>
+  Users (except
+  <strong>
+   anonymous
+  </strong>
+  ) with
+  <strong>
+   delete
+  </strong>
+  permissions
+can delete tickets created by
+  <strong>
+   anonymous
+  </strong>
+  within 24 hours of ticket creation.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
