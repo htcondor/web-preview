@@ -1,3 +1,4 @@
+let idx;
 window.onload = main;
 
 function main(){
