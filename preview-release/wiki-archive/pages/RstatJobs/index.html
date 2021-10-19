@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-release/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-release/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-release/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-release/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-release/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-release/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-release/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Rstat Jobs</title>
+
+    <script src="/web-preview/preview-release/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-release/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-release/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-release/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-release/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Rstat Jobs</h1>
+<div id="content">
+ See also, and eventually merge into,
+ <span class="wiki">
+  <a href="/web-preview/preview-release/wiki-archive/pages/RunningRincondorPool" title="Running Rincondor Pool">
+   RunningRincondorPool
+  </a>
+ </span>
+ <p>
+  From Kerry Creeron at the Laboratory for Molecular and Computational Genomics here at UW:
+ </p>
+ <p>
+  I got R to successfully run on HTCondor. Here are my results:
+ </p>
+ <p>
+  First off, Nathan gave me the suggestion to use the 'tar' command to put
+together the R binary executable and all the libraries  needed to run your
+program together in your file, and then to use a shell script to untar the
+archive on the remote machine. I extended the concept further to preserve
+the directory structure of the input files that you used, as well.
+ </p>
+ <p>
+  Secondly, when invoking R, I use
+ </p>
+ <div class="code">
+  <pre class="code">R --vanilla &lt; inputfile.r</pre>
+ </div>
+ <p>
+  to run the program. Apparently R doesn't support standard
+ </p>
+ <div class="code">
+  <pre class="code">R arg1 arg2 arg3</pre>
+ </div>
+ style command-line arguments. Though I could easily be wrong about this. Either way, it seemed to be the simplest solution.
+ <p>
+  1. I needed to compile the R binary from source. For whatever reason, simply
+taking the binary from the
+  <code>
+   /usr/bin/
+  </code>
+  directory did not work. I used version
+2.11.1, because it appears to be the latest that our version of CentoOS
+supports, though there isn't necessarily any reason that a newer version of
+R couldn't be used. I also chose R version 2.11.1 because in order to get
+MCMCpack, one of the libraries that your program requires, to install using
+CRAN (similar to CPAN on perl), a version of R  at least2.10 was needed.
+ </p>
+ <p>
+  2. Next, I turned to getting the libraries to work. I initially investigated
+using environment variables like the
+  <code>
+   R_LIBS_USER
+  </code>
+  to set where the remote
+computer is supposed to look for libraries, but that did not work. So,
+instead, I chose to insert the following line into the R program to change
+the default library search directories to look to the current directory
+first:
+ </p>
+ <div class="code">
+  <pre class="code">.libPaths(c(".","/usr/lib64/R/library","/usr/share/R/library"))
+</pre>
+ </div>
+ This should be inserted at the beginning of any programs you want to
+HTCondor-ize. For an example, look at
+ <code>
+  test.r
+ </code>
+ .
+ <p>
+  3. Next, you'll need to make sure that all the libraries are included in the
+tar file. The file
+  <code>
+   tarcmd.txt
+  </code>
+  as follows:
+ </p>
+ <div class="code">
+  <pre class="code">tar -cf r.tar ./R -C /usr/lib64/R/library/ MASS/ coda/ MCMCpack/ lattice/  -C /exports/scratch/&lt;user&gt;/04-2010/ ch01/refsigs/sig104_A.txt ch01/sigsnp/sigint104_A.txt
+</pre>
+ </div>
+ contains the tar command I used to tar the R executable (which I also copied
+into the same directory), the libraries, and your input files. I tarred the
+input files because I wanted to preserve the directory structure and didn't
+want to have to modify your R code.
+ <p>
+  4. The next issue was that the output directories don't exist on the remote
+machine, so I included in
+  <code>
+   r.sh
+  </code>
+  (the shell script) a few
+  <code>
+   mkdir -p
+  </code>
+  commands to
+create the output directories. The output files don't actually have to exist
+on the remote machine---just the directories.
+ </p>
+ <p>
+  Just a side note:
+  <code>
+   &lt;user&gt;
+  </code>
+  , your R files currently have all the file paths
+specified with back slashes ("\\"). On Linux, this will not work. The
+filenames will need forward slashes instead.
+ </p>
+ <p>
+  5. The output files aren't currently being transferred from the remote
+machine back to the submit machine. What needs to be done is to add the
+output files to the job file so that they are transferred when the job
+terminates. I will insert this code when I get the chance.
+ </p>
+ <p>
+  6. The job file also needs to have a constraint that requires that the
+machine is 64-bit. I tested the R binary on a 32-bit machine and it
+didn't work, so I assume that's why.
+ </p>
+ <p>
+  7. All told, running the job took about 5 minutes on the remote machine. So,
+I don't know how that compares to what you've tried on
+  <code>
+   &lt;machine&gt;
+  </code>
+  .
+ </p>
+ <p>
+  Kerry
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
