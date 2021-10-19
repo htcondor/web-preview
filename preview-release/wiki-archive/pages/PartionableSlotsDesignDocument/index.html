@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-release/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-release/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-release/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-release/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-release/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-release/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-release/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Partionable Slots Design Document</title>
+
+    <script src="/web-preview/preview-release/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-release/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-release/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-release/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-release/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-release/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Partionable Slots Design Document</h1>
+<div id="content">
+ Work to support Paritionable slots in HTCondor is an ongoing effort.
+ <p>
+  Current support for partitionable slots in HTCondor:
+ </p>
+ <p>
+  A startd can be configured to support zero or more paritionable slots, in addition to the traditional static slots.  Static and partitionable slots can be mixed, and we do see demand from user for having machines running with both static and partitionable slots.  This can be to have a static slot for administrative purposes, or to support specific kinds of resources like GPUs.  Partitionable slots can be given fixed or remaining amounts of disk, cpu and memory resources.  Today, the negotiatior knows nothing special about partitionable slots -- they are advertised to the collector, matched in the negotiator, just like a static slot, and assigned to a schedd.  Only when the claim is in the schedd does their partitionable nature become noticed.  When the schedd claims a partitionable slot, the startd splits the claim into the requested amount (perhaps rounded by itself), creating a new claim we call the dynamic slot, and decrements the existing partitionable slot, so that it represents the remaining claim.  The schedd can then repeatedly try to claim the partitionable leftovers until they are exhausted.  However, the partitionable slot never itself goes into the claimed state, it stays unclaimed for the whole life cycle.  Defragmentation is handled by a defragmentation daemon, which periodically sends draining
+requests to selected startds, in order to drain the whole machine.
+ </p>
+ <p>
+  Problems with current support for partitionable slots
+ </p>
+ <p>
+  There are several operational problems with the current partitionable slot implementation.  These stem from a few root causes.
+ </p>
+ <p>
+  The first root cause is that the negotiator doesn't know about partitioning, and hands out the whole resource, or tries to, to the schedd.  This means that in cases where there are many resources per machine, and each submitter, for whatever reason, is only allowed to currently use less than a whole machine's worth of resources, the negotiator will fail to match the resource to the job, because it can only allocate the full slot to the submitter.  A related problem is that it is impossible to specify a policy where the admin can "fill up" one machine with jobs before moving on to the next machine.  Again, this is because the negotiator believes it is matching one job to a resource which eventually may split into multiples.  Because the negotiator implements concurrency limits, these don't work correctly in the paritionable slot case either.  Another result of this is that startd rank doesn't work correctly -- the rank and the match only apply to the partitionable slot, not to the dynamic slot which is created by the start at claim time.  A minor consequence is that the partitionable slot stays unclaimed, which is confusing in condor_status output.
+ </p>
+ <p>
+  Another root cause of several problems is that there is no naming or identification of partitionable slots.  While static slots aren't explicitly named, many sites use the slotd as a de-facto name.  For example, one static slot might be special in some way, and be bound to jobs that need licenses
+or whole machine slots, or GPUs or other specialness.  Because the slot id of dynamic slots is dynamic, there is no fixed binding even of the slot id to a name, and thus there is no way to consistently identify dynamnic or partitionable slots.  A related problem is that the CPU affinity knobs are bound to slot ids, which don't really exist as one might expect in the partitionable slot world, so there is no way to express the common idiom of "use Linux CPU affinity to give each slot one core".  Yet another problem related to this is custom slot attributes.  With static slots, there is the ability to set SLOTxx_SomeConfigKnob, to just change the config knob for that slot.  This is not possible in the partitionable slot world.  Perhaps the most common example of this is the Start expression itself -- this is global per startd, instead of per slot, or per slot type.
+ </p>
+ <p>
+  Proposed fixes
+ </p>
+ <p>
+  To improve upon this situation, in this work we will make the partitionable slots named and claimable.  Each partitionable slot will have it's own id, and it will be possible to assign configuration values and classad attributes to the partitionable slot, which are copied into that slot's dynamic slot at claim time.  Specifcally, it should be possible for each slot type to have it's own START expression, independent of the other slot types.  The workflow will also be changed to that the negotiator and schedd will collaborate to claim the partitionable slot, and only perform fast leftover claimed from the claimed partitionable slot.  This will show up in the condor_status output, so that the partitionable slot
+will, less confusingly, end up in the Claimed/busy state.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

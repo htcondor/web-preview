@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-release/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-release/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-release/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-release/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-release/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-release/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-release/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Tjs Useful Classad Transforms</title>
+
+    <script src="/web-preview/preview-release/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-release/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-release/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-release/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-release/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-release/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Tjs Useful Classad Transforms</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   This page has useful classad tranform rules.
+  </h2>
+ </span>
+ <p>
+  use by saving each as a file, and passing that file to condor_transform_ads like this:
+ </p>
+ <div class="term">
+  <pre class="term">condor_transform_ads -rules to_docker.xfm -in vanilla_jobs.ads -out docker_jobs.ads
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Convert job to docker job
+ </h4>
+ Invoke with Image=&lt;image-name&gt; to override default docker image
+ <p>
+ </p>
+ <div class="snip">
+  <pre class="sniplabel">to_docker.xfm </pre>
+  <pre class="snip">Name VanillaToDocker
+Requirements Universe == 5 &amp;&amp; ! WantDocker
+
+# invoker can pass image=&lt;image&gt; on command line to override...
+If ! defined image
+  image = SL6
+Endif
+
+# Convert to docker, rewrite executable to be relative to the sandbox
+#
+Set     WantDocker  = true
+Set     DockerImage = "$F(image)"
+Set     Cmd         = "./$Fnx(MY.Cmd)"
+Rename  Requirements VanillaRequirements
+Set     Requirements = Target.HasDocker
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Set accounting group
+ </h4>
+ Set accounting group based on username and preferred group.
+Assumes that the "groups" user map has been loaded.
+ <p>
+ </p>
+ <div class="snip">
+  <pre class="sniplabel">set_accounting_group.xfm </pre>
+  <pre class="snip">Name SetAccountingGroup
+# convert AccountingGroup into a preferred group, then map
+# the user into an Accounting group honoring their preference
+Rename  AccountingGroup PreferredGroup
+Default PreferredGroup  undefined
+EvalSet AccountingGroup mapUser("groups", Owner, PreferredGroup)
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Simulate batlab execute nodes
+ </h4>
+ Converts a set of STARTD ads from a single machine, into multiple startd ads, each with a different architecture and operating system.
+Invoke with
+ <ul>
+  <li>
+   DOMAIN=x.y.z set the default domain for generated machine names
+  </li>
+  <li>
+   SharedFileSystem=true simulate a shared file system.
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="snip">
+  <pre class="sniplabel">to_multi_platform.xfm </pre>
+  <pre class="snip"># Transform a each STARTD ad into multiple ads, each with a differnt OS and Arch
+NAME Simulate multiple STARTD platforms
+REQUIREMENTS MyType == "Machine"
+
+# extract slotname from the ad name and manufacture a machine index
+EVALMACRO SLOT = splitslotname(Name)[0]
+INDEX = $(ROW)+1
+
+# rewrite the machine name and domain
+#
+SET UidDomain = "$(DOMAIN:cs.wisc.edu)"
+SET Machine = "exec$INT(INDEX,%02d).$(MY.UidDomain)"
+if defined SLOT
+  SET  Name = "$(SLOT)@$(My.Machine)"
+else
+  COPY Machine Name
+endif
+COPY Machine PrivateNetworkName
+
+if $(SharedFileSystem)
+  COPY UidDomain FileSystemDomain
+else
+  COPY Machine FileSystemDomain
+endif
+
+SET Arch           = "$(ARCH)"
+SET OpSys          = "$(OS)"
+SET OpSysAndVer    = "$(OSAndVer)"
+SET OpSysVer       = "$(OSVer)"
+SET OpSysName      = "$(OSName)"
+SET OpSysMajorVer  = "$(OSMajor)"
+SET OpSysShortName = "$(OSShort)"
+SET OpSysLegacy    = "$(OSLegacy)"
+
+
+TRANSFORM Arch,OS,OSAndVer,OSVer,OSName,OSMajor,OSShort,OSLegacy from (
+  X86_64 LINUX   Debian7      700 Debian       7 Debian  LINUX
+  X86_64 LINUX   Debian8      800 Debian       8 Debian  LINUX
+  X86_64 LINUX   SL6          602 SL           6 SL      LINUX
+  X86_64 LINUX   SL7          702 SL           7 SL      LINUX
+  X86_64 LINUX   RedHat6      607 RedHat       6 RedHat  LINUX
+  X86_64 LINUX   RedHat6      607 RedHat       6 RedHat  LINUX
+  INTEL  LINUX   RedHat6      607 RedHat       6 RedHat  LINUX
+  X86_64 LINUX   RedHat7      702 RedHat       7 RedHat  LINUX
+  X86_64 WINDOWS WINDOWS601   601 Windows7   601 Win7    WINNT61
+  X86_64 WINDOWS WINDOWS602   602 Windows8   602 Win8    WINNT62
+  X86_64 WINDOWS WINDOWS1000 1000 Windows10 1000 Win10   WINNT100
+  X86_64 OSX     MacOSX7      705 Lion         7 MacOSX  OSX
+  X86_64 OSX     MacOSX8      805 MountainLion 8 MacOSX  OSX
+  X86_64 OSX     MacOSX10    1001 ElCapitan   10 MacOSX  OSX
+  X86_64 OSX     MacOSX10    1005 ElCapitan   10 MacOSX  OSX
+  X86_64 LINUX   Ubuntu12    1204 Ubuntu      12 Ubuntu  LINUX
+  X86_64 LINUX   Ubuntu14    1404 Ubuntu      14 Ubuntu  LINUX
+  X86_64 LINUX   Fedora23    2300 Fedora      23 Fedora  LINUX
+  X86_64 LINUX   Fedora24    2200 Fedora      22 Fedora  LINUX
+  X86_64 FREEBSD FreeBSD10   1003 FreeBSD     10 FreeBSD FREEBSD
+)
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Generate simulated dynamic slots from a partitionable slot
+ </h4>
+ Converts a partitionable STARTD ads from a single machine, into a partitionable slot ad and multiple dynamic slot ads.  It does
+ <strong>
+  NOT
+ </strong>
+ properly adjust the partitionable slot ad to account for resources consumed by the dynamic slot ads.
+Invoke with
+ <ul>
+  <li>
+   DOMAIN=x.y.z  set the default domain for generated machine names
+  </li>
+  <li>
+   User=bob      set the name of the simulated user for the dynamic slots
+  </li>
+  <li>
+   NumDynSlots=N control the number of dynamic slots
+  </li>
+  <li>
+   ReqMem=NN     set the memory assigned to the dynamic slots
+  </li>
+  <li>
+   Update=N      set the update sequence number
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="snip">
+  <pre class="sniplabel">to_dyn_slots.xfm </pre>
+  <pre class="snip"># Simulate one or more active dynamic slots from an idle partitionable one
+# The original partitionable slot is passed through untransfomed followed
+# by N partitionable slots by the TRANSFORM N+1 statement
+#
+
+# this trick currently results in infinite loop... if they are self-references &lt;sigh&gt;
+Client = $(Client:submit.chtc.wisc.edu)
+User   = $(User:bob)
+ReqMem = $(ReqMem:4000)
+NumDynSlots = $(NumDynSlots:1)
+
+#IpAddr = split(MyAddress,"&lt;?&gt;&amp;")[0]
+EVALMACRO AddrIp = $(My.AddressV1)[0].a
+EVALMACRO AddrPort = $(My.AddressV1)[0].port
+EVALMACRO Slot = splitslotname(Name)[0]
+
+#CurrentTime = time()
+#CurrentTime = $EVAL(CurrentTime)
+EVALMACRO CurrentTime time()
+
+SET MyCurrentTime = $(CurrentTime)
+DELETE /^Updates.+/
+if defined UPDATE
+   SET UpdateSequenceNumber $(Update)
+endif
+
+if defined DOMAIN
+  EVALMACRO Host = split("$(My.Machine)",".")[0]
+  SET Machine "$(Host).$F(DOMAIN)"
+  SET Name "$(Slot)@$(Host).$F(DOMAIN)"
+endif
+
+SET ClassAdLifetime 600
+
+if $(Step)
+  # Convert partitionable slot to dynamic slot
+  #
+  SET NAME  "$(Slot)_$(Step)@$(My.Machine)"
+  DELETE PartitionableSlot
+  DELETE NumDynamicSlots
+  DELETE /^Child.+/
+  SET ParentSlotId  $(My.SlotId)
+  SET DynamicSlot   true
+  SET SlotType      "Dynamic"
+  SET SlotTypeId    -1
+  SET Activity      "Busy"
+  SET State         "Claimed"
+  SET PublicClaimId "&lt;$(AddrIp):$(AddrPort)&gt;#$(CurrentTime)#$RANDOM_INTEGER(10000,20000,1)#..."
+
+  # set info about the executing job and claim
+  #
+  SET     JobId           "$RANDOM_INTEGER(11100,22200,1).0"
+  SET     JobUniverse     5
+  EVALSET JobStart        time() - 60*16
+  SET     NumPids         2
+  SET     GlobalJobId     "$(Client)#$(MY.JobId)#$(CurrentTime)"
+  SET     ImageSize       $RANDOM_INTEGER(100000,1000000,128)
+  SET     ExecutableSize  3
+  EVALSET ResidentSetSize ImageSize + $RANDOM_INTEGER(1000,10000,128)
+  COPY    JobStart EnteredCurrentState
+  COPY    JobStart EnteredCurrentActivity
+  EVALSET TotalClaimRunTime time() - EnteredCurrentState
+  COPY    TotalClaimRunTime TotalJobRunTime
+  COPY    TotalClaimRunTime TotalTimeClaimedBusy
+  SET     TotalTimeClaimedIdle 2
+  DELETE  TotalTimeDrainedRetiring
+  DELETE  TotalTimeUnclaimedIdle
+  DELETE  TotalTimeUnclaimedBenchmarking
+  EVALSET RetirementTimeRemaining 60*60*24*3 - TotalClaimRunTime
+
+  # set ownership
+  #
+  SET NiceUser      false
+  SET RemoteOwner   "$(User)@chtc.wisc.edu"
+  COPY RemoteOwner  RemoteUser
+  SET RemoteNegotiatingGroup "&lt;none&gt;"
+  SET RemoteAutoregroup false
+  SET ClientMachine "$(Client)"
+
+  # set resource usage
+  #
+  SET     Cpus      1
+  COPY    Cpus      TotalSlotCpus
+  SET     RequestMemory $(ReqMem)
+  EVALSET Memory    quantize($(ReqMem),256)
+  COPY    Memory    TotalSlotMemory
+  SET     MemoryUsage ((ResidentSetSize + 1023)/1024)
+  EVALSET Disk      Disk/40.0
+  COPY    Disk      TotalSlotDisk
+
+
+else
+
+  # Pass original Partitionable Slot through unmolested at step 0
+  # Should maybe subtract resource usage from it?
+
+
+endif
+
+TRANSFORM 1+$(NumDynSlots:1)
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

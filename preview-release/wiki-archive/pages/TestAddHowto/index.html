@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-release/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-release/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-release/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-release/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-release/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-release/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-release/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Test Add Howto</title>
+
+    <script src="/web-preview/preview-release/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-release/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-release/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-release/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-release/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-release/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Test Add Howto</h1>
+<div id="content">
+ <strong class="two">
+  About the test suite
+ </strong>
+ <p>
+  The HTCondor test suite lives in src/condor_tests
+ </p>
+ <p>
+  There's no toplevel Makefile (src/Imakefile) rule that builds and runs all
+of this.To build and run the test suite see section above. We will get into variations later.
+ </p>
+ <p>
+  The Imake rules know on each platform what compilers exist. For each compiler it
+finds on a platform, it creates a new directory underneath condor_tests that is the name of that compiler, and creates basically a symlink and copy image of everything else in condor_tests for that compiler. Then it goes through each compiler subdirectory and builds each test with that compiler, usually with the syscall library and a vanilla version of that test. Last it does any building of non-Standard Universe test in the top level.
+ </p>
+ <p>
+  batch_test.pl by default assumes you want to test with daemons found in your path and assumes they are currently running with your current configurations. This allows having a daemon in a debugger during the testing if needed.
+ </p>
+ <p>
+  batch_test.pl knows how to create a new test personal HTCondor from the binaries in your path using slightly modified generic configuration files. It creates the
+directory condor_tests/TestingPersonalCondor and sets up to run there. Sometimes to restart tests you may need to remove this directory so it knows to restart the personal HTCondor.
+ </p>
+ <p>
+  batchtest.pl runs tests serially one after another by default.
+ </p>
+ <p>
+  <strong class="two">
+   Variations within batch_test.pl
+  </strong>
+ </p>
+ <p>
+  To run the entire test suite with your existing daemons:
+ </p>
+ <p>
+  ./batch_test.pl
+ </p>
+ <p>
+  To set up the environment(including the personal HTCondor) and then run the entire
+suite:
+ </p>
+ <p>
+  ./batch_test.pl -b
+ </p>
+ <p>
+  To set up a test environment in
+condor_tests/TestingPersonalCondor and run the quick class:
+ </p>
+ <p>
+  ./batch_test.pl -f list_quick -b
+ </p>
+ <p>
+  batch_test.pl takes multiple arguments:
+ </p>
+ <p>
+ </p>
+ <pre>  -b &lt;build&amp;test&gt;  Use generic config files from HTCondor examples
+                   and start a personal HTCondor.
+  -d &lt;directory&gt;   Run the tests in this directory, ie "-d gcc/"
+  -s &lt;filename&gt;    Skip all the tests listed in &lt;filename&gt;
+  -f &lt;filename&gt;    Run all of the tests listed in &lt;filename&gt;
+  -a &lt;count&gt;       Run each test this many times
+  -t &lt;test&gt;        Run just this test
+  -p &lt;pretest&gt;     Just set up the testing personal HTCondor
+</pre>
+ <p>
+  Run all the top level tests( standard way for windows ) with
+a pristine personal HTCondor.
+ </p>
+ <p>
+  ./batch_test.pl -d . -b
+ </p>
+ <p>
+  Run just one test and then do the same but run it five times.
+ </p>
+ <p>
+  ./batch_test.pl -d . -t job_condorc_ab_van
+./batch_test.pl -d . -t job_condorc_ab_van -a 5
+ </p>
+ <p>
+  The files that -s and -f are one test per line of things to run or skip.
+ </p>
+ <p>
+  <strong class="two">
+   wrapped tests(All are wrapped since 7.9.5)
+  </strong>
+ </p>
+ <p>
+  We wrap tests because we want to change the environment(config settings) used while this test is running without impacting the other tests which are either running now or will run yet in the main personal HTCondor. It also ensures that
+there will be a log directory showing only what is going on during this test.
+With many tests running in the starting personal HTCondor it can be hard to see what is going on. All tests are wrapped within the HKCondor perl test module.
+To change the HTCondor config, wrap the test yourself.
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Write the test to start a personal HTCondor and then run it's test
+  </li>
+ </ol>
+ <p>
+  The most basic test done in a personal HTcondor is "example_personal_condor_test".
+ </p>
+ <p>
+  <strong class="two">
+   General expectations
+  </strong>
+ </p>
+ <p>
+  "Tests" are perl scripts that end in .run. batch_test.pl takes the list of
+tests it's supposed to run, forks them off. It sets a timer of 18 hours
+that the test must complete in or it will automatically exit. stdout of the
+test is redirected to &lt;testprogram&gt;.out (and testprogram includes the .run,
+but not the compiler - that's implied by the directory it's running in) As
+each test exits, batch_test.pl collects the return code and decides if the
+test was successful or not. If a test exits with status 0, it was "successful".
+Anything else is considered a failure.
+ </p>
+ <p>
+  batch_test.pl prints to stdout a list of all the the tests it is running, and
+if they passed or succeeded. It looks like this:
+ </p>
+ <p>
+ </p>
+ <pre>  submitting gcc tests.......
+  no_supp            succeeded
+  loop               succeeded
+  bigenv-scheduler   succeeded
+  syscalltester      succeeded
+  coredump           succeeded
+  printer            succeeded
+  big                succeeded
+</pre>
+ <p>
+ </p>
+ <pre>  submitting g++ tests........
+  no_supp            succeeded
+  loop               succeeded
+  bigenv-scheduler   succeeded
+  lseek              (job never checkpointed)
+  syscalltester      succeeded
+  coredump           succeeded
+  printer            succeeded
+  big                succeeded
+</pre>
+ <p>
+ </p>
+ <pre>  14 successful, 1 failed
+</pre>
+ <p>
+  The exit status is the number of tests that failed. If everything passed,
+it exits with 0. Additionally, it writes two files, successful_tests and
+failed_tests, which contain a list of compiler/testname of tests that worked
+and didn't.
+ </p>
+ <p>
+  A test can write a failure reason that batch_test.pl will display by including
+in it's stdout a line that looks like
+FAILURE (failure reason)
+ </p>
+ <p>
+  <strong class="two">
+   Adding a new test
+  </strong>
+ </p>
+ <p>
+  READ the README files! The naming is supposed to be concise by rules in them. This helps everyone understand what the test is doing. Additionally understand classes! The default class run by batch_test.pl is list_quick. On windows the default list of tests run comes from the file Windows_list.
+ </p>
+ <p>
+  To add a new test to the test suite, you have to do three steps:
+ </p>
+ <ol>
+  <li>
+   Write the code for the test program itself
+  </li>
+  <li>
+   Decide how your test should be built
+  </li>
+  <li>
+   Write a .run file that can run your test and collect the output.
+  </li>
+ </ol>
+ <p>
+  Actually writing your test code is very easy. The first thing to think about is
+what are you trying to test. Most of the compiler directory tests in the current
+test suite are designed to test the remote system calls or checkpointing of HTCondor. There is a file ?testmethods.txt? in condor_tests that explains what many of the tests do.
+ </p>
+ <p>
+  Standard Universe compiler directory highlights: syscall_tester calls a number of generic POSIX functions with both valid and invalid arguments, and makes sure that it gets sane answers back. It's designed to test the HTCondor syscall library. floats does some floating point calculations, forces itself to checkpoint, and outputs the state of the floating point registers after the checkpoint, to ensure that we can safely checkpoint floating point registers. Most of the top level tests check other aspects of HTCondor?s behavior and are named to point at what they are testing.
+ </p>
+ <p>
+  There are very few restrictions on what your program has to do or how it has to be written. It's polite to have it run in a fairly short period, and to be
+deterministic. If you are going to use the standard universe, you should be aware of the ckpt_and_exit() call - you can directly force your program to save its state and exit. If your program is running under HTCondor, it will go back into the queue and be resubmitted, and it will be restarted as though it had just returned from the ckpt_and_exit() call.
+ </p>
+ <p>
+  Once you've written your program, you have to decide how it is built and where to place it. Most non-Standard Universe tests get added to Imakefile. Standard
+Universe tests get added to the CImakefile, CPPImakefile and FImakefile - in the
+test suite. The CImakefile(and others) are what actually build your programs. The Imakefile in src/condor_tests is used for building the testing infrastructure (picking out compilers, etc)and for most of the tests. For each compiler subdirectory, we create a symlink to the CImakefile, and treat the CImakefile as the Imakefile for the compiler subdirectory. condor_imake is invoked on it, so all of our standard Imake rules are available. The most-used rule is
+ </p>
+ <p>
+  BUILD( $(CC), &lt;testname&gt;, c )
+ </p>
+ <p>
+  That rule will build testname (which ends in .c) for every compiler on that
+platform (usually the vendor C C++ compilers, and the GNU C and C++ compilers) It will build two versions of your program for each compiler - a testname.remote and a testname.vanilla, which are standard and vanilla universe jobs, respectively. It will also by default place a symlink to the .run file for that test, and the .cmd file that is used to submit that job to HTCondor. If you specifically know that your test will not run under the standard universe, you can build it with BUILD_SPECIFIC_VANILLA, which will not try and relink it with the syscall library.
+ </p>
+ <p>
+  If your test program is a Perl script, or something that does not need to be
+"built", you can use all_symlink_target() to get it represented into the compiler subdirectories so batch_test.pl will run it.
+ </p>
+ <p>
+  Now that you've got your test program represented with a binary and a .run file,
+it's time to run your test. The first thing to remember is that the .run file is a perl script. It's responsible for running your test and deciding if it passed or failed - it technically does not have to use HTCondor for any of that, and we could put unit tests into batch_test.pl that simply run. The only strange thing is that they some have to appear in a "compiler" subdirectory. However, nearly all tests are going to be run as HTCondor jobs (which is why the default BUILD rule symlinks a &lt;testname&gt;.cmd file for you in the compiler subdirectory).
+ </p>
+ <p>
+  Because most of the tests are going to be submitting and running HTCondor jobs, they generally use the CondorTest.pm Perl module. The
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-release/wiki-archive/pages/CondorTest" title="Condor Test">
+    CondorTest
+   </a>
+  </span>
+  perl module in turn builds on the Condor.pm perl module. The Condor.pm module provides a a Perl
+interface to submitting HTCondor jobs and receiving callbacks when events happen. (It monitors the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-release/wiki-archive/pages/UserLog" title="User Log">
+    UserLog
+   </a>
+  </span>
+  file the job submit file specifies to discover this
+information.) CondorTest.pm adds several new functions on top of Condor.pm, mostly for managing expected output. Again, a .run file is just a Perl script, and as such does not have to use the HTCondor perl modules or even use HTCondor at all.
+ </p>
+ <p>
+  <strong class="two">
+   Sample Test
+  </strong>
+ </p>
+ <p>
+  Here is an example .run file, for dirtest.c - dirtest.c is designed to check that the dirent() functions still work, so it creates a couple of directories and looks at them:
+ </p>
+ <p>
+ </p>
+ <pre>  #!/usr/bin/env perl
+</pre>
+ <p>
+ </p>
+ <pre>  use CondorTest;
+</pre>
+ <p>
+ </p>
+ <pre>  $cmd = 'dirtest.cmd';
+  $testname = 'getdirentries Test';
+</pre>
+ <p>
+ </p>
+ <pre>  @CondorTest::expected_output = ( 'ENTRY: .',
+  'ENTRY: ..',
+  'ENTRY: first',
+  'ENTRY: second',
+  'ENTRY: third',
+  'completed successfully' );
+</pre>
+ <p>
+ </p>
+ <pre>  CondorTest::RegisterExitedSuccess( $testname,
+                                   \&amp;CondorTest::DefaultOutputTest );
+</pre>
+ <p>
+ </p>
+ <pre>  if( CondorTest::RunTest($testname, $cmd, 0) ) {
+    print "$testname: SUCCESS\n";
+    exit(0);
+  } else {
+    die "$testname: CondorTest::RunTest() failed\n";
+  }
+</pre>
+ <p>
+  <strong class="two">
+   Sample test walkthrough
+  </strong>
+ </p>
+ <p>
+  The first thing to notice is the @CondorTest::expected_output array - this is the text that dirtest.c will output, and that we should be looking for. If there are lines that your test will produce that aren't invariant (say you print out the time of day at the beginning of your test) you can register certain output lines as "lines to be skipped":
+ </p>
+ <p>
+  @CondorTest::skipped_output_lines = ( 4, 5, 6);
+ </p>
+ <p>
+  means don't look at lines 4, 5, and 6.
+ </p>
+ <p>
+  CondorTest::RegisterExitedSuccess means to "Call this function HTCondor says the job has exited and left the queue." The CondorTest::DefaultOutputTest is a predefined function that compares the text from expected_output_array to the stdout that your job produced and ensures that they're the same. It will also complain if there is data in the stderr file. Your test is free to define it's own function to be called - on tests that don't care to check the output, a common trick is to say:
+ </p>
+ <p>
+  CondorTest::RegisterExitedSuccess( $testname, sub { return 1 } );
+ </p>
+ <p>
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-release/wiki-archive/pages/RegisterExitedSuccess" title="Register Exited Success">
+    RegisterExitedSuccess
+   </a>
+  </span>
+  has a friend, CondorTest::RegisterExitedAbnormal(), which
+will provide a callback when a job exits with some error condition. See
+coredump.run for an example. There are also other callbacks that are available
+through the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-release/wiki-archive/pages/CondorTest" title="Condor Test">
+    CondorTest
+   </a>
+  </span>
+  interface - see the source for CondorTest.pm and look in the function
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-release/wiki-archive/pages/RunTest" title="Run Test">
+    RunTest
+   </a>
+  </span>
+  to see what all you can register.
+ </p>
+ <p>
+  CondorTest::RunTest ultimately submits the job to HTCondor, and blocks until the job has left the queue. The arguments are the name of the test, the submit file to use, and whether or not HTCondor should try and force a checkpoint. If you can't use ckpt_and_exit, but you need to checkpoint for your test to be valid, set this flag to be 1. However, realize that your job will need to run for "long enough" to make sure that:
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   The Condor.pm module sees that your job is executing
+  </li>
+  <li>
+   It has a chance to send the 'condor_vacate' to the remote machine
+  </li>
+  <li>
+   The remote machine has a chance to get the 'condor_vacate' command, and
+decide that you're authorized to send a 'condor_vacate' to it
+  </li>
+  <li>
+   The remote machine has a chance to actually send the SIGUSR2 to the job
+  </li>
+ </ol>
+ <p>
+  Oftentimes, the job will finish before it successfully checkpoints. This sort of
+testing in a distributed system is hard.
+ </p>
+ <p>
+  <strong class="two">
+   Added tidbits:
+  </strong>
+ </p>
+ <p>
+  There are many examples to look at in src/condor_tests/Imakefile. We also have a
+perl module called CondorPersonal.pm which allows us to setup tests which require a modified environment so as to not change the environment of the personal HTCondor running all of the tests. It allows us to emulate most pool configurations. Look at the job_flocking_to, job_condorc_ab_van and cmd_status_shows-avail for more complicated examples.
+ </p>
+ <p>
+  <strong class="two">
+   Setting up for testing on windows
+  </strong>
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   Install windows msi
+  </li>
+  <li>
+   Add path to HTCondor binaries(bin and sbin) to PATH env variable
+  </li>
+  <li>
+   Install cygwin with cygwin perl
+  </li>
+  <li>
+   Install Active perl
+  </li>
+  <li>
+   Bring down sources for condor_examples, condor_scripts and condor_tests to c:\
+  </li>
+  <li>
+   Cp *.pm and batch_test.pl from condor_scripts to condor_tests
+  </li>
+  <li>
+   Cd to condor_tests
+  </li>
+  <li>
+   CONDOR_HOST = 127.0.0.1
+  </li>
+  <li>
+   NETWORK_INITERFACE = 127.0.0.1
+  </li>
+  <li>
+   If you are using a personal HTCondor in your path, then
+   <code>
+    chmod go+rX &lt;bindir and contentsl&gt;
+   </code>
+   so perl's -x works like how you expect.
+  </li>
+  <li>
+   ./batch_test.pl -d . -b
+  </li>
+ </ul>
+ <p>
+  <strong class="two">
+   Controlling Windows Testing
+  </strong>
+ </p>
+ <p>
+  Windows testing uses the tests in the file "Windows_list"
+to determine what it tests when you do the above which will
+run all the current approved Window's tests.
+ </p>
+ <p>
+  For NMI, you can do a shorter run of tests. These tests
+are selected from the file Windows_shortlist.
+ </p>
+ <p>
+  Control is done by adding
+  <strong class="two">
+   --test-args=short
+  </strong>
+  to the call
+to condor_nmi_submit.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
