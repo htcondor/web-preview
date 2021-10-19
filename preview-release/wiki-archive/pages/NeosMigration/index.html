@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-release/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-release/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-release/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-release/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-release/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-release/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-release/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Neos Migration</title>
+
+    <script src="/web-preview/preview-release/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-release/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-release/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-release/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-release/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-release/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-release/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Neos Migration</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Overview
+  </h2>
+ </span>
+ This wiki provide information about NEOS server migration from ANL to WID/MIR. There are 3 main components that we need to migrate.
+ <ol>
+  <li>
+   NEOS Web Portal and Database
+  </li>
+  <li>
+   NEOS Solvers
+  </li>
+  <li>
+   NEOS Wiki
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Contact Person
+ </h3>
+ <span class="subsubsection">
+  <h4>
+   HTCondor
+  </h4>
+ </span>
+ <ul>
+  <li>
+   Greg Thain
+  </li>
+  <li>
+   Thawan Kooburat
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  ANL
+ </h4>
+ <ul>
+  <li>
+   Jason Sarich - jason.sarich at gmail.com [NEOS Developer]
+  </li>
+  <li>
+   Sven Leyffer - leyffer at mcs.anl.gov [NEOS Wiki]
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Action Items
+ </h3>
+ <ul>
+  <li>
+   Obtain license for AMPL, GAMS and Intel Compilers
+  </li>
+  <li>
+   Test running all solvers on our site
+  </li>
+  <li>
+   Download NEOS documentation and change link to local site
+  </li>
+  <li>
+   Setup rsync to transfer job archive
+  </li>
+  <li>
+   Obtain and import NEOS database dump
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Completed
+ </h3>
+ <ul>
+  <li>
+   Migrated NEOS Wiki
+   <a class="external" href="http://neos2.chtc.wisc.edu/NEOS">
+    http://neos2.chtc.wisc.edu/NEOS
+   </a>
+  </li>
+  <li>
+   Setup testing NEOS site
+   <a class="external" href="http://neos1.chtc.wisc.edu/neos/">
+    http://neos1.chtc.wisc.edu/neos/
+   </a>
+   <ul>
+    <li>
+     Running solvers: HelloNEOS, MINLP, filter
+    </li>
+   </ul>
+  </li>
+  <li>
+   Installed GAMS and AMPL
+  </li>
+  <li>
+   Use HTCondor to manage NEOS daemons
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Development
+ </h3>
+ <ul>
+  <li>
+   <span class="wiki">
+    <a href="/web-preview/preview-release/wiki-archive/pages/NeosDevelop" title="Neos Develop">
+     Neos Development Wiki
+    </a>
+   </span>
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Related documents
+ </h3>
+ <ul>
+  <li>
+   NEOS worksheet -
+   <a class="external" href="http://docs.google.com/leaf?id=0B78BChQNqEaqNGQyYWQwNDgtYTcyMS00NTM2LTg1ZTAtYjk0YTA1ZDE3NmM0&amp;hl=en">
+    http://docs.google.com/leaf?id=0B78BChQNqEaqNGQyYWQwNDgtYTcyMS00NTM2LTg1ZTAtYjk0YTA1ZDE3NmM0&amp;hl=en
+   </a>
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Migration Plan
+ </h2>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  NEOS Web Portal Migration
+ </h3>
+ <span class="subsubsection">
+  <h4>
+   Source
+  </h4>
+ </span>
+ <ol>
+  <li>
+   Dump NEOS database
+  </li>
+  <li>
+   Tar job archive area
+  </li>
+  <li>
+   Gather all solver XMLs
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Destination
+ </h4>
+ <ol>
+  <li>
+   Setup the NEOS server
+  </li>
+  <li>
+   Import NEOS database
+  </li>
+  <li>
+   ? Start NEOS scheduler
+  </li>
+  <li>
+   Register all solver from XMLs
+  </li>
+  <li>
+   Extract job archive area
+  </li>
+  <li>
+   ? Start NEOS web portal
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  NEOS Solvers
+ </h3>
+ <span class="subsubsection">
+  <h4>
+   Source
+  </h4>
+ </span>
+ <ol>
+  <li>
+   ?
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Destination
+ </h4>
+ <ol>
+  <li>
+   Start NEOS solver daemons
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  NEOS Wiki
+ </h3>
+ <span class="subsubsection">
+  <h4>
+   Source
+  </h4>
+ </span>
+ <ol>
+  <li>
+   Dump NEOS Wiki database (or tables with NEOS wiki's prefix)
+  </li>
+  <li>
+   Tar flat files in 'wiki' folder
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Destination
+ </h4>
+ <ol>
+  <li>
+   Import NEOS wiki database
+  </li>
+  <li>
+   Restore 'wiki' folder
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  References
+ </h2>
+ <ul>
+  <li>
+   NEOS server setup -
+   <a class="external" href="http://neos.mcs.anl.gov/neos/SolverHowTo.html">
+    http://neos.mcs.anl.gov/neos/SolverHowTo.html
+   </a>
+  </li>
+  <li>
+   Moving Wiki -
+   <a class="external" href="http://www.mediawiki.org/wiki/Manual:Moving_a_wiki">
+    http://www.mediawiki.org/wiki/Manual:Moving_a_wiki
+   </a>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
