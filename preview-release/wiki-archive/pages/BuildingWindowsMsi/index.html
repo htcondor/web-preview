@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-release/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-release/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-release/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-release/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-release/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-release/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-release/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Building Windows Msi</title>
+
+    <script src="/web-preview/preview-release/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-release/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-release/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-release/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-release/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-release/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-release/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Building Windows Msi</h1>
+<div id="content">
+ In order to make the MSI you need a machine or VM running Windows.  WiX must be installed and in the path.  There is a Windows 7 VM available on
+ <code>
+  monza.cs.wisc.edu
+ </code>
+ at
+ <code>
+  /scratch/condor-vm
+ </code>
+ that can be used.  This VM has some additional scripts to simplify the process.  However, the VM does require a newer version of vmware than is installed by default on the lab computers as of 2011-02.
+ <p>
+ </p>
+ <ol>
+  <li>
+   Load the Windows VM.
+   <p>
+   </p>
+  </li>
+  <li>
+   The password for the HTCondor user is the same password as for our web page.
+   <p>
+   </p>
+  </li>
+  <li>
+   Open a shell using the "Condor Build" icon on the desktop.  This puts WiX and 7-zip into the path, (as well as cmake and the compiler)
+   <p>
+   </p>
+  </li>
+  <li>
+   Create a directory in
+   <code>
+    C:\scratch
+   </code>
+   e.g.
+   <code>
+    C:\scratch\pkg760
+   </code>
+   and put the HTCondor ZIP file into it. You can do this by downloading the
+   <code>
+    results.tar.gz
+   </code>
+   from your build into this directory and unpacking it via 7-Zip:
+  </li>
+ </ol>
+ <p>
+ </p>
+ <pre>   c:\&gt; cd c:\scratch\pkg760
+   c:\scratch\pkg760&gt; 7z x results.tar.gz
+   c:\scratch\pkg760&gt; 7z x results.tar
+</pre>
+ <p>
+  Alternatively you can map a directory from your local machine into the VM and copy the ZIP file from there.  A mapping should already exist to point to the
+  <code>
+   /scratch/condor-vm
+  </code>
+  directory on monza.  The mapping can be seen as the Z: drive in My Computer. If the mapping is missing it can be created by going to
+VM -&gt; Settings -&gt; Options Tab -&gt; Shared Folders -&gt; Add
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Put the HTCondor zip file in this directory
+  </li>
+ </ol>
+ <p>
+ </p>
+ <pre>   c:\scratch\pkg760&gt; move public\condor*.zip .
+</pre>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Unzip the HTCondor ZIP file into a temporary directory.
+  </li>
+ </ol>
+ <p>
+ </p>
+ <pre>   c:\scratch\pkg760&gt; 7z x -oTemp condor*.zip *
+</pre>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Change into the bin directory and test for debug c-runtime
+  </li>
+ </ol>
+ <p>
+ </p>
+ <pre>   c:\scratch\pkg760&gt; cd Temp\bin
+   c:\scratch\pkg760&gt; @for %I in (*.dll *.exe) do @link -dump -imports %I | findstr /i href="/web-preview/preview-release/wiki-archive/pages/90D" </pre>
+ <p>
+  There is a script called testfordebugcrt.bat in the VM that contains the
+  <code>
+   for
+  </code>
+  command above.  If the
+  <code>
+   for
+  </code>
+  command produces any output, then you have debug c-runtime linkage. If this happens
+  <strong>
+   stop
+  </strong>
+  . you cannot ship these binaries!
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   build the MSI, there is a batch file called
+   <code>
+    do_wix.bat
+   </code>
+   in the
+   <code>
+    etc\xml
+   </code>
+   directory.  Run this batch file and pass it the path and filename for the MSI to make an MSI.  Note that the WiX programs heat.exe, light.exe and candle.exe must be in the PATH.
+  </li>
+ </ol>
+ <p>
+ </p>
+ <pre>   c:\scratch\pkg760&gt; Temp\etc\WiX\do_wix.bat "%CD%\Condor-7.6.0-winnt-x86.msi"
+</pre>
+ <p>
+ </p>
+ <ol>
+  <li>
+   If NMI is still putting an extra directory into the ZIP file that it creates, you will have to make a new ZIP file. You can use 7-zip to unzip, but do
+   <em>
+    NOT
+   </em>
+   use 7-zip to build the new ZIP file - it uses the wrong compression.  Use the Windows Shell to do this. (instructions at the bottom of this page)
+   <p>
+   </p>
+  </li>
+  <li>
+   Transfer the files back out of the VM and put them in the appropriate place in NFS.  Make sure the zip file and MSI are named similarly (e.g. they both start with condor-7.6.0)
+  </li>
+ </ol>
+ <p>
+  Additional Notes:
+ </p>
+ <p>
+  The VM has a script called
+  <code>
+   packageit.bat
+  </code>
+  that will unzip the HTCondor ZIP file into a temporary directory and make and MSI from it, then optionally delete the temporary directory.
+ </p>
+ <p>
+  To make a ZIP file using the Windows Shell.
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   start an Explorer window.
+  </li>
+ </ol>
+ <p>
+ </p>
+ <pre>    c:\scratch\pkg760&gt; start .
+</pre>
+ <p>
+ </p>
+ <ol>
+  <li>
+   right click in this window and choose
+   <em>
+    New
+   </em>
+   -&gt;
+   <em>
+    Compressed (zipped) folder
+   </em>
+   <p>
+   </p>
+  </li>
+  <li>
+   give the folder the desired name, e.g. Condor-7.6.0-winnt-x86.zip
+   <p>
+   </p>
+  </li>
+  <li>
+   navigate into the condor root folder - the parent folder of the bin folder. and hit ctrl+A to select all and then Ctrl+C to copy.
+   <p>
+   </p>
+  </li>
+  <li>
+   navigate back to the folder containing the new empty ZIP file.
+   <p>
+   </p>
+  </li>
+  <li>
+   right click on the ZIP file and choose
+   <em>
+    Paste
+   </em>
+  </li>
+ </ol>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
