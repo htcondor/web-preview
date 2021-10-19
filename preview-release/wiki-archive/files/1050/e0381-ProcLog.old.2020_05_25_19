@@ -1,0 +1,1885 @@
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 11774
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 25092
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 14740
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 36600
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 6639
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 14809
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 16236
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 34251
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 7815
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 15580
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 28462
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 31444
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 15646
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 23955
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 29032
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 4497
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 14291
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 19796
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 29142
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 9208
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 11779
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 34049
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 19809
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 9209
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 11388
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 32860
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 17788
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 16503
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:45 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:45 : gathering usage data for family with root pid 2124
+05/25/20 13:08:45 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 11774
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 25092
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 14740
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 36600
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 6639
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 14809
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 16236
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 34251
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 7815
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 15580
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 28462
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 31444
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 15646
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 23955
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 29032
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 4497
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 14291
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 19796
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 29142
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 9208
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 11779
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 34049
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 19809
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 9209
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 11388
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 32860
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 17788
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 16503
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:50 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:50 : gathering usage data for family with root pid 2124
+05/25/20 13:08:50 : Internal cgroup error when retrieving iowait statistics: No such file or directory
+05/25/20 13:08:52 : taking a snapshot...
+05/25/20 13:08:52 : ProcAPI: new boottime = 1586904783; old_boottime = 1586904784; /proc/stat boottime = 1586904784; /proc/uptime boottime = 1586904783
+05/25/20 13:08:52 : process 6075 (of family 11737) has exited
+05/25/20 13:08:52 : process 11737 (of family 11737) has exited
+05/25/20 13:08:52 : process 6078 (of family 6078) has exited
+05/25/20 13:08:52 : process 23955 (of family 23955) has exited
+05/25/20 13:08:52 : process 31617 (of family 25911) has exited
+05/25/20 13:08:52 : process 25911 (of family 25911) has exited
+05/25/20 13:08:52 : process 28462 (of family 28462) has exited
+05/25/20 13:08:52 : process 28593 (of family 28593) has exited
+05/25/20 13:08:52 : process 31444 (of family 31444) has exited
+05/25/20 13:08:52 : process 31638 (of family 31638) has exited
+05/25/20 13:08:52 : process 32860 (of family 32860) has exited
+05/25/20 13:08:52 : process 36004 (of family 33884) has exited
+05/25/20 13:08:52 : process 35446 (of family 33884) has exited
+05/25/20 13:08:52 : process 33884 (of family 33884) has exited
+05/25/20 13:08:52 : process 11388 (of family 11388) has exited
+05/25/20 13:08:52 : process 37161 (of family 12232) has exited
+05/25/20 13:08:52 : process 37160 (of family 12232) has exited
+05/25/20 13:08:52 : process 12391 (of family 12232) has exited
+05/25/20 13:08:52 : process 12232 (of family 12232) has exited
+05/25/20 13:08:52 : process 29032 (of family 29032) has exited
+05/25/20 13:08:52 : process 30922 (of family 29896) has exited
+05/25/20 13:08:52 : process 29896 (of family 29896) has exited
+05/25/20 13:08:52 : process 34251 (of family 34251) has exited
+05/25/20 13:08:52 : process 34976 (of family 34556) has exited
+05/25/20 13:08:52 : process 34556 (of family 34556) has exited
+05/25/20 13:08:52 : process 17788 (of family 17788) has exited
+05/25/20 13:08:52 : process 18765 (of family 18038) has exited
+05/25/20 13:08:52 : process 18038 (of family 18038) has exited
+05/25/20 13:08:52 : process 6639 (of family 6639) has exited
+05/25/20 13:08:52 : process 7549 (of family 7188) has exited
+05/25/20 13:08:52 : process 7188 (of family 7188) has exited
+05/25/20 13:08:52 : process 29142 (of family 29142) has exited
+05/25/20 13:08:52 : process 29685 (of family 29656) has exited
+05/25/20 13:08:52 : process 29656 (of family 29656) has exited
+05/25/20 13:08:52 : process 7815 (of family 7815) has exited
+05/25/20 13:08:52 : process 8864 (of family 8324) has exited
+05/25/20 13:08:52 : process 8324 (of family 8324) has exited
+05/25/20 13:08:52 : process 16503 (of family 16503) has exited
+05/25/20 13:08:52 : process 21246 (of family 18168) has exited
+05/25/20 13:08:52 : process 18168 (of family 18168) has exited
+05/25/20 13:08:52 : process 16236 (of family 16236) has exited
+05/25/20 13:08:52 : process 20260 (of family 16767) has exited
+05/25/20 13:08:52 : process 16767 (of family 16767) has exited
+05/25/20 13:08:52 : process 19809 (of family 19809) has exited
+05/25/20 13:08:52 : process 20016 (of family 20342) has exited
+05/25/20 13:08:52 : process 20342 (of family 20342) has exited
+05/25/20 13:08:52 : process 19796 (of family 19796) has exited
+05/25/20 13:08:52 : process 8071 (of family 20335) has exited
+05/25/20 13:08:52 : process 20335 (of family 20335) has exited
+05/25/20 13:08:52 : process 34049 (of family 34049) has exited
+05/25/20 13:08:52 : process 34566 (of family 34394) has exited
+05/25/20 13:08:52 : process 34394 (of family 34394) has exited
+05/25/20 13:08:52 : process 9209 (of family 9209) has exited
+05/25/20 13:08:52 : process 11293 (of family 9338) has exited
+05/25/20 13:08:52 : process 9338 (of family 9338) has exited
+05/25/20 13:08:52 : process 9208 (of family 9208) has exited
+05/25/20 13:08:52 : process 13272 (of family 10048) has exited
+05/25/20 13:08:52 : process 10048 (of family 10048) has exited
+05/25/20 13:08:52 : process 11779 (of family 11779) has exited
+05/25/20 13:08:52 : process 12905 (of family 12142) has exited
+05/25/20 13:08:52 : process 12843 (of family 12142) has exited
+05/25/20 13:08:52 : process 12142 (of family 12142) has exited
+05/25/20 13:08:52 : process 11774 (of family 11774) has exited
+05/25/20 13:08:52 : process 12835 (of family 12143) has exited
+05/25/20 13:08:52 : process 12143 (of family 12143) has exited
+05/25/20 13:08:52 : process 14291 (of family 14291) has exited
+05/25/20 13:08:52 : process 21349 (of family 14492) has exited
+05/25/20 13:08:52 : process 14492 (of family 14492) has exited
+05/25/20 13:08:52 : process 15646 (of family 15646) has exited
+05/25/20 13:08:52 : process 16347 (of family 16071) has exited
+05/25/20 13:08:52 : process 16071 (of family 16071) has exited
+05/25/20 13:08:52 : process 15580 (of family 15580) has exited
+05/25/20 13:08:52 : process 16359 (of family 16034) has exited
+05/25/20 13:08:52 : process 16303 (of family 16034) has exited
+05/25/20 13:08:52 : process 16034 (of family 16034) has exited
+05/25/20 13:08:52 : process 14809 (of family 14809) has exited
+05/25/20 13:08:52 : process 15469 (of family 15083) has exited
+05/25/20 13:08:52 : process 15083 (of family 15083) has exited
+05/25/20 13:08:52 : process 14740 (of family 14740) has exited
+05/25/20 13:08:52 : process 15531 (of family 15030) has exited
+05/25/20 13:08:52 : process 15455 (of family 15030) has exited
+05/25/20 13:08:52 : process 15030 (of family 15030) has exited
+05/25/20 13:08:52 : process 36600 (of family 36600) has exited
+05/25/20 13:08:52 : process 36644 (of family 36644) has exited
+05/25/20 13:08:52 : process 25092 (of family 25092) has exited
+05/25/20 13:08:52 : process 35537 (of family 12474) has exited
+05/25/20 13:08:52 : process 35536 (of family 12474) has exited
+05/25/20 13:08:52 : process 35531 (of family 12474) has exited
+05/25/20 13:08:52 : process 35522 (of family 12474) has exited
+05/25/20 13:08:52 : process 35521 (of family 12474) has exited
+05/25/20 13:08:52 : process 35519 (of family 12474) has exited
+05/25/20 13:08:52 : process 35517 (of family 12474) has exited
+05/25/20 13:08:52 : process 35515 (of family 12474) has exited
+05/25/20 13:08:52 : process 35513 (of family 12474) has exited
+05/25/20 13:08:52 : process 35512 (of family 12474) has exited
+05/25/20 13:08:52 : process 35511 (of family 12474) has exited
+05/25/20 13:08:52 : process 35510 (of family 12474) has exited
+05/25/20 13:08:52 : process 35425 (of family 12474) has exited
+05/25/20 13:08:52 : process 40021 (of family 12474) has exited
+05/25/20 13:08:52 : process 12474 (of family 12474) has exited
+05/25/20 13:08:52 : process 6076 (of family 6076) has exited
+05/25/20 13:08:52 : process 3652 (not in monitored family) has exited
+05/25/20 13:08:52 : process 3651 (not in monitored family) has exited
+05/25/20 13:08:52 : process 3650 (not in monitored family) has exited
+05/25/20 13:08:52 : process 38669 (not in monitored family) has exited
+05/25/20 13:08:52 : process 38668 (not in monitored family) has exited
+05/25/20 13:08:52 : process 33840 (not in monitored family) has exited
+05/25/20 13:08:52 : process 33838 (not in monitored family) has exited
+05/25/20 13:08:52 : process 30084 (not in monitored family) has exited
+05/25/20 13:08:52 : process 30083 (not in monitored family) has exited
+05/25/20 13:08:52 : process 30025 (not in monitored family) has exited
+05/25/20 13:08:52 : process 29822 (not in monitored family) has exited
+05/25/20 13:08:52 : process 27551 (not in monitored family) has exited
+05/25/20 13:08:52 : process 27550 (not in monitored family) has exited
+05/25/20 13:08:52 : process 26499 (not in monitored family) has exited
+05/25/20 13:08:52 : process 26486 (not in monitored family) has exited
+05/25/20 13:08:52 : process 26475 (not in monitored family) has exited
+05/25/20 13:08:52 : process 23954 (not in monitored family) has exited
+05/25/20 13:08:52 : process 23514 (not in monitored family) has exited
+05/25/20 13:08:52 : process 14513 (not in monitored family) has exited
+05/25/20 13:08:52 : process 8986 (not in monitored family) has exited
+05/25/20 13:08:52 : process 6074 (not in monitored family) has exited
+05/25/20 13:08:52 : process 39638 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35432 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35428 (not in monitored family) has exited
+05/25/20 13:08:52 : process 34264 (not in monitored family) has exited
+05/25/20 13:08:52 : process 31116 (not in monitored family) has exited
+05/25/20 13:08:52 : process 30029 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28866 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28637 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28635 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28617 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28409 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28401 (not in monitored family) has exited
+05/25/20 13:08:52 : process 25784 (not in monitored family) has exited
+05/25/20 13:08:52 : process 18034 (not in monitored family) has exited
+05/25/20 13:08:52 : process 14261 (not in monitored family) has exited
+05/25/20 13:08:52 : process 40422 (not in monitored family) has exited
+05/25/20 13:08:52 : process 38442 (not in monitored family) has exited
+05/25/20 13:08:52 : process 32460 (not in monitored family) has exited
+05/25/20 13:08:52 : process 31748 (not in monitored family) has exited
+05/25/20 13:08:52 : process 31681 (not in monitored family) has exited
+05/25/20 13:08:52 : process 31659 (not in monitored family) has exited
+05/25/20 13:08:52 : process 31305 (not in monitored family) has exited
+05/25/20 13:08:52 : process 29299 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28850 (not in monitored family) has exited
+05/25/20 13:08:52 : process 25080 (not in monitored family) has exited
+05/25/20 13:08:52 : process 16266 (not in monitored family) has exited
+05/25/20 13:08:52 : process 11862 (not in monitored family) has exited
+05/25/20 13:08:52 : process 8875 (not in monitored family) has exited
+05/25/20 13:08:52 : process 8870 (not in monitored family) has exited
+05/25/20 13:08:52 : process 39122 (not in monitored family) has exited
+05/25/20 13:08:52 : process 34613 (not in monitored family) has exited
+05/25/20 13:08:52 : process 32183 (not in monitored family) has exited
+05/25/20 13:08:52 : process 23685 (not in monitored family) has exited
+05/25/20 13:08:52 : process 17347 (not in monitored family) has exited
+05/25/20 13:08:52 : process 38366 (not in monitored family) has exited
+05/25/20 13:08:52 : process 36396 (not in monitored family) has exited
+05/25/20 13:08:52 : process 36193 (not in monitored family) has exited
+05/25/20 13:08:52 : process 31670 (not in monitored family) has exited
+05/25/20 13:08:52 : process 27052 (not in monitored family) has exited
+05/25/20 13:08:52 : process 37700 (not in monitored family) has exited
+05/25/20 13:08:52 : process 29669 (not in monitored family) has exited
+05/25/20 13:08:52 : process 16923 (not in monitored family) has exited
+05/25/20 13:08:52 : process 18042 (not in monitored family) has exited
+05/25/20 13:08:52 : process 18041 (not in monitored family) has exited
+05/25/20 13:08:52 : process 34268 (not in monitored family) has exited
+05/25/20 13:08:52 : process 21696 (not in monitored family) has exited
+05/25/20 13:08:52 : process 18317 (not in monitored family) has exited
+05/25/20 13:08:52 : process 17867 (not in monitored family) has exited
+05/25/20 13:08:52 : process 17866 (not in monitored family) has exited
+05/25/20 13:08:52 : process 17863 (not in monitored family) has exited
+05/25/20 13:08:52 : process 36828 (not in monitored family) has exited
+05/25/20 13:08:52 : process 33042 (not in monitored family) has exited
+05/25/20 13:08:52 : process 32858 (not in monitored family) has exited
+05/25/20 13:08:52 : process 29813 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28277 (not in monitored family) has exited
+05/25/20 13:08:52 : process 5869 (not in monitored family) has exited
+05/25/20 13:08:52 : process 36179 (not in monitored family) has exited
+05/25/20 13:08:52 : process 24198 (not in monitored family) has exited
+05/25/20 13:08:52 : process 20924 (not in monitored family) has exited
+05/25/20 13:08:52 : process 13841 (not in monitored family) has exited
+05/25/20 13:08:52 : process 8133 (not in monitored family) has exited
+05/25/20 13:08:52 : process 26170 (not in monitored family) has exited
+05/25/20 13:08:52 : process 15767 (not in monitored family) has exited
+05/25/20 13:08:52 : process 12554 (not in monitored family) has exited
+05/25/20 13:08:52 : process 7495 (not in monitored family) has exited
+05/25/20 13:08:52 : process 11467 (not in monitored family) has exited
+05/25/20 13:08:52 : process 11464 (not in monitored family) has exited
+05/25/20 13:08:52 : process 8503 (not in monitored family) has exited
+05/25/20 13:08:52 : process 7037 (not in monitored family) has exited
+05/25/20 13:08:52 : process 33822 (not in monitored family) has exited
+05/25/20 13:08:52 : process 20776 (not in monitored family) has exited
+05/25/20 13:08:52 : process 16946 (not in monitored family) has exited
+05/25/20 13:08:52 : process 39117 (not in monitored family) has exited
+05/25/20 13:08:52 : process 32400 (not in monitored family) has exited
+05/25/20 13:08:52 : process 12013 (not in monitored family) has exited
+05/25/20 13:08:52 : process 14242 (not in monitored family) has exited
+05/25/20 13:08:52 : process 16824 (not in monitored family) has exited
+05/25/20 13:08:52 : process 8553 (not in monitored family) has exited
+05/25/20 13:08:52 : process 10411 (not in monitored family) has exited
+05/25/20 13:08:52 : process 36539 (not in monitored family) has exited
+05/25/20 13:08:52 : process 15656 (not in monitored family) has exited
+05/25/20 13:08:52 : process 40886 (not in monitored family) has exited
+05/25/20 13:08:52 : process 16133 (not in monitored family) has exited
+05/25/20 13:08:52 : process 24953 (not in monitored family) has exited
+05/25/20 13:08:52 : process 12390 (not in monitored family) has exited
+05/25/20 13:08:52 : process 16478 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35884 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35880 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35876 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35873 (not in monitored family) has exited
+05/25/20 13:08:52 : process 37409 (not in monitored family) has exited
+05/25/20 13:08:52 : process 12882 (not in monitored family) has exited
+05/25/20 13:08:52 : process 26782 (not in monitored family) has exited
+05/25/20 13:08:52 : process 35660 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28938 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28422 (not in monitored family) has exited
+05/25/20 13:08:52 : process 28420 (not in monitored family) has exited
+05/25/20 13:08:52 : process 9412 (not in monitored family) has exited
+05/25/20 13:08:52 : process 10564 (not in monitored family) has exited
+05/25/20 13:08:52 : method ENV: found family 6078 for process 5520
+05/25/20 13:08:52 : method ENV: found family 6078 for process 5732
+05/25/20 13:08:52 : method ENV: found family 6078 for process 5734
+05/25/20 13:08:52 : method PARENT: found family 6078 for process 5732 (already determined)
+05/25/20 13:08:52 : method PARENT: found family 6078 for process 5734 (already determined)
+05/25/20 13:08:52 : no methods have determined process 4615 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 4619 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5410 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5482 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5486 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5686 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5687 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5688 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5692 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5693 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5694 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5696 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5698 to be in a monitored family
+05/25/20 13:08:52 : no methods have determined process 5702 to be in a monitored family
+05/25/20 13:08:52 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_14@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:52 : watcher 23955 of family with root 25911 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 23955 has died; family removed
+05/25/20 13:08:52 : watcher 28462 of family with root 28593 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 28462 has died; family removed
+05/25/20 13:08:52 : watcher 31444 of family with root 31638 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 31444 has died; family removed
+05/25/20 13:08:52 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_26@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:52 : watcher 32860 of family with root 33884 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 32860 has died; family removed
+05/25/20 13:08:52 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_25@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:52 : watcher 11388 of family with root 12232 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 11388 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 2124 has died; family removed
+05/25/20 13:08:52 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_15@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:52 : watcher 29032 of family with root 29896 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 29032 has died; family removed
+05/25/20 13:08:52 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_8@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:52 : watcher 34251 of family with root 34556 has died; family removed
+05/25/20 13:08:52 : watcher 6078 of family with root 34251 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_27@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 17788 of family with root 18038 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 17788 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 4497 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_5@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 6639 of family with root 7188 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 6639 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_19@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 29142 of family with root 29656 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 29142 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_9@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 7815 of family with root 8324 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 7815 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_28@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 16503 of family with root 18168 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 16503 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_7@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 16236 of family with root 16767 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 16236 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_23@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 19809 of family with root 20342 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 19809 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_18@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 19796 of family with root 20335 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 19796 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_22@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 34049 of family with root 34394 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 34049 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_24@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 9209 of family with root 9338 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 9209 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_20@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 9208 of family with root 10048 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 9208 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_21@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 11779 of family with root 12142 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 11779 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_1@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 11774 of family with root 12143 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 11774 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_17@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 14291 of family with root 14492 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 14291 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_13@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 15646 of family with root 16071 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 15646 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_10@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 15580 of family with root 16034 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 15580 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_6@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 14809 of family with root 15083 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 14809 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_3@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 14740 of family with root 15030 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 14740 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_4@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 36600 of family with root 36644 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 36600 has died; family removed
+05/25/20 13:08:53 : Unable to completely remove cgroup htcondor/condor_var_lib_condor_execute_slot1_slot1_2@e0381.chtc.wisc.edu for. 50016 No such file or directory
+05/25/20 13:08:53 : watcher 25092 of family with root 12474 has died; family removed
+05/25/20 13:08:53 : watcher 6078 of family with root 25092 has died; family removed
+05/25/20 13:08:53 : watcher 11737 of family with root 6078 has died; family removed
+05/25/20 13:08:53 : watcher 11737 of family with root 6076 has died; family removed
+05/25/20 13:08:53 : ERROR: Watcher pid 11737 exited so procd is exiting. Bye.
+05/25/20 13:08:53 : ***********************************
+05/25/20 13:08:53 : * condor_procd STARTING UP
+05/25/20 13:08:53 : * PID = 5873
+05/25/20 13:08:53 : * UID = 0
+05/25/20 13:08:53 : * GID = 0
+05/25/20 13:08:53 : ***********************************
+05/25/20 13:08:53 : Procd has a watcher pid and will die if pid 11737 dies.
+05/25/20 13:08:53 : Initializing cgroup library.
+05/25/20 13:08:53 : taking a snapshot...
+05/25/20 13:08:53 : ProcAPI::getProcInfo() pid 5877 does not exist.
+05/25/20 13:08:53 : method PID: found family 11737 for process 11737
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5873
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6076
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6078
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6639
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7188
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7549
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7815
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8324
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8864
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9208
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9209
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9338
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 10048
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11293
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11388
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11774
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11779
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12142
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12143
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12232
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12391
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12835
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12843
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 13272
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14291
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14492
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14740
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14809
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15030
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15083
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15455
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15469
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15580
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15646
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16034
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16071
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16236
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16303
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16347
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16503
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16767
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 17788
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18038
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18168
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18765
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19796
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19809
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20260
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20335
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20342
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21246
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21349
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 23955
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25092
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25911
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28462
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28593
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29032
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29142
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29656
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29685
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29896
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 30922
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31444
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31617
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31638
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 32860
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 33884
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34049
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34251
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34394
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34556
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34566
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34976
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35446
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36600
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36644
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37160
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37161
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2124
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2497
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2744
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4497
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4734
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4765
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4835
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5520
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5732
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5734
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5873 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6076 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6078 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6639 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7188 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7549 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7815 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8071
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8324 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8864 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9208 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9209 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9338 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 10048 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11293 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11388 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11774 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11779 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12142 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12143 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12232 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12391 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12474
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12835 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12843 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 13272 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14291 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14492 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14740 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14809 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15030 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15083 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15455 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15469 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15580 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15646 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16034 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16071 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16236 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16303 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16347 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16503 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16767 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 17788 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18038 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18168 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18765 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19796 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19809 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20016
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20260 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20335 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20342 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21246 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21349 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 23955 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25092 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25911 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28462 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28593 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29032 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29142 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29656 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29685 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29896 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 30922 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31444 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31617 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31638 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 32860 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 33884 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34049 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34251 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34394 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34556 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34566 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34976 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35446 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36600 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36644 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37160 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37161 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 40021
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2124 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2497 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2744 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4497 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4734 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4765 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4835 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5520 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5732 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5734 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5873 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6076 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6078 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6639 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7188 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7549 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7815 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8071 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8324 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8864 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9208 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9209 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9338 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 10048 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11293 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11388 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11774 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11779 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12142 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12143 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12232 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12391 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12474 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12835 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12843 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 13272 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14291 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14492 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14740 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14809 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15030 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15083 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15455 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15469 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15580 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15646 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16034 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16071 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16236 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16303 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16347 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16503 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16767 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 17788 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18038 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18168 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18765 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19796 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19809 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20016 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20260 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20335 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20342 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21246 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21349 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 23955 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25092 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25911 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28462 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28593 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29032 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29142 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29656 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29685 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29896 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 30922 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31444 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31617 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31638 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 32860 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 33884 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34049 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34251 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34394 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34556 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34566 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34976 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35425
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35446 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35510
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35511
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35512
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35513
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35515
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35517
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35519
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35521
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35522
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35531
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35536
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35537
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36600 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36644 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37160 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37161 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 40021 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2124 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2497 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 2744 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4497 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4734 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4765 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 4835 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5520 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5732 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5734 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 5873 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6076 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6078 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 6639 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7188 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7549 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 7815 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8071 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8324 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 8864 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9208 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9209 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 9338 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 10048 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11293 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11388 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11774 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 11779 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12142 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12143 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12232 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12391 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12474 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12835 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 12843 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 13272 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14291 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14492 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14740 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 14809 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15030 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15083 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15455 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15469 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15580 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 15646 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16034 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16071 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16236 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16303 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16347 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16503 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 16767 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 17788 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18038 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18168 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 18765 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19796 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 19809 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20016 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20260 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20335 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 20342 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21246 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 21349 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 23955 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25092 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 25911 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28462 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 28593 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29032 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29142 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29656 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29685 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 29896 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 30922 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31444 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31617 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 31638 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 32860 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 33884 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34049 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34251 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34394 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34556 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34566 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 34976 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35425 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35446 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35510 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35511 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35512 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35513 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35515 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35517 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35519 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35521 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35522 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35531 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35536 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 35537 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36600 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 36644 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37160 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 37161 (already determined)
+05/25/20 13:08:53 : method PARENT: found family 11737 for process 40021 (already determined)
+05/25/20 13:08:53 : no methods have determined process 1 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 4 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 6 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 9 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 10 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 11 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 12 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 14 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 15 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 17 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 19 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 20 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 21 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 22 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 24 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 25 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 26 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 27 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 29 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 30 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 32 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 34 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 37 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 39 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 40 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 41 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 42 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 44 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 45 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 46 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 47 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 49 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 50 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 51 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 52 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 54 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 55 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 56 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 57 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 59 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 60 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 61 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 62 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 64 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 66 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 67 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 68 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 70 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 71 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 72 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 73 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 75 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 76 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 77 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 78 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 80 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 81 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 82 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 83 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 85 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 86 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 87 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 88 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 90 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 91 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 92 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 93 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 95 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 96 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 97 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 98 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 100 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 101 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 102 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 103 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 105 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 106 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 107 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 108 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 110 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 111 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 112 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 113 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 115 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 116 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 117 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 118 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 120 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 121 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 122 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 123 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 125 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 126 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 127 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 128 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 130 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 131 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 132 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 133 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 135 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 136 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 137 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 138 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 140 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 141 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 142 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 143 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 145 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 146 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 147 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 148 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 150 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 151 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 152 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 153 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 155 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 156 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 157 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 158 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 160 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 161 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 162 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 163 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 165 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 166 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 167 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 168 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 170 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 171 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 172 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 173 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 175 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 176 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 177 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 178 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 180 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 181 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 182 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 183 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 185 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 186 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 187 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 188 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 190 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 191 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 192 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 193 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 195 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 196 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 197 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 198 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 200 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 201 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 202 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 203 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 205 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 206 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 207 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 208 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 210 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 211 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 212 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 213 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 217 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 218 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 219 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 220 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 221 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 222 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 223 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 224 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 225 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 226 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 227 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 228 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 229 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 230 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 231 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 274 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 275 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 362 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 363 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 364 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 365 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 366 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 368 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 369 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 370 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 371 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 372 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 373 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 374 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 375 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 376 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 395 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 430 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 556 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 561 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 758 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 763 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 781 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 783 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 785 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 786 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 787 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 788 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 789 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 793 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 797 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 798 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 799 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 801 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 802 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 805 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 807 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 808 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 812 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 818 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 829 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 830 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 831 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 837 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 895 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 903 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 907 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 910 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 917 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 918 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 926 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 927 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 930 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 931 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 934 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 936 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 950 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 952 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 957 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 958 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 960 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 961 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 971 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 992 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1072 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1073 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1083 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1132 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1208 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1209 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1225 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1260 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1286 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1292 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1294 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1295 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1298 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1303 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1353 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1371 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1372 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1373 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1374 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1375 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1376 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1377 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1396 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1431 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1474 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1480 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1481 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1486 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1497 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1500 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1506 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1513 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1514 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1519 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1520 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1523 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1524 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1531 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1532 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1549 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1550 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1579 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1581 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1590 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1609 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1611 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1664 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1687 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1688 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1690 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1692 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1712 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1717 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 1730 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2114 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2220 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2221 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2225 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2260 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2262 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2267 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2268 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2274 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2290 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2380 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2423 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 2639 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3152 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3155 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3168 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3302 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3744 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3745 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3746 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3747 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3748 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3749 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3750 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3786 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3787 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 3946 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 4363 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 4615 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 4619 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 4911 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 4984 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5410 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5482 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5486 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5566 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5692 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5693 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5694 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5696 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5698 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5702 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5816 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5842 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5844 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5847 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 5869 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 6074 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 7037 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 7495 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 8133 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 8503 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 8553 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 8870 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 8875 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 8986 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 9412 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 10411 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 10564 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 11464 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 11467 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 11862 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 12013 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 12390 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 12554 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 12882 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 12905 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 13841 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 14242 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 14261 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 14513 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 15531 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 15656 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 15767 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16133 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16266 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16359 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16478 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16824 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16923 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 16946 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 17347 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 17863 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 17866 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 17867 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 18034 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 18041 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 18042 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 18317 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 20776 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 20924 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 21696 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 23514 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 23685 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 23954 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 24198 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 24953 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 25080 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 25784 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 26170 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 26475 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 26486 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 26499 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 26782 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 27052 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 27550 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 27551 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28277 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28401 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28409 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28420 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28422 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28617 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28635 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28637 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28850 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28866 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 28938 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 29299 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 29669 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 29813 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 29822 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 30025 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 30029 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 30083 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 30084 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31116 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31305 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31659 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31670 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31681 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 31748 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 32183 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 32400 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 32460 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 32858 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 33042 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 33822 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 33838 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 33840 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 34264 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 34268 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 34613 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35428 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35432 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35660 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35873 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35876 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35880 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 35884 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36004 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36179 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36193 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36396 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36539 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 36828 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 37409 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 37700 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 38366 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 38442 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 38668 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 38669 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 39117 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 39122 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 39638 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 40422 to be in a monitored family
+05/25/20 13:08:53 : no methods have determined process 40886 to be in a monitored family
+05/25/20 13:08:53 : ...snapshot complete
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 25911 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 33884 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 29896 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 16034 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 20342 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 12232 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 16071 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 16767 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 9338 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 12143 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 8324 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 34394 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 29656 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 18038 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 15030 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 10048 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 12142 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 20335 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 34556 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 15083 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 12474 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 18168 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 7188 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 36644 not found
+05/25/20 13:08:54 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:54 : get_family_usage failure: family with root 14492 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6070 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6071 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6072 does not exist.
+05/25/20 13:08:54 : process 5734 (of family 11737) has exited
+05/25/20 13:08:54 : process 5732 (of family 11737) has exited
+05/25/20 13:08:54 : process 5520 (of family 11737) has exited
+05/25/20 13:08:54 : process 5847 (not in monitored family) has exited
+05/25/20 13:08:54 : process 5844 (not in monitored family) has exited
+05/25/20 13:08:54 : process 5842 (not in monitored family) has exited
+05/25/20 13:08:54 : process 5694 (not in monitored family) has exited
+05/25/20 13:08:54 : process 5693 (not in monitored family) has exited
+05/25/20 13:08:54 : process 5692 (not in monitored family) has exited
+05/25/20 13:08:54 : no methods have determined process 6019 to be in a monitored family
+05/25/20 13:08:54 : no methods have determined process 6020 to be in a monitored family
+05/25/20 13:08:54 : no methods have determined process 6021 to be in a monitored family
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 29896 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6079 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6080 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6081 does not exist.
+05/25/20 13:08:54 : process 29896 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 8324 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6082 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6083 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6084 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 8324 does not exist.
+05/25/20 13:08:54 : process 8324 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 7188 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6089 does not exist.
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 18038 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6096 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6097 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 18038 does not exist.
+05/25/20 13:08:54 : process 18038 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 18168 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6104 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6105 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6106 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 18168 does not exist.
+05/25/20 13:08:54 : process 18168 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 9338 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6110 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6111 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 9338 does not exist.
+05/25/20 13:08:54 : process 9338 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 14492 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : process 14492 (of family 11737) has exited
+05/25/20 13:08:54 : GroupTracker (pid = 6119): fopen error: Failed to open file '/proc/6119/cgroup'. Error No such file or directory (2)
+05/25/20 13:08:54 : no methods have determined process 6119 to be in a monitored family
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 20342 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6019 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6020 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6021 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6123 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6124 does not exist.
+05/25/20 13:08:54 : process 20342 (of family 11737) has exited
+05/25/20 13:08:54 : process 6119 (not in monitored family) has exited
+05/25/20 13:08:54 : process 6021 (not in monitored family) has exited
+05/25/20 13:08:54 : process 6020 (not in monitored family) has exited
+05/25/20 13:08:54 : process 6019 (not in monitored family) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 10048 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6129 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6130 does not exist.
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 6131 does not exist.
+05/25/20 13:08:54 : process 10048 (of family 11737) has exited
+05/25/20 13:08:54 : no methods have determined process 6126 to be in a monitored family
+05/25/20 13:08:54 : no methods have determined process 6127 to be in a monitored family
+05/25/20 13:08:54 : no methods have determined process 6128 to be in a monitored family
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 20335 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 20335 does not exist.
+05/25/20 13:08:54 : process 20335 (of family 11737) has exited
+05/25/20 13:08:54 : no methods have determined process 6136 to be in a monitored family
+05/25/20 13:08:54 : no methods have determined process 6137 to be in a monitored family
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 36644 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : process 36644 (of family 11737) has exited
+05/25/20 13:08:54 : no methods have determined process 6138 to be in a monitored family
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 29896 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 8324 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 18038 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 18168 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 25911 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 16071 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : process 16071 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 16034 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 16034 does not exist.
+05/25/20 13:08:54 : process 16034 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 33884 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 12142 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : process 12142 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 12143 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : process 12143 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 12474 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ProcAPI::getProcInfo() pid 12474 does not exist.
+05/25/20 13:08:54 : process 12474 (of family 11737) has exited
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 9338 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 14492 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 20342 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:54 : ...snapshot complete
+05/25/20 13:08:54 : signal_family error: family with root 10048 not found
+05/25/20 13:08:54 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:54 : taking a snapshot...
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 20335 not found
+05/25/20 13:08:55 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:55 : taking a snapshot...
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 36644 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 29896 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 8324 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 18038 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 18168 not found
+05/25/20 13:08:55 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:55 : taking a snapshot...
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 16071 not found
+05/25/20 13:08:55 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:55 : taking a snapshot...
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 16034 not found
+05/25/20 13:08:55 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:55 : taking a snapshot...
+05/25/20 13:08:55 : method PARENT: found family 11737 for process 6140
+05/25/20 13:08:55 : method PARENT: found family 11737 for process 6140 (already determined)
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 12142 not found
+05/25/20 13:08:55 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:55 : taking a snapshot...
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 12143 not found
+05/25/20 13:08:55 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:55 : taking a snapshot...
+05/25/20 13:08:55 : ...snapshot complete
+05/25/20 13:08:55 : signal_family error: family with root 12474 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 9338 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 14492 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 20342 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 10048 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 20335 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 36644 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 16071 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 16034 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 12142 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 12143 not found
+05/25/20 13:08:55 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:55 : get_family_usage failure: family with root 12474 not found
+05/25/20 13:08:56 : PROC_FAMILY_GET_USAGE
+05/25/20 13:08:56 : get_family_usage failure: family with root 11774 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : process 6140 (of family 11737) has exited
+05/25/20 13:08:56 : process 16303 (of family 11737) has exited
+05/25/20 13:08:56 : process 6138 (not in monitored family) has exited
+05/25/20 13:08:56 : process 6137 (not in monitored family) has exited
+05/25/20 13:08:56 : process 6136 (not in monitored family) has exited
+05/25/20 13:08:56 : process 5696 (not in monitored family) has exited
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6153
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6155
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6156
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6157
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6163
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6153 (already determined)
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6155 (already determined)
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6156 (already determined)
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6157 (already determined)
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6163 (already determined)
+05/25/20 13:08:56 : no methods have determined process 6159 to be in a monitored family
+05/25/20 13:08:56 : no methods have determined process 6160 to be in a monitored family
+05/25/20 13:08:56 : no methods have determined process 6161 to be in a monitored family
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 15083 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6164
+05/25/20 13:08:56 : method PARENT: found family 11737 for process 6164 (already determined)
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 34556 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 12232 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 15030 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 29656 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 34394 not found
+05/25/20 13:08:56 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:56 : taking a snapshot...
+05/25/20 13:08:56 : ...snapshot complete
+05/25/20 13:08:56 : signal_family error: family with root 16767 not found
+05/25/20 13:08:57 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:57 : taking a snapshot...
+05/25/20 13:08:57 : process 6156 (of family 11737) has exited
+05/25/20 13:08:57 : process 6155 (of family 11737) has exited
+05/25/20 13:08:57 : process 6153 (of family 11737) has exited
+05/25/20 13:08:57 : process 16347 (of family 11737) has exited
+05/25/20 13:08:57 : process 16359 (not in monitored family) has exited
+05/25/20 13:08:57 : method PARENT: found family 11737 for process 6194
+05/25/20 13:08:57 : method PARENT: found family 11737 for process 6194 (already determined)
+05/25/20 13:08:57 : no methods have determined process 6190 to be in a monitored family
+05/25/20 13:08:57 : no methods have determined process 6195 to be in a monitored family
+05/25/20 13:08:57 : ...snapshot complete
+05/25/20 13:08:57 : signal_family error: family with root 4734 not found
+05/25/20 13:08:57 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:08:57 : taking a snapshot...
+05/25/20 13:08:57 : ...snapshot complete
+05/25/20 13:08:57 : signal_family error: family with root 2497 not found
+05/25/20 13:09:03 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:09:03 : taking a snapshot...
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 7815 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 9208 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 9209 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 11774 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 11779 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 16503 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 17788 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 19796 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 19809 does not exist.
+05/25/20 13:09:03 : ProcAPI::getProcInfo() pid 29032 does not exist.
+05/25/20 13:09:03 : process 6194 (of family 11737) has exited
+05/25/20 13:09:03 : process 6157 (of family 11737) has exited
+05/25/20 13:09:03 : process 36600 (of family 11737) has exited
+05/25/20 13:09:03 : process 29032 (of family 11737) has exited
+05/25/20 13:09:03 : process 25092 (of family 11737) has exited
+05/25/20 13:09:03 : process 19809 (of family 11737) has exited
+05/25/20 13:09:03 : process 19796 (of family 11737) has exited
+05/25/20 13:09:03 : process 17788 (of family 11737) has exited
+05/25/20 13:09:03 : process 16503 (of family 11737) has exited
+05/25/20 13:09:03 : process 15646 (of family 11737) has exited
+05/25/20 13:09:03 : process 15580 (of family 11737) has exited
+05/25/20 13:09:03 : process 14291 (of family 11737) has exited
+05/25/20 13:09:03 : process 12843 (of family 11737) has exited
+05/25/20 13:09:03 : process 12835 (of family 11737) has exited
+05/25/20 13:09:03 : process 11779 (of family 11737) has exited
+05/25/20 13:09:03 : process 11774 (of family 11737) has exited
+05/25/20 13:09:03 : process 9209 (of family 11737) has exited
+05/25/20 13:09:03 : process 9208 (of family 11737) has exited
+05/25/20 13:09:03 : process 7815 (of family 11737) has exited
+05/25/20 13:09:03 : process 6078 (of family 11737) has exited
+05/25/20 13:09:03 : process 6161 (not in monitored family) has exited
+05/25/20 13:09:03 : process 6160 (not in monitored family) has exited
+05/25/20 13:09:03 : process 6159 (not in monitored family) has exited
+05/25/20 13:09:03 : process 6128 (not in monitored family) has exited
+05/25/20 13:09:03 : process 6127 (not in monitored family) has exited
+05/25/20 13:09:03 : process 6126 (not in monitored family) has exited
+05/25/20 13:09:03 : process 35432 (not in monitored family) has exited
+05/25/20 13:09:03 : process 35428 (not in monitored family) has exited
+05/25/20 13:09:03 : process 31681 (not in monitored family) has exited
+05/25/20 13:09:03 : process 31659 (not in monitored family) has exited
+05/25/20 13:09:03 : process 28637 (not in monitored family) has exited
+05/25/20 13:09:03 : process 28617 (not in monitored family) has exited
+05/25/20 13:09:03 : process 12905 (not in monitored family) has exited
+05/25/20 13:09:03 : process 561 (not in monitored family) has exited
+05/25/20 13:09:03 : process 556 (not in monitored family) has exited
+05/25/20 13:09:03 : no methods have determined process 6227 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6230 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6251 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6254 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6270 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6273 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6274 to be in a monitored family
+05/25/20 13:09:03 : no methods have determined process 6305 to be in a monitored family
+05/25/20 13:09:03 : ...snapshot complete
+05/25/20 13:09:03 : signal_family error: family with root 6078 not found
+05/25/20 13:09:04 : PROC_FAMILY_UNREGISTER_FAMILY
+05/25/20 13:09:04 : unregister_subfamily failure: family with root 6078 not found
+05/25/20 13:09:05 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:09:05 : taking a snapshot...
+05/25/20 13:09:05 : process 6164 (of family 11737) has exited
+05/25/20 13:09:05 : process 6163 (of family 11737) has exited
+05/25/20 13:09:05 : process 31638 (of family 11737) has exited
+05/25/20 13:09:05 : process 6274 (not in monitored family) has exited
+05/25/20 13:09:05 : process 6270 (not in monitored family) has exited
+05/25/20 13:09:05 : no methods have determined process 6347 to be in a monitored family
+05/25/20 13:09:05 : no methods have determined process 6348 to be in a monitored family
+05/25/20 13:09:05 : no methods have determined process 6349 to be in a monitored family
+05/25/20 13:09:05 : ...snapshot complete
+05/25/20 13:09:05 : signal_family error: family with root 31638 not found
+05/25/20 13:09:05 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:05 : get_family_usage failure: family with root 31638 not found
+05/25/20 13:09:07 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:09:07 : taking a snapshot...
+05/25/20 13:09:07 : process 35510 (of family 11737) has exited
+05/25/20 13:09:07 : process 28593 (of family 11737) has exited
+05/25/20 13:09:07 : method PARENT: found family 11737 for process 6391
+05/25/20 13:09:07 : method PARENT: found family 11737 for process 6391 (already determined)
+05/25/20 13:09:07 : ...snapshot complete
+05/25/20 13:09:07 : signal_family error: family with root 28593 not found
+05/25/20 13:09:07 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:07 : get_family_usage failure: family with root 28593 not found
+05/25/20 13:09:14 : PROC_FAMILY_REGISTER_SUBFAMILY
+05/25/20 13:09:14 : taking a snapshot...
+05/25/20 13:09:14 : process 6391 (of family 11737) has exited
+05/25/20 13:09:14 : process 35537 (of family 11737) has exited
+05/25/20 13:09:14 : process 35536 (of family 11737) has exited
+05/25/20 13:09:14 : process 35531 (of family 11737) has exited
+05/25/20 13:09:14 : process 35522 (of family 11737) has exited
+05/25/20 13:09:14 : process 35521 (of family 11737) has exited
+05/25/20 13:09:14 : process 35519 (of family 11737) has exited
+05/25/20 13:09:14 : process 35517 (of family 11737) has exited
+05/25/20 13:09:14 : process 35515 (of family 11737) has exited
+05/25/20 13:09:14 : process 35513 (of family 11737) has exited
+05/25/20 13:09:14 : process 35512 (of family 11737) has exited
+05/25/20 13:09:14 : process 35511 (of family 11737) has exited
+05/25/20 13:09:14 : process 35425 (of family 11737) has exited
+05/25/20 13:09:14 : process 40021 (of family 11737) has exited
+05/25/20 13:09:14 : process 31444 (of family 11737) has exited
+05/25/20 13:09:14 : process 28462 (of family 11737) has exited
+05/25/20 13:09:14 : method PARENT: found family 11737 for process 6514
+05/25/20 13:09:14 : method PARENT: found family 11737 for process 6514 (already determined)
+05/25/20 13:09:14 : ...snapshot complete
+05/25/20 13:09:14 : moving process 6514 into new subfamily 6514
+05/25/20 13:09:14 : new subfamily registered: root = 6514, watcher = 11737
+05/25/20 13:09:14 : PROC_FAMILY_TRACK_FAMILY_VIA_ENVIRONMENT
+05/25/20 13:09:27 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:09:27 : taking a snapshot...
+05/25/20 13:09:27 : process 15455 (of family 11737) has exited
+05/25/20 13:09:27 : process 15030 (of family 11737) has exited
+05/25/20 13:09:27 : process 1083 (not in monitored family) has exited
+05/25/20 13:09:27 : method ENV: found family 6514 for process 7082
+05/25/20 13:09:27 : method PARENT: found family 6514 for process 7082 (already determined)
+05/25/20 13:09:27 : no methods have determined process 7054 to be in a monitored family
+05/25/20 13:09:27 : ...snapshot complete
+05/25/20 13:09:27 : signal_family error: family with root 15030 not found
+05/25/20 13:09:27 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:27 : get_family_usage failure: family with root 15030 not found
+05/25/20 13:09:28 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:28 : get_family_usage failure: family with root 25911 not found
+05/25/20 13:09:28 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:09:28 : taking a snapshot...
+05/25/20 13:09:28 : process 15469 (of family 11737) has exited
+05/25/20 13:09:28 : process 15083 (of family 11737) has exited
+05/25/20 13:09:28 : process 14740 (of family 11737) has exited
+05/25/20 13:09:28 : process 7082 (of family 6514) has exited
+05/25/20 13:09:28 : method ENV: found family 6514 for process 7092
+05/25/20 13:09:28 : method PARENT: found family 6514 for process 7092 (already determined)
+05/25/20 13:09:28 : ...snapshot complete
+05/25/20 13:09:28 : signal_family error: family with root 15083 not found
+05/25/20 13:09:28 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:28 : get_family_usage failure: family with root 15083 not found
+05/25/20 13:09:29 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:29 : get_family_usage failure: family with root 25911 not found
+05/25/20 13:09:34 : PROC_FAMILY_KILL_FAMILY
+05/25/20 13:09:34 : taking a snapshot...
+05/25/20 13:09:34 : process 31617 (of family 11737) has exited
+05/25/20 13:09:34 : process 25911 (of family 11737) has exited
+05/25/20 13:09:34 : process 14809 (of family 11737) has exited
+05/25/20 13:09:34 : process 7092 (of family 6514) has exited
+05/25/20 13:09:34 : process 30029 (not in monitored family) has exited
+05/25/20 13:09:34 : process 28635 (not in monitored family) has exited
+05/25/20 13:09:34 : process 20776 (not in monitored family) has exited
+05/25/20 13:09:34 : process 15531 (not in monitored family) has exited
+05/25/20 13:09:34 : method ENV: found family 6514 for process 7113
+05/25/20 13:09:34 : method PARENT: found family 6514 for process 7113 (already determined)
+05/25/20 13:09:34 : no methods have determined process 7117 to be in a monitored family
+05/25/20 13:09:34 : ...snapshot complete
+05/25/20 13:09:34 : signal_family error: family with root 25911 not found
+05/25/20 13:09:34 : PROC_FAMILY_GET_USAGE
+05/25/20 13:09:34 : get_family_usage failure: family with root 25911 not found
+05/25/20 13:09:54 : taking a snapshot...
+05/25/20 13:09:54 : ProcAPI: new boottime = 1586904784; old_boottime = 1586904784; /proc/stat boottime = 1586904784; /proc/uptime boottime = 1586904784
+05/25/20 13:09:54 : process 23955 (of family 11737) has exited
+05/25/20 13:09:54 : process 7113 (of family 6514) has exited
+05/25/20 13:09:54 : method ENV: found family 6514 for process 7686
+05/25/20 13:09:54 : method ENV: found family 6514 for process 7718
+05/25/20 13:09:54 : method PARENT: found family 6514 for process 7686 (already determined)
+05/25/20 13:09:54 : method PARENT: found family 6514 for process 7718 (already determined)
+05/25/20 13:09:54 : no methods have determined process 7646 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8382 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8384 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8388 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8469 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8474 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8489 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8490 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8518 to be in a monitored family
+05/25/20 13:09:54 : no methods have determined process 8557 to be in a monitored family
+05/25/20 13:09:54 : ...snapshot complete
