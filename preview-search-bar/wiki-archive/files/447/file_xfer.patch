@@ -1,0 +1,41 @@
+diff --git a/src/condor_shadow.V6.1/pseudo_ops.cpp b/src/condor_shadow.V6.1/pseudo_ops.cpp
+index d84bf23..2d1fba3 100644
+--- a/src/condor_shadow.V6.1/pseudo_ops.cpp
++++ b/src/condor_shadow.V6.1/pseudo_ops.cpp
+@@ -105,7 +105,14 @@ pseudo_get_job_info(ClassAd *&ad)
+ 		// Since the shadow runs as the submitting user, we
+ 		// let the OS enforce permissions instead of relying on
+ 		// the pesky perm object to get it right.
+-	thisRemoteResource->filetrans.Init( the_ad, false, PRIV_USER, false );
++		//
++		// Tell the FileTransfer object to create a file catalog if
++		// the job's files are spooled. This prevents FileTransfer
++		// from listing unmodified input files as intermediate files
++		// that need to be transferred back from the starter.
++	int spool_time = 0;
++	the_ad->LookupInteger(ATTR_STAGE_IN_FINISH,spool_time);
++	thisRemoteResource->filetrans.Init( the_ad, false, PRIV_USER, spool_time != 0 );
+ 
+ 	Shadow->publishShadowAttrs( the_ad );
+ 
+diff --git a/src/condor_shadow.V6.1/remoteresource.cpp b/src/condor_shadow.V6.1/remoteresource.cpp
+index 9618dc3..4d3ea28 100644
+--- a/src/condor_shadow.V6.1/remoteresource.cpp
++++ b/src/condor_shadow.V6.1/remoteresource.cpp
+@@ -1794,8 +1794,15 @@ RemoteResource::requestReconnect( void )
+ 		// FileTransfer server object right here.  No worries if
+ 		// one already exists, the FileTransfer object will just
+ 		// quickly and quietly return success in that case.
++		//
++		// Tell the FileTransfer object to create a file catalog if
++		// the job's files are spooled. This prevents FileTransfer
++		// from listing unmodified input files as intermediate files
++		// that need to be transferred back from the starter.
+ 	ASSERT(jobAd);
+-	filetrans.Init( jobAd, true, PRIV_USER, false );
++	int spool_time = 0;
++	jobAd->LookupInteger(ATTR_STAGE_IN_FINISH,spool_time);
++	filetrans.Init( jobAd, true, PRIV_USER, spool_time != 0 );
+ 	char* value = NULL;
+ 	jobAd->LookupString(ATTR_TRANSFER_KEY,&value);
+ 	if (value) {

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-20 21:43:27 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Chroot Jail For Cvstrac</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Chroot Jail For Cvstrac</h1>
+<div id="content">
+ <strong>
+  Launching CVSTrac Into A Chroot Jail
+ </strong>
+ <p>
+  CVSTrac will automatically put itself into a chroot jail if its
+first argument is
+  <em>
+   chroot
+  </em>
+  and it is started as root.  After the
+  <strong>
+   chroot
+  </strong>
+  argument, the next two arguments are the directory which
+should be the new root directory and the user that the program
+should run as after it is chrooted.  (CVSTrac always drops any superuser
+privileges before doing any real work, regardless of whether or not
+you use the
+  <strong>
+   chroot
+  </strong>
+  option.)  After the
+  <em>
+   chroot
+  </em>
+  argument and its
+two parameters, the usual
+  <strong>
+   cgi
+  </strong>
+  or
+  <strong>
+   http
+  </strong>
+  keyword and its arguments
+appear.
+ </p>
+ <p>
+  For the
+  <a class="external" href="http://cvs.hwaci.com:2080/cvstrac/">
+   http://cvs.hwaci.com:2080/cvstrac/
+  </a>
+  site, CVSTrac is run from
+inetd.  The inetd.conf configuration line looks like this:
+ </p>
+ <p>
+ </p>
+ <pre>  2080 steam tcp nowait.1000 root /usr/bin/cvstrac \
+       cvstrac chroot /home/cvs cvs http /
+</pre>
+ <p>
+  The three arguments
+  <strong>
+   chroot /home/cvs cvs
+  </strong>
+  tell the server to put
+itself into a chroot jail located at
+  <strong>
+   /home/cvs
+  </strong>
+  and drop superuser
+privilege and become user
+  <strong>
+   cvs
+  </strong>
+  before continuing.  The first three
+arguments are then removed and processing continues as if the
+command had been launched as
+ </p>
+ <p>
+ </p>
+ <pre>  cvstrac http /
+</pre>
+ <p>
+  Notice that the directory argument to the
+  <em>
+   http
+  </em>
+  directive, the argument
+that tells CVSTrac where to look for its database, is specified
+relative to the chroot jail, not to the regular filesystem.
+ </p>
+ <p>
+  <strong>
+   Configuring The Jail
+  </strong>
+ </p>
+ <p>
+  CVSTrac does a popen() of a few commands for some of its operations.
+It uses the following external programs:
+  <strong>
+   rlog rcsdiff co.
+  </strong>
+  The popen() procedure uses /bin/sh and rcsdiff uses diff.
+All of these external programs most be available inside the chroot
+jail.  In addition, CVSTrac needs to access a stripped-down version
+of /etc/passwd at one point.  It also needs access to the /tmp
+directory and to the special file /dev/null.  The /etc/localhost
+file is optional, but without it, all times are shown in UTC.
+ </p>
+ <p>
+  The following listing shows all the files and directories in the chroot jail
+for the canonical CVSTrac installation:
+ </p>
+ <p>
+ </p>
+ <pre>  bin
+  bin/sh
+  bin/bash
+  dev
+  dev/null
+  etc
+  etc/localtime
+  etc/passwd
+  lib
+  lib/libc.so.6
+  lib/ld-linux.so.2
+  lib/libtermcap.so.2
+  tmp
+  usr
+  usr/bin
+  usr/bin/rcsdiff
+  usr/bin/co
+  usr/bin/rlog
+  usr/bin/diff
+</pre>
+ <p>
+  A similar set of files will be required in any chroot jail for
+CVSTrac, though the details may vary.  For example, the required
+libraries might change.  Or you might use a different shell.
+(The bin/sh above is a hard link to bin/bash)
+ </p>
+ <p>
+  <strong>
+   Setup Changes
+  </strong>
+ </p>
+ <p>
+  After you get CVSTrac running inside a chroot jail, you'll need to log in
+as the "setup" user, go to the "setup" page, and change the path to the
+CVS repository and the log file so that they are relative to the chroot
+jail not the regular filesystem.  Other than that, though, no additional
+setup changes are required.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

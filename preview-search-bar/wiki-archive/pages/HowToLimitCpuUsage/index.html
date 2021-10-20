@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-20 21:43:27 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Limit Cpu Usage</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Limit Cpu Usage</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to limit CPU usage of jobs
+  </h2>
+ </span>
+ <p>
+  <em>
+   Known to work with HTCondor v8.2 and above
+  </em>
+ </p>
+ <p>
+  When you submit a job in HTCondor, users can specify
+  <code>
+   request_cpus
+  </code>
+  in the job submit description to the expected maximum number of CPU cores required by all the processes in the job. HTCondor will then schedule the job to run on an appropriately sized slot for your job that has at least as many cores as specified. This document describes three different strategies to configure HTCondor to prevent jobs from using more  CPU cores than specified in the slot.  Each strategy has its own set of pros and cons that are highlighted below.
+ </p>
+ <p>
+  The three strategies are:
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Use ASSIGN_CPU_AFFINITY
+  </li>
+  <li>
+   Use cgroups
+  </li>
+  <li>
+   Use startd policy expressions to monitor cores used, and place jobs on hold that use more cores than were requested/allocated.
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Option 1: ASSIGN_CPU_AFFINITY
+ </h3>
+ <p>
+  To enable, just put the following line in your condor_config file(s) on all your execute nodes
+ </p>
+ <div class="code">
+  <pre class="code">ASSIGN_CPU_AFFINITY = True
+</pre>
+ </div>
+ and then issue a condor_reconfig command.  HTCondor will then configure the kernel to prevent it from utilizing more core than
+your job than requested.  For instance, if your job is scheduled onto a one-core slot and starts up 50 threads, all 50 threads will timeshare upon one CPU core.
+ <p>
+  This requires that your execute node is running Linux and that you only have one condor_startd instance running per machine.  The condor_startd does not need to have root access.  One downside of this method is even if there is no contention for CPU cores on the server, the job cannot use more cores than specified in the Cpus attribute of the slot.  That is, on an eight core machine, with only a single, one-core slot running, and otherwise idle, the job running in the one slot could only consume one core.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Option 2: cgroups
+ </h3>
+ <p>
+  This configuration requires a relatively recent version of Linux (RHEL 6.5 or above), only works when the HTCondor daemons have been started as root, and requires there only be one condor_startd instance running per machine.
+ </p>
+ <p>
+  To use, configure cgroups as described in the manual in section "Cgroup-Based Process Tracking", in section 3.12:
+  <a class="external" href="http://research.cs.wisc.edu/htcondor/manual/current/3_12Setting_Up.html">
+   Cgroup-Based Process Tracking
+  </a>
+  . HTCondor will then configure the kernel to prevent it from utilizing more core than
+your job than requested.  However, unlike
+  <code>
+   ASSIGN_CPU_AFFINITY
+  </code>
+  above, this limit only applies when there is contention for the CPU. That is, on an eight core machine, with only a single, one-core slot running, and otherwise idle, the job running in the one slot could consume all eight CPU cores concurrently with this limit in play, if it is the only thing running. If, however, all eight slots had running jobs, with each configured for one CPU core, the core usage would be assigned equally to each job, regardless of the number of processes in each job.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Option 3: startd policy expressions
+ </h3>
+ <p>
+  This configuration works on any operating system (Linux, Windows, MacOS), does not require root/administrator access, and continues to work even if there is more than one startd running per machine (and thus is applicable in a glide-in scenario).
+Append the below into the condor_config file(s) on your execute machines to 1) advertise the number of CPU cores used by the job in the
+slot ad as attribute
+  <code>
+   CpusUsage
+  </code>
+  , and to 2) place jobs on hold that use more cores than requested.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">#
+# Publish the number of CPU cores being used by the job into
+# to slot ad as attribute "CpusUsage".  This value will
+# be the average number of cores used by the job over the
+# past minute, sampling every 5 seconds, and rounded to two digits (X.XX).
+#
+CpusUsage = ifthenelse( \
+   TotalLoadAvg &gt; 0.0 &amp;&amp; Activity!="Idle", \
+   int(CondorLoadAvg / TotalLoadAvg * \
+       ifthenelse(TotalLoadAvg &lt; $(DETECTED_CORES), TotalLoadAvg, $(DETECTED_CORES)) \
+       * 100) / 100.0, \
+    0)
+STARTD_EXPRS = $(STARTD_EXPRS) CpusUsage
+#
+# If the number of CPU cores used by the job exceeds the
+# number of cores requested by more than 0.8, put the
+# job on hold with a helpful message in job attribute "HoldReason",
+# and job attributes HoldReasonCode set to 21 and HoldReasonSubCode set to 1.
+# Note that to place the job on hold, we first eliminate any
+# retirement time and preempt the job.
+#
+CPU_EXCEEDED = (CpusUsage &gt; Cpus + 0.8)
+PREEMPT = ($(PREEMPT:False)) || $(CPU_EXCEEDED)
+MAXJOBRETIREMENTTIME = ifthenelse($(CPU_EXCEEDED),0,$(MAXJOBRETIREMENTTIME:0))
+WANT_SUSPEND = ($(WANT_SUSPEND:False)) &amp;&amp; $(CPU_EXCEEDED) =!= TRUE
+WANT_HOLD = ($(WANT_HOLD:False)) || $(CPU_EXCEEDED)
+WANT_HOLD_REASON = ifThenElse($(CPU_EXCEEDED), \
+     "cpu usage exceeded request_cpus",$(WANT_HOLD_REASON:UNDEFINED))
+WANT_HOLD_SUBCODE = ifThenElse($(CPU_EXCEEDED),1,$(WANT_HOLD_SUBCODE:UNDEFINED))
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

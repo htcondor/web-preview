@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-20 21:43:27 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Vmware In Out</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Vmware In Out</h1>
+<div id="content">
+ <strong class="two">
+  How to make VMware jobs run
+ </strong>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Have a script in the correct run level linked to one in /etc/init.d
+   which will do your job if it is present but allow the machine to come up
+   for adjustments if not. (sample scripts below)
+   <p>
+   </p>
+  </li>
+  <li>
+   Have a second disk configured in your VM which is used to place input data
+   and extract output data
+   <p>
+   </p>
+  </li>
+  <li>
+   Have patience as the job happens in a black box.
+  </li>
+ </ol>
+ <p>
+  In order for this all to work you must have a VM which is rich enough
+to have "mkfs" which has the "-t vfat" option to make a windows vat32 partition.
+ </p>
+ <p>
+  Given that you have such a second disk created. The trick now is to use
+a combination of gemu-img and mtools to build a disk you can mount from
+within the VM and based on it's contents, run the job or simply bring up
+the VM for inspection.
+ </p>
+ <p>
+  Qemu-img can be downloaded from "
+  <a class="external" href="http://www.qemu.org/download.html">
+   http://www.qemu.org/download.html
+  </a>
+  ".
+ </p>
+ <p>
+  Mtools can be downloaded from "
+  <a class="external" href="http://www.gnu.org/software/mtools/download.html">
+   http://www.gnu.org/software/mtools/download.html
+  </a>
+  ".
+ </p>
+ <p>
+  Once you have a
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/VmWare" title="Vm Ware">
+    VmWare
+   </a>
+  </span>
+  raw disk you can use mtools on it to add things to the disk or pull things from it. However note that every use of the disk makes it larger so you should retain a pristine copy of the original empty disk.
+ </p>
+ <p>
+  Mtools requires an rc file to define drives. A sample is here:
+ </p>
+ <p>
+  drive n: file="/home/bt/SOAR/sources/sscc_cbf/v1/code/DSLstata-0.raw" offset=32256 mtools_skip_check=1
+ </p>
+ <p>
+  One places such information into a file which you point to
+with the environment variable "MTOOLSRC".
+ </p>
+ <p>
+  When HTCondor completes a
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/VmWare" title="Vm Ware">
+    VmWare
+   </a>
+  </span>
+  job its returns all the files
+of the VM to the run directory allowing one to restart the VM and
+look inside.
+  <strong>
+   However if you use the procedures here, you will want to copy in an
+empty second disk or it will startup and run the job again
+or error as it did the last time depending where you
+are in creating your job within the VM.
+  </strong>
+ </p>
+ <p>
+  A simple submit file for HTCondor which has the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/VmWare" title="Vm Ware">
+    VmWare
+   </a>
+  </span>
+  files
+in a directory called vmware_dir looks like this and note that the
+executable is simply the name of the job that condor_q uses to
+display it in the queue:
+ </p>
+ <p>
+ </p>
+ <pre>  universe = vm
+  vm_type = vmware
+  vmware_dir = vmware_dir
+  executable = sscc_cbf_vm
+  log = sscc_cbf_vm.log
+  vmware_should_transfer_files = YES
+  vmware_snapshot_disk = false
+  vm_memory = 1000
+  notification = never
+  queue
+</pre>
+ <p>
+  Below are some Perl functions to use the above tools:
+ </p>
+ <p>
+ </p>
+ <pre>  #####################################################
+  #
+  #   VM Universe code for VmWare
+  #
+  #   Initializing the VM for a job and accessing the
+  #   results are done by including a suitable second
+  #   VmWare disk. This disk is created for dynamic
+  #   allocation and created in a VM which can use fdisk
+  #   to create a fat32 partition and must have an
+  #   mkfs which allows a "-t vfat" to complete creation
+  #   of the disk.
+  #
+  #   Once one has this disk it can be used as a template
+  #   second drive for any VmWare VM. Note keep the core
+  #   empty disk and copy it when needed as it gets
+  #   larger with every use.
+  #
+  #   We rely on "mtools" and "qemu" for the rest.
+  #   "qemu-img" is used to convert the disk back and forth
+  #   between vmdk and raw formats. "mcopy, mdir etc"
+  #   are used to place and fetch files off the raw
+  #   disk.
+  #
+  #####################################################
+</pre>
+ <p>
+ </p>
+ <pre>  sub VMwareAddFile
+  {
+      my $file = shift;
+      runcmd("mcopy $file n:");
+      runcmd("mdir n:");
+  }
+</pre>
+ <p>
+ </p>
+ <pre>  sub VMwareFetchByPattern
+  {
+      my $pattern = shift;
+      runcmd("mcopy n:\*$pattern* .");
+      runcmd("mdir n:");
+  }
+</pre>
+ <p>
+ </p>
+ <pre>  sub VMwareRemakeDataDisk
+  {
+      my $data = shift;
+      my $raw = shift;
+</pre>
+ <p>
+ </p>
+ <pre>      my $cmd = "qemu-img convert -f raw $raw -O vmdk $data";
+      runcmd($cmd);
+  }
+</pre>
+ <p>
+ </p>
+ <pre>  sub VMwareCreateRawDisk
+  {
+      my $empty = shift;
+      my $raw = shift;
+</pre>
+ <p>
+ </p>
+ <pre>      my $cmd = "qemu-img convert -f vmdk $empty -O raw $raw";
+      runcmd($cmd);
+  }
+</pre>
+ <p>
+ </p>
+ <pre>  sub VMwareCreateMTOOLSRC
+  {
+      my $rawdisk = shift;
+      my $top = getcwd();
+      my $baseentry = "drive n: file=\"$top/$rawdisk\" offset=32256 mtools_skip_check=1";
+      print "Making MTOOLSRC here&lt;$top&gt;\n";
+      open(MTRC,"&gt;$top/mtoolsrc") or die "Can not open mtoolsrc in &lt;$top&gt;:$!\n";
+      print MTRC "$baseentry\n";
+      close(MTRC);
+      $ENV{MTOOLSRC} = "$top/mtoolsrc";
+      runcmd("mdir n:");
+  }
+</pre>
+ <p>
+  Below is a suitable script for mounting a second disk at the right
+run level and deciding if a job should be run or the VM simply brought up for
+changes or inspection.
+ </p>
+ <p>
+ </p>
+ <pre>  #!/bin/sh
+</pre>
+ <p>
+ </p>
+ <pre>  PATH=/bin:/usr/bin:/sbin:/usr/sbin:/usr/local/stata
+</pre>
+ <p>
+ </p>
+ <pre>  case "$1" in
+    start)
+          echo "Testing VM Job Status"
+          mount /dev/hdb1 /vmjob
+          ls /vmjob
+          if test -f "/vmjob/statajob"
+          then
+                  /vmjob/runstatajob.pl /vmjob statajob
+                  shutdown -h now
+          else
+                  echo "Bring up for non-vm work"
+                  sleep 20
+          fi
+          echo "."
+          ;;
+  esac
+</pre>
+ <p>
+ </p>
+ <pre>  exit 0
+</pre>
+ <p>
+  Here is a perl script which mounts the second disk and looks
+for a file holding a list of Stata jobs to run.
+ </p>
+ <p>
+ </p>
+ <pre>  #!/usr/bin/env perl
+</pre>
+ <p>
+ </p>
+ <pre>  my $dir = $ARGV[0];
+  my $file = $ARGV[1];
+</pre>
+ <p>
+ </p>
+ <pre>  chdir("/vmjob");
+  my $dbinstalllog =  "stataVM.LOG";
+  print "Trying to open logfile... $dbinstalllog\n";
+  open(OLDOUT, "&gt;&amp;STDOUT");
+  open(OLDERR, "&gt;&amp;STDERR");
+  open(STDOUT, "&gt;&gt;$dbinstalllog") or die "Could not open $dbinstalllog: $!";
+  open(STDERR, "&gt;&amp;STDOUT");
+  select(STDERR);
+   $| = 1;
+  select(STDOUT);
+   $| = 1;
+</pre>
+ <p>
+ </p>
+ <pre>  print "runstatajob.pl called with dir&lt;$dir&gt; file&lt;$file&gt;\n";
+</pre>
+ <p>
+ </p>
+ <pre>  system("mkdir /tmp/vmjob");
+  system("cp * /tmp/vmjob");
+  #chdir($dir);
+  chdir("/tmp/vmjob");
+</pre>
+ <p>
+ </p>
+ <pre>  print "Lets look at disk availability\n";
+  system("pwd");
+  system("df -h");
+  system("ls -l");
+  system("which stata-se");
+  print "Do the following job:\n";
+  print "*****************************\n\n";
+  system("cat $file");
+  print "*****************************\n\n";
+</pre>
+ <p>
+ </p>
+ <pre>  # ado directory has to go in a stata "sysdir"
+  # one such location is /usr/local/stata
+</pre>
+ <p>
+ </p>
+ <pre>  # extract out ado.tar.gz
+  system("tar -zxvf ado.tar.gz");
+  system("chmod -R 777 ado");
+  system("cd ado");
+  system("mkdir /usr/local/ado");
+  # place in one of many sysdir directories
+  # visible by typing "sysdir" at the stata prompt
+  system("cp -r plus/* /usr/local/ado");
+  system("cp -r personal/* /usr/local/ado");
+  system("cd /tmp/vmjob");
+</pre>
+ <p>
+ </p>
+ <pre>  open(JOB,"&lt;$file") or die "Can not open &lt;$file&gt;:$!\n";
+  my $line = "";
+  while(&lt;JOB&gt;) {
+          chomp();
+          $line = $_;
+          print "Running stata on $line\n";
+          system("stata-se -b $line");
+          print "done\n";
+          system("ls");
+  }
+  close(JOB);
+  print "Copy results back to /vmjob\n";
+  system("cp *.log /vmjob");</pre>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
