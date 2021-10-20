@@ -1,0 +1,25 @@
+diff -rNup condor-7.4.4.orig/src/condor_negotiator.V6/matchmaker.cpp condor-7.4.4/src/condor_negotiator.V6/matchmaker.cpp
+--- condor-7.4.4.orig/src/condor_negotiator.V6/matchmaker.cpp	2011-06-13 13:38:24.000000000 -0400
++++ condor-7.4.4/src/condor_negotiator.V6/matchmaker.cpp	2011-06-13 13:43:16.000000000 -0400
+@@ -1189,7 +1188,12 @@ negotiationTime ()
+                         dprintf(D_ALWAYS, "Group %s - skipping, at or over quota (usage=%g)\n", group->name.c_str(), group->usage);
+                         continue;
+                     }
+-
++		    
++		    if (group->submitterAds->MyLength()==0) {
++                        dprintf(D_ALWAYS, "Group %s - skipping, no submitters (usage=%g)\n", group->name.c_str(), group->usage);
++                        continue;
++                    }
++		    
+                     dprintf(D_ALWAYS, "Group %s - BEGIN NEGOTIATION\n", group->name.c_str());
+ 
+                     double delta = max(0.0, group->allocated - group->usage);
+@@ -1989,6 +1993,7 @@ negotiateWithGroup ( int untrimmed_num_s
+ 		dprintf (D_FULLDEBUG, "    NormalFactor = %f\n", normalFactor);
+ 		dprintf (D_FULLDEBUG, "    MaxPrioValue = %f\n", maxPrioValue);
+ 		dprintf (D_FULLDEBUG, "    NumSubmitterAds = %d\n", scheddAds.MyLength());
++		dprintf (D_FULLDEBUG, "    NumSlotAds = %d\n", startdAds.MyLength());
+ 		scheddUsed=0;
+ 		scheddAds.Open();
+         // These are submitter ads, not the actual schedd daemon ads.
