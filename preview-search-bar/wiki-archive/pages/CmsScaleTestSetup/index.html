@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-20 20:53:54 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Cms Scale Test Setup</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Cms Scale Test Setup</h1>
+<div id="content">
+ As described in
+ <span class="ticket">
+  <a class="new" href="../../tickets/?ticket=4490" title="Implement CMS's global pool needs">
+   #4490
+  </a>
+ </span>
+ , CMS needs a wide-area glidein pool with 200,000 cores. We have a test setup that simulates a large pool to see how we can scale to that level. We use only a fraction of the normal hardware for execute nodes by running many startds per core and running sleeps jobs that don't consume CPU or memory.
+ <p>
+  This page documents both the HTCondor configuration (i.e. changes to the default RPM) as well as any Linux kernel parameter tuning required, divided into three sections: configs/tunings on the central manager, configs/tunings required on the submit nodes, and configs/tunings on the execute machines.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  StartD
+ </h3>
+ <div class="verbatim">
+  <pre>UPDATE_INTERVAL=$RANDOM_INTEGER(540, 740, 1)
+</pre>
+ </div>
+ <span class="subsection">
+  <h3>
+   Central Manager
+  </h3>
+ </span>
+ <p>
+  The central managers are running on HA mode, test-012.t2.ucsd.edu and e143.chtc.wisc.edu. They have 128GB of memory and 32cores. they have collectors trees with 200 child collectors.
+ </p>
+ <p>
+  Central Manager Configuration:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   System Configurations:
+   <div class="verbatim">
+    <pre>net.core.rmem_max = 10000000 (via sysctl)
+renice -5 main Collector Process
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   00_gwms_general.config
+   <div class="verbatim">
+    <pre>CONDOR_HOST=$(FULL_HOSTNAME)
+UID_DOMAIN=$(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN=$(FULL_HOSTNAME)
+LOCK = $(LOG)
+DAEMON_LIST   = MASTER
+SEC_DAEMON_SESSION_DURATION = 50000
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS,GSI
+SEC_READ_AUTHENTICATION    = OPTIONAL
+SEC_CLIENT_AUTHENTICATION  = OPTIONAL
+DENY_WRITE         = anonymous@*
+DENY_ADMINISTRATOR = anonymous@*
+DENY_DAEMON        = anonymous@*
+DENY_NEGOTIATOR    = anonymous@*
+DENY_CLIENT        = anonymous@*
+SEC_DEFAULT_ENCRYPTION = OPTIONAL
+SEC_DEFAULT_INTEGRITY = REQUIRED
+SEC_READ_INTEGRITY = OPTIONAL
+SEC_CLIENT_INTEGRITY = OPTIONAL
+SEC_READ_ENCRYPTION = OPTIONAL
+SEC_CLIENT_ENCRYPTION = OPTIONAL
+HOSTALLOW_WRITE = *
+ALLOW_WRITE = $(HOSTALLOW_WRITE)
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   01_gwms_collectors.config
+   <div class="verbatim">
+    <pre>COLLECTOR_NAME = frontend_service
+COLLECTOR_HOST = $(CONDOR_HOST)
+COLLECTOR.USE_VOMS_ATTRIBUTES = False
+COLLECTOR_MAX_FILE_DESCRIPTORS=80000
+SCHEDD_MAX_FILE_DESCRIPTORS = 80000
+SHARED_PORT_MAX_FILE_DESCRIPTORS = 80000
+DAEMON_LIST   = $(DAEMON_LIST),  COLLECTOR, NEGOTIATOR
+NEGOTIATOR_POST_JOB_RANK = MY.LastHeardFrom
+NEGOTIATOR_INTERVAL = 60
+NEGOTIATOR_MAX_TIME_PER_SUBMITTER=60
+NEGOTIATOR_MAX_TIME_PER_PIESPIN=20
+PREEMPTION_REQUIREMENTS = False
+NEGOTIATOR_INFORM_STARTD = False
+NEGOTIATOR.USE_VOMS_ATTRIBUTES = False
+NEGOTIATOR_CONSIDER_PREEMPTION = False
+CONDOR_VIEW_HOST = $(COLLECTOR_HOST)
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   03_gwms_local.config
+   <div class="verbatim">
+    <pre>GSI_DAEMON_TRUSTED_CA_DIR= /etc/grid-security/certificates
+GSI_DAEMON_CERT =  /etc/grid-security/hostcert.pem
+GSI_DAEMON_KEY  =  /etc/grid-security/hostkey.pem
+CERTIFICATE_MAPFILE= /etc/condor/certs/condor_mapfile
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   10_high_availability.config
+   <div class="verbatim">
+    <pre>CONDOR_HOST=
+CENTRAL_MANAGER1 = test-012.t2.ucsd.edu
+CENTRAL_MANAGER2 = e143.chtc.wisc.edu
+COLLECTOR_HOST = $(CENTRAL_MANAGER1),$(CENTRAL_MANAGER2)
+HAD_PORT = 51450
+HAD_ARGS = -p $(HAD_PORT)
+REPLICATION_PORT = 41450
+REPLICATION_ARGS = -p $(REPLICATION_PORT)
+REPLICATION_LIST = \
+                 $(CENTRAL_MANAGER1):$(REPLICATION_PORT), \
+                 $(CENTRAL_MANAGER2):$(REPLICATION_PORT)
+HAD_LIST = \
+         $(CENTRAL_MANAGER1):$(HAD_PORT), \
+         $(CENTRAL_MANAGER2):$(HAD_PORT)
+HAD_CONNECTION_TIMEOUT = 5
+HAD_USE_PRIMARY = true
+HAD         = $(SBIN)/condor_had
+REPLICATION = $(SBIN)/condor_replication
+TRANSFERER  = $(SBIN)/condor_transferd
+DAEMON_LIST = $(DAEMON_LIST), HAD, REPLICATION
+HAD_USE_REPLICATION = true
+STATE_FILE = $(SPOOL)/Accountantnew.log
+REPLICATION_INTERVAL = 300
+MAX_TRANSFERER_LIFETIME = 300
+HAD_UPDATE_INTERVAL = 300
+MASTER_NEGOTIATOR_CONTROLLER    = HAD
+MASTER_HAD_BACKOFF_CONSTANT     = 360
+MAX_HAD_LOG = 640000
+HAD_DEBUG = D_COMMAND
+HAD_LOG = $(LOG)/HADLog
+MAX_REPLICATION_LOG = 640000
+REPLICATION_DEBUG = D_COMMAND
+REPLICATION_LOG = $(LOG)/ReplicationLog
+MAX_TRANSFERER_LOG = 640000
+TRANSFERER_DEBUG = D_COMMAND
+TRANSFERER_LOG = $(LOG)/TransferLog
+HOSTALLOW_ADMINISTRATOR = $(COLLECTOR_HOST)
+HOSTALLOW_NEGOTIATOR = $(COLLECTOR_HOST)
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   11_gwms_secondary_collectors.config
+   <div class="verbatim">
+    <pre>COLLECTOR9620 = $(COLLECTOR)
+COLLECTOR9620_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector9620Log"
+COLLECTOR9620_ARGS = -f -p 9620
+DAEMON_LIST=$(DAEMON_LIST), COLLECTOR9620
+# Similar entry through port 9819
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   90_gwms_dns.config
+   <div class="verbatim">
+    <pre># Add certs to GSI_DAEMON_NAME with these subjects:
+# /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=...
+#   test-010.t2.ucsd.edu, test-008.t2.ucsd.edu, test-003.t2.ucsd.edu,
+#   pilot01/test-008.t2.ucsd.edu, gtesterpilot01/test-001.t2.ucsd.edu,
+#   test-009.t2.ucsd.edu, test-004.t2.ucsd.edu, test-005.t2.ucsd.edu,
+#   test-006.t2.ucsd.edu, test-007.t2.ucsd.edu, cmssrv240.fnal.gov,
+#   test-002.t2.ucsd.edu, cmssrv241.fnal.gov
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   96_scale_tweaks.config
+   <div class="verbatim">
+    <pre>COLLECTOR_QUERY_WORKERS=16
+CONDOR_VIEW_HOST = 127.0.0.1
+MAX_FILE_DESCRIPTORS=10512
+NEGOTIATOR_MAX_TIME_PER_SUBMITTER=600
+NEGOTIATOR_MAX_TIME_PER_PIESPIN=500
+NEGOTIATOR_TRIM_SHUTDOWN_THRESHOLD=300
+NEGOTIATOR_MAX_TIME_PER_CYCLE=1500
+CLASSAD_LIFETIME=2200
+</pre>
+   </div>
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Submit Machines
+ </h3>
+ <p>
+ </p>
+ <ul>
+  <li>
+   System Configurations:
+   <div class="verbatim">
+    <pre>kernel.pid_max=131072
+/proc/sys/net/core/somaxconn to 1024
+
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   00_gwms_general.config
+   <div class="verbatim">
+    <pre>CONDOR_HOST=$(FULL_HOSTNAME)
+UID_DOMAIN=$(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN=$(FULL_HOSTNAME)
+
+LOCK = $(LOG)
+
+DAEMON_LIST   = MASTER
+SEC_DAEMON_SESSION_DURATION = 50000
+
+SEC_DEFAULT_AUTHENTICATION = REQUIRED
+SEC_DEFAULT_AUTHENTICATION_METHODS = FS,GSI
+SEC_READ_AUTHENTICATION    = OPTIONAL
+SEC_CLIENT_AUTHENTICATION  = OPTIONAL
+DENY_WRITE         = anonymous@*
+DENY_ADMINISTRATOR = anonymous@*
+DENY_DAEMON        = anonymous@*
+DENY_NEGOTIATOR    = anonymous@*
+DENY_CLIENT        = anonymous@*
+
+SEC_DEFAULT_ENCRYPTION = OPTIONAL
+SEC_DEFAULT_INTEGRITY = REQUIRED
+SEC_READ_INTEGRITY = OPTIONAL
+SEC_CLIENT_INTEGRITY = OPTIONAL
+SEC_READ_ENCRYPTION = OPTIONAL
+SEC_CLIENT_ENCRYPTION = OPTIONAL
+
+HOSTALLOW_WRITE = *
+ALLOW_WRITE = $(HOSTALLOW_WRITE)
+</pre>
+   </div>
+  </li>
+  <li>
+   02_gwms_schedds.config
+   <div class="verbatim">
+    <pre>DAEMON_LIST   = $(DAEMON_LIST),  SCHEDD
+MAX_JOBS_RUNNING        = 30000
+JOB_START_DELAY = 2
+JOB_START_COUNT = 50
+JOB_STOP_DELAY = 1
+JOB_STOP_COUNT = 30
+
+MAX_CONCURRENT_UPLOADS = 100
+MAX_CONCURRENT_DOWNLOADS = 100
+
+APPEND_REQ_VANILLA = (Memory&gt;=1) &amp;&amp; (Disk&gt;=1)
+JOB_DEFAULT_REQUESTMEMORY=1024
+JOB_DEFAULT_REQUESTDISK=1
+MAXJOBRETIREMENTTIME = $(HOUR) * 24 * 7
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+SCHEDD_SEND_VACATE_VIA_TCP = True
+STARTD_SENDS_ALIVES = True
+ENABLE_USERLOG_FSYNC = False
+SHADOW.GLEXEC_STARTER = True
+SHADOW.GLEXEC = /bin/false
+MAX_SHADOW_LOG = 100000000
+SPOOL_DIR_STRING="$(SPOOL)"
+LOCAL_SCHEDD_DIR=/var/lib/condor
+SCHEDD_EXPRS = $(SCHEDD_EXPRS) SPOOL_DIR_STRING
+RESERVED_SWAP = 0
+SHADOW.USE_SHARED_PORT = True
+SCHEDD.USE_SHARED_PORT = True
+SHARED_PORT_MAX_WORKERS = 1000
+SHARED_PORT_ARGS = -p 9615
+DAEMON_LIST = $(DAEMON_LIST), SHARED_PORT
+JOB_Site               = "$$(GLIDEIN_Site:Unknown)"
+JOB_GLIDEIN_Entry_Name = "$$(GLIDEIN_Entry_Name:Unknown)"
+JOB_GLIDEIN_Name       = "$$(GLIDEIN_Name:Unknown)"
+JOB_GLIDEIN_Factory    = "$$(GLIDEIN_Factory:Unknown)"
+JOB_GLIDEIN_Schedd     = "$$(GLIDEIN_Schedd:Unknown)"
+JOB_GLIDEIN_ClusterId  = "$$(GLIDEIN_ClusterId:Unknown)"
+JOB_GLIDEIN_ProcId     = "$$(GLIDEIN_ProcId:Unknown)"
+JOB_GLIDEIN_Site       = "$$(GLIDEIN_Site:Unknown)"
+JOB_GLIDEIN_SiteWMS = "$$(GLIDEIN_SiteWMS:Unknown)"
+JOB_GLIDEIN_SiteWMS_Slot = "$$(GLIDEIN_SiteWMS_Slot:Unknown)"
+JOB_GLIDEIN_SiteWMS_JobId = "$$(GLIDEIN_SiteWMS_JobId:Unknown)"
+JOB_GLIDEIN_SiteWMS_Queue = "$$(GLIDEIN_SiteWMS_Queue:Unknown)"
+JOB_GLIDEIN_ATTRS = JOB_Site JOB_GLIDEIN_Entry_Name JOB_GLIDEIN_Name JOB_GLIDEIN_Factory JOB_GLIDEIN_Schedd JOB_GLIDEIN_ClusterId JOB_GLIDEIN_ProcId JOB_GLIDEIN_Site
+JOB_GLIDEIN_SITEWMS_ATTRS = JOB_GLIDEIN_SiteWMS JOB_GLIDEIN_SiteWMS_Slot JOB_GLIDEIN_SiteWMS_JobId JOB_GLIDEIN_SiteWMS_Queue
+JobAdInformationAttrs = $(JOB_GLIDEIN_ATTRS), $(JOB_GLIDEIN_SITEWMS_ATTRS)
+SUBMIT_EXPRS = $(SUBMIT_EXPRS) $(JOB_GLIDEIN_ATTRS) $(JOB_GLIDEIN_SITEWMS_ATTRS) JobAdInformationAttrs
+</pre>
+   </div>
+  </li>
+  <li>
+   03_gwms_local.config
+   <div class="verbatim">
+    <pre>GSI_DAEMON_TRUSTED_CA_DIR= /etc/grid-security/certificates
+
+GSI_DAEMON_CERT =  /etc/grid-security/hostcert.pem
+GSI_DAEMON_KEY  =  /etc/grid-security/hostkey.pem
+
+CERTIFICATE_MAPFILE= /etc/condor/certs/condor_mapfile
+</pre>
+   </div>
+  </li>
+  <li>
+   10_high_availability.config
+   <div class="verbatim">
+    <pre>CONDOR_HOST =
+
+CENTRAL_MANAGER1 = test-012.t2.ucsd.edu
+CENTRAL_MANAGER2 = e143.chtc.wisc.edu
+
+COLLECTOR_HOST = $(CENTRAL_MANAGER1),$(CENTRAL_MANAGER2)
+
+HOSTALLOW_ADMINISTRATOR = $(COLLECTOR_HOST)
+HOSTALLOW_NEGOTIATOR = $(COLLECTOR_HOST)
+</pre>
+   </div>
+  </li>
+  <li>
+   95_scalability_tweaks.config
+   <div class="verbatim">
+    <pre>MAX_DEFAULT_LOG = 100 Mb
+SHADOW_WORKLIFE = 24 * $(HOUR)
+SOCKET_LISTEN_BACKLOG = 1024
+SHADOW=$(SBIN)/condor_shadow_s
+
+CONDOR_Q_USE_V3_PROTOCOL = False
+</pre>
+   </div>
+  </li>
+ </ul>
+ <p>
+  These are the submit machines:
+ </p>
+ <ul>
+  <li>
+   e141.chtc.wisc.edu
+  </li>
+  <li>
+   e142.chtc.wisc.edu
+  </li>
+  <li>
+   test-003.t2.ucsd.edu
+  </li>
+  <li>
+   test-010.t2.ucsd.edu
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Execute Machines
+ </h3>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

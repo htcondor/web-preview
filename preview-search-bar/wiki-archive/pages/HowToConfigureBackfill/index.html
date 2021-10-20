@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-20 20:53:54 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Configure Backfill</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>How To Configure Backfill</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to configure backfill tasks such as BOINC using work fetch
+  </h2>
+ </span>
+ <p>
+  Should work in HTCondor version: 7.2
+ </p>
+ <p>
+  NOTE: This recipe doesn't work with partitionable slots. The BOINC client will happily run forever. We use machine RANK to preempt the BOINC jobs when more important jobs are available. Machine RANK doesn't work with partitionable slots as of HTCondor 8.0.
+ </p>
+ <p>
+  When HTCondor is not busy running jobs from users, you may want it to run some other backfill task. HTCondor provides special support for backfilling with BOINC. However, the built-in support assumes that BOINC can decide for itself how many tasks to run in order to fill the idle cpus on a multi-cpu/core machine. At this time (BOINC 6.4), there is no such capability in BOINC. Therefore, the built-in support for BOINC is only really capable of backfilling a single slot. (If you set it up, HTCondor may show multiple slots in the backfill state, but in fact only a single instance of BOINC will be running and it will be running a statically configured number of work units in parallel--typically just one.)
+ </p>
+ <p>
+  To get around that problem, there is a different way to configure HTCondor to run BOINC backfill (or any other type of backfill task). It uses the startd's fetch-work hook to run one instance of the backfill task per idle HTCondor slot. Here is an example configuration:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">BOINC_HOME = /opt/boinc
+# the following BOINC settings are used by the boinc fetch work hook
+BOINC_Executable = $(BOINC_HOME)/BOINC/boinc
+BOINC_InitialDir = $(BOINC_HOME)/var/slot$(BOINC_SLOT)
+BOINC_Owner = backfill
+BOINC_User = backfill@your.domain
+BOINC_Arguments = -no_gui_rpc -allow_multiple_clients -attach_project http://einstein.phys.uwm.edu &lt;insert_id&gt;
+BOINC_Output = $(BOINC_InitialDir)/boinc.out
+BOINC_Error = $(BOINC_InitialDir)/boinc.err
+BOINC_Requirements = \
+   RemoteUser =?= "$(BOINC_Owner)" || \
+   RemoteUser =?= "$(BOINC_User)" || \
+   (State == "Unclaimed" &amp;&amp; $(StateTimer) &gt; 1200)
+
+# configure the startd to run BOINC backfill jobs
+STARTD_JOB_HOOK_KEYWORD = BOINC
+BOINC_HOOK_FETCH_WORK = $(BOINC_HOME)/fetch_work_boinc
+RANK = $(RANK) - (Owner =?= "backfill")
+</pre>
+ </div>
+ <p>
+  The above example starts up BOINC after 20 minutes of the slot being unclaimed. (You will see an entry in the startd logs each time the startd calls out to the fetch-work script. The note says that the job requirements were not met whenever the above requirements expression is not true.)
+ </p>
+ <p>
+  The BOINC jobs will run as the backfill user. It assumes BOINC has been installed in /opt/boinc/BOINC and directories for each instance of BOINC have been created in /opt/boinc/var/slot1, slot2, etc. The slotX directories should be owned by the backfill user (or whatever user you have configured the slot to run as).
+ </p>
+ <p>
+  The fetch_work_boinc script can just be a shell script such as the following:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">#!/bin/sh
+
+# read the machine ClassAd and extract what we need
+# (set _CONDOR_BOINC_SLOT so that BOINC config variables can
+#  reference $(BOINC_SLOT))
+eval `awk '/^SlotID/ {print "export _CONDOR_BOINC_SLOT="$3}'`
+
+# load the following config variables from the HTCondor configuration
+BOINC_ConfigVars="
+BOINC_Executable
+BOINC_InitialDir
+BOINC_Owner
+BOINC_User
+BOINC_Arguments
+BOINC_Output
+BOINC_Error
+BOINC_Requirements
+"
+
+for var in ${BOINC_ConfigVars}; do
+  value=`condor_config_val $var`
+
+  # if anything is not defined, bail out
+  if [ "$?" != 0 ] || [ "$value" = "" ]; then
+    echo "Failed to look up $var in HTCondor configuration." 2&gt;&amp;1
+    exit 1
+  fi
+
+  eval $var=\'$value\'
+done
+
+
+# generate the BOINC job ClassAd
+echo "Cmd = \"${BOINC_Executable}\""
+echo "IWD = \"${BOINC_InitialDir}\""
+echo "Owner = \"${BOINC_Owner}\""
+echo "User = \"${BOINC_User}\""
+echo "JobUniverse = 5"
+echo "Arguments = \"${BOINC_Arguments}\""
+echo "Out = \"${BOINC_Output}\""
+echo "Err = \"${BOINC_Error}\""
+echo "NiceUser = true"
+echo "Requirements = ${BOINC_Requirements}"
+echo "MaxJobRetirementTime = 0"
+echo "JobLeaseDuration = 604800"
+echo "RequestCpus = 1"
+echo "RequestDisk = 512"
+echo "RequestMemory = 512"
+
+</pre>
+ </div>
+ <p>
+  Inside of each of the slot_X directories, you should create a file named global_prefs_override.xml. The contents of that file depend on the version of BOINC you are using. Here is an example for an 8-core machine running BOINC 6.2.15. You will at least need to adjust max_ncpus_pct so that the correct number of cpus per slot are consumed (typically you would have one cpu per slot).
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">&lt;global_preferences&gt;
+    &lt;max_ncpus_pct&gt;0.125&lt;/max_ncpus_pct&gt;
+    &lt;run_if_user_active&gt;1&lt;/run_if_user_active&gt;
+    &lt;disk_max_used_gb&gt;10&lt;/disk_max_used_gb&gt;
+    &lt;disk_max_used_pct&gt;50&lt;/disk_max_used_pct&gt;
+    &lt;disk_min_free_gb&gt;0.1&lt;/disk_min_free_gb&gt;
+    &lt;vm_max_used_pct&gt;75&lt;/vm_max_used_pct&gt;
+    &lt;ram_max_used_busy_pct&gt;50&lt;/ram_max_used_busy_pct&gt;
+    &lt;ram_max_used_idle_pct&gt;90&lt;/ram_max_used_idle_pct&gt;
+    &lt;cpu_usage_limit&gt;100&lt;/cpu_usage_limit&gt;
+&lt;/global_preferences&gt;
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  How to create static backfill slots that defer to a partitionable slot
+ </h2>
+ Currently workfetch does not work with partitionable slots, but you can still run backfill jobs on machines that are configured to use partitionable slots.  The way to do this is by creating a set of static slots that are configured to share the same resources as the partitionable slot, but to run jobs (or workfetch) only when the partitionable slot is not using the resouces.  The configuration looks like this
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># each backfill slot will have the following resources
+BackfillCpusPerSlot = 1
+BackfillMemoryPerSlot = 1000
+
+# First tell the startd we have double the amount of cpus and memory than we actually have
+# and advertise some additional information into the slots (such as the amount
+# of Cpus, Memory leftover in the pslot.
+#
+num_cpus = 2 * $(DETECTED_CPUS)
+memory = 2 * $(DETECTED_MEMORY)
+startd_attrs = $(startd_attrs) BackfillSlot preempt want_vacate
+startd_slot_attrs = $(startd_slot_attrs) Cpus Memory
+# Decrease startd polling internal so backfill jobs are killed quickly when
+# production jobs arrive.
+polling_interval = 2
+
+# Set up a pslot for the production jobs, adding a START requirement to
+# prohibit accepting backfill jobs.  If you already have a p-slot configuration
+# you only need to add the slot_type_1_start expression below. It prevents BOINC
+# workfetch jobs from starting on the p-slot.
+#
+slot_type_1_partitionable = true
+slot_type_1 = cpus=$(DETECTED_CPUS) memory=$(DETECTED_MEMORY) gpus=100% disk=50% swap=50%
+num_slots_type_1 = 1
+slot_type_1_BackfillSlot = False
+slot_type_1_start = $(START) &amp;&amp; (Owner != "$(BOINC_owner)")
+
+# don't run workfetch on slot_type_1
+slot_type_1_STARTD_JOB_HOOK_KEYWORD =
+
+#
+# Set up a set of static slots for backfill jobs.  The number of static slots
+# is determined by how many CPUs/Memory required per slot.  Set the START expression
+# to only accept backfill jobs, and only if the pslot has enough free resources.
+# Preempt backfill slots one at a time as unused resources in the pslot disappear.
+# Give this slots a custom name of "backfillX@foo", and a custom attribute of
+# BackfillSlot=True.  Disable vacate on these slots, so that jobs are immediately killed
+# upon preemption (we want the resources freed up asap for the production jobs).
+#
+NumBackfillSlots = min( { $(DETECTED_CPUS) / $(BackfillCpusPerSlot), $(DETECTED_MEMORY) / $(BackfillMemoryPerSlot) } )
+Backfill_Cpus_Exhausted = (slot1_Cpus / $(BackfillCpusPerSlot) &lt; (SlotID - 1))
+Backfill_Memory_Exhausted = (slot1_Memory / $(BackfillMemoryPerSlot) &lt; (SlotID- 1))
+Backfill_Resources_Exhausted = ( $(Backfill_Cpus_Exhausted) || $(Backfill_Memory_Exhausted) )
+slot_type_2_partitionable = false
+slot_type_2_name_prefix = backfill
+slot_type_2 = cpus=$(BackfillCpusPerSlot) memory=$(BackfillMemoryPerSlot), gpus=0
+num_slots_type_2 = $INT(NumBackfillSlots)
+slot_type_2_BackfillSlot = True
+slot_type_2_start = (Owner == "$(BOINC_owner)") &amp;&amp; ($(Backfill_Resources_Exhausted) == False)
+slot_type_2_preempt = $(Backfill_Resources_Exhausted)
+slot_type_2_want_vacate = False
+
+# check once a minute for "better" BOINC jobs or when idle
+slot_type_2_FetchWorkDelay = 60
+
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  How to submit backfill jobs as a user
+ </h2>
+ <p>
+  The previous example showed how to configure an execute node to generate its own low-priority tasks to backfill the time that is unused by jobs from users.  Another way to backfill the system is to simply submit jobs the usual way, but give them lower priority than all other jobs.  One convenient way to do this is to use the nice_user submit-file command.  This automatically reduces the priority of the job, but if you want the nice-user jobs to be preempted, be sure that your job management policy allows this.
+ </p>
+ <p>
+  Example submit file:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">executable = my_backfill_task
+nice_user = true
+on_exit_remove = false
+queue 1000
+</pre>
+ </div>
+ <p>
+  The above example creates 1000 low priority jobs.  If the jobs ever exit, they remain in the queue and will run again when they next get matched to a machine.
+ </p>
+ <p>
+  Example preemption policy that allows preemption of nice-user jobs:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">PREEMPTION_REQUIREMENTS = ($(PREEMPTION_REQUIREMENTS)) || TARGET.NiceUser =?= True
+</pre>
+ </div>
+ <p>
+  Check your RANK expression and make sure it never gives
+  <code>
+   NiceUser
+  </code>
+  jobs a higher rank than other jobs.  If all jobs have the same rank, that is fine.  You can just let ordinary user-priority preemption take place.  If some jobs have higher rank than others, then just make sure the expression does not grant
+  <code>
+   NiceUser
+  </code>
+  jobs a high rank.
+ </p>
+ <p>
+  Example RANK expression that gives some jobs a high rank but ensures that
+  <code>
+   NiceUser
+  </code>
+  jobs are excluded:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">RANK = (TARGET.NiceUser =!= True) * (TARGET.IsHighPrioJob =?= True) * 10
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

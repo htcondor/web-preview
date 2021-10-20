@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-20 20:53:54 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Experimental Support For Periodic Checkpointing In Vanilla Universe</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Experimental Support For Periodic Checkpointing In Vanilla Universe</h1>
+<div id="content">
+ <strong class="two">
+  This documentation is for EXPERIMENTAL features.
+ </strong>
+ <p>
+  <strong>
+   Both the feature and the documentation are subject to change without notice.
+  </strong>
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Introduction
+ </h2>
+ <p>
+  The vanilla universe can now periodically send a signal to the user process.  If the process exits successfully after receiving this signal, intermediate file transfer will occur, in order to ensure that progress to that point has been preserved.
+ </p>
+ <p>
+  Presently, "success" is defined to be "exit with code 0"; this will change in a future revision.
+ </p>
+ <p>
+  In 8.5.3 (and until 8.7.3), "success" will be defined by three job ad attributes:
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CheckpointExitBySignal" title="Checkpoint Exit By Signal">
+    CheckpointExitBySignal
+   </a>
+  </span>
+  ,
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CheckpointExitSignal" title="Checkpoint Exit Signal">
+    CheckpointExitSignal
+   </a>
+  </span>
+  , and
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CheckpointExitCode" title="Checkpoint Exit Code">
+    CheckpointExitCode
+   </a>
+  </span>
+  .  If the first is true, then "success" occurs when the process exits on signal
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CheckpointExitSignal" title="Checkpoint Exit Signal">
+    CheckpointExitSignal
+   </a>
+  </span>
+  .  Otherwise, "success" occurs when the process exits with code
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CheckpointExitCode" title="Checkpoint Exit Code">
+    CheckpointExitCode
+   </a>
+  </span>
+  .  (As this is an experimental feature, you'll need to prepend a '+' to each of the preceeding attributes when you use it in a submit file.)
+ </p>
+ <p>
+  In 8.7.3 (and later), "success" will be defined in the same way, but the name of the attributes change to
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/SuccessCheckpointExitBySignal" title="Success Checkpoint Exit By Signal">
+    SuccessCheckpointExitBySignal
+   </a>
+  </span>
+  ,
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/SuccessCheckpointExitSignal" title="Success Checkpoint Exit Signal">
+    SuccessCheckpointExitSignal
+   </a>
+  </span>
+  , and
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/SuccessCheckpointExitCode" title="Success Checkpoint Exit Code">
+    SuccessCheckpointExitCode
+   </a>
+  </span>
+  , respectively.  You will still need to prepend a '+'.
+ </p>
+ <p>
+  In 8.5.3, you may also set '+WantFTOnCheckpoint = TRUE'.  If during the course of normal execution the job exits with "success", as defined above, file transfer will occur as if the job is being evicted.
+ </p>
+ <p>
+  Presently, intermediate file transfer is defined to be identical to file transfer as if on an eviction, which means that specifying a transfer_output_files list that doesn't include the checkpoint files will break things (the job will restart from scratch if rescheduled on another machine).  This also implies that you'll only want to use this feature on a small scale for now -- the checkpoints (which may include the entire sandbox) are uploaded to the schedd's spool directory, which is probably space- and time- wise unwise.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Configuration
+ </h2>
+ <p>
+  Configure the startd for periodic checkpoints as normal for standard universe.
+ </p>
+ <p>
+  In the job ad, set '+WantCheckpointSignal = TRUE'.  You may also set '+CheckpointSig' to the signal you want sent.  The signal will otherwise default to the soft kill signal (which defaults to SIGTERM).
+ </p>
+ <p>
+  If you also want to checkpoint on eviction, set 'when_to_transfer_output = ON_EXIT_OR_EVICT' in the job ad.  You may also want to set 'kill_sig' to match '+CheckpointSig' (so that your job will receive its checkpoint signal, rather than its soft-kill signal (usually SIGTERM), when it's evicted).
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Random Thoughts
+ </h2>
+ <p>
+  The code currently doesn't update the job ad on a successful checkpoint; it also does not correctly tell the shadow (and therefore the schedd or job log) if the job successfully checkpointed (it will always say it didn't).
+ </p>
+ <p>
+  The remote usage accounting is probably entirely wrong.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
