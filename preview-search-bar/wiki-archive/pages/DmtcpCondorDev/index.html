@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-21 14:50:19 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Dmtcp Condor Dev</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Dmtcp Condor Dev</h1>
+<div id="content">
+ <ul>
+  <li>
+   User documentation:
+   <span class="wiki">
+    <a href="/web-preview/preview-search-bar/wiki-archive/pages/DmtcpCondor" title="Dmtcp Condor">
+     DmtcpCondor
+    </a>
+   </span>
+  </li>
+  <li>
+   <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/search?s=dmtcp&amp;t=1">
+    Tickets about DMTCP
+   </a>
+  </li>
+  <li>
+   Releases are now in /p/condor/public/binaries/contrib, named dmtcp_condor_integration-*-Any-Any.tar.gz where * is the version number.
+  </li>
+  <li>
+   The Git repository is in /p/condor/repository/dmtcp_condor.git/ and can be cloned with
+   <div class="code">
+    <pre class="code">git clone /p/condor/repository/dmtcp_condor.git/</pre>
+   </div>
+  </li>
+  <li>
+   When making a new release, you need to change the version number inside of shim_dmtcp.
+  </li>
+  <li>
+   DMTCP has a build option for HTCondor.  The normal behavior is to try and checkpoint sockets.  When built for HTCondor, DMTCP behaves like HTCondor's checkpointing support: attempts to checkpoint are delayed until all sockets are closed.
+  </li>
+  <li>
+   Some changes to shim_dmtcp come from Michael Hanke, the Debian maintainer for HTCondor (among other packages)
+  </li>
+ </ul>
+ <p>
+  Open tasks:
+ </p>
+ <ul>
+  <li>
+   How can we identify platforms that a checkpoint is compatible with?  Machine
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/ClassAd" title="Class Ad">
+     ClassAd
+    </a>
+   </span>
+   attributes of possible interest include
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/CheckpointPlatform" title="Checkpoint Platform">
+     CheckpointPlatform
+    </a>
+   </span>
+   and OSKernelRelease.
+  </li>
+  <li>
+   Should the signal to trap in shim_dmtcp should be overridable via a command line option?  Are there any circumstances in which we care?
+  </li>
+  <li>
+   The "normal" standard output and error should be from the real job, with outptu from shim_dmtcp and the related tools should go into a user-specified file.  At the moment the situation is backward.  Note that If shim_dmtcp utterly fails, it should report
+   <em>
+    something
+   </em>
+   to the main stderr.
+  </li>
+  <li>
+   At the moment the script just waits 3 seconds for dmtcp_command to finish whatever it was doing, be it checkpointing or terminating the running processes.  (This is the checkpoint function in shim_dmtcp, look for calls to delay.)  dmtcp_command returns immediately, but the actual work may take longer.  psilord feels 3 seconds is extremely reliable, but it's not guaranteed.  Ideal solution: see if dmtcp_command has a --block-until-work-is-really-done option.  If not, ask for one upstream.
+  </li>
+  <li>
+   shim_dmtcp line 217 "ckptsig=`${CONDOR_PATH}/bin/condor_status -l $host 2&gt;&amp;1"..., don't bother with egreping, just use -format!
+  </li>
+  <li>
+   shim_dmtcp line 280 "/bin/sleep 2" change to "delay 2"
+  </li>
+  <li>
+   The dmtcp_restart_script.sh symlink renaming code around line 252 in shim_dmtcp exists to work around perceived limitations in HTCondor. dmtcp_restart_script.sh is a symlink, and psilord thinks HTCondor does something terrible, like returning it as a 0-length file.  (A copy would be fine!) Verify claim.  If true, report bug to HTCondor.  If not true and hasn't been true for "a while", remove the code.
+  </li>
+  <li>
+   shim_dmtcp line 328, the "Close the gcb" section, is probably moot in the new GCB free world and can be deleted.
+  </li>
+  <li>
+   shim_dmtcp line 355 (logit "could not start dmtcp_coordinator"): should it "exit 1"?  Should we continue? What will happen?
+  </li>
+  <li>
+   shim_dmtcp line 350 (port=`${dmtcp_coordinator} --port 0 --exit-on-last --interval ${CKPTINT} --background 2&gt;&amp;1 | grep "Port:" | /bin/sed -e 's/Port://g' -e 's/[ \t]//g'`) - We just threw away potentially useful output from the dmtcp_coordinator!  Write output and error to a temporary file, grep the port out of that, dump contents of temporary file to stdout so we have it for debugging.  Also: ask upstream to add a --port-file option that will write the port and nothing else to a file, to simplify extracting it.
+  </li>
+  <li>
+   shim_dmtcp 377 (${dmtcp_checkpoint} --port $port -j "$@" &lt;$STDIN 1&gt;$STDOUT 2&gt;$STDERR &amp;) - Why background this?  psilord believes that it is necessary for our signal trap to work. Verify.  If true, add a comment noting that.
+  </li>
+  <li>
+   shim_dmtcp 383 (if [ $ret -gt 128 ] ; then) the purpose of this code block is not clear.  Something about handling the user executable exiting with a signal.  Needs investigation.
+   <p>
+   </p>
+  </li>
+  <li>
+   Improve output messages in shim_dmtcp:
+   <ul>
+    <li>
+     line 109 "echo "Terminating..." &gt;&amp;2".  Should clarify that it's an internal error, and that getopt failed
+    </li>
+    <li>
+     line 128 "*) echo "Internal error! ($1)"; exit 1;;" - Not an internal error; invalid usage/bad arguments.
+    </li>
+    <li>
+     line 133 "printf "Need at least one argument.\n\n"" - append ", the program to run."
+    </li>
+   </ul>
+  </li>
+  <li>
+   Comment typos
+   <ul>
+    <li>
+     shim_dmtcp line 195 "# Try to idenitify"..., spell identify.
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p>
+  General system:
+ </p>
+ <ul>
+  <li>
+   The user submits a job.  Notable changes to their submit file are:
+   <div class="code">
+    <pre class="code"># Submit the ship_dmtcp instead of their normal job.
+executable=shim_dmtcp
+
+# Those are IN ADDITION to the users "real" binary and input files!
+transfer_input_files = dmtcp_checkpoint,dmtcp_coordinator,\
+    dmtcp_command,dmtcp_restart,dmtcphijack.so,libmtcp.so,\
+    mtcp_restart
+
+# Argument  Meaning
+# --log     log file name for actions in shim_dmtcp script,
+#           if n/a use /dev/null
+# --stdin   stdin file, if n/a use /dev/null
+# --stdout  stdout file, if n/a use /dev/null
+# --stderr  stderr file, if n/a use /dev/null
+# --ckptint checkpointing interval in seconds
+# 1         the executable name you should have transferred in
+# 2+        arguments to the executable
+#
+# Note that stdout/stderr files are for output from the "real"
+# binaries.  The normal output/error will execlusively be
+# messages from shim_dmtcp and the DMTCP tools.
+arguments = --log shim_dmtcp.$(CLUSTER).$(PROCESS).log \
+    --stdin foo.py \
+    --stdout job.$(CLUSTER).$(PROCESS).out \
+    --stderr job.$(CLUSTER).$(PROCESS).err \
+    --ckptint 1800 \
+    ./REAL_BINARY example-argument-one example-argument-two
+
+
+# These are all required by DMTCP. JALIB is an internal DMTCP
+# library ("Jason's library").  If your jobs needs more
+# environment options set, just append them.
+environment=DMTCP_TMPDIR=./;JALIB_STDERR_PATH=/dev/null;\
+    DMTCP_PREFIX_ID=$(CLUSTER)_$(PROCESS)
+
+# On kill, tell our shim to checkpoint. You can change this, but will
+# need to change shim_dmtcp as well
+kill_sig = 2
+
+# If your pool isn't homogenous (nearly identical distributions
+# and updates), your checkpoints may not be portable.  The exact
+# options needed aren't yet knom, but these may work.  Note that
+# you'll need to identify the exact values yourself; these won't
+# work for you!
+Requirements = \
+    (CheckpointPlatform == "LINUX INTEL 2.6.x normal 0x40000000"\
+    &amp;&amp; OSKernelRelease == "2.6.18-128.el5")
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   The shim starts up the dmtcp_coordinator.  It is given instructions to checkpoint at regular intervals.
+  </li>
+  <li>
+   The shim starts up the user job, sneaking dmtcphijack.so into the runtime. (Probably using LD_PRELOAD?)
+  </li>
+  <li>
+   When restarting from a checkpoint, shim_dmtcp will notice the dmtcp_restart_script.sh created by DMTCP and will run that instead.
+  </li>
+ </ul>
+ <p>
+  Contents of the DMTCP HTCondor integration repository (and tarballs at the moment):
+ </p>
+ <ul>
+  <li>
+   <code>
+    shim_dmtcp
+   </code>
+   - The heart of our system. Submit this instead of your job, passing suitable options, to get checkpointing behavior.
+  </li>
+  <li>
+   <code>
+    job.sub
+   </code>
+   - Example submit file using shim_dmtcp; used as part of manual testing.
+  </li>
+  <li>
+   <code>
+    Makefile
+   </code>
+   - Really just for development use. Collects DMTCP files and builds/submits a little test program.  Note that the pay to mtcp_restart varies in different distributions.
+  </li>
+  <li>
+   testing and development tools
+   <ul>
+    <li>
+     <code>
+      foo.py
+     </code>
+     - Python script used for testing Python under DMTCP
+    </li>
+    <li>
+     <code>
+      foo.c
+     </code>
+     - C program used for testing Python under DMTCP
+    </li>
+   </ul>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

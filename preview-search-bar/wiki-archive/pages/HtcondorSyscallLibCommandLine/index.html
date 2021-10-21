@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-21 14:50:19 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Htcondor Syscall Lib Command Line</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Htcondor Syscall Lib Command Line</h1>
+<div id="content">
+ See also
+ <span class="wiki">
+  <a href="/web-preview/preview-search-bar/wiki-archive/pages/StandardUniverse" title="Standard Universe">
+   StandardUniverse
+  </a>
+ </span>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Usage
+ </h2>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Starting up
+ </h4>
+ <p>
+  Start your program like so:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">setarch x86_64 -L -B -R ./a.out -_condor_ckpt ckpt
+</pre>
+ </div>
+ <p>
+  Replace a.out with your program name.
+ </p>
+ <p>
+  Replace "x86_64" with "i386" if you're on a 32-bit system.  You may be able to omit the -B and associated 32-bit memory limit under unknown circumstances.  You can add arguments to the program itself before or after the arguments above.
+ </p>
+ <p>
+  Replace ckpt with the file name you want your checkpoint written into.  You can omit all of the arguments, in which case the checkpoint file is your program name with .ckpt appended.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Checkpointing
+ </h4>
+ <p>
+  To checkpoint and exit, send SIGTSTP.  To checkpoint and continue, send SIGUSR2.
+ </p>
+ <p>
+  Checkpoints should be atomic; they are written to ckpt.tmp and moved to ckpt upon completion.
+ </p>
+ <p>
+  When checkpointing and exiting, the process will exit with the signal SIGUSR2 (Not SIGTSTP, which is what you sent it!)
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Resuming a checkpoint
+ </h4>
+ <p>
+  To resume from a checkpoint, do this:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">setarch x86_64 -L -B -R ./a.out -_condor_restart ckpt -_condor_relocatable
+</pre>
+ </div>
+ <p>
+  This is the same command line as before, but -_condor_ckpt is now -_condor_restart and -_condor_relocatable has been added.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Checkpointing in HTCondor's vanilla universe
+ </h3>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Register a signal handler for SIGTERM; it should send SIGTSTP to the running "real" job.
+  </li>
+  <li>
+   Register a signal handler for SIGTSTP; it should send SIGTSTP to the running
+"real" job. (This will probably be unused, but is included to offer an option that is more similar to the standard universe.)
+  </li>
+  <li>
+   Register a signal handler for SIGUSR2; it should send SIGUSR2 to the running "real" job.  (As of July, 2012, this will never be used, but we anticipate adding support for periodic checkpoints in the vanilla universe.)
+  </li>
+  <li>
+   Is the checkpoint file ("my-real-job.ckpt") present?  Then the arguments are "-_condor_restart my-real-job.ckpt -_condor_relocatable".  Otherwise the arguments are "-_condor_ckpt my-real-job.ckpt".
+  </li>
+  <li>
+   Start your "real" job
+   <ul>
+    <li>
+     Start under setarch to disable address randomization and similar that HTCondor checkpointing cannot cope with.  The "-B" (limiting memory to 32 bit addresses) may not be necessary in all cases, but the specific circumstances are not known.  The
+     <em>
+      &lt;arguments&gt;
+     </em>
+     are as determined above.
+     <ul>
+      <li>
+       32-bit:  setarch i386 -L -B -R ./my-real-job
+       <em>
+        &lt;arguments&gt;
+       </em>
+      </li>
+      <li>
+       64-bit:  setarch x86_64 -L -B -R ./my-real-job
+       <em>
+        &lt;arguments&gt;
+       </em>
+      </li>
+     </ul>
+    </li>
+    <li>
+     Note the PID, for use in the signal handlers mentioned above.
+    </li>
+   </ul>
+  </li>
+  <li>
+   Wait for your "real" job to exit.
+   <ul>
+    <li>
+     If the job exited with SIGTSTP, then this is a checkpoint.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p>
+  In pseudocode:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># Terminal checkpoint:
+register signal SIGTERM handler:
+        kill -TSTP $PID
+
+# Terminal checkpoint:
+register signal SIGTSTP handler:
+        kill -TSTP $PID
+
+
+# Periodic checkpoint:
+register signal SIGUSR2 handler:
+        kill -USR2 $PID
+
+# Modern address randomization and related cause us grief. Disable.
+$ARCH = i386 (or x86_64)
+$COMPAT = setarch $ARCH -L -B -R
+
+if a CKPT_FILENAME is NOT present
+    $COMPAT ./$PROGRAM -_condor_ckpt $CKPT_FILENAME
+    note the $PID
+else
+    $COMPAT ./$PROGRAM -_condor_relocatable -_condor_restart $CKPT_FILENAME
+    note the $PID
+</pre>
+ </div>
+ <p>
+  Working Perl code: See
+  <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/attach_get/612/checkpoint-wrapper">
+   checkpoint-wrapper
+  </a>
+  , an attachment to this page.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Command line
+ </h2>
+ <p>
+  A program that has been condor_compiled takes additional command line options.  Generally speaking end users shouldn't need to know this; HTCondor will invoke them automatically.  But for testing or doing checkpointing without the standard universe, this might be useful.
+  <em>
+   These are officially undocumented and may change without warning!
+  </em>
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <strong>
+    -_condor_cmd_fd &lt;FD&gt;
+   </strong>
+   - File descriptor that the caller will stream a command file in on.  Also enables remote syscalls.  Used by the starter.  Incompatible with -_condor_cmd_file.
+  </li>
+  <li>
+   <strong>
+    -_condor_cmd_file &lt;filename&gt;
+   </strong>
+   - Identical to -_condor_cmd_fd, except that the command file is read from &lt;filename&gt; instead of an FD.  Incompatible with -_condor_cmd_fd.
+  </li>
+  <li>
+   <strong>
+    -_condor_debug_wait
+   </strong>
+   - Upon starting up, the process will enter an infinite loop, allowing you to attach to a debugger where you can break the loop.
+  </li>
+  <li>
+   <strong>
+    -_condor_nowarn
+   </strong>
+   - Disable notice messages. Obsolete, prefer "-_condor_warning UNSUP OFF"
+  </li>
+  <li>
+   <strong>
+    -_condor_warning &lt;kind&gt; &lt;mode&gt;
+   </strong>
+   - Set warning level.
+   <ul>
+    <li>
+     <em>
+      &lt;kind&gt;
+     </em>
+     can be: ALL, NOTICE, READWRITE, UNSUP, BADURL
+    </li>
+    <li>
+     <em>
+      &lt;mode&gt;
+     </em>
+     can be: ON, OFF, ONCE
+    </li>
+   </ul>
+  </li>
+  <li>
+   <strong>
+    -_condor_D_&lt;LEVEL&gt;
+   </strong>
+   - Add D_&lt;LEVEL&gt; to the debug levels being logged.  eg "-_condor_D_FULLDEBUG" turns on D_FULLDEBUG.
+  </li>
+  <li>
+   <strong>
+    -_condor_ckpt &lt;filename&gt;
+   </strong>
+   - File to checkpoint into.
+  </li>
+  <li>
+   <strong>
+    -_condor_restart &lt;filename&gt;
+   </strong>
+   - Restart from the checkpoint &lt;filename&gt;.  Implies "-_condor_ckpt &lt;filename&gt;".  For safety and clarity, specify -_condor_ckpt
+   <em>
+    or
+   </em>
+   -_condor_retart, not both.  If you specify both, the &lt;filename&gt; specified in the last one will be used for both.
+  </li>
+  <li>
+   <strong>
+    -_condor_aggravate_bugs
+   </strong>
+   - Engage in behavior that should be safe, but will likely tickle bugs in the checkpointing code.  At the moment the code avoids assigning virtual FDs between 2 and 32 inclusive in an attempt to ensure that the virtual FDs and the real FDs aren't the same, revealing bugs where the wrong one is used.
+  </li>
+  <li>
+   <strong>
+    -_condor_relocatable
+   </strong>
+   - Allow the working directory to change on restart, instead of forcing it to be the same as when last checkpointed.
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Command file
+ </h2>
+ <p>
+  You can pass a command file in through a file descriptor (-_condor_cmd_fd) or a file (-_condor_cmd_file).  The command file can set several options, and also enables remote syscalls simply by being specified.
+ </p>
+ <p>
+  Commands in the file are one per line.  The recognized commands are
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <strong>
+    iwd &lt;pathname&gt;
+   </strong>
+   - Change working directory to &lt;pathname&gt;.  This is intended to get the process into the working directory specified in the user's job description file.
+  </li>
+  <li>
+   <strong>
+    fd &lt;n&gt; &lt;pathname&gt; &lt;open_mode&gt;
+   </strong>
+   - Open the file &lt;pathname&gt; with the mode &lt;open_mode&gt;.  Set things up (using dup2()), so that the file is available at file descriptor number &lt;n&gt;.  This is intended for redirection of the standard files 0, 1, and 2.
+  </li>
+  <li>
+   <strong>
+    ckpt &lt;pathname&gt;
+   </strong>
+   - The process should write its state information to the file &lt;pathname&gt; so that it can be restarted at a later time.  We don't actually do a checkpoint here, we just set things up so that when we checkpoint, the given file name will be used.  The actual checkpoint is triggered by recipt of the signal SIGTSTP, or by the user code calling the ckpt() routine.
+  </li>
+  <li>
+   <strong>
+    restart &lt;pathname&gt;
+   </strong>
+   - The process should read its state information from the file &lt;pathname&gt; and do a restart.  (In this case, main() will not get called, as we are jumping back to wherever the process left off at checkpoint time.)
+  </li>
+  <li>
+   <strong>
+    migrate_to &lt;host_name&gt; &lt;port_number&gt;
+   </strong>
+   - A process on host &lt;host_name&gt; is listening at &lt;port_number&gt; for a TCP connection.  This process should connect to the given port, and write its state information onto the TCP connection exactly as it would for a ckpt command.  It is intended that the other process is running the same a.out file that this process is, and will use the state information to effect a restart on the new machine (a migration).
+  </li>
+  <li>
+   <strong>
+    migrate_from &lt;fd&gt;
+   </strong>
+   - This process's parent (the condor_starter) has passed it an open file descriptor &lt;fd&gt; which is in reality a TCP socket.  The remote process will write its state information onto the TCP socket, which this process will use to effect a restart.  Since the restart is on a different machine, this is a migration.
+  </li>
+  <li>
+   <strong>
+    exit &lt;status&gt;
+   </strong>
+   - The process should exit now with status &lt;status&gt;.  This is intended to be issued after a "ckpt" or "migrate_to" command.  We don't want to assume that the process should always exit after one of these commands because we want the flexibility to create interim checkpoints.  (It's not clear why we would want to want to send a copy of a process to another machine and continue running on the current machine, but we have that flexibility too if we want it...)
+  </li>
+  <li>
+   <strong>
+    end
+   </strong>
+   - We are temporarily at the end of commands.  Now it is time to call main() or effect the restart as requested.  Note that the process should not close the file descriptor at this point.  Instead a signal handler will be set up to handle the signal SIGTSTP.  The signal handler will invoke the command stream interpreter again.  This is done so that the condor_starter can send a "ckpt" or a "migrate_to" command to the process after it has been running for some time.  In the case of the "ckpt" command the name of the file could have been known in advance, but in the case of the "migrate_to" command the name and port number of the remote host are presumably not known until the migration becomes necessary.
+  </li>
+ </ul>
+ <h3>
+  Attachments:
+ </h3>
+ <blockquote>
+  <ul>
+   <li>
+    <a href="attach_get/654/checkpoint-wrapper">
+     checkpoint-wrapper
+    </a>
+    4994 bytes added by adesmet on 2012-Nov-16 20:01:39 UTC.
+    <br/>
+    Perl implementation of wrapper implementing Condor Syscall library checkpointing in the vanilla universe.
+    <br/>
+   </li>
+  </ul>
+ </blockquote>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

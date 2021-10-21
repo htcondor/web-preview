@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="date" content="2021-10-21 14:50:19 +0000" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-search-bar/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-search-bar/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-search-bar/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-search-bar/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-search-bar/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-search-bar/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Autoclusting And Significant Attributes</title>
+
+    <script src="/web-preview/preview-search-bar/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-search-bar/assets/js/bootstrap.js" type="text/javascript"></script>
+    <script src="/web-preview/preview-search-bar/assets/js/lunr.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/search_bar.js" type="text/javascript" async></script>
+    <script src="/web-preview/preview-search-bar/assets/js/default.js" type="text/javascript" defer></script>
+
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-search-bar/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-search-bar/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-search-bar/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-search-bar/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                            <li class="nav-item">
+                                <div id="main-search-bar" class="search-bar">
+                                    <input type="text" class="form-control" placeholder="Loading..." aria-describedby="button-addon2">
+                                    <div class="results-dropdown" class="results-dropdown w-100">
+                                        <div class="search-results" ></div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Autoclusting And Significant Attributes</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Autoclustering: SIGNIFICANT_ATTRIBUTES and Automatic Significant Attributes
+  </h2>
+ </span>
+ <p>
+  The following is old documentation for the
+  <em>
+   SIGNIFICANT_ATTRIBUTES
+  </em>
+  ("SA")
+setting in HTCondor.  It's here for two reasons.  1. Some customers are using
+SA, and you might need to deal with their RUST.  2. The automatic SA
+detection (appearing in 6.7.15) basically does this automatically, so this
+is a good introduction to the general principles. 3. If the automatic SA
+generation fails, you might need to call back on explicit SA.
+ </p>
+ <p>
+  When attempting to match jobs, the negotiator basically asks the schedd,
+"Let me see the next job", repeating until the schedd says, "No more jobs".
+As an optimization, prior to SA if the negotiator could not match a given
+job, the schedd would not return any more processes in that given cluster
+for the current negotiation cycle.  So if 12.4 failed to match, the schedd
+would simply not type to match 12.5, 12.6 and so on.  The theory is that
+other procs in the same cluster likely have similar attributes and
+Requirements, so if one fails to match the others likely will fail to match
+as well, so why bother the negotiator with them?
+ </p>
+ <p>
+  Problem 1: Sometimes different procs in a cluster had different
+attributes.  For example, 12.4 might fail to match because it's run (and
+was interrupted) once and has generated a monstrous
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/ImageSize" title="Image Size">
+    ImageSize
+   </a>
+  </span>
+  .  Problem 2:
+Identical jobs in different clusters would never be optimized this way.
+ </p>
+ <p>
+  Solution: Autoclustering.  Automatically create clusters of jobs that
+are "identical" for purposes of matchmaking. The initial implementation was
+  <em>
+   SIGNIFICANT_ATTRIBUTES
+  </em>
+  , in which the administrator had to identify
+which attributes of a job were important for deciding that two jobs were,
+for matchmaking purposes, identical.
+ </p>
+ <p>
+  The remainder of this document is heavily based on the original rough
+documentation given to users of
+  <em>
+   SIGNIFICANT_ATTRIBUTES
+  </em>
+  .  There is
+some out of date information, but the core design remains accurate.
+ </p>
+ <p>
+  <em>
+   SIGNIFICANT_ATTRIBUTES
+  </em>
+  is a list of attributes from a schedd's
+job ads that define different jobs to use in negotiation. The
+schedd maintains a list of "autoclusters", and then tries to put
+each job into one of those autoclusters. For each job, it looks
+at the values of the attributes listed in
+  <em>
+   SIGNFICANT_ATTRIBUTES
+  </em>
+  .
+If all of those values match those of an existing autocluster, it
+adds the job to an existing autocluster. If not, it creates a new
+autocluster for that tuple of values.
+ </p>
+ <p>
+  To get the pre 6.7.15 behavior, just set
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">SIGNIFICANT_ATTRIBUTES = ClusterId</pre>
+ </div>
+ <p>
+  To make significant attributes useful, use the following formula:
+ </p>
+ <p>
+  1. Collect all
+  <em>
+   START
+  </em>
+  expressions from the pool. Find all job
+attributes that the
+  <em>
+   START
+  </em>
+  expression references. ie:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">Start = ((TARGET.ImageSize &lt;= ((My.Memory - 15) * 1024))
+
+SIG_ATTRS_FROM_STARTD = ImageSize
+</pre>
+ </div>
+ <p>
+  2. Now add anything from the job ad referenced by the Central
+Manager's
+  <em>
+   PreemptionRequirements
+  </em>
+  .
+ </p>
+ <p>
+  (
+  <em>
+   MY
+  </em>
+  in
+  <em>
+   preemption_requirements
+  </em>
+  is the startd ad of the machine
+we're considering for preemption,
+  <em>
+   Target
+  </em>
+  is the job ad of that
+we're considering putting on the machine. Anything you want from
+the job that's currently running on the machine you have to
+export into the machine ad with
+  <em>
+   STARTD_JOB_EXPRS
+  </em>
+  )
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">Preemption_Requirements = (MY.ResearchGroupOfMachine == Target.ResGroupOfJob)
+
+SIG_ATTRS_FROM_PREEMPTION = ResGroupOfJob
+</pre>
+ </div>
+ <p>
+  3. At the schedd, we're always going to want to have jobs with
+different requirements be part of different
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/AutoClusters" title="Auto Clusters">
+    AutoClusters
+   </a>
+  </span>
+  .  (The
+schedd may do this automatically in the future.)
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">SIG_ATTRS_OBVIOUSLY_NEEDED = Requirements
+</pre>
+ </div>
+ <p>
+  4. Now, find all references in the requirements of the job ads
+for other things in the job ad, so two jobs that have the
+  <em>
+   same
+expression
+  </em>
+  for requirements but
+  <em>
+   different values
+  </em>
+  for that
+expression get placed in different autoclusters:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">Requirements = (Target.HasSwapCkpt == TRUE &amp;&amp; (TARGET.Arch == "INTEL") \
+    &amp;&amp; (TARGET.OpSys == "LINUX") &amp;&amp; (TARGET.Disk &gt;= MY.DiskUsage)
+
+SIG_ATTRS_FROM_REQUIREMENTS = DiskUsage
+</pre>
+ </div>
+ <p>
+  We're now ready to create the list of significant attributes for the
+schedd:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">SIGNIFICANT_ATTRIBUTES = $(SIG_ATTRS_FROM_STARTD),\
+                         $(SIG_ATTRS_FROM_PREEMPTION), \
+                         $(SIG_ATTRS_OBVIOUSLY_NEEDED), \
+                         $(SIG_ATTRS_FROM_REQUIREMENTS)
+</pre>
+ </div>
+ <p>
+  Note, if you make your significant attributes too restrictive
+(you cluster jobs in ways that don't actually matter), you'll end
+up with extra negotiation.  This is harmless, but reduces the
+benefits of
+  <em>
+   SIGNIFICANT_ATTRIBUTES
+  </em>
+  .   "
+  <em>
+   SIGNIFICANT_ATTRIBUTES =
+ClusterId
+  </em>
+  " is the extreme version of this.
+ </p>
+ <p>
+  If your significant attributes are too loose (you cluster
+dissimilar jobs), HTCondor may skip over jobs that can in fact be
+run.  If you follow the system above, you shouldn't run into
+this.
+ </p>
+ <p>
+  Given the above, note that putting certain things in your
+  <em>
+   SIGNIFICANT_ATTRIBUTES
+  </em>
+  will lead to worst case behavior: every
+single job gets its own cluster and zero optimization is performed.  This
+includes any unique or highly individual attribute.  Things
+that probably never belong in SA include
+  <em>
+   QDate,
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-search-bar/wiki-archive/pages/ClusterId" title="Cluster Id">
+     ClusterId
+    </a>
+   </span>
+   , and
+ProcId
+  </em>
+  .  Note that the automatical significant attribute finder in
+6.7.15 will happily mark these as significant if they are present in the
+expressions above.  Thus, avoid putting unique or highly unique things in
+your machine expressions and the like.  For example, giving startds a
+"
+  <em>
+   RANK=2000000000-QDate
+  </em>
+  " to try and prioritize older jobs will
+cause worst case behavior.  It will work correctly, but slowly.
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
