@@ -1,0 +1,61 @@
+From 5bf07b8754cb8ca3ea27019eb647c02f0c161e42 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Wed, 10 Oct 2012 20:22:34 -0500
+Subject: [PATCH] Remove safefile configure script - replace with a few magic
+ lines of cmake. #3264
+
+---
+ build/cmake/CondorConfigure.cmake |  5 +++++
+ src/safefile/CMakeLists.txt       | 20 --------------------
+ 2 files changed, 5 insertions(+), 20 deletions(-)
+
+diff --git a/build/cmake/CondorConfigure.cmake b/build/cmake/CondorConfigure.cmake
+index cbd7555..1c168a6 100644
+--- a/build/cmake/CondorConfigure.cmake
++++ b/build/cmake/CondorConfigure.cmake
+@@ -626,6 +626,11 @@ configure_file(${CONDOR_SOURCE_DIR}/src/condor_includes/config.h.cmake ${CMAKE_C
+ exec_program ( ${CMAKE_COMMAND} ARGS -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/src/condor_includes/config.tmp ${CMAKE_CURRENT_BINARY_DIR}/src/condor_includes/config.h )
+ add_definitions(-DHAVE_CONFIG_H)
+ 
++# We could run the safefile configure script each time with cmake - or we could just fix the one usage of configure.
++execute_process( COMMAND sed "s|#undef id_t|#cmakedefine ID_T\\n#if !defined(ID_T)\\n#define id_t uid_t\\n#endif|" ${CONDOR_SOURCE_DIR}/src/safefile/safe_id_range_list.h.in OUTPUT_FILE ${CMAKE_CURRENT_BINARY_DIR}/src/safefile/safe_id_range_list.h.in.tmp  )
++configure_file( ${CONDOR_BINARY_DIR}/src/safefile/safe_id_range_list.h.in.tmp ${CMAKE_CURRENT_BINARY_DIR}/src/safefile/safe_id_range_list.h.tmp_out)
++exec_program ( ${CMAKE_COMMAND} ARGS -E copy_if_different ${CMAKE_CURRENT_BINARY_DIR}/src/safefile/safe_id_range_list.h.tmp_out ${CMAKE_CURRENT_BINARY_DIR}/src/safefile/safe_id_range_list.h )
++
+ ###########################################
+ # include and link locations
+ include_directories( ${CONDOR_EXTERNAL_INCLUDE_DIRS} )
+diff --git a/src/safefile/CMakeLists.txt b/src/safefile/CMakeLists.txt
+index f3cdc14..ee3d5ab 100644
+--- a/src/safefile/CMakeLists.txt
++++ b/src/safefile/CMakeLists.txt
+@@ -19,26 +19,6 @@ if(WINDOWS)
+ 	file(GLOB SAFE_OPEN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/safe_open.* ${CMAKE_CURRENT_SOURCE_DIR}/safe_fopen.*)
+ else()
+ 	file(GLOB SAFE_OPEN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/safe_open.* ${CMAKE_CURRENT_SOURCE_DIR}/safe_fopen.* ${CMAKE_CURRENT_SOURCE_DIR}/safe_is_path_trusted.* ${CMAKE_CURRENT_SOURCE_DIR}/safe_id_range_list.c ${CMAKE_CURRENT_BINARY_DIR}/safe_id_range_list.h)
+-	
+-#	add_custom_command( OUTPUT config.h safe_id_range_list.h
+-#						WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+-#						COMMAND ${CMAKE_CURRENT_SOURCE_DIR}/configure
+-#						ARGS --srcdir=${CMAKE_CURRENT_SOURCE_DIR}
+-#						COMMAND rm
+-#						ARGS -f ${CMAKE_CURRENT_BINARY_DIR}/config.h
+-#						)
+-#	add_custom_target(  configure_safefile
+-#						ALL
+-#						DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/safe_id_range_list.h
+-#						)
+-
+-	exec_program(${CMAKE_CURRENT_SOURCE_DIR}/configure ${CMAKE_CURRENT_BINARY_DIR}
+-               ARGS --srcdir=${CMAKE_CURRENT_SOURCE_DIR} && rm -f ${CMAKE_CURRENT_BINARY_DIR}/config.h 
+-			   RETURN_VALUE retval)
+-	if (retval)
+-		message(FATAL_ERROR "Running configure in safefile library failed")
+-	endif(retval)
+-
+ endif()
+ set(SAFE_OPEN_SRC ${SAFE_OPEN_SRC} PARENT_SCOPE)
+ 
+-- 
+1.7.11.7
+
