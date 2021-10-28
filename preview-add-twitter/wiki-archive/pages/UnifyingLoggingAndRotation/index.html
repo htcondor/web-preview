@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-add-twitter/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-add-twitter/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-add-twitter/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-add-twitter/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-add-twitter/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-add-twitter/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-add-twitter/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Unifying Logging And Rotation</title>
+
+    <script src="/web-preview/preview-add-twitter/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-add-twitter/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-add-twitter/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-add-twitter/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-add-twitter/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-add-twitter/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-add-twitter/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-twitter/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-twitter/new">News</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-twitter/downloads">Downloads</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-add-twitter/publications">Publications</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Unifying Logging And Rotation</h1>
+<div id="content">
+ This wiki page contains an overview of currently existing logging and rotation mechanisms in HTCondor.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  What is there?
+ </h3>
+ <div class="code">
+  <pre class="code">- dprintf
+- user logs
+- event logs
+- history files
+- quill logs
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Current API of the individual logging methods
+ </h3>
+ <hr/>
+ User Log:
+ <hr/>
+ Writer- and Reader-class :
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-add-twitter/wiki-archive/pages/WriteUserLog" title="Write User Log">
+   WriteUserLog
+  </a>
+ </span>
+ and
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-add-twitter/wiki-archive/pages/ReadUserLog" title="Read User Log">
+   ReadUserLog
+  </a>
+ </span>
+ <p>
+  -
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-add-twitter/wiki-archive/pages/WriteUserLog" title="Write User Log">
+    WriteUserLog
+   </a>
+  </span>
+ </p>
+ <p>
+ </p>
+ <pre>	May be global, may write out as XML
+</pre>
+ <p>
+ </p>
+ <pre>	- Instantiation:
+    	WriteUserLog(const char *owner, const char *domain, const char *file,
+				 int clu, int proc, int subp, bool xml = XML_USERLOG_DEFAULT,
+				 const char *gjid = NULL);
+</pre>
+ <p>
+ </p>
+ <pre>    	WriteUserLog(const char *owner, const char *file,
+				 int clu, int proc, int subp, bool xml = XML_USERLOG_DEFAULT);
+</pre>
+ <p>
+ </p>
+ <pre>		Also empty constructor possible, but that means that initialization has to be done separately.
+</pre>
+ <p>
+ </p>
+ <pre>	- Usage:
+		  bool writeEvent (ULogEvent *event, ClassAd *jobad = NULL,
+					 bool *written = NULL );
+</pre>
+ <p>
+ </p>
+ <pre>		Problem: This function returns success, even if no initialization was made (and therefore nothing was written)
+</pre>
+ <p>
+ </p>
+ <pre>	- Locking:
+		- in write process:
+				FileLockBase: lock on file is obtained
+				lock is released upon completion
+</pre>
+ <p>
+ </p>
+ <pre>		private function for writing/locking: doWriteEvent(...)
+</pre>
+ <p>
+ </p>
+ <pre>	- Rotation:
+		int doRotation( const char *path, FILE *&amp;fp,
+					MyString &amp;rotated, int max_rotations );
+</pre>
+ <p>
+ </p>
+ <pre>		log files are named &lt;name&gt;.x, where &lt;name&gt;.1 is the most recently created file (apart from simply &lt;name&gt;, which is the current log file)
+		A rename has to take place for all existing archived log files for every rotation.
+</pre>
+ <p>
+ </p>
+ <hr/>
+ Event Log:
+ <hr/>
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-add-twitter/wiki-archive/pages/UserLog" title="User Log">
+   UserLog
+  </a>
+ </span>
+ API, different semantics
+ <p>
+ </p>
+ <hr/>
+ dprintf:
+ <hr/>
+ - initially used by daemon core with several different declarations
+ <div class="code">
+  <pre class="code">-- void dprintf( int flags, char* fmt, ... ) CHECK_PRINTF_FORMAT(3,4)
+-- void dprintf( int, const char*, ... )
+-- void	dprintf( int, char* ... )
+-- void dprintf( int level ) const
+-- void dprintf(unsigned int lvl)
+-- void dprintf ( int flags, const char* fmt, ... ) CHECK_PRINTF_FORMAT(2,3)
+-- void dprintf ()
+</pre>
+ </div>
+ <p>
+ </p>
+ <hr/>
+ Quill:
+ <hr/>
+ uses daemon core dprintf
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Current semantics
+ </h3>
+ TODO
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Some commonly used logging/rotation tools
+ </h3>
+ <p>
+  syslog : typically system administrator determines log destination, not software
+  <br/>
+  Log4J : Apache logging tool for Java
+  <br/>
+  Log4CPP : Logging tool for C++ modeled after Log4J
+  <br/>
+  Log4C : --- " ---- for C
+  <br/>
+ </p>
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

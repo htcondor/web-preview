@@ -1,0 +1,44 @@
+diff -r -u condor-8.0.5.orig/src/condor_schedd.V6/qmgmt.cpp condor-8.0.5/src/condor_schedd.V6/qmgmt.cpp
+--- condor-8.0.5.orig/src/condor_schedd.V6/qmgmt.cpp	2013-12-02 20:25:26.000000000 +0100
++++ condor-8.0.5/src/condor_schedd.V6/qmgmt.cpp	2014-01-02 09:23:52.000000000 +0100
+@@ -1900,22 +1900,24 @@
+ 
+ 	int universe = CONDOR_UNIVERSE_STANDARD;
+ 	ad->LookupInteger(ATTR_JOB_UNIVERSE, universe);
+-
+-	if( (universe == CONDOR_UNIVERSE_MPI) ||
+-		(universe == CONDOR_UNIVERSE_PARALLEL) ) {
+-			// Parallel jobs take up a whole cluster.  If we've been ask to
+-			// destroy any of the procs in a parallel job cluster, we
+-			// should destroy the entire cluster.  This hack lets the
+-			// schedd just destroy the proc associated with the shadow
+-			// when a multi-class parallel job exits without leaving other
+-			// procs in the cluster around.  It also ensures that the
+-			// user doesn't delete only some of the procs in the parallel
+-			// job cluster, since that's going to really confuse the
+-			// shadow.
+-		int ret = DestroyCluster(cluster_id);
+-		if(ret < 0 ) { return DESTROYPROC_ERROR; }
+-		return DESTROYPROC_SUCCESS;
+-	}
++//-fwo this leads to a crash of the schedd when using PeriodicRemove expression
++//-fwo it seems that the DestroyCluster function destroys something which is accessed
++//-fwo later on...
++//	if( (universe == CONDOR_UNIVERSE_MPI) ||
++//		(universe == CONDOR_UNIVERSE_PARALLEL) ) {
++//			// Parallel jobs take up a whole cluster.  If we've been ask to
++//			// destroy any of the procs in a parallel job cluster, we
++//			// should destroy the entire cluster.  This hack lets the
++//			// schedd just destroy the proc associated with the shadow
++//			// when a multi-class parallel job exits without leaving other
++//			// procs in the cluster around.  It also ensures that the
++//			// user doesn't delete only some of the procs in the parallel
++//			// job cluster, since that's going to really confuse the
++//			// shadow.
++//		int ret = DestroyCluster(cluster_id);
++//		if(ret < 0 ) { return DESTROYPROC_ERROR; }
++//		return DESTROYPROC_SUCCESS;
++//	}
+ 
+ 	// Append to history file
+ 	AppendHistory(ad);
