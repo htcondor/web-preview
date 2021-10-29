@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-multiple-software/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-multiple-software/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-multiple-software/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Creating Personal Htcondor The Hard Way</title>
+
+    <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-multiple-software/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-multiple-software/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-multiple-software/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-multiple-software/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="documentation-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    Documentation
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="documentation-toggle">
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-doc-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-doc-toggle">
+                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/">Feature&#11023;</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/v9_0/">Long Term Support&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link dropdown-item" href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/" >
+                                            HTCondor-CE&#11023;
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    Software
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview">Overview</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download">Download</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/">Documentation&#11023;</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor-CE
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview">Overview</a></li>
+                                            <li><a class="dropdown-item" href="htcondor-ce/download">Download</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/">Documentation&#11023;</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Creating Personal Htcondor The Hard Way</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Creating a personal HTCondor from your own build of HTCondor or from prebuilt binaries
+  </h2>
+ </span>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Building HTCondor
+ </h3>
+ <p>
+  Note this section is optional -- if you are on a CSL machine, you can skip to the "Settting up your Personal HTCondor" section
+ </p>
+ <p>
+  Pretend you have your build in
+  <code>
+   /scratch/roy/v66
+  </code>
+  .
+Pretend you have you want to set up a personal HTCondor in
+  <code>
+   /scratch/roy/personal-condor
+  </code>
+  .
+Substitute pathnames appropriately.
+ </p>
+ <p>
+  First, build HTCondor as described in
+  <span class="wiki">
+   <a href="/web-preview/preview-multiple-software/wiki-archive/pages/BuildingHtcondorOnUnix" title="Building Htcondor On Unix">
+    here
+   </a>
+  </span>
+  . After you run make, do "make install" (note: in older versions of the code, this used to be "make release"). You'll find that you have a new directory
+  <code>
+   /scratch/roy/v66/release_dir
+  </code>
+  , and if you look inside it, you will see something like:
+ </p>
+ <div class="code">
+  <pre class="code">&gt; ls /scratch/roy/v66/release_dir/
+bin/  include/  lib/  man/  sbin/  src/
+</pre>
+ </div>
+ This is very similar to what a HTCondor installation has in it.  Note that if you have a version of HTCondor 7.5.5 or later, do not do the "make release" command.
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Setting up your Personal HTCondor
+ </h3>
+ <p>
+  There are lots of ways to set up a personal HTCondor: I'll show you one way. You want to set up your
+  <code>
+   PATH
+  </code>
+  to point at the
+  <code>
+   bin
+  </code>
+  and
+  <code>
+   sbin
+  </code>
+  directories in your release directory. You want to set
+  <code>
+   CONDOR_CONFIG
+  </code>
+  to point at a
+  <code>
+   condor_config
+  </code>
+  file. You want to edit your
+  <code>
+   condor_config
+  </code>
+  file appropriately. Here is what I do:
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Make a link to your release directory
+ </h4>
+ <div class="code">
+  <pre class="code">cd /scratch/roy/personal-condor
+ln -s /scratch/roy/v66/src/release_dir .
+</pre>
+ </div>
+ With the new
+ <a class="external" href="https://condor-wiki.cs.wisc.edu/index.cgi/wiki?p=BuildModernization">
+  build
+ </a>
+ system using cmake, you will want to remove the
+ <code>
+  src/
+ </code>
+ part of the path in the above
+ <code>
+  ln
+ </code>
+ command, (for versions of HTCondor later than 7.5.5.)
+ <p>
+  Or, if you want to use the pre-built binaries in the CS pool, the release directory is in "/unsup/condor", and you don't need to make the subdirectories below.
+ </p>
+ <p>
+  Make some directories for HTCondor
+ </p>
+ <div class="code">
+  <pre class="code">mkdir execute
+mkdir log
+mkdir spool
+</pre>
+ </div>
+ <span class="subsubsection">
+  <h4>
+   Set up your environment
+  </h4>
+ </span>
+ This commands are for tcsh: you'll need to edit them for bash.
+ <div class="code">
+  <pre class="code">cat &gt; setup
+setenv PATH /scratch/roy/personal-condor/release_dir/bin:${PATH}
+setenv PATH /scratch/roy/personal-condor/release_dir/sbin:${PATH}
+setenv CONDOR_CONFIG /scratch/roy/personal-condor/condor_config
+(control-d)
+</pre>
+ </div>
+ When you do source setup your environment will be set up for your personal HTCondor.
+ <span class="subsubsection">
+  <h4>
+   Create your HTCondor configuration file
+  </h4>
+ </span>
+ <div class="code">
+  <pre class="code">cp /scratch/roy/v66/src/condor_examples/condor_config.generic condor_config
+touch condor_config.local
+</pre>
+ </div>
+ Now you need to edit your
+ <code>
+  condor_config
+ </code>
+ file. Search for the following configuration variables, and set them as follows (using the correct pathnames and email address for you):
+ <div class="code">
+  <pre class="code">CONDOR_HOST             = $(FULL_HOSTNAME)
+RELEASE_DIR             = /scratch/roy/personal-condor/release_dir
+LOCAL_DIR               = /scratch/roy/personal-condor
+LOCAL_CONFIG_FILE       = $(LOCAL_DIR)/condor_config.local
+CONDOR_ADMIN            = your-email@cs.wisc.edu
+UID_DOMAIN              = $(FULL_HOSTNAME)
+FILESYSTEM_DOMAIN       = $(FULL_HOSTNAME)
+
+COLLECTOR_HOST  = $(CONDOR_HOST):11000
+# Not necessary for late versions of HTCondor
+NEGOTIATOR_HOST = $(CONDOR_HOST):11001
+
+# choose a policy for running jobs.
+# as of 8.2 the default policy is always_run_jobs
+#USE POLICY : ALWAYS_RUN_JOBS
+#USE POLICY : DESKTOP
+
+DAEMON_LIST             = MASTER, STARTD, SCHEDD, COLLECTOR, NEGOTIATOR
+</pre>
+ </div>
+ <em>
+  Note:
+ </em>
+ Pick different numbers for the COLLECTOR_HOST and the NEGOTIATOR_HOST. These are port numbers, and each personal HTCondor running on a machine needs to have different ports. Probably randomly picking numbers that are greater than 1024 will be sufficient.
+ <p>
+  <em>
+   Note:
+  </em>
+  It may be useful to set
+  <code>
+   CONDOR_HOST = localhost
+  </code>
+  or
+  <code>
+   CONDOR_HOST = localhost.localdomain
+  </code>
+  if the machine running this does not have a valid IP address, is a virtual machine, or the administrator wants HTCondor to look only at that machine.
+ </p>
+ <p>
+  This looks like a lot of things to edit. Why is it so hard? Well, our installation script normally sets things up for you, but because you are using a build environment, it is harder to use the installation script. Also, it is useful for you to be familiar with these settings, so you understand better how HTCondor works.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Run HTCondor
+ </h4>
+ <p>
+  First, make sure that you will run the correct HTCondor. Which should tell you the one you expect to see:
+ </p>
+ <div class="code">
+  <pre class="code">&gt; source setup
+&gt; which condor_master
+/scratch/roy/personal-condor/release_dir/sbin/condor_master
+</pre>
+ </div>
+ Then run condor_master:
+ <div class="code">
+  <pre class="code">condor_master
+</pre>
+ </div>
+ Wait a second, and make sure that everything is running:
+ <div class="code">
+  <pre class="code">ps -x | grep condor
+</pre>
+ </div>
+ When you are done with your personal HTCondor, you can kill it with:
+ <div class="code">
+  <pre class="code">condor_off -master
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Advanced configuration and problem solving
+ </h4>
+ <p>
+  If you are debugging a daemon, you may want to have additional debugging information. For instance, if you are debugging the collector, you can edit COLLECTOR_DEBUG. For instance, you might do:
+ </p>
+ <div class="code">
+  <pre class="code">COLLECTOR_DEBUG = D_CAT D_FULLDEBUG D_COMMAND:1
+</pre>
+ </div>
+ Note that this set up described above is rather nice for working with different versions of HTCondor. Just change the link to the release directory, and you can test a different version of HTCondor.
+</div>
+
+</div>
+</main>
+<div id="footer" class="border-top mt-auto">
+    <div class="container py-4">
+        <div class="row">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>
