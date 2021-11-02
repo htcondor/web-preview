@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-multiple-software/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-multiple-software/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-multiple-software/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Hgq Design Doc</title>
+
+    <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-multiple-software/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-multiple-software/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-multiple-software/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-multiple-software/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    Software
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor-CE
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="documentation-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    Documentation
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="documentation-toggle">
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
+                                            HTCondor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
+                                            HTCondor-CE
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row" style="height:40px">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Hgq Design Doc</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Group Quota Design
+  </h2>
+ </span>
+ <hr/>
+ <span class="subsection">
+  <h3>
+   Motivating Scenarios
+  </h3>
+ </span>
+ <p>
+  ??? What's some good use cases here
+What didn't the old code do that the new code can?
+ </p>
+ <p>
+  Some questions we'd like customer use cases to address:
+ </p>
+ <ul>
+  <li>
+   What is the semantic of accounting group quota?
+   <ul>
+    <li>
+     That is: what does a group quota regulate/limit?
+    </li>
+    <li>
+     What is the 'unit' associated with a quota?
+    </li>
+    <li>
+     <a class="external" href="http://erikerlandson.github.com/blog/2012/11/15/rethinking-the-semantics-of-group-quotas-and-slot-weights-claim-capacity-model/">
+      http://erikerlandson.github.com/blog/2012/11/15/rethinking-the-semantics-of-group-quotas-and-slot-weights-claim-capacity-model/
+     </a>
+    </li>
+   </ul>
+  </li>
+  <li>
+   What does it mean for groups to be in a hierarchy?
+   <ul>
+    <li>
+     How does a parent's quota relate to child quotas?
+    </li>
+    <li>
+     How do 'sibling' groups relate to each other, their parent, and their children (if any)?
+    </li>
+   </ul>
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  High Level Design and Definitions
+ </h3>
+ <p>
+  The HGQ design is intended to allow administrator to restrict the aggregrate number of slots running jobs submitted by groups of users.
+ </p>
+ <p>
+  These sets of users are organized into hierarchical groups, with the "none" group being the name of the root.  The admin is expected to
+assign a quota to every leaf and interior node in the tree, except for the root.  The assigned quotas can be
+absolute numbers or a floating point number from 0 to 1, which represents a percentage of the immediate parent.
+If absolute, it represents a weighted number of slots, where the each slot is multiplied by a configurable weight, which
+defaults to number of cores.  All groups named must be predeclared in the config file.  Note the quota is independent of
+user priority.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Definintions
+ </h3>
+ <p>
+  Can we get crisp definitions of each of the fields in the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-multiple-software/wiki-archive/pages/GroupEntry" title="Group Entry">
+    GroupEntry
+   </a>
+  </span>
+  structure?
+ </p>
+ <p>
+  Here is some annotation from the meeting on fields that didn't already have in-code doc:
+ </p>
+ <div class="code">
+  <pre class="code">    // these are set from configuration
+   string name;
+    double config_quota;  // Could be static (&gt;=1) or dynamic (0&lt;x&lt;1)
+   bool static_quota; // Flag for if config_quota is static or dynamic
+   bool accept_surplus; // true if this group will accept surplus
+    bool autoregroup; // true if will participate in autoregroup phase
+
+    // current usage information coming into this negotiation cycle
+    double usage; // accountant's value for usage under thi sgroup
+    ClassAdListDoesNotDeleteAds* submitterAds; // list of submitter ads under this group
+    double priority; // group's priority from acct
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Meaning of quota for "static" quota:
+ </h4>
+ <p>
+  The static quota for a given group indicates the minimum number of machines/slots that group is expected to be allocated, given
+sufficient demand. The sum of the static quota for all the children nodes of any given parent must be less than or equal to the parent's static quota.
+ </p>
+ <p>
+  The sum of the children's static quota may be less than the parent.  If so, the remainder is assigned to the parent.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  For dynamic (proportional) quota
+ </h4>
+ <p>
+  A dynamic (proportional) quota indicates the percentage of the parent's node resources the group is expected to be allocated,
+given sufficient demand. If the children of a node have proportional quota, each node then is assigned an absolute quota based on the proportion assigned to their parent's node.
+ </p>
+ <p>
+  The sum of all the sibling quota should be &lt;= 1.0.  (if not, they are normalized to 1 with a warning message)
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  specifying quotas
+ </h4>
+ <p>
+  Each job then specifies what group it should be in with the "+AccountingGroup = "group_name.username" syntax.  See also:
+  <a class="external" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=2728">
+   https://htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=2728
+  </a>
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  quota terminology
+ </h4>
+ Note:  The term "quota" is overloaded.  Sometimes in the code and documentation, it means "the amount assigned by the
+administrator to a group" (entry-&gt;config_quota).   It may also be the value translated from configured quota to actual (possibly weighted) slot quantity (entry-&gt;quota). The quantity finally assigned to a group, after quota computation and surplus sharing and fractional-quota distribution, is referred to as 'allocated' (entry-&gt;allocated).
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Algorithm
+ </h3>
+ <p>
+  First, the code builds up a data structure which describes each group, it's position in the tree, the administratively
+configured quota, whether it is static or dynamic quota, whether this group accepts_surplus or autoregroup.
+For each group, the current weighted usage is fetched from the accountant, as is the current userprio.
+The number of running and idle jobs is copied from the submitter ad from each submitter, and summed into the
+corresponding group structure. Note that the number of running jobs also includes jobs running
+in flocked-to pools.  Each group also contains a list of all the related submitter ads.
+ </p>
+ <p>
+  If autoregroup is on, the submitters are also appended to the root's list of submitter ads.
+ </p>
+ <p>
+  After (weighted) slot quotas are assigned to all the group entries, surplus sharing is computed for all groups in the hierarchy configured to accept surplus.  Following surplus sharing, when slot weighting is not enabled, any fractional quota allocations are consolidated and distributed in a round robin fashion.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Surplus Sharing
+ </h4>
+ The primary purpose of surplus sharing is to allow group quotas to "float" locally based on demand.  For example, if one configures group A, A.B, and A.C, where gropup A does not share surplus, but A.B and A.C do share surplus, then A.B and A.C can float against each other, while maintaining the constraint that quota(A.B) + quota(A.C) &lt;= quota(A).  Surplus quota is always shared at the lowest possible level before being passed upwards.
+ <p>
+  The basic principle for surplus sharing is: surplus quota is distributed among sibling groups in proportion to assigned quota. For example, if group A has twice the quota of group B, group A will be awarded twice the surplus.  Some additional points:
+ </p>
+ <ul>
+  <li>
+   available surplus consists of any surplus shared from the level above in the hierarchy, plus any surplus coming up from sibling sub-trees
+  </li>
+  <li>
+   any groups with surplus sharing not enabled do not participate in surplus distribution
+  </li>
+  <li>
+   if a group does not need all of its potential surplus, any it does not use will be shared among remaining participating groups
+  </li>
+  <li>
+   the parent group of siblings participates in sharing, effectively as another sibling
+  </li>
+  <li>
+   any surplus unused after sharing among siblings (and parent) is sent up the hierarchy to be shared at the level above
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Fractional Quota Consolidation
+ </h4>
+ When slot weighting is not enabled, fractional quota values for groups are consolidated and distributed in round robin fashion to ensure that all quotas are integer values.
+ <ul>
+  <li>
+   available remainder for consolidation consists of remainder coming from upper level in hierarchy, combined with any remainder coming up from sibling subtrees
+  </li>
+  <li>
+   remainders are not accepted by groups not accepting surplus
+  </li>
+  <li>
+   siblings having received remainder least recently are favored in round robin - siblings are ordered by time of last receipt of a remainder
+  </li>
+  <li>
+   remainder unused at a level is sent up to parent
+  </li>
+ </ul>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Allocation Rounds
+ </h4>
+ <p>
+  Allocation rounds are a method to address the scenario where jobs submitted under an accounting group do not satisfy mutual job/slot requirements for enough slots to achieve their quota.  When GROUP_QUOTA_MAX_ALLOCATION_ROUNDS &gt; 1, then each group that has not met its allocated quota has its 'requested' value re-set to be equal to whatever its current (weighted) usage is.  (i.e. it is assumed that no further jobs under that group will match slots until next negotiation cycle).  This frees up the unused quota for other groups that may be able to use it as surplus.
+ </p>
+ <p>
+  The following steps are iterated GROUP_QUOTA_MAX_ALLOCATION_ROUNDS times:
+ </p>
+ <ol>
+  <li>
+   (starting after 1st round) re-set 'requested' values to current usage
+  </li>
+  <li>
+   (re)compute quota allocations
+  </li>
+  <li>
+   allow all groups to renegotiate
+  </li>
+ </ol>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Round Robin Rate
+ </h4>
+ Round robin rate is a method to address the 'overlapping effective pool' problem: this is a scenario where the jobs in two or more accounting groups are in fact competing for a subset of the total available resources.  For example, if a pool has 100 linux machines and 100 windows machines, and 200 jobs from 2 accounting groups are competing only for the linux machines.  Without intervention, the first group to negotiate can acquire all 100 linux machines and starve the 2nd group.
+ <p>
+  To address this problem, there is a loop around negotiation that operates like so:
+ </p>
+ <ol>
+  <li>
+   (initialize all quota limits at zero)
+  </li>
+  <li>
+   increase each quota limit by the round robin rate (up to allocated quota)
+  </li>
+  <li>
+   run negotiation with those limits
+  </li>
+  <li>
+   repeat
+  </li>
+ </ol>
+ <p>
+  Round robin rate is convigured via: GROUP_QUOTA_ROUND_ROBIN_RATE, which defaults to "infinity", which emulates legacy behavior.
+ </p>
+ <p>
+  (note: There is some interest in developing alternative approaches to allocation rounds and round robin rate that require fewer nested loops on top of basic negotiation)
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  accounting group negotiation order
+ </h4>
+ we sort the submitters in "starvation order", by GROUP_SORT_EXPR, defaults to the ratio of current group usage / configured group quota
+ <p>
+  Finally, we negotiate with each group in that order, with a quota limited as calculated above.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Questions
+ </h3>
+ <p>
+ </p>
+ <ul>
+  <li>
+   How common is it to have demand (submitters) in interior nodes?
+   <ul>
+    <li>
+     some downstream customers are known to be interested in jobs submitted against interior nodes
+    </li>
+   </ul>
+  </li>
+  <li>
+   What about non-homogenous pools?
+  </li>
+  <li>
+   Is there a way to do this without relying on the submitter ad's # of idle/running jobs?
+   <ul>
+    <li>
+     There may be alternative approaches to surplus-sharing to address this behavior, but it is an open question
+    </li>
+   </ul>
+  </li>
+  <li>
+   How should this behave in the face of flocking?
+  </li>
+  <li>
+   Weighted slots?
+   <ul>
+    <li>
+     I have a few thoughts on how weighted slots should be thought about here:
+     <ul>
+      <li>
+       <a class="external" href="http://erikerlandson.github.com/blog/2012/11/15/rethinking-the-semantics-of-group-quotas-and-slot-weights-claim-capacity-model/">
+        http://erikerlandson.github.com/blog/2012/11/15/rethinking-the-semantics-of-group-quotas-and-slot-weights-claim-capacity-model/
+       </a>
+      </li>
+     </ul>
+    </li>
+    <li>
+     and here:
+     <a class="external" href="https://htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=3435">
+      https://htcondor-wiki.cs.wisc.edu/index.cgi/tktview?tn=3435
+     </a>
+    </li>
+   </ul>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="border-top bg-light pt-4 mt-auto">
+    <div class="container">
+        <div class="row">
+            <div class="col-2 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-1 d-none d-lg-flex"></div>
+            <div class="col-12 col-lg-9">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html/">HTCondor Week</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/release-notes/">Contribute</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

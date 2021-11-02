@@ -1,0 +1,99 @@
+diff --git a/src/condor_utils/selector.cpp b/src/condor_utils/selector.cpp
+index 61f6e86..dd0905c 100644
+--- a/src/condor_utils/selector.cpp
++++ b/src/condor_utils/selector.cpp
+@@ -25,6 +25,20 @@
+ #include "selector.h"
+ #include "condor_threads.h"
+ 
++// In newer versions of gcc, when FORITY_SOURCE is enabled, these macros
++// will call abort() if an fd larger than FD_SETSIZE is used (thus would
++// overflow a single fd_set).
++// So we do some pointer arithmetic to avoid that check.
++#if defined(WIN32)
++#  define MY_FD_SET(fd, set)	FD_SET(fd, set)
++#  define MY_FD_CLR(fd, set)	FD_CLR(fd, set)
++#  define MY_FD_ISSET(fd, set)	FD_ISSET(fd, set)
++#else
++#  define MY_FD_SET(fd, set)	FD_SET(fd % FD_SETSIZE, set + fd / FD_SETSIZE)
++#  define MY_FD_CLR(fd, set)	FD_CLR(fd % FD_SETSIZE, set + fd / FD_SETSIZE)
++#  define MY_FD_ISSET(fd, set)	FD_ISSET(fd % FD_SETSIZE, set + fd / FD_SETSIZE)
++#endif
++
+ #ifndef SELECTOR_USE_POLL
+ #define POLLIN 1
+ #define POLLOUT 2
+@@ -199,7 +213,7 @@ Selector::add_fd( int fd, IO_FUNC interest )
+ 		}
+ #endif
+ 		m_poll.events |= POLLIN;
+-		FD_SET( fd, save_read_fds );
++		MY_FD_SET( fd, save_read_fds );
+ 		break;
+ 
+ 	  case IO_WRITE:
+@@ -209,7 +223,7 @@ Selector::add_fd( int fd, IO_FUNC interest )
+ 		}
+ #endif
+ 		m_poll.events |= POLLOUT;
+-		FD_SET( fd, save_write_fds );
++		MY_FD_SET( fd, save_write_fds );
+ 		break;
+ 
+ 	  case IO_EXCEPT:
+@@ -219,7 +233,7 @@ Selector::add_fd( int fd, IO_FUNC interest )
+ 		}
+ #endif
+ 		m_poll.events |= POLLERR;
+-		FD_SET( fd, save_except_fds );
++		MY_FD_SET( fd, save_except_fds );
+ 		break;
+ 
+ 	}
+@@ -252,15 +266,15 @@ Selector::delete_fd( int fd, IO_FUNC interest )
+ 	switch( interest ) {
+ 
+ 	  case IO_READ:
+-		FD_CLR( fd, save_read_fds );
++		MY_FD_CLR( fd, save_read_fds );
+ 		break;
+ 
+ 	  case IO_WRITE:
+-		FD_CLR( fd, save_write_fds );
++		MY_FD_CLR( fd, save_write_fds );
+ 		break;
+ 
+ 	  case IO_EXCEPT:
+-		FD_CLR( fd, save_except_fds );
++		MY_FD_CLR( fd, save_except_fds );
+ 		break;
+ 
+ 	}
+@@ -378,15 +392,15 @@ Selector::fd_ready( int fd, IO_FUNC interest )
+ 	switch( interest ) {
+ 
+ 	  case IO_READ:
+-		return (SINGLE_SHOT_OK == m_single_shot) ? (m_poll.revents & (POLLIN|POLLHUP)) : FD_ISSET( fd, read_fds );
++		return (SINGLE_SHOT_OK == m_single_shot) ? (m_poll.revents & (POLLIN|POLLHUP)) : MY_FD_ISSET( fd, read_fds );
+ 		break;
+ 
+ 	  case IO_WRITE:
+-		return (SINGLE_SHOT_OK == m_single_shot) ? (m_poll.revents & (POLLOUT|POLLHUP)) : FD_ISSET( fd, write_fds );
++		return (SINGLE_SHOT_OK == m_single_shot) ? (m_poll.revents & (POLLOUT|POLLHUP)) : MY_FD_ISSET( fd, write_fds );
+ 		break;
+ 
+ 	  case IO_EXCEPT:
+-		return (SINGLE_SHOT_OK == m_single_shot) ? (m_poll.revents & POLLERR) : FD_ISSET( fd, except_fds );
++		return (SINGLE_SHOT_OK == m_single_shot) ? (m_poll.revents & POLLERR) : MY_FD_ISSET( fd, except_fds );
+ 		break;
+ 
+ 	}
+@@ -478,7 +492,7 @@ display_fd_set( const char *msg, fd_set *set, int max, bool try_dup )
+ 
+ 	dprintf( D_ALWAYS, "%s {", msg );
+ 	for( i=0, count=0; i<=max; i++ ) {
+-		if( FD_ISSET(i,set) ) {
++		if( MY_FD_ISSET(i,set) ) {
+ 			count++;
+ 
+ 			dprintf( D_ALWAYS | D_NOHEADER, "%d", i );
