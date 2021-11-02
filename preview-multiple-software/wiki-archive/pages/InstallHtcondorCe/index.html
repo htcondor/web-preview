@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-multiple-software/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-multiple-software/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-multiple-software/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Install Htcondor Ce</title>
+
+    <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-multiple-software/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="vh-100 d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header">
+    <div class="mb-4 container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
+                    <a href="/web-preview/preview-multiple-software/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png" style="border:0"></a>
+                    <a href="/web-preview/preview-multiple-software/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-multiple-software/">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    Software
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            HTCondor-CE
+                                        </a>
+                                        <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
+                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
+                                            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="documentation-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                    Documentation
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="documentation-toggle">
+                                    <li class="dropstart">
+                                        <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
+                                            HTCondor
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
+                                            HTCondor-CE
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </div>
+        <div class="row" style="height:40px">
+            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+        </div>
+    </div>
+</header>
+<main id="main-copy" tabindex="-1">
+    <div class="container mb-4">
+    <h1>Install Htcondor Ce</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Installing and Maintaining HTCondor-CE
+  </h2>
+ </span>
+ <p>
+  <strong>
+   NOTE:
+  </strong>
+  If you are installing an HTCondor-CE for the Open Science Grid, consult the
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/">
+   OSG-specific installation guide
+  </a>
+ </p>
+ <p>
+  The HTCondor-CE software is a job gateway for a grid Compute Element (CE).
+As such, HTCondor-CE is the entry point for jobs coming from the grid - it handles authorization and delegation of jobs to your local batch system.
+See the
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/htcondor-ce-overview/">
+   OSG HTCondor-CE Overview
+  </a>
+  for a much more detailed introduction.
+ </p>
+ <p>
+  Use this page to learn how to install, configure, run, test, and troubleshoot HTCondor-CE from the
+  <a class="external" href="http://research.cs.wisc.edu/htcondor/instructions/">
+   HTCondor Yum repositories
+  </a>
+  .
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Before Starting
+ </h2>
+ <p>
+  Before starting the installation process, consider the following points (consulting the Reference section below as needed):
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <strong>
+    User IDs:
+   </strong>
+   If they do not exist already, the installation will create the Linux user
+   <code>
+    condor
+   </code>
+   (UID 4716)
+  </li>
+  <li>
+   <strong>
+    SSL certificate:
+   </strong>
+   The HTCondor-CE service uses a host certificate at
+   <code>
+    /etc/grid-security/hostcert.pem
+   </code>
+   and an accompanying key at
+   <code>
+    /etc/grid-security/hostkey.pem
+   </code>
+  </li>
+  <li>
+   <strong>
+    DNS entries:
+   </strong>
+   Forward and reverse DNS must resolve for the HTCondor-CE host
+  </li>
+  <li>
+   <strong>
+    Network ports:
+   </strong>
+   The pilot factories must be able to contact your HTCondor-CE service on port 9619 (TCP)
+  </li>
+  <li>
+   <strong>
+    Submit host:
+   </strong>
+   HTCondor-CE should be installed on a host that already has the ability to submit jobs into your local cluster running supported batch system software (HTCondor, LSF, PBS/Torque, SGE, Slurm)
+  </li>
+  <li>
+   <strong>
+    File Systems:
+   </strong>
+   Non-HTCondor batch systems require a shared file system between the HTCondor-CE host and the batch system worker nodes.
+  </li>
+ </ul>
+ <p>
+  There are some one-time (per host) steps to prepare in advance:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   Ensure the host has a supported operating system (Red Hat Enterprise Linux variant version 6 or 7)
+  </li>
+  <li>
+   Obtain root access to the host
+  </li>
+  <li>
+   Prepare the EPEL and
+   <a class="external" href="http://research.cs.wisc.edu/htcondor/instructions/">
+    HTCondor
+   </a>
+   Yum repositories
+  </li>
+  <li>
+   Install CA certificates and VO data into
+   <code>
+    /etc/grid-security
+   </code>
+  </li>
+ </ul>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Installing HTCondor-CE
+ </h2>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Install the appropriate HTCondor-CE package for your batch system:
+  </li>
+ </ol>
+ <p>
+  <table border="1" cellspacing="0">
+   <tbody>
+    <tr>
+     <td>
+      <strong>
+       If your batch system is...
+      </strong>
+     </td>
+     <td>
+      <strong>
+       Then run the following command...
+      </strong>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      HTCondor
+     </td>
+     <td>
+      <code>
+       yum install htcondor-ce-condor
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      LSF
+     </td>
+     <td>
+      <code>
+       yum install htcondor-ce-lsf
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      PBS/Torque
+     </td>
+     <td>
+      <code>
+       yum install htcondor-ce-pbs
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      SGE
+     </td>
+     <td>
+      <code>
+       yum install htcondor-ce-sge
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Slurm
+     </td>
+     <td>
+      <code>
+       yum install htcondor-ce-slurm
+      </code>
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Install the certificate revocation list updater available from EPEL:
+  </li>
+ </ol>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># yum install fetch-crl
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Configuring HTCondor-CE
+ </h2>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Configuring Authorization
+ </h3>
+ <p>
+  To authorize the local HTCondor-CE daemons and job submission from external users and VOs, edit the contents of
+  <code>
+   /etc/condor-ce/condor_mapfile
+  </code>
+  by following the comments.
+ </p>
+ <p>
+  <strong>
+   NOTE:
+  </strong>
+  <code>
+   condor_mapfile.rpmnew
+  </code>
+  files may be generated upon HTCondor-CE version updates that should be merged into
+  <code>
+   condor_mapfile
+  </code>
+  .
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Configuring Non-HTCondor Batch Systems
+ </h3>
+ <p>
+  HTCondor-CE requires a shared filesystem between the CE and the worker nodes to support file transfer for non-HTCondor batch systems. See the
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/#batch-systems-other-than-htcondor">
+   documentation here
+  </a>
+  for details.
+ </p>
+ <p>
+  HTCondor-CE uses the Batch Language ASCII Helper Protocol (BLAHP) to submit and track jobs to non-HTCondor batch systems.
+To work with the HTCondor-CE, modify
+  <code>
+   /usr/libexec/condor/glite/etc/batch_gahp.config
+  </code>
+  using the following steps:
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Disable BLAHP handling of certificate proxies:
+  </li>
+ </ol>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">blah_disable_wn_proxy_renewal=yes
+blah_delegate_renewed_proxies=no
+blah_disable_limited_proxy=yes
+</pre>
+ </div>
+ <p>
+ </p>
+ <ol>
+  <li>
+   <strong>
+    (Optional)
+   </strong>
+   If your batch system tools are installed in a non-standard location (i.e., outside of
+   <code>
+    /usr/bin/
+   </code>
+   ), set the corresponding
+   <code>
+    *_binpath
+   </code>
+   variable to the directory containing your batch system tools:
+  </li>
+ </ol>
+ <p>
+  <table border="1" cellspacing="0">
+   <tbody>
+    <tr>
+     <td>
+      <strong>
+       If your batch system is...
+      </strong>
+     </td>
+     <td>
+      <strong>
+       Then change the following configuration variable...
+      </strong>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      LSF
+     </td>
+     <td>
+      <code>
+       lsf_binpath
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      PBS/Torque
+     </td>
+     <td>
+      <code>
+       pbs_binpath
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      SGE
+     </td>
+     <td>
+      <code>
+       sge_binpath
+      </code>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Slurm
+     </td>
+     <td>
+      <code>
+       slurm_binpath
+      </code>
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Optional Configuration
+ </h3>
+ <p>
+  If your site needs to report to BDII, consult the
+  <a class="external" href="https://github.com/opensciencegrid/htcondor-ce/tree/master/contrib/bdii#htcondor-ce-bdii-provider">
+   HTCondor-CE BDII Provider
+  </a>
+  documentation.
+ </p>
+ <p>
+  See
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/#optional-configuration">
+   this section of the OSG installation guide
+  </a>
+  for additional optional HTCondor-CE configurations. Note that the "Accounting with multiple CEs or local user jobs" and "HTCondor-CE monitoring web interface" sections are both OSG specific and can be safely ignored.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Using HTCondor-CE
+ </h2>
+ <p>
+  See
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/#using-htcondor-ce">
+   this section of the OSG installation guide
+  </a>
+  for how to use HTCondor-CE, including starting and stopping of services. Note that Gratia is accounting software specific to the OSG and can be safely ignored.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Validating HTCondor-CE
+ </h2>
+ <p>
+  See
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/#validating-htcondor-ce">
+   this section of the OSG installation guide
+  </a>
+  for steps to validate your HTCondor-CE.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Troubleshooting HTCondor-CE
+ </h2>
+ <p>
+  See
+  <a class="external" href="https://opensciencegrid.org/docs/compute-element/troubleshoot-htcondor-ce">
+   this OSG guide
+  </a>
+  for troubleshooting tips and strategies.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Getting Help
+ </h2>
+ <p>
+  For assistance with HTCondor-CE, please see the
+  <a class="external" href="http://research.cs.wisc.edu/htcondor/htcondor-support/">
+   HTCondor support page
+  </a>
+  .
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  References
+ </h2>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <a class="external" href="https://opensciencegrid.org/docs/compute-element/htcondor-ce-overview/">
+    HTCondor-CE Overview
+   </a>
+  </li>
+  <li>
+   <a class="external" href="https://opensciencegrid.org/docs/compute-element/install-htcondor-ce/">
+    OSG HTCondor-CE Installation Guide
+   </a>
+  </li>
+  <li>
+   <a class="external" href="https://opensciencegrid.org/docs/compute-element/job-router-recipes/">
+    Job Router Configuration Guide
+   </a>
+  </li>
+  <li>
+   <a class="external" href="https://github.com/opensciencegrid/htcondor-ce/tree/master/contrib/bdii#htcondor-ce-bdii-provider">
+    HTCondor-CE BDII Provider
+   </a>
+  </li>
+  <li>
+   <a class="external" href="https://opensciencegrid.org/docs/compute-element/troubleshoot-htcondor-ce/">
+    HTCondor-CE Troubleshooting Guide
+   </a>
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="border-top bg-light pt-4 mt-auto">
+    <div class="container">
+        <div class="row">
+            <div class="col-2 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-1 d-none d-lg-flex"></div>
+            <div class="col-12 col-lg-9">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html/">HTCondor Week</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/release-notes/">Contribute</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto m-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
