@@ -1,0 +1,53 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>4.2 Limitations</TITLE>
+<META NAME="description" CONTENT="4.2 Limitations">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html186" HREF="node17.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html184" HREF="node14.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html180" HREF="node15.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html187" HREF="node17.html">5 Conclusion</A>
+<B>Up:</B> <A NAME="tex2html185" HREF="node14.html">4 Summary of Checkpoint </A>
+<B> Previous:</B> <A NAME="tex2html181" HREF="node15.html">4.1 Remote File Access</A>
+<BR> <P>
+<A NAME="seclimitations">&#160;</A><H2><A NAME="SECTION00042000000000000000">4.2 Limitations</A></H2>
+<P>
+While the designers of truly distributed operating systems such as
+Sprite and V Kernel have carefully defined and implemented their
+process models to accommodate migration, we users of UNIX are not so
+fortunate.  There are a lot of details in a process's state which are
+implicit, known only to the kernel, or are otherwise difficult or
+impossible to re-create.  In condor we have taken the viewpoint that
+we can save and restore enough of a process's state to accommodate the
+needs of a wide variety of real-world user code.  There is however, no
+way we can save all the state necessary for every kind of process.
+The most glaring lack of course is our inability to migrate one or
+more members of a set of communicating processes.  In fact no attempt
+is made to deal with processes which execute <TT>fork()</TT> or <TT>
+exec()</TT>, or communicate with other processes via signals, sockets,
+pipes, files, or any other means.  This is not to say that some
+inventive users have not found ways to use Condor for communicating
+processes, but they have changed their code to accommodate our
+limitations.
+<P>
+Another major limitation is the fact the the condor checkpointing code
+must be linked in with the user's code.  This is fine for folks who
+build and run their own software, but it doesn't work for users of
+third party software who don't have access to the source.  We have
+considered schemes to provide a ``checkpointing C library'' for third
+party programs which are dynamically linked, but so far have not
+implemented anything.  A major obstacle to such work is the fact that
+shared library implementations vary widely across platforms, and such
+a facility would not be very portable.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

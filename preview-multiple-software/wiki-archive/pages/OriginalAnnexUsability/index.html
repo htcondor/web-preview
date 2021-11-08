@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-multiple-software/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-multiple-software/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-multiple-software/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Original Annex Usability</title>
+
+    <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-multiple-software/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header" class="bg-light mb-4 ">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Software
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor-CE
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="help-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Documentation
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="help-support-toggle">
+                            <li class="dropdown">
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
+                                    HTCondor
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
+                                    HTCondor-CE
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Software
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Help & Support
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Community
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class="border d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor-CE</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="help-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Documentation</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor/">HTCondor</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor-ce/">HTCondor-CE</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Email Lists</th></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Professional Support</th></tr>
+                        <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Internal Contract Support</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor Week</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html">Content Archives</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>CHTC</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl p-4">
+    <h1>Original Annex Usability</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Assumptions
+  </h2>
+ </span>
+ <p>
+  We assume you already have an AWS account.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Installation and Configuration
+ </h2>
+ <p>
+  Martin Kandes wrote excellent instructions on installing and configuring
+  <code>
+   condor_annex
+  </code>
+  :
+  <a class="external" href="http://www.t2.ucsd.edu/twiki2/bin/view/UCSDTier2/Condor_annex">
+   http://www.t2.ucsd.edu/twiki2/bin/view/UCSDTier2/Condor_annex
+  </a>
+  .
+ </p>
+ <p>
+  First-time users should:
+ </p>
+ <ul>
+  <li>
+   Follow steps 1-3 as written
+  </li>
+  <li>
+   Skip step 4, and just use the 'us-east-1' region.
+  </li>
+  <li>
+   Follow steps 5&amp;6 as written
+  </li>
+  <li>
+   Skip step 7, and just use the [FIXME] AMI
+  </li>
+  <li>
+   Follow steps 8-9
+  </li>
+  <li>
+   Instead of step 10, please obtain the most recent version of
+   <code>
+    condor_annex
+   </code>
+   from [FIXME]
+  </li>
+ </ul>
+ <p>
+  Everyone should then follow the instructions below ("set the default launch configurations").
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Set the default launch configurations.
+ </h3>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Go to your list of Auto Scaling group launch configurations:
+   <a class="external" href="https://console.aws.amazon.com/ec2/autoscaling/home?region=us-east-1#LaunchConfigurations">
+    https://console.aws.amazon.com/ec2/autoscaling/home?region=us-east-1#LaunchConfigurations
+   </a>
+   :
+  </li>
+  <li>
+   If you don't have any Auto Scaling groups, you'll have to (temporarily) create one in order to create a Launch Configuration; click the
+   <strong>
+    Create Auto Scaling group
+   </strong>
+   button.
+  </li>
+  <li>
+   Click the
+   <strong>
+    Create launch configuration
+   </strong>
+   button in the lower-right.
+  </li>
+  <li>
+   Select "Community AMIs" from the tabs on the left.  Enter "FIXME" and hit the
+   <strong>
+    Select
+   </strong>
+   button to choose the default AMI.
+  </li>
+  <li>
+   Select an instance type from the list.  If you just created a new account, the "t2.micro" type may be free.  Otherwise, "m3.large" is a nice, simple choice.
+  </li>
+  <li>
+   Click the
+   <strong>
+    Configure details
+   </strong>
+   button.
+  </li>
+  <li>
+   For HTCondor to find this launch configuration, it
+   <em>
+    must
+   </em>
+   be named "HTCondorAnnex1".
+  </li>
+  <li>
+   If you're not able to use AWS' free tier, the cheapest way to experiment is the Spot instances; see FIXME for details.  The simplest way (because you instances won't vanish unexpectedly) is without Spot instances.
+  </li>
+  <li>
+   Click the the
+   <em>
+    5. Configure Security Group
+   </em>
+   link at the top.
+  </li>
+  <li>
+   Click "Select an
+   <strong>
+    existing
+   </strong>
+   security group" and make sure the default security group (or the security you created) is selected.
+  </li>
+  <li>
+   Hit the
+   <strong>
+    Review
+   </strong>
+   button.
+  </li>
+  <li>
+   Hit the
+   <strong>
+    Create launch configuration
+   </strong>
+   button.
+  </li>
+  <li>
+   Select the EC2 keypair you created in step 5 of Martin Kandes' instructions.
+  </li>
+  <li>
+   Click the acknowledgement and the
+   <strong>
+    Create launch configuration
+   </strong>
+   button.
+  </li>
+  <li>
+   Now hit the "Cancel" link at the bottom --
+   <code>
+    condor_annex
+   </code>
+   will create the autoscaling group(s) you need for you.
+  </li>
+ </ol>
+ <p>
+  You only need one launch configuration to get started, but if you want to another instance types later, just change the name to "HTCondorAnnex2".
+  <code>
+   condor_annex
+  </code>
+  will recognize and use up to "HTCondorAnnex8".
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Start an Annex
+ </h2>
+ <p>
+  The minimal set of options to start an annex follows:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_annex --project-id MyFirstAnnex --instances 3 --expiry "2017-01-20 17:18:19"
+</pre>
+ </div>
+ <p>
+  <em>
+   [The collector address and the password file path are both extracted from the command environment's HTCondor configuration.  The password file is uploaded to a private S3 bucket managed by condor_annex; the location is passed into the custom AMI via the usual instance contextualization methods.]
+  </em>
+ </p>
+ <p>
+  This command will return after HTCondor has set up the lease and requested that Amazon start 3 instances of the type(s) you specified.
+ </p>
+ <p>
+  <em>
+   [The tool allows you to create a set of default launch configurations, so you don't have to type them in every time, but specifying an example type on the command-line is a much faster way to get started.]
+  </em>
+ </p>
+ <p>
+  It will take a few minutes for the annex's slots to show up, but they will be assigned in the next negotiation cycle (which may also take a few minutes), and your jobs will start running shortly after that.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Monitor your Annex
+ </h2>
+ <p>
+  The following command line will print out the usual
+  <code>
+   condor_status
+  </code>
+  information for the annex you specify:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_status -annex MyFirstAnnex
+ip-172-31-48-84.ec2.internal  LINUX      X86_64 Claimed   Busy      0.640 3767
+ip-172-31-54-121.ec2.internal LINUX      X86_64 Claimed   Busy      0.880 3767
+ip-172-31-56-45.ec2.internal  LINUX      X86_64 Claimed   Busy      0.600 3767
+
+              Total Owner Claimed Unclaimed Matched Preempting Backfill  Drain
+ X86_64/LINUX    11     0      11         0       0          0        0      0
+        Total    11     0      11         0       0          0        0      0
+</pre>
+ </div>
+ <p>
+ </p>
+ <div class="restricted">
+  <i>
+   [This is entirely equivalent to
+  </i>
+  <tt>
+   condor_status -const 'AnnexName =?= MyFirstAnnex'
+  </tt>
+  <i>
+   so it should be easy to implement.]
+  </i>
+ </div>
+ In this case, all three of the slots you requested have already started to run jobs.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Stop an Annex
+ </h2>
+ <p>
+  If you're already familiar with the
+  <code>
+   condor_off
+  </code>
+  command, you can use it to turn off HTCondor on the annex nodes; the default image is configured so that this will also shut down the machine.  To shut down each machine in an annex, use the following command-line:
+ </p>
+ <p>
+ </p>
+ <div class="term">
+  <pre class="term">$ condor_off -annex MyFirstAnnex
+</pre>
+ </div>
+ <p>
+ </p>
+ <div class="restricted">
+  <i>
+   [This is entirely equivalent to
+  </i>
+  <tt>
+   condor_off -const 'AnnexName =?= MyFirstAnnex'
+  </tt>
+  <i>
+   so it should be easy to implement.]
+  </i>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html/">HTCondor Week</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/release-notes/">Contribute</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

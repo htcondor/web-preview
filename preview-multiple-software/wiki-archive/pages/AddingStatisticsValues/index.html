@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-multiple-software/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-multiple-software/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-multiple-software/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Adding Statistics Values</title>
+
+    <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-multiple-software/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header" class="bg-light mb-4 ">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Software
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor-CE
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="help-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Documentation
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="help-support-toggle">
+                            <li class="dropdown">
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
+                                    HTCondor
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
+                                    HTCondor-CE
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Software
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Help & Support
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Community
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class="border d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor-CE</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="help-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Documentation</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor/">HTCondor</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor-ce/">HTCondor-CE</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Email Lists</th></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Professional Support</th></tr>
+                        <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Internal Contract Support</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor Week</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html">Content Archives</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>CHTC</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl p-4">
+    <h1>Adding Statistics Values</h1>
+<div id="content">
+ <code>
+  condor_utils
+ </code>
+ has classes designed to make measuring and publishing statistics about the performance of code easy.  The classes are defined in
+ <code>
+  generic_stats.h
+ </code>
+ <p>
+  This consists of a set of simple templatized classes that you add as member variables to your code, or to a helper class or structure. The most commonly used of these is the
+  <code>
+   stats_entry_recent
+  </code>
+  class.  This class keeps track of a total value, and also uses a ring buffer to keep track of recent values.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Adding statistics values to an existing collection
+ </h3>
+ To add a statistics value where there is already an existing collection of values, do the following:
+ <p>
+ </p>
+ <ul>
+  <li>
+   Declare a member of type
+   <code>
+    stats_entry_xxx
+   </code>
+   and add it to the stats collection class. the most common type is
+   <code>
+    stats_entry_recent
+   </code>
+   .  The collection is a member of type
+   <em>
+    <span class="quote">
+     StatisticsPool
+    </span>
+   </em>
+   and is usually
+named
+   <em>
+    Pool
+   </em>
+  </li>
+  <li>
+   Set or increment the variable in the code to be measured.
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Adding a statistics value when there isn't a collection
+ </h3>
+ At the most basic level, use generic statistics by:
+ <p>
+ </p>
+ <ul>
+  <li>
+   Add member variables of type
+   <code>
+    stats_entry_xxx
+   </code>
+   to your class or as a static or global
+  </li>
+  <li>
+   Set the size of the recent buffer if the type is
+   <code>
+    stats_entry_recent
+   </code>
+   (you can do this in the constructor)
+  </li>
+  <li>
+   Set or increment the variable in the code to be measured.
+  </li>
+  <li>
+   Periodically call the
+   <code>
+    Advance
+   </code>
+   or
+   <code>
+    AdvanceBy
+   </code>
+   method to rotate the recent buffer
+  </li>
+  <li>
+   call the
+   <code>
+    Publish
+   </code>
+   method to write the value as a
+   <span class="quote">
+    ClassAd
+   </span>
+   attribute.
+  </li>
+ </ul>
+ <p>
+  Below is code suitable for creating an object that keeps track of times.
+ </p>
+ <div class="code">
+  <pre class="code">
+class MyObject {
+    ...
+    // declare a statistics counter
+    stats_entry_recent&lt;time_t&gt; myObjectRuntime;
+    ...
+};
+
+// set statistics recent buffer to 4 items in the constructor
+void MyObject::MyObject()
+    : myObjectRuntime(4)
+{
+}
+
+// update the counter value in one of my worker methods
+void MyObject::MyWorkerMethod() {
+    time_t begintime = time(NULL);
+
+    // advance the recent buffer if enough time has passed.
+    time_t delta = (begintime - last_rotate_time);
+    if (delta &gt; time_quantum) {
+       myObjectRuntime.AdvanceBy(delta/time_quantum);
+       last_rotate_time = begintime - (delta % time_quantum);
+    }
+
+    // ... do some work
+
+    // accumulate statistics data
+    myObjectRuntime += time(NULL) - begintime;
+}
+
+// publish the counter value(s) in another worker method
+void MyObject::MyPublishStatisticsMethod(ClassAd &amp; ad) {
+
+    if (publish_all) {
+       myObjectRuntime.Publish(ad, "ObjectRuntime");
+    } else {
+      // publish the overall value
+      myObjectRuntime.Publish(ad, "ObjectRuntime", myObjectRuntime.PubValue);
+      // publish the recent value
+      myObjectRuntime.Publish(ad, "RecentObjectRuntime", myObjectRuntime.PubRecent);
+    }
+
+}
+</pre>
+ </div>
+ <p>
+  The
+  <code>
+   myObjectRuntime
+  </code>
+  member will accumulate overall runtime and runtime within the recent window.  In this the above example, the recent window consists of 4 intervals, with the interval advancing whenever you call the
+  <code>
+   Advance
+  </code>
+  or
+  <code>
+   AdvanceBy
+  </code>
+  methods on myObjectRuntime. You would commonly advance based on elapsed time, and there is a helper function in generic_stats.cpp
+  <code>
+   generic_stats_Tick
+  </code>
+  , that will advance a collection of counters on that basis.
+ </p>
+ <p>
+  The published
+  <span class="quote">
+   ClassAd
+  </span>
+  attribute data types will be the same as the templatized data type.
+  <code>
+   int
+  </code>
+  ,
+  <code>
+   double
+  </code>
+  are supported in
+  <span class="quote">
+   ClassAds
+  </span>
+  . time_t values will be published as
+  <code>
+   int
+  </code>
+  .
+ </p>
+ <p>
+  More sophisticated counters can be built by using a class as the template parameter to
+  <code>
+   stats_entry_recent
+  </code>
+  . For instance
+  <code>
+   stats_entry_recent&lt;Probe&gt;
+  </code>
+  will store and publish count,min,max,average,and standard deviation for a sample value and a recent window of the values.  The
+  <code>
+   Probe
+  </code>
+  class does count,min,max etc, and the
+  <code>
+   stats_entry_recent
+  </code>
+  class will manage a total and recent buffer of =Probe=s.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Creating a new statistics collection
+ </h3>
+ <p>
+  It is common to have multiple statistics values to measure a subsystem that are intended to be published together. When this is the case is most convenient to gather then up into a container class/struct and then add a
+  <span class="quote">
+   StatisticsPool
+  </span>
+  member to the class so that you can use it's methods to Clear, Publish and Advance the collection of counters as a unit.
+ </p>
+ <p>
+  Counters of type stats_entry_recent&lt;&gt; contain a ring buffer, so that values from the past can be discarded. The usual way to do this is to decide how long you want to keep values (the window), and how precisely you want to keep track of the time a value was added (the time quantum).  The number of entries in the ring buffer becomes window/quantum, so there is a trade-off between memory used by a statistics counter and how accurately it keeps track of time.
+ </p>
+ <p>
+  As a general rule a statistics collection is defined by where and when the data will be gathered rather rather than by how and where the data is published.
+ </p>
+ <p>
+  If there is a need to publish the same value in more than one
+  <span class="quote">
+   ClassAd
+  </span>
+  with a different name in each add, this can be accomplished by calling the Publish methods of the counters explicitly or adding the counters to the
+  <span class="quote">
+   StatisticsPool
+  </span>
+  multiple times with different names.
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   create a structure or class to hold your probes
+   <br/>
+   <ul>
+    <li>
+     use
+     <code>
+      stats_entry_recent&lt;type&gt;
+     </code>
+     for probes that should publish recent values (i.e. number of jobs that have finished)
+     <br/>
+    </li>
+    <li>
+     use
+     <code>
+      stats_entry_abs&lt;type&gt;
+     </code>
+     for probes that are instantaneous values for which you may want to publish a max value (i.e. number of shadow currently alive)
+     <br/>
+    </li>
+    <li>
+     use
+     <code>
+      stats_recent_counter_timer
+     </code>
+     for probes that accumulate runtime
+    </li>
+    <li>
+     use
+     <code>
+      stats_entry_probe&lt;type&gt;
+     </code>
+     for probes that publish min,max,avg,stdev
+     <br/>
+    </li>
+    <li>
+     use
+     <code>
+      stats_entry_recent&lt;Probe&gt;
+     </code>
+     for probes that publish min,max,avg,stdev and also keep a recent buffer of the same.
+     <br/>
+    </li>
+   </ul>
+  </li>
+  <li>
+   give your stats class methods for
+   <code>
+    Init
+   </code>
+   ,
+   <code>
+    Clear
+   </code>
+   ,
+   <code>
+    Tick
+   </code>
+   , and
+   <code>
+    Publish
+   </code>
+   , and have those methods call the corresponding methods on the  member variable of type
+   <em>
+    <span class="quote">
+     StatisticsPool
+    </span>
+   </em>
+   .
+  </li>
+ </ul>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">class MyStats {
+    time_t                  InitTime;
+    time_t                  Lifetime;
+    time_t                  LastUpdateTime;
+    time_t                  RecentLifetime;
+    time_t                  RecentTickTime;
+
+    stats_entry_recent&lt;int&gt; JobsSubmitted;
+    stats_entry_recent&lt;time_t&gt; JobsTimeToStart;
+    stats_entry_recent&lt;double&gt; JobsRunningTime;
+    ... etc
+
+    StatisticsPool  Pool;
+
+    void Init();
+    void Clear();
+    void Tick();
+    void Publish(ClassAd &amp; ad) const;
+    void Unpublish(ClassAd &amp; ad) const;
+
+} MyStats;
+</pre>
+ </div>
+ <p>
+  Then, in your C++ source file for the
+  <code>
+   MyStats
+  </code>
+  class:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">void MyStats::Init()
+{
+   const int recent_window = 60*20;
+   const int window_quantum = 60*4;
+
+   Pool.AddProbe("JobsSubmitted", &amp;JobsSubmitted);
+   Pool.AddProbe("JobsTimeToStart", &amp;JobsTimeToStart);
+   Pool.AddProbe("JobsRunningTime", &amp;JobsRunningTime);
+   Pool.SetRecentMax(recent_window, window_quantum);
+}
+
+void MyStats::Clear()
+{
+   Pool.Clear();
+   this-&gt;InitTime = time(NULL);
+   this-&gt;StatsLifetime = 0;
+   this-&gt;StatsLastUpdateTime = 0;
+   this-&gt;RecentStatsTickTime = 0;
+   this-&gt;RecentStatsLifetime = 0;
+}
+
+void MyStats::Publish(ClassAd &amp; ad, int flags) const
+{
+   Pool.Publish(ad, flags);
+}
+
+void MyStats::Unpublish(ClassAd &amp; ad) const
+{
+   Pool.Unpublish(ad);
+}
+
+void MyStats::Tick()
+{
+   const int my_window  = 20*60; // seconds
+   const int my_quantum = 4*60;  // in seconds
+
+   int cAdvance = generic_stats_Tick(
+      my_window,
+      my_quantum,
+      this-&gt;InitTime,
+      this-&gt;LastUpdateTime,
+      this-&gt;RecentTickTime,
+      this-&gt;Lifetime,
+      this-&gt;RecentLifetime);
+   if (cAdvance)
+      Pool.Advance(cAdvance);
+}
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Adding statistics values at runtime
+ </h3>
+ <p>
+  Probes can be added to the
+  <span class="quote">
+   StatisticsPool
+  </span>
+  at runtime.  They can also be queried out of the pool, athough this is more expensive and error-prone than merely referencing a member variable.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">class MyStats {
+    ...
+
+    StatisticsPool  Pool;
+
+    ...
+
+    void NewProbe(const char * category, const char * ident, int as_type);
+    void Sample(const char * ident, int val);
+    void Sample(const char * ident, double val);
+
+} MyStats;
+
+// create a new probe with name name
+//
+void MyStats::NewProbe(const char * category, const char * ident, int as_type)
+{
+    MyString attr;
+    attr.sprintf("MYStat_%s_%s", category, ident);
+    cleanStringForUseAsAttr(attr);
+
+    int flags = IF_BASICPUB;
+    int cRecent = my_window / my_quantum;
+    switch (as_type)
+    {
+    case STATS_ENTRY_TYPE_INT32 | AS_RECENT:
+       {
+       stats_entry_recent&lt;int&gt; probe =
+       Pool.NewProbe&lt; stats_entry_recent&lt;int&gt; &gt;(ident, attr.Value(), flags);
+       probe-&gt;SetRecentMax(cRecent);
+       }
+       break;
+
+    case STATS_ENTRY_TYPE_DOUBLE | AS_RECENT:
+       {
+       stats_entry_recent&lt;double&gt; probe =
+       Pool.NewProbe&lt; stats_entry_recent&lt;double&gt; &gt;(ident, attr.Value(), flags);
+       probe-&gt;SetRecentMax(cRecent);
+       }
+       break;
+    }
+}
+
+void MyStats::Sample(const char * ident, int val)
+{
+    stats_entry_recent&lt;int&gt;* probe =
+    Pool.Get&lt; stats_entry_recent&lt;int&gt; &gt;(ident);
+    if (probe)
+       probe-&gt;Add(val);
+}
+
+void MyStats::Sample(const char * name, double val)
+{
+    stats_entry_recent&lt;double&gt;* probe =
+    Pool.Get&lt; stats_entry_recent&lt;double&gt; &gt;(ident);
+    if (probe)
+       probe-&gt;Add(val);
+}
+
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html/">HTCondor Week</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/release-notes/">Contribute</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

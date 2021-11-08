@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-multiple-software/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-multiple-software/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-multiple-software/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-multiple-software/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Limit Memory Usage</title>
+
+    <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-multiple-software/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+<header id="header" class="bg-light mb-4 ">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Software
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+                                </ul>
+                            </li>
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor-CE
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="help-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Documentation
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="help-support-toggle">
+                            <li class="dropdown">
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
+                                    HTCondor
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
+                                    HTCondor-CE
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Software
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Help & Support
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Community
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class="border d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor-CE</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="help-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Documentation</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor/">HTCondor</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor-ce/">HTCondor-CE</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Email Lists</th></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Professional Support</th></tr>
+                        <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Internal Contract Support</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor Week</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html">Content Archives</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>CHTC</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl p-4">
+    <h1>How To Limit Memory Usage</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to limit memory usage of jobs
+  </h2>
+ </span>
+ <p>
+  <em>
+   With HTCondor 8.0+ running on Operating Systems like RHEL6 that support cgroups, use the following methods to limit the memory used by jobs.  A less powerful, but more portable method is listed below in the section titled: Known to work with HTCondor version: 7.8+
+  </em>
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Known to work with HTCondor 8.0+ on Linux distros that fully support cgroups, such as RHEL6
+ </h3>
+ <p>
+  Proviso:  This configuration only works when the HTCondor daemons have been started as root, usually by the init process.  It will not work with a glided-in
+HTCondor or a personal condor.
+ </p>
+ <p>
+  First, configure cgroups as described in the manual in section "Cgroup-Based Process Tracking", in section 3.12:
+  <a class="external" href="http://research.cs.wisc.edu/htcondor/manual/current/3_12Setting_Up.html">
+   Cgroup-Based Process Tracking
+  </a>
+ </p>
+ <p>
+  Second, set the configuration parameter CGROUP_MEMORY_LIMIT_POLICY to hard.
+ </p>
+ <p>
+  Third, set the Request_Memory attribute in the job to the expected maximum physical memory needed by all the processes in the job.
+ </p>
+ <p>
+  HTCondor will then allocate an appropriately sized slot for your job, and
+configures the kernel to prevent it from allocating more physical pages for
+your job than requested.  Note this may cause swapping.  If the job would otherwise exhaust the memory requested, all the processes in the job will be
+killed by the out of memory killer, and the job will be put on hold.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Known to work with HTCondor version 7.8+
+ </h3>
+ <p>
+  Users can specify the amount of memory and disk space that their job needs by setting the following attributes in their job ad.
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <code>
+    RequestDisk
+   </code>
+   The amount of disk needed by the job in KB
+  </li>
+  <li>
+   <code>
+    RequestMemory
+   </code>
+   The amount of memory needed by the job in MB
+  </li>
+ </ul>
+ <p>
+  HTCondor matches jobs with resources by referencing the above in the job's
+  <code>
+   Requirements
+  </code>
+  expression, and by provisioning dynamic slots with resources greater than or equal to the requested amounts.
+ </p>
+ <p>
+  HTCondor monitors the total virtual memory usage of jobs.  This includes both physical RAM and disk-based virtual memory allocated by the job.  Information about the memory and disk usage of the job is stored in the job add using the following attributes. These attributes are also available for use in STARTD policy expressions.
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   <code>
+    DiskUsage
+   </code>
+   The amount of disk used in KB
+  </li>
+  <li>
+   <code>
+    MemoryUsage
+   </code>
+   The amount of memory used in MB
+  </li>
+  <li>
+   <code>
+    ImageSize
+   </code>
+   Maximum observed memory image size in KB
+  </li>
+  <li>
+   <code>
+    ResidentSetSize
+   </code>
+   The amount of virtual memory used in KB
+  </li>
+  <li>
+   <code>
+    ProportionalSetSize
+   </code>
+   when avaliable, this is a better measure of virtual memory used for jobs that have multiple processes that share memory.
+  </li>
+ </ul>
+ <p>
+  By default,
+  <code>
+   MemoryUsage
+  </code>
+  is an expression that converts
+  <code>
+   ResidentSetSize
+  </code>
+  to MB.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to preempt (evict) jobs that use too much memory
+ </h3>
+ <p>
+  Put the following in your configuration file on the execute machine.  This assumes that things like PREEMPT have already been defined further up in the configuration, so put it after the other stuff, or merge it into the other stuff.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># preempt jobs that are more than 10% over memory assigned to the slot.
+PREEMPT = $(PREEMPT) || ((MemoryUsage*1.1 &gt; Memory) =!= TRUE)
+WANT_SUSPEND = $(WANT_SUSPEND) &amp;&amp; ((MemoryUsage*1.1 &gt; Memory) =!= TRUE)
+</pre>
+ </div>
+ <p>
+  Note that preempted jobs will go back to idle in the job queue and will potentially try to run again if they can match to a machine.  If you instead wish to put the jobs on hold when they are evicted, either use the submit-side policy described later or, in HTCondor 7.3+, use the expression WANT_HOLD.  One advantage of using WANT_HOLD -vs- the submit-side policy example below is the startd will evaluate these attributes much more frequently than updates are sent to the schedd. An example using WANT_HOLD :
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># hold jobs that are more than 10% over memory assigned to the slot.
+MEMORY_EXCEEDED = ((MemoryUsage*1.1 &gt; Memory) =!= TRUE)
+PREEMPT = ($(PREEMPT)) || $(MEMORY_EXCEEDED)
+WANT_SUSPEND = $(WANT_SUSPEND) &amp;&amp; $(MEMORY_EXCEEDED)
+WANT_HOLD = $(MEMORY_EXCEEDED)
+WANT_HOLD_REASON = ifThenElse( $(MEMORY_EXCEEDED), \
+               "Your job used too much virtual memory.", \
+               undefined )
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to hold/remove a job that uses too much memory
+ </h3>
+ <p>
+  Jobs can hold or remove themselves by specifying a periodic_hold or periodic_remove expression.  The schedd can also hold or remove jobs as dictated by the configuration expressions SYSTEM_PERIODIC_HOLD or SYSTEM_PERIODIC_REMOVE.  These are all submit-side controls, whereas the PREEMPT example above is an execute-side control.  One problem with the PREEMPT example is that it doesn't do a very good job of communicating to the job owner why the job was evicted.  Putting the job on hold may help communicate better.  Then the user knows to resubmit the job with larger memory requirements or investigate why the job used more memory than it should have.  The following example configuration shows how to put jobs on hold from the submit-side when they use too much memory.  All of the same issues concerning accurate measurement of working set size apply here just as they did in the PREEMPT example above.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">
+# When a job matches, insert the machine memory into the
+# job ClassAd so periodic_remove can refer to it.
+MachineMemoryString = "$$(Memory)"
+SUBMIT_EXPRS = $(SUBMIT_EXPRS)  MachineMemoryString
+
+SYSTEM_PERIODIC_HOLD = MATCH_EXP_MachineMemory =!= UNDEFINED &amp;&amp; \
+                       MemoryUsage &gt; 0.9*int(MATCH_EXP_MachineMemoryString)
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to automatically increase request_memory of a held job
+ </h3>
+ <p>
+  Lets say I have a job with request_memory = 256 Megabytes, but if I go over it will get held according to my SYSTEM_PERIODIC_HOLD policy. I would like to
+automatically triple the request_memory and then release the job. A setup to do precisely this
+  <a class="external" href="https://lists.cs.wisc.edu/archive/htcondor-users/2013-December/msg00128.shtml">
+   was posted on the htcondor-users email list
+  </a>
+  .
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to place a hard limit on memory usage by a job in unix
+ </h3>
+ <p>
+  HTCondor doesn't currently provide a configuration setting for this, but you can write your own wrapper script that runs before the job and sets resource limits that are enforced by the operating system.  Here is what you put in the configuration file of your execute machines:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">USER_JOB_WRAPPER = /path/to/condor_job_wrapper
+</pre>
+ </div>
+ <p>
+  The file condor_job_wrapper above can be called whatever you want.  You should create that file with the following contents:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">#!/bin/sh
+
+# change this to the maximum allowed data segment size (in kilobytes)
+ulimit -d 1000000
+
+# run the job
+exec "$@"
+</pre>
+ </div>
+ <p>
+  Note that ulimit -m (maximum resident memory size) appears attractive, but it is not actually enforced on many operating systems.
+ </p>
+ <p>
+  Make sure the wrapper script is executable.  Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">chmod a+x /path/to/condor_job_wrapper
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html/">HTCondor Week</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/release-notes/">Contribute</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
