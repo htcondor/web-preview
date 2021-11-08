@@ -15,6 +15,8 @@
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-config" content="/web-preview/preview-multiple-software/assets/images/favicons/browserconfig.xml">
     <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <!-- Primary Meta Tags -->
     <meta name="title" content="HTCondor">
@@ -37,6 +39,7 @@
     <title>How To Allow Some Jobs</title>
 
     <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-multiple-software/assets/js/header.js" type="text/javascript" defer></script>
     <script src="/web-preview/preview-multiple-software/assets/js/bootstrap.js" type="text/javascript"></script>
     
 
@@ -50,95 +53,207 @@
     
 
 </head>
-<body class="vh-100 d-flex flex-column">
+<body class="d-flex flex-column">
 
 <!-- For non-visual user agents: -->
 <a id="skip-link" href="#main-copy">Skip to main content.</a>
 
-<header id="header">
-    <div class="mb-4 container">
-        <div class="row">
-            <div class="col-12">
-                <nav class="navbar navBar navbar-expand-lg navbar-light w-100">
-                    <a href="/web-preview/preview-multiple-software/index.html" class="d-none d-md-inline"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png" style="border:0"></a>
-                    <a href="/web-preview/preview-multiple-software/index.html" class="d-inline d-md-none"><img height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
-                            <li class="nav-item">
-                                <a class="nav-link " href="/web-preview/preview-multiple-software/">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                    Software
+<header id="header" class="bg-light mb-4 ">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    <li class="nav-item">
+                        <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Software
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="software-toggle">
-                                    <li class="dropstart">
-                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            HTCondor
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
-                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
-                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
-                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
-                                            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
-                                        </ul>
-                                    </li>
-                                    <li class="dropstart">
-                                        <a class="nav-link dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                            HTCondor-CE
-                                        </a>
-                                        <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
-                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
-                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
-                                            <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
-                                            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
-                                        </ul>
-                                    </li>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
                                 </ul>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="documentation-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
-                                    Documentation
+                            <li class="dropdown">
+                                <a class="dropdown-item dropdown-toggle" href="#" id="htcondor-ce-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    HTCondor-CE
                                 </a>
-                                <ul class="dropdown-menu" aria-labelledby="documentation-toggle">
-                                    <li class="dropstart">
-                                        <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
-                                            HTCondor
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
-                                            HTCondor-CE
-                                        </a>
-                                    </li>
+                                <ul class="dropdown-menu" aria-labelledby="htcondor-ce-toggle">
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></li>
+                                    <li><a class="dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></li>
+                                    <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
                                 </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
                             </li>
                         </ul>
-                    </div>
-                </nav>
-            </div>
-        </div>
-        <div class="row" style="height:40px">
-            
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="help-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                            Documentation
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="help-support-toggle">
+                            <li class="dropdown">
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor/documentation">
+                                    HTCondor
+                                </a>
+                            </li>
+                            <li>
+                                <a class="nav-link dropdown-item" href="/web-preview/preview-multiple-software/htcondor-ce/documentation" >
+                                    HTCondor-CE
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+                    </li>
+                    <li class="nav-item ms-2">
+                        <div style="height:40px; width: 250px;">
+                            
 
 <script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
 <div class="gcse-searchbox-only"></div>
 
 
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-multiple-software/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/CondorTitle.png"></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item">
+                            <a class="nav-link " href="/web-preview/preview-multiple-software/new">News</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Software
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Help & Support
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+                                Community
+                            </a>
+                        </li>
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class="border d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor-CE</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/overview/">Overview</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/documentation/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/download/">Download</a></td></tr>
+                        <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/downloads/">Download</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/security/">Security</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="help-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Documentation</th></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor/">HTCondor</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/documentation/htcondor-ce/">HTCondor-CE</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Email Lists</th></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+                        <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+                    </table>
+                </div>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>Professional Support</th></tr>
+                        <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/uw-support/">Internal Contract Support</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/htcondor-support#external-support/">Outside Support</a></td></tr>
+                    </table>
+                </div>
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+                <div class="col-auto mx-4 my-2">
+                    <table>
+                        <tr><th>HTCondor Week</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+                        <tr><td><a href="/web-preview/preview-multiple-software/past_condor_weeks.html">Content Archives</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>General</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                    <table>
+                        <tr><th>CHTC</th></tr>
+                        <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Staff &#11023;</a></td></tr>
+                        <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs</a></td></tr>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </header>
+
 <main id="main-copy" tabindex="-1">
-    <div class="container mb-4">
+    <div class="container-xxl p-4">
     <h1>How To Allow Some Jobs</h1>
 <div id="content">
  This wiki topic has moved.  See
@@ -152,23 +267,22 @@
 
 </div>
 </main>
-<footer id="footer" class="border-top bg-light pt-4 mt-auto">
-    <div class="container">
-        <div class="row">
-            <div class="col-2 d-none d-lg-flex">
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
                 <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-multiple-software/assets/images/HTCondor_red_blk.svg" />
             </div>
-            <div class="col-1 d-none d-lg-flex"></div>
-            <div class="col-12 col-lg-9">
+            <div class="col-12 col-sm-10 col-lg-7">
                 <div class="row justify-content-between my-2">
-                    <div class="col-auto m-2">
+                    <div class="col-auto my-2">
                         <table>
                             <tr><th>Suite</th></tr>
                             <tr><td><a href="/web-preview/preview-multiple-software/htcondor/">HTCondor</a></td></tr>
                             <tr><td><a href="/web-preview/preview-multiple-software/htcondor-ce/">HTCondor-CE</a></td></tr>
                         </table>
                     </div>
-                    <div class="col-auto m-2">
+                    <div class="col-auto my-2">
                         <table>
                             <tr><th>Software</th></tr>
                             <tr><td><a href="/web-preview/preview-multiple-software/manual/">Documentation</a></td></tr>
@@ -177,7 +291,7 @@
                             <tr><td><a href="/web-preview/preview-multiple-software/license/">License</a></td></tr>
                         </table>
                     </div>
-                    <div class="col-auto m-2">
+                    <div class="col-auto my-2">
                         <table>
                             <tr><th>Community</th></tr>
                             <tr><td><a href="/web-preview/preview-multiple-software/mail-lists/">Email Lists</a></td></tr>
@@ -185,7 +299,7 @@
                             <tr><td><a href="/web-preview/preview-multiple-software/release-notes/">Contribute</a></td></tr>
                         </table>
                     </div>
-                    <div class="col-auto m-2">
+                    <div class="col-auto my-2">
                         <table>
                             <tr><th>Support</th></tr>
                             <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
