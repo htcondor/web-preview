@@ -36,7 +36,7 @@
     <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
     <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
 
-    <title>Home</title>
+    <title>HTCONDOR-2020-0002</title>
 
     <script src="/web-preview/preview-multiple-software/assets/js/sitewide.js" type="text/javascript" defer></script>
     <script src="/web-preview/preview-multiple-software/assets/js/header.js" type="text/javascript" defer></script>
@@ -331,154 +331,116 @@
 
 <main id="main-copy" tabindex="-1">
     <div class="container-xxl p-4">
-    <div class="row mb-4">
-    <div class="col-12 col-md-8">
-        <h2>Computing with HTCondor&trade;</h2>
-        <p>
-            Our goal is to develop, implement, deploy, and evaluate mechanisms and policies that support <a href="htc.html">High Throughput Computing (HTC)</a> on large collections of distributively owned computing resources. Guided by both the technological and sociological challenges of such a computing environment, the <a href="http://chtc.cs.wisc.edu/">Center for High Throughput Computing</a> at UW-Madison has been building the open source <a href="description.html">HTCondor distributed computing software</a> (pronounced "aitch-tee-condor") and related technologies to enable scientists and engineers to increase their computing throughput.
-        </p>
-        <div class="text-danger">
-            Note: The HTCondor Software Suite (HTCSS) was known as 'Condor' from 1988 <a href="https://lists.cs.wisc.edu/archive/condor-users/2012-October/msg00110.shtml">until its name changed</a> in 2012.
-        </div>
-        <p>
-        If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
-        </p>
-    </div>
-    <div id="#new-container" class="news col-12 col-md-4 mb-2">
-        <div class="p-2 bg-light">
-            <h4 class="d-flex flex-row flex-md-column flex-lg-row">
-                Latest News
-                <a class="d-flex me-0 m-auto m-md-0 me-lg-0 m-lg-auto text-decoration-none" href="https://twitter.com/HTCondor?ref_src=twsrc%5Etfw">
-                    <div id="follow-twitter">
-                        <div id="twitter-icon">
-                            <img height="12px" src="/web-preview/preview-multiple-software/assets/images/twitter.svg" alt="Twitter Logo"/>
-                        </div>
-                        <div>
-                            Follow @HTCondor
-                        </div>
-                    </div>
-                </a>
-            </h4>
-            
-            
-            
+    <link href="/web-preview/preview-multiple-software/assets/css/vulnerabilities.css" rel="stylesheet">
 
+<h1>
+    HTCONDOR-2020-0002
+</h1>
+<hr>
+<table width='100%' summary='whole page'>
+<tr>
+    <td width='25%'><p class='h'>Summary:</p></td>
+    <td class='sv'><p class='v'>&nbsp;</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+        A piece of secret information is sent over the network in the clear if the administrator has not enabled daemon-to-daemon encryption.  For pools configured without daemon-to-daemon encryption, an attacker could use this secret information to control the slot of another user, including running their own code as that user.
+        <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-18823">CVE-2019-18823</a>
+    </p></td>
+</tr>
+<tr><td colspan='2'>
+<br><table class='sumtable' width='100%' summary='short values'>
+<tr>
+<th width='20%'>Component</th>
+<th width='20%'>Vulnerable Versions</th>
+<th width='20%'>Platform</th>
+<th width='20%'>Availability</th>
+<th width='20%'>Fix Available</th>
+</tr>
+<tr>
+<td class='sv'>condor_startd</td>
+<td class='sv'>All before 8.8.8 (stable) and 8.9.6 (devel)</td>
+<td class='sv'>all</td>
+<td class='sv'>not known to be publicly exploited</td>
+<td class='sv'>8.8.8, 8.9.6</td>
+</tr>
+<tr>
+<th width='20%'>Status</th>
+<th width='20%'>Access Required</th>
+<th width='20%'>Host Type Required</th>
+<th width='20%'>Effort Required</th>
+<th width='20%'>Impact/Consequences</th>
+</tr>
+<tr>
+<td class='sv'>Verified</td>
+<td class='sv'>ability to capture traffic between submit and execute machines</td>
+<td class='sv'>N/A</td>
+<td class='sv'>high</td>
+<td class='sv'>high</td>
+</tr>
+<tr>
+<th width='20%'>Fixed Date</th>
+<th width='20%'>Credit</th>
+</tr>
+<tr>
+<td class='sv'>2020-03-01</td>
+<td class='sv'>Todd Tannenbaum</td>
+</tr>
+</table>
+</td></tr>
+<tr>
+    <td width='25%'><p class='h'>Access Required:</p></td>
+	<td class='sv'><p class='v'>
+	</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+	Be able to capture network traffic between a condor_schedd and a condor_startd.  The condor_config settings must also be configured with no daemon-to-daemon encryption (the default) and match password authentication enabled (the default) to be vulnerable.
+    </p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Effort Required:</p></td>
+    <td class='sv'><p class='v'>high</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+        A thorough understanding of the HTCondor code and the ability to write custom tools is required to exploit this vulnerability.  If authentication has been set up for the pool and match password authentication is disabled, the attacker would also need to gain access to the condor credentials.  If encryption has also been set up for the pool, you are not vulnerable.
+    </p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Impact/Consequences:</p></td>
+    <td class='sv'><p class='v'>high</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+	Using the secret information, an attacker could manipulate another user's running job, including evicting that job or replacing that job with one that executes the attacker's own code.  This could possibly allow the attacker to get access to the user's job data files which may contain sensitive information.  Pools that are not configured to use daemon-to-daemon authentication or have match password authentication enabled (the default), and also are not using daemon-to-daemon encryption are vulnerable.
+</p></td>
+</tr>
+<tr>
+    <td width='25%'><p class='h'>Workaround:</p></td>
+</tr>
+<tr>
+    <td colspan='2' class='sv'><p>
+	Depending on your site configuration, the workaround for this issue may be quite complicated and involve setting up authentication mechanisms that were not previous configured.  We <b>highly</b> recommend upgrading to the latest version if at all possible, in which case you do not need to work around the issue as the new binaries are no longer vulnerable to this issue.
+<p>	To work around this issue, the administrator will first need to make sure that all daemon-to-daemon communication is authenticated.  How this works varies significantly depending on your site configuration.  Please consult the HowTo here:
+<blockquote><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=EnablingAuthenticationCveTwo">https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=EnablingAuthenticationCveTwo</a></blockquote>
+<p>     After enabling authentication, the administrator can then do one of two things:
+<ol>
+<li>	Configure execute machines to require encryption for daemon-to-daemon communications by setting "SEC_DAEMON_ENCRYPTION=REQUIRED" in your HTCondor config file on all execute machines.
+<li>	Disable match password authentication.  To disable match password authentication, set "SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION=False" in your HTCondor config file on all execute machines.  Be advised that disabling match password authentication can put significant extra load on the submit machines of a large pool (thousands of nodes).
+</ol>
+<p> After installing updated binaries or working around the issue, you should restart HTCondor.
+    </p></td>
+</tr>
 
+<tr>
+    <td width='25%'><p class='h'>Full Details:</p></td>
+    <td class='sv'>
+	Embargoed until future notice.
+    </td>
+</tr>
 
-
-<div class="event mb-1">
-  <a class="newsHeading" href="/web-preview/preview-multiple-software/news/HTCondor_9.2.0_released/">HTCondor 9.2.0 released!</a>
-  <div class="newsDate">
-    <small class="text-muted">September 23, 2021</small>
-  </div>
-</div>
-
-
-            
-            
-
-
-
-
-<div class="event mb-1">
-  <a class="newsHeading" href="/web-preview/preview-multiple-software/news/HTCondor_9.0.6_released/">HTCondor 9.0.6 released!</a>
-  <div class="newsDate">
-    <small class="text-muted">September 23, 2021</small>
-  </div>
-</div>
-
-
-            
-            
-
-
-
-
-<div class="event mb-1">
-  <a class="newsHeading" href="/web-preview/preview-multiple-software/news/HTCondor-CE_5.1.2_released/">HTCondor-CE 5.1.2 released!</a>
-  <div class="newsDate">
-    <small class="text-muted">September 23, 2021</small>
-  </div>
-</div>
-
-
-            
-            
-
-
-
-
-<div class="event mb-1">
-  <a class="newsHeading" href="/web-preview/preview-multiple-software/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a>
-  <div class="newsDate">
-    <small class="text-muted">September 22, 2021</small>
-  </div>
-</div>
-
-
-            
-            
-
-
-
-
-<div class="event mb-1">
-  <a class="newsHeading" href="/web-preview/preview-multiple-software/news/European_HTCondor_Workshop_2021_Next_Week/">European HTCondor Workshop 2021 Next Week</a>
-  <div class="newsDate">
-    <small class="text-muted">September 13, 2021</small>
-  </div>
-</div>
-
-
-            
-
-            <div class="more"><a href="new.html">More News &raquo;</a></div>
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-<div class="row border-top">
-    <div class="col-12 col-md-4 pt-4 ps-4 p-2">
-        <h3>Software</h3>
-        <ul>
-            <li><a href="description.html">What is the HTCondor Software Suite (HTCSS)?</a></li>
-            <li><a href="downloads.html"><strong>Downloads</strong></a> including HTCondor and HTCondor-CE source and binaries.</li>
-            <li><a href="manual/"><strong>Documentation</strong></a> includes the Quick Start Guides and Manuals.</li>
-            <li><a href="htcondor-support/">Support Options</a> include community and professional solutions.</li>
-            <li><a href="https://htcondor-wiki.cs.wisc.edu/index.cgi/wiki?p=DeveloperReleasePlan">Forthcoming release plans</a></li>
-            <li><a href="license.html">License Information</a></li>
-            <li><a href="security/">Security Information</a></li>
-        </ul>
-    </div>
-
-    <div class="col-12 col-md-4 pt-4 ps-4 p-2 border-start border-end">
-        <h3>Community</h3>
-        <ul>
-            <li><a href="mail-lists/"><strong>Email Lists</strong></a> - ask questions and share experiences with users worldwide.</li>
-            <li><a href="https://agenda.hep.wisc.edu/event/1579/">HTCondor Week</a> is our annual community meeting in Madison, and we often have an annual meeting in Europe as well. <a href="past_condor_weeks.html">Materials from past meetings</a> include talks from science and industry, plus <strong>useful tutorials</strong>.</li>
-            <li><a href="http://condor-wiki.cs.wisc.edu/index.cgi/wiki">HTCondor Wiki</a> contains <a href="https://condor-wiki.cs.wisc.edu/index.cgi/wiki?p=HowToAdminRecipes">FAQs</a>, bug tickets, and more. </li>
-            <!-- <li><a href="http://htcondor.github.com/planet/">Blog Posts</a> aggregated at GitHub from multiple sites.</li> -->
-            <li><a href="logos/">Official Logos</a></li>
-            <!-- <li><a href="talks.html">Slide Presentations</a></li> -->
-        </ul>
-    </div>
-
-    <div class="col-12 col-md-4 pt-4 ps-4 p-2">
-        <h3>Research and Development</h3>
-        <ul>
-            <li><a href="publications.html"><strong>Research Publications</strong></a></li>
-            <li><a href="research.html">HTCondor Technologies</a> including the widely used <a href="classad/classad.html">ClassAd Library</a></li>
-            <li><a href="https://condor-wiki.cs.wisc.edu/index.cgi/wiki?p=MakingContributions">Information for Developers</a></li>
-            <li><a href="http://chtc.cs.wisc.edu/jobs">Jobs</a> available in support of distributed computing at UW-Madison</li>
-            <li><a href="people.html">The CHTC Team</a> at the UW-Madison, and <a href="https://condor-wiki.cs.wisc.edu/index.cgi/wiki?p=DeveloperHomePages">a list of code contributors and maintainers.</a></li>
-        </ul>
-    </div>
-</div>
+</table>
 
 
 
