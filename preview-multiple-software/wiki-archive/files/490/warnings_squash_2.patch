@@ -1,0 +1,986 @@
+From 759f7744f0413c46aa5af7e0e15d62a8e98f4ddd Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Wed, 26 Oct 2011 01:19:37 -0500
+Subject: [PATCH 1/4] Wrong variable name in the return value check.
+
+---
+ src/condor_privsep/safe.unix.cpp |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/src/condor_privsep/safe.unix.cpp b/src/condor_privsep/safe.unix.cpp
+index e87d8bb..005f039 100644
+--- a/src/condor_privsep/safe.unix.cpp
++++ b/src/condor_privsep/safe.unix.cpp
+@@ -132,7 +132,7 @@ void setup_err_stream(int fd)
+ 
+     flags |= FD_CLOEXEC;
+     r = fcntl(new_fd, F_SETFD, flags);
+-    if (flags == -1) {
++    if (r == -1) {
+         fatal_error_exit(1, "fcntl F_SETFD failed on fd=%d: %s", new_fd,
+                          strerror(errno));
+     }
+-- 
+1.7.6.4
+
+
+From 2b5a1efa39b793948a2173b6da18d083aea6c8bc Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Wed, 26 Oct 2011 01:24:40 -0500
+Subject: [PATCH 2/4] Fix a function in the procapi that doesnt return a
+ value.
+
+---
+ src/condor_procapi/procapi.cpp |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+diff --git a/src/condor_procapi/procapi.cpp b/src/condor_procapi/procapi.cpp
+index 9cc8dfc..6b1a591 100644
+--- a/src/condor_procapi/procapi.cpp
++++ b/src/condor_procapi/procapi.cpp
+@@ -575,6 +575,12 @@ ProcAPI::getPSSInfo( pid_t pid, procInfoRaw& procRaw, int &status )
+ 		fclose( fp );
+ 		fp = NULL;
+ 	}
++
++	if (status == PROCAPI_OK) {
++		return PROCAPI_SUCCESS;
++	} else {
++		return PROCAPI_FAILURE;
++	}
+ }
+ #endif
+ 
+-- 
+1.7.6.4
+
+
+From f3e8ee3f9f5605e898f53520758eefd27fefa601 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Wed, 26 Oct 2011 01:49:23 -0500
+Subject: [PATCH 3/4] Round of warning smashing.
+
+---
+ src/classad/classad_functional_tester.cpp |    4 ++--
+ src/classad/indexfile.cpp                 |    4 ++--
+ src/condor_privsep/switchboard.unix.cpp   |    2 --
+ src/condor_utils/classad_helpers.cpp      |    4 ++--
+ src/condor_utils/condor_q.cpp             |    2 +-
+ src/condor_utils/condor_sockfunc.cpp      |    4 ++++
+ src/condor_utils/cron_job.cpp             |    2 +-
+ src/condor_utils/do_connect.unix.cpp      |    2 --
+ src/condor_utils/fdpass.unix.cpp          |    5 +++--
+ src/condor_utils/generic_stats.h          |    3 ++-
+ src/condor_utils/jobqueuedatabase.h       |    4 ++--
+ 11 files changed, 19 insertions(+), 17 deletions(-)
+
+diff --git a/src/classad/classad_functional_tester.cpp b/src/classad/classad_functional_tester.cpp
+index 105dbf1..dfdb19b 100644
+--- a/src/classad/classad_functional_tester.cpp
++++ b/src/classad/classad_functional_tester.cpp
+@@ -128,7 +128,7 @@ void handle_echo(string &line, State &state, Parameters &parameters);
+ void handle_print(string &line, State &state, Parameters &parameters);
+ void handle_help(void);
+ void print_version(void);
+-void print_error_message(char *error, State &state);
++void print_error_message(const char *error, State &state);
+ void print_error_message(string &error, State &state);
+ void print_final_state(State &state);
+ bool line_is_comment(string &line);
+@@ -1408,7 +1408,7 @@ void print_version(void)
+  *
+  *********************************************************************/
+ void print_error_message(
+-    char  *error, 
++    const char  *error, 
+     State &state)
+ {
+     string error_s = error;
+diff --git a/src/classad/indexfile.cpp b/src/classad/indexfile.cpp
+index ef6a2ea..0e24210 100644
+--- a/src/classad/indexfile.cpp
++++ b/src/classad/indexfile.cpp
+@@ -47,8 +47,8 @@ TruncateStorageFile()
+ {
+ 	int cur_set;
+ 	int new_filed;
+-	char* filename="temp_file";
+-	char* logfilename="storagefile";
++	const char* filename="temp_file";
++	const char* logfilename="storagefile";
+ 
+ 	cur_set = 0;
+ 
+diff --git a/src/condor_privsep/switchboard.unix.cpp b/src/condor_privsep/switchboard.unix.cpp
+index dee2679..91841cf 100644
+--- a/src/condor_privsep/switchboard.unix.cpp
++++ b/src/condor_privsep/switchboard.unix.cpp
+@@ -750,14 +750,12 @@ static char *do_common_dir_cmd_tasks(configuration *c,
+                                      int is_chown_dir)
+ {
+     const char *pathname;
+-    uid_t uid;
+     int r;
+     char *dir_parent;
+     char *dir_name;
+ 
+     process_dir_cmd_config(dir_cmd_conf, is_rmdir, is_chown_dir);
+ 
+-    uid = dir_cmd_conf->user_uid;
+     pathname = dir_cmd_conf->user_dir;
+ 
+     dir_parent = strdup(pathname);
+diff --git a/src/condor_utils/classad_helpers.cpp b/src/condor_utils/classad_helpers.cpp
+index 082b9d3..cdc6f1c 100644
+--- a/src/condor_utils/classad_helpers.cpp
++++ b/src/condor_utils/classad_helpers.cpp
+@@ -57,7 +57,7 @@ int cleanStringForUseAsAttr(MyString &str, char chReplace/*=0*/, bool compact/*=
+    str.trim();
+    for (int ii = 0; ii < str.Length(); ++ii) {
+       char ch = str[ii];
+-      if (ch == '_' || ch >= '0' && ch <= '9' || ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z')
++      if (ch == '_' || (ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
+          continue;
+       str.setChar(ii,chReplace);
+       }
+@@ -84,7 +84,7 @@ bool canStringBeUsedAsAttr(const char * pattr)
+    for (const char * psz = pattr; *psz; ++psz)
+       {
+       char ch = *psz;
+-      if (ch == '_' || ch >= '0' && ch <= '9' || ch >= 'A' && ch <= 'Z' || ch >= 'a' && ch <= 'z')
++      if (ch == '_' || (ch >= '0' && ch <= '9') || (ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
+          continue;
+       return false;
+       }
+diff --git a/src/condor_utils/condor_q.cpp b/src/condor_utils/condor_q.cpp
+index c57e89f..a476076 100644
+--- a/src/condor_utils/condor_q.cpp
++++ b/src/condor_utils/condor_q.cpp
+@@ -544,7 +544,7 @@ CondorQ::getFilterAndProcessAds( const char *constraint,
+ 		free(attrs_str);
+ 
+ 		while( true ) {
+-			ClassAd *ad = new ClassAd;
++			ad = new ClassAd;
+ 			if( GetAllJobsByConstraint_Next( *ad ) != 0 ) {
+ 				delete ad;
+ 				break;
+diff --git a/src/condor_utils/condor_sockfunc.cpp b/src/condor_utils/condor_sockfunc.cpp
+index 084cea0..6491c19 100644
+--- a/src/condor_utils/condor_sockfunc.cpp
++++ b/src/condor_utils/condor_sockfunc.cpp
+@@ -168,6 +168,10 @@ hostent* condor_gethostbyaddr_ipv6(const condor_sockaddr& addr)
+ 		sockaddr_in6* sin6 = (sockaddr_in6*)sa;
+ 		p_addr = (const char*)&sin6->sin6_addr;
+ 		len = sizeof(in6_addr);
++	} else {
++		// Taking a guess at the error code.
++		h_errno = NO_ADDRESS;
++		return NULL;
+ 	}
+ 
+ 	ret = gethostbyaddr(p_addr, len, type);
+diff --git a/src/condor_utils/cron_job.cpp b/src/condor_utils/cron_job.cpp
+index eeb07b2..46f9b97 100644
+--- a/src/condor_utils/cron_job.cpp
++++ b/src/condor_utils/cron_job.cpp
+@@ -473,7 +473,7 @@ CronJob::ProcessOutputQueue( void )
+ 			m_num_outputs++;			// Increment # of valid output blocks
+ 		}
+ 	}
+-	return 0;
++	return status;
+ }
+ 
+ // Start a job
+diff --git a/src/condor_utils/do_connect.unix.cpp b/src/condor_utils/do_connect.unix.cpp
+index 004dcb4..8fb21c3 100644
+--- a/src/condor_utils/do_connect.unix.cpp
++++ b/src/condor_utils/do_connect.unix.cpp
+@@ -222,7 +222,6 @@ int tcp_connect_timeout( int sockfd, struct sockaddr *sinful, int len,
+ 	fd_set			writefds;
+ 	int				nfound;
+ 	int				nfds;
+-	int				tmp_errno;
+ 	socklen_t		sz;
+ 	int				val = 0;
+ 	int				save_errno;
+@@ -245,7 +244,6 @@ int tcp_connect_timeout( int sockfd, struct sockaddr *sinful, int len,
+ 
+ 	/* try the connect, which will return immediately */
+ 	if( connect(sockfd, sinful,len) < 0 ) {
+-		tmp_errno = errno;
+ 		switch( errno ) {
+ 			case EAGAIN:
+ 			case EINPROGRESS:
+diff --git a/src/condor_utils/fdpass.unix.cpp b/src/condor_utils/fdpass.unix.cpp
+index 540361d..2b2b7d0 100644
+--- a/src/condor_utils/fdpass.unix.cpp
++++ b/src/condor_utils/fdpass.unix.cpp
+@@ -45,7 +45,7 @@ fdpass_send(int uds_fd, int fd)
+ 	cmsg->cmsg_level = SOL_SOCKET;
+ 	cmsg->cmsg_type = SCM_RIGHTS;
+ 	cmsg->cmsg_len = CMSG_LEN(sizeof(int));
+-	*(int*)CMSG_DATA(cmsg) = fd;
++	memcpy(CMSG_DATA(cmsg), &fd, sizeof(int));
+ 
+ 	ssize_t bytes = sendmsg(uds_fd, &msg, 0);
+ 	if (bytes == -1) {
+@@ -113,7 +113,8 @@ fdpass_recv(int uds_fd)
+ 	}
+ 
+ 	struct cmsghdr* cmsg = CMSG_FIRSTHDR(&msg);
+-	int fd = *(int*)CMSG_DATA(cmsg);
++	int fd;
++	memcpy(&fd, CMSG_DATA(cmsg), sizeof(int));
+ 
+ 	free(buf);
+ 	return fd;
+diff --git a/src/condor_utils/generic_stats.h b/src/condor_utils/generic_stats.h
+index d752e8a..a8c064a 100644
+--- a/src/condor_utils/generic_stats.h
++++ b/src/condor_utils/generic_stats.h
+@@ -296,7 +296,8 @@ public:
+       if ( ! pbuf) SetSize(2);
+ 
+       // advance the head item pointer
+-      ixHead = (++ixHead) % cMax;
++      ++ixHead;
++      ixHead %= cMax;
+ 
+       // if we have room to add an item without overwriting one
+       // then also grow the counter.
+diff --git a/src/condor_utils/jobqueuedatabase.h b/src/condor_utils/jobqueuedatabase.h
+index b44e7d9..2994b64 100644
+--- a/src/condor_utils/jobqueuedatabase.h
++++ b/src/condor_utils/jobqueuedatabase.h
+@@ -190,13 +190,13 @@ public:
+ 		this->releaseQueryResult();		
+ 	}
+ 
+-	void emailDBError(int errorcode, const char *dbtype) {
++	void emailDBError(int errorcode, const char *dbtype2) {
+ 		FILE *email;
+ 		char msg_body[4000];
+ 		
+ 		snprintf(msg_body, 4000, "Database system error occurred: error code = "
+ 				 "%d, database type = %s\n", 
+-				 errorcode, dbtype);
++				 errorcode, dbtype2);
+ 
+ 		email = email_admin_open(msg_body);
+ 
+-- 
+1.7.6.4
+
+
+From 401cec1b2d98b505f68cd6e73d3927bd22cfa0c9 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Thu, 27 Oct 2011 20:32:11 -0500
+Subject: [PATCH 4/4] Squash gcc-inspired warnings.
+
+---
+ src/classad_analysis/analysis.cpp      |    2 --
+ src/classad_analysis/multiProfile.cpp  |    4 ++--
+ src/classad_analysis/profile.cpp       |    4 ++--
+ src/condor_ckpt_server/network2.cpp    |    2 +-
+ src/condor_ckpt_server/network2.h      |    2 +-
+ src/condor_daemon_client/daemon.cpp    |    8 ++++----
+ src/condor_daemon_client/dc_credd.cpp  |    2 +-
+ src/condor_daemon_client/dc_master.cpp |    3 ---
+ src/condor_includes/condor_auth_x509.h |    2 +-
+ src/condor_includes/dprintf_internal.h |   12 ++++++------
+ src/condor_includes/reli_sock.h        |    2 +-
+ src/condor_includes/sock.h             |    2 +-
+ src/condor_io/authentication.cpp       |    8 ++++----
+ src/condor_io/cedar_no_ckpt.cpp        |    2 +-
+ src/condor_io/condor_auth_x509.cpp     |   17 +++++++++++------
+ src/condor_io/condor_ipverify.cpp      |    4 ++--
+ src/condor_io/condor_rw.cpp            |    2 +-
+ src/condor_io/condor_rw.h              |    2 +-
+ src/condor_io/reli_sock.cpp            |    6 +++---
+ src/condor_io/sock.cpp                 |    6 ++++--
+ src/condor_utils/dprintf.cpp           |   11 ++---------
+ src/condor_utils/file_lock.cpp         |    2 +-
+ src/condor_utils/file_transfer.cpp     |   12 +++++++++---
+ src/condor_utils/file_xml.h            |    2 +-
+ src/condor_utils/generic_stats.cpp     |    2 +-
+ src/condor_utils/globus_utils.cpp      |    5 +++--
+ src/condor_utils/history_utils.h       |    4 ++--
+ src/condor_utils/killfamily.cpp        |    2 ++
+ src/condor_utils/param_info.cpp        |    2 +-
+ src/condor_utils/passwd_cache.unix.cpp |    3 ---
+ 30 files changed, 69 insertions(+), 68 deletions(-)
+
+diff --git a/src/classad_analysis/analysis.cpp b/src/classad_analysis/analysis.cpp
+index dd57268..9b8a0d4 100644
+--- a/src/classad_analysis/analysis.cpp
++++ b/src/classad_analysis/analysis.cpp
+@@ -1962,7 +1962,6 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 	currentABV = NULL;
+ 	hrs = NULL;
+ 	currHR = NULL;
+-	AnnotatedBoolVector *bestABV = NULL;
+ 	HyperRect *bestHR = NULL;
+ 	IndexSet hasContext;
+ 	IndexSet hasMachine;
+@@ -1980,7 +1979,6 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 			hasMachine.GetCardinality( currNumContexts );
+ 			if( currNumContexts > maxNumContexts ) {
+ 				maxNumContexts = currNumContexts;
+-				bestABV = currentABV;
+ 				bestHR = currHR;
+ 			}
+ 		}
+diff --git a/src/classad_analysis/multiProfile.cpp b/src/classad_analysis/multiProfile.cpp
+index 9b7406b..d8d4ca1 100644
+--- a/src/classad_analysis/multiProfile.cpp
++++ b/src/classad_analysis/multiProfile.cpp
+@@ -37,13 +37,13 @@ MultiProfile::
+ }
+ 
+ bool MultiProfile::
+-AddProfile( Profile &c )
++AddProfile( Profile & )
+ {
+ 	return true;
+ }
+ 
+ bool MultiProfile::
+-RemoveProfile( Profile &c )
++RemoveProfile( Profile & )
+ {
+ 	return true;
+ }
+diff --git a/src/classad_analysis/profile.cpp b/src/classad_analysis/profile.cpp
+index b8a91df..7f739b6 100644
+--- a/src/classad_analysis/profile.cpp
++++ b/src/classad_analysis/profile.cpp
+@@ -32,13 +32,13 @@ Profile::
+ }
+ 
+ bool Profile::
+-AddCondition( Condition &c )
++AddCondition( Condition & )
+ {
+ 	return true;
+ }
+ 
+ bool Profile::
+-RemoveCondition( Condition &c )
++RemoveCondition( Condition & )
+ {
+ 	return true;
+ }
+diff --git a/src/condor_ckpt_server/network2.cpp b/src/condor_ckpt_server/network2.cpp
+index 7500b59..b32f569 100644
+--- a/src/condor_ckpt_server/network2.cpp
++++ b/src/condor_ckpt_server/network2.cpp
+@@ -67,7 +67,7 @@
+ /* P R O T O T Y P E S */
+ char *param(void);
+ 
+-char* GetIPName(struct in_addr machine_IP)
++const char* GetIPName(struct in_addr machine_IP)
+ {
+   char* temp_name;
+ 
+diff --git a/src/condor_ckpt_server/network2.h b/src/condor_ckpt_server/network2.h
+index 545a108..1c61725 100644
+--- a/src/condor_ckpt_server/network2.h
++++ b/src/condor_ckpt_server/network2.h
+@@ -65,7 +65,7 @@
+ 
+ /* Function Prototypes*/
+ extern "C" {
+-char* GetIPName(struct in_addr machine_IP); 
++const char* GetIPName(struct in_addr machine_IP); 
+ 
+ int I_bind(int socket_desc,
+ 		   struct sockaddr_in* addr, int is_well_known);
+diff --git a/src/condor_daemon_client/daemon.cpp b/src/condor_daemon_client/daemon.cpp
+index 02fd7ff..608af26 100644
+--- a/src/condor_daemon_client/daemon.cpp
++++ b/src/condor_daemon_client/daemon.cpp
+@@ -1540,14 +1540,14 @@ Daemon::initHostname( void )
+ 	dprintf( D_HOSTNAME, "Address \"%s\" specified but no name, "
+ 			 "looking up host info\n", _addr );
+ 
+-	condor_sockaddr addr;
+-	addr.from_sinful(_addr);
+-	MyString fqdn = get_full_hostname(addr);
++	condor_sockaddr my_addr;
++	my_addr.from_sinful(_addr);
++	MyString fqdn = get_full_hostname(my_addr);
+ 	if (fqdn.IsEmpty()) {
+ 		New_hostname( NULL );
+ 		New_full_hostname( NULL );
+ 		dprintf(D_HOSTNAME, "get_full_hostname() failed for address %s",
+-				addr.to_ip_string().Value());
++				my_addr.to_ip_string().Value());
+ 		MyString err_msg = "can't find host info for ";
+ 		err_msg += _addr;
+ 		newError( CA_LOCATE_FAILED, err_msg.Value() );
+diff --git a/src/condor_daemon_client/dc_credd.cpp b/src/condor_daemon_client/dc_credd.cpp
+index 370b618..33284a4 100644
+--- a/src/condor_daemon_client/dc_credd.cpp
++++ b/src/condor_daemon_client/dc_credd.cpp
+@@ -183,7 +183,7 @@ DCCredd::listCredentials (SimpleList <Credential*> & result,
+ 	Credential * cred = NULL;
+ 	classad::ClassAdParser parser;
+ 	classad::ClassAd * ad = NULL;
+-	char * request = "_";
++	unsigned char request[] = "_";
+ 
+ 	rsock = (ReliSock *)startCommand(
+ 			CREDD_QUERY_CRED, Stream::reli_sock, 20, &condor_error);
+diff --git a/src/condor_daemon_client/dc_master.cpp b/src/condor_daemon_client/dc_master.cpp
+index 03d77a8..e4e59b5 100644
+--- a/src/condor_daemon_client/dc_master.cpp
++++ b/src/condor_daemon_client/dc_master.cpp
+@@ -70,7 +70,6 @@ DCMaster::sendMasterCommand( bool insure_update, int my_cmd )
+ 	}
+ 
+ 	ReliSock reli_sock;
+-	Sock* tmp;
+ 	bool  result;
+ 
+ 	if( insure_update ) {
+@@ -84,10 +83,8 @@ DCMaster::sendMasterCommand( bool insure_update, int my_cmd )
+ 		}
+ 
+ 		result = sendCommand( master_cmd, (Sock*)&reli_sock, 0, &errstack );
+-		tmp = &reli_sock;
+ 	} else {
+ 		result = sendCommand( master_cmd, (Sock*)m_master_safesock, 0, &errstack );
+-		tmp = m_master_safesock;
+ 	}
+ 	if( ! result ) {
+ 		dprintf( D_FULLDEBUG, 
+diff --git a/src/condor_includes/condor_auth_x509.h b/src/condor_includes/condor_auth_x509.h
+index a13136a..6143a01 100644
+--- a/src/condor_includes/condor_auth_x509.h
++++ b/src/condor_includes/condor_auth_x509.h
+@@ -129,7 +129,7 @@ class Condor_Auth_X509 : public Condor_Auth_Base {
+         looking for a proxy which it does not need. */
+     void  erase_env();
+     
+-    void  print_log(OM_uint32 ,OM_uint32 ,int , char*);
++    void  print_log(OM_uint32 ,OM_uint32 ,int , const char*);
+ 
+     //------------------------------------------
+     // Data (private)
+diff --git a/src/condor_includes/dprintf_internal.h b/src/condor_includes/dprintf_internal.h
+index 26b9d15..416d6f6 100644
+--- a/src/condor_includes/dprintf_internal.h
++++ b/src/condor_includes/dprintf_internal.h
+@@ -15,10 +15,10 @@
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  *
+- ***************************************************************/
+-
+-#define _FILE_OFFSET_BITS 64
+-
++ ***************************************************************/
++
++#define _FILE_OFFSET_BITS 64
++
+ #include <string>
+ #include <map>
+ struct DebugFileInfo
+@@ -29,7 +29,7 @@ struct DebugFileInfo
+ 	off_t maxLog;
+ 	int maxLogNum;
+ 
+-	DebugFileInfo() : debugFlags(0), debugFP(0), maxLog(0), maxLogNum(0) {}
++	DebugFileInfo() : debugFP(0), debugFlags(0), maxLog(0), maxLogNum(0) {}
+ 	DebugFileInfo(const DebugFileInfo &debugFileInfo);
+ 	~DebugFileInfo();
+-};
+\ No newline at end of file
++};
+diff --git a/src/condor_includes/reli_sock.h b/src/condor_includes/reli_sock.h
+index 01e7adb..1a383b4 100644
+--- a/src/condor_includes/reli_sock.h
++++ b/src/condor_includes/reli_sock.h
+@@ -133,7 +133,7 @@ public:
+     ///
+ 	int get_line_raw( char *buffer, int max_length );
+     ///
+-	int put_bytes_raw( char *buffer, int length );
++	int put_bytes_raw( const char *buffer, int length );
+     ///
+ 	int get_bytes_raw( char *buffer, int length );
+     ///
+diff --git a/src/condor_includes/sock.h b/src/condor_includes/sock.h
+index a364131..1a0bc90 100644
+--- a/src/condor_includes/sock.h
++++ b/src/condor_includes/sock.h
+@@ -506,7 +506,7 @@ private:
+         //------------------------------------------
+ 
+ 	int _condor_read(SOCKET fd, char *buf, int sz, int timeout);
+-	int _condor_write(SOCKET fd, char *buf, int sz, int timeout);
++	int _condor_write(SOCKET fd, const char *buf, int sz, int timeout);
+ 	int bindWithin(const int low, const int high, bool outbound);
+ 	///
+ 	// Buffer to hold the string version of our peer's IP address. 
+diff --git a/src/condor_io/authentication.cpp b/src/condor_io/authentication.cpp
+index 5b95f62..71737fb 100644
+--- a/src/condor_io/authentication.cpp
++++ b/src/condor_io/authentication.cpp
+@@ -56,10 +56,10 @@ char const *UNMAPPED_DOMAIN = "unmapped";
+ char const *MATCHSESSION_DOMAIN = "matchsession";
+ char const *UNAUTHENTICATED_FQU = "unauthenticated@unmapped";
+ char const *UNAUTHENTICATED_USER = "unauthenticated";
+-extern char const *EXECUTE_SIDE_MATCHSESSION_FQU = "execute-side@matchsession";
+-extern char const *SUBMIT_SIDE_MATCHSESSION_FQU = "submit-side@matchsession";
+-extern char const *CONDOR_CHILD_FQU = "condor@child";
+-extern char const *CONDOR_PARENT_FQU = "condor@parent";
++char const *EXECUTE_SIDE_MATCHSESSION_FQU = "execute-side@matchsession";
++char const *SUBMIT_SIDE_MATCHSESSION_FQU = "submit-side@matchsession";
++char const *CONDOR_CHILD_FQU = "condor@child";
++char const *CONDOR_PARENT_FQU = "condor@parent";
+ 
+ Authentication::Authentication( ReliSock *sock )
+ {
+diff --git a/src/condor_io/cedar_no_ckpt.cpp b/src/condor_io/cedar_no_ckpt.cpp
+index a06a465..7d1f3a3 100644
+--- a/src/condor_io/cedar_no_ckpt.cpp
++++ b/src/condor_io/cedar_no_ckpt.cpp
+@@ -705,7 +705,7 @@ int relisock_gsi_put(void *arg,  void *buf, size_t size)
+     sock->encode();
+     
+     //send size of data to send
+-    stat = sock->code( (int &)size );
++    stat = sock->code( &(size) );
+     
+     
+     //if successful, send the data
+diff --git a/src/condor_io/condor_auth_x509.cpp b/src/condor_io/condor_auth_x509.cpp
+index c7d2f0e..9f5ead5 100644
+--- a/src/condor_io/condor_auth_x509.cpp
++++ b/src/condor_io/condor_auth_x509.cpp
+@@ -274,14 +274,17 @@ int Condor_Auth_X509 :: isValid() const
+ void Condor_Auth_X509 :: print_log(OM_uint32 major_status,
+                                    OM_uint32 minor_status,
+                                    int       token_stat, 
+-                                   char *    comment)
++                                   const char *    comment)
+ {
+     char* buffer;
++    char *tmp = (char *)malloc(strlen(comment)+1);
++    strcpy(tmp, comment);
+     globus_gss_assist_display_status_str(&buffer,
+-                                         comment,
++                                         tmp,
+                                          major_status,
+                                          minor_status,
+                                          token_stat);
++    free(tmp);
+     if (buffer){
+         dprintf(D_ALWAYS,"%s\n",buffer);
+         free(buffer);
+@@ -450,9 +453,10 @@ int Condor_Auth_X509::nameGssToLocal(const char * GSSClientname)
+ #else
+ // Switched the unix map function to _map_and_authorize, which allows access
+ // to the Globus callout infrastructure.
++        char condor_str[] = "condor";
+ 	major_status = globus_gss_assist_map_and_authorize(
+             context_handle,
+-            "condor", // Requested service name
++            condor_str, // Requested service name
+             NULL, // Requested user name; NULL for non-specified
+             local_user,
+             USER_NAME_MAX-1); // Leave one space at end of buffer, just-in-case
+@@ -600,7 +604,7 @@ int Condor_Auth_X509::authenticate_self_gss(CondorError* errstack)
+     //this method will prompt for password if private key is encrypted!
+     int time = mySock_->timeout(60 * 5);  //allow user 5 min to type passwd
+     
+-    priv_state priv;
++    priv_state priv = PRIV_UNKNOWN;
+     
+     //if ((!mySock_->isClient() && {
+     if (isDaemon()) {
+@@ -656,16 +660,17 @@ int Condor_Auth_X509::authenticate_client_gss(CondorError* errstack)
+     OM_uint32	minor_status = 0;
+     int         status = 0;
+ 
+-    priv_state priv;
++    priv_state priv = PRIV_UNKNOWN;
+     
+     if (isDaemon()) {
+         priv = set_root_priv();
+     }
+     
++    char target_str[] = "GSI-NO-TARGET";
+     major_status = globus_gss_assist_init_sec_context(&minor_status,
+                                                       credential_handle,
+                                                       &context_handle,
+-                                                      "GSI-NO-TARGET",
++                                                      target_str,
+                                                       GSS_C_MUTUAL_FLAG,
+                                                       &ret_flags, 
+                                                       &token_status,
+diff --git a/src/condor_io/condor_ipverify.cpp b/src/condor_io/condor_ipverify.cpp
+index 1bac406..c1756bf 100644
+--- a/src/condor_io/condor_ipverify.cpp
++++ b/src/condor_io/condor_ipverify.cpp
+@@ -814,7 +814,7 @@ IpVerify::Verify( DCpermission perm, const condor_sockaddr& addr, const char * u
+ 			hostnames = get_hostname_with_alias(addr);
+ 		}
+ 
+-		for (int i = 0; i < hostnames.size(); ++i) {
++		for (unsigned int i = 0; i < hostnames.size(); ++i) {
+ 			thehost = hostnames[i].Value();
+ 			peer_description.append_to_list(thehost);
+ 
+@@ -892,7 +892,7 @@ IpVerify::Verify( DCpermission perm, const condor_sockaddr& addr, const char * u
+ 						deny_reason->sprintf(
+ 							"%s authorization policy contains no matching "
+ 							"ALLOW entry for this request"
+-							"; identifiers used for this host: %s, hostname size = %d, "
++							"; identifiers used for this host: %s, hostname size = %lu, "
+ 							"original ip address = %s",
+ 							PermString(perm),
+ 							peer_description.Value(),
+diff --git a/src/condor_io/condor_rw.cpp b/src/condor_io/condor_rw.cpp
+index 5f63635..8b662eb 100644
+--- a/src/condor_io/condor_rw.cpp
++++ b/src/condor_io/condor_rw.cpp
+@@ -210,7 +210,7 @@ condor_read( char const *peer_description, SOCKET fd, char *buf, int sz, int tim
+ 
+ 
+ int
+-condor_write( char const *peer_description, SOCKET fd, char *buf, int sz, int timeout, int flags )
++condor_write( char const *peer_description, SOCKET fd, const char *buf, int sz, int timeout, int flags )
+ {
+ 	Selector selector;
+ 	int nw = 0, nwo = 0;
+diff --git a/src/condor_io/condor_rw.h b/src/condor_io/condor_rw.h
+index 12716cc..35cadaa 100644
+--- a/src/condor_io/condor_rw.h
++++ b/src/condor_io/condor_rw.h
+@@ -28,6 +28,6 @@
+ int condor_read(char const *peer_description,SOCKET fd, char *buf, int sz, int timeout, int flags=0);
+ 
+ 
+-int condor_write(char const *peer_description,SOCKET fd, char *buf, int sz, int timeout, int flags=0);
++int condor_write(char const *peer_description,SOCKET fd, const char *buf, int sz, int timeout, int flags=0);
+ 
+ #endif
+diff --git a/src/condor_io/reli_sock.cpp b/src/condor_io/reli_sock.cpp
+index 07300bd..872b5ad 100644
+--- a/src/condor_io/reli_sock.cpp
++++ b/src/condor_io/reli_sock.cpp
+@@ -261,7 +261,7 @@ ReliSock::put_line_raw( char *buffer )
+ 	int length = strlen(buffer);
+ 	result = put_bytes_raw(buffer,length);
+ 	if(result!=length) return -1;
+-	result = put_bytes_raw("\n",1);
++	result = put_bytes_raw("\n", 1);
+ 	if(result!=1) return -1;
+ 	return length;
+ }
+@@ -287,7 +287,7 @@ ReliSock::get_line_raw( char *buffer, int length )
+ }
+ 
+ int 
+-ReliSock::put_bytes_raw( char *buffer, int length )
++ReliSock::put_bytes_raw( const char *buffer, int length )
+ {
+ 	return condor_write(peer_description(),_sock,buffer,length,_timeout);
+ }
+@@ -523,7 +523,7 @@ const char * ReliSock :: isIncomingDataMD5ed()
+ int 
+ ReliSock::put_bytes(const void *data, int sz)
+ {
+-	int		tw, header_size = isOutgoing_MD5_on() ? MAX_HEADER_SIZE:NORMAL_HEADER_SIZE;
++	int		tw=0, header_size = isOutgoing_MD5_on() ? MAX_HEADER_SIZE:NORMAL_HEADER_SIZE;
+ 	int		nw, l_out;
+         unsigned char * dta = NULL;
+ 
+diff --git a/src/condor_io/sock.cpp b/src/condor_io/sock.cpp
+index 149c2a0..746efdf 100644
+--- a/src/condor_io/sock.cpp
++++ b/src/condor_io/sock.cpp
+@@ -378,7 +378,7 @@ int Sock::move_descriptor_up()
+ 
+ int Sock::assign(SOCKET sockd)
+ {
+-	int		my_type;
++	int		my_type = SOCK_DGRAM;
+ 
+ 	if (_state != sock_virgin) return FALSE;
+ 
+@@ -1940,7 +1940,7 @@ condor_sockaddr
+ Sock::my_addr() 
+ {
+ 	condor_sockaddr addr;
+-	int ret = condor_getsockname_ex(_sock, addr);
++	condor_getsockname_ex(_sock, addr);
+ 	return addr;
+ }
+ 
+@@ -2248,6 +2248,8 @@ Sock::_bind_helper(int fd, const condor_sockaddr& addr, bool outbound, bool loop
+ 		rval = condor_bind(fd, addr);
+ 	}
+ #else
++	if (outbound) {} // To remove unused variable warning
++	if (loopback) {} // To remove unused variable warning
+ 		//rval = ::bind(fd, (SOCKET_ADDR_CONST_BIND SOCKET_ADDR_TYPE)addr, len);
+ 	rval = condor_bind(fd, addr);
+ #endif /* HAVE_EXT_GCB */
+diff --git a/src/condor_utils/dprintf.cpp b/src/condor_utils/dprintf.cpp
+index 5a17d48..ce7896f 100644
+--- a/src/condor_utils/dprintf.cpp
++++ b/src/condor_utils/dprintf.cpp
+@@ -383,7 +383,6 @@ _condor_dprintf_va( int flags, const char* fmt, va_list args )
+ #endif
+ 	int saved_errno;
+ 	priv_state	priv;
+-	int debug_level;
+ 	FILE *debug_file_ptr = NULL;
+ 	std::vector<DebugFileInfo>::iterator it;
+ 
+@@ -893,7 +892,6 @@ void debug_close_file(int debug_level)
+ {
+ 	FILE *debug_file_ptr = NULL;
+ 	std::vector<DebugFileInfo>::iterator it;
+-	bool level_exists = false;
+ 
+ 	for(it = DebugLogs->begin(); it < DebugLogs->end(); it++)
+ 	{
+@@ -904,7 +902,6 @@ void debug_close_file(int debug_level)
+ 		if(((*it).debugFlags & debug_level) != 0)
+ 			continue;
+ 		debug_file_ptr = (*it).debugFP;
+-		level_exists = true;
+ 		break;
+ 	}
+ 
+@@ -924,7 +921,6 @@ void debug_close_all_files()
+ {
+ 	FILE *debug_file_ptr = NULL;
+ 	std::vector<DebugFileInfo>::iterator it;
+-	bool level_exists = false;
+ 
+ 	for(it = DebugLogs->begin(); it < DebugLogs->end(); it++)
+ 	{
+@@ -947,7 +943,6 @@ debug_unlock(int debug_level)
+ 	int result = 0;
+ 
+ 	FILE *debug_file_ptr = NULL;
+-	bool level_exists = false;
+ 	std::vector<DebugFileInfo>::iterator it;
+ 
+ 	if(log_keep_open)
+@@ -962,7 +957,6 @@ debug_unlock(int debug_level)
+ 		if(((*it).debugFlags & debug_level) != 0)
+ 			continue;
+ 		debug_file_ptr = (*it).debugFP;
+-		level_exists = true;
+ 	}
+ 
+ 	if( DebugUnlockBroken ) {
+@@ -1139,7 +1133,6 @@ preserve_log_file(int debug_level)
+ void
+ _condor_fd_panic( int line, const char* file )
+ {
+-	priv_state	priv;
+ 	int i;
+ 	char msg_buf[DPRINTF_ERR_MAX];
+ 	char panic_msg[DPRINTF_ERR_MAX];
+@@ -1147,9 +1140,9 @@ _condor_fd_panic( int line, const char* file )
+ 	std::vector<DebugFileInfo>::iterator it;
+ 	std::string filePath;
+ 	bool fileExists = false;
+-	FILE* debug_file_ptr;
++	FILE* debug_file_ptr=0;
+ 
+-	priv = _set_priv(PRIV_CONDOR, __FILE__, __LINE__, 0);
++	_set_priv(PRIV_CONDOR, __FILE__, __LINE__, 0);
+ 
+ 	snprintf( panic_msg, sizeof(panic_msg),
+ 			 "**** PANIC -- OUT OF FILE DESCRIPTORS at line %d in %s",
+diff --git a/src/condor_utils/file_lock.cpp b/src/condor_utils/file_lock.cpp
+index 5977cc1..25e6981 100644
+--- a/src/condor_utils/file_lock.cpp
++++ b/src/condor_utils/file_lock.cpp
+@@ -513,7 +513,7 @@ FileLock::obtain( LOCK_TYPE t )
+ // their current position.  The lesson here is don't use fseeks and lseeks
+ // interchangeably...
+ 	int		status = -1;
+-	int saved_errno;
++	int saved_errno = -1;
+ 
+ 	if ( m_use_kernel_mutex == -1 ) {
+ 		m_use_kernel_mutex = param_boolean_int("FILE_LOCK_VIA_MUTEX", TRUE);
+diff --git a/src/condor_utils/file_transfer.cpp b/src/condor_utils/file_transfer.cpp
+index 276c270..57c2cb7 100644
+--- a/src/condor_utils/file_transfer.cpp
++++ b/src/condor_utils/file_transfer.cpp
+@@ -1584,10 +1584,8 @@ FileTransfer::DoDownload( filesize_t *total_bytes, ReliSock *s)
+ 	int hold_code = 0;
+ 	int hold_subcode = 0;
+ 	MyString error_buf;
+-	file_transfer_record record;
+ 	int delegation_method = 0; /* 0 means this transfer is not a delegation. 1 means it is.*/
+ 	time_t start, elapsed;
+-  char daemon[15];
+ 	bool I_go_ahead_always = false;
+ 	bool peer_goes_ahead_always = false;
+ 	DCTransferQueue xfer_queue(m_xfer_queue_contact_info);
+@@ -2025,19 +2023,26 @@ FileTransfer::DoDownload( filesize_t *total_bytes, ReliSock *s)
+ 		}
+ 		*total_bytes += bytes;
+ 
++#ifdef HAVE_EXT_POSTGRESQL
++	        file_transfer_record record;
+ 		record.fullname = fullname.Value();
+ 		record.bytes = bytes;
+ 		record.elapsed  = elapsed;
+     
+ 			// Get the name of the daemon calling DoDownload
++		char daemon[16]; daemon[15] = '\0';
+ 		strncpy(daemon, get_mySubSystem()->getName(), 15);
+ 		record.daemon = daemon;
+ 
+ 		record.sockp =s;
+ 		record.transfer_time = start;
+ 		record.delegation_method_id = delegation_method;
+-#ifdef HAVE_EXT_POSTGRESQL
+ 		file_transfer_db(&record, &jobAd);
++#else
++		// Get rid of compiler set-but-not-used warnings on Linux
++		// Hopefully the compiler can just prune out the emitted code.
++		if (delegation_method) {}
++		if (elapsed) {}
+ #endif
+ 	}
+ 
+@@ -2579,6 +2584,7 @@ FileTransfer::DoUpload(filesize_t *total_bytes, ReliSock *s)
+ 								error_desc.Value(),__LINE__);
+ 		}
+ #endif
++		if (is_the_executable) {} // Done to get rid of the compiler set-but-not-used warnings.
+ 
+ 
+ 		// now we send an int to the other side to indicate the next
+diff --git a/src/condor_utils/file_xml.h b/src/condor_utils/file_xml.h
+index 0e3d7b5..66a65a0 100644
+--- a/src/condor_utils/file_xml.h
++++ b/src/condor_utils/file_xml.h
+@@ -47,7 +47,7 @@ private:
+ public:
+ 	
+ 	FILEXML(bool use_xml_logfile = false) : FILESQL(use_xml_logfile) { }
+-	FILEXML(const char *outputfilename,int flags=O_WRONLY|O_CREAT|O_APPEND, bool use_xml_logfile = false) : FILESQL(outfilename, flags, use_xml_logfile) { }
++	FILEXML(const char *ofilename,int flags=O_WRONLY|O_CREAT|O_APPEND, bool use_xml_logfile = false) : FILESQL(ofilename, flags, use_xml_logfile) { }
+ 	virtual ~FILEXML() {}
+ 
+ /*
+diff --git a/src/condor_utils/generic_stats.cpp b/src/condor_utils/generic_stats.cpp
+index e2fb4d0..a16e103 100644
+--- a/src/condor_utils/generic_stats.cpp
++++ b/src/condor_utils/generic_stats.cpp
+@@ -418,7 +418,7 @@ template <> void stats_entry_recent< stats_histogram<int> >::AdvanceBy(int cSlot
+    recent = buf.Sum();
+ }
+ 
+-template <> void stats_entry_recent< stats_histogram<int64_t> >::Publish(ClassAd& ad, const char * pattr, int flags) const
++template <> void stats_entry_recent< stats_histogram<int64_t> >::Publish(ClassAd& ad, const char * pattr, int) const
+ {
+    MyString str;
+    if (this->value.cItems <= 0) {
+diff --git a/src/condor_utils/globus_utils.cpp b/src/condor_utils/globus_utils.cpp
+index 786a10a..1f51445 100644
+--- a/src/condor_utils/globus_utils.cpp
++++ b/src/condor_utils/globus_utils.cpp
+@@ -943,8 +943,9 @@ x509_proxy_try_import( const char *proxy_file )
+ 
+ 	if ( rc != GSS_S_COMPLETE ) {
+ 		char *message;
+-        globus_gss_assist_display_status_str(&message,
+-											 "",
++		char empty_str[1]; empty_str[0] = '\0'; // This nonsense brought to you by the fact that globus doesn't declare things const.
++        	globus_gss_assist_display_status_str(&message,
++											 empty_str,
+ 											 rc,
+ 											 min_stat,
+ 											 0);
+diff --git a/src/condor_utils/history_utils.h b/src/condor_utils/history_utils.h
+index 41800c3..a2c6dd7 100644
+--- a/src/condor_utils/history_utils.h
++++ b/src/condor_utils/history_utils.h
+@@ -31,7 +31,7 @@ static void displayJobShort(AttrList* ad);
+ static void short_header(void);
+ static void short_print(int,int,const char*,int,int,int,int,int,int,const char *);
+ static void shorten (char *, int);
+-static char* format_date( time_t date );
++static const char* format_date( time_t date );
+ static char* format_time( int tot_secs );
+ static char encode_status( int status );
+ 
+@@ -161,7 +161,7 @@ short_print(
+   Format a date expressed in "UNIX time" into "month/day hour:minute".
+ */
+ 
+-static char* format_date( time_t date )
++static const char* format_date( time_t date )
+ {
+         static char     buf[ 12 ];
+         struct tm       *tm;
+diff --git a/src/condor_utils/killfamily.cpp b/src/condor_utils/killfamily.cpp
+index 766db60..9a26822 100644
+--- a/src/condor_utils/killfamily.cpp
++++ b/src/condor_utils/killfamily.cpp
+@@ -405,6 +405,8 @@ KillFamily::takesnapshot()
+ 					}
+ 				}
+ 			}
++#else
++			if (found_it) {} // To get rid of set-but-not-used warning
+ #endif	// of ifdef WIN32
+ 
+ 			// keep a running tally of the cpu usage for pids
+diff --git a/src/condor_utils/param_info.cpp b/src/condor_utils/param_info.cpp
+index ab4323c..67864df 100644
+--- a/src/condor_utils/param_info.cpp
++++ b/src/condor_utils/param_info.cpp
+@@ -60,7 +60,7 @@ param_info_init()
+     // creating a hashtable from int and using the hash to do the lookup.  but in the
+     // interest in having minimal changes in this patch, we'll keep the hash table for now.
+     //
+-    for (int ii = 0; ii < sizeof(g_param_info_init_table)/sizeof(g_param_info_init_table[0]); ++ii)
++    for (int ii = 0; ii < (int)(sizeof(g_param_info_init_table)/sizeof(g_param_info_init_table[0])); ++ii)
+        {
+        param_info_hash_insert(param_info, g_param_info_init_table[ii]);
+        }
+diff --git a/src/condor_utils/passwd_cache.unix.cpp b/src/condor_utils/passwd_cache.unix.cpp
+index 1a5c963..7f470ad 100644
+--- a/src/condor_utils/passwd_cache.unix.cpp
++++ b/src/condor_utils/passwd_cache.unix.cpp
+@@ -219,10 +219,8 @@ bool passwd_cache::cache_groups(const char* user) {
+ 	bool result;
+ 	group_entry *group_cache_entry;
+ 	gid_t user_gid;
+-	int count;
+    
+ 	group_cache_entry = NULL;
+-	count = 0;
+ 	result = true;
+ 
+ 	if ( user == NULL ) {
+@@ -243,7 +241,6 @@ bool passwd_cache::cache_groups(const char* user) {
+ 		 * we're going to call initgroups() first, then call get groups
+ 		 * so we can cache whatever we get.*/
+ 
+-		count = 0;
+ 		if ( initgroups(user, user_gid) != 0 ) {
+ 			dprintf(D_ALWAYS, "passwd_cache: initgroups() failed! errno=%s\n",
+ 					strerror(errno));
+-- 
+1.7.6.4
+
