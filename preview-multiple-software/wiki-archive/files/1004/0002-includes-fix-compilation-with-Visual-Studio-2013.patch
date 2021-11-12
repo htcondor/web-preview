@@ -1,0 +1,27 @@
+From 131c80722d25769856910cba38c0d55740e1d432 Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 13 Apr 2017 12:09:02 +0100
+Subject: [PATCH 2/4] includes: fix compilation with Visual Studio 2013+
+
+rint is now defined as an inline function by the standard library.
+---
+ src/condor_includes/condor_sys_nt.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/condor_includes/condor_sys_nt.h b/src/condor_includes/condor_sys_nt.h
+index 300c0cd474..5f72d5d29a 100644
+--- a/src/condor_includes/condor_sys_nt.h
++++ b/src/condor_includes/condor_sys_nt.h
+@@ -167,7 +167,9 @@ DLL_IMPORT_MAGIC int __cdecl access(const char *, int);
+ #define S_IRWXO 2
+ #define S_ISDIR(mode) (((mode)&_S_IFDIR) == _S_IFDIR)
+ #define S_ISREG(mode) (((mode)&_S_IFREG) == _S_IFREG)
++#if _MSC_VER < 1800 // Added to the standard library in VS 2013
+ #define rint(num) ((num<0.)? -floor(-num+.5):floor(num+.5))
++#endif
+ 
+ #ifndef ETIMEDOUT
+ #define ETIMEDOUT ERROR_TIMEOUT
+-- 
+2.13.5
+
