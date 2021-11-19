@@ -1,0 +1,130 @@
+TODO  (MWLshaped)
+----
+
+-- Do something intelligent in numScenariosPerTask()
+
+   Done -- but probably down the road you will want to not have the
+   same number of scenarios allocated to a task, but instead have this
+   depend on the machine speed.	  How does one get this information from
+   condor?  JP is putting this in?
+
+   It's in there, so do something with it...
+
+
+-- Open itlog as append if starting from checkpoint only
+
+-- Remove rows from the master if they have been slack for a number of
+   iterations.
+
+   Done.
+
+   What is the "convergence theory" for this?  (Read Ruz's paper), you
+   should probably write cuts to binary file on disk and read them
+   back in if you need them.  The problem is how to ensure that you
+   don't duplicate cuts to the file  and to do things efficiently!
+
+   Other bells and whistles to add
+   -------------------------------
+   ** Dynamically adjust slackCounter Array
+   ** Only delete cuts every "n" iterations 
+
+   Bug to fix
+   ----------
+   Fix ResolveNumericalIssues() to update slackCounter array 
+     correctly.  I don't think I call ResolveNumericalIssues() ever.
+   Maybe I should just remove it.
+
+-- Solve some *really* big instances.
+
+   In order to do this it looks like we will need a mathematically
+   more sophisticated master problem solver.  Maybe if you
+
+   1) Solved the Dual Master LP?
+
+   2) Used "center points" to find cutting planes (or columns)
+
+   this might help.
+
+   Also, SOPLEX is a huge memory hog.  I purified the code, and am
+   pretty sure there are no memory leaks, but even after adding only
+   3000 cuts and 270,000 nz to the LP, I am using over 1GB of main
+   memory on the master.  This seems to also be true if read things in 
+   from a checkpoint.
+
+   Don't add rows one at a time in SOPLEX.  YES -- This fixes the bug.
+
+
+-- Code a "dynamic" multicut method.
+
+-- Code asynchronous implementation
+
+   This is done, except for changing the checkpoint code, I think.
+   Still needs to be debugged and tested. 
+
+   It works as follows...
+
+   After alpha (user specified) percent of the workers for an
+   iteration have reported and found a cut, we start a new iteration.
+
+
+-- Parse command line options or read a configuration file
+   Possible configuration options
+
+   filenames (stoch, core, and time)
+   executable name
+   do sampling?  (This isn't implemented yet).
+   target chunk time
+   checkpointing frequency
+   how many times dual = 0 before you remove row.
+
+   maximum number of cuts
+   maximum number of cut nonzeros
+   relative optimality tolerance?	 
+
+   strategies...
+  
+   1) Straight Benders.
+
+   2) Synch Benders with Chunk size dependent on available processors
+     *This one isn't coded yet*
+
+   3) Asynch Benders.
+      (Then percentage of cuts before starting a new iteration).
+
+   4) Different Master Problem Solvers?
+     *Not coded yet*
+     
+
+
+
+-- Log some statistics about mean uptime, etc.  Then perhaps use this
+   information to answer the following question:   
+   Given the mean "uptime" of a worker (and a probability
+   distribution?), what is the "optimal" grain size? 
+
+
+-- If you want to solve *really* big instances, you will need to do
+   the "implicit variable" thing, and you will also probably want to
+   switch to solving the dual of the master LP, since you will start
+   getting lots of columns, and you will be better able to leave them all 
+   in the LP.
+
+-- Maybe it would be easiest to just pass the ".sto" file and let Joe's
+   base code do the rest?
+
+-- Start writing this research up!
+
+
+SMALL
+-----
+-- Check for instance name when restarting from checkpoint.
+
+-- Are the primal and dual methods being called when appropriate?
+
+-- Your Bender's code won't work with all types of "stochasiticity",
+   so you may want to try to find more instances.
+
+-- Write out the slackcounter information as part of the checkpoint
+
+-- Write out zub as part of the checkpoint
+

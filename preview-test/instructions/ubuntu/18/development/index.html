@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HTCondor - Install Instructions - Ubuntu 18 Development</title>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <meta name="description" content="HTCondor Homepage">
+        <script src="/web-preview/preview-test/assets/js/sitewide.js" type="text/javascript"></script>
+        <link href="/web-preview/preview-test/assets/css/style.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+        
+        
+            <meta name="robots" content="noindex">
+        
+    </head>
+<body>
+
+    <!-- For non-visual user agents: -->
+    <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <div id="container">
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+    <div class="midHeader">
+        <div class="iconHeader">
+            <a href="/web-preview/preview-test/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-test/assets/images/CondorTitle.gif" style="border:0"></a>
+        </div>
+
+        <div class="navAndSearch">
+            <div class="navBar">
+                <span class="doNotDisplay">Navigation:</span>
+                <a href="/web-preview/preview-test/index.html">Home</a> |
+                <a href="/web-preview/preview-test/new.html">News</a> |
+                <a href="/web-preview/preview-test/downloads.html">Download</a> |
+                <a href="/web-preview/preview-test/publications.html">Publications</a> |
+                <a href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+            </div>
+
+            <div class="searchForm" >
+                <script>
+                (function() {
+                    var cx = '010754594835990937497:xijuwhbknew';
+                    var gcse = document.createElement('script');
+                    gcse.type = 'text/javascript';
+                    gcse.async = true;
+                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                        '//www.google.com/cse/cse.js?cx=' + cx;
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(gcse, s);
+                })();
+                </script>
+                <gcse:searchbox-only></gcse:searchbox-only>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="main-copy">
+        <h1>Install Instructions</h1>
+
+<!-- Page body -->
+
+<h3>Ubuntu 18.04 (Bionic Beaver)</h3>
+<ol>
+    <li>
+        Setup the repository
+        <ol type="a">
+            <li>
+                Install the HTCondor repository key
+                <pre>$ wget -qO - https://research.cs.wisc.edu/htcondor/ubuntu/HTCondor-Release.gpg.key | sudo apt-key add -</pre>
+            </li>
+            <li>
+                Add the HTCondor repository (running as the root user)
+                <pre># echo "deb http://research.cs.wisc.edu/htcondor/ubuntu/8.9/bionic bionic contrib" &gt;&gt; /etc/apt/sources.list
+# echo "deb-src http://research.cs.wisc.edu/htcondor/ubuntu/8.9/bionic bionic contrib" &gt;&gt; /etc/apt/sources.list</pre>
+            </li>
+        </ol>
+    </li>
+    <li>
+        Install HTCondor
+        <pre>$ sudo apt-get update
+$ sudo apt-get install condor</pre>
+    </li>
+    <li>
+        Check that it is running
+        <pre>$ ps ax | grep condor</pre>
+		Note that if condor is NOT running, the only output of this ps command will look like this:
+		<pre>$ ps auxww | grep condor
+user    1466  0.0  0.0  14736  1048 pts/1    S+   13:05   0:00 grep condor</pre>
+		If condor is running, you will see several lines of output, something like this:
+		<pre>user    1433  0.0  0.0  14736  1092 pts/1    S+   13:05   0:00 grep condor
+user    6404  0.0  0.0  72488 12956 ?        Ss    2020   0:55 condor_master -f
+user   27159  0.0  0.0  27888  6084 ?        S     2020   1:11 condor_procd -A /var/log/procd_pipe -L /var/log/ProcLog -R 1000000 -S 60 -D -C 28297
+user   27201  0.0  0.0  60744 12620 ?        Ss    2020   4:04 condor_collector
+user   27202  0.0  0.0  62016 14124 ?        Ss    2020   0:35 condor_schedd
+user   27203  0.0  0.0  60784 12576 ?        Ss    2020   2:20 condor_negotiator
+user   27204  0.0  0.3 103864 55784 ?        Ss    2020   3:14 condor_startd
+</pre>
+    </li>
+</ol>
+
+<p>
+    Instructions on how to install other Linux distributions can be found on the <a href="/web-preview/preview-test/instructions">Install Instructions page</a>.
+</p>
+
+    </div>
+
+    <div id="footer">
+    For comments or questions about this website, please
+<a href="mailto:htcondor-admin@cs.wisc.edu">email htcondor-admin@cs.wisc.edu</a><br />
+    This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+  <script type="text/javascript">
+      document.write("Updated &raquo; "+lastMod(document.lastModified))
+  </script>
+</div>
+
+
+    </div>
+</body>
+</html>
