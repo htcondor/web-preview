@@ -1,0 +1,206 @@
+This is a log of runs, so that we can keep track of progress.  
+Interesting results should be put here..
+----------------------------------------
+
+10/26
+l152lav -- gets right answer.  5749 nodes.
+
+15:50:02 Mean & Var. uptime for the workers:        1409.1202	309842.7038
+15:50:02 Mean & Var. working time for the worker:   1112.5601	338348.5036
+15:50:02 Mean & Var. cpu time for the workers:      1046.4843	315951.7610
+15:50:02 Mean & Var. susp. time for the workers:     206.0628	68375.8445
+15:50:02 Before pvm_exit
+15:56:46 After pvm_exit
+
+
+10/28
+New and improved code...  (With improved soplex basis handling)
+
+l152lav -- shows improvement in using SOPLEX
+
+18:37:40 
+18:37:40 Number of workers:                          32
+18:37:40 Wall clock time for this job:               548.8151
+18:37:40 Total time workers were alive (up):       11401.7787
+18:37:40 Total wall clock time of workers:          6560.0808
+18:37:40 Total cpu time used by all workers:        6482.4500
+18:37:40 Total time workers were suspended:          302.6325
+18:37:40 Mean & Var. uptime for the workers:         356.3056    4289.2124
+18:37:40 Mean & Var. working time for the worker:    205.0025    3688.3239
+18:37:40 Mean & Var. cpu time for the workers:       202.5766    3622.5027
+
+
+air04 -- Most of the workers are now CPLEX (depending on how many
+CPLEX licenses are in use)
+
+10/30/99
+
+20:15:22 Task 43 returned with improved solution: 58935.000000
+20:16:25 Task 48 returned with improved solution: 58773.000000
+20:22:31 Task 145 returned with improved solution: 57418.000000
+20:24:39 Task 259 returned with improved solution: 57376.000000
+20:30:59 Task 582 returned with improved solution: 57375.000000
+20:31:38 Task 616 returned with improved solution: 56977.000000
+20:31:50 Task 895 returned with improved solution: 56568.000000
+20:38:44 Task 1593 returned with improved solution: 56385.000000
+20:39:08 Task 1619 returned with improved solution: 56374.000000
+20:42:27 Task 1854 returned with improved solution: 56148.000000
+20:42:58 Task 1909 returned with improved solution: 56138.000000
+21:17:10 Task 2306 returned with improved solution: 56137.000000
+23:00:42 *** Best solution found is: 56137.000000
+23:00:42 
+23:00:42 Number of workers:                          66
+23:00:42 Wall clock time for this job:             11060.8106
+23:00:42 Total time workers were alive (up):       437767.5389
+23:00:42 Total wall clock time of workers:         190957.5507
+23:00:42 Total cpu time used by all workers:       186001.3900
+23:00:42 Total time workers were suspended:        10681.3047
+23:00:42 Mean & Var. uptime for the workers:        6632.8415	10698146.7480
+23:00:42 Mean & Var. working time for the worker:   2893.2962	3244399.3108
+23:00:42 Mean & Var. cpu time for the workers:      2818.2029	3190930.6741
+23:00:42 Mean & Var. susp. time for the workers:     161.8380	99458.6560
+23:00:42 Before pvm_exit
+
+Bad machine usage.  The tree isn't "fat" enough to accomidate all the
+workers.  (Towards the end, all of the workers are waiting on one (or
+a small number) of processors to perform their tasks)
+
+Uh, oh-- maybe DFS is bad? I would try reducing the grain size
+first, though.
+
+
+
+Here is vpm2
+------------
+08:27:47 Task 7 returned with improved solution: 16.750000
+08:27:59 Task 8 returned with improved solution: 16.250000
+08:28:14 Task 69 returned with improved solution: 15.750000
+08:28:20 Task 112 returned with improved solution: 15.500000
+08:28:23 Task 113 returned with improved solution: 14.500000
+08:33:09 Task 145 returned with improved solution: 14.250000
+08:34:28 Task 251 returned with improved solution: 14.000000
+08:37:30 Task 254 returned with improved solution: 13.750000
+09:07:25 *** Best solution found is: 13.750000
+09:07:25 *** Nodes: 3493070  Pivots: 43932698  Time:  83637.99
+09:07:25 Number of workers:                          100
+09:07:25 Wall clock time for this job:              2394.2848
+09:07:25 Total time workers were alive (up):       129086.6791
+09:07:25 Total wall clock time of workers:         86464.2138
+09:07:25 Total cpu time used by all workers:       83647.0300
+09:07:25 Total time workers were suspended:         3667.2541
+09:07:25 Mean & Var. uptime for the workers:        1290.8668	271969.6582
+09:07:25 Mean & Var. working time for the worker:    864.6421	110790.6721
+09:07:25 Mean & Var. cpu time for the workers:       836.4703	107391.7473
+09:07:25 Mean & Var. susp. time for the workers:      36.6725	17961.8803
+09:07:25 Before pvm_exit
+09:11:51 After pvm_exit
+
+11/1
+----
+bell3a.
+
+07:43:10 Task 5 returned with improved solution: 899390.390000
+07:43:11 Task 6 returned with improved solution: 881066.200000
+07:44:54 Task 35 returned with improved solution: 878651.068000
+07:44:55 Task 34 returned with improved solution: 878430.316000
+07:48:23 *** Best solution found is: 878430.316000
+
+07:48:23 *** Nodes: 64312  Pivots: 672392  Time:  1549.74
+
+07:48:23 Number of workers:                          43
+07:48:23 Wall clock time for this job:               327.1631
+07:48:23 Total time workers were alive (up):        5521.9562
+07:48:23 Total wall clock time of workers:          1577.5296
+07:48:23 Total cpu time used by all workers:        1550.8500
+07:48:23 Total time workers were suspended:            0.0000
+07:48:23 Mean & Var. uptime for the workers:         128.4176    6092.0165
+07:48:23 Mean & Var. working time for the worker:     36.6867    2431.5227
+07:48:23 Mean & Var. cpu time for the workers:        36.0663    2357.4847
+07:48:23 Mean & Var. susp. time for the workers:       0.0000       0.0000
+07:48:23 Before pvm_exit
+07:48:23 After pvm_exit
+
+This run used all SOPLEX workers.
+
+
+air05
+-----
+
+Notes -- I think it would be better if the grain size was > 100
+seconds.  It seems to be taking nearly that long to process the top
+node of the subtree, and you get less benefit from going depth first.
+
+(Maybe you should run this one with -DDEBUG_DFS)
+
+
+Also, again the tree is too skinny for this problem.  We have many
+workers just waiting on one or two processors to finish up the tree.
+:-(
+
+
+
+Didn't PVM exit.  Here are the stats...
+08:10:25 Task 120 returned with improved solution: 30491.000000
+08:13:56 Task 428 returned with improved solution: 26879.000000
+08:14:04 Task 448 returned with improved solution: 26654.000000
+08:14:55 Task 468 returned with improved solution: 26476.000000
+08:17:44 Task 1180 returned with improved solution: 26473.000000
+08:23:14 Task 1742 returned with improved solution: 26434.000000
+08:28:37 Task 1844 returned with improved solution: 26375.000000
+08:30:54 Task 2351 returned with improved solution: 26374.000000
+09:32:50 *** Best solution found is: 26374.000000
+
+09:32:50 *** Nodes: 6714  Pivots: 2457660  Time:  163794.24
+
+09:32:50 Number of workers:                          77
+09:32:50 Wall clock time for this job:              5888.0121
+09:32:50 Total time workers were alive (up):       368348.6177
+09:32:50 Total wall clock time of workers:         177260.3391
+09:32:50 Total cpu time used by all workers:       168944.7000
+09:32:50 Total time workers were suspended:        19882.3157
+09:32:50 Mean & Var. uptime for the workers:        4783.7483   1440756.3659
+09:32:50 Mean & Var. working time for the worker:   2302.0823   1043626.7987
+09:32:50 Mean & Var. cpu time for the workers:      2194.0870   1070764.6135
+09:32:50 Mean & Var. susp. time for the workers:     258.2119   183891.2388
+09:32:50 Before pvm_exit
+
+
+blend2!
+
+
+10:11:46 Task 7 returned with improved solution: 24.728888
+10:12:02 Task 8 returned with improved solution: 22.573828
+10:14:38 Task 123 returned with improved solution: 18.191780
+10:14:38 Task 121 returned with improved solution: 8.992437
+10:14:58 Task 133 returned with improved solution: 8.818432
+10:15:07 Task 478 returned with improved solution: 8.615282
+10:15:09 Task 134 returned with improved solution: 8.556964
+10:16:58 Task 1350 returned with improved solution: 8.413776
+10:17:03 Task 837 returned with improved solution: 8.101781
+10:17:20 Task 497 returned with improved solution: 7.692983
+10:19:51 Task 877 returned with improved solution: 7.598985
+10:20:23 *** Best solution found is: 7.598985
+10:20:23 *** Nodes: 65662  Pivots: 589352  Time:  4233.92
+10:20:23 
+10:20:23 Number of workers:                          38
+10:20:23 Wall clock time for this job:               530.9488
+10:20:23 Total time workers were alive (up):        8212.0696
+10:20:23 Total wall clock time of workers:          4314.0551
+10:20:23 Total cpu time used by all workers:        4235.6600
+10:20:23 Total time workers were suspended:           26.5106
+10:20:23 Mean & Var. uptime for the workers:         216.1071	19638.3378
+10:20:23 Mean & Var. working time for the worker:    113.5278	 7675.4195
+10:20:23 Mean & Var. cpu time for the workers:       111.4647	 7360.3029
+10:20:23 Mean & Var. susp. time for the workers:       0.6976	   18.9949
+10:20:23 Before pvm_exit
+
+
+cap6000
+-------
+
+You are getting a lot of "worker" exits -- probably you are adding too 
+many cuts!  Look into this.
+
+
+danoint was taking a long time to solve.  Need to have "good"
+priority, so I quit it.
