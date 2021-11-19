@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>HTCondor - Install Instructions</title>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1">-->
+        <meta name="description" content="HTCondor Homepage">
+        <script src="/web-preview/preview-test/assets/js/sitewide.js" type="text/javascript"></script>
+        <link href="/web-preview/preview-test/assets/css/style.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+        
+        
+            <meta name="robots" content="noindex">
+        
+    </head>
+<body>
+
+    <!-- For non-visual user agents: -->
+    <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+    <div id="container">
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+    <div class="midHeader">
+        <div class="iconHeader">
+            <a href="/web-preview/preview-test/index.html"><img height="75" alt="Condor High Throughput Computing" src="/web-preview/preview-test/assets/images/CondorTitle.gif" style="border:0"></a>
+        </div>
+
+        <div class="navAndSearch">
+            <div class="navBar">
+                <span class="doNotDisplay">Navigation:</span>
+                <a href="/web-preview/preview-test/index.html">Home</a> |
+                <a href="/web-preview/preview-test/new.html">News</a> |
+                <a href="/web-preview/preview-test/downloads.html">Download</a> |
+                <a href="/web-preview/preview-test/publications.html">Publications</a> |
+                <a href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+            </div>
+
+            <div class="searchForm" >
+                <script>
+                (function() {
+                    var cx = '010754594835990937497:xijuwhbknew';
+                    var gcse = document.createElement('script');
+                    gcse.type = 'text/javascript';
+                    gcse.async = true;
+                    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+                        '//www.google.com/cse/cse.js?cx=' + cx;
+                    var s = document.getElementsByTagName('script')[0];
+                    s.parentNode.insertBefore(gcse, s);
+                })();
+                </script>
+                <gcse:searchbox-only></gcse:searchbox-only>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <div id="main-copy">
+        <h1>Install Instructions</h1>
+
+<p>
+    HTCondor is in the Debian and Ubuntu repositories as well as Enterprise Linux’s EPEL, but these versions may
+    lag behind our current releases. If you want a newer version, please consider using one of our repositories
+    installed via your package manager.
+</p>
+
+<p>
+    We have repositories for the current and previous versions of Enterprise Linux, Debian, and Ubuntu LTS and each
+    distribution will have 3 release series available: Development, Stable, and Previous. If you're unsure which
+    one to choose, go with stable series.
+</p>
+
+<ul>
+    <li>
+        The Development series is updated every 6-8 weeks and has new features under development. We do run it in our
+        production environment before release. However, we have the resources to quickly address the problems found.
+    </li>
+    <li>
+        The Stable series is updated several times during the year, whenever a bug has sufficient impact on one of our
+        users.
+    </li>
+    <li>
+        The Previous repository contains the last release of the previous Stable series.
+    </li>
+</ul>
+
+<p>
+    The main package (condor on Enterprise Linux systems,
+    htcondor on Debian/Ubuntu system) needs to be configured before
+    running HTCondor.
+    There is a minicondor package (minihtcondor on Debian/Ubuntu) that
+    configures HTCondor to run on a single node.
+</p>
+
+<p>
+    Except for EL6, we only support 64-bit Intel architectures.
+</p>
+
+<h3>Enterprise Linux</h3>
+<ul>
+    <li>
+        EL6 (Red Hat Enterprise Linux 6, CentOS 6, Scientific Linux 6)
+        <a href="el/6/stable">Stable</a>
+        <a href="el/6/previous">Previous</a>
+    </li>
+    <li>
+        EL7 (Red Hat Enterprise Linux 7, CentOS 7, Scientific Linux 7)
+        <a href="el/7/stable">Stable</a>
+        <a href="el/7/development">Development</a>
+        <a href="el/7/previous">Previous</a>
+    </li>
+    <li>
+        EL8 (Red Hat Enterprise Linux 8, CentOS 8)
+        <a href="el/8/stable">Stable</a>
+        <a href="el/8/development">Development</a>
+    </li>
+</ul>
+
+<h3>Debian</h3>
+<ul>
+    <li>
+        Debian 9 (Stretch)
+        <a href="debian/9/stable">Stable</a>
+        <a href="debian/9/development">Development</a>
+        <a href="debian/9/previous">Previous</a>
+    </li>
+    <li>
+        Debian 10 (Buster)
+        <a href="debian/10/stable">Stable</a>
+        <a href="debian/10/development">Development</a>
+    </li>
+</ul>
+
+<h3>Ubuntu</h3>
+<ul>
+    <li>
+        Ubuntu 16.04 (Xenial Xerus)
+        <a href="ubuntu/16/stable">Stable</a>
+        <a href="ubuntu/16/development">Development</a>
+        <a href="ubuntu/16/previous">Previous</a>
+    </li>
+    <li>
+        Ubuntu 18.04 (Bionic Beaver)
+        <a href="ubuntu/18/stable">Stable</a>
+        <a href="ubuntu/18/development">Development</a>
+        <a href="ubuntu/18/previous">Previous</a>
+    </li>
+    <li>
+        Ubuntu 20.04 (Focal Fossa)
+        <a href="ubuntu/20/stable">Stable</a>
+        <a href="ubuntu/20/development">Development</a>
+    </li>
+</ul>
+
+<p>
+    HTCondor documentation and manuals may be downloaded, or viewed online from the
+    <a href="https://htcondor.readthedocs.io/en/latest/">HTCondor Manual</a>.
+</p>
+
+    </div>
+
+    <div id="footer">
+    For comments or questions about this website, please
+<a href="mailto:htcondor-admin@cs.wisc.edu">email htcondor-admin@cs.wisc.edu</a><br />
+    This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+  <script type="text/javascript">
+      document.write("Updated &raquo; "+lastMod(document.lastModified))
+  </script>
+</div>
+
+
+    </div>
+</body>
+</html>

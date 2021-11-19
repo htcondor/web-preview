@@ -1,0 +1,564 @@
+<html><head><TITLE>FALSE</TITLE></head>
+<body>
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif></A> #define FALSE  </H2><BLOCKQUOTE>
+FALSE is defined as 0
+</BLOCKQUOTE>
+
+<hr>
+<DL>
+ <DT><A HREF="#DOC.6.2"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>A. Resource Management Functions</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.2.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>exit</B>( int exitval ) </B>
+ <DD><I>System shutdown</I>
+<DT><A HREF="#DOC.6.2.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>setup</B>( int argc, char* argv[], int *my_id, int *master_id ) </B>
+ <DD><I>Initialization of the master process</I>
+<DT><A HREF="#DOC.6.2.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>config</B>( int *nhosts, int *narches, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> ***w ) </B>
+ <DD><I>This returns the state of the "virtual machine" - aka the 
+set of workers under the master's control</I>
+<DT><A HREF="#DOC.6.2.4"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>start_worker</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>Start a worker on a machine that has been given to you</I>
+<DT><A HREF="#DOC.6.2.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>init_beginning_workers</B>( int *nworkers, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> ***workers ) </B>
+ <DD><I>This routine is used to start up multiple workers at 
+the beginning of a run</I>
+<DT><A HREF="#DOC.6.2.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>removeWorker</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>Remove a worker from the virtual machine</I>
+
+</DL>
+<DT><A HREF="#DOC.6.3"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>B. Checkpointing Functions </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.3.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>write_checkpoint</B>( FILE * fp ) </B>
+ <DD><I>Write out internal state to a FILE *</I>
+<DT><A HREF="#DOC.6.3.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>read_checkpoint</B>( FILE * fp ) </B>
+ <DD><I>Read in restart information from a FILE * </I>
+<DT><A HREF="#DOC.6.3.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>read_RMstate</B>( FILE *fp ) </B>
+ <DD><I>Some Low level specific read/write functions </I>
+<DT><A HREF="#DOC.6.3.4"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>write_RMstate</B>( FILE *fp ) </B>
+ <DD><I></I>
+
+</DL>
+<DT><A HREF="#DOC.6.4"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>C. Other public functions </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.4.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_worker_attributes</B>( int arch_class, char *exec_name, char *requirements ) </B>
+ <DD><I>Set the name of the binary and the requirements string 
+for an arch class</I>
+<DT><A HREF="#DOC.6.4.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>processExec</B>( char*, char* ) </B>
+ <DD><I>If the RM software needs to "process" the executable name in
+some way, this is done here</I>
+<DT><A HREF="#DOC.6.4.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_num_arches</B>() </B>
+ <DD><I>Return the number of arch classes </I>
+<DT><A HREF="#DOC.6.4.4"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_num_arches</B>( int n ) </B>
+ <DD><I>Set the number of arch classes </I>
+<DT><A HREF="#DOC.6.4.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>set_worker_checkpointing</B>( <!2><A HREF="#DOC.9">bool</A> wc ) </B>
+ <DD><I>Set whether or not you would like worker checkpointing 
+(if the CommRM implementation has the capability)</I>
+
+</DL>
+<DT><A HREF="#DOC.6.5"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>D. Host Management Members </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.5.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>hostaddlogic</B>( int *num_workers ) </B>
+ <DD><I>This will figure out if we need to ask for more hosts
+or remove hosts</I>
+<DT><A HREF="#DOC.6.5.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_target_num_workers</B>( int num_workers ) </B>
+ <DD><I>Set a "target" number of workers across all arches</I>
+
+</DL>
+<DT><A HREF="#DOC.6.6"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>E. Some Protected Data </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.6.1"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>worker_executables</B>[16][_POSIX_PATH_MAX] </B>
+ <DD><I>An array containing the <B>full</b> pathnames of the executables</I>
+<DT><A HREF="#DOC.6.6.2"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>worker_requirements</B>[16][1024] </B>
+ <DD><I>An array containing the requirements string for each arch 
+class</I>
+<DT><A HREF="#DOC.6.6.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>target_num_workers</B> </B>
+ <DD><I>The desired number of workers </I>
+<DT><A HREF="#DOC.6.6.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>num_arches</B> </B>
+ <DD><I>The number of different arch classes</I>
+<DT><A HREF="#DOC.6.6.5"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.9">bool</A>  <B>worker_checkpointing</B> </B>
+ <DD><I>Would you like the workers to be checkpointed</I>
+
+</DL>
+<DT><A HREF="#DOC.6.1"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>MWRMComm</B>() </B>
+ <DD><I>Constructor</I>
+<DT><A HREF="#DOC.6.7"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>The Communication Routines</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.7.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>initsend</B>( int encoding = 0 ) </B>
+ <DD><I>Initialize a buffer for sending some data</I>
+<DT><A HREF="#DOC.6.7.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>send</B>( int to_whom, int msgtag ) </B>
+ <DD><I>Send the data that has been packed</I>
+<DT><A HREF="#DOC.6.7.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>recv</B>( int from_whom, int msgtag ) </B>
+ <DD><I>Receive some data that has been packed</I>
+<DT><A HREF="#DOC.6.7.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>bufinfo</B>( int buf_id, int *len, int *tag, int *from ) </B>
+ <DD><I>Provide info on the message just received </I>
+<DT><A HREF="#DOC.6.7.7"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>hostadd</B>( ) </B>
+ <DD><I>Needed only for MW-Independent </I>
+<DT><A HREF="#DOC.6.7.4"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Pack Functions</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.7.4.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( char *bytes, int nitem, int stride = 1 ) </B>
+ <DD><I>Pack some bytes</I>
+<DT><A HREF="#DOC.6.7.4.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( float *f, int nitem, int stride = 1 ) </B>
+ <DD><I>float</I>
+<DT><A HREF="#DOC.6.7.4.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( double *d, int nitem, int stride = 1 ) </B>
+ <DD><I>double</I>
+<DT><A HREF="#DOC.6.7.4.4"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( int *i, int nitem, int stride = 1 ) </B>
+ <DD><I>int</I>
+<DT><A HREF="#DOC.6.7.4.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( unsigned int *ui, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned int</I>
+<DT><A HREF="#DOC.6.7.4.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( short *sh, int nitem, int stride = 1 ) </B>
+ <DD><I>short</I>
+<DT><A HREF="#DOC.6.7.4.7"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( unsigned short *ush, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned short</I>
+<DT><A HREF="#DOC.6.7.4.8"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( long *l, int nitem, int stride = 1 ) </B>
+ <DD><I>long</I>
+<DT><A HREF="#DOC.6.7.4.9"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( unsigned long *ul, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned long</I>
+<DT><A HREF="#DOC.6.7.4.10"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>pack</B>( char *string ) </B>
+ <DD><I>Pack a NULL-terminated string</I>
+
+</DL>
+<DT><A HREF="#DOC.6.7.5"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Unpack Functions</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.6.7.5.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( char *bytes, int nitem, int stride = 1 ) </B>
+ <DD><I>Unpack some bytes</I>
+<DT><A HREF="#DOC.6.7.5.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( float *f, int nitem, int stride = 1 ) </B>
+ <DD><I>float</I>
+<DT><A HREF="#DOC.6.7.5.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( double *d, int nitem, int stride = 1 ) </B>
+ <DD><I>double</I>
+<DT><A HREF="#DOC.6.7.5.4"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( int *i, int nitem, int stride = 1 ) </B>
+ <DD><I>int</I>
+<DT><A HREF="#DOC.6.7.5.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( unsigned int *ui, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned int</I>
+<DT><A HREF="#DOC.6.7.5.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( short *sh, int nitem, int stride = 1 ) </B>
+ <DD><I>short</I>
+<DT><A HREF="#DOC.6.7.5.7"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( unsigned short *ush, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned short</I>
+<DT><A HREF="#DOC.6.7.5.8"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( long *l, int nitem, int stride = 1 ) </B>
+ <DD><I>long</I>
+<DT><A HREF="#DOC.6.7.5.9"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( unsigned long *ul, int nitem, int stride = 1 ) </B>
+ <DD><I>unsigned long</I>
+<DT><A HREF="#DOC.6.7.5.10"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  int  <B>unpack</B>( char *string ) </B>
+ <DD><I>Unpack a NULL-terminated string</I>
+
+</DL>
+
+</DL>
+<DT><A HREF="#DOC.6.8"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <B>~MWRMComm</B>() </B>
+ <DD><I>Destructor...</I>
+</DL><A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+FALSE is defined as 0
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="MWRMComm">
+<A NAME ="DOC.6.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  MWRMComm()</B></TT>
+<DD>Constructor.  Sets data to -1's. 
+<DL></DL><P>
+<A NAME="~MWRMComm">
+<A NAME ="DOC.6.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  ~MWRMComm()</B></TT>
+<DD>Destructor...
+<DL></DL><P>
+<A NAME="A. Resource Management Functions">
+<A NAME ="DOC.6.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  A. Resource Management Functions</B></TT>
+<DD>
+Here are all the methods you could want to have for managing 
+a set of machines.  See each method for details...
+<DL></DL><P><DL>
+
+<A NAME="exit">
+<A NAME ="DOC.6.2.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  exit( int exitval )</B></TT>
+<DD>System shutdown.  Does not return.  
+
+<DL><DT><B>Parameters:</B><DD><B>exitval</B> -  The value to call ::exit() with <br></DL><P>
+<A NAME="setup">
+<A NAME ="DOC.6.2.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  setup( int argc, char* argv[], int *my_id, int *master_id )</B></TT>
+<DD>Initialization of the master process.  This will be called
+one time only when the master starts up.  
+
+<DL><DT><B>Returns:</B><DD>0 on success, -1 on failure
+</DL><P>
+<A NAME="config">
+<A NAME ="DOC.6.2.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  config( int *nhosts, int *narches, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> ***w )</B></TT>
+<DD>This returns the state of the "virtual machine" - aka the 
+set of workers under the master's control.  
+
+<DL><DT><B>Returns:</B><DD>0 on success, -1 on error.
+<DT><B>Parameters:</B><DD><B>nhosts</B> -  The number of hosts
+<br><B>narches</B> -  The number of architechture classes
+<br><B>w</B> -  A pointer to a pointer to an array of pointers.  
+This should be NULL when called; config() will allocate
+the memory using new and return it to you.  Don't forget
+to delete not only the elements in that array, but 
+also the array itself.  The array will have nhosts
+elements, and they will each represent a worker 
+machine.
+<br></DL><P>
+<A NAME="start_worker">
+<A NAME ="DOC.6.2.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  start_worker( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>Start a worker on a machine that has been given to you.
+This is really only important if the process of starting
+a worker is two-stage.  For instance, in pvm, you
+first get a machine.  THEN you have to spawn an 
+executable on that machine.  For something like MW-files, 
+once you get a worker it already has the executable 
+started on it.  In that case this will basically be
+a no-op.  
+
+<DL><DT><B>Returns:</B><DD>id2 on success, -1 on failure
+<DT><B>Parameters:</B><DD><B>w</B> -  A pointer to a MWWorkerID.  This must point
+to allocated memory.  It is filled with info like the
+machine name, id2, and the arch.
+<br></DL><P>
+<A NAME="init_beginning_workers">
+<A NAME ="DOC.6.2.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  init_beginning_workers( int *nworkers, <!1><A HREF="MWWorkerID.html">MWWorkerID</A> ***workers )</B></TT>
+<DD>This routine is used to start up multiple workers at 
+the beginning of a run.  It should only be called one
+time.  It basically does a config() to find out what
+machines are available, and then starts a worker on 
+each of them.  You may want to check the implementations
+for details...
+
+<DL><DT><B>Returns:</B><DD>0 on success, -1 on failure
+<DT><B>Parameters:</B><DD><B>nworkers</B> -  The number of workers at the start (returned!)
+<br><B>workers</B> -  A pointer to a pointer to an array of
+MWWorkerID pointers.  The memory management for this 
+is the same as it is for the config() call - it should
+be null when called and will point to allocated memory
+when it comes back.
+<br></DL><P>
+<A NAME="removeWorker">
+<A NAME ="DOC.6.2.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  removeWorker( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>Remove a worker from the virtual machine.  This call 
+will delete w, so don't reference that memory again!
+
+<DL><DT><B>Returns:</B><DD>0 on success, a negative number on failure
+<DT><B>Parameters:</B><DD><B>w</B> -  The MWWorkerID of the machine to remove.
+<br></DL><P></DL>
+
+<A NAME="B. Checkpointing Functions ">
+<A NAME ="DOC.6.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  B. Checkpointing Functions </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="write_checkpoint">
+<A NAME ="DOC.6.3.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  write_checkpoint( FILE * fp )</B></TT>
+<DD>Write out internal state to a FILE *
+<DL></DL><P>
+<A NAME="read_checkpoint">
+<A NAME ="DOC.6.3.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  read_checkpoint( FILE * fp )</B></TT>
+<DD>Read in restart information from a FILE * 
+<DL></DL><P>
+<A NAME="read_RMstate">
+<A NAME ="DOC.6.3.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  read_RMstate( FILE *fp )</B></TT>
+<DD>Some Low level specific read/write functions 
+<DL></DL><P>
+<A NAME="write_RMstate">
+<A NAME ="DOC.6.3.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  write_RMstate( FILE *fp )</B></TT>
+<DL></DL><P></DL>
+
+<A NAME="C. Other public functions ">
+<A NAME ="DOC.6.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  C. Other public functions </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="set_worker_attributes">
+<A NAME ="DOC.6.4.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_worker_attributes( int arch_class, char *exec_name, char *requirements )</B></TT>
+<DD>Set the name of the binary and the requirements string 
+for an arch class.  Technically, the requirements string 
+is not needed for MWPvmRC - it is defined in the submit
+file.  It *is* needed in the MWFileRC, however, for job
+submission.
+
+<DL><DT><B>Parameters:</B><DD><B>arch_class</B> -  This specifies which arch class the above
+requirements will apply to.
+<br><B>exec_name</B> -  The name of the worker executable for 
+this arch class.
+<br><B>requirements</B> -  A string containing the "requirements" 
+attribute of a given arch class of workers.  This will 
+be something that can be used in a submit file, like 
+"(arch == \"INTEL\" &amp;&amp; opsys == \"SOLARIS26\")"<br></DL><P>
+<A NAME="processExec">
+<A NAME ="DOC.6.4.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  processExec( char*, char* )</B></TT>
+<DD>If the RM software needs to "process" the executable name in
+some way, this is done here
+<DL></DL><P>
+<A NAME="get_num_arches">
+<A NAME ="DOC.6.4.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_num_arches()</B></TT>
+<DD>Return the number of arch classes 
+<DL></DL><P>
+<A NAME="set_num_arches">
+<A NAME ="DOC.6.4.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_num_arches( int n )</B></TT>
+<DD>Set the number of arch classes 
+<DL></DL><P>
+<A NAME="set_worker_checkpointing">
+<A NAME ="DOC.6.4.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  set_worker_checkpointing( <!2><A HREF="#DOC.9">bool</A> wc )</B></TT>
+<DD>Set whether or not you would like worker checkpointing 
+(if the CommRM implementation has the capability)
+<DL></DL><P></DL>
+
+<A NAME="D. Host Management Members ">
+<A NAME ="DOC.6.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  D. Host Management Members </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="hostaddlogic">
+<A NAME ="DOC.6.5.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  hostaddlogic( int *num_workers )</B></TT>
+<DD>This will figure out if we need to ask for more hosts
+or remove hosts.  It is called whenever a host is added
+or removed from the system, or set_target_num_workers()
+is called.
+
+<DL><DT><B>Returns:</B><DD>If we have more workers than we need, we return a
+positive number as the "excess" that can be deleted.  
+<DT><B>Parameters:</B><DD><B>num_workers</B> -  A pointer to an array of length
+num_arches that contains the number of workers for 
+each arch class.
+<br></DL><P>
+<A NAME="set_target_num_workers">
+<A NAME ="DOC.6.5.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_target_num_workers( int num_workers )</B></TT>
+<DD>Set a "target" number of workers across all arches.  This 
+is useful if you don't care how many you get of each arch... 
+
+<DL><DT><B>Parameters:</B><DD><B>num_workers</B> -  The target number of workers <br></DL><P></DL>
+
+<A NAME="E. Some Protected Data ">
+<A NAME ="DOC.6.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  E. Some Protected Data </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="worker_executables">
+<A NAME ="DOC.6.6.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  worker_executables[16][_POSIX_PATH_MAX]</B></TT>
+<DD>An array containing the <B>full</b> pathnames of the executables.
+Element 0 is for arch "0", element 1 is for arch "1", etc.
+Usually read in get get_userinfo().  The array is fixed at 
+16 arches - that ought to be enough!
+<DL></DL><P>
+<A NAME="worker_requirements">
+<A NAME ="DOC.6.6.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  worker_requirements[16][1024]</B></TT>
+<DD>An array containing the requirements string for each arch 
+class.  This is needed in MW-files. 
+<DL></DL><P>
+<A NAME="target_num_workers">
+<A NAME ="DOC.6.6.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  target_num_workers</B></TT>
+<DD>The desired number of workers 
+<DL></DL><P>
+<A NAME="num_arches">
+<A NAME ="DOC.6.6.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  num_arches</B></TT>
+<DD>The number of different arch classes
+<DL></DL><P>
+<A NAME="worker_checkpointing">
+<A NAME ="DOC.6.6.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.9">bool</A>  worker_checkpointing</B></TT>
+<DD>Would you like the workers to be checkpointed
+<DL></DL><P></DL>
+
+<A NAME="The Communication Routines">
+<A NAME ="DOC.6.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  The Communication Routines</B></TT>
+<DD>
+These message passing routines are very closely modeled on
+PVM's message passing facility.  They are, however, pretty
+generic in that any message passing interface should be 
+able to implement them.
+<DL></DL><P><DL>
+
+<A NAME="initsend">
+<A NAME ="DOC.6.7.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  initsend( int encoding = 0 )</B></TT>
+<DD>Initialize a buffer for sending some data
+<DL><DT><B>Parameters:</B><DD><B>encoding</B> -  Defined by each application.  0 = default <br></DL><P>
+<A NAME="send">
+<A NAME ="DOC.6.7.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  send( int to_whom, int msgtag )</B></TT>
+<DD>Send the data that has been packed. 
+
+<DL><DT><B>Parameters:</B><DD><B>to_whom</B> -  An identifier for the recipient
+<br><B>msgtag</B> -  A 'tag' to identify that type of message <br></DL><P>
+<A NAME="recv">
+<A NAME ="DOC.6.7.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  recv( int from_whom, int msgtag )</B></TT>
+<DD>Receive some data that has been packed.  Should make this 
+more PVM-independent; will do this sometime.
+
+<DL><DT><B>Parameters:</B><DD><B>from_whom</B> -  From a specific source; -1 is from all
+<br><B>msgtag</B> -  With a certain tag; -1 is all. <br></DL><P>
+<A NAME="bufinfo">
+<A NAME ="DOC.6.7.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  bufinfo( int buf_id, int *len, int *tag, int *from )</B></TT>
+<DD>Provide info on the message just received 
+<DL></DL><P>
+<A NAME="hostadd">
+<A NAME ="DOC.6.7.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  hostadd( )</B></TT>
+<DD>Needed only for MW-Independent 
+<DL></DL><P>
+<A NAME="Pack Functions">
+<A NAME ="DOC.6.7.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Pack Functions</B></TT>
+<DD>
+In the following pack() functions, there are some common themes.
+First, each stuffs some data into a buffer to be sent.  The
+nitem parameter is just a count of the number of items.  The 
+stride parameter specifies *which* items to pack.  1 implies
+all, 2 would be every 2nd item, 3 is every 3rd item, etc. <P>The return value is user defined.  It should be standardized, 
+but I'll do that later.
+<DL></DL><P><DL>
+
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( char *bytes, int nitem, int stride = 1 )</B></TT>
+<DD>Pack some bytes
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( float *f, int nitem, int stride = 1 )</B></TT>
+<DD>float
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( double *d, int nitem, int stride = 1 )</B></TT>
+<DD>double
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( int *i, int nitem, int stride = 1 )</B></TT>
+<DD>int
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( unsigned int *ui, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned int
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( short *sh, int nitem, int stride = 1 )</B></TT>
+<DD>short
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( unsigned short *ush, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned short
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( long *l, int nitem, int stride = 1 )</B></TT>
+<DD>long
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( unsigned long *ul, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned long
+<DL></DL><P>
+<A NAME="pack">
+<A NAME ="DOC.6.7.4.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  pack( char *string )</B></TT>
+<DD>Pack a NULL-terminated string
+<DL></DL><P></DL>
+
+<A NAME="Unpack Functions">
+<A NAME ="DOC.6.7.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Unpack Functions</B></TT>
+<DD>
+These unpack functions unpack data packed with the pack() 
+functions.  See the pack() functions for more details.
+
+<DL></DL><P><DL>
+
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( char *bytes, int nitem, int stride = 1 )</B></TT>
+<DD>Unpack some bytes
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( float *f, int nitem, int stride = 1 )</B></TT>
+<DD>float
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( double *d, int nitem, int stride = 1 )</B></TT>
+<DD>double
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( int *i, int nitem, int stride = 1 )</B></TT>
+<DD>int
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( unsigned int *ui, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned int
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( short *sh, int nitem, int stride = 1 )</B></TT>
+<DD>short
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( unsigned short *ush, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned short
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( long *l, int nitem, int stride = 1 )</B></TT>
+<DD>long
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( unsigned long *ul, int nitem, int stride = 1 )</B></TT>
+<DD>unsigned long
+<DL></DL><P>
+<A NAME="unpack">
+<A NAME ="DOC.6.7.5.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  int  unpack( char *string )</B></TT>
+<DD>Unpack a NULL-terminated string
+<DL></DL><P></DL>
+</DL>
+</DL>
+<DL></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>

@@ -1,0 +1,1186 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2//EN">
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=iso-8859-1">
+	<TITLE>Introduction</TITLE>
+	<META NAME="GENERATOR" CONTENT="StarOffice/5.2 (Linux)">
+	<META NAME="AUTHOR" CONTENT="Computer Systems Lab">
+	<META NAME="CREATED" CONTENT="20010501;12590000">
+	<META NAME="CHANGEDBY" CONTENT="sanjeevk">
+	<META NAME="CHANGED" CONTENT="20010518;13540000">
+	<STYLE>
+	<!--
+		@page { margin-right: 1in; margin-top: 1in; margin-bottom: 0.49in }
+		H1 { margin-bottom: 0.04in; font-family: "Arial", sans-serif; font-size: 14pt; widows: 2; orphans: 2 }
+		H3 { margin-left: 0.19in; text-indent: 0in; margin-top: 0in; margin-bottom: 0in; font-size: 10pt; font-style: italic; line-height: 0.25in; text-align: justify; widows: 2; orphans: 2 }
+		H4 { margin-top: 0in; margin-bottom: 0in; font-size: 10pt; line-height: 0.25in; text-align: center; widows: 2; orphans: 2 }
+		H5 { margin-top: 0in; margin-bottom: 0in; widows: 2; orphans: 2 }
+		A:link { color: #0000ff }
+		A:visited { color: #800080 }
+	-->
+	</STYLE>
+</HEAD>
+<BODY LINK="#0000ff" VLINK="#800080">
+<H1 ALIGN=CENTER STYLE="margin-top: 0.12in; margin-bottom: 0.09in; line-height: 0.25in">
+<BR><BR>
+</H1>
+<H1 ALIGN=CENTER STYLE="margin-top: 0.12in; margin-bottom: 0.09in; line-height: 0.25in">
+<FONT FACE="Times New Roman, serif"><FONT SIZE=4 STYLE="font-size: 16pt">An
+Intelligent framework for Master-Worker Applications in a Dynamic
+Metacomputing Environment</FONT></FONT></H1>
+<P ALIGN=LEFT><BR>
+</P>
+<H3 ALIGN=CENTER STYLE="margin-left: 0.19in; text-indent: 0in; font-style: normal; font-weight: medium">
+<FONT SIZE=3>Sanjeev Kulkarni </FONT>
+</H3>
+<H3 ALIGN=CENTER STYLE="margin-left: 0.19in; text-indent: 0in; font-weight: medium">
+<BR>
+</H3>
+<H3 ALIGN=CENTER STYLE="margin-left: 0.19in; text-indent: 0in; font-weight: medium">
+<FONT SIZE=3>Computer Sciences Department</FONT></H3>
+<H3 ALIGN=CENTER STYLE="margin-left: 0.19in; text-indent: 0in; font-weight: medium">
+<FONT SIZE=3>University of Wisconsin - Madison</FONT></H3>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in"><FONT SIZE=3><I>sanjeevk@cs.wisc.edu</I></FONT></P>
+<P ALIGN=CENTER><BR>
+</P>
+<P ALIGN=CENTER STYLE="line-height: 0.25in">May 11, 2001</P>
+<H4><BR>
+</H4>
+<H4>Abstract</H4>
+<P ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.5in; margin-right: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+In a metacomputing environment like Condor the availability of
+computational resources changes very rapidly and randomly.
+Applications designed to work in such an environment should be
+written to take care of such dynamics. In this paper we describe MW,
+a software framework that allows users to quickly and easily
+parallelize scientific computations using the master-worker paradigm
+in such an environment. MW takes care of systems events like workers
+joining/leaving allowing users to focus on the implementation of
+their algorithm. Because MW is based on a layered architecture, users
+can move from one underlying resource manager like Condor to another
+like PVM with minimum work. Also MW exposes a very flexible
+scheduling mechanism that allows users to group their work into
+classes. This mechanism cuts the communication costs dramatically for
+some applications as shown by a case study.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<H5 STYLE="margin-top: 0.08in">1 Introduction</H5>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	With
+advances in computer architecture and underlying electronics users
+today have access to a lot of computational resources. Also with
+increasing connectivity between machines (most often connected
+together by the ubiquitous LAN) there is an increasing trend towards
+metacomputing wherein these sets of machines are used to solve large
+problems, problems which a decade ago could be solved only with
+supercomputers. However to effectively use these metacomputers the
+problem of dividing and distributing a complex computation has to be
+solved. Although projects like Condor[6], Legion[7] and Globus[8]
+provide the underlying infrastructure for resource management to
+support metacomputing, there are still a host of problems encountered
+in adapting algorithms to work in these environments.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	Condor,
+an example of a metacomputing environment, is essentially an idle
+cycle scavenger. Condor resides on a set of workstations (also called
+a Condor pool) observing their characteristics like load average. If
+it finds machines idle for a considerable period of time it starts
+jobs submitted to the system on them. However when the owner of
+machine comes back, Condor either suspends or kills the job running
+on that machine. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	It
+is clear that Condor represents a volatile metacomputing system.
+Machines can be acquired at any time and can go away at any point of
+time with little notice. This dynamic nature poses new kinds of
+problems for a user implementing a distributed algorithm. The user
+has to have an elaborate mechanism to monitor which nodes have been
+suspended/killed and has to do reassignment of work pieces for killed
+workers. This puts a lot of extra work in addition to the actual
+algorithm. Moreover this also ties the implementation to one
+particular resource manager (in this case Condor) and a total rewrite
+may be necessary if the user wants to migrate to another environment.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	There
+has been a lot of work in the area of providing a framework for
+applications in a metacomputing environment. NetSolve[1] provides an
+API to access and schedule Grid resources in a seamless way but it is
+not suited for writing non-embarrassingly parallel codes.
+Everyware[2] is an attempt to show that an application can draw
+computational resources transparently from the Grid but it is not
+abstracted as a programming tool. CARMI/Wodi[9], though a useful
+interface for programming master-worker applications, is strongly
+tied to Condor-PVM software tool[3].</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+The goal of our project is to develop an easy to use software
+framework that allows users to quickly parallelize their applications
+in a metacomputing environment. The focus is on hiding the
+characteristics of the underlying environment by abstracting and
+exposing a complete API to the user. This framework called MW is
+based on the master-worker paradigm of distributed computing. MW
+transparently handles the various system events of the underlying
+resource manager thereby allowing the user to focus on the main
+algorithm at hand. Based on a layered architecture, MW makes
+implementation highly portable across different metacomputing
+environments. Also MW incorporates a very elegant group management
+mechanism that allows users to group their work into different
+classes. Using this mechanism, users have to merely manipulate group
+memberships of tasks and workers. MW takes care of the distribution
+of tasks to workers based on group memberships. MW is envisioned to
+work in a heterogeneous environment where machines differ from one
+another not only in their architecture and operating system but also
+in their computation power, memory, disk space etc. Along with these
+static differences, machines can also have dynamic differences like
+network connectivity, available bandwidth etc. The current
+architecture of MW makes it possible to do more intelligent
+distribution of tasks among workers by taking into account this
+asymmetry between machines and between tasks.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	The
+rest of this paper is organized as follows. Section 2 introduces MW.
+In particular it describes the architecture of MW and the interface
+it provides. Section 3 speaks about the various function performed by
+MW. The next section talks about the group management mechanism of MW
+taking the matrix multiplication example as a test case. We end with
+conclusions and some possible future extensions. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<H5>2 MW</H5>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	MW
+(which stands for Master-Worker) is a software framework that allows
+users to easily parallize their applications in a metacomputing
+environment. MW essentially is a set of abstract C++ classes. It
+provides interface for the application writer as well as interfaces
+to the underlying resource manager. As an application writer the user
+must implement just a few virtual functions of MW. Similarly the Grid
+application programmer has to write a few virtual functions to port
+MW to a new metacomputing environment.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	The
+architecture of MW is shown in fig 1. As shown in the figure MW has a
+layered approach. The application interacts with MW by using the
+application interface to define tasks. MW interacts with the Resource
+Management and Communication layer for acquiring machines and
+communicating between the master and the workers. The core MW
+abstracts these system characteristics and provides a uniform
+interface to the application while also performing task and worker
+management.</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<IMG SRC="sv615616.gif" ALIGN=LEFT HSPACE=12><IMG SRC="sv615617.gif" ALIGN=LEFT HSPACE=12><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<SPAN ID="Frame2" STYLE="float: left; width: 2.27in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=CENTER><FONT SIZE=3><B>Application Programmers' Interface</B></FONT></P>
+</SPAN><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<IMG SRC="sv615618.gif" ALIGN=LEFT><IMG SRC="sv615619.gif" ALIGN=LEFT><IMG SRC="sv615620.gif" ALIGN=LEFT><SPAN ID="Frame4" STYLE="float: left; width: 1.27in; height: 0.3in; border: none; padding: 0in; background: #ffffff">
+	<H1 STYLE="margin-top: 0in; margin-bottom: 0in"><FONT FACE="Times New Roman, serif">Application</FONT></H1>
+</SPAN>
+<SPAN ID="Frame6" STYLE="float: left; width: 1.77in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT><FONT SIZE=4><B>Core MW Layer</B></FONT></P>
+</SPAN>
+<SPAN ID="Frame5" STYLE="float: left; width: 2.65in; height: 0.3in; border: none; padding: 0in; background: #ffffff">
+	<H1 STYLE="margin-top: 0in; margin-bottom: 0in"><FONT FACE="Times New Roman, serif">MWRMComm
+	Layer</FONT></H1>
+</SPAN>
+<SPAN ID="Frame3" STYLE="float: left; width: 2.52in; height: 0.67in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=CENTER><FONT SIZE=3><B>Infrastructure Programmers'
+	Interface</B></FONT></P>
+</SPAN><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<IMG SRC="sv615621.gif" ALIGN=LEFT HSPACE=12><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+				Fig 1. Architecture of MW</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+We describe these interfaces first before describing the main
+functions of MW. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>2.1
+Infrastructure Interface</B></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	The
+infrastructure software that interfaces with MW should have at least
+the following capabilities.</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	Communication - It should allow data to be passed between the master
+	and workers</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	Resource Management - It should interface with the underlying
+	resource manager and be able to</P>
+	<UL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		 acquire/release resources</P>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		query the state of computational resources in the pool</P>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		start jobs on remote machines.</P>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		Detect when resources fail or leave the computation.</P>
+	</UL>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">This
+layer, called the MWRMComm (resource management and communication)
+layer, is an abstract class and is the part of MW that is tied to the
+underlying metacomputing environment. It interfaces with MW using
+Infrastructure Programming Interface which abstracts the core
+communication and resource management requirements for master-worker
+applications and acts as the eye of MW on the underlying environment.
+The actual IPI is detailed in [4]. Here we talk about the existing
+RMComm layers available.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	Currently
+there are three implementations of MWRMComm class. All of them rely
+on the resource management facilities provided by the Condor system.
+Since Condor is a dynamic metacomputing environment, they serve as
+good test-beds to test the fault-tolerant behavior of MW. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	One
+implementation uses PVM for communication. PVM uses sockets for the
+underlying communication and its communication library is highly
+optimized for high performance. However a disadvantage of using this
+layer is the requirement of the installation of PVM in all the
+machines in the environment. In the second implementation,
+communication is done via Condor's remote I/O mechanism to write to a
+series of shared files. Since files are used for message passing,
+communication is very costly. In the third implementation TCP sockets
+are used for communication. This combines the best of both worlds,
+communication is not costly and there is no requirement of
+installation of any software in the pool. Table 1 summarizes the
+above points. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>2.2
+Application Programmers Interface</B></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>	</B>The
+application programmers' interface is very well suited to the work
+cycles pattern of master-worker computing. In this pattern the user
+creates a set of tasks in the beginning, which are distributed to the
+workers. When the results of all these tasks come, the master creates
+a new set of tasks and sends them out again. This cycle continues
+until some terminal conditions are met.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	</P>
+<TABLE WIDTH=620 BORDER=1 BORDERCOLOR="#000000" CELLPADDING=1 CELLSPACING=0>
+	<COL WIDTH=153>
+	<COL WIDTH=153>
+	<COL WIDTH=153>
+	<COL WIDTH=152>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Services</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Condor-PVM</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Condor-FILES</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Condor-Sockets</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Communication</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Messages buffered and passed through pvm_pk() in XDR
+			format</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Messages passed through shared files via Condor
+			Remote I/O</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Messages passed through TCP sockets.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Resource Request and Detection</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Requests formulated with Condor ClassAds, served by
+			Condor matchmaking, detection notified by pvm_notify()</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Requests formulated with Condor ClassAds, served by
+			Condor matchmaking, detection by checking Condor log files</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Requests formulated with Condor ClassAds, served by
+			Condor matchmaking, detection by checking Condor log files</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Fault Detection</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Faults detected by Condor-PVM and passed through
+			pvm_notify()</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Faults detected by checking Condor logs</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Faults detected jointly by checking Condor logs and
+			socket status</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Remote Execution</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Jobs started by pvm_spawn()</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Jobs started by Condor</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Jobs started by Condor</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>On Master Crash</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>All workers lost, should again submit requests to
+			get them</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Workers linger for considerable period. A restarting
+			master can detect and admit them into the system.</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Workers lost, should submit requests again to get
+			them</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Communication Performance</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Optimized for Message Passing</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Slowest of the lot in communication</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT>Fairly Good.</P>
+		</TD>
+	</TR>
+	<TR VALIGN=TOP>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Comments</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Condor-PVM should be present across all worker
+			machines</P>
+		</TD>
+		<TD WIDTH=153>
+			<P ALIGN=LEFT>Worker Object files must be available to relink</P>
+		</TD>
+		<TD WIDTH=152>
+			<P ALIGN=LEFT><BR>
+			</P>
+		</TD>
+	</TR>
+</TABLE>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in">Table
+1. The characteristics of the current RMComm Layers.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">In
+order to parallelize an application with MW, the application
+programmer must re-implement three abstract base classes- MWDriver,
+MWTask and MWWorker.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>2.2.1
+MWDriver</B></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>	</B>MWDriver
+corresponds to the master in the master-worker computation. This
+class manages a set of MWTasks and a set of MWWorkers to execute
+those tasks. MWDriver base class handles workers joining and leaving
+the computation, assigning tasks to appropriate workers and
+rematching tasks when the workers are lost. Section 3 describes the
+features in more detail.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>2.2.2
+MWTask</B></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>	</B>The
+MWTask is the abstraction of one unit of work. The class holds both
+the data describing that work and the results computed by the worker.
+This object is created by the MWDriver and is distributed to a
+worker. The MWWorker executes the work and returns back the results
+to MWDriver.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>2.2.3
+MWWorker</B></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	The
+MWWorker corresponds to the worker in the master-worker computation.
+The MWDriver starts it on a remote machine. The MWWorker listens for
+work from the master, computes the results and sends them back to the
+master.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">Readers
+are referred to [4] for the actual API of MWDriver, MWTask and
+MWWorker. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>3
+MW Functionality</B></P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+The core MW provides the following functionalities.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Task Management</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+MW manages the tasks given to it by the user. To do this MW maintains
+two lists. The <I>to-do</I> list keeps track of which tasks are still
+to be done. The <I>running</I> list keeps track of the tasks that are
+being done at any time. Also maintained in the running list for each
+task is the worker who is executing that task. When a worker running
+a task goes away, MW moves the task from the running list to the
+<I>to-do</I> list. In some environments like Condor workers can get
+suspended. In this case MW either moves the task back to the <I>to-do</I>
+list or waits for the worker to resume. This policy is configurable
+by the user. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+MW distributes tasks from the front of the list. Tasks are inserted
+into the list either at the beginning or at the end. MW also provides
+ways to sort the task list using some user-defined key.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Worker Management</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+MW keeps track of all the workers that it has at any point in the
+computation. At the start the application typically asks for a
+certain number of workers. The method of acquiring the desired number
+of workers is left to the underlying Resource Manager/Communicator
+(RMComm) interface layer. This enables the RMComm layer to acquire
+the workers in a manner that is most suitable to the underlying
+resource manager. Once a worker comes alive MW maintains the state of
+the worker on the basis of the information provided by the RMComm
+layer. The RMComm layer communicates the various system events like
+host doing down, getting suspended to MW using the interface
+specified earlier.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Task Distribution</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The basic work of MWDriver is the distribution of tasks to the
+workers. Whenever a worker comes alive MW first sends it a
+benchmarking task. This benchmarking is user defined and is intended
+to serve as an indicator of the power of the worker. After the worker
+returns with the benchmarking results MW starts distributing the user
+tasks to the worker. This distribution works on a group membership
+mechanism that is described separately in section 4.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Checkpointing</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.06in; text-indent: 0.44in; margin-top: 0.08in; line-height: 0.25in">
+Because the MWDriver reschedules the tasks when the workers running
+these tasks go away, applications running on top of MW are fault
+tolerant in the presence of failures of all processor failures-except
+for the master processor. In order to make computations fully
+reliable, MWDriver offers features to logically checkpoint the state
+of the computation on the master process on a user-defined frequency.
+To enable this checkpointing, user must re-implement checkpointing
+functions for writing and reading the state contained in its
+application's master and task classes. During checkpointing MW dumps
+the state of the computation in a file. This state includes the tasks
+to be done, the tasks that are being done, underlying RMComm state
+and a few other system parameters.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Debugging Facilities</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+Debugging an application in such an environment is a major issue
+considering that the entire computation is distributed across
+machines. To help users debug their applications, MW can operate in a
+mode called MW-Independent. In this mode the entire computation is
+contained in a single process with the master and a single worker.
+The underlying send/recv functions of the RMComm layer map into
+<I>memcpy</I> operations. There is also a switching from the master
+to worker and vice-versa at the time of send and recv functions.
+Since this is a self-contained applications users can debug their
+implementation using the well known debugging facilities like gdb.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<OL START=3>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	<B>Group Management Mechanism</B></P>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+In the architecture described above the application writer doesn't
+have sufficient control over the distribution of tasks to the
+workers. Whenever a worker is ready to receive work, MW would pick
+the next task from the to-do list and send that task to it. Although
+the application can order the task list, it may not be sufficient. In
+particular the driver may want to have a say on which workers a task
+might be sent to. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+There are several reasons why applications need such a capability.
+Applications may break up their work into uneven pieces. Some tasks
+may be difficult (computationally expensive) and some may be
+relatively simple. In a heterogeneous environment workers too may
+differ in their computational power. Applications may therefore want
+bigger tasks to be sent to powerful machines. Another reason why
+applications may need more control in the distribution of tasks is
+because of the incapability of some workers to compute some tasks.
+For example consider an image processing application wherein the
+master initially sends some chunk of image to each worker. Now if
+each task is modeled as acting upon a particular area of the image,
+then it is easy to see that only those workers who have the image
+area corresponding to a task can operate that task.</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The above discussion necessitates a framework in MW wherein
+applications have enough control over the distribution of tasks. In
+particular this framework must be</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	Easy to Use: - MW must do the actual scheduling work. The
+	application writer must just set a few parameters that would trigger
+	the scheduling</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	Scalable: - The framework must scale linearly with the number of
+	tasks.</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	Efficient: - The process of selecting next task to give to a ready
+	worker is a frequent operation. Hence the process of selecting the
+	next task must be efficient.</P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+We have developed a framework in MW that gives applications the
+above-mentioned control over the distribution of tasks. This
+framework, called Group Management Mechanism, provides applications
+the capability to do intelligent scheduling. While MW does the actual
+distribution, applications have only to set a few parameters to
+enable it. Also this framework scales linearly with respect to the
+number of tasks. The next couple of sections describe this framework,
+the workings and the application programmers' interface.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Group Management Framework</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+MW introduces the concept of <B>work classes.</B> These work classes
+are created by the application and their meaning is therefore
+application specific. MW provides the API for applications to enroll
+tasks and workers into these work classes. The basic idea is to group
+the workers and tasks into appropriate work classes and use this
+grouping to distribute tasks to the workers. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+As described earlier applications can group their tasks into work
+classes in any manner. For example one way is to grade the complexity
+of tasks from 0 to k and assign tasks of complexity <I>i</I> to work
+class <I>i</I>. Similarly workers can be assigned a work class
+depending upon their computational power (this could be done by
+executing a benchmark task on each worker and measuring the time it
+takes to execute it). All the application writer has to do is to use
+MW APIs and assign work classes to each task and worker. MW takes
+care of the actual scheduling.</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+Tasks and workers can belong to more than one work class. This
+feature is very useful as it offers great flexibility to the
+applications in defining the work classes. Thus the scheduling policy
+of MW is as follows. It distributes a particular task to a worker if
+the task and the worker belong to at least one common work class.
+Also MW does not try to distribute a task to that worker that most
+resembles it (i.e. has more work classes in common with the task than
+others). We deemed this would add significant extra computation
+needed to determine the most suitable worker and thus could be a
+potential bottleneck.</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Application Programmers' Interface</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+This section describes the API exposed by MW to enable applications
+to use the group management framework.</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	MWDriver::set_num_work_classes ( int num ) - This function declares
+	the number of work classes the application wants to create.</P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">The
+following function relate to assigning work classes to the tasks.</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	MWTask::addGroup ( int num ) - This function enrolls the task into
+	work class num.</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	MWTask::deleteGroup ( int num ) - This cancels the enrollment of the
+	task from the work class num.</P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">Next,
+these below functions relate to assigning work classes to the
+workers.</P>
+<UL>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	MWWorker::addGroup ( int num ) - This function enrolls the worker
+	into work class num.</P>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	MWWorker::deleteGroup ( int num ) - This cancels the enrollment of
+	the worker from the work class num.</P>
+</UL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The MWDriver manages the group information of tasks and workers. When
+a worker is ready to receiver a task, it finds any available task
+that has at least one common work class as the worker. For each work
+class MW maintains a bitmap of tasks belonging to it. This enables MW
+to do a fast search to find the next eligible task.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Test Case</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+To illustrate the advantages offered by MW's group mechanism, lets
+take the example of the matrix multiplication example. The example
+consists of multiplying two large square matrices using MW's
+Master-Worker framework. In both implementations the master divides
+the matrix into smaller pieces and ships these pieces to the workers
+who multiply these sub-matrices and return the results. The master
+then reconstructs the resulting matrix. The first implementation does
+not use the group mechanism while the second uses it. In this section
+we will compare the communication costs between two implementations
+illustrating the benefits of the mechanism.</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The first example divides the two matrices of size <I>n</I> as shown
+in Fig 2a. Both the input matrices (labeled A and B) are divided into
+sub-matrices of size <I>k</I> (assuming <I>k</I> divides <I>n</I>).
+This results in <I>n<SUP>2</SUP>/k<SUP>2</SUP></I> small matrices for
+both A and B. The master then ships pairs of these small matrices to
+the workers to multiply as shown in Fig 2b. Thus in this example the
+pair of the sub-matrices defines a task. The workers multiply these
+pairs and return the result (also a square matrix of size <I>k</I>)
+to the master. The result represents a particular segment of the
+answer that is reconstructed by the master.</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<SPACER TYPE=BLOCK ALIGN=LEFT WIDTH=218 HEIGHT=194>
+<DIV ID="Frame9" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>11</SUB></P>
+</DIV>
+<DIV ID="Frame8" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>21</SUB></P>
+</DIV>
+<SPACER TYPE=BLOCK ALIGN=LEFT WIDTH=218 HEIGHT=194>
+<DIV ID="Frame12" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>11</SUB></P>
+</DIV>
+<DIV ID="Frame11" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>21</SUB></P>
+</DIV>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<IMG SRC="sv615622.gif" ALIGN=LEFT><IMG SRC="sv615623.gif" ALIGN=LEFT><IMG SRC="sv615624.gif" ALIGN=LEFT><IMG SRC="sv615625.gif" ALIGN=LEFT><IMG SRC="sv615626.gif" ALIGN=LEFT><IMG SRC="sv615627.gif" ALIGN=LEFT><IMG SRC="sv615628.gif" ALIGN=LEFT><IMG SRC="sv615629.gif" ALIGN=LEFT><IMG SRC="sv615630.gif" ALIGN=LEFT><IMG SRC="sv615631.gif" ALIGN=LEFT><IMG SRC="sv615632.gif" ALIGN=LEFT><IMG SRC="sv615633.gif" ALIGN=LEFT><IMG SRC="sv615634.gif" ALIGN=LEFT><IMG SRC="sv615635.gif" ALIGN=LEFT><IMG SRC="sv615636.gif" ALIGN=LEFT><IMG SRC="sv615637.gif" ALIGN=LEFT><IMG SRC="sv615638.gif" ALIGN=LEFT><IMG SRC="sv615639.gif" ALIGN=LEFT><IMG SRC="sv615640.gif" ALIGN=LEFT><IMG SRC="sv615641.gif" ALIGN=LEFT><IMG SRC="sv615642.gif" ALIGN=LEFT><IMG SRC="sv615643.gif" ALIGN=LEFT><IMG SRC="sv615644.gif" ALIGN=LEFT><IMG SRC="sv615645.gif" ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in">Fig
+2a. Shows Matrices A and B</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<IMG SRC="sv615646.gif" ALIGN=LEFT><IMG SRC="sv615647.gif" ALIGN=LEFT><IMG SRC="sv615648.gif" ALIGN=LEFT><IMG SRC="sv615649.gif" ALIGN=LEFT><IMG SRC="sv615650.gif" ALIGN=LEFT><IMG SRC="sv615651.gif" ALIGN=LEFT><IMG SRC="sv615652.gif" ALIGN=LEFT><IMG SRC="sv615653.gif" ALIGN=LEFT><IMG SRC="sv615654.gif" ALIGN=LEFT><IMG SRC="sv615655.gif" ALIGN=LEFT><IMG SRC="sv615656.gif" ALIGN=LEFT><IMG SRC="sv615657.gif" ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615658.gif" ALIGN=LEFT><IMG SRC="sv615659.gif" ALIGN=LEFT><IMG SRC="sv615660.gif" ALIGN=LEFT><IMG SRC="sv615661.gif" ALIGN=LEFT><IMG SRC="sv615662.gif" ALIGN=LEFT><IMG SRC="sv615663.gif" ALIGN=LEFT><IMG SRC="sv615664.gif" ALIGN=LEFT><IMG SRC="sv615665.gif" ALIGN=LEFT><SPAN ID="Frame17" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>11</SUB></P>
+</SPAN>
+<SPAN ID="Frame18" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>11</SUB></P>
+</SPAN>
+<SPAN ID="Frame16" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>11</SUB></P>
+</SPAN>
+<SPAN ID="Frame15" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>12</SUB></P>
+</SPAN>
+<SPAN ID="Frame14" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>12</SUB></P>
+</SPAN>
+<SPAN ID="Frame13" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>21</SUB></P>
+</SPAN>
+<IMG SRC="sv615666.gif" ALIGN=LEFT>
+<IMG SRC="sv615667.gif" ALIGN=LEFT>
+<IMG SRC="sv615668.gif" ALIGN=LEFT>
+<IMG SRC="sv615669.gif" ALIGN=LEFT>
+<IMG SRC="sv615670.gif" ALIGN=LEFT>
+<IMG SRC="sv615671.gif" ALIGN=LEFT>Fig 2b. Shows the sub-matrix
+paired tasks.
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+It is easy to see that for each sub-matrix of matrix A there are <I>n/k</I>
+sub-matrices of B that have to be multiplied with. Since there are
+<I>n<SUP>2</SUP>/k<SUP>2</SUP></I> sub-matrices of A, the total
+number of tasks denoted by N is given by the equation</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><B><IMG SRC="sv615672.gif" NAME="Object1" ALIGN=BOTTOM WIDTH=175 HEIGHT=21></B></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">Since
+each task is composed of two matrices of size k, the amount of data
+that is shipped with each task to the worker is given by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615673.gif" NAME="Object2" ALIGN=BOTTOM WIDTH=69 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">Thus
+the total data that is shipped from the master to the worker is given
+by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615674.gif" NAME="Object3" ALIGN=BOTTOM WIDTH=147 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">The
+result is just a square matrix of size k. Hence the size of result <I>S<SUB>r</SUB>
+</I>is given by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615675.gif" NAME="Object4" ALIGN=BOTTOM WIDTH=48 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">With
+this the data D<SUB>2</SUB> transferred from the worker to the master
+is 
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615676.gif" NAME="Object5" ALIGN=BOTTOM WIDTH=129 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">The
+total data <I>D</I> transferred is then the sum of <I>D<SUB>1</SUB></I>
+and <I>D<SUB>2</SUB>.</I></P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615677.gif" NAME="Object6" ALIGN=BOTTOM WIDTH=155 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>	</B></P>
+<P ALIGN=JUSTIFY STYLE="text-indent: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+The second implementation makes use of the group mechanism provided
+by MW. As in the previous implementation A and B are divided into
+<I>n<SUP>2</SUP>/k<SUP>2</SUP></I> sub-matrices each of size <I>k</I>.
+The driver creates <I>n<SUP>2</SUP>/k</I><SUP>2</SUP> work classes.
+As shown in Fig 3a, each work class corresponds to one segment of
+matrix B. A worker is assigned a particular work class when it is
+given a sub-matrix of B as initial data. As in the previous
+implementation each task comprises of a sub-matrix multiplication. In
+this case however only one sub-matrix data is included as the task
+data. The basic idea is to assign each task a work class so that it
+is routed to only one particular worker who has the corresponding
+sub-matrix to multiply against. This is depicted in fig 3.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">As
+in the previous case the total number of tasks <I>N</I> is given by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><B><IMG SRC="sv615678.gif" NAME="Object7" ALIGN=BOTTOM WIDTH=85 HEIGHT=24></B></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">Since
+each task is composed of one matrix of size k, the amount of data
+that is shipped with each task to the worker is given by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615679.gif" NAME="Object8" ALIGN=BOTTOM WIDTH=48 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">Thus
+the total data that is shipped from the master to the worker is given
+by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615680.gif" NAME="Object9" ALIGN=BOTTOM WIDTH=125 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">The
+result is just a square matrix of size k. Hence the size of result <I>S<SUB>r</SUB>
+</I>is given by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615681.gif" NAME="Object10" ALIGN=BOTTOM WIDTH=48 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">With
+this the data D<SUB>2</SUB> transferred from the worker to the master
+is 
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615682.gif" NAME="Object11" ALIGN=BOTTOM WIDTH=129 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">A
+sub-matrix of B of size k is sent to each worker as initial data.
+Since the total data equals the matrix of B, this component D<SUB>3</SUB>
+is given by</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615683.gif" NAME="Object12" ALIGN=BOTTOM WIDTH=53 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><SPACER TYPE=BLOCK ALIGN=LEFT WIDTH=218 HEIGHT=194><IMG SRC="sv615684.gif" ALIGN=LEFT><IMG SRC="sv615685.gif" ALIGN=LEFT><IMG SRC="sv615686.gif" ALIGN=LEFT><IMG SRC="sv615687.gif" ALIGN=LEFT><IMG SRC="sv615688.gif" ALIGN=LEFT><IMG SRC="sv615689.gif" ALIGN=LEFT><IMG SRC="sv615690.gif" ALIGN=LEFT><IMG SRC="sv615691.gif" ALIGN=LEFT><IMG SRC="sv615692.gif" ALIGN=LEFT><IMG SRC="sv615693.gif" ALIGN=LEFT><IMG SRC="sv615694.gif" ALIGN=LEFT><IMG SRC="sv615695.gif" ALIGN=LEFT><SPAN ID="Frame22" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>11</SUB></P>
+</SPAN>
+<SPAN ID="Frame21" STYLE="float: left; width: 0.52in; height: 0.17in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>21</SUB></P>
+</SPAN>
+<SPACER TYPE=BLOCK ALIGN=LEFT WIDTH=218 HEIGHT=194>
+<IMG SRC="sv615696.gif" ALIGN=LEFT>
+<IMG SRC="sv615697.gif" ALIGN=LEFT>
+<IMG SRC="sv615698.gif" ALIGN=LEFT>
+<IMG SRC="sv615699.gif" ALIGN=LEFT>
+<IMG SRC="sv615700.gif" ALIGN=LEFT>
+<IMG SRC="sv615701.gif" ALIGN=LEFT>
+<IMG SRC="sv615702.gif" ALIGN=LEFT>
+<IMG SRC="sv615703.gif" ALIGN=LEFT>
+<IMG SRC="sv615704.gif" ALIGN=LEFT>
+<IMG SRC="sv615705.gif" ALIGN=LEFT>
+<IMG SRC="sv615706.gif" ALIGN=LEFT>
+<IMG SRC="sv615707.gif" ALIGN=LEFT>
+<SPAN ID="Frame19" STYLE="float: left; width: 0.52in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>11</SUB></P>
+	<P ALIGN=LEFT>(0)</P>
+</SPAN><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><SPAN ID="Frame24" STYLE="float: left; width: 0.52in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>B<SUB>21</SUB></P>
+	<P ALIGN=LEFT>(1)</P>
+</SPAN><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in">Fig
+3a. Shows the sub-matrices of A and B. The bracket number in B's
+sub-matrix indicates its work class</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615708.gif" ALIGN=LEFT><IMG SRC="sv615709.gif" ALIGN=LEFT><IMG SRC="sv615710.gif" ALIGN=LEFT><SPAN ID="Frame26" STYLE="float: left; width: 0.52in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>11</SUB></P>
+	<P ALIGN=LEFT>(0)</P>
+</SPAN>
+<SPAN ID="Frame25" STYLE="float: left; width: 0.52in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>12</SUB></P>
+	<P ALIGN=LEFT>(1)</P>
+</SPAN><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615711.gif" ALIGN=LEFT><IMG SRC="sv615712.gif" ALIGN=LEFT><SPAN ID="Frame27" STYLE="float: left; width: 0.77in; height: 0.42in; border: none; padding: 0in; background: #ffffff">
+	<P ALIGN=LEFT>A<SUB>11</SUB></P>
+	<P ALIGN=LEFT>(n/k)</P>
+</SPAN>
+<IMG SRC="sv615713.gif" ALIGN=LEFT>
+<IMG SRC="sv615714.gif" ALIGN=LEFT>
+<IMG SRC="sv615715.gif" ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615716.gif" ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615717.gif" ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615718.gif" ALIGN=LEFT><IMG SRC="sv615719.gif" ALIGN=LEFT><IMG SRC="sv615720.gif" ALIGN=LEFT><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in">Fig
+3b. Shows the sub-matrix comprising each task. The bracketed number
+stands for the work class of the task</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">The
+total data <I>D</I> transferred is then the sum of <I>D<SUB>1 ,</SUB>D<SUB>2</SUB>
+</I>and<I> D<SUB>3</SUB>.</I></P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615721.gif" NAME="Object13" ALIGN=BOTTOM WIDTH=220 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	As
+can be seen, the second implementation cuts the communication costs
+by <I>C</I> where  
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in"><SUB><IMG SRC="sv615722.gif" NAME="Object14" ALIGN=BOTTOM WIDTH=121 HEIGHT=21></SUB></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">which
+is significant if <I>n/k</I> is large. This equation also says that
+as the task size remains the same, as the size of the matrix
+increases, the difference between the first and the second
+implementation increases significantly.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	The
+key reason why communication costs in the second implementation are
+lower is because each piece of data is sent only once to each worker.
+In the first case it may happen that a worker, who has already worked
+on a task comprising of the sub-matrix pair (a, b), gets a task
+comprising of the sub-matrix pair (c, b). Thus the sub-matrix b is
+transported twice. The second implementation avoids this situation by
+creating work classes that make sure that a worker with initial data
+b receives tasks comprising of c and a.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>4.4
+Experimental Results</B></P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><B>	</B>In
+order to verify these savings we implemented the above-mentioned
+strategies in MW. We counted the number of bytes sent and received by
+the master in both strategies. The master was given as input a
+10000x10000 size square matrix. We then ran both the strategies for
+various values of <I>k.</I> The graph in fig 4 gives the
+communication costs of both strategies for various values of <I>k</I>.
+For comparison purposes, we fixed the number of workers at 12 for all
+runs.</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><IMG SRC="sv615723.gif" NAME="Object15" ALIGN=LEFT><BR CLEAR=LEFT><BR>
+</P>
+<P ALIGN=CENTER STYLE="margin-top: 0.08in; line-height: 0.25in">Fig
+4. Shows the Communication Costs of the two strategies</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in"><BR>
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	As
+can be seen the group management cuts down the communication costs
+significantly. One can see that in all cases, the implementation
+using group management has communication costs that are almost
+one-third less than the other implementation. Another interesting
+thing to note is the increasing gap between the communication costs
+of the two strategies with the decreasing k. This re-affirms our
+analysis that as the grain size decreases with respect to the total
+problem size, the advantages of group management become increasingly
+clear.</P>
+<OL START=3>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	<B>Conclusions</B></P>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+MW provides a software framework that allows programmers to quickly
+and easily parallize their applications in a dynamic metacomputing
+environment like Condor. This framework hides the system
+characteristics from the user allowing the application writers to
+focus on the algorithm at hand. Because of layered architecture,
+applications written with MW can be ported from one environment to
+another with minimum effort. Its checkpoint facilities ensure that
+computational cycles are not wasted in a crash. Its debugging
+facilities make it an integrated developmental platform.</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+<BR>
+</P>
+<OL START=3>
+	<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+	<B>Future Work</B></P>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.5in; margin-top: 0.08in; line-height: 0.25in">
+In this section we talk about possible enhancements to the current MW
+architecture.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Control Tasks</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The main work of MWDriver is to distribute the tasks submitted by the
+user and collect the results sent by the workers. However there are
+cases when MW itself may want the workers to do some other tasks.
+Benchmarking is one example of a control task where the task is not
+strictly related to the actual computation. There could be other
+information that MW may want from workers that is not directly
+available from the underlying RMComm layer. For example the Condor
+system does not maintain network connectivity information between the
+machines in the pool. MW could use the information such as these to
+distribute tasks better among the workers. 
+</P>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The idea is group the MWTasks into two classes. Apart from the class
+of tasks that are application specific and that are added by the
+user, we can have some control tasks that are not related directly to
+the computation. These control tasks are MW specific tasks and they
+do work for the MW like collecting network information.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Network Measurement Architecture</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+The idea is to have an application programmers' interface through
+which the user tells MW about the communication requirements to
+distribute a particular task. By developing a network measurement
+infrastructure, MW could periodically collect information from the
+workers regarding network connectivity between the master and the
+worker. This work of collecting the data can be grouped into the set
+of Control Tasks as outlined in the previous section. MW can then
+intelligently match the network requirements of a task with the
+network connectivity of the workers. For example it can give a task
+that involves a lot of data transfer to worker that has a high
+bandwidth connection with the master.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Task-Task Dependency</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">	Presently
+MW maintains the tasks as a list. However there may be certain
+interdependency between the tasks. An example of such a dependency is
+one where say task 2 must be distributed only after results of task 1
+are received. Presumably this occurs because of some boundary value
+information that needs to be passed with task 2 and is available only
+after task 1 is evaluated. Thus a more general way to maintain the
+tasks is a Directed Acyclic Graph (DAG). An arc from A to B in such a
+DAG would mean a dependency from task A to task B. This would require
+extension to the existing API to facilitate users to express such a
+requirement.</P>
+<OL START=3>
+	<OL>
+		<LI><P ALIGN=JUSTIFY STYLE="margin-top: 0.08in; line-height: 0.25in">
+		<B>Hierarchical Masters</B></P>
+	</OL>
+</OL>
+<P ALIGN=JUSTIFY STYLE="margin-left: 0.25in; margin-top: 0.08in; line-height: 0.25in">
+Currently the architecture has only one master controlling all the
+workers. Although this is a very simple framework and a lot of
+applications can be molded into it, the single master may prove a
+performance bottleneck. One way of dealing with this is to have
+another level of hierarchy with one master controlling a bunch of
+other masters and these masters responsible a particular number of
+workers. This would pose new problems like master-master protocol and
+task distribution across the masters.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.25in"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.25in"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.25in"><BR>
+</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.25in"><BR>
+</P>
+<H5 STYLE="margin-left: 0.25in">References</H5>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[1] Henri Casanova and Jack Dongarra, NetSolve: Network Enabled
+Solvers. IEEE Computational Science and    Engineering, 5(3):57-67,
+1998.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[2] R. Wolski, J. Brevik, C. Krintz, G. Obertelli, N. Spring and A.
+Su, Running Everyware on the computational grid. In SC99 Conference
+on High Performance Computing, 1999. Available from
+http://www.cs.utk.edu/~rich/papers/ev-sc99.ps.gz.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[3] J. Pruyne and M. Livny, Interfacing Condor and PVM to harness the
+cycles of workstation clusters. Journal on Future Generation of
+Computer Systems, 12:53-65, 1996.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[4] Jean-Pierre Goux, Sanjeev Kulkarni, Jeff Linderoth and Michael
+Yoder, An Enabling Framework for Master-Worker Applications on the
+Computational Grid. In HPDC, 2000</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[5] J.P. Goux, J. Linderoth and M. Yoder, Metacomputing and the
+master-worker paradigm. Preprint ANL/MCS-P792-0200, Mathematics and
+Computer Science Division, Argonne National Laboratory, 2000.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[6] M. Livny, J. Basney, R. Raman and T. Tannenbaum, Mechanisms for
+High Throughput Computing. In SPEEDUP, 11, 1997. Available from
+<FONT COLOR="#0000ff"><U><A HREF="http://www.cs.wisc.edu/condor/doc/htc_mech.ps">http://www.cs.wisc.edu/condor/doc/htc_mech.ps</A></U></FONT>.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[7] A. Grimshaw, A. Ferrari, F. Knabe and M. Humphrey, Legion: An
+Operating System for wide-area computing. Available at
+<FONT COLOR="#0000ff"><U><A HREF="http://legion.virginia.edu/papers/CS-99-12.ps.Z">http://legion.virginia.edu/papers/CS-99-12.ps.Z</A></U></FONT>,
+1999.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[8] I. Foster and C. Kesselman. Globus: A metacomputing
+infrastructure toolkit, International Journal of SuperComputer
+Applications, 1997. Available at
+<FONT COLOR="#0000ff"><U><A HREF="ftp://ftp.globus.org/pub/globus/papers/globus.ps.gz">ftp://ftp.globus.org/pub/globus/papers/globus.ps.gz</A></U></FONT>.</P>
+<P ALIGN=LEFT STYLE="margin-left: 0.19in; text-indent: -0.19in; line-height: 0.25in">
+[9] J. Pruyne and M. Livny, Providing resource management services to
+parallel applications, In Proceedings of Second Workshop on
+Environments and Tools for Parallel Scientific Computing, 1991.
+Available at
+http://www.cs.wisc.edu/condor/doc/condor_pvm_framework.ps.Z.</P>
+<DIV TYPE=FOOTER>
+	<P ALIGN=LEFT STYLE="margin-top: 0.34in"><SPAN ID="Frame1" STYLE="float: left; width: 0.26in; height: 0.15in; border: none; padding: 0in; background: #ffffff">
+		<P ALIGN=LEFT><SDFIELD TYPE=PAGE SUBTYPE=RANDOM FORMAT=PAGE>16</SDFIELD></P>
+	</SPAN><BR>
+	</P>
+</DIV>
+</BODY>
+</HTML>
