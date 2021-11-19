@@ -1,0 +1,50 @@
+# Now we're in the pvm universe
+
+universe = PVM
+
+# The name of our executable
+
+Executable     = master-fib
+
+# Assume a max image size of 16 Megabytes.
+
+Image_Size     = 4 Meg
+MemoryRequirements = 4 Meg
+
+# This goes into stdin for the master.
+
+Input   = in_master
+
+# Set the output of this job to go to out_master
+
+Output  = out_master
+
+# Set the stderr of this job to go to out_worker.  It is named 
+# out_worker because the output of the workers is directed to stderr
+
+Error   = out_worker
+
+
+# Keep a log in case of problems.
+
+Log = work.log
+
+notify_user = sanjeevk@cs.wisc.edu
+
+# I want a _lot_ of machines!
+
+#machine_count = 1..150
+#machine_count = 1..1
+
+# Send it away!
+
+#requirements = VirtualMemory >= 0 
+
+#Requirements = (( arch == "INTEL" ) && ( Opsys == "LINUX" ) )
+#machine_count = 1..1
+#Queue
+
+Requirements = ( ( arch == "INTEL" ) && ( opsys == "SOLARIS26" ) )
+machine_count = 1..1
+Queue
+
