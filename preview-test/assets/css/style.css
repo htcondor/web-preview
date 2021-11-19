@@ -1,0 +1,184 @@
+/******************************************* TITLE: HTCondor Screen Stylesheet         *  based on Prosimii Screen Stylesheet     *  MODIF: 2005-Dec-27 tannenba@cs.wisc.edu * ******************************************/
+/* ##### Common Styles ##### */
+body { font-family: verdana, helvetica, arial, sans-serif; font-size: 73%; /* Enables font size scaling in MSIE */ margin: 0; padding: 0; background-color: #EFEFEF; }
+
+html > body { font-size: 9pt; }
+
+acronym, .titleTip { border-bottom: 1px dotted #3d5c7a; cursor: help; margin: 0; padding: 0 0 0.4px 0; }
+
+img { border: 0; }
+
+a { color: #3d5c7a; background-color: transparent; text-decoration: underline; margin: 0; padding: 0 1px 2px 1px; }
+
+a:visited { color: #1f1f3d; background-color: transparent; text-decoration: underline; margin: 0; padding: 0 1px 2px 1px; }
+
+a:hover { color: #7590ae; text-decoration: none; }
+
+ol { margin: 1em 0 1.5em 0; padding: 0; }
+
+ul { list-style-type: square; margin: 1em 0 1.5em 0; padding: 0; }
+
+dl { margin: 1em 0 0.5em 0; padding: 0; }
+
+ul li { line-height: 1.5em; margin: 1.25ex 0 0 1.5em; padding: 0; }
+
+ol li { line-height: 1.5em; margin: 1.25ex 0 0 2em; padding: 0; }
+
+dt { font-weight: bold; margin: 0; padding: 0 0 1ex 0; }
+
+dd { line-height: 1.75em; margin: 0 0 1.5em 1.5em; padding: 0; }
+
+pre { background-color: whitesmoke; padding: 15px; outline: lightgray solid 1px; font-family: monospace; }
+
+.doNotDisplay { display: none !important; }
+
+.smallCaps { font-size: 117%; font-variant: small-caps; }
+
+img.scaled { width: 100%; }
+
+#container { background-color: white; /* width: 76.8%; // 960px/1250px */ max-width: 1037px; min-width: 740px; margin: 0 auto; }
+
+/* ##### Header ##### */
+.superHeader { color: #82809a; background-color: #213242; text-align: right; margin: 0; padding: 0.5ex 10px; }
+
+.superHeader span { color: #c3c4d2; background-color: transparent; font-weight: bold; text-transform: uppercase; }
+
+.superHeader a { color: #c3c4d2; background-color: transparent; text-decoration: none; margin: 0; }
+
+.superHeader a:hover { color: #c1665a; background-color: transparent; text-decoration: none; }
+
+.superHeader input { color: black; background-color: white; border-width: 2px; font-size: 8pt; margin: 0; padding: 0; }
+
+.midHeader { color: #3D5C7A; background-color: white; padding: 12px 12px 12px 12px; text-align: right; min-height: 65px; }
+
+.midHeader a.release { color: white; background-color: transparent; text-decoration: none; font-weight: bold; display: inline; }
+
+.midHeader a.release:hover { color: #ffcc00; background-color: transparent; text-decoration: underline; font-weight: bold; display: inline; }
+
+.iconHeader { position: relative; right: 0; top: 0; padding: 0; margin: 0; float: left; }
+
+.headerTitle { font-size: 300%; margin: 0; padding: 0; }
+
+.headerSubTitle { font-size: 151%; font-weight: normal; font-style: italic; margin: 0 0 1ex 0; padding: 0; }
+
+.headerLinks { position: absolute; right: 1.5em; top: 2.9em; text-align: right; float: right; margin: 0; font-weight: normal; }
+
+.headerLinks a.release { color: white; background-color: transparent; text-decoration: none; font-weight: bold; display: inline; }
+
+.headerLinks a.release:hover { color: #ffcc00; background-color: transparent; text-decoration: underline; font-weight: bold; display: inline; }
+
+.navAndSearch { float: right; }
+
+.navBar { color: #3D5C7A; text-align: center; background-color: transparent; /* position: absolute; */ /* width:480px; */ /* right:15px; */ /* top:10px; */ float: right; margin: 0; padding: 0.5ex 0px 0.5ex 0px; }
+
+.navBar a, .navBar .highlight { color: #3D5C7A; background-color: transparent; font-size: 110%; font-weight: bold; text-decoration: none; margin: 0; /*padding:0px 0.25ex 0px 0px;*/ }
+
+.navBar a:hover, .navBar .highlight { color: #FFCC00; background-color: transparent; text-decoration: none; }
+
+.searchForm { float: right; clear: both; margin-top: 10px; }
+
+.searchForm input { color: black; background-color: white; border-width: 2px; font-size: 8pt; margin: 0; padding: 0; }
+
+/*
+.searchForm .searchBtn { position: absolute; right: 15px; top: 41px;
+}
+*/
+.searchForm .searchText { /* position: absolute; right: 60px; top: 41px;
+*/ width: 148px; }
+
+.subHeader { color: white; text-align: center; background-color: #7590ae; margin: 0; padding: 0.5ex 10px; }
+
+.subHeader a, .subHeader .highlight { color: white; background-color: transparent; font-size: 110%; font-weight: bold; text-decoration: none; margin: 0; padding: 0 0.25ex 0 0; }
+
+.subHeader a:hover, .subHeader .highlight { color: #ffcc00; background-color: transparent; text-decoration: none; }
+
+/* ##### Main Copy ##### */
+#main-copy { margin: 0; padding: 0.5em 10px; clear: left; }
+
+#main-copy h1 { color: #7590ae; background-color: transparent; font-family: "trebuchet ms", verdana, helvetica, arial, sans-serif; font-size: 200%; margin: 0; padding: 0; }
+
+#main-copy h2 { color: #3d5c7a; background-color: transparent; font-family: "trebuchet ms", verdana, helvetica, arial, sans-serif; font-weight: normal; font-size: 151%; margin: 0; padding: 1ex 0 0 0; }
+
+#main-copy p { line-height: 1.75em; margin: 1em 0 1.5em 0; padding: 0; }
+
+#name-note { color: red; }
+
+#name-note a { color: #990000; }
+
+#name-note a:hover { color: #ff6666; }
+
+.newsHeading { color: #3d5c7a; background-color: transparent; font-family: "trebuchet ms", verdana, helvetica, arial, sans-serif; font-size: 125%; text-decoration: none; margin: 0; padding: 1ex 0 0 0; display: block; cursor: pointer; }
+
+.newsHeading:hover { color: #7590ae; background-color: transparent; text-decoration: underline; cursor: pointer; }
+
+#news-container .newsDate { font-style: italic; color: grey; margin: 0 !important; padding: 0; }
+
+.newsDate { font-style: italic; margin: 0 !important; font-size: 80%; padding: 0; }
+
+.newsSummary { margin: 1.5ex 0 2.5ex 0.75ex !important; padding: 0; text-align: left; }
+
+.inBox { margin: 1.5ex 2.25ex 1.5ex 2.25ex !important; background-color: #f0f0f0; padding: 1.5em 0.80em !important; border: 1px solid black; }
+
+.more { text-align: right; margin: 0; padding: 0.5em 0; }
+
+.more a { color: #3d5c7a; background-color: transparent; font-size: 92%; text-decoration: underline; margin: 0; padding: 0.25ex 0.75ex; }
+
+.more a:hover { color: #7590ae; text-decoration: none; }
+
+.rowOfBoxes { clear: both; }
+
+.quarter, .oneThird, .half, .twoThirds, .fullWidth { margin: 1em 0; float: left; /* border-left: 1px solid rgb(204,204,204); */ }
+
+.column-border { border-right: 1px solid #cccccc; border-left: 1px solid #cccccc; }
+
+.quarter { width: 21%; padding: 0 1.9%; }
+
+.oneThird { width: 28%; padding: 0 1.9%; }
+
+.half { text-align: justify; width: 46%; padding: 0 1.9%; }
+
+.twoThirds { text-align: justify; width: 63%; padding: 0 1.9%; }
+
+.fullWidth { text-align: justify; width: 96%; padding: 0 1.2em; border-left: none; }
+
+.filler { /* use with an empty <p> element to add padding to the end of a text box */ border: 1px solid white; }
+
+.noBorderOnLeft { border-left: none; }
+
+.dividingBorderAbove { border-top: 1px solid #cccccc; }
+
+/* More elegant alternatives to .noBorderOnLeft & .dividingBorderAbove that don't require the creation of new classes - but which are not supported by MSIE - are the following:  .rowOfBoxes > div:first-child { border-left: none; }  .rowOfBoxes + .rowOfBoxes { border-top: 1px solid rgb(204,204,204); } */
+/* ##### Footer ##### */
+#footer { color: #333366; background-color: #efefef; font-size: 87%; text-align: center; line-height: 1.25em; margin: 2em 0 0 0; padding: 1ex 10px; clear: left; }
+
+#footer a { color: #0044cc; background-color: transparent; text-decoration: underline; }
+
+#footer a:hover { text-decoration: none; }
+
+/* ##### Quick Start ##### */
+.WindowsHL { background-color: Yellow; }
+
+.WindowsHL pre { background-color: Yellow; }
+
+.UnixHL { background-color: LightGreen; }
+
+.UnixHL pre { background-color: LightGreen; }
+
+.TwoColRight, .TwoColLeft { width: 47%; padding: 0.5em 1%; }
+
+.TwoColRight { float: right; }
+
+.TwoColLeft { float: left; }
+
+.TwoColHolder { /* This causes the div to grow to contain the floating columns inside,
+essentially "clear:both". */ overflow: auto; }
+
+.TwoColHolder H3 { text-align: center; }
+
+div.hotnews { margin: 1em 2em; padding: 0.5em 1em; font-size: 120%; border: 1px solid #cccccc; text-align: left; }
+
+table.striped, table.striped-spaced { border: 1px #e5e5ff solid; border-collapse: collapse; }
+
+tr.light-stripe { color: black; background-color: #ffffff; vertical-align: top; }
+
+tr.dark-stripe { color: black; background-color: #e5e5ff; vertical-align: top; }

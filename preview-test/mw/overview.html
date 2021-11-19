@@ -1,0 +1,217 @@
+<!DOCTYPE html> 
+<!-- 
+-     DON'T EDIT THIS!
+-     It's a generated page, you need to edit the source and rebuild
+-     git clone /afs/cs.wisc.edu/p/condor/repository/condor-web.git
+-     cd condor-web
+-     &lt;edit pages under src&gt;
+-     git add
+-     git commit
+-     git push
+-     ./generate_html --live
+-->
+<html>
+
+<head>
+    <!-- Elements common to many pages -->
+    <meta charset="UTF-8" />
+    <meta name="description" content="HTCondor Homepage" />
+    <link rel="stylesheet" type="text/css" href="https://research.cs.wisc.edu/htcondor/prosimii-screen.css" media="screen, tv, projection" title="Default" />
+	<!-- javascript used throughout the site -->
+    <script src="https://research.cs.wisc.edu/htcondor/sitewide.js" type="text/javascript"></script>
+     
+    <!-- Items for specific pages -->
+    <title>HTCondor - MW Overview</title>
+    
+  </head>
+
+  <body>
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+      <div id="container">
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+    	<div class="midHeader">
+	  <div class="iconHeader">
+	    <a href="https://research.cs.wisc.edu/htcondor/index.html"><img src="https://research.cs.wisc.edu/htcondor/images/white_bird_logo.png" alt="HTCondor High Throughput Computing" height="75"></a>
+	  </div>
+       
+       <div class="navAndSearch">
+    	<div class="navBar">
+  	  <span class="doNotDisplay">Navigation:</span>
+	  <a href="https://research.cs.wisc.edu/htcondor/index.html">Home</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/new.html">News</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/downloads/">Download</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/publications.html">Publications</a> |
+	  <a href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+	</div>
+
+	<div class="searchForm" >
+<script>
+  (function() {
+    var cx = '010754594835990937497:xijuwhbknew';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+	</div>
+	</div>
+	</div>
+</div>
+
+    <!-- ##### Main Copy ##### -->
+
+    <div id="main-copy">
+
+
+<!-- Page body -->
+<table width="600" border=0 cellspacing=0 cellpadding=0>
+<tr>
+ <td width=170 valign=top>
+ <a href="index.html"><img src="MWLogo.gif" height=227 width=158 border=0></a>
+ <p>
+ <ul>
+  <li><a href="overview.html">Overview</a>
+  <li><a href="papers.html">MW Paper</a>
+  <li><a href="mw/examples/matmul/Matmul.html">Base Class Docs</a>
+  <li><a href="mw/examples/matmul/Matmul.html">Example App Docs</a>
+        <li><a href="talks/dec99.ps.gz">Winter 1999 Talk</a> </li>
+        <li><a href="talks/jun99/index.htm">Summer 1999 Talk</a> </li>
+        <li><a href="talks/feb99/index.htm">Spring 1999 Talk</a> </li>
+        <li><a href="talks/mar00/index.htm">March 2000 Talk</a> </li>
+        <li><A href="talks/feb04/mw.pdf">February 2004 Talk</a> </li>
+  <li><a href="solvers.html">Solvers</a>
+        <li><a href="doc/html">Documentation</a> </li>
+
+ </ul>
+ <td width=10>
+ <td valign=top>
+
+<h2>MW Overview</h2> 
+
+<b>MW</b> is a set of C++ abstract base classes that allow rapid
+development of sophisticated scientific computing applications based
+on the master-worker paradigm.  We outline here the design of MW and
+indicate how it can be used to build an application.
+<p>
+
+There are three abstract base classes to implement.  The
+<b>MWDriver</b> class corresponds to the master process and contains
+the control center for distributing tasks to workers.  The
+<b>MWTask</b> class describes the inputs and outputs - the data and
+results - that are associated with a single unit of work.  The
+<b>MWWorker</b> class contains code to initialize a worker process and
+to execute any tasks that are sent to it by the master.
+<p>
+
+<h4>MWDriver</h4>
+
+To create the MWDriver - the master process - the user need only
+implement four pure virtual functions:
+
+<ul>
+ <li><tt>get_userinfo()</tt> --  Do basic setup, process any
+arguments, etc.  This is called once when the master is started up.
+ <li><tt>setup_initial_tasks()</tt> --  Returns a set of tasks for the
+computation to begin work on.  Also executed once at the beginning.
+ <li><tt>pack_worker_init_data()</tt> --  When a worker starts up, it may
+have to be sent some initial data.  That is done here.
+ <li><tt>act_on_completed_task()-</tt> -  This is called every time a task
+finishes.  Some actions that the user could take might include adding
+more tasks or making calculations based on the result of the task.
+</ul>
+
+The MWDriver manages a set of MWTasks and a set of MWWorkers
+to execute those tasks.  The MWDriver handles workers joining and
+leaving the computation, assigns tasks to appropriate workers and
+rematches running tasks when workers are lost.  Despite this internal
+complexity, a minimal implementation can be quite simple.  The
+MWDriver offers more advanced functionality that will be explained
+below.
+
+<h4>MWTask</h4>
+
+The MWTask is the abstraction of one unit of work.  The class holds
+both the data describing that task and the results computed by the worker.
+The derived task class must also implement functions for sending and
+receiving its data between the master and worker.  The names of these
+functions are self-explanatory: <tt>pack_work()</tt>, <tt>unpack_work()</tt>,
+<tt>pack_results()</tt>, and <tt>unpack_results()</tt>.
+
+<h4>MWWorker</h4>
+
+The MWWorker class is the core of the worker executable.  Two pure
+virtual functions must be implemented:
+
+<ul>
+ <li><tt>unpack_init_data()</tt>-- Unpacks the initialization
+information passed in the MWDriver's <tt>pack_worker_init_data()</tt>.
+ <li><tt>execute_task()</tt>-- Given a task, compute the results.  
+</ul>
+
+After it does some basic initialization, the MWWorker sits in a simple
+loop.  It asks the master for a task, computes the results, reports 
+the results back and waits for another task.  The loop finishes when 
+the master asks the worker to end.  It is an easy matter to bring in
+other libraries, such as highly optimized FORTRAN routines, to the
+worker.  They can be linked in with the C++ code, and called in the
+<tt>execute_task()</tt> function.
+
+<h4>Other MWDriver features</h4>
+
+To make computations fully reliable, MWDriver offers features to checkpoint 
+the state of the computation on a user-defined frequency. MWDriver can restart 
+from that state after a crash of the master. The user has just 
+to implement functions for writing and reading the state contained in its 
+application's master and tasks. This feature can be used to perform rudimentary
+``computational steering'' if the user stops the computation by hand,
+modifies the checkpoint file, and then restarts from that checkpoint.
+<p>
+To help the user make the best use of available resources, MWDriver
+has abstract mechanisms to sort the task pool according to
+user-supplied priorities.  MWDriver also maintains
+information about each participating workers. This information can be
+used by the user to develop advanced scheduling policies which match
+tasks with the best suited workers.
+<p>
+The user can set the number of workers desired for a computation by
+using the <tt>set_target_num_workers()</tt> function.  This function
+can be called as needed to change the target size of the pool of workers.
+To deal with heterogeneous resources, MWDriver currently makes use of
+the multi-architecture features of HTCondor. But one can easily extend this for
+other resource manager as well. The user compiles
+the workers for the targeted architectures, and the MWDriver takes care of
+selecting the correct executable as new workers enter the
+computation.  
+<p>
+
+</table>
+
+    </div>
+
+    <!-- ##### Footer ##### -->
+
+    <div id="footer">
+        For comments or questions about this website, please
+	<a href="mailto:htcondor-admin@cs.wisc.edu">email htcondor-admin@cs.wisc.edu</a><br />
+	This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+      <script type="text/javascript">
+	      document.write("Updated &raquo; "+lastMod(document.lastModified))
+      </script>
+    </div>
+
+
+
+    </div> <!-- end of div#container -->
+  </body>
+</html>
+

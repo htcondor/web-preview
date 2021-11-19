@@ -1,0 +1,1373 @@
+<html><head><TITLE>MWDriver</TITLE></head>
+<body>
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif></A>  class  MWDriver  </H2><BLOCKQUOTE>
+This class is responsible for managing an application in an 
+opportunistic environment
+</BLOCKQUOTE>
+<hr>
+ <h2> Inheritance:</h2>
+<APPLET CODE="ClassGraph.class" WIDTH=600 HEIGHT=95>
+<param name=classes value="CMWDriver,MMWDriver.html,Cuser_driver,Muser_driver.html,CDriver_Fib,MDriver_Fib.html">
+<param name=before value="M,M|_,Mr_">
+<param name=after value="M,M,M">
+<param name=indent value="0,0,0">
+<param name=arrowdir value="down">
+</APPLET>
+<hr>
+
+<DL>
+<DL>
+<DT><h3>Public Fields</h3><DD><DT><A HREF="#DOC.26.3"> <IMG BORDER=0 SRC=icon1.gif></A> static  MWRMComm*  <B>RMC</B> </B>
+ <DD><I>A static instance of our Resource Management / Communication
+class</I>
+</DL><DL>
+<DT><h3>Public Methods</h3><DD><DT><A HREF="#DOC.26.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>go</B>( int argc, char *argv[] ) </B>
+ <DD><I>This method runs the entire fault-tolerant
+application in the condor environment</I>
+<DT><A HREF="#DOC.26.18"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>go</B>() </B>
+ <DD><I>
+This version of go simply calls go(0, NULL)</I>
+<DT><A HREF="#DOC.26.16"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>MWDriver</B>() </B>
+ <DD><I>Default constructor</I>
+<DT><A HREF="#DOC.26.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>printresults</B>() </B>
+ <DD><I>
+Prints the Results</I>
+<DT><A HREF="#DOC.26.17"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <B>~MWDriver</B>() </B>
+ <DD><I>Destructor - walks through lists of tasks &amp; workers and
+deletes them</I>
+</DL><DL>
+<DT><h3>Protected</h3><DD><DT><A HREF="#DOC.26.4"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>A. Pure Virtual Methods</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.4.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>get_userinfo</B>( int argc, char *argv[] ) </B>
+ <DD><I>This function is called to read in all information
+specific to a user's application and do any initialization on
+this information</I>
+<DT><A HREF="#DOC.26.4.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>setup_initial_tasks</B>( int *n, <!1><A HREF="MWTask.html">MWTask</A> ***task ) </B>
+ <DD><I>This function must return a number n &gt; 0 of pointers
+to Tasks to "jump start" the application</I>
+<DT><A HREF="#DOC.26.4.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>act_on_completed_task</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>
+This function performs actions that happen
+once the Driver receives notification of a completed task</I>
+<DT><A HREF="#DOC.26.4.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>pack_worker_init_data</B>( void ) </B>
+ <DD><I>
+A common theme of Master-Worker applications is that there is 
+a base amount of "initial" data defining the problem, and then 
+just incremental data defining "Tasks" to be done by the Workers</I>
+<DT><A HREF="#DOC.26.4.4"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>unpack_worker_initinfo</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>
+This one unpacks the "initial" information sent to the driver
+once the worker initializes</I>
+<DT><A HREF="#DOC.26.4.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>pack_driver_task_data</B>( void ) </B>
+ <DD><I>
+OK, This one is not pure virtual either, but if you have some 
+"driver" data that is conceptually part of the task and you wish
+not to replicate the data in each task, you can pack it in a
+message buffer by implementing this function</I>
+
+</DL>
+<DT><A HREF="#DOC.26.5"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>B. Task List Management</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.5.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>addTask</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>Add a task to the list</I>
+<DT><A HREF="#DOC.26.5.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>addTasks</B>( int, <!1><A HREF="MWTask.html">MWTask</A> ** ) </B>
+ <DD><I>Add a bunch of tasks to the list</I>
+<DT><A HREF="#DOC.26.5.3"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_task_key_function</B>( <!2><A HREF="#DOC.20">MWKey</A> (*)( <!1><A HREF="MWTask.html">MWTask</A> * ) ) </B>
+ <DD><I>Sets the function that MWDriver users to get the "key" for a task</I>
+<DT><A HREF="#DOC.26.5.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>set_task_add_mode</B>( <!1><A HREF="MWTaskAdditionMode.html">MWTaskAdditionMode</A> ) </B>
+ <DD><I>Set the mode you wish for task addition.</I>
+<DT><A HREF="#DOC.26.5.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>set_task_retrieve_mode</B>( <!1><A HREF="MWTaskRetrievalMode.html">MWTaskRetrievalMode</A> ) </B>
+ <DD><I>Set the mode you wish for task retrieval.  </I>
+<DT><A HREF="#DOC.26.5.6"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>set_machine_ordering_policy</B>( <!1><A HREF="MWMachineOrderingPolicy.html">MWMachineOrderingPolicy</A> ) </B>
+ <DD><I>Sets the machine ordering policy.  </I>
+<DT><A HREF="#DOC.26.5.7"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>print_task_keys</B>( void ) </B>
+ <DD><I>(Mostly for debugging) -- Prints the task keys in the todo list</I>
+<DT><A HREF="#DOC.26.5.8"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>sort_task_list</B>( void ) </B>
+ <DD><I>This sorts the task list by the key that is set</I>
+<DT><A HREF="#DOC.26.5.9"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>delete_tasks_worse_than</B>( <!2><A HREF="#DOC.20">MWKey</A> ) </B>
+ <DD><I>This deletes all tasks in the task list with a key worse than 
+the one specified </I>
+<DT><A HREF="#DOC.26.5.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_number_tasks</B>() </B>
+ <DD><I>returns the number of tasks on the todo list.</I>
+<DT><A HREF="#DOC.26.5.11"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_number_running_tasks</B>() </B>
+ <DD><I>returns the number of running tasks.</I>
+
+</DL>
+<DT><A HREF="#DOC.26.9"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Benchmarking</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.9.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>register_benchmark_task</B>( <!1><A HREF="MWTask.html">MWTask</A> *t ) </B>
+ <DD><I>register the task that will be used for benchmarking</I>
+<DT><A HREF="#DOC.26.9.2"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>get_benchmark_task</B>() </B>
+ <DD><I>get the benchmark task </I>
+
+</DL>
+<DT><A HREF="#DOC.26.6"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>C. Worker Policy Management </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.6.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_target_num_workers</B>( int iWantThisMany ) </B>
+ <DD><I>Sets the desired number of workers</I>
+<DT><A HREF="#DOC.26.6.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_target_num_workers</B>( int *iWantThisany, int num_arches ) </B>
+ <DD><I>Sets the desired number of workers</I>
+<DT><A HREF="#DOC.26.6.3"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_suspension_policy</B>( <!1><A HREF="MWSuspensionPolicy.html">MWSuspensionPolicy</A> ) </B>
+ <DD><I>Set the policy to use when suspending</I>
+<DT><A HREF="#DOC.26.6.5"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>worker_timeout</B> </B>
+ <DD><I>If 0 : workers never timeout and can potentially work forever on a task
+If 1 : workers time out after worker_timeout_limit seconds </I>
+<DT><A HREF="#DOC.26.6.6"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>worker_timeout_limit</B> </B>
+ <DD><I>Limit of seconds after which workers are considered time out and tasks are re-assigned </I>
+<DT><A HREF="#DOC.26.6.7"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>worker_timeout_check_frequency</B> </B>
+ <DD><I>frequency at which we check if there are timed out workers </I>
+<DT><A HREF="#DOC.26.6.8"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>next_worker_timeout_check</B> </B>
+ <DD><I>based on the time out frequency, next timeout check time</I>
+<DT><A HREF="#DOC.26.6.9"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>set_worker_timeout_limit</B>(double timeout_limit, int timeout_frequency) </B>
+ <DD><I>Sets the timeout_limit and turn worker_timeout to 1 </I>
+<DT><A HREF="#DOC.26.6.10"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>reassign_tasks_timedout_workers</B>() </B>
+ <DD><I>Go through the list of timed out WORKING workers and reschedule tasks </I>
+<DT><A HREF="#DOC.26.6.4"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>timeval_to_double</B>( struct timeval t ) </B>
+ <DD><I>A helper function</I>
+
+</DL>
+<DT><A HREF="#DOC.26.7"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>D. Event Handling Methods</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.7.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>handle_benchmark</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>Here, we get back the benchmarking
+results, which tell us something about the worker we've got</I>
+<DT><A HREF="#DOC.26.7.2"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>handle_hostdel</B>() </B>
+ <DD><I>This is what gets called when a host goes away</I>
+<DT><A HREF="#DOC.26.7.3"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>handle_hostsuspend</B>() </B>
+ <DD><I>Implements a suspension policy</I>
+<DT><A HREF="#DOC.26.7.4"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>handle_hostresume</B>() </B>
+ <DD><I>Here's where you go when a host gets resumed</I>
+<DT><A HREF="#DOC.26.7.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>handle_taskexit</B>() </B>
+ <DD><I>We do basically the same thing as handle_hostdel()</I>
+<DT><A HREF="#DOC.26.7.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>handle_checksum</B>() </B>
+ <DD><I>Routine to handle when the communication layer says that a
+checksum error happened</I>
+
+</DL>
+<DT><A HREF="#DOC.26.8"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>E. Checkpoint Handling Functions</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.8.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>checkpoint</B>() </B>
+ <DD><I>This function writes the current state of the job to disk</I>
+<DT><A HREF="#DOC.26.8.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>restart_from_ckpt</B>() </B>
+ <DD><I>This function does the inverse of checkpoint</I>
+<DT><A HREF="#DOC.26.8.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>set_checkpoint_frequency</B>( int freq ) </B>
+ <DD><I>This function sets the frequency with with checkpoints are
+done</I>
+<DT><A HREF="#DOC.26.8.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>set_checkpoint_time</B>( int secs ) </B>
+ <DD><I>Set a time-based frequency for checkpoints</I>
+<DT><A HREF="#DOC.26.8.5"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>write_master_state</B>( FILE *fp ) </B>
+ <DD><I>Here you write out all 'state' of the driver to fp</I>
+<DT><A HREF="#DOC.26.8.6"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  void  <B>read_master_state</B>( FILE *fp ) </B>
+ <DD><I>Here, you read in the 'state' of the driver from fp</I>
+<DT><A HREF="#DOC.26.8.7"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  <!1><A HREF="MWTask.html">MWTask</A>*  <B>gimme_a_task</B>() </B>
+ <DD><I>It's really annoying that the user has to do this, but
+they do</I>
+
+</DL>
+</DL><DL>
+<DT><h3>Private Fields</h3><DD><DT><A HREF="#DOC.26.14"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWStatistics.html">MWStatistics</A>  <B>stats</B> </B>
+ <DD><I>The instance of the stats class that takes workers and later
+prints out relevant stats</I>
+</DL><DL>
+<DT><h3>Private Methods</h3><DD><DT><A HREF="#DOC.26.19"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_instant_pool_perf</B>() </B>
+ <DD><I>This returns the sum of the bench results for the currently working machines</I>
+</DL><DL>
+<DT><h3>Private</h3><DD><DT><A HREF="#DOC.26.13"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Checkpoint internal helpers... </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.13.3"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>checkpoint_frequency</B> </B>
+ <DD><I>How often to checkpoint?  Task frequency based</I>
+<DT><A HREF="#DOC.26.13.4"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>checkpoint_time_freq</B> </B>
+ <DD><I>How often to checkpoint?  Time based</I>
+<DT><A HREF="#DOC.26.13.1"> <IMG BORDER=0 SRC=icon1.gif></A> long  <B>next_ckpt_time</B> </B>
+ <DD><I>Time to do next checkpoint</I>
+<DT><A HREF="#DOC.26.13.2"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>num_completed_tasks</B> </B>
+ <DD><I>The number of tasks acted upon up to now</I>
+<DT><A HREF="#DOC.26.13.5"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>bench_task</B> </B>
+ <DD><I>The benchmark task</I>
+<DT><A HREF="#DOC.26.13.6"> <IMG BORDER=0 SRC=icon1.gif></A> const  char*  <B>ckpt_filename</B> </B>
+ <DD><I>The name of the checkpoint file </I>
+
+</DL>
+<DT><A HREF="#DOC.26.11"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Internal Task List Routines </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.11.3"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>pushTask</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>This puts a (generally failed) task at the beginning of the list</I>
+<DT><A HREF="#DOC.26.11.4"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>getNextTask</B>() </B>
+ <DD><I>Get a Task.  </I>
+<DT><A HREF="#DOC.26.11.5"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>putOnRunQ</B>( <!1><A HREF="MWTask.html">MWTask</A> *t ) </B>
+ <DD><I>This puts a task at the end of the list</I>
+<DT><A HREF="#DOC.26.11.6"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>rmFromRunQ</B>( int jobnum ) </B>
+ <DD><I>Removes a task from the queue of things to run</I>
+<DT><A HREF="#DOC.26.11.7"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>printRunQ</B>() </B>
+ <DD><I>Print the tasks in the list of tasks to do</I>
+<DT><A HREF="#DOC.26.11.8"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>ckpt_addTask</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>Add one task to the todo list; do NOT set the 'number' of
+the task - useful in restarting from a checkpoint </I>
+<DT><A HREF="#DOC.26.11.9"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  <B>task_assigned</B>( <!1><A HREF="MWTask.html">MWTask</A> *t ) </B>
+ <DD><I>returns the worker this task is assigned to, NULL if none.</I>
+<DT><A HREF="#DOC.26.11.10"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.9">bool</A>  <B>task_in_todo_list</B>( <!1><A HREF="MWTask.html">MWTask</A> *t ) </B>
+ <DD><I>Returns true if "t" is still in the todo list</I>
+<DT><A HREF="#DOC.26.11.11"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>ControlPanel</B>( ) </B>
+ <DD><I>The control panel that controls the execution of the
+independent mode</I>
+<DT><A HREF="#DOC.26.11.1"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.20">MWKey</A> <B>(*task_key)</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>A pointer to a (user written) function that takes an MWTask
+and returns the "key" for this task</I>
+<DT><A HREF="#DOC.26.11.12"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTaskAdditionMode.html">MWTaskAdditionMode</A>  <B>addmode</B> </B>
+ <DD><I>Where should tasks be added to the list?</I>
+<DT><A HREF="#DOC.26.11.13"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTaskRetrievalMode.html">MWTaskRetrievalMode</A>  <B>getmode</B> </B>
+ <DD><I>Where should tasks by retrived from the list</I>
+<DT><A HREF="#DOC.26.11.2"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.20">MWKey</A> <B>(*worker_key)</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> * ) </B>
+ <DD><I>A pointer to the function that returns the "key" by which machines are ranked</I>
+<DT><A HREF="#DOC.26.11.14"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>task_counter</B> </B>
+ <DD><I>MWDriver keeps a unique identifier for each task -- 
+here's the counter </I>
+<DT><A HREF="#DOC.26.11.15"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.9">bool</A>  <B>listsorted</B> </B>
+ <DD><I>Is the list sorted by the current key function</I>
+<DT><A HREF="#DOC.26.11.16"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>todo</B> </B>
+ <DD><I>The head of the list of tasks to do</I>
+<DT><A HREF="#DOC.26.11.17"> <IMG BORDER=0 SRC=icon1.gif></A>  <B></B> </B>
+ <DD><I>This is Jeff's nasty addition so that he can get access</I>
+<DT><A HREF="#DOC.26.11.18"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>get_todo_head</B>() </B>
+ <DD><I>to the tasks on the master</I>
+<DT><A HREF="#DOC.26.11.19"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>todoend</B> </B>
+ <DD><I>The tail of the list of tasks to do</I>
+<DT><A HREF="#DOC.26.11.20"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>running</B> </B>
+ <DD><I>The head of the list of tasks that are actually running</I>
+<DT><A HREF="#DOC.26.11.21"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWTask.html">MWTask</A>*  <B>runningend</B> </B>
+ <DD><I>The tail of the list of tasks that are actually running</I>
+
+</DL>
+<DT><A HREF="#DOC.26.10"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Main Internal Handling Routines </B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.10.1"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>master_setup</B>( int argc, char *argv[] ) </B>
+ <DD><I>This method is called before master_mainloop() is</I>
+<DT><A HREF="#DOC.26.10.2"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>master_mainloop</B>() </B>
+ <DD><I>This is the main controlling routine of the master</I>
+<DT><A HREF="#DOC.26.10.9"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>worker_init</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>
+unpacks the initial worker information, and sends the
+application startup information (by calling pure virtual
+<TT>pack_worker_init_data()</tt><P>The return value is taken as the return value from the user's 
+<TT>pack_worker_init_data()</tt> function</I>
+<DT><A HREF="#DOC.26.10.3"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>create_initial_tasks</B>() </B>
+ <DD><I>
+This routine sets up the list of initial tasks to do on the 
+todo list</I>
+<DT><A HREF="#DOC.26.10.4"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>handle_worker_results</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>
+Act on a "completed task" message from a worker</I>
+<DT><A HREF="#DOC.26.10.5"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>send_task_to_worker</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>We grab the next task off the todo list, make and send a work
+message, and send it to a worker</I>
+<DT><A HREF="#DOC.26.10.6"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>rematch_tasks_to_workers</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *nosend ) </B>
+ <DD><I>After each result message is processed, we try to match up
+tasks with workers</I>
+<DT><A HREF="#DOC.26.10.7"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>call_hostaddlogic</B>() </B>
+ <DD><I>A wrapper around the lower level's hostaddlogic</I>
+<DT><A HREF="#DOC.26.10.10"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>kill_workers</B>() </B>
+ <DD><I>Kill all the workers</I>
+<DT><A HREF="#DOC.26.10.8"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>hostPostmortem</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>This is called in both handle_hostdelete and handle_taskexit</I>
+
+</DL>
+<DT><A HREF="#DOC.26.12"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Worker management methods</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.12.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>addWorker</B>( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w ) </B>
+ <DD><I>Adds a worker to the list of avaiable workers</I>
+<DT><A HREF="#DOC.26.12.2"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  <B>lookupWorker</B>( int tid ) </B>
+ <DD><I>Looks up information about a worker given its task ID</I>
+<DT><A HREF="#DOC.26.12.3"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  <B>rmWorker</B>( int tid ) </B>
+ <DD><I>Removes a worker from the list of available workers</I>
+<DT><A HREF="#DOC.26.12.4"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>printWorkers</B>() </B>
+ <DD><I>Prints the available workers</I>
+<DT><A HREF="#DOC.26.12.5"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  <B>get_workers_head</B>() </B>
+ <DD><I>Another terrible addition so that Jeff can print out the worker list
+in his own format </I>
+<DT><A HREF="#DOC.26.12.6"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  <B>workers</B> </B>
+ <DD><I>The head of the list of workers.</I>
+<DT><A HREF="#DOC.26.12.7"> <IMG BORDER=0 SRC=icon1.gif></A> <!1><A HREF="MWSuspensionPolicy.html">MWSuspensionPolicy</A>  <B>suspensionPolicy</B> </B>
+ <DD><I>Here's where we store what should happen on a suspension...</I>
+<DT><A HREF="#DOC.26.12.8"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>sort_worker_list</B>() </B>
+ <DD><I>Based on the ordering policy, place w in the worker list appropriately</I>
+<DT><A HREF="#DOC.26.12.9"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>numWorkers</B>() </B>
+ <DD><I>Counts the existing workers</I>
+<DT><A HREF="#DOC.26.12.10"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>numWorkers</B>( int arch ) </B>
+ <DD><I>Counts the number of workers in the given arch class</I>
+<DT><A HREF="#DOC.26.12.11"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>numWorkersInState</B>( int ThisState ) </B>
+ <DD><I>Counts the number of workers in the given state</I>
+<DT><A HREF="#DOC.26.12.12"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.20">MWKey</A>  <B>return_best_todo_keyval</B>( void ) </B>
+ <DD><I>Returns the value (only) of the best key in the Todo list </I>
+<DT><A HREF="#DOC.26.12.13"> <IMG BORDER=0 SRC=icon1.gif></A> <!2><A HREF="#DOC.20">MWKey</A>  <B>return_best_running_keyval</B>( void ) </B>
+ <DD><I>Returns the best value (only) of the best key in the Running list.</I>
+
+</DL>
+<DT><A HREF="#DOC.26.15"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>XML and Status Methods.</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.26.15.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>write_XML_status</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.1"> <IMG BORDER=0 SRC=icon1.gif></A> virtual  char*  <B>get_XML_results_status</B>(void ) </B>
+ <DD><I>
+If you want to display information about status of some
+results variables of your solver, you have to dump a string in
+ASCII, HTML or XML format out of the following method</I>
+<DT><A HREF="#DOC.26.15.3"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_XML_status</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.4"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_XML_job_information</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.5"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_XML_problem_description</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.6"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_XML_interface_remote_files</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.7"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_XML_resources_status</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.8"> <IMG BORDER=0 SRC=icon1.gif></A> const  char*  <B>xml_filename</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.9"> <IMG BORDER=0 SRC=icon1.gif></A> const  char*  <B>xml_menus_filename</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.10"> <IMG BORDER=0 SRC=icon1.gif></A> const  char*  <B>xml_jobinfo_filename</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.11"> <IMG BORDER=0 SRC=icon1.gif></A> const  char*  <B>xml_pbdescrib_filename</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.12"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>get_machine_info</B>() </B>
+ <DD><I>Set the current machine information</I>
+<DT><A HREF="#DOC.26.15.13"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_Arch</B>() </B>
+ <DD><I>Returns a pointer to the machine's Arch</I>
+<DT><A HREF="#DOC.26.15.14"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_OpSys</B>() </B>
+ <DD><I>Returns a pointer to the machine's OpSys</I>
+<DT><A HREF="#DOC.26.15.15"> <IMG BORDER=0 SRC=icon1.gif></A> char*  <B>get_IPAddress</B>() </B>
+ <DD><I>Returns a pointer to the machine's IPAddress</I>
+<DT><A HREF="#DOC.26.15.16"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_CondorLoadAvg</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.17"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>get_LoadAvg</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.18"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_Memory</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.19"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_Cpus</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.20"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_VirtualMemory</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.21"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_Disk</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.22"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_KFlops</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.23"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>get_Mips</B>() </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.24"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>Arch</B>[64] </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.25"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>OpSys</B>[64] </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.26"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>IPAddress</B>[64] </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.27"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>CondorLoadAvg</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.28"> <IMG BORDER=0 SRC=icon1.gif></A> double  <B>LoadAvg</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.29"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Memory</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.30"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Cpus</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.31"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>VirtualMemory</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.32"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Disk</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.33"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>KFlops</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.34"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>Mips</B> </B>
+ <DD><I></I>
+<DT><A HREF="#DOC.26.15.35"> <IMG BORDER=0 SRC=icon1.gif></A> int  <B>check_for_int_val</B>(char* name, char* key, char* value) </B>
+ <DD><I>Utility functions used by get_machine info</I>
+<DT><A HREF="#DOC.26.15.36"> <IMG BORDER=0 SRC=icon1.gif></A> char  <B>mach_name</B>[64] </B>
+ <DD><I>The name of the machine the worker is running on.</I>
+
+</DL>
+</DL></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+This class is responsible for managing an application in an 
+opportunistic environment.  The goal is to be completely fault - 
+tolerant, dealing with all possiblities of host (worker) problems.  
+To do this, the MWDriver class manages a set of tasks and a set 
+of workers.  It monitors messages about hosts coming up and 
+going down, and assigns tasks appropriately.<P>This class is built upon some sort of resource management and 
+message passing lower layer.  Previously, it was built directly 
+on top of Condor - PVM, but the interface to that has been 
+abstracted away so that it can use any facility that provides 
+for resource management and message passing.  See the abstract
+MWRMComm class for details of this lower layer.  When interfacing
+with this level, you'll have use the RMC object that's a static
+member of the MWDriver, MWTask, and MWWorker class.  <P>To implement an application, a user must derive a class from this
+base class and implement the following methods:<P><UL>
+<LI> get_userinfo()
+<LI> setup_initial_tasks()
+<LI> pack_worker_init_data()
+<LI> act_on_completed_task()
+</UL><P>Similar application dependent methods must be implemented
+for the "Task" of work to be done and the "Worker" who performs
+the tasks.<P>
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="MWDriver">
+<A NAME ="DOC.26.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  MWDriver()</B></TT>
+<DD>Default constructor
+<DL></DL><P>
+<A NAME="~MWDriver">
+<A NAME ="DOC.26.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  ~MWDriver()</B></TT>
+<DD>Destructor - walks through lists of tasks &amp; workers and
+deletes them
+<DL></DL><P>
+<A NAME="go">
+<A NAME ="DOC.26.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  go( int argc, char *argv[] )</B></TT>
+<DD>This method runs the entire fault-tolerant
+application in the condor environment.  What is *really* does
+is call setup_master(), then master(), then printresults(), 
+and then ends.  See the other functions	for details. 
+<DL></DL><P>
+<A NAME="go">
+<A NAME ="DOC.26.18">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  go()</B></TT>
+<DD>
+This version of go simply calls go(0, NULL)
+<DL></DL><P>
+<A NAME="printresults">
+<A NAME ="DOC.26.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  printresults()</B></TT>
+<DD>
+Prints the Results.  It does not do anything useful now.
+<DL></DL><P>
+<A NAME="RMC">
+<A NAME ="DOC.26.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> static  MWRMComm*  RMC</B></TT>
+<DD>A static instance of our Resource Management / Communication
+class.  It's a member of this class because that way derived
+classes can use it easily; it's static because there should
+only be one instance EVER.  The instance of RMC in the MWTask
+class is actually a pointer to this one... 
+<DL></DL><P>
+<A NAME="A. Pure Virtual Methods">
+<A NAME ="DOC.26.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  A. Pure Virtual Methods</B></TT>
+<DD>
+These are the methods from the MWDriver class that a user 
+<B>must</b> reimplement in order to have to create an application. 
+<DL></DL><P><DL>
+
+<A NAME="get_userinfo">
+<A NAME ="DOC.26.4.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  get_userinfo( int argc, char *argv[] )</B></TT>
+<DD>This function is called to read in all information
+specific to a user's application and do any initialization on
+this information
+<DL></DL><P>
+<A NAME="setup_initial_tasks">
+<A NAME ="DOC.26.4.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  setup_initial_tasks( int *n, <!1><A HREF="MWTask.html">MWTask</A> ***task )</B></TT>
+<DD>This function must return a number n &gt; 0 of pointers
+to Tasks to "jump start" the application.<P>The MWTasks pointed to should be of the task type derived
+for your application
+<DL></DL><P>
+<A NAME="act_on_completed_task">
+<A NAME ="DOC.26.4.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  act_on_completed_task( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>
+This function performs actions that happen
+once the Driver receives notification of a completed task.  
+You will need to cast the MWTask * to a pointer of the Task type 
+derived for your application.  For example<P><PRE>
+			Task_Fib *dt = dynamic_cast&lt;Task_Fib *&gt; ( t );
+			assert( dt );     
+			</pre>
+<DL></DL><P>
+<A NAME="pack_worker_init_data">
+<A NAME ="DOC.26.4.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  pack_worker_init_data( void )</B></TT>
+<DD>
+A common theme of Master-Worker applications is that there is 
+a base amount of "initial" data defining the problem, and then 
+just incremental data defining "Tasks" to be done by the Workers.<P>This one packs all the user's initial data.  It is unpacked 
+int the worker class, in unpack_init_data().
+<DL></DL><P>
+<A NAME="unpack_worker_initinfo">
+<A NAME ="DOC.26.4.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  unpack_worker_initinfo( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>
+This one unpacks the "initial" information sent to the driver
+once the worker initializes. <P>Potential "initial" information that might be useful is...
+<UL>
+<LI> Information on the worker characteristics  etc...
+<LI> Information on the bandwith between MWDriver and worker
+</UL><P>These sorts of things could be useful in building some 
+scheduling intelligence into the driver.
+
+<DL></DL><P>
+<A NAME="pack_driver_task_data">
+<A NAME ="DOC.26.4.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  pack_driver_task_data( void )</B></TT>
+<DD>
+OK, This one is not pure virtual either, but if you have some 
+"driver" data that is conceptually part of the task and you wish
+not to replicate the data in each task, you can pack it in a
+message buffer by implementing this function.  If you do this, 
+you must implement a matching unpack_worker_task_data()
+function.
+<DL></DL><P></DL>
+
+<A NAME="B. Task List Management">
+<A NAME ="DOC.26.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  B. Task List Management</B></TT>
+<DD>
+These functions are to manage the list of Tasks.  MW provides
+default useful functionality for managing the list of tasks.
+
+<DL></DL><P><DL>
+
+<A NAME="addTask">
+<A NAME ="DOC.26.5.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  addTask( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>Add a task to the list
+<DL></DL><P>
+<A NAME="addTasks">
+<A NAME ="DOC.26.5.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  addTasks( int, <!1><A HREF="MWTask.html">MWTask</A> ** )</B></TT>
+<DD>Add a bunch of tasks to the list.  You do this by making
+an array of pointers to MWTasks and giving that array to 
+this function.  The MWDriver will take over memory 
+management for the MWTasks, but not for the array of 
+pointers, so don't forget to delete [] it! 
+<DL></DL><P>
+<A NAME="set_task_key_function">
+<A NAME ="DOC.26.5.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_task_key_function( <!2><A HREF="#DOC.20">MWKey</A> (*)( <!1><A HREF="MWTask.html">MWTask</A> * ) )</B></TT>
+<DD>Sets the function that MWDriver users to get the "key" for a task
+<DL></DL><P>
+<A NAME="set_task_add_mode">
+<A NAME ="DOC.26.5.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  set_task_add_mode( <!1><A HREF="MWTaskAdditionMode.html">MWTaskAdditionMode</A> )</B></TT>
+<DD>Set the mode you wish for task addition.
+<DL></DL><P>
+<A NAME="set_task_retrieve_mode">
+<A NAME ="DOC.26.5.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  set_task_retrieve_mode( <!1><A HREF="MWTaskRetrievalMode.html">MWTaskRetrievalMode</A> )</B></TT>
+<DD>Set the mode you wish for task retrieval.  
+<DL></DL><P>
+<A NAME="set_machine_ordering_policy">
+<A NAME ="DOC.26.5.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  set_machine_ordering_policy( <!1><A HREF="MWMachineOrderingPolicy.html">MWMachineOrderingPolicy</A> )</B></TT>
+<DD>Sets the machine ordering policy.  
+<DL></DL><P>
+<A NAME="print_task_keys">
+<A NAME ="DOC.26.5.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  print_task_keys( void )</B></TT>
+<DD>(Mostly for debugging) -- Prints the task keys in the todo list
+<DL></DL><P>
+<A NAME="sort_task_list">
+<A NAME ="DOC.26.5.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  sort_task_list( void )</B></TT>
+<DD>This sorts the task list by the key that is set
+<DL></DL><P>
+<A NAME="delete_tasks_worse_than">
+<A NAME ="DOC.26.5.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  delete_tasks_worse_than( <!2><A HREF="#DOC.20">MWKey</A> )</B></TT>
+<DD>This deletes all tasks in the task list with a key worse than 
+the one specified 
+<DL></DL><P>
+<A NAME="get_number_tasks">
+<A NAME ="DOC.26.5.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_number_tasks()</B></TT>
+<DD>returns the number of tasks on the todo list.
+<DL></DL><P>
+<A NAME="get_number_running_tasks">
+<A NAME ="DOC.26.5.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_number_running_tasks()</B></TT>
+<DD>returns the number of running tasks.
+<DL></DL><P></DL>
+
+<A NAME="C. Worker Policy Management ">
+<A NAME ="DOC.26.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  C. Worker Policy Management </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="set_target_num_workers">
+<A NAME ="DOC.26.6.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_target_num_workers( int iWantThisMany )</B></TT>
+<DD>Sets the desired number of workers.  This can be called at any 
+time, but a call with a value less than the preceding call 
+will have no effect.  If iWantThisMany is -1, it imples that
+you want as many workers as possible. 
+<DL></DL><P>
+<A NAME="set_target_num_workers">
+<A NAME ="DOC.26.6.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_target_num_workers( int *iWantThisany, int num_arches )</B></TT>
+<DD>Sets the desired number of workers.  This takes an array of 
+integers, which represents the number of desired machines for
+each arch class.  
+<DL></DL><P>
+<A NAME="set_suspension_policy">
+<A NAME ="DOC.26.6.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_suspension_policy( <!1><A HREF="MWSuspensionPolicy.html">MWSuspensionPolicy</A> )</B></TT>
+<DD>Set the policy to use when suspending.  Currently 
+this can be either DEFAULT or REASSIGN 
+<DL></DL><P>
+<A NAME="worker_timeout">
+<A NAME ="DOC.26.6.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  worker_timeout</B></TT>
+<DD>If 0 : workers never timeout and can potentially work forever on a task
+If 1 : workers time out after worker_timeout_limit seconds 
+<DL></DL><P>
+<A NAME="worker_timeout_limit">
+<A NAME ="DOC.26.6.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  worker_timeout_limit</B></TT>
+<DD>Limit of seconds after which workers are considered time out and tasks are re-assigned 
+<DL></DL><P>
+<A NAME="worker_timeout_check_frequency">
+<A NAME ="DOC.26.6.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  worker_timeout_check_frequency</B></TT>
+<DD>frequency at which we check if there are timed out workers 
+<DL></DL><P>
+<A NAME="next_worker_timeout_check">
+<A NAME ="DOC.26.6.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  next_worker_timeout_check</B></TT>
+<DD>based on the time out frequency, next timeout check time
+<DL></DL><P>
+<A NAME="set_worker_timeout_limit">
+<A NAME ="DOC.26.6.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  set_worker_timeout_limit(double timeout_limit, int timeout_frequency)</B></TT>
+<DD>Sets the timeout_limit and turn worker_timeout to 1 
+<DL></DL><P>
+<A NAME="reassign_tasks_timedout_workers">
+<A NAME ="DOC.26.6.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  reassign_tasks_timedout_workers()</B></TT>
+<DD>Go through the list of timed out WORKING workers and reschedule tasks 
+<DL></DL><P>
+<A NAME="timeval_to_double">
+<A NAME ="DOC.26.6.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  timeval_to_double( struct timeval t )</B></TT>
+<DD>A helper function...struct timeval-&gt;double. 
+<DL></DL><P></DL>
+
+<A NAME="D. Event Handling Methods">
+<A NAME ="DOC.26.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  D. Event Handling Methods</B></TT>
+<DD>
+In the case that the user wants to take specific actions
+when notified of processors going away, these methods
+may be reimplemented.  Care must be taken when
+reimplementing these, or else things may get messed up.<P>Probably a better solution in the long run is to provide 
+users hooks into these functions or something. <P>Basic default functionality that updates the known
+status of our virtual machine is provided. 
+
+<DL></DL><P><DL>
+
+<A NAME="handle_benchmark">
+<A NAME ="DOC.26.7.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  handle_benchmark( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>Here, we get back the benchmarking
+results, which tell us something about the worker we've got.
+Also, we could get some sort of error back from the worker
+at this stage, in which case we remove it. 
+<DL></DL><P>
+<A NAME="handle_hostdel">
+<A NAME ="DOC.26.7.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  handle_hostdel()</B></TT>
+<DD>This is what gets called when a host goes away.  We figure out
+who died, remove that worker from our records, remove its task
+from the running queue (if it was running one) and put that
+task back on the todo list. 
+<DL></DL><P>
+<A NAME="handle_hostsuspend">
+<A NAME ="DOC.26.7.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  handle_hostsuspend()</B></TT>
+<DD>Implements a suspension policy.  Currently either DEFAULT or
+REASSIGN, depending on how suspensionPolicy is set. 
+<DL></DL><P>
+<A NAME="handle_hostresume">
+<A NAME ="DOC.26.7.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  handle_hostresume()</B></TT>
+<DD>Here's where you go when a host gets resumed.  Usually, 
+you do nothing...but it's nice to know...
+<DL></DL><P>
+<A NAME="handle_taskexit">
+<A NAME ="DOC.26.7.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  handle_taskexit()</B></TT>
+<DD>We do basically the same thing as handle_hostdel().  One might 
+<EM>think</EM> that we could restart something on that host; 
+in practice, however, it means that the host has gone down, too.
+We put that host's task back on the todo list.
+<DL></DL><P>
+<A NAME="handle_checksum">
+<A NAME ="DOC.26.7.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  handle_checksum()</B></TT>
+<DD>Routine to handle when the communication layer says that a
+checksum error happened. If the underlying Communitor
+gives a reliably reliable communication then this messge
+need not be generated. But for some Communicators like
+MW-File we may need some thing like this.
+<DL></DL><P></DL>
+
+<A NAME="E. Checkpoint Handling Functions">
+<A NAME ="DOC.26.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  E. Checkpoint Handling Functions</B></TT>
+<DD>
+These are logical checkpoint handling functions.  They are
+virtual, and are *entirely* application-specific.  In them, the
+user must save the "state" of the application to permanent
+storage (disk).  To do this, you need to:<P><UL>
+<LI> Implement the methods write_master_state() and
+read_master_state() in your derived MWDriver app.
+<LI> Implement the methods write_ckpt_info() and 
+read_ckpt_info() in your derived MWTask class.
+</UL><P>Then MWDriver does the rest for you.  When checkpoint() is
+called (see below) it opens up a known filename for writing.
+It passes the file pointer of that file to write_master_state(), 
+which dumps the "state" of the master to that fp.  Here 
+"sate" includes all the variables, info, etc of YOUR
+CLASS THAT WAS DERIVED FROM MWDRIVER.  All state in
+MWDriver.C is taken care of (there's not much).  Next, 
+checkpoint will walk down the running queue and the todo
+queue and call each member's write_ckpt_info().  <P>Upon restart, MWDriver will detect the presence of the 
+checkpoint file and restart from it.  It calls 
+read_master_state(), which is the inverse of 
+write_master_state().  Then, for each task in the 
+checkpoint file, it creates a new MWTask, calls 
+read_ckpt_info() on it, and adds it to the todo queue.<P>We start from there and proceed as normal.<P>One can set the "frequency" that checkpoint files will be 
+written (using set_checkpoint_frequency()).  The default
+frequency is zero - no checkpointing.  When the frequency is
+set to n, every nth time that act_on_completed_task gets 
+called, we checkpoint immediately afterwards.  If your
+application involves "work steps", you probably will want to 
+leave the frequency at zero and call checkpoint yourself
+at the end of a work step.
+
+<DL></DL><P><DL>
+
+<A NAME="checkpoint">
+<A NAME ="DOC.26.8.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  checkpoint()</B></TT>
+<DD>This function writes the current state of the job to disk.  
+See the section header to see how it does this.
+
+<DL><DT><B>See Also:</B><DD><!1><A HREF="MWTask.html">MWTask</A><br></DL><P>
+<A NAME="restart_from_ckpt">
+<A NAME ="DOC.26.8.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  restart_from_ckpt()</B></TT>
+<DD>This function does the inverse of checkpoint.  
+It opens the checkpoint file, calls read_master_state(), 
+then, for each task class in the file, creates a MWTask, 
+calls read_ckpt_info on it, and adds that class to the
+todo list. 
+<DL></DL><P>
+<A NAME="set_checkpoint_frequency">
+<A NAME ="DOC.26.8.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  set_checkpoint_frequency( int freq )</B></TT>
+<DD>This function sets the frequency with with checkpoints are
+done.  It returns the former frequency value.  The default
+frequency is zero (no checkpoints).  If the frequency is n, 
+then a checkpoint will occur after the nth call to 
+act_on_completed_task().  A good place to set this is in
+get_userinfo().
+
+<DL><DT><B>Returns:</B><DD>The former frequency value.
+<DT><B>Parameters:</B><DD><B>freq</B> -  The frequency to set checkpoints to.
+<br></DL><P>
+<A NAME="set_checkpoint_time">
+<A NAME ="DOC.26.8.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  set_checkpoint_time( int secs )</B></TT>
+<DD>Set a time-based frequency for checkpoints.  The time units
+are in seconds.  A value of 0 "turns off" time-based 
+checkpointing.  Time-based checkpointing cannot be "turned 
+on" unless the checkpoint_frequency is set to 0.  A good
+place to do this is in get_userinfo().
+
+<DL><DT><B>Returns:</B><DD>The former time frequency value.
+<DT><B>Parameters:</B><DD><B>secs</B> -  Checkpoint every "secs" seconds
+<br></DL><P>
+<A NAME="write_master_state">
+<A NAME ="DOC.26.8.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  write_master_state( FILE *fp )</B></TT>
+<DD>Here you write out all 'state' of the driver to fp
+<DL><DT><B>Parameters:</B><DD><B>fp</B> -  A file pointer that has been opened for writing. <br></DL><P>
+<A NAME="read_master_state">
+<A NAME ="DOC.26.8.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  void  read_master_state( FILE *fp )</B></TT>
+<DD>Here, you read in the 'state' of the driver from fp.  Note
+that this is the reverse of write_master_state().
+
+<DL><DT><B>Parameters:</B><DD><B>fp</B> -  A file pointer that has been opened for reading. <br></DL><P>
+<A NAME="gimme_a_task">
+<A NAME ="DOC.26.8.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  <!1><A HREF="MWTask.html">MWTask</A>*  gimme_a_task()</B></TT>
+<DD>It's really annoying that the user has to do this, but
+they do.  The thing is, we have to make a new task of the
+user's derived type when we read in the checkpoint file.
+<PRE>
+			    MWTask* gimme_a_task() {
+			        return new &lt;your derived task class&gt;;
+			    }
+			</pre>
+<DL></DL><P></DL>
+
+<A NAME="Benchmarking">
+<A NAME ="DOC.26.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Benchmarking</B></TT>
+<DD>We now have a user-defined benchmarking phase. 
+<DL></DL><P><DL>
+
+<A NAME="register_benchmark_task">
+<A NAME ="DOC.26.9.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  register_benchmark_task( <!1><A HREF="MWTask.html">MWTask</A> *t )</B></TT>
+<DD>register the task that will be used for benchmarking
+<DL></DL><P>
+<A NAME="get_benchmark_task">
+<A NAME ="DOC.26.9.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  get_benchmark_task()</B></TT>
+<DD>get the benchmark task 
+<DL></DL><P></DL>
+
+<A NAME="Main Internal Handling Routines ">
+<A NAME ="DOC.26.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Main Internal Handling Routines </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="master_setup">
+<A NAME ="DOC.26.10.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWReturn.html">MWReturn</A>  master_setup( int argc, char *argv[] )</B></TT>
+<DD>This method is called before master_mainloop() is.  It does 
+some setup, including calling the get_userinfo() and 
+create_initial_tasks() methods.  It then figures out how 
+many machines it has and starts worker processes on them.
+
+<DL><DT><B>Returns:</B><DD>This is the from the user's get_userinfo() routine.
+If get_userinfo() returns OK, then the return value is from 
+the user's setup_initial_tasks() function.
+<DT><B>Parameters:</B><DD><B>argc</B> -  The argc from the command line
+<br><B>argv</B> -  The argv from the command line
+<br></DL><P>
+<A NAME="master_mainloop">
+<A NAME ="DOC.26.10.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWReturn.html">MWReturn</A>  master_mainloop()</B></TT>
+<DD>This is the main controlling routine of the master.  It sits
+in a loop that accepts a message and then (in a big switch 
+statement) calls routines to deal with that message.  This loop
+ends when there are no jobs on either the running or todo queues.
+It is probably best to see the switch staement yourself to see
+which routines are called when. 
+<DL></DL><P>
+<A NAME="worker_init">
+<A NAME ="DOC.26.10.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWReturn.html">MWReturn</A>  worker_init( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>
+unpacks the initial worker information, and sends the
+application startup information (by calling pure virtual
+<TT>pack_worker_init_data()</tt><P>The return value is taken as the return value from the user's 
+<TT>pack_worker_init_data()</tt> function
+<DL></DL><P>
+<A NAME="create_initial_tasks">
+<A NAME ="DOC.26.10.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWReturn.html">MWReturn</A>  create_initial_tasks()</B></TT>
+<DD>
+This routine sets up the list of initial tasks to do on the 
+todo list.  In calls the pure virtual function 
+<TT>setup_initial_tasks()</tt>.
+
+<DL><DT><B>Returns:</B><DD>Is taken from the return value of
+<TT>setup_initial_tasks()</tt>.
+</DL><P>
+<A NAME="handle_worker_results">
+<A NAME ="DOC.26.10.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWReturn.html">MWReturn</A>  handle_worker_results( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>
+Act on a "completed task" message from a worker.
+Calls pure virtual function <TT>act_on_completed_task()</tt>.
+
+<DL><DT><B>Returns:</B><DD>Is from the return value of <TT>act_on_completed_task()</tt>.
+</DL><P>
+<A NAME="send_task_to_worker">
+<A NAME ="DOC.26.10.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  send_task_to_worker( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>We grab the next task off the todo list, make and send a work
+message, and send it to a worker.  That worker is marked as 
+"working" and has its runningtask pointer set to that task.  The
+worker pointer in the task is set to that worker.  The task
+is then placed on the running queue. 
+<DL></DL><P>
+<A NAME="rematch_tasks_to_workers">
+<A NAME ="DOC.26.10.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  rematch_tasks_to_workers( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *nosend )</B></TT>
+<DD>After each result message is processed, we try to match up
+tasks with workers.  (New tasks might have been added to the list
+during processing of a message).  Don't send a task to
+"nosend", since he just reported in.
+<DL></DL><P>
+<A NAME="call_hostaddlogic">
+<A NAME ="DOC.26.10.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  call_hostaddlogic()</B></TT>
+<DD>A wrapper around the lower level's hostaddlogic.  Handles
+things like counting machines and deleting surplus 
+<DL></DL><P>
+<A NAME="kill_workers">
+<A NAME ="DOC.26.10.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  kill_workers()</B></TT>
+<DD>Kill all the workers
+<DL></DL><P>
+<A NAME="hostPostmortem">
+<A NAME ="DOC.26.10.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  hostPostmortem( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>This is called in both handle_hostdelete and handle_taskexit.
+It removes the host from our records and cleans up 
+relevent pointers with the task it's running. 
+<DL></DL><P></DL>
+
+<A NAME="Internal Task List Routines ">
+<A NAME ="DOC.26.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Internal Task List Routines </B></TT>
+<DD>
+These methods and data are responsible for managing the 
+list of tasks to be done
+<DL></DL><P><DL>
+
+<A NAME="pushTask">
+<A NAME ="DOC.26.11.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  pushTask( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>This puts a (generally failed) task at the beginning of the list
+<DL></DL><P>
+<A NAME="getNextTask">
+<A NAME ="DOC.26.11.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  getNextTask()</B></TT>
+<DD>Get a Task.  
+<DL></DL><P>
+<A NAME="putOnRunQ">
+<A NAME ="DOC.26.11.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  putOnRunQ( <!1><A HREF="MWTask.html">MWTask</A> *t )</B></TT>
+<DD>This puts a task at the end of the list
+<DL></DL><P>
+<A NAME="rmFromRunQ">
+<A NAME ="DOC.26.11.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  rmFromRunQ( int jobnum )</B></TT>
+<DD>Removes a task from the queue of things to run
+<DL></DL><P>
+<A NAME="printRunQ">
+<A NAME ="DOC.26.11.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  printRunQ()</B></TT>
+<DD>Print the tasks in the list of tasks to do
+<DL></DL><P>
+<A NAME="ckpt_addTask">
+<A NAME ="DOC.26.11.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  ckpt_addTask( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>Add one task to the todo list; do NOT set the 'number' of
+the task - useful in restarting from a checkpoint 
+<DL></DL><P>
+<A NAME="task_assigned">
+<A NAME ="DOC.26.11.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  task_assigned( <!1><A HREF="MWTask.html">MWTask</A> *t )</B></TT>
+<DD>returns the worker this task is assigned to, NULL if none.
+<DL></DL><P>
+<A NAME="task_in_todo_list">
+<A NAME ="DOC.26.11.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.9">bool</A>  task_in_todo_list( <!1><A HREF="MWTask.html">MWTask</A> *t )</B></TT>
+<DD>Returns true if "t" is still in the todo list
+<DL></DL><P>
+<A NAME="ControlPanel">
+<A NAME ="DOC.26.11.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  ControlPanel( )</B></TT>
+<DD>The control panel that controls the execution of the
+independent mode
+<DL></DL><P>
+<A NAME="(*task_key)">
+<A NAME ="DOC.26.11.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.20">MWKey</A> (*task_key)( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>A pointer to a (user written) function that takes an MWTask
+and returns the "key" for this task.  The user is allowed to 
+change the "key" by simply changing the function
+<DL></DL><P>
+<A NAME="addmode">
+<A NAME ="DOC.26.11.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTaskAdditionMode.html">MWTaskAdditionMode</A>  addmode</B></TT>
+<DD>Where should tasks be added to the list?
+<DL></DL><P>
+<A NAME="getmode">
+<A NAME ="DOC.26.11.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTaskRetrievalMode.html">MWTaskRetrievalMode</A>  getmode</B></TT>
+<DD>Where should tasks by retrived from the list
+<DL></DL><P>
+<A NAME="(*worker_key)">
+<A NAME ="DOC.26.11.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.20">MWKey</A> (*worker_key)( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> * )</B></TT>
+<DD>A pointer to the function that returns the "key" by which machines are ranked.
+Right now, we offer only some (hopefully useful) default functions that are 
+set through the machine_ordering_policy
+<DL></DL><P>
+<A NAME="task_counter">
+<A NAME ="DOC.26.11.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  task_counter</B></TT>
+<DD>MWDriver keeps a unique identifier for each task -- 
+here's the counter 
+<DL></DL><P>
+<A NAME="listsorted">
+<A NAME ="DOC.26.11.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.9">bool</A>  listsorted</B></TT>
+<DD>Is the list sorted by the current key function
+<DL></DL><P>
+<A NAME="todo">
+<A NAME ="DOC.26.11.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  todo</B></TT>
+<DD>The head of the list of tasks to do
+<DL></DL><P>
+<A NAME="">
+<A NAME ="DOC.26.11.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  </B></TT>
+<DD>This is Jeff's nasty addition so that he can get access
+<DL></DL><P>
+<A NAME="get_todo_head">
+<A NAME ="DOC.26.11.18">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  get_todo_head()</B></TT>
+<DD>to the tasks on the master
+<DL></DL><P>
+<A NAME="todoend">
+<A NAME ="DOC.26.11.19">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  todoend</B></TT>
+<DD>The tail of the list of tasks to do
+<DL></DL><P>
+<A NAME="running">
+<A NAME ="DOC.26.11.20">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  running</B></TT>
+<DD>The head of the list of tasks that are actually running
+<DL></DL><P>
+<A NAME="runningend">
+<A NAME ="DOC.26.11.21">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  runningend</B></TT>
+<DD>The tail of the list of tasks that are actually running
+<DL></DL><P></DL>
+
+<A NAME="Worker management methods">
+<A NAME ="DOC.26.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Worker management methods</B></TT>
+<DD>
+These methods act on the list of workers
+(or specifically) ID's of workers, that the
+driver knows about.
+
+<DL></DL><P><DL>
+
+<A NAME="addWorker">
+<A NAME ="DOC.26.12.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  addWorker( <!1><A HREF="MWWorkerID.html">MWWorkerID</A> *w )</B></TT>
+<DD>Adds a worker to the list of avaiable workers
+<DL></DL><P>
+<A NAME="lookupWorker">
+<A NAME ="DOC.26.12.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  lookupWorker( int tid )</B></TT>
+<DD>Looks up information about a worker given its task ID
+<DL></DL><P>
+<A NAME="rmWorker">
+<A NAME ="DOC.26.12.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  rmWorker( int tid )</B></TT>
+<DD>Removes a worker from the list of available workers
+<DL></DL><P>
+<A NAME="printWorkers">
+<A NAME ="DOC.26.12.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  printWorkers()</B></TT>
+<DD>Prints the available workers
+<DL></DL><P>
+<A NAME="get_workers_head">
+<A NAME ="DOC.26.12.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  get_workers_head()</B></TT>
+<DD>Another terrible addition so that Jeff can print out the worker list
+in his own format 
+<DL></DL><P>
+<A NAME="workers">
+<A NAME ="DOC.26.12.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWWorkerID.html">MWWorkerID</A>*  workers</B></TT>
+<DD>The head of the list of workers.
+<DL></DL><P>
+<A NAME="suspensionPolicy">
+<A NAME ="DOC.26.12.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWSuspensionPolicy.html">MWSuspensionPolicy</A>  suspensionPolicy</B></TT>
+<DD>Here's where we store what should happen on a suspension...
+<DL></DL><P>
+<A NAME="sort_worker_list">
+<A NAME ="DOC.26.12.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  sort_worker_list()</B></TT>
+<DD>Based on the ordering policy, place w in the worker list appropriately
+<DL></DL><P>
+<A NAME="numWorkers">
+<A NAME ="DOC.26.12.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  numWorkers()</B></TT>
+<DD>Counts the existing workers
+<DL></DL><P>
+<A NAME="numWorkers">
+<A NAME ="DOC.26.12.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  numWorkers( int arch )</B></TT>
+<DD>Counts the number of workers in the given arch class
+<DL></DL><P>
+<A NAME="numWorkersInState">
+<A NAME ="DOC.26.12.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  numWorkersInState( int ThisState )</B></TT>
+<DD>Counts the number of workers in the given state
+<DL></DL><P>
+<A NAME="return_best_todo_keyval">
+<A NAME ="DOC.26.12.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.20">MWKey</A>  return_best_todo_keyval( void )</B></TT>
+<DD>Returns the value (only) of the best key in the Todo list 
+<DL></DL><P>
+<A NAME="return_best_running_keyval">
+<A NAME ="DOC.26.12.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!2><A HREF="#DOC.20">MWKey</A>  return_best_running_keyval( void )</B></TT>
+<DD>Returns the best value (only) of the best key in the Running list.
+<DL></DL><P></DL>
+
+<A NAME="Checkpoint internal helpers... ">
+<A NAME ="DOC.26.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Checkpoint internal helpers... </B></TT>
+<DL></DL><P><DL>
+
+<A NAME="checkpoint_frequency">
+<A NAME ="DOC.26.13.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  checkpoint_frequency</B></TT>
+<DD>How often to checkpoint?  Task frequency based
+<DL></DL><P>
+<A NAME="checkpoint_time_freq">
+<A NAME ="DOC.26.13.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  checkpoint_time_freq</B></TT>
+<DD>How often to checkpoint?  Time based
+<DL></DL><P>
+<A NAME="next_ckpt_time">
+<A NAME ="DOC.26.13.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> long  next_ckpt_time</B></TT>
+<DD>Time to do next checkpoint...valid when using time-based 
+checkpointing. 
+<DL></DL><P>
+<A NAME="num_completed_tasks">
+<A NAME ="DOC.26.13.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  num_completed_tasks</B></TT>
+<DD>The number of tasks acted upon up to now.  Used with 
+checkpoint_frequency 
+<DL></DL><P>
+<A NAME="bench_task">
+<A NAME ="DOC.26.13.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWTask.html">MWTask</A>*  bench_task</B></TT>
+<DD>The benchmark task
+<DL></DL><P>
+<A NAME="ckpt_filename">
+<A NAME ="DOC.26.13.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> const  char*  ckpt_filename</B></TT>
+<DD>The name of the checkpoint file 
+<DL></DL><P></DL>
+
+<A NAME="stats">
+<A NAME ="DOC.26.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> <!1><A HREF="MWStatistics.html">MWStatistics</A>  stats</B></TT>
+<DD>The instance of the stats class that takes workers and later
+prints out relevant stats... 
+<DL></DL><P>
+<A NAME="get_instant_pool_perf">
+<A NAME ="DOC.26.19">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_instant_pool_perf()</B></TT>
+<DD>This returns the sum of the bench results for the currently working machines
+<DL></DL><P>
+<A NAME="XML and Status Methods.">
+<A NAME ="DOC.26.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  XML and Status Methods.</B></TT>
+<DD>
+This function is called by the CORBA layer to get the
+XML status of the MWDriver.
+<DL></DL><P><DL>
+
+<A NAME="write_XML_status">
+<A NAME ="DOC.26.15.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  write_XML_status()</B></TT>
+<DL></DL><P>
+<A NAME="get_XML_results_status">
+<A NAME ="DOC.26.15.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> virtual  char*  get_XML_results_status(void )</B></TT>
+<DD>
+If you want to display information about status of some
+results variables of your solver, you have to dump a string in
+ASCII, HTML or XML format out of the following method. 
+The iMW interface will be in charge of displaying this information
+on the user's browser.
+<DL></DL><P>
+<A NAME="get_XML_status">
+<A NAME ="DOC.26.15.3">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_XML_status()</B></TT>
+<DL></DL><P>
+<A NAME="get_XML_job_information">
+<A NAME ="DOC.26.15.4">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_XML_job_information()</B></TT>
+<DL></DL><P>
+<A NAME="get_XML_problem_description">
+<A NAME ="DOC.26.15.5">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_XML_problem_description()</B></TT>
+<DL></DL><P>
+<A NAME="get_XML_interface_remote_files">
+<A NAME ="DOC.26.15.6">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_XML_interface_remote_files()</B></TT>
+<DL></DL><P>
+<A NAME="get_XML_resources_status">
+<A NAME ="DOC.26.15.7">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_XML_resources_status()</B></TT>
+<DL></DL><P>
+<A NAME="xml_filename">
+<A NAME ="DOC.26.15.8">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> const  char*  xml_filename</B></TT>
+<DL></DL><P>
+<A NAME="xml_menus_filename">
+<A NAME ="DOC.26.15.9">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> const  char*  xml_menus_filename</B></TT>
+<DL></DL><P>
+<A NAME="xml_jobinfo_filename">
+<A NAME ="DOC.26.15.10">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> const  char*  xml_jobinfo_filename</B></TT>
+<DL></DL><P>
+<A NAME="xml_pbdescrib_filename">
+<A NAME ="DOC.26.15.11">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> const  char*  xml_pbdescrib_filename</B></TT>
+<DL></DL><P>
+<A NAME="get_machine_info">
+<A NAME ="DOC.26.15.12">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  get_machine_info()</B></TT>
+<DD>Set the current machine information
+<DL></DL><P>
+<A NAME="get_Arch">
+<A NAME ="DOC.26.15.13">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_Arch()</B></TT>
+<DD>Returns a pointer to the machine's Arch
+<DL></DL><P>
+<A NAME="get_OpSys">
+<A NAME ="DOC.26.15.14">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_OpSys()</B></TT>
+<DD>Returns a pointer to the machine's OpSys
+<DL></DL><P>
+<A NAME="get_IPAddress">
+<A NAME ="DOC.26.15.15">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char*  get_IPAddress()</B></TT>
+<DD>Returns a pointer to the machine's IPAddress
+<DL></DL><P>
+<A NAME="get_CondorLoadAvg">
+<A NAME ="DOC.26.15.16">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_CondorLoadAvg()</B></TT>
+<DL></DL><P>
+<A NAME="get_LoadAvg">
+<A NAME ="DOC.26.15.17">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  get_LoadAvg()</B></TT>
+<DL></DL><P>
+<A NAME="get_Memory">
+<A NAME ="DOC.26.15.18">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_Memory()</B></TT>
+<DL></DL><P>
+<A NAME="get_Cpus">
+<A NAME ="DOC.26.15.19">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_Cpus()</B></TT>
+<DL></DL><P>
+<A NAME="get_VirtualMemory">
+<A NAME ="DOC.26.15.20">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_VirtualMemory()</B></TT>
+<DL></DL><P>
+<A NAME="get_Disk">
+<A NAME ="DOC.26.15.21">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_Disk()</B></TT>
+<DL></DL><P>
+<A NAME="get_KFlops">
+<A NAME ="DOC.26.15.22">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_KFlops()</B></TT>
+<DL></DL><P>
+<A NAME="get_Mips">
+<A NAME ="DOC.26.15.23">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  get_Mips()</B></TT>
+<DL></DL><P>
+<A NAME="Arch">
+<A NAME ="DOC.26.15.24">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  Arch[64]</B></TT>
+<DL></DL><P>
+<A NAME="OpSys">
+<A NAME ="DOC.26.15.25">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  OpSys[64]</B></TT>
+<DL></DL><P>
+<A NAME="IPAddress">
+<A NAME ="DOC.26.15.26">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  IPAddress[64]</B></TT>
+<DL></DL><P>
+<A NAME="CondorLoadAvg">
+<A NAME ="DOC.26.15.27">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  CondorLoadAvg</B></TT>
+<DL></DL><P>
+<A NAME="LoadAvg">
+<A NAME ="DOC.26.15.28">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> double  LoadAvg</B></TT>
+<DL></DL><P>
+<A NAME="Memory">
+<A NAME ="DOC.26.15.29">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Memory</B></TT>
+<DL></DL><P>
+<A NAME="Cpus">
+<A NAME ="DOC.26.15.30">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Cpus</B></TT>
+<DL></DL><P>
+<A NAME="VirtualMemory">
+<A NAME ="DOC.26.15.31">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  VirtualMemory</B></TT>
+<DL></DL><P>
+<A NAME="Disk">
+<A NAME ="DOC.26.15.32">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Disk</B></TT>
+<DL></DL><P>
+<A NAME="KFlops">
+<A NAME ="DOC.26.15.33">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  KFlops</B></TT>
+<DL></DL><P>
+<A NAME="Mips">
+<A NAME ="DOC.26.15.34">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  Mips</B></TT>
+<DL></DL><P>
+<A NAME="check_for_int_val">
+<A NAME ="DOC.26.15.35">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> int  check_for_int_val(char* name, char* key, char* value)</B></TT>
+<DD>Utility functions used by get_machine info
+<DL></DL><P>
+<A NAME="mach_name">
+<A NAME ="DOC.26.15.36">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> char  mach_name[64]</B></TT>
+<DD>The name of the machine the worker is running on.
+<DL></DL><P></DL>
+</DL>
+<hr>
+<DL><DT><B>Direct child classes:
+</B><DD><A HREF="user_driver.html"> user_driver </A><br>
+<A HREF="Driver_Fib.html"> Driver_Fib </A><br>
+</DL>
+<DL><DT><B>Author:</B><DD>Mike Yoder, Jeff Linderoth, Jean-Pierre Goux, Sanjeev Kulkarni
+<DT><B>See Also:</B><DD><!1><A HREF="MWTask.html">MWTask</A>
+<br><!1><A HREF="MWWorker.html">MWWorker</A>
+<br>MWRMComm
+<br></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>
