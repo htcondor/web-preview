@@ -1,0 +1,19 @@
+#!/unsup/condor/bin/condor_submit
+
+#
+# The condor submission file for the MW/fatcop code.
+#
+
+universe = PVM
+executable = fatcop-driver
+Arguments  = /local.wheel/linderot/data/miplib/p0033
+LOG=log.mip
+output = driver.out
+error = worker.out
+machine_count = 1..1
+image_size = 32 Meg
++MemoryRequirements = 32
+requirements = ((( arch == "SUN4u" ) || ( arch == "SUN4x" )) && ( opsys == "SOLARIS26" ))
+
+queue
+

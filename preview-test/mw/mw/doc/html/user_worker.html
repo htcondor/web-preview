@@ -1,0 +1,98 @@
+<html><head><TITLE>user_worker</TITLE></head>
+<body>
+<H2><A HREF ="#DOC.DOCU" > <IMG BORDER=0 SRC=down.gif></A>  class  user_worker : public <!2><A HREF="MWWorker.html#DOC.29.6">MWWorker</A> </H2><BLOCKQUOTE>
+<P>This is your user-defined worker, that knows how do your
+user-defined tasks
+</BLOCKQUOTE>
+<hr>
+ <h2> Inheritance:</h2>
+<APPLET CODE="ClassGraph.class" WIDTH=600 HEIGHT=65>
+<param name=classes value="CMWWorker,MMWWorker.html,Cuser_worker,Muser_worker.html">
+<param name=before value="M,M">
+<param name=after value="Md_,M">
+<param name=indent value="0,1">
+<param name=arrowdir value="down">
+</APPLET>
+<hr>
+
+<DL>
+<DL>
+<DT><h3>Public Methods</h3><DD><DT><A HREF="#DOC.32.2"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>user_worker</B>() </B>
+ <DD><I>Default Constructor</I>
+</DL><DL>
+<DT><h3>Public</h3><DD><DT><A HREF="#DOC.32.1"> <IMG BORDER=0 SRC=icon1.gif></A>  <B>Implemented methods.</B> </B>
+ <DD><I></I>
+
+<DL>
+<DT><A HREF="#DOC.32.1.1"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>unpack_init_data</B>( void ) </B>
+ <DD><I>Unpacks the "base" application data from the PVM buffer</I>
+<DT><A HREF="#DOC.32.1.2"> <IMG BORDER=0 SRC=icon1.gif></A> void  <B>execute_task</B>( <!1><A HREF="MWTask.html">MWTask</A> * ) </B>
+ <DD><I>Executes the given task</I>
+
+</DL>
+</DL></DL>
+<hr><H3>Inherited from <A HREF="MWWorker.html">MWWorker:</A></h3>
+
+<DL>
+<DL>
+<DT><h3>Public Fields</h3><DD><DT><IMG SRC=icon2.gif> static  MWRMComm*  <B>RMC</B>
+<DT><IMG SRC=icon2.gif> <!1><A HREF="MWTask.html">MWTask</A>*  <B>workingTask</B>
+</DL><DL>
+<DT><h3>Public Methods</h3><DD><DT><IMG SRC=icon2.gif> void  <B>go</B>( int argc, char *argv[] )
+</DL><DL>
+<DT><h3>Protected Fields</h3><DD><DT><IMG SRC=icon2.gif> char  <B>mach_name</B>[64]
+<DT><IMG SRC=icon2.gif> int  <B>master</B>
+</DL><DL>
+<DT><h3>Protected Methods</h3><DD><DT><IMG SRC=icon2.gif> virtual  double  <B>benchmark</B>( <!1><A HREF="MWTask.html">MWTask</A> * )
+<DT><IMG SRC=icon2.gif> virtual  void  <B>execute_task</B>( <!1><A HREF="MWTask.html">MWTask</A> * )
+<DT><IMG SRC=icon2.gif> virtual  void  <B>pack_worker_initinfo</B>()
+<DT><IMG SRC=icon2.gif> void  <B>suicide</B>()
+<DT><IMG SRC=icon2.gif> double  <B>timeval_to_double</B>( struct timeval t )
+<DT><IMG SRC=icon2.gif> virtual  void  <B>unpack_driver_task_data</B>( void )
+<DT><IMG SRC=icon2.gif> virtual  <!1><A HREF="MWReturn.html">MWReturn</A>  <B>unpack_init_data</B>()
+<DT><IMG SRC=icon2.gif> void  <B>worker_mainloop</B>()
+<DT><IMG SRC=icon2.gif> <!1><A HREF="MWReturn.html">MWReturn</A>  <B>worker_setup</B>()
+</DL><DL>
+<DT><h3>Protected</h3><DD><DT><IMG SRC=icon2.gif>  <B></B>
+</DL></DL>
+<A NAME="DOC.DOCU">
+<hr>
+ <h2> Documentation </h2>
+<BLOCKQUOTE>
+<P>This is your user-defined worker, that knows how do your
+user-defined tasks...
+
+
+</BLOCKQUOTE>
+<DL>
+
+<A NAME="user_worker">
+<A NAME ="DOC.32.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  user_worker()</B></TT>
+<DD>Default Constructor
+<DL></DL><P>
+<A NAME="Implemented methods.">
+<A NAME ="DOC.32.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B>  Implemented methods.</B></TT>
+<DD>
+These are the ones that must be Implemented in order
+to create an application
+<DL></DL><P><DL>
+
+<A NAME="unpack_init_data">
+<A NAME ="DOC.32.1.1">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  unpack_init_data( void )</B></TT>
+<DD>Unpacks the "base" application data from the PVM buffer
+<DL></DL><P>
+<A NAME="execute_task">
+<A NAME ="DOC.32.1.2">
+<DT><IMG BORDER=0 SRC=icon2.gif><TT><B> void  execute_task( <!1><A HREF="MWTask.html">MWTask</A> * )</B></TT>
+<DD>Executes the given task
+<DL></DL><P></DL>
+</DL>
+<hr>
+ <DL><DT><B>This class has no child classes.</B></DL>
+<DL></DL><P><I><A HREF="aindex.html"> alphabetic index</A></I>  <I><A HREF="HIER.html"> hierarchy of classes</A></I><P></BODY><hr>
+<A HREF="http://www.zib.de/Visual/software/doc++/index.html"><IMG BORDER=0 ALIGN=RIGHT SRC=logo.gif></A>
+<P Align=Center><I>this page has been generated automatically by doc++
+<P Align=Center>(c)opyright by <A HREF="http://www.zib.de/zoeckler/"> Malte  Z&oumlckler</A>, <A HREF="mailto:wunderling@zib.de"> Roland Wunderling </A><br>contact: <A HREF="mailto:doc++@zib.de"> doc++@zib.de </a>
