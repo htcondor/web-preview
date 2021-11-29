@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-homepage-update/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-homepage-update/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-homepage-update/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-homepage-update/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-homepage-update/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-homepage-update/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-homepage-update/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Upgrading From Eight Nine To Nine Zero</title>
+
+    <script src="/web-preview/preview-homepage-update/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-homepage-update/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-homepage-update/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-homepage-update/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="bg-light">
+    <div class="container-xxl px-xxl-0">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-homepage-update/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-homepage-update/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item ">
+    
+        <a class="nav-link" href="/web-preview/preview-homepage-update/new.html">News</a>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/downloads/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/license/">License</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-homepage-update/past_condor_weeks.html">Content Archives</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-homepage-update/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-homepage-update/assets/images/CondorTitle.png"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="/web-preview/preview-homepage-update/new.html">
+            News
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/downloads/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/license/">License</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-homepage-update/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl p-4">
+    <h1>Upgrading From Eight Nine To Nine Zero</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Upgrading from 8.9 to 9.0
+  </h2>
+ </span>
+ <p>
+  If you successfully upgraded to 8.9.13, the upgrade to 9.0 should be seamless.
+ </p>
+ <p>
+  Otherwise, this document explains, in order of likelihood, how you may need to intervene when upgrading your pool to 9.0 from an v8.9.x release of HTCondor, and what that intervention might be.  For example, if after upgrading, you cannot see your pool via
+  <em>
+   condor_status
+  </em>
+  as before, it is likely a problem discussed here.  A given pool might require multiple interventions, so please check each of the conditions after each heading below.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Step 1: Required changes to security configuration
+ </h3>
+ <p>
+  The default HTCondor security configuration is no longer host-based.  Specifically, to allow HTCondor 9.0 to be secure by default, we have commented out the line
+  <code>
+   use security:host_based
+  </code>
+  from the default
+  <code>
+   /etc/condor/condor_config
+  </code>
+  , and have added a new configuration file,
+  <code>
+   /etc/condor/config.d/00-htcondor-9.0.config
+  </code>
+  .  (This file will not be overwritten by subsequent upgrades, so it is safe to modify.)  This file adds the line
+ </p>
+ <p>
+ </p>
+ <pre>   use security:recommended_v9_0
+</pre>
+ <p>
+  which configures user-based security and requires encryption, authentication, and integrity. If you have already configured another daemon authentication method (e.g. pool PASSWORD, SSL, GSI, KERBEROS, etc) at some point in the past, you can comment out the above line in file
+  <code>
+   00-htcondor-9.0.config
+  </code>
+  and skip to Step 2 below.
+ </p>
+ <p>
+  If you have not already configured some other daemon authentication method and thus are relying solely on host-based authentication (i.e. a list of allowed hostnames or IP addresses), you have three options:
+ </p>
+ <p>
+ </p>
+ <ul>
+  <strong>
+   Option A
+  </strong>
+  .  Use
+  <em>
+   get_htcondor
+  </em>
+  to reinstall your pool with a fresh installation; see the
+  <a class="external" href="https://htcondor.readthedocs.io/getting-htcondor/index.html">
+   instructions
+  </a>
+  .  The
+  <em>
+   get_htcondor
+  </em>
+  tool will configure your pool with our recommended security configuration for you.  Once it's done, you can copy your site-specific configuration from your old installation to the new installation by placing configuration files into
+  <code>
+   /etc/condor/config.d
+  </code>
+  .
+  <p>
+   <strong>
+    Option B
+   </strong>
+   .  Run two commands (as root) on every machine in your pool to enable the recommended security configuration appropriate for v8.9.13.  When prompted, type the same password for every machine. (
+   <em>
+    Note:
+   </em>
+   if typing a password is problematic, see the
+   <a class="external" href="https://htcondor.readthedocs.io/en/latest/man-pages/condor_store_cred.html">
+    condor_store_cred manual page
+   </a>
+   for other options such as reading the password from a file or command-line).
+  </p>
+ </ul>
+ <p>
+ </p>
+ <pre>        # condor_store_cred -c add
+        # umask 0077; condor_token_create -identity condor@mypool &gt; /etc/condor/tokens.d/condor@mypool
+</pre>
+ <p>
+ </p>
+ <ul>
+  <strong>
+   Option C
+  </strong>
+  .  Revert to the previous host-based security configuration that was the default before v8.9.13.  This is the most expedient way to get your pool running again as it did before upgrading, but realize that a host-based security model is not recommended.  If you go for this option, please consider it a temporary measure.  To configure HTCondor to function as it did before the upgrade, see the instructions in
+  <code>
+   /etc/condor/config.d/00-htcondor-9.0.config
+  </code>
+  .
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Step 2: Compatibility changes with IDTOKENS
+ </h3>
+ <p>
+  We fixed a bug in how the IDTOKENS authentication method reads its signing key(s), which are stored in directory
+  <code>
+   /etc/condor/passwords.d
+  </code>
+  .  If you are not currently using tokens, or you have created these signing key(s) by using the
+  <em>
+   condor_store_cred
+  </em>
+  command-line tool, you should not have any problems and can skip to Step 3.  If, however, you created the signing key file(s) in directory
+  <code>
+   /etc/condor/passwords.d
+  </code>
+  via some other method (such as a copying from
+  <code>
+   /dev/random
+  </code>
+  ), there is a possibility that previously issued tokens will no longer authenticate.
+ </p>
+ <p>
+  You can use the new
+  <code>
+   condor_check_password
+  </code>
+  tool to determine if your signing key(s) were affected by this bug (run as root):
+ </p>
+ <p>
+ </p>
+ <pre>   # condor_check_password
+</pre>
+ <p>
+  If this tool indicates that your signing keys were truncated, we recommend that you re-issue these tokens to clients via either
+  <em>
+   condor_token_create
+  </em>
+  or
+  <em>
+   condor_token_fetch
+  </em>
+  .  The `condor_check_password` tool may also be used to truncate the affected key(s) before the first byte causing the problem, which will allow existing tokens to continue to work, but is, perhaps substantially, less cryptographically secure.  If you'd like to do so anyway, use the following command (run as root):
+ </p>
+ <p>
+ </p>
+ <pre>   # condor_check_password --truncate
+</pre>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Step 3: Directory permission changed in /etc/condor/tokens.d
+ </h3>
+ <p>
+  HTCondor now reads files in
+  <code>
+   /etc/condor/tokens.d
+  </code>
+  as root.  If you have files in that directory, you should change their ownership, using the following command (run as root):
+ </p>
+ <p>
+ </p>
+ <pre>   # chown -R root:root /etc/condor/tokens.d</pre>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-homepage-update/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/license/">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-homepage-update/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
