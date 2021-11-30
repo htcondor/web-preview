@@ -1,0 +1,20 @@
+--- queue.cpp.patched	2012-08-10 12:41:56.000000000 -0700
++++ queue.cpp	2012-08-10 12:42:01.000000000 -0700
+@@ -3391,5 +3391,5 @@
+ }
+ 
+-typedef long condor_time_t;
++typedef int condor_time_t;
+ static condor_time_t getEventTime(ULogEvent *event)
+ {
+@@ -3809,7 +3809,7 @@
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+-	jobClassAd->InsertAttr("ImageSize",img_event->image_size_kb);
+-	jobClassAd->InsertAttr("ResidentSetSize",img_event->resident_set_size_kb);
+-	jobClassAd->InsertAttr("ProportionalSetSize",img_event->proportional_set_size_kb);
++	jobClassAd->InsertAttr("ImageSize",int(img_event->image_size_kb));
++	jobClassAd->InsertAttr("ResidentSetSize",int(img_event->resident_set_size_kb));
++	jobClassAd->InsertAttr("ProportionalSetSize",int(img_event->proportional_set_size_kb));
+       }
+       break;
