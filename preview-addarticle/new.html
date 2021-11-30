@@ -495,6 +495,72 @@
 
 <!-- News item -->
 <dl class="p-3 bg-light">
+<dt><a href="/web-preview/preview-addarticle/news/2021-11-30-banq/">(November 30, 2021) <strong>Centuries of newspapers are now easily searchable thanks to HTCSS</strong></a></dt>
+<dd><p>By Josephine Watkins</p>
+
+<figure>
+  <img src="/web-preview/preview-addarticle/assets/images/banq-mw.png" alt="Newspaper spread" />
+  <figcaption class="figure-caption">The Montreal Witness. Monday, January 31, 1848. https://collections.banq.qc.ca/ark:/52327/4182772 <br /></figcaption>
+</figure>
+
+<p>The Bibliothèque et Archives nationales du Québec (BAnQ) has been using the HTCondor Software Suite (HTCSS) to help digitize their vast collections of documents 
+since 2013. Just this year, they built a powerful computing cluster out of staff workstations, using HTCSS’s cycle scavenging capabilities to tackle their largest 
+computational endeavor yet.</p>
+
+<p>Anything published in Québec –– books, magazines, newspapers, and more –– is all housed within BAnQ, an institution uniting Québec’s National Library, the 
+province’s National Archives, and Montreal’s vast public library. “You can imagine the result is a colossal amount of materials,” attests Senior Computer 
+Technician David Lamarche, “ranging from the discovery of the Americas and the very beginning of the colony, to whatever’s being written in newspapers this week.” 
+Ultimately, these archives and collections reflect important historical moments, rich cultural heritage, and a tremendous amount of data.</p>
+
+<p>To tackle this archival mountain, the digital collections team at BAnQ enlists the help of the <a href="https://research.cs.wisc.edu/htcondor/">HTCondor Software Suite (HTCSS)</a> 
+to transform images of pages into text, which can be analyzed in-house and made available to the public. This was the goal of their largest computational project yet –– 
+completing text recognition on decades of articles from 114 archived newspapers in order to make them available for full-text search. This feat took them several years, 
+but on July 12 of this year, the digital collections team finished text recognition on the very last newspaper.</p>
+
+<p>Now, with full-text search available, users of the <a href="https://numerique.banq.qc.ca/">BAnQ Digital Archives and Collections</a> have nearly 260 years of cultural and 
+historical moments at their fingertips. Information that used to be buried in the ink of these newspapers, accessible only through time-consuming searches and 
+tedious record-keeping, can now be unearthed with mere strokes of a keyboard. This saves users immense amounts of time and elevates the cultural value of the 
+documents themselves.</p>
+
+<p>The end result wouldn’t have happened quite as fast without the ability of HTCSS to automate the work across BAnQ’s staff workstations. File analyses, conversions, 
+and text recognitions that typically took weeks or even months to complete are now completed in the same week, or perhaps even overnight.</p>
+
+<p>“HTCondor has become nothing less than a central pillar of our team,” attests David Lamarche, the HTCondor administrator for the digital collections team. 
+“We want to give credit to HTCondor for its role in this project’s success, as we would not have reached that milestone quite so quickly without it!”</p>
+
+<p>But accelerating digitization was only half the battle. David reflects that the project’s main challenge “was not only to process this backlog of 114 newspapers, 
+but to do so while minimizing the impact on our daily workflows for newly-digitized titles.” Continuing, he explains two HTCondor features that were vital to the 
+project’s completion: “The first is HTCondor’s scalability, which allowed us to easily add more workstations to our resource pool. The second is HTCondor’s 
+resource distribution mechanisms, which we were able to configure to control how many resources could be allocated to processing older titles.”</p>
+
+<p>Over the course of the project, the team used HTCSS to process over 5 million files. Many of the newspapers span decades, and some centuries, with new issues 
+published monthly, weekly, or even daily. For every issue, each page is manually scanned before the team uses HTCondor to analyze the file, convert it into a 
+high-quality version, prepare it for text recognition, conduct text recognition, and finally convert the file into a smaller, lower-quality version that can be 
+disseminated on a web platform. Throughout the workflow, the team integrated a variety of software tools into their jobs, which ran by cycle scavenging on 50 
+workstations when they were not being used by in-office staff.</p>
+
+<figure class="figure float-right" style="margin-left: 1em">
+  <img src="/web-preview/preview-addarticle/assets/images/banq-patrie.png" class="figure-img img-fluid rounded" alt="Cover of La Patrie Newspaper" width="350px" />
+  <figcaption class="figure-caption">Cover of La Patrie newspaper. July 8, 1921<br /></figcaption>
+</figure>
+
+<p>The La Patrie newspaper, which circulated as one of the main news sources in Québec from 1879 to 1978, was one of the larger publications that the team digitized. 
+Recounting of the Great Depression, both world wars, and a plethora of other important historical events are buried in its –– now digital –– ink. Consisting of 
+more than 600,000 files, text recognition on La Patrie would take an estimate of 18 years on a single workstation. With HTCondor, this publication was successfully 
+processed in merely 8 months.</p>
+
+<p>Digitization –– enabled by the HTCondor Software Suite –– offers a solution to the tradeoff between the preservation of these cultural documents and their 
+accessibility, and even adds value back into the documents themselves by enabling full-text searches. In the future, BAnQ’s digitization team hopes to expand their 
+use of HTCSS to text recognition on handwritten documents and perhaps even object recognition in photographs.</p>
+
+<p>…</p>
+
+<p><em>Browse the <a href="https://numerique.banq.qc.ca/rechercheExterne/encoded/Kg==/false/D/asc/W3sibm9tIjoiY29ycHVzIiwidmFsZXVyIjoiUGF0cmltb2luZSUyMHF1w6liw6ljb2lzIn0seyJub20iOiJ0eXBlX2RvY19mIiwidmFsZXVyIjoiUmV2dWVzJTIwZXQlMjBqb3VybmF1eCJ9LHsibm9tIjoiYXZlY190ZXh0ZV9pbnRlZ3JhbCIsInZhbGV1ciI6Im5vbiJ9LHsibm9tIjoiZ2VucmVfZiIsInZhbGV1ciI6IkpvdXJuYXV4In1d/Liste%20de%20r%C3%A9sultats/true/false/">newspapers in BAnQ’s digital collections.</a></em></p>
+</dd>
+</dl>
+
+<!-- News item -->
+<dl class="p-3 bg-light">
 <dt><a href="/web-preview/preview-addarticle/news/HTCondor_9.3.0_released/">(November  3, 2021) <strong>HTCondor 9.3.0 released!</strong></a></dt>
 <dd><p>The HTCondor team is pleased to announce the release of HTCondor 9.3.0.
 This release contains all of the bug fixes from the 9.0.7 LTS release.</p>
