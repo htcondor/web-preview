@@ -1,0 +1,178 @@
+mkdir condor_src
+cd condor_src
+
+# Set up the git repository
+git init
+
+# Configure the git repository
+# We do it this way so that branch names and tag names do
+# not get overwritten
+git remote add src /p/condor/repository/CONDOR_SRC.git
+git remote add doc /p/condor/repository/CONDOR_DOC.git
+git config remote.src.fetch '+refs/*:refs/src/*'
+git config remote.doc.fetch '+refs/*:refs/doc/*'
+git config remote.src.tagopt --no-tags
+git config remote.doc.tagopt --no-tags
+
+# Now fetch from each repo
+git fetch src
+git fetch doc
+
+# Set ourselves up to easily merge the branches
+git pack-refs --all
+(cd .git
+sed 's|refs/doc/heads/\(.\+\)$|refs/heads/\1-doc|;s|refs/src/heads|refs/heads|;s|refs/doc/tags/\(.\+\)$|refs/tags/\1-doc|;s|refs/src/tags|refs/tags|' < packed-refs > temp
+/bin/mv -f temp packed-refs)
+
+# Now bag-and-tag old branches in doc
+find_branches_to_trim() {
+local ctime=$(date +'%s')
+ctime=$(( $ctime - 7776000 ))
+git for-each-ref refs/heads refs/remotes | while read sha1 type refname
+do
+	if test "$type" != "commit"; then
+		continue
+	fi
+	if echo "$refname" | grep -qE 'refs/tags'; then
+		continue
+	fi
+	local commitdate="$(git log --pretty=format:'%ct' -1 $sha1)"
+	if test "$commitdate" -gt "$ctime"; then
+		continue;
+	fi
+	echo "$sha1 $refname"
+done
+}
+
+find_branches_to_trim | \
+sed -n '/SandboxManagement\|add_dagman_fd_throttle/!p' | \
+sed 's/^.\{41\}//' | \
+sed 's/^.\+/& &/;s|^refs/heads|refs/tags|;s/ /-tag /;s/^\(.\+\) \(.\+\)$/\2 \1/;s/^.\+$/s|&|/;s/ /|/ ' > convert-branches-to-tags.sed
+
+(cd .git
+sed -f ../convert-branches-to-tags.sed < packed-refs > temp
+/bin/mv temp packed-refs
+/bin/rm -f ../convert-branches-to-tags.sed)
+
+git checkout master
+git read-tree --prefix=/ master-doc
+git checkout-index -a -f
+newmaster=$(echo "Merge src master and doc master" | git commit-tree $(git write-tree) -p $(git rev-parse master) -p $(git rev-parse master-doc))
+git merge $newmaster
+
+#To check that nothing untoward happened, do
+git diff-tree HEAD^ HEAD
+git diff-tree HEAD^2 HEAD
+
+git checkout V7_6-branch
+git read-tree --prefix=/ V7_6-branch-doc
+git checkout-index -a -f
+new76=$(echo "Merge 7_6 branch and 7_6-branch-doc" | git commit-tree $(git write-tree) -p $(git rev-parse V7_6-branch) -p $(git rev-parse V7_6-branch-doc))
+git merge $new76
+
+#To check that nothing untoward happened in 7_6-branch
+git diff-tree HEAD^ HEAD
+git diff-tree HEAD^2 HEAD
+
+cat | patch -p1 <<-PATCHFORNMI
+diff --git a/nmi_tools/condor_nmi_submit b/nmi_tools/condor_nmi_submit
+index 66c7d9d..7bb1442 100755
+--- a/nmi_tools/condor_nmi_submit
++++ b/nmi_tools/condor_nmi_submit
+@@ -51,7 +51,7 @@ sub FALSE { 0; };
+ 
+ # Constants for use with makeFetchFileVCS to specify if fetching from
+ # source (SRC), externals (EXT) or manual (DOC) repositories.
+-sub DOC 	{ 1; };
++#sub DOC 	{ 1; };
+ sub SRC 	{ 0; };
+ 
+ ######################################################################
+@@ -62,7 +62,7 @@ sub SRC 	{ 0; };
+ my \$GITROOT_SRC = "/space/git/CONDOR_SRC.git";
+ 
+ # Root of the GIT Manual repository
+-my \$GITROOT_DOC = "/space/git/CONDOR_DOC.git";
++# my \$GITROOT_DOC = "/space/git/CONDOR_DOC.git";
+ 
+ # name of the submit_info file
+ my \$submit_info_basename = "SubmitInfo.pm";
+@@ -1578,16 +1578,16 @@ sub generateBuildFetchFiles
+ 		# check the externals and manual out from different
+ 		# repositories than the source. Ideally, this would only be
+ 		# visible at the makeFetchFileVCS level.
+-		if( defined \$opt_git ) {
++#		if( defined \$opt_git ) {
+ #	    	my \$extfile = "externals-\$othertag.src";
+ #	    	\$extfile =~ s,/,,g;
+ #	    	makeFetchFileVCS( \$extfile, TRUE, EXT, \$module, \$othertag );
+ #	    	push( @fetch_files, \$extfile );
+ 	
+-	    	my \$docfile = "manual-\$othertag.src";
+-	    	\$docfile =~ s,/,,g;
+-	    	makeFetchFileVCS( \$docfile, TRUE, DOC, \$module, \$othertag );
+-	    	push( @fetch_files, \$docfile );
++#	    	my \$docfile = "manual-\$othertag.src";
++#	    	\$docfile =~ s,/,,g;
++#	    	makeFetchFileVCS( \$docfile, TRUE, DOC, \$module, \$othertag );
++#	    	push( @fetch_files, \$docfile );
+ 
+ #	    	my \$test_cnffile = "confidential-\$othertag.src";
+ #	    	\$test_cnffile =~ s,/,,g;
+@@ -1598,7 +1598,7 @@ sub generateBuildFetchFiles
+ #	    	\$test_cnffile =~ s,/,,g;
+ #	    	makeFetchFileVCS( \$test_cnffile, TRUE, TST_LRG, \$module, \$othertag );
+ #	    	push( @fetch_files, \$test_cnffile );
+-		}
++#		}
+     } elsif( defined \$src_workspace ) {
+         # TODO: There is a race condition if the user also specified
+         # --nmi-glue and this directory (\$src_workspace) contains
+@@ -1673,15 +1673,16 @@ sub makeFetchFileVCS
+ #		if( EXT == \$repo) {
+ #			\$gitroot = \$GITROOT_EXT;
+ #		} elsif(DOC == \$repo) {
+-		if(DOC == \$repo) {
+-			\$gitroot = \$GITROOT_DOC;
++#		if(DOC == \$repo) {
++#			\$gitroot = \$GITROOT_DOC;
+ #		} elsif(TST_CNF == \$repo) {
+ #			\$gitroot = \$GITROOT_TSTCNF;
+ #		} elsif(TST_LRG == \$repo) {
+ #			\$gitroot = \$GITROOT_TSTLRG;
+-		} else {
+-			\$gitroot = \$GITROOT_SRC;
+-		}
++#		} else {
++#			\$gitroot = \$GITROOT_SRC;
++#		}
++		\$gitroot = \$GITROOT_SRC;
+ 		print FILE "method = git\n";
+ 		print FILE "git_root = \$gitroot\n";
+ 		print FILE "git_path = \$module\n" unless \$is_module;
+diff --git a/nmi_tools/run_nightly_builds b/nmi_tools/run_nightly_builds
+index b4d2a5a..745f7b1 100755
+--- a/nmi_tools/run_nightly_builds
++++ b/nmi_tools/run_nightly_builds
+@@ -35,7 +35,8 @@ my \$CNS = "nmi_tools/condor_nmi_submit";
+ my \$tags_file = "/space/git/nwo-build-tags.git";
+ my \$GIT="/prereq/git-1.5.4/bin/git";
+ my \$GIT_SRC_ROOT="/space/git/CONDOR_SRC.git";
+-my \$GIT_DOC_ROOT="/space/git/CONDOR_DOC.git";
++# Don't need this after doc-src merge
++#my \$GIT_DOC_ROOT="/space/git/CONDOR_DOC.git";
+ # these next three are currently unused, but could be used for an older build
+ my \$GIT_EXT_ROOT="/space/git/CONDOR_EXT.git";
+ my \$GIT_TSTCNF_ROOT="/space/git/CONDOR_TEST_CNFDTL.git";
+PATCHFORNMI
+
+# Now commit the patch
+git commit --no-verify -a -m "Do not get doc repository after merge of doc and src"
+
+# Now merge it into master
+git checkout master
+git merge V7_6-branch
+
+# If everything works well, do the following
+# git push src refs/heads/*:refs/heads/*
+# git push --tags src
