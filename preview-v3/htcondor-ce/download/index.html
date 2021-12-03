@@ -74,17 +74,6 @@
 
 
 
-<li class="nav-item ">
-    
-        <a class="nav-link" href="/web-preview/preview-v3/new.html">News</a>
-    
-</li>
-                    
-                        
-
-
-
-
 <li class="nav-item dropdown">
     
         <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -264,6 +253,17 @@
     
 </li>
                     
+                        
+
+
+
+
+<li class="nav-item ">
+    
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">About</a>
+    
+</li>
+                    
                     <li class="nav-item mt-2">
                         <div style="height:40px; width: 250px;">
                             
@@ -282,20 +282,6 @@
                 <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
-                        
-                            
-
-
-
-    <li class="nav-item">
-        <a class="nav-link" href="/web-preview/preview-v3/new.html">
-            News
-        </a>
-    </li>
-
-
-
-
                         
                             
 
@@ -332,6 +318,20 @@
     <li class="nav-item">
         <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">
+            About
         </a>
     </li>
 
@@ -601,52 +601,107 @@
     
 </ul>
         </div>
-        <h3>Feature Channel <span class="text-muted">(Previously Current Channel)</span></h3>
-<div class="mb-4 p-2 bg-light">
-    <h5>Channel Details</h5>
-    <p>
-        The current channel distributes HTCondor-CE's new features and also
-        incorporates bug fixes.
-    </p>
-    <p>
-        Most people should use choose this channel and stay up-to-date with
-        HTCondor-CE's latest features.
-    </p>
-    <h5>Installation Guide</h5>
-    <p><a href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/">Get HTCondor-CE ( Current Channel )</a></p>
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="mb-4 card">
+    <div class="card-body">
+        <h3><span class="text-secondary">5.1.2</span> Feature Channel <span class="text-muted">(Previously Current Channel)</span></h3>
+        <p>September 23, 2021</p>
+        <div>
+            
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Fixed the default memory and CPU requests when using job router transforms</li>
+  <li>Apply default MaxJobs and MaxJobsIdle when using job router transforms</li>
+  <li>Improved SciTokens support in submission tools</li>
+  <li>Fixed –debug flag in condor_ce_run</li>
+  <li>Update configuration verification script to handle job router transforms</li>
+  <li>Corrected ownership of the HTCondor PER_JOBS_HISTORY_DIR</li>
+  <li>Fix bug passing maximum wall time requests to the local batch system</li>
+</ul>
+
+        </div>
+        <hr>
+        <p>
+            The feature channel distributes HTCondor's new features and also
+            incorporates bug fixes. Most people should use choose this channel and stay up-to-date with
+            HTCondor's latest features.
+        </p>
+        <div>
+            <a class="btn btn-primary me-3" href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/">Installation Guide</a>
+            <a class="btn btn-primary" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Previous Release Notes</a>
+        </div>
+    </div>
 </div>
-<h3>Long Term Support (LTS) Channel</h3>
-<div class="mb-4 p-2 bg-light">
-    <h5>Channel Details</h5>
-    <p>
-        The Long Term Support channels distribute only bug fixes to a particular, fixed set of
-        features from the current channel.  As a result, each LTS channel tends to
-        become more stable over time; read the <a href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/">release notes</a>
-        from the current channel to make sure you aren't missing any features you
-        need.
-    </p>
-    <p>
-        If you can't regularly upgrade your machines, this may be the channel
-        for you.
-    </p>
-    <p>
-        Periodically, we will update the set of features that we support with
-        bug fixes and start a new LTS channel.  This will not the change the set
-        of features available to an existing or automatically-updated installation of
-        a LTS channel; you have to make the decision to change manually.  However,
-        after a time, we will stop issuing additional bug fixes for older LTS
-        channels.
-    </p>
-    <p>
-        The following link always goes to the instructions for the newest LTS
-        channel.
-    </p>
-    <h5>Installation Guide</h5>
-    <p><a href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/">Get HTCondor-CE ( LTS Channel )</a></p>
+<div class="mb-4 card">
+    <div class="card-body">
+        <h3><span class="text-secondary">5.1.2</span> Long Term Support Channel</h3>
+        <p>September 23, 2021</p>
+        <div>
+            
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Fixed the default memory and CPU requests when using job router transforms</li>
+  <li>Apply default MaxJobs and MaxJobsIdle when using job router transforms</li>
+  <li>Improved SciTokens support in submission tools</li>
+  <li>Fixed –debug flag in condor_ce_run</li>
+  <li>Update configuration verification script to handle job router transforms</li>
+  <li>Corrected ownership of the HTCondor PER_JOBS_HISTORY_DIR</li>
+  <li>Fix bug passing maximum wall time requests to the local batch system</li>
+</ul>
+
+        </div>
+        <hr>
+        <p>
+            The Long Term Support channels distribute only bug fixes to a particular, fixed set of
+            features from the current channel.  As a result, each LTS channel tends to
+            become more stable over time; read the <a href="https://htcondor.readthedocs.io/en/latest/version-history/">release notes</a>
+            from the current channel to make sure you aren't missing any features you
+            need.
+        </p>
+        <p>
+            If you can't regularly upgrade your machines, this may be the channel
+            for you.
+        </p>
+        <p>
+            Periodically, we will update the set of features that we support with
+            bug fixes and start a new LTS channel.  This will not the change the set
+            of features available to an existing or automatically-updated installation of
+            a LTS channel; you have to make the decision to change manually.  However,
+            after a time, we will stop issuing additional bug fixes for older LTS
+            channels.
+        </p>
+        <div>
+            <a class="btn btn-primary me-3" href="https://htcondor.com/htcondor-ce/v5/installation/htcondor-ce/">Installation Guide</a>
+            <a class="btn btn-primary" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Previous Release Notes</a>
+        </div>
+    </div>
 </div>
-<p class="text-center text-danger p-3 bg-light">
-    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>
-</p>
 
     </div>
 </div>

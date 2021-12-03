@@ -74,17 +74,6 @@
 
 
 
-<li class="nav-item ">
-    
-        <a class="nav-link" href="/web-preview/preview-v3/new.html">News</a>
-    
-</li>
-                    
-                        
-
-
-
-
 <li class="nav-item dropdown">
     
         <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
@@ -264,6 +253,17 @@
     
 </li>
                     
+                        
+
+
+
+
+<li class="nav-item ">
+    
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">About</a>
+    
+</li>
+                    
                     <li class="nav-item mt-2">
                         <div style="height:40px; width: 250px;">
                             
@@ -282,20 +282,6 @@
                 <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
                 <div class="collapse navbar-collapse">
                     <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
-                        
-                            
-
-
-
-    <li class="nav-item">
-        <a class="nav-link" href="/web-preview/preview-v3/new.html">
-            News
-        </a>
-    </li>
-
-
-
-
                         
                             
 
@@ -332,6 +318,20 @@
     <li class="nav-item">
         <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">
+            About
         </a>
     </li>
 
@@ -601,43 +601,99 @@
     
 </ul>
         </div>
-        <h3>Feature Channel <span class="text-muted">(Previously Current Channel)</span></h3>
-<div class="mb-4 p-2 bg-light">
-    <h5>Channel Details</h5>
-    <p>The current channel distributes HTCondor's new features and also
-        incorporates bug fixes.</p>
-    <p>Most people should use choose this channel and stay up-to-date with
-        HTCondor's latest features.</p>
-    <p>In this channel, the second number in the HTCondor version will be non-zero (9.<b>X</b>.<b>Y</b>). </p>
-    <h5>Installation Guide</h5>
-    <p><a href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">HTCondor Installation Guide (Feature Channel)</a></p>
-</div>
-<h3>Long Term Support (LTS) Channel</h3>
-<div class="mb-4 p-2 bg-light">
-    <h5>Channel Details</h5>
-    <p>The Long Term Support channels distribute only bug fixes to a particular, fixed set of
-        features from the current channel.  As a result, each LTS channel tends to
-        become more stable over time; read the <a href="https://htcondor.readthedocs.io/en/latest/version-history/">release notes</a>
-        from the current channel to make sure you aren't missing any features you
-        need.</p>
-    <p>If you can't regularly upgrade your machines, this may be the channel
-        for you.</p>
-    <p>Periodically, we will update the set of features that we support with
-        bug fixes and start a new LTS channel.  This will not the change the set
-        of features available to an existing or automatically-updated installation of
-        a LTS channel; you have to make the decision to change manually.  However,
-        after a time, we will stop issuing additional bug fixes for older LTS
-        channels.</p>
-    <p>The following link always goes to the instructions for the newest LTS
-        channel.</p>
-    <p>In this channel, the second number in the HTCondor version will be 0 (9.<b>0</b>.<b>Y</b>).</p>
+        
 
-    <h5>Installation Guide</h5>
-    <p><a href="https://htcondor.readthedocs.io/en/v9_0/getting-htcondor/index.html">HTCondor Installation Guide (Long Term Support)</a></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="mb-4 card">
+    <div class="card-body">
+        <h3><span class="text-secondary">9.3.0</span> Feature Channel <span class="text-muted">(Previously Current Channel)</span></h3>
+        <p>November  3, 2021</p>
+        <div>
+            <p>NOTE: Globus GSI has been removed from this release. If you are currently
+using GSI, you must migrate to a different authorization mechanism.</p>
+
+<p>Enhancements in the release include:</p>
+
+<ul>
+  <li>Discontinue support for Globus GSI</li>
+  <li>Discontinue support for grid type ‘‘nordugrid’’, use ‘‘arc’’ instead</li>
+  <li>MacOS version strings now include the major version number (10 or 11)</li>
+  <li>File transfer plugin sample code to aid in developing new plugins</li>
+  <li>Add generic knob to set the slot user for all slots</li>
+</ul>
+
+        </div>
+        <hr>
+        <p>
+            The feature channel distributes HTCondor's new features and also
+            incorporates bug fixes. Most people should use choose this channel and stay up-to-date with
+            HTCondor's latest features.
+        </p>
+        <div>
+            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">Installation Guide</a>
+            <a class="btn btn-primary" href="https://htcondor.readthedocs.io/en/latest/version-history/development-release-series-91.html">Previous Release Notes</a>
+        </div>
+    </div>
 </div>
-<p class="text-center text-danger p-3 bg-light">
-    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>
-</p>
+<div class="mb-4 card">
+    <div class="card-body">
+        <h3><span class="text-secondary">9.0.7</span> Long Term Support Channel</h3>
+        <p>November  2, 2021</p>
+        <div>
+            <p>The HTCondor Team is pleased to announce the HTCondor 9.0.7 LTS release.</p>
+
+<p>A Long Term Support (LTS) release contains significant bug fixes.</p>
+
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Fix bug where condor_gpu_discovery could crash with older CUDA libraries</li>
+  <li>Fix bug where condor_watch_q would fail on machines with older kernels</li>
+  <li>condor_watch_q no longer has a limit on the number of job event log files</li>
+  <li>Fix bug where a startd could crash claiming a slot with p-slot preemption</li>
+  <li>Fix bug where a job start would not be recorded when a shadow reconnects</li>
+</ul>
+
+        </div>
+        <hr>
+        <p>
+            The Long Term Support channels distribute only bug fixes to a particular, fixed set of
+            features from the current channel.  As a result, each LTS channel tends to
+            become more stable over time; read the <a href="https://htcondor.readthedocs.io/en/latest/version-history/">release notes</a>
+            from the current channel to make sure you aren't missing any features you
+            need.
+        </p>
+        <p>
+            If you can't regularly upgrade your machines, this may be the channel
+            for you.
+        </p>
+        <p>
+            Periodically, we will update the set of features that we support with
+            bug fixes and start a new LTS channel.  This will not the change the set
+            of features available to an existing or automatically-updated installation of
+            a LTS channel; you have to make the decision to change manually.  However,
+            after a time, we will stop issuing additional bug fixes for older LTS
+            channels.
+        </p>
+        <div>
+            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/v9_0/getting-htcondor/index.html">Installation Guide</a>
+            <a class="btn btn-primary" href="https://htcondor.readthedocs.io/en/latest/version-history/stable-release-series-90.html">Previous Release Notes</a>
+        </div>
+    </div>
+</div>
     </div>
 </div>
 
