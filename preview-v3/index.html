@@ -515,6 +515,13 @@
 <div class="container-xxl">
     <div class="row my-5">
         <div class="col-4">
+            <div class="card h-100" style="height:591px">
+                <div class="px-2 pt-1">
+                    <a class="twitter-timeline" height="485px" data-dnt="true" data-theme="light" href="https://twitter.com/HTCondor?ref_src=twsrc%5Etfw">Tweets by HTCondor</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
             <div class="card h-100">
                 <img src="/web-preview/preview-v3/assets/images/python-logo.jpg" class="card-img-top" alt="Python Logo">
                 <div class="card-body border-top">
@@ -534,19 +541,10 @@
             </div>
         </div>
         <div class="col-4">
-            <div class="card h-100" style="height:591px">
-                <div class="px-2 pt-1">
-                    <a class="twitter-timeline" height="485px" data-dnt="true" data-theme="light" href="https://twitter.com/HTCondor?ref_src=twsrc%5Etfw">Tweets by HTCondor</a> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-                </div>
-            </div>
-        </div>
-        <div class="col-4">
             
 
 
 
-
-            
 
 
 
@@ -556,7 +554,21 @@
 
 
 
+
+
+
             
+
+
+
+
+
+
+
+            
+
+
+
 
 
 
@@ -600,10 +612,10 @@
                         <div class="row justify-content-between">
                             <div class="col-auto d-flex flex-column">
                                 <span class="fs-5">Long Term Support</span>
-                                <span class="text-muted">November  7, 2019</span>
+                                <span class="text-muted">January  9, 2020</span>
                             </div>
                             <div class="col-auto">
-                                <span class="fs-1">4.0.1</span>
+                                <span class="fs-1">4.1.0</span>
                             </div>
                         </div>
                     </div>
@@ -615,76 +627,78 @@
 <div class="pb-5">
     <div class="container-xxl py-4 p-md-5 px-xxl-0">
         <h2 class="mb-4">HTCondor Software Suite</h2>
-        <div class="accordion accordion-flush" id="htcss-suite-accordion">
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="htcondor-header">
-                    <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#htcondor-body" aria-expanded="false" aria-controls="htcondor-body">
-                        <div>
-                            <h3>HTCondor</h3>
-                            <p>
-                                HTCondor provides you with the ability to effectively utilize all the computing resources at your disposal.
-                            </p>
-                        </div>
-                    </button>
-                </h2>
-                <div id="htcondor-body" class="accordion-collapse collapse" aria-labelledby="htcondor-header" data-bs-parent="#htcss-suite-accordion">
-                    <div class="accordion-body">
-                        <p>
-                            HTCondor is a software system that creates a High-Throughput Computing (HTC) environment. It
-                            effectively uses the computing power of machines connected over a network, be they a single
-                            cluster, a set of clusters on a campus, cloud resources either standalone or temporarily
-                            joined to a local cluster, or international grids. Power comes from the ability to effectively
-                            harness shared resources with distributed ownership.
-                        </p>
-                        <p>
-                            <a class="btn btn-primary" href="/htcondor/overview">
-                                Learn More About HTCondor
-                            </a>
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="htcondor-ce-header">
-                    <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#htcondor-ce-body" aria-expanded="false" aria-controls="htcondor-ce-body">
-                        <div>
-                            <h3>HTCondor-CE</h3>
-                            <p>
-                                The entry point to remote computing resources.
-                            </p>
-                        </div>
-                    </button>
-                </h2>
-                <div id="htcondor-ce-body" class="accordion-collapse collapse" aria-labelledby="htcondor-ce-header" data-bs-parent="#htcss-suite-accordion">
-                    <div class="accordion-body">
-                        <div class="row justify-content-between py-3">
-                            <div class="col-12 col-lg-5">
+        <div class="" id="htcss-mobile-accordion-container">
+            <div class="accordion accordion-flush" id="htcss-suite-accordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="htcondor-header">
+                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#htcondor-body" aria-expanded="false" aria-controls="htcondor-body">
+                            <div>
+                                <h3>HTCondor</h3>
                                 <p>
-                                    The <a href="#what-is-htcondor-ce">HTCondor-CE</a> software is a <em>Compute Entrypoint</em> (CE) based on <a href="http://htcondor.org">HTCondor</a> for sites
-                                    that are part of a larger computing grid
-                                    (e.g. <a href="https://www.egi.eu/">European Grid Infrastructure</a>, <a href="https://opensciencegrid.org/">Open Science Grid</a>).
-                                    As such, HTCondor-CE serves as a "door" for incoming resource allocation requests (RARs) — it handles authorization and
-                                    delegation of these requests to a grid site's local batch system.
-                                    Supported batch systems include
-                                    <a href="http://www.univa.com/products/">Grid Engine</a>,
-                                    <a href="http://htcondor.org">HTCondor</a>,
-                                    <a href="https://www.ibm.com/us-en/marketplace/hpc-workload-management">LSF</a>,
-                                    <a href="https://www.altair.com/pbs-professional/">PBS Pro</a>/<a href="https://adaptivecomputing.com/cherry-services/torque-resource-manager/">Torque</a>,
-                                    and <a href="https://slurm.schedmd.com/">Slurm</a>.
-                                </p>
-                                <p>
-                                    For an introduction to HTCondor-CE, watch our <a href="https://www.youtube.com/embed/6IWaMbofG7M">recorded webinar</a> from the EGI
-                                    Community Webinar Programme.
-                                </p>
-                                <p>
-                                    <a class="btn btn-primary" href="/htcondor-ce/overview">
-                                        Learn More About HTCondor-CE
-                                    </a>
+                                    HTCondor provides you with the ability to effectively utilize all the computing resources at your disposal.
                                 </p>
                             </div>
-                            <div class="col d-none d-lg-flex">
-                                <div class="mx-auto">
-                                    <iframe class="mb-4" width="480" height="315" src="https://www.youtube.com/embed/6IWaMbofG7M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                        </button>
+                    </h2>
+                    <div id="htcondor-body" class="accordion-collapse collapse" aria-labelledby="htcondor-header" data-bs-parent="#htcss-suite-accordion">
+                        <div class="accordion-body">
+                            <p>
+                                HTCondor is a software system that creates a High-Throughput Computing (HTC) environment. It
+                                effectively uses the computing power of machines connected over a network, be they a single
+                                cluster, a set of clusters on a campus, cloud resources either standalone or temporarily
+                                joined to a local cluster, or international grids. Power comes from the ability to effectively
+                                harness shared resources with distributed ownership.
+                            </p>
+                            <p>
+                                <a class="btn btn-primary" href="/htcondor/overview">
+                                    Learn More About HTCondor
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="htcondor-ce-header">
+                        <button class="accordion-button collapsed bg-light" type="button" data-bs-toggle="collapse" data-bs-target="#htcondor-ce-body" aria-expanded="false" aria-controls="htcondor-ce-body">
+                            <div>
+                                <h3>HTCondor-CE</h3>
+                                <p>
+                                    The entry point to remote computing resources.
+                                </p>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="htcondor-ce-body" class="accordion-collapse collapse" aria-labelledby="htcondor-ce-header" data-bs-parent="#htcss-suite-accordion">
+                        <div class="accordion-body">
+                            <div class="row justify-content-between py-3">
+                                <div class="col-12 col-lg-5">
+                                    <p>
+                                        The <a href="#what-is-htcondor-ce">HTCondor-CE</a> software is a <em>Compute Entrypoint</em> (CE) based on <a href="http://htcondor.org">HTCondor</a> for sites
+                                        that are part of a larger computing grid
+                                        (e.g. <a href="https://www.egi.eu/">European Grid Infrastructure</a>, <a href="https://opensciencegrid.org/">Open Science Grid</a>).
+                                        As such, HTCondor-CE serves as a "door" for incoming resource allocation requests (RARs) — it handles authorization and
+                                        delegation of these requests to a grid site's local batch system.
+                                        Supported batch systems include
+                                        <a href="http://www.univa.com/products/">Grid Engine</a>,
+                                        <a href="http://htcondor.org">HTCondor</a>,
+                                        <a href="https://www.ibm.com/us-en/marketplace/hpc-workload-management">LSF</a>,
+                                        <a href="https://www.altair.com/pbs-professional/">PBS Pro</a>/<a href="https://adaptivecomputing.com/cherry-services/torque-resource-manager/">Torque</a>,
+                                        and <a href="https://slurm.schedmd.com/">Slurm</a>.
+                                    </p>
+                                    <p>
+                                        For an introduction to HTCondor-CE, watch our <a href="https://www.youtube.com/embed/6IWaMbofG7M">recorded webinar</a> from the EGI
+                                        Community Webinar Programme.
+                                    </p>
+                                    <p>
+                                        <a class="btn btn-primary" href="/htcondor-ce/overview">
+                                            Learn More About HTCondor-CE
+                                        </a>
+                                    </p>
+                                </div>
+                                <div class="col d-none d-lg-flex">
+                                    <div class="mx-auto">
+                                        <iframe class="mb-4" width="480" height="315" src="https://www.youtube.com/embed/6IWaMbofG7M" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -491,7 +491,7 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl p-4">
+    <div class="container-xxl py-4">
     <h1>Dag Noop Nodes</h1>
 <div id="content">
  Currently nodes that are declared NOOPs in the DAG file (as opposed to in the submit file) do not have their jobs submitted to HTCondor.  This means that DAGMan writes "fake" submit (and execute?) and terminated events to the workflow log, so that DAG recovery will work.

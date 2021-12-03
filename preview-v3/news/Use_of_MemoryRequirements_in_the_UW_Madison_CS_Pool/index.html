@@ -491,14 +491,14 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl p-4">
+    <div class="container-xxl py-4">
     <div id="news-container" class="row justify-content-center">
     <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
         <h1>Use of MemoryRequirements in the UW Madison CS Pool</h1>
         <h4 class="text-muted">March  1, 1999</h4>
         
-        <p><p>The UW Madison CS Condor pool has been configured to check for a MemoryRequirements parameter in all Condor jobs.  This     parameter specifies, in megabytes, how much physical memory your job   needs to run efficiently.  If this parameter is not specified, Condor  will assume a default value of 128 MB.  Condor will only run jobs on   machines with enough available physical memory to satisfy the jobs’   memory requirements.  To specify this parameter, please add the following to your job description file(s):  &lt;pre&gt;   +MemoryRequirements = 90 &lt;/pre&gt;  replacing 90 with the actual memory requirements of your job in megabytes. 			   We encourage you to continue to specify your job’s virtual memory requirements with the image_size command in your job description  file.</p>
-</p>
+        <div class="fs-5"><p>The UW Madison CS Condor pool has been configured to check for a MemoryRequirements parameter in all Condor jobs.  This     parameter specifies, in megabytes, how much physical memory your job   needs to run efficiently.  If this parameter is not specified, Condor  will assume a default value of 128 MB.  Condor will only run jobs on   machines with enough available physical memory to satisfy the jobs’   memory requirements.  To specify this parameter, please add the following to your job description file(s):  &lt;pre&gt;   +MemoryRequirements = 90 &lt;/pre&gt;  replacing 90 with the actual memory requirements of your job in megabytes. 			   We encourage you to continue to specify your job’s virtual memory requirements with the image_size command in your job description  file.</p>
+</div>
     </div>
 </div>
 

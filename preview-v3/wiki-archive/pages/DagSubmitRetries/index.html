@@ -491,7 +491,7 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl p-4">
+    <div class="container-xxl py-4">
     <h1>Dag Submit Retries</h1>
 <div id="content">
  It's important to note that submit retries are entirely separate from node retries.  Submit retries handle the case where the condor_submit command for a node job failed (because of the schedd being too heavily loaded and timing out, for example); in other words, the node job never even gets into the HTCondor queue.  Node retries, on the other hand, handle the case where the node as a whole has failed (the HTCondor job runs but fails, for example).
