@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-v3/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-v3/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-v3/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-v3/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-v3/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-v3/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-v3/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Manage Large Condor Pools</title>
+
+    <script src="/web-preview/preview-v3/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-v3/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/license">License</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item ">
+    
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">About</a>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>How To Manage Large Condor Pools</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to manage a large HTCondor pool
+  </h2>
+ </span>
+ <p>
+  Known to work with HTCondor version: 7.0
+ </p>
+ <p>
+  HTCondor can handle pools of 10s of thousands of execution slots and job queues of 100s of thousands of jobs.  Depending on the way you deploy it, the workloads that run on it, and the other tasks that share the system with it, you may find that HTCondor's ability to 'keep up' is limited by memory, processing speed, disk bandwidth, or configurable limits.  The following information should help you determine whether there is a problem, which component is suffering, and what you might be able to do about it.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Basic Guidelines for Large HTCondor Pools
+ </h3>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Upgrade to HTCondor 8 if you are still using something older than that.  It has many scalability improvements.  It is also a good idea to upgrade your configuration based on the defaults that ship with HTCondor 8, because it also contains updated settings that improve scalability.
+   <p>
+   </p>
+  </li>
+  <li>
+   Put central manager (collector + negotiator) on a machine with sufficient memory and 2 cpus/cores primarily dedicated to this service.
+   <p>
+   </p>
+  </li>
+  <li>
+   If convenient, take advantage of the fact that you can use multiple submit machines.  At least dedicate one machine as a submit machine with few or no other duties.
+   <p>
+   </p>
+  </li>
+  <li>
+   Under UNIX, increase the number of jobs that a schedd will run simultaneously if you have enough disk bandwidth and memory (see rough estimates in next section).  As of HTCondor 7.4.0, the default setting for MAX_JOBS_RUNNING should be a reasonable formula that scales with the amount of memory available.  In prior versions, the default was just 200.
+   <div class="code">
+    <pre class="code">MAX_JOBS_RUNNING = 2000
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Under Windows, you
+   <em>
+    might
+   </em>
+   be able to increase the maximum number of jobs running in the schedd, but only if you also increase desktop heap space adequately.  The problem on Windows is that each running job has an instance of condor_shadow, which eats up desktop heap space.  Typically, this heap space becomes exhausted with on the order of only ~100 jobs running.  See
+   <a class="external" href="http://www.cs.wisc.edu/condor/manual/v7.0/7_4Condor_on.html#SECTION008413000000000000000">
+    My submit machine cannot have more than 120 jobs running concurrently. Why?
+   </a>
+   in the FAQ.
+   <p>
+   </p>
+  </li>
+  <li>
+   Put a busy schedd's spool directory on a fast disk with little else using it.  If you have an SSD use the JOB_QUEUE_LOG config knob to put the job_queue.log file, the schedd's database, on the SSD drive.
+   <p>
+   </p>
+  </li>
+  <li>
+   Do not put your log files on NFS or network storage, especially for very busy daemons like the Schedd and Shadows.
+   <p>
+   </p>
+  </li>
+  <li>
+   If running a lot of big standard universe jobs, set up multiple checkpoint servers, rather than doing all checkpointing onto the submit node.
+   <p>
+   </p>
+  </li>
+  <li>
+   If you are not using strong security (i.e. just host IP authorization) in your HTCondor pool, then you can turn off security negotiation to reduce overhead:
+   <div class="code">
+    <pre class="code">SEC_DEFAULT_NEGOTIATION = OPTIONAL
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   If you are not using condor_history (or any other means of reading the job history, including history in Quill), turn it off to reduce overhead:
+   <div class="code">
+    <pre class="code">HISTORY =
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   If you do not allow preemption by user priority or machine rank expression in your pool (i.e. not just preventing job killing with
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/MaxJobRetirementTime" title="Max Job Retirement Time">
+     MaxJobRetirementTime
+    </a>
+   </span>
+   , but completely disallowing claims from being preempted), then you can reduce overhead in the negotiator:
+   <div class="code">
+    <pre class="code">NEGOTIATOR_CONSIDER_PREEMPTION = False
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Some general linux scalability tuning advice may be found
+   <span class="wiki">
+    <a href="/web-preview/preview-v3/wiki-archive/pages/LinuxTuning" title="Linux Tuning">
+     here
+    </a>
+   </span>
+   .
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Rough Estimations of System Requirements
+ </h3>
+ <p>
+ </p>
+ <ul>
+  <li>
+   Collector requires a minimum of ~10k RAM per batch slot.  Ditto for the negotiator.
+   <p>
+   </p>
+  </li>
+  <li>
+   Schedd requires a minimum of ~10k RAM per job in the job queue.  For jobs with huge environment values or other big
+   <span class="wiki">
+    <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/ClassAd" title="Class Ad">
+     ClassAd
+    </a>
+   </span>
+   attributes, the requirements are larger.
+   <p>
+   </p>
+  </li>
+  <li>
+   Each running job has a condor_shadow process, which requires an additional ~500k RAM.  (Disclaimer: we have some reports that in different environments/configurations, this requirement can be inflated by a factor of 2.)  32-bit Linux may run out of kernel memory even if there is free "high" memory available.  In our experience, with HTCondor 7.3.0, a 32-bit dedicated submit machine cannot run more than 10,000 jobs simultaneously, because of kernel memory constraints.
+   <p>
+   </p>
+  </li>
+  <li>
+   Each shadow processes consumes on the order of 50 file descriptors, mainly because of shared libraries.  You may need to dramatically increase the number of file descriptors available to the system or to a user, in order to run a lot of jobs.  It is not unusual to configure a large memory system with a million file descriptors.
+   <p>
+   </p>
+  </li>
+  <li>
+   Each vanilla job requires two, occasionally three, network ports on the submit machine.  Standard universe jobs require 5.  In 2.6 Linux, the ephemeral port range is typically 32768 through 61000, so from a single submit machine this limits you to 14000 simultaneously running vanilla jobs.  In Linux, you can increase the ephemeral port range via /proc/sys/net/ipv4/ip_local_port_range.  Note that short-running jobs may require more ports, because a non-negligible number of ports will be consumed in the temporary TIME_WAIT state.  For this reason, the HTCondor manual conservatively recommends 5 * running jobs.  Fortunately, as of HTCondor 7.5.3, the TIME_WAIT issue with short running jobs is largely gone, due to SHADOW_WORKLIFE.  Also, as of HTCondor 7.5.0, condor_shared_port can be used to reduce port usage even further.  Port usage per running job is negligible if CCB is used to access the execute nodes; otherwise it is 1 (outgoing) port/job.
+  </li>
+ </ul>
+ <p>
+  Example calculations:
+ </p>
+ <p>
+  Absolute minimum RAM requirements for schedd with up to 10,000 jobs in the queue and up to 2,000 jobs running:
+ </p>
+ <div class="code">
+  <pre class="code">10000*0.01MB + 2000*0.5MB = 1.1GB</pre>
+ </div>
+ <p>
+  Absolute minimum RAM requirements for central manager machine (collector+negotiator) with 5000 batch slots:
+ </p>
+ <div class="code">
+  <pre class="code">2*5000*0.01MB = 100MB</pre>
+ </div>
+ <p>
+  Realistically, you will want to add in at least another 500MB or so to the above numbers.  And if you do have other processes running on your submit or central manager machines, you will need extra resources for those.
+ </p>
+ <p>
+  <em>
+   Also remember to provision a fast dedicated disk for the spool directory of very busy schedds.
+  </em>
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Monitoring Health of the Submit Machine
+ </h3>
+ <p>
+  To see whether you are suffering from timeout tuning problems, search for "timeout reading" or "timeout writing" in your
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/ShadowLog" title="Shadow Log">
+    ShadowLog
+   </a>
+  </span>
+  .
+ </p>
+ <p>
+  As a general indicator of health on a submit node, you can summarize the condor_shadow exit codes with a command like this:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">$ grep 'EXITING WITH STATUS' ShadowLog | cut -d " " -f 8- | sort | uniq -c
+
+  12099 EXITING WITH STATUS 100
+     81 EXITING WITH STATUS 102
+   2965 EXITING WITH STATUS 107
+    239 EXITING WITH STATUS 108
+    332 EXITING WITH STATUS 112
+</pre>
+ </div>
+ <p>
+  Meaning of common exit codes:
+ </p>
+ <p>
+  <strong>
+   100
+  </strong>
+  - success (you want to see a majority of these and/or 115)
+ </p>
+ <p>
+  <strong>
+   101
+  </strong>
+  - evicted (checkpointed)
+ </p>
+ <p>
+  <strong>
+   102
+  </strong>
+  - job killed
+ </p>
+ <p>
+  <strong>
+   103
+  </strong>
+  - job dumped core
+ </p>
+ <p>
+  <strong>
+   104
+  </strong>
+  - job exited with an exception
+ </p>
+ <p>
+  <strong>
+   105
+  </strong>
+  - shadow out of memory
+ </p>
+ <p>
+  <strong>
+   107
+  </strong>
+  - job evicted without checkpointing OR
+            communication with starter failed, so requeue/reconnect job
+ </p>
+ <p>
+  <strong>
+   108
+  </strong>
+  - failed to activate claim to startd (e.g. failed to connect)
+ </p>
+ <p>
+  <strong>
+   111
+  </strong>
+  - failed to find checkpoint file
+ </p>
+ <p>
+  <strong>
+   112
+  </strong>
+  - job should be put on hold; see
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/HoldReason" title="Hold Reason">
+    HoldReason
+   </a>
+  </span>
+  ,
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/HoldReasonCode" title="Hold Reason Code">
+    HoldReasonCode
+   </a>
+  </span>
+  ,
+and
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/HoldReasonSubCode" title="Hold Reason Sub Code">
+    HoldReasonSubCode
+   </a>
+  </span>
+  to understand why
+ </p>
+ <p>
+  <strong>
+   113
+  </strong>
+  - job should be removed (e.g. periodic_remove)
+ </p>
+ <p>
+  <strong>
+   114
+  </strong>
+  - job missed its deferral time (e.g. cron job)
+ </p>
+ <p>
+  <strong>
+   115
+  </strong>
+  - same as 100, but claim to machine is closing
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Monitoring Health of the Negotiator
+ </h3>
+ <p>
+  Check the duration of the negotiation cycle:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">$ grep "Negotiation Cycle" NegotiatorLog
+
+5/3 07:37:35 ---------- Started Negotiation Cycle ----------
+5/3 07:39:41 ---------- Finished Negotiation Cycle ----------
+5/3 07:44:41 ---------- Started Negotiation Cycle ----------
+5/3 07:46:59 ---------- Finished Negotiation Cycle ----------
+</pre>
+ </div>
+ <p>
+  If the cycle is taking long (e.g. longer than 5 minutes), then see if it is spending a lot of time on a particular user:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">$ grep "Negotiating with" NegotiatorLog
+
+5/3 07:53:12   Negotiating with osg_samgrid@hep.wisc.edu at ...
+5/3 07:53:13   Negotiating with jherschleb@lmcg.wisc.edu at ...
+5/3 07:53:13   Negotiating with camiller@che.wisc.edu at ...
+5/3 07:53:14   Negotiating with malshe@cae.wisc.edu at ...
+</pre>
+ </div>
+ <p>
+  If a particular user is consuming a lot of time in the negotiator (e.g. job after job being rejected), then look at how well that user's jobs are getting "auto clustered".  This auto clustering happens, for the most part, behind the scenes and helps improve the efficiency of negotiation by grouping equivalent jobs together.
+ </p>
+ <p>
+  You can see how the jobs are getting grouped together by looking at the job attribute AutoClusterID.  Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">$ condor_q -constraint 'AutoClusterId =!= undefined' -f "%s" AutoClusterID -f " %s" ClusterID -f ".%s\n" ProcID
+
+1  649884.0
+1  649885.0
+50 650082.0
+</pre>
+ </div>
+ <p>
+  Jobs with the same AutoClusterID are in the same group for negotiation purposes.  If you see that many small groups are being created, take a look at the attribute
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/AutoClusterAttrs" title="Auto Cluster Attrs">
+    AutoClusterAttrs
+   </a>
+  </span>
+  .  This will tell you what attributes are being used to group jobs together.  All jobs in a group have identical values for these attributes.  In some cases, it may be necessary to tweak the way a particular attribute is being rounded.  See
+  <a class="external" href="http://www.cs.wisc.edu/condor/manual/v7.0/3_3Configuration.html#14142">
+   SCHEDD_ROUND_ATTR
+  </a>
+  in the manual for more information on that.
+ </p>
+ <p>
+  To protect the negotiator against one user consuming large amounts of time, you can also configure NEGOTIATOR_MAX_TIME_PER_SUBMITTER.  Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">NEGOTIATOR_MAX_TIME_PER_SUBMITTER = 360
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Monitoring Health of the Collector
+ </h3>
+ <p>
+  If the collector can't keep up with the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  updates that it is receiving from the HTCondor daemons in the pool, and you are using UDP updates (the default) then it will "drop" updates.  The consequence of dropped updates is stale information about the state of the pool and possibly machines appearing to be missing from the pool (depending on how many successive updates are lost).  If you are using TCP updates and the collector cannot keep up, then HTCondor daemons (e.g. startds) may block/timeout when trying to send udpates.
+ </p>
+ <p>
+  A simple way to see if you have a serious problem with dropped updates is to observe the total number of machines in the pool, from the point of view of the collector (
+ </p>
+ <div class="code">
+  <pre class="code">condor_status -total</pre>
+ </div>
+ ).  If this number drops down to less than it should be, and the missing machines are running HTCondor and otherwise working fine, then the problem may be dropped updates.
+ <p>
+  A more direct way to see if your collector is dropping
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  updates is to use the tool
+  <a class="external" href="http://www.cs.wisc.edu/condor/manual/v7.0/condor_updates_stats.html">
+   condor_updates_stats
+  </a>
+  .  Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">condor_status -l | condor_updates_stats
+
+*** Name/Machine = 'vm4@...' MyType = 'Machine' ***
+ Type: Main
+   Stats: Total=713, Seq=712, Lost=3 (0.42%)
+     0: Ok
+  ...
+   127: Ok
+
+</pre>
+ </div>
+ <p>
+  If your problem is simply that UDP updates are coming in uneven bursts, then the solution is to provide enough UDP buffer space.  You can see whether this is the problem by watching the receive queue on the collector's UDP port (visible through &lt;code&gt;netstat -l&lt;/code&gt; under unix).  If it fills up now and then but is otherwise empty, then increasing the buffer size should help.  However, the default in current versions of HTCondor is 10MB, which is adequate for most large pools that we have seen.  Example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># 20MB
+COLLECTOR_SOCKET_BUFSIZE = 20480000
+</pre>
+ </div>
+ <p>
+  See the HTCondor Manual entry for
+  <a class="external" href="http://www.cs.wisc.edu/condor/manual/v7.0/3_3Configuration.html#14586">
+   COLLECTOR_SOCKET_BUFSIZE
+  </a>
+  for additional information on how to make sure the OS is cooperating with the requested buffer size.
+ </p>
+ <p>
+  If you are using strong authentication in the updates to the collector, this may add a lot of overhead and cause the collector not to scale high enough for very large pools.  One way to deal with that is to have multiple collectors that each serve a portion of your execute nodes.  These collectors would receive updates via strong authentication and then forward the updates to another main collector.  An example of how to set this up is described in
+  <span class="wiki">
+   <a class="missing" "HowToConfigMulti-TierCollectors" title="How To Config Multi- Tier Collectors">
+    How to configure multi-tier collectors
+   </a>
+  </span>
+  .
+ </p>
+ <p>
+ </p>
+ <pre>  This forwarding can be configured by using the CONDOR_VIEW_HOST configuration setting.
+</pre>
+ <p>
+  If all else fails, you can decrease the frequency of
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/ClassAd" title="Class Ad">
+    ClassAd
+   </a>
+  </span>
+  updates by tuning UPDATE_INTERVAL and MASTER_UPDATE_INTERVAL.
+ </p>
+ <p>
+  One more tunable parameter in the collector is (only under unix) the maximum number of queries that the collector will try to respond to simultaneously (by creating child processes to handle each one).  This is controlled by COLLECTOR_QUERY_WORKERS, which defaults to 16.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  High Availability
+ </h3>
+ <p>
+  You can set up redundant collector+negotiator instances, so if the central manager machine goes down, the pool can continue to function.  All of the HAD collectors run all the time, but only one negotiator may run at a time, so the condor_had component ensures that a new instance of the negotiator is started up when the existing one dies.  The main restriction is that the HAD negotiator won't help users who are flocking to the HTCondor pool.  More information about HAD can be found in the
+  <a class="external" href="http://www.cs.wisc.edu/condor/manual/v7.0/3_10High_Availability.html">
+   HTCondor manual
+  </a>
+  .
+ </p>
+ <p>
+  Tip: if you do frequent condor_status queries for monitoring, you can direct these to one of your secondary collectors in order to offload work from your primary collector.
+ </p>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                </span>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>

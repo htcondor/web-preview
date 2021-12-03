@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-v3/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-v3/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-v3/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-v3/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-v3/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-v3/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-v3/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Mpi Wisdom</title>
+
+    <script src="/web-preview/preview-v3/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-v3/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/license">License</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item ">
+    
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">About</a>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>Mpi Wisdom</h1>
+<div id="content">
+ <div class="restricted">
+  <pre>This is RUST Ticket #4081. It contains MPI Wisdom from Derek, as well as a few other tidbits.
+
+From: Martin Siegert
+To: condor-admin@cs.wisc.edu
+Subject: condor on a beowulf
+
+Hi there,
+
+I am in the process of setting up HTCondor as a batch queueing/scheduling
+system for our Beowulf cluster. But before I can get started I already
+ran into a few problems:
+
+1) I downloaded condor-6.4.0-linux-x86-glibc22-dynamic.tar.gz.
+   I was expecting that this would contain shared libraries (lib*.so).
+   However, the release.tar contains only what looks like static
+   libraries (lib*.a). Am I missing something?
+
+2) I am installing HTCondor on the master node of the cluster and want to
+   use it on the private network 172.16.0.0. The hostname structure is
+
+   172.16.0.1    b001                (master node)
+   172.16.0.2    b002
+   172.16.0.3    b003
+   ...
+
+   Following section 3.11.9 of the manual I set
+
+   CONDOR_HOST = b001
+
+   but to what should I set UID_DOMAIN and FILESYSTEM_DOMAIN? I do use
+   a common uid space and I NFS export /home and /usr/local from the
+   master node. However, I do not have a domain name (which would
+   unnecessarily complicate management of the cluster). Thus, do I set
+   UID_DOMAIN and FILESYSTEM_DOMAIN to nothing (empty string)?
+   Also, should I set DEFAULT_DOMAIN_NAME = '' ?
+
+3) All nodes have two interfaces one (on the 172.16.0.0 network) is
+   used for MPI communication, the second (on the 172.17.0.0 network)
+   is used for NFS. Thus I set NETWORK_INTERFACE = 172.16.0.# in each
+   of the condor_config.local files.
+   Does it create a problem with HTCondor that NFS traffic (including
+   exporting of the HTCondor home directory and the HTCondor binaries and
+   libraries) is actually on a different interface?
+
+Thanks a lot for your help in advance!
+Also, thanks for making HTCondor available.
+
+Regards,
+Martin
+
+===========================================================================
+Date of creation: Tue Jul 16 12:41:32 2002 (1026841296)
+
+
+From RUST Tue, 16 Jul 2002 14:15:20  -0600 (CST)
+Subject: Actions
+
+Assigned to ned by ned
+===========================================================================
+Date of actions: Tue Jul 16 14:15:20 2002 (1026846921)
+
+Date: Tue, 16 Jul 2002 16:45:27 -0500
+From: James Kirby
+To: ned
+Subject: Re: [condor-admin #4081] condor on a beowulf
+
+Hello,
+
+
+&gt; I am in the process of setting up HTCondor as a batch queueing/scheduling
+&gt; system for our Beowulf cluster. But before I can get started I already
+&gt; ran into a few problems:
+&gt;
+&gt; 1) I downloaded condor-6.4.0-linux-x86-glibc22-dynamic.tar.gz.
+&gt;    I was expecting that this would contain shared libraries (lib*.so).
+&gt;    However, the release.tar contains only what looks like static
+&gt;    libraries (lib*.a). Am I missing something?
+
+No.  We statically link in all of our own libraries, hence the size of the
+executables.
+
+&gt; 2) I am installing HTCondor on the master node of the cluster and want to
+&gt;    use it on the private network 172.16.0.0. The hostname structure is
+&gt;
+&gt;    172.16.0.1    b001                (master node)
+&gt;    172.16.0.2    b002
+&gt;    172.16.0.3    b003
+&gt;    ...
+&gt;
+&gt;    Following section 3.11.9 of the manual I set
+&gt;
+&gt;    CONDOR_HOST = b001
+&gt;
+&gt;    but to what should I set UID_DOMAIN and FILESYSTEM_DOMAIN?
+
+You need to "make up" a domain for your machines, like so:
+
+
+172.16.0.1    b001.qux.foo.bar.com b001                (master node)
+172.16.0.2    b002.qux.foo.bar.com b002
+172.16.0.3    b003.qux.foo.bar.com b002
+
+Then just set UID_DOMAIN and FILESYSTEM_DOMAIN to qux.foo.bar.com.  If this
+is set up correctly, you won't need the DEFAULT_DOMAIN_NAME config file
+entry.
+
+&gt; 3) All nodes have two interfaces one (on the 172.16.0.0 network) is
+&gt;    used for MPI communication, the second (on the 172.17.0.0 network)
+&gt;    is used for NFS. Thus I set NETWORK_INTERFACE = 172.16.0.# in each
+&gt;    of the condor_config.local files.
+&gt;    Does it create a problem with HTCondor that NFS traffic (including
+&gt;    exporting of the HTCondor home directory and the HTCondor binaries and
+&gt;    libraries) is actually on a different interface?
+
+Consensus amongst the development team is no, it shouldn't create any
+problems, but neither has anyone run across this before.  If you do run
+into problems, please let us know.
+
+--condor-admin
+
+===========================================================================
+Date mail was appended: Tue Jul 16 16:45:27 2002 (1026855928)
+
+
+Date: Tue, 23 Jul 2002 15:00:51 -0700
+From: Martin Siegert
+To: condor-admin response tracking system
+Subject: Re: [condor-admin #4081] condor on a beowulf
+
+Hello again,
+
+On Tue, Jul 16, 2002 at 04:45:27PM -0600, condor-admin response
+tracking system wrote:
+
+&gt; Hello,
+&gt;
+&gt; &gt; I am in the process of setting up HTCondor as a batch queueing/scheduling
+&gt; &gt; system for our Beowulf cluster. But before I can get started I already
+&gt; &gt; ran into a few problems:
+&gt; &gt;
+&gt; &gt; 1) I downloaded condor-6.4.0-linux-x86-glibc22-dynamic.tar.gz.
+&gt; &gt;    I was expecting that this would contain shared libraries (lib*.so).
+&gt; &gt;    However, the release.tar contains only what looks like static
+&gt; &gt;    libraries (lib*.a). Am I missing something?
+&gt;
+&gt; No.  We statically link in all of our own libraries, hence the size of the
+&gt; executables.
+
+Doesn't that mean that every time a job is checkpointed all the HTCondor
+libraries are dumped into the checkpoint directory for every and each job
+over and over again leading to an unnecessary high demand for disk space?
+I would prefer adding /usr/local/condor/lib to /etc/ld.so.conf (just a
+thought - I have not actually estimated the typical disk space needs on
+my cluster in the checkpoint directory).
+
+&gt; &gt; 2) I am installing HTCondor on the master node of the cluster and want to
+&gt; &gt;    use it on the private network 172.16.0.0. The hostname structure is
+&gt; &gt;
+&gt; &gt;    172.16.0.1    b001                (master node)
+&gt; &gt;    172.16.0.2    b002
+&gt; &gt;    172.16.0.3    b003
+&gt; &gt;    ...
+&gt; &gt;
+&gt; &gt;    Following section 3.11.9 of the manual I set
+&gt; &gt;
+&gt; &gt;    CONDOR_HOST = b001
+&gt; &gt;
+&gt; &gt;    but to what should I set UID_DOMAIN and FILESYSTEM_DOMAIN?
+&gt;
+&gt; You need to "make up" a domain for your machines, like so:
+&gt;
+&gt;
+&gt; 172.16.0.1    b001.qux.foo.bar.com b001                (master node)
+&gt; 172.16.0.2    b002.qux.foo.bar.com b002
+&gt; 172.16.0.3    b003.qux.foo.bar.com b002
+&gt;
+&gt; Then just set UID_DOMAIN and FILESYSTEM_DOMAIN to qux.foo.bar.com.  If this
+&gt; is set up correctly, you won't need the DEFAULT_DOMAIN_NAME config file
+&gt; entry.
+
+Hmm. That isn't really an option. Too many scripts would break that rely
+on the short hostnames. Is there a way to change the FULL_HOSTNAME
+macro (I guess that that is determining how hostnames get interpreted)?
+
+As far as I understand I can set FILESYSTEM_DOMAIN to any string and as
+long as it is the same on all hosts it will work.
+I could set UID_DOMAIN to *. Then I could firewall all HTCondor ports on the
+master node so that only machines on the private network can talk to the
+HTCondor daemons. This seems to be desirable anyway.
+Which are the HTCondor ports that I would have to block in that case?
+Anything else that I must consider (with respect to security), if I set
+UID_DOMAIN = *
+?
+
+&gt; &gt; 3) All nodes have two interfaces one (on the 172.16.0.0 network) is
+&gt; &gt;    used for MPI communication, the second (on the 172.17.0.0 network)
+&gt; &gt;    is used for NFS. Thus I set NETWORK_INTERFACE = 172.16.0.# in each
+&gt; &gt;    of the condor_config.local files.
+&gt; &gt;    Does it create a problem with HTCondor that NFS traffic (including
+&gt; &gt;    exporting of the HTCondor home directory and the HTCondor binaries and
+&gt; &gt;    libraries) is actually on a different interface?
+&gt;
+&gt; Consensus amongst the development team is no, it shouldn't create any
+&gt; problems, but neither has anyone run across this before.  If you do run
+&gt; into problems, please let us know.
+&gt;
+&gt; --condor-admin
+
+I'll definitely let you know. But for now I ran into another problem:
+SMP configuration.
+All of the machines in my cluster are identical dual processor boxes.
+I understand that by default HTCondor would split those boxes up into
+two virtual machines with equal amount of memory. This is not really
+what I would like to do. I'd rather make all of memory available to
+the first job and then make [total_memory - (memory taken by first job)]
+available to the second machine. Is that possible?
+
+Also: can you give me some hints what would be reasonable policies for
+a cluster?
+This is what I'd like to do: the cluster has 192 cpus. I'd like to split
+it into two parts: 96 CPUs dedicated to MPI (and possibly PVM) jobs and
+96 CPUs for everything else. Right now I do not have enough MPI jobs to fill
+the MPI processors, but I have (at least sometimes) more than 192 serial
+jobs. I'd like to configure HTCondor such that a serial job goes preferably
+on those 96 processors that are not dedicated to MPI jobs. If those
+are already busy, serial jobs go onto the MPI processors as well.
+When a MPI job claims those processor the serial jobs vacate immediately
+and get back to the top of the serial queue.
+Preferably the user priority is determined by the number of processors
+jobs of the user currently occupy, i.e., the "history" should not play a role.
+Quite  honestly: I am kind of lost after having read through various
+chapters of the manual. I do not have a "Owner" - thus I understand that
+I somehow should guarantee that Owner evaluates to UNDEFINED always. Is that
+the default? Also I guess that I should set KeyboardIdle to True and
+KeyboardBusy  and ConsoleBusy to False, correct? What else should I set?
+According to chapter 3.11.11 half of the machines will be defined as
+dedicated resources in their local config files. In order to let serial
+jobs onto those processor do I just set "START = True" as mentioned under
+3.11.11.5? Or can I actually use "START = True" everywhere, thus just define
+it in the global config file?
+
+Also, is there a way of forcing users to submit their jobs to HTCondor
+instead of starting them directly in the background? I.e., can HTCondor
+stop jobs that are not started via HTCondor?
+
+Any pointer are appreciated. Thanks a lot for your help!
+
+Cheers,
+Martin
+
+Assigned to wright by ned
+===========================================================================
+Date of actions: Mon Jul 29 13:47:30 2002 (1027968451)
+
+
+To: condor-admin@cs.wisc.edu
+Subject: Re: [condor-admin #4081] HTCondor on a beowulf
+Date: Tue, 30 Jul 2002 16:39:28 -0500
+From: Derek Wright
+
+&gt; Doesn't that mean that every time a job is checkpointed all the HTCondor
+&gt; libraries are dumped into the checkpoint directory for every and each job
+&gt; over and over again leading to an unnecessary high demand for disk space?
+
+basically, yes.  however, there is state in the HTCondor libraries
+linked in with your code, specific to each job, that can't be shared
+across the different jobs.
+
+&gt; I would prefer adding /usr/local/condor/lib to /etc/ld.so.conf (just a
+&gt; thought - I have not actually estimated the typical disk space needs on
+&gt; my cluster in the checkpoint directory).
+
+if we did a lot of effort, we might be able to make a shareable
+section of the HTCondor libraries and put that in a dynamic library.
+however, the problems associated with checkpointing dynamically linked
+jobs (particularly on linux) were so awful that we decided it wasn't
+worth our effort to continue to support it.  80 gig drives are so
+cheap now, we're not loosing any sleep over the slightly inefficient
+use of space...
+
+&gt; Hmm. That isn't really an option. Too many scripts would break that rely
+&gt; on the short hostnames. Is there a way to change the FULL_HOSTNAME
+&gt; macro (I guess that that is determining how hostnames get
+interpreted)?
+
+sort of.  that's not really what you want, though.
+
+as luck would have it, there's active work on the HTCondor team to
+support pools without fully qualified hostnames.  however, i'm not
+involved with that, so i put that question of yours into a new message
+in our tracking system.  i'll assign it to someone else, and let them
+reply to all of the domain-related stuff.
+
+&gt; But for now I ran into another problem:
+
+for future reference, it's a lot easier for us if you just send a new
+message to condor-admin with completely new questions.  most of the
+time, different people are the best to answer any given question.  if
+there's a bunch of background information in common between the two
+problems, you can always reference the tracking number of your old
+ticket (in this case [condor-admin #4081]) in the new one, and any of
+us can read the other ticket if we need to...
+
+i'll reply to your SMP and MPI questions in a little while.
+
+-derek
+
+===========================================================================
+Date mail was appended: Tue Jul 30 16:39:28 2002 (1028065169)
+
+
+To: condor-admin@cs.wisc.edu
+Subject: Re: [condor-admin #4081] HTCondor on a beowulf
+Date: Tue, 30 Jul 2002 19:10:49 -0500
+From: Derek Wright
+
+&gt; SMP configuration.
+&gt; All of the machines in my cluster are identical dual processor boxes.
+&gt; I understand that by default HTCondor would split those boxes up into
+&gt; two virtual machines with equal amount of memory. This is not really
+&gt; what I would like to do. I'd rather make all of memory available to
+&gt; the first job and then make [total_memory - (memory taken by first job)]
+&gt; available to the second machine. Is that possible?
+
+no.  i agree with you, that's how i think it should work, too.
+however, when i was implementing the smp support in HTCondor, i was told
+it had to work the way it does, so that's how it is.  here's the deal:
+you can partition the memory however you want between the two cpus
+(50/50, 73/27, whatever you want), but you have to do it ahead of
+time.  if there's no job running on the machine, you can re-partition
+the memory if you want.  but, there's no way, while a job is running,
+to change it.
+
+the "party line" is that if you really need to dynamically partition
+the memory on a per-job basis, you should write your own script/daemon
+to monitor your job queue, and decide when and how to repartition the
+memory on your machines.  i think this is highly unsatisfactory, but
+that's what i'm supposed to tell you.  i wish it could be otherwise,
+but that's just how it is.  i'm sorry.
+
+&gt; Also: can you give me some hints what would be reasonable policies for
+&gt; a cluster?
+
+sure.
+
+&gt; This is what I'd like to do: the cluster has 192 cpus. I'd like to
+&gt; split it into two parts: 96 CPUs dedicated to MPI (and possibly PVM)
+&gt; jobs and 96 CPUs for everything else.
+
+sounds good (assuming you never need more than 96 cpus for MPI)
+
+&gt; Right now I do not have enough MPI jobs to fill the MPI processors,
+&gt; but I have (at least sometimes) more than 192 serial jobs.
+
+no problem.  this mix of dedicated parallel jobs and "opportunistic"
+serial jobs is exactly the kind of environment HTCondor is setup to
+handle.
+
+&gt; I'd like to configure HTCondor such that a serial job goes preferably
+&gt; on those 96 processors that are not dedicated to MPI jobs.
+
+you would do this with the "Rank" expression in the job's submit
+file.  you can do this 1 of two ways:
+
+1) educate your users to put it in their own Rank expression
+2) have condor_submit automatically append it to their Rank for them
+
+either way, you want the serial jobs to prefer to run on machines with
+the "DedicatedScheduler" attribute undefined (therefore, unable to run
+MPI jobs).  like this:
+
+Rank = DedicatedScheduler =?= UNDEFINED
+
+i don't know if you're already using the job rank for anything.  if
+so, you may want to give this preference more weight.  for example,
+you might want to run on machines with more memory, but you'd much
+rather run on a small-memory non-mpi machine than a high memory mpi
+machine.  you'd do that like this:
+
+Rank = (Memory) + ((DedicatedScheduler =?= UNDEFINED) * 10000)
+
+assuming you don't have any machines with 10 gigs of RAM in them :),
+if DedicatedScheduler is undefined, that whole side of it will
+evaluate (1 * 10000) and if you add that to, say 512 megs of ram on a
+"small memory" non-mpi machine, you'll always get more than the 2048
+the rank would evalute to for a high memory mpi node.  make sense?
+
+it's probably best to just have submit add this for you, so you don't
+have to worry about users forgetting.  the "append_rank" expression in
+your config file will do this for you, like this:
+
+APPEND_RANK = (DedicatedScheduler =?= UNDEFINED) * 10000
+
+condor_submit is smart enough that if you specify something to append,
+but the user doesn't define anything, the expression to append is just
+used as the rank.  if the user defines anything, it's put in ()'s, and
+your expression is appended like this:
+
+Rank = (their expression) + (your expression)
+
+or, in this case:
+
+Rank = (Memory) + ((DedicatedScheduler =?= UNDEFINED) * 10000)
+
+&gt; If those are already busy, serial jobs go onto the MPI processors as
+&gt; well.
+
+job rank is just a preference.  it's not a requirement (since you put
+this restriction in "rank", not "requirements").  so, if the job
+doesn't have anywhere to go that it really prefers, it'll run anywhere
+that satisfies its requirements.  so, you don't have to do anything
+special to get this behavior.
+
+&gt; When a MPI job claims those processor the serial jobs vacate
+&gt; immediately
+
+that's exactly what happens when the machine's Rank expression is used
+to specify what kinds of jobs a machine prefers to run.  that's why
+you're supposed to put:
+
+RANK = Scheduler =?= $(DedicatedScheduler)
+
+in your config file for resources that are going to be dedicated.
+this way, if an MPI job comes along, dedicated resources will always
+evict non-mpi jobs to run the mpi job instead.
+
+&gt; and get back to the top of the serial queue.
+
+yeah, basically.  it's not really seperate queues, but that doesn't
+matter.  the behavior is what you expect...
+
+&gt; Preferably the user priority is determined by the number of
+&gt; processors jobs of the user currently occupy, i.e., the "history"
+&gt; should not play a role.
+
+that's a different issue.  this is the responsibility of the HTCondor
+"accountant", which lives inside the condor_negotiator daemon.  the
+knob you want to turn is called "PRIORITY_HALFLIFE".  think of your
+user priority as a radioactive substance. :) consider a priority that
+exactly matches your current resource usage the "stable state", and a
+priority "contaminated" with past usage "radioactive."  if it's got a
+long halflife, it takes a long time for your priority to decay back to
+"normal".  if the halflife is very short, it'll decay very quickly,
+and will remain very close to your current usage.  so, just set
+PRIORITY_HALFLIFE to a small floating point value (like 0.0001), and
+your user priority should always match your current usage.  if you're
+not using any resources, your priority will go back to the baseline
+value instantly.
+
+&gt; Quite honestly: I am kind of lost after having read through various
+&gt; chapters of the manual.
+
+yeah, HTCondor is incredibly flexible, therefore, incredibly complicated
+to configure and document.  i'm sorry.  we get this stuff wrong in our
+own pool on occassion, even with the developers editing the config
+files. :)
+
+that said, specific feedback on things in the manual that are
+particularly confusing, or suggestions for improvement are always
+welcome.  (again, just send a new message to condor-admin, so the
+person who does the editing of the manual can reply to it).
+
+&gt; I do not have a "Owner" - thus I understand wthat I somehow should
+&gt; guarantee that Owner evaluates to UNDEFINED always. Is that the
+&gt; default?
+
+you don't really need to worry about that (read on)
+
+&gt; Also I guess that I should set KeyboardIdle to True and KeyboardBusy
+&gt; and ConsoleBusy to False, correct?
+
+KeyboardIdle and ConsoleIdle are computed for you by HTCondor.  they're
+just a measure of how long it's been since someone logged into a tty,
+or touched the physical console.  you can't set them to anything.
+however, all that really matters are the "policy expressions" (start,
+suspend, preempt, etc), and if you don't refer to these attributes in
+any of those expressions, if their values change, it won't impact the
+policy on the machine.
+
+&gt; What else should I set?
+&gt;
+&gt; According to chapter 3.11.11 half of the machines will be defined as
+&gt; dedicated resources in their local config files. In order to let serial
+&gt; jobs onto those processor do I just set "START = True" as mentioned under
+&gt; 3.11.11.5?
+
+yes.  if you want them to always run jobs, you want:
+
+START = True
+
+if you want them to also be able to run MPI jobs, you want to set:
+
+DedicatedScheduler = "DedicatedScheduler@b001"
+STARTD_EXPRS = $(STARTD_EXPRS), DedicatedScheduler
+RANK         = Scheduler =?= $(DedicatedScheduler)
+
+to tell them about MPI stuff.
+
+&gt; Or can I actually use "START = True" everywhere, thus just define
+&gt; it in the global config file?
+
+it depends.  if you want all of your nodes to run jobs all the time
+(assuming they're not already running a job), then, yes, you can say
+"START = True" in your global config file and that'll be the behavior
+on all the machines in the pool.
+
+&gt; Also, is there a way of forcing users to submit their jobs to HTCondor
+&gt; instead of starting them directly in the background? I.e., can
+&gt; HTCondor stop jobs that are not started via HTCondor?
+
+sort of, but it's quite convoluted at this point.  your best bet for
+now is to just have a cron job run every minute or so, check for
+processes on your system that are using lots of cpu that aren't
+children of the condor_master, and take appropriate action (kill
+-TERM, kill -KILL, whatever).
+
+i hope this helps.  if you have futher questions about any of this,
+reply to this message.  if you have other questions or comments about
+HTCondor, just send a new note to condor-admin.
+
+thanks,
+-derek
+
+
+
+
+===========================================================================
+Date mail was appended: Tue Jul 30 19:10:50 2002 (1028074250)
+
+
+From RUST Tue, 30 Jul 2002 19:10:50  -0600 (CST)
+Subject: Actions
+
+Ticket resolved by wright
+===========================================================================
+Date of actions: Tue Jul 30 19:10:50 2002 (1028074251)
+
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                </span>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
