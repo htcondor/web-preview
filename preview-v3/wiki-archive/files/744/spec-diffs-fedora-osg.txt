@@ -1,0 +1,103 @@
+condor.spec differences between Fedora's (condor-7.9.5-0.2.fc20.src.rpm)
+and OSG's (condor-7.9.6-4.osg.el6.src.rpm, from upcoming)
+
+---
+
+%defines in fedora only:
+ - plumage
+
+%defines in osg only:
+ - gsoap, qmf, git_build_man, include_man
+
+---
+
+differences not in their own %defines:
+
+in fedora only:
+ - aviary has further aviary-* subpackages
+ - some config file setup around line 467?
+%build:
+ - set BUILDID string
+ - -DWITH_QPID:BOOL=FALSE
+ - -DWITH_PIGEON:BOOL=FALSE
+ - -DWITH_MANAGEMENT:BOOL=TRUE  (based on %qmf in osg)
+ - -DWANT_MAN_PAGES:BOOL=TRUE \
+%install:
+ - populate %{_libdir}/ %{buildroot}/%{_datadir}/condor/libaviary_*.so
+ - populate %_sysconfdir/condor/config.d %{buildroot}/etc/examples/63aviary-hadoop.config
+ - mv %{buildroot}%{_var}/lib/condor/aviary/services/collector/libaviary_collector_axis.so %{buildroot}%{_libdir}/condor/plugins/
+ - rm -rf %{buildroot}%{_datadir}/condor/Chirp.jar
+%files
+ - %config(noreplace) for %_sysconfdir/condor/config.d/00personal_condor.config
+ - %_sbindir/condor_check_security
+ - %systemd specific selinux setup in %post, around 1188
+
+in osg only:
+%build:
+ - export CMAKE_PREFIX_PATH=/usr
+%install:
+ - rm -f %{buildroot}/%{_mandir}/man1/condor_convert_history.1.gz
+ - Install perl modules
+ - rm -rf %{buildroot}%{_sbindir}/condor
+ - rm -rf %{buildroot}%{_sbindir}/condor_master_off
+ - rm -rf %{buildroot}%{_sbindir}/condor_reconfig_schedd
+ - rm -rf %{buildroot}%{_includedir}/usr/include/condor_ast.h
+ - rm -rf %{buildroot}%{_includedir}/condor_astbase.h
+ - rm -rf %{buildroot}%{_includedir}/condor_attrlist.h
+ - rm -rf %{buildroot}%{_includedir}/condor_exprtype.h
+ - rm -rf %{buildroot}%{_includedir}/condor_parser.h
+ - rm -rf %{buildroot}%{_includedir}/condor_ast.h
+%files
+ - chirp stuff
+ - %_libexecdir/condor/accountant_log_fixer
+ - %_bindir/condor_ping
+ - %_bindir/condor_tail
+ - %_bindir/condor_qsub
+ - %postun step to try-restart condor (1158,1183) ... fedora leaves it
+   to condor to notice and restart based on configuration
+
+---
+
+installed binaries in latest rpms:
+
+only in osg:
+  /usr/bin:
+    bosco_*
+    classad_*
+    condor_ping
+    condor_qsub
+    condor_tail
+
+  /usr/libexec/condor:
+    campus_factory
+    condor_glexec_* (except _wrapper, which both have)
+    condor_schedd.init
+    glite
+    libvirt_simple_script.awk
+    shellselector
+
+  /usr/sbin:
+    bosco_install
+    campus_factory
+    condor_ft-gahp
+    condor_kbdd
+    condor_procd
+    condor_vm-gahp
+    condor_vm_vmware
+    cream_gahp
+    gidd_alloc
+    glidein_creation
+    procd_ctl
+    runfactory
+
+only in fedora:
+  /usr/sbin/condor_check_security
+
+---
+
+other:
+  - misc patches are different
+  - note BuildRequires differences from fedora for %deltacloud, %aviary
+  - the '#######################' section markers between subpackages in fedora
+  - BLClient location is different for %blahp
+
