@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-v3/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-v3/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-v3/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-v3/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-v3/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-v3/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-v3/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Reverting Bad Merges</title>
+
+    <script src="/web-preview/preview-v3/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-v3/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/license">License</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></li>
+        
+            <li><a class="dropdown-item" href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item ">
+    
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">About</a>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link" href="/web-preview/preview-v3/about.html">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+                
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a></h3>
+                            <div>
+                                <span class="text-muted">September 22, 2021</span>
+                            </div>
+                            <hr/>
+                            <a href="new">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.readthedocs.io/en/latest/version-history/index.html">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-users">Users&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-world">World&#11023;</a></td></tr>
+            
+                <tr><td><a href="https://lists.cs.wisc.edu/mailman/listinfo/htcondor-devel">Developers&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email&#11023;</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-v3/assets/images/banq-mw.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/user-stories/2021-11-30-banq/">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
+                            <hr/>
+                            <a href="user-stories">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All User Stories
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+                <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>Reverting Bad Merges</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   I haven't pushed the merge
+  </h2>
+ </span>
+ If you haven't pushed the merge yet, this is easy.  "git reset --hard PRE_MERGE_SHA" where PRE_MERGE_SHA is the SHA of the commit prior to the merge.
+ <strong>
+  Warning:
+ </strong>
+ <em>
+  This completely destroys the merge and anything committed since.
+ </em>
+ It's as if it never happened.
+ <em>
+  Use with caution.
+ </em>
+ If you have commits after the merge that you'd like to save, you can use "git format-patch" and "git am" to store them away and re-apply them.  The general technique looks something like this.  BAD_MERGE_SHA is the SHA of the merge itself. CURRENT_HEAD_SHA1 is the current head of the branch.  If you don't have commits after the merge, skip the "format-patch" and "am" steps.
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">git format-patch --stdout BAD_MERGE_SHA..CURRENT_HEAD_SHA &gt; my.rescue
+git reset --hard PRE_MERGE_SHA
+git am my.rescue
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  The merge was pushed
+ </h2>
+ <p>
+  This is Hard.
+ </p>
+ <p>
+  You
+  <em>
+   can
+  </em>
+  just revert the merge.
+  <a class="external" href="http://www.kernel.org/pub/software/scm/git/docs/howto/revert-a-faulty-merge.txt">
+   Here's the official why and how to do it.
+  </a>
+  However, this leaves Git with the erroneous belief that the merged commits are still on the target branch. That leaves two landmines waiting to surprise developers: 1. A future attempt to redo the merge, or perhaps cherrypick parts of it over will silently drop commits (after all, they're already applied) and 2. If you ask "Is this commit part on this branch?" you'll get "yes" for commits that were reverted as part of the merge.  As such, it may be the wrong answer.  On the up side, it's relatively straightforward.  If the merge is relatively small, it's probably the right solution.
+ </p>
+ <p>
+  If you need to "really" revert the change, the following steps will walk you through it.  For this example, the merge target branch is V7_4-branch.  Change it, and the commit SHAs to whatever you're actually doing.
+ </p>
+ <p>
+  <table border="1" cellspacing="0">
+   <tbody>
+    <tr>
+     <td>
+      Commit
+     </td>
+     <td>
+      Notes
+     </td>
+    </tr>
+    <tr>
+     <td>
+      584e2bb18f4e038066e44b53cddd9945e0b9dbbb
+     </td>
+     <td>
+      Last good commit on V7_4-branch before the merge
+     </td>
+    </tr>
+    <tr>
+     <td>
+      80fc0a87a790657756aed97dd3d4bdc852e50081
+     </td>
+     <td>
+      The bad merge
+     </td>
+    </tr>
+    <tr>
+     <td>
+      63964181bbe027cfead32e3a6886349dbfab61a7
+     </td>
+     <td>
+      The head of V7_4-branch
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Send out email to
+   <em>
+    everyone
+   </em>
+   who might be working with our Git repo, warning them to stop pulling or pushing the relevant branch.  The sooner this happens, the easier it should be.  "Everyone" is probably condor-devel and condor-team.
+   <p>
+   </p>
+  </li>
+  <li>
+   <a class="external" href="http://condor-wiki.cs.wisc.edu/index.cgi/tktnew">
+    Create a ticket
+   </a>
+   to track this work.  You'll use it later.  Document what went wrong, noting the relevant branches and commit SHAs.
+   <p>
+   </p>
+  </li>
+  <li>
+   Save good work on the V7_4-branch.  The version numbers are the bad merge and the head.
+   <div class="code">
+    <pre class="code">git checkout V7_4-branch
+git format-patch --stdout 80fc0a87a790657756aed97dd3d4bdc852e50081..63964181bbe027cfead32e3a6886349dbfab61a7 &gt; v7.4-rescue
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Back V7_4-branch to the commit immediately before the bad merge.
+   <div class="code">
+    <pre class="code">git reset --hard 584e2bb18f4e038066e44b53cddd9945e0b9dbbb
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Reapply the good work
+   <div class="code">
+    <pre class="code">git am v7.4-rescue
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Push the correction upstream.  Note that this actually deletes the branch upstream, then pushes the corrected version.  This is because our upstream is a "bare" repository.  (A bare repository lacks a working tree, and is a good idea for a repo that no-one uses directly.)  If it wasn't bare, we could have used "git push --force origin V7_4-branch"
+   <div class="code">
+    <pre class="code">git push origin :V7_4-branch
+git push origin +V7_4-branch
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Flesh out the ticket with information on how to update local repositories.  Here's a template; remember to put the correct branch name and SHAs!  You can also look at
+   <span class="ticket">
+    <a class="resolved" href="../../tickets/?ticket=1084" title="Undo merge of V7_5-cream_hardening-branch into V7_4-branch">
+     #1084
+    </a>
+   </span>
+   as a live example of this.
+   <div class="verbatim">
+    <pre>The changes documented below involve versions of HTCondor that were never released.  Customers do not need to worry about them.
+
+V7_5-cream_hardening-branch was merged into V7_4-branch in commit 80fc0a87a790657756aed97dd3d4bdc852e50081.  This is probably wrong.  Notably, V7_5-cream_hardening-branch has repeatedly had master merged into it, so V7_4-branch now contains all of the master (7.5.x) work!
+
+This has been undone, but it has ramifications for anyone working with out Git repository.
+
+All developers will need to check to make sure they don't have the bad merge lurking in their repositories. If you haven't done a "git pull" or fetch since December 20th, you're probably okay, but check anyway.
+
+To check, on any local branch you have that is based on V7_4-branch, do the following, repleacing V7_4-branch with your local branch name.
+
+1: Check if you have the bad merge on the branch:
+{code}
+git rev-list V7_4-branch | grep 80fc0a87a790657756aed97dd3d4bdc852e50081
+{endcode}
+1: Check the output and return code ("echo $?") of the previous command:
+*::If there is *no output* and a *non-zero return code*, all is well.  This branch is safe.  Go back to the start and repeat for other branches based on V7_4-branch.  If you're out of branches, you're done!
+*:: If the *return code is 0* and the *output is "80fc0a87a790657756aed97dd3d4bdc852e50081"*, then you have the bad merge.  If this is the case, you *must* destroy and recreate the branch, otherwise you could reinfect the central repository.  Continue:
+1: You'll need to delete your infected V7_4-branch and recreate it.  Do you have committed changes to V7_4-branch that you haven't pushed?
+*:: *No un-pushed changes:* Just run the following to delete and recreate the local branch:
+{code}
+git checkout master
+git branch -D V7_4-branch
+git branch V7_4-branch origin/V7_4-branch
+{endcode}
+*::*Un-pushed changes:* You will want to store your good changes away and reapply them. Be careful to not accidentally drag in the bad merge!  You can _not_ use git stash for this, as git stash will just stash away the bad merge.  You can do this by hand, or you can use "git format-patch" and "git am" to store them away and re-apply them.   Use "gitk" or similar to find the ranges of SHAs that contain your changes.  Be sure to _not_ include 80fc0a87a790657756aed97dd3d4bdc852e50081 in the range!  If you have multiple ranges, simply call "git format-patch" repeatedly, appending to the same file.  Once you have your ranges, use the following, or something similar:
+{code}
+git format-patch --stdout EARLIEST_GOOD_SHA1..CURRENT_GOOD_SHA1 &gt; v7.4-rescue
+git checkout master
+git branch -D V7_4-branch
+git branch V7_4-branch origin/V7_4-branch
+git checkout V7_4-branch
+git am v7.4-rescue
+{endcode}
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Email everyone to let them know that they must update their local repositories before doing any more commits, pulls, or pushes.  Here's a template.  Be sure to replace the link with a link to the ticket you made.
+   <div class="verbatim">
+    <pre>If you're using our Git repository, THIS IS IMPORTANT!  If you're
+not, my apologies for the bother.
+
+Before making any more commits, and definitely before doing any
+pushes, you _must_ follow the directions at
+http://condor-wiki.cs.wisc.edu/index.cgi/tktview?tn=1084
+
+That page explains what happened, what steps you need to take,
+and if you're curious, what corrective measures were taken.
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Close the ticket.
+  </li>
+ </ol>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="mailto:htcondor-admin@cs.wisc.edu">Support Email</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-4">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+        <div class="row pb-4">
+            <div class="col text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                </span>
+            </div>
+
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
