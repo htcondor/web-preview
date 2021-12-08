@@ -79,4 +79,5 @@ function HeaderToggle(id){
 const software = new HeaderToggle("software-desktop")
 const documentation = new HeaderToggle("help-and-support-desktop")
 const commmunity = new HeaderToggle("community-desktop")
-const header_toggles = new HeaderToggles([software, documentation, commmunity])
+const about = new HeaderToggle("about-desktop")
+const header_toggles = new HeaderToggles([software, documentation, commmunity, about])

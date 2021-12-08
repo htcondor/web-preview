@@ -133,6 +133,8 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/new">News</a></li>
+        
             <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
@@ -246,13 +248,11 @@
 
 <li class="dropdown">
     <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-        CHTC
+        Users
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
-        
-            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/user-stories">User Stories</a></li>
         
     </ul>
 </li>
@@ -266,9 +266,44 @@
 
 
 
-<li class="nav-item ">
+<li class="nav-item dropdown">
     
-        <a class="nav-link" href="/web-preview/preview-v3/description.html">About</a>
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/description">Description</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/logos">Logos</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
     
 </li>
                     
@@ -338,7 +373,7 @@
 
 
     <li class="nav-item">
-        <a class="nav-link" href="/web-preview/preview-v3/description.html">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
             About
         </a>
     </li>
@@ -384,7 +419,7 @@
                                 <span class="text-muted">September 22, 2021</span>
                             </div>
                             <hr/>
-                            <a href="new">
+                            <a href="/web-preview/preview-v3/new">
                                 <div class="row">
                                     <div class="col-auto d-flex">
                                         <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
@@ -435,6 +470,8 @@
     <div class="col-auto mx-4 my-2">
         <table>
             <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/new">News</a></td></tr>
             
                 <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
             
@@ -509,7 +546,7 @@
                         <div class="card-body d-flex flex-column">
                             <h5><a class="text-decoration-none" href="/user-stories/2021-11-30-banq/">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
                             <hr/>
-                            <a href="user-stories">
+                            <a href="/web-preview/preview-v3/user-stories">
                                 <div class="row">
                                     <div class="col-auto d-flex">
                                         <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
@@ -536,6 +573,43 @@
                 <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></td></tr>
             
                 <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Users</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/user-stories">User Stories</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-v3/assets/images/team-2021.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="https://chtc.cs.wisc.edu/people">CHTC Team Photo</a></h5>
+                        </div>
+                    </div>
+                </div>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCSS</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/description">Description</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/logos">Logos</a></td></tr>
             
         </table>
     </div>
