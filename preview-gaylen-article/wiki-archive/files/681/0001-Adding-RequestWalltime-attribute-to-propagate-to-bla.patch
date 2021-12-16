@@ -1,0 +1,81 @@
+From e34c38105d68bc9ad5f1100d53e59a99f38de858 Mon Sep 17 00:00:00 2001
+From: Derek Weitzel <djw8605@gmail.com>
+Date: Wed, 6 Feb 2013 13:06:36 -0600
+Subject: [PATCH] Adding RequestWalltime attribute to propagate to blahp. #3398
+
+request_walltime (transformed to RequestWalltime) is added as a
+submit attribute to be used by the blahp when submitting to non-condor
+resource managers.
+---
+ src/condor_gridmanager/infnbatchjob.cpp |    2 ++
+ src/condor_includes/condor_attributes.h |    1 +
+ src/condor_submit.V6/submit.cpp         |   14 ++++++++++++++
+ 3 files changed, 17 insertions(+), 0 deletions(-)
+
+diff --git a/src/condor_gridmanager/infnbatchjob.cpp b/src/condor_gridmanager/infnbatchjob.cpp
+index 52a9aec..eecadf4 100644
+--- a/src/condor_gridmanager/infnbatchjob.cpp
++++ b/src/condor_gridmanager/infnbatchjob.cpp
+@@ -1137,6 +1137,8 @@ ClassAd *INFNBatchJob::buildSubmitAd()
+ 		ATTR_TRANSFER_OUTPUT_REMAPS,
+ 		ATTR_JOB_IWD,
+ 		ATTR_GRID_RESOURCE,
++        ATTR_REQUEST_MEMORY,
++        ATTR_REQUEST_WALLTIME,
+ 		NULL };		// list must end with a NULL
+ 
+ 	submit_ad = new ClassAd;
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index 5e1b06c..1997659 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -866,6 +866,7 @@ extern const char ATTR_SEC_AUTHENTICATED_USER [];
+ #define ATTR_REQUEST_CPUS  "RequestCpus"
+ #define ATTR_REQUEST_MEMORY  "RequestMemory"
+ #define ATTR_REQUEST_DISK  "RequestDisk"
++#define ATTR_REQUEST_WALLTIME "RequestWalltime"
+ 
+ // machine resource prefixes
+ #define ATTR_REQUEST_PREFIX  "Request"
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 38d98ea..5f449c4 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -243,6 +243,7 @@ const char	*MemoryUsage	= "memory_usage";
+ const char	*RequestCpus	= "request_cpus";
+ const char	*RequestMemory	= "request_memory";
+ const char	*RequestDisk	= "request_disk";
++const char	*RequestWalltime	= "request_walltime";
+ const std::string  RequestPrefix  = "request_";
+ std::set<std::string> fixedReqRes;
+ 
+@@ -2473,6 +2474,18 @@ SetImageSize()
+ 		}
+ 		free(tmp);
+ 	}
++
++	// set an initial value for RequestWalltime
++	if ((tmp = condor_param(RequestWalltime, ATTR_REQUEST_WALLTIME))) {
++        
++        if (MATCH != strcasecmp(tmp, "undefined")) {
++            buffer.formatstr("%s = %s", ATTR_REQUEST_WALLTIME, tmp);
++            InsertJobExpr(buffer);
++        }
++        free(tmp);
++	}
++
++
+ 	
+ }
+ 
+@@ -7322,6 +7335,7 @@ init_params()
+     fixedReqRes.insert(RequestCpus);
+     fixedReqRes.insert(RequestMemory);
+     fixedReqRes.insert(RequestDisk);
++    fixedReqRes.insert(RequestWalltime);
+ }
+ 
+ int
+-- 
+1.7.4.1
+
