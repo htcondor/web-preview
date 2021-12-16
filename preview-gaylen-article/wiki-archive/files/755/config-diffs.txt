@@ -1,0 +1,118 @@
+---------------
+ condor_config
+---------------
+
+note misc differences in comments... osg/fedora say do not edit
+
+CONDOR_HOST =
+  fedora/osg: central-manager-hostname.your.domain
+  uw:         $(FULL_HOSTNAME)
+
+LOCAL_DIR =
+  fedora:     $(TILDE)
+  osg:        /var/lib/condor
+  uw          /var
+
+LOCAL_CONFIG_FILE =
+  uw:         /etc/condor/condor_config.local
+  osg/fedora: not present
+
+LOCK =
+  osg/fedora: /var/lock/condor
+  uw:         $(LOCAL_DIR)/lock/condor  (same thing)
+
+LOCAL_DISK_LOCK_DIR =
+  f/o:        $(LOCK)/local
+  uw:         not specified
+
+TRUST_UID_DOMAIN =
+  o/f:        True
+  uw:         False
+
+osg only:
+  MAX_TRIGGERD_LOG  = 1000000
+  TRIGGERD_DEBUG    =
+
+MachineMaxVacateTime =
+  f:          $(KILLING_TIMEOUT)-1
+  o/uw:       $(MaxVacateTime)
+
+RUN LOG SPOOL EXECUTE BIN:
+  uw v f/o:   all are under /var/lib/condor, but expressed with $(LOCAL_DIR)
+
+DATA ETC:
+  not specified in uw
+
+TRIGGERD_LOG CKPT_SERVER TRIGGERD:
+  only in osg
+
+CONDOR_DEVELOPERS = NONE
+CONDOR_DEVELOPERS_COLLECTOR = NONE
+  only in osg
+
+NEGOTIATOR_USE_SLOT_WEIGHTS =
+  fedora:     True
+  osg:        False
+  uw:         not specified
+
+PROCD_LOG =
+  uw/osg:     $(LOG)/ProcLog
+  fedora:     not specified
+
+JAVA_CLASSPATH_DEFAULT =
+  f/o:        $(SHARE) $(SHARE)/scimark2lib.jar .
+  uw:         $(LIB) $(LIB)/scimark2lib.jar .
+
+GRIDMANAGER_JOB_PROBE_INTERVAL =
+  f/uw:       300
+  osg:        not specified
+
+BATCH_GAHP =
+  f/uw:       $(GLITE_LOCATION)/bin/batch_gahp
+  osg:        $(BIN)/blahpd
+
+
+STORK*:
+  removed from uw
+
+QUILL* DBMSD* HDFS*:
+  only in osg/uw
+
+UNHIBERNATE =
+  fedora:     CurrentTime - MachineLastMatchTime < 1200
+  uw/osg:     not present
+
+
+--------------------------
+ 00personal_condor.config
+--------------------------
+identical in osg/fedora (copied from condor_config.local from examples),
+not present in uw
+
+
+---------------------
+ condor_config.local
+---------------------
+  uw:       ships one from examples in /etc/condor/
+  fedora:   ships 00personal_condor.config from examples
+  osg:      ships both, 00personal_condor.config from examples, and a version
+            of condor_config.local with comments stripped out in
+            /var/lib/condor/
+
+
+-----------
+ sysconfig
+-----------
+  uw:       large one with lots of default values
+  osg:      not provided, but an osg-specific one is with a few lcmaps env vars
+  fedora:   not provided with systemd
+
+
+--------
+ init.d
+--------
+  osg/uw:   two fairly different versions, this should be sorted out with the
+            init.d improvements
+  fedora:   not provided with systemd
+
+
