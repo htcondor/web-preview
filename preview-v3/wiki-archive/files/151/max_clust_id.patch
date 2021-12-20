@@ -1,0 +1,110 @@
+diff --git a/src/condor_includes/condor_qmgr.h b/src/condor_includes/condor_qmgr.h
+index 6c36c47..8e78ff5 100644
+--- a/src/condor_includes/condor_qmgr.h
++++ b/src/condor_includes/condor_qmgr.h
+@@ -70,9 +70,11 @@ bool DisconnectQ(Qmgr_connection *qmgr, bool commit_transactions=true);
+ 
+ /** Start a new job cluster.  This cluster becomes the
+ 	active cluster, and jobs may only be submitted to this cluster.
+-	@return -1 on failure; the new cluster id on success
++	@return the new cluster id on success, < 0 on failure: -1 == "owner check failed"
++    -2 == "MAX_JOBS_SUBMITTED exceeded", -3 == "cluster id collision"
+ */
+ int NewCluster(void);
++
+ /** Signal the start of a new job description (a new job process).
+ 	@param cluster_id cluster id of the active job cluster (from NewCluster())
+ 	@return -1 on failure; the new proc id on success
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index b2b923c..305191c 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -91,6 +91,7 @@ static int in_walk_job_queue = 0;
+ static time_t xact_start_time = 0;	// time at which the current transaction was started
+ static int cluster_initial_val = 1;		// first cluster number to use
+ static int cluster_increment_val = 1;	// increment for cluster numbers of successive submissions 
++static int cluster_maximum_val = 0;     // maximum cluster id (default is 0, or 'no max')
+ 
+ static void AddOwnerHistory(const MyString &user);
+ 
+@@ -678,6 +679,7 @@ InitQmgmt()
+ 
+ 	cluster_initial_val = param_integer("SCHEDD_CLUSTER_INITIAL_VALUE",1,1);
+ 	cluster_increment_val = param_integer("SCHEDD_CLUSTER_INCREMENT_VALUE",1,1);
++    cluster_maximum_val = param_integer("SCHEDD_CLUSTER_MAXIMUM_VALUE",0,0);
+ 
+ 	flush_job_queue_log_delay = param_integer("SCHEDD_JOB_QUEUE_LOG_FLUSH_DELAY",5,0);
+ }
+@@ -737,6 +739,12 @@ InitJobQueue(const char *job_queue_name,int max_historical_logs)
+ 		stored_cluster_num = 0;
+ 	}
+ 
++    // If a stored cluster id exceeds a configured maximum, tag it for re-computation
++    if ((cluster_maximum_val > 0) && (stored_cluster_num > cluster_maximum_val)) {
++        dprintf(D_ALWAYS, "Stored cluster id %d exceeds configured max %d.  Flagging for reset.\n", stored_cluster_num, cluster_maximum_val);
++        stored_cluster_num = 0;
++    }
++
+ 		// Figure out what the correct ATTR_SCHEDULER is for any
+ 		// dedicated jobs in this queue.  Since it'll be the same for
+ 		// all jobs, we only have to figure it out once.  We use '%'
+@@ -891,6 +899,14 @@ InitJobQueue(const char *job_queue_name,int max_historical_logs)
+ 		}
+ 	} // WHILE
+ 
++    // We defined a candidate next_cluster_num above, as (current-max-clust) + (increment).
++    // If the candidate exceeds the configured max, then wrap it.  Default maximum is zero,
++    // which signals 'no maximum'
++    if ((cluster_maximum_val > 0) && (next_cluster_num > cluster_maximum_val)) {
++        dprintf(D_ALWAYS, "Next cluster id exceeded configured max %d: wrapping to %d\n", cluster_maximum_val, cluster_initial_val);
++        next_cluster_num = cluster_initial_val;
++    }
++
+ 	if ( stored_cluster_num == 0 ) {
+ 		snprintf(cluster_str, PROC_ID_STR_BUFLEN, "%d", next_cluster_num);
+ //		LogSetAttribute *log = new LogSetAttribute(HeaderKey,
+@@ -1433,6 +1449,22 @@ NewCluster()
+ 	next_proc_num = 0;
+ 	active_cluster_num = next_cluster_num;
+ 	next_cluster_num += cluster_increment_val;
++
++    // check for wrapping if a maximum cluster id is set
++    if ((cluster_maximum_val > 0) && (next_cluster_num > cluster_maximum_val)) {
++        dprintf(D_ALWAYS, "NewCluster(): Next cluster id %d exceeded configured max %d.  Wrapping to %d.\n", next_cluster_num, cluster_maximum_val, cluster_initial_val);
++        next_cluster_num = cluster_initial_val;
++    }
++
++    // check for collision with an existing cluster id
++    char test_cluster_key[PROC_ID_STR_BUFLEN];
++    ClassAd* test_cluster_ad;
++	IdToStr(active_cluster_num,-1,test_cluster_key);
++    if (JobQueue->LookupClassAd(test_cluster_key, test_cluster_ad)) {
++        dprintf(D_ALWAYS, "NewCluster(): collision with existing cluster id %d\n", active_cluster_num);
++        return -3;
++    }
++
+ 	snprintf(cluster_str, PROC_ID_STR_BUFLEN, "%d", next_cluster_num);
+ //	log = new LogSetAttribute(HeaderKey, ATTR_NEXT_CLUSTER_NUM, cluster_str);
+ //	JobQueue->AppendLog(log);
+@@ -2504,6 +2536,7 @@ AbortTransactionAndRecomputeClusters()
+ 	}	// end of if JobQueue->AbortTransaction == True
+ }
+ 
++
+ int
+ GetAttributeFloat(int cluster_id, int proc_id, const char *attr_name, float *val)
+ {
+diff --git a/src/condor_schedd.V6/schedd_api.cpp b/src/condor_schedd.V6/schedd_api.cpp
+index c7613df..04715df 100644
+--- a/src/condor_schedd.V6/schedd_api.cpp
++++ b/src/condor_schedd.V6/schedd_api.cpp
+@@ -620,7 +620,8 @@ ScheddTransaction::newCluster(int &id)
+ 		// XXX: Need a transaction...
+ 	id = NewCluster();
+ 
+-	return -1 == id ? -1 : 0;
++    //return -1 == id ? -1 : 0;
++	return (id < 0) ? -1 : 0;
+ }
+ 
+ int

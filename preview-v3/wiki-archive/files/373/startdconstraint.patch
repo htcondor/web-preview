@@ -1,0 +1,227 @@
+diff -rNup condor-7.4.4.orig/src/classad.old/classad_list.cpp condor-7.4.4/src/classad.old/classad_list.cpp
+--- condor-7.4.4.orig/src/classad.old/classad_list.cpp	2010-10-11 17:37:00.000000000 -0400
++++ condor-7.4.4/src/classad.old/classad_list.cpp	2011-06-13 13:41:48.000000000 -0400
+@@ -52,9 +52,9 @@ static bool _evalBool(ClassAd *ad, ExprT
+ 	return false;
+ }
+ 
+-// Count ads in list that meet constraint.
++// Count and remove ads in list that meet constraint.
+ int ClassAdList::
+-Count( ExprTree *constraint )
++Count( ExprTree *constraint, bool remove )
+ {
+     ClassAd *ad = NULL;
+     int matchCount  = 0;
+@@ -68,7 +68,9 @@ Count( ExprTree *constraint )
+     while( (ad = Next() ) ) {
+         if ( _evalBool( ad, constraint) ) {
+             matchCount++;
+-        }
++        } else if (remove) {
++	    Delete(ad);
++	}
+     }
+     return matchCount;
+ }
+diff -rNup condor-7.4.4.orig/src/condor_includes/condor_classad.h condor-7.4.4/src/condor_includes/condor_classad.h
+--- condor-7.4.4.orig/src/condor_includes/condor_classad.h	2010-10-11 17:37:00.000000000 -0400
++++ condor-7.4.4/src/condor_includes/condor_classad.h	2011-06-13 13:41:48.000000000 -0400
+@@ -140,7 +140,7 @@ class ClassAdList : public AttrListList
+ 	void   Sort(SortFunctionType,void* =NULL);
+ 
+ 	// Count ads in list that meet constraint.
+-	int         Count( ExprTree *constraint );
++	int         Count( ExprTree *constraint, bool remove );
+ 
+   private:
+ 	void	Sort(SortFunctionType,void*,AttrListAbstract*&);
+diff -rNup condor-7.4.4.orig/src/condor_negotiator.V6/matchmaker.cpp condor-7.4.4/src/condor_negotiator.V6/matchmaker.cpp
+--- condor-7.4.4.orig/src/condor_negotiator.V6/matchmaker.cpp	2011-06-13 13:38:24.000000000 -0400
++++ condor-7.4.4/src/condor_negotiator.V6/matchmaker.cpp	2011-06-13 13:43:16.000000000 -0400
+@@ -191,8 +191,10 @@ Matchmaker ()
+ 	update_collector_tid = -1;
+ 
+ 	update_interval = 5*MINUTE; 
+-    DynQuotaMachConstraint = NULL;
+ 
++        StartdConstraint = NULL;
++        StartdConstraintRemove = false;
++	
+ 	groupQuotasHash = NULL;
+ 
+ 	strcpy(RejectsTable, "rejects");
+@@ -230,7 +232,8 @@ Matchmaker::
+ 
+ 	if (NegotiatorName) free (NegotiatorName);
+ 	if (publicAd) delete publicAd;
+-    if (DynQuotaMachConstraint) delete DynQuotaMachConstraint;
++
++        if (StartdConstraint) delete StartdConstraint;
+ 	if (groupQuotasHash) delete groupQuotasHash;
+ 	if (stashedAds) delete stashedAds;
+ 
+@@ -477,22 +482,32 @@ reinitialize ()
+ 	preemption_req_unstable = ! (param_boolean("PREEMPTION_REQUIREMENTS_STABLE",true)) ;
+ 	preemption_rank_unstable = ! (param_boolean("PREEMPTION_RANK_STABLE",true)) ;
+ 
+-	if (DynQuotaMachConstraint) delete DynQuotaMachConstraint;
+-	DynQuotaMachConstraint = NULL;
+-	tmp = param("GROUP_DYNAMIC_MACH_CONSTRAINT");
++	if (StartdConstraint) delete StartdConstraint;
++	StartdConstraint = NULL;
++	tmp = param("NEG_STARTD_CONSTRAINT");
+ 	if( tmp ) {
+-        dprintf(D_FULLDEBUG, "%s = %s\n", "GROUP_DYNAMIC_MACH_CONSTRAINT",
+-                tmp);
+-		if( Parse(tmp, DynQuotaMachConstraint) ) {
+-			dprintf(
+-                D_ALWAYS, 
+-                "Error parsing GROUP_DYNAMIC_MACH_CONSTRAINT expression: %s",
+-					tmp
+-            );
+-            DynQuotaMachConstraint = NULL;
++		dprintf(D_FULLDEBUG, "%s = %s\n", "NEG_STARTD_CONSTRAINT", tmp);
++			if( Parse(tmp, StartdConstraint) ) {
++				dprintf( D_ALWAYS, 
++                			"Error parsing NEG_STARTD_CONSTRAINT expression: %s", tmp);
++			StartdConstraint = NULL;
++			}
++		free (tmp);
++	} 
++	if ( StartdConstraint == NULL){  
++		tmp = param("GROUP_DYNAMIC_MACH_CONSTRAINT"); //for backward compatibility
++		if( tmp ) {
++	        	dprintf(D_FULLDEBUG, "%s = %s\n", "GROUP_DYNAMIC_MACH_CONSTRAINT", tmp);
++			if( Parse(tmp, StartdConstraint) ) {
++				dprintf( D_ALWAYS, 
++                			"Error parsing GROUP_DYNAMIC_MACH_CONSTRAINT expression: %s",tmp);
++			StartdConstraint = NULL;
++			}
++		free (tmp);
+ 		}
+-        free (tmp);
+ 	}
++	
++	StartdConstraintRemove = param_boolean("NEG_STARTD_CONSTRAINT_REMOVE",false);
+ 
+ 	num_negotiation_cycle_stats = param_integer("NEGOTIATION_CYCLE_STATS_LENGTH",3,0,MAX_NEGOTIATION_CYCLE_STATS);
+ 	ASSERT( num_negotiation_cycle_stats <= MAX_NEGOTIATION_CYCLE_STATS );
+@@ -997,29 +1012,13 @@ negotiationTime ()
+ 		ASSERT(groupQuotasHash);
+     }
+ 
+-    // Restrict number of slots available for dynamic quotas.
+-    if ( numDynGroupSlots && DynQuotaMachConstraint ) {
+-		int matchedSlots = startdAds.Count( DynQuotaMachConstraint );
+-        if ( matchedSlots ) {
+-            dprintf(D_ALWAYS,"GROUP_DYNAMIC_MACH_CONSTRAINT constraint reduces machine "
+-                    "count from %d to %d\n", numDynGroupSlots, matchedSlots);
+-            numDynGroupSlots = matchedSlots;
+-        } else {
+-            dprintf(D_ALWAYS, "warning: 0 out of %d machines match "
+-                    "GROUP_DYNAMIC_MACH_CONSTRAINT for dynamic quotas\n",
+-                    numDynGroupSlots);
+-            numDynGroupSlots = 0;
+-        }
+-    }
+-
+-	// if don't care about preemption, we can trim out all non Unclaimed ads now.
++	// if don't care about preemption, we can trim out claimed and preempting ads now.
+ 	// note: we cannot trim out the Unclaimed ads before we call CheckMatches,
+ 	// otherwise CheckMatches will do the wrong thing (because it will not see
+ 	// any of the claimed machines!).
+-	int num_trimmed = trimStartdAds(startdAds);
+-	if ( num_trimmed > 0 ) {
+-		dprintf(D_FULLDEBUG, "Trimmed out %d startd ads not Unclaimed\n",num_trimmed);
+-	}
++
++	numDynGroupSlots = trimStartdAds(numDynGroupSlots,startdAds);
++	
+     negotiation_cycle_stats[0]->trimmed_slots = startdAds.MyLength();
+     // candidate slots may be pruned further below
+     negotiation_cycle_stats[0]->candidate_slots = startdAds.MyLength();
+@@ -2261,8 +2266,9 @@ comparisonFunction (AttrList *ad1, AttrL
+ }
+ 
+ int Matchmaker::
+-trimStartdAds(ClassAdList &startdAds)
++trimStartdAds(int numDynGroupSlots, ClassAdList &startdAds)
+ {
++	int matchedSlots=numDynGroupSlots;
+ 	int removed = 0;
+ 	ClassAd *ad = NULL;
+ 	char curState[80];
+@@ -2270,13 +2276,29 @@ trimStartdAds(ClassAdList &startdAds)
+ 	char const *preempting_state_str = state_to_string(preempting_state);
+ 	ASSERT(claimed_state_str && preempting_state_str);
+ 
++        // Restrict number of slots available for dynamic quotas.
++        if ( numDynGroupSlots && StartdConstraint ) {
++		matchedSlots = startdAds.Count( StartdConstraint, StartdConstraintRemove );
++        	if ( matchedSlots ) {
++            		dprintf(D_ALWAYS,"NEG_STARTD_CONSTRAINT reduces machine "
++                   		 "count from %d to %d.\n", numDynGroupSlots, matchedSlots);
++            		if (StartdConstraintRemove) {
++	    			dprintf(D_ALWAYS,"NEG_STARTD_CONSTRAINT_REMOVE removes %d startdAds.\n", numDynGroupSlots-matchedSlots);
++	    		} 
++        	} else {
++            		dprintf(D_ALWAYS, "trimStartdAds: Warning, 0 out of %d machines match NEG_STARTD_CONSTRAINT. No slots to use.\n",
++                    		numDynGroupSlots);
++			matchedSlots=0;		// we constrained to match no slots
++        	}
++    	}
++
+ 		// If we are not considering preemption, we can save time
+ 		// (and also make the spinning pie algorithm more correct) by
+-		// getting rid of ads that are not in the Unclaimed state.
++		// getting rid of ads that are in claimed or preempting state.
+ 	
+ 	if ( ConsiderPreemption ) {
+ 			// we need to keep all the ads.
+-		return 0;
++		return matchedSlots;
+ 	}
+ 
+ 	startdAds.Open();
+@@ -2292,7 +2314,11 @@ trimStartdAds(ClassAdList &startdAds)
+ 	}
+ 	startdAds.Close();
+ 
+-	return removed;
++	if ( removed > 0 ) {
++		dprintf(D_FULLDEBUG, "Trimmed out %d Claimed and Preempting startd ads.\n",removed);
++	}
++	
++	return matchedSlots;
+ }
+ 
+ double Matchmaker::
+diff -rNup condor-7.4.4.orig/src/condor_negotiator.V6/matchmaker.h condor-7.4.4/src/condor_negotiator.V6/matchmaker.h
+--- condor-7.4.4.orig/src/condor_negotiator.V6/matchmaker.h	2011-06-13 13:38:24.000000000 -0400
++++ condor-7.4.4/src/condor_negotiator.V6/matchmaker.h	2011-06-13 13:41:48.000000000 -0400
+@@ -256,7 +256,7 @@ class Matchmaker : public Service
+ 
+ 			// If we are not considering preemption, this function will
+ 			// trim out startd ads that are not in the Unclaimed state.
+-		int trimStartdAds(ClassAdList &startdAds);
++		int trimStartdAds(int numDynGroupSlots, ClassAdList &startdAds);
+ 
+ 		bool SubmitterLimitPermits(ClassAd *candidate, double used, double allowed, double pieLeft);
+ 		double sumSlotWeights(ClassAdList &startdAds,double *minSlotWeight);
+@@ -287,10 +287,12 @@ class Matchmaker : public Service
+ 		bool want_inform_startd;	
+ 		/// Should the negotiator use non-blocking connect to contact startds?
+ 		bool want_nonblocking_startd_contact;
+-        ExprTree *DynQuotaMachConstraint;   // Filter machineAds by this
+-                                            // constraint before calculating
+-                                            // dynamic quotas.  Added for CDF.
++                ExprTree *StartdConstraint;   // Filter machineAds by this
++                                              // constraint before calculating
++                                              // dynamic quotas.  Added for CDF.
+ 
++		bool StartdConstraintRemove;
++		
+ 		StringList NegotiatorMatchExprNames;
+ 		StringList NegotiatorMatchExprValues;
+ 
