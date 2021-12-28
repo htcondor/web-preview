@@ -1,0 +1,1100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-v3/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-v3/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-v3/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-v3/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-v3/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-v3/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-v3/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Consumption Policies</title>
+
+    <script src="/web-preview/preview-v3/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-v3/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/release-highlights">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/release-plan">Release Schedule</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/new">News</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#user">Users</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#world">World</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#developer">Developers</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></li>
+        
+            <li><a class="dropdown-item" href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/description">What is HTCSS?</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/logos">Logos</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+                
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/release-highlights">Release Highlights</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/release-plan">Release Schedule</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></td></tr>
+            
+                <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/new">News</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a></h3>
+                            <div>
+                                <span class="text-muted">September 22, 2021</span>
+                            </div>
+                            <hr/>
+                            <a href="/web-preview/preview-v3/new">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#user">Users</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#world">World</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#developer">Developers</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+                <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-md-block col-lg-4 my-2">
+                    <a href="/featured-users"><b>Featured Users</b></a>
+                    
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/featured-users/2021-11-30-banq">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Centuries of newspapers are now easily searchable thanks to HTCSS
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 30, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/featured-users/2021-11-29-usgs">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Protecting ecosystems with HTC
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 29, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                </div>
+                <div class="d-none d-xl-block col-xl-4 my-2">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-v3/assets/images/banq-mw.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/featured-users/2021-11-30-banq">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
+                            <hr/>
+                            <a href="/web-preview/preview-v3/featured-users">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Featured Users
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-v3/assets/images/team-2021.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="https://chtc.cs.wisc.edu/people">CHTC Team Photo</a></h5>
+                        </div>
+                    </div>
+                </div>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCSS</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/description">What is HTCSS?</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/logos">Logos</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>Consumption Policies</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   Introduction to Consumption Policies
+  </h2>
+ </span>
+ A Consumption Policy is a policy expression that resides on a partitionable slot classad, as advertised by the startd on an HTCondor execute node, which governs the amount of resources used by a job match against that slot.
+ <p>
+  Each
+  <em>
+   kind
+  </em>
+  of resource (or resource "asset") has a corresponding Consumption Policy.  In a typical partitionable slot (p-slot), three resources are always defined: Cpus, Memory and Disk, which might advertise Consumption Policies as configured in this simple example:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># enable use of consumption policies
+CONSUMPTION_POLICY = True
+
+# define a simple consumption policy
+# (note, "target" refers to the scope of the candidate job classad being considered for a match)
+CONSUMPTION_CPUS = target.RequestCpus
+CONSUMPTION_MEMORY = target.RequestMemory
+CONSUMPTION_DISK = target.RequestDisk
+</pre>
+ </div>
+ <p>
+  The HTCondor negotiator matchmaking logic is aware of a Consumption Policy (CP) detected on a p-slot.  When a job matches against a p-slot with a CP, the amount of each resource dictated by its consumption policy is deducted from that p-slot.  The p-slot then remains available to match with another job.  In other words:
+  <strong>
+   Consumption Policies allow multiple jobs to be matched against a single partitionable slot during a negotiation cycle
+  </strong>
+  .  When the HTCondor startd is allocating a claim to a new match, the same Consumption Policy expressions are also evaluated to determine the resources that are subtracted from the partitionable slot (and added to the corresponding new dynamic slot).
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Motivation
+ </h3>
+ A partitionable slot presents resources that can service multiple jobs (frequently, all the resources available on a particular execute node).  However, the negotiator historically only matches one job to a slot per negotiation cycle -- that is, only a single request can be matched to a p-slot during each cycle, regardless of how many requests
+ <strong>
+  might
+ </strong>
+ be serviced.
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  current solutions
+ </h4>
+ The two existing mechanisms for assigning p-slot resources to multiple jobs are:
+ <ol>
+  <li>
+   Assign resources over multiple negotiation cycles
+  </li>
+  <li>
+   Allow a scheduler daemon to obtain multiple claims against a p-slot (by enabling CLAIM_PARTITIONABLE_LEFTOVERS).   This is also referred to as "scheduler splitting."
+  </li>
+ </ol>
+ <p>
+  The chief disadvantage of (1) is that it limits the rate at which a pool's partitionable resources can be allocated, particularly if the interval between negotiation cycles is long.  For example, if each p-slot can support 10 jobs, it will require 10 negotiator cycles to fully allocate all the slots resources to those jobs.  If the negotiation interval is set to 5 minutes, that means it might take
+  <em>
+   nearly an hour
+  </em>
+  (50 min) to fully utilize the pool's resources.
+ </p>
+ <p>
+  Using mechanism (2) -- scheduler splitting -- substantially increases the potential rate at which p-slot resources can be allocated, because the scheduler can obtain multiple claims from the slot in a faster loop that isn't rate limited by the negotiation interval.
+ </p>
+ <p>
+  There are limitations to scheduler splitting.  The first is that, unlike the negotiator, the scheduler does not have access to the Concurrency Limit accounting, and so this method cannot work when Concurrency Limits are under consideration.
+ </p>
+ <p>
+  Additionally, jobs from any
+  <em>
+   different
+  </em>
+  schedulers will not have access to any remaining resources until the next negotiation cycle.
+ </p>
+ <p>
+  Lastly, in a situation where accounting group quotas and/or submitter shares are smaller than a p-slot's slot weight, the negotiator will never match a p-slot to those requests, and so the scheduler will never have access to the slot so it can execute slot splitting.  This results in the possibility of accounting group starvation.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Consumption Policies
+ </h4>
+ Consumption Policies address the limitations described above in the following ways.
+ <p>
+  <em>
+   Fast resource allocation:
+  </em>
+  When the HTCondor negotiator matches a job against a partitionable slot configured with a Consumption Policy, it will deduct the resource assets (cpu, memory, etc) from that p-slot and keep it in the list.  Therefore, a p-slot can be matched against multiple jobs in the same negotiation cycle.  This allows p-slots to be fully loaded in a single cycle, instead of matching a single job per cycle.  Because this matching happens in the negotiator, it may also be referred to as "negotiator splitting"
+ </p>
+ <p>
+  <em>
+   Concurrency Limits:
+  </em>
+  The negotiator has access to all Concurrency Limit accounting, and so negotiator splitting via Consumption Policies works properly with all Concurrency Limits.
+ </p>
+ <p>
+  <em>
+   Multiple schedulers:
+  </em>
+  Because the negotiator has access to jobs from all schedulers, Consumption Policies allow a partitionable slot to service jobs from multiple schedulers in a single negotiation cycle.
+ </p>
+ <p>
+  <em>
+   Accounting Group Quotas:
+  </em>
+  The cost of matching a job against a slot is traditionally the value of the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+    SlotWeight
+   </a>
+  </span>
+  expression.  In a scenario where the slot weights of available p-slots are greater than an accounting group's quota, the jobs in that accounting group will be starved.  This kind of scenario becomes increasingly likely in a fine-grained accounting group configuration involving many smaller quotas, or when machines with larger amounts of resources and correspondingly large slot weights are in play.
+ </p>
+ <p>
+  When a p-slot with a Consumption Policy is matched then its match-cost is the
+  <em>
+   change
+  </em>
+  in the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+    SlotWeight
+   </a>
+  </span>
+  value, from before the match to after.  This means that a match is
+  <em>
+   only charged for the portion of the p-slot that it actually used
+  </em>
+  (as measured by the
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+    SlotWeight
+   </a>
+  </span>
+  expression), and so p-slots with large
+  <span class="wiki">
+   <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+    SlotWeight
+   </a>
+  </span>
+  values can generally be used by accounting groups with smaller quotas (and likewise by submitters having smaller fairshare values).
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  trade-offs
+ </h4>
+ One implication of negotiator splitting (Consumption Policies) is that the negotiator is responsible for matching all requests.   In an large-scale pool, this may make the negotiation cycle the rate-limiter for resource allocation.  A pool can support multiple schedulers, so scheduler splitting (CLAIM_PARTITIONABLE_LEFTOVERS) can scale by increasing the number of schedulers running on the pool.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Consumption Policies and Accounting
+ </h2>
+ <span class="subsubsection">
+  <h4>
+   match cost
+  </h4>
+ </span>
+ The match cost for a job against a slot with a Consumption Policy is the
+ <em>
+  change
+ </em>
+ in the
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+   SlotWeight
+  </a>
+ </span>
+ value from before the match to after.  It is this match cost value that is added to the corresponding submitter's usage in the HTCondor accountant.  A useful way to think about accounting with Consumption Policies is that the standard role of
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+   SlotWeight
+  </a>
+ </span>
+ is replaced with the change in
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/SlotWeight" title="Slot Weight">
+   SlotWeight
+  </a>
+ </span>
+ .
+ <p>
+  For example, consider the memory-driven consumption policy above:
+ </p>
+ <div class="code">
+  <pre class="code">CONSUMPTION_MEMORY = quantize(target.RequestMemory, {1024})
+SLOT_WEIGHT = floor(Memory / 1024)
+</pre>
+ </div>
+ <p>
+  Note that a job may acquire more than one of the "chunks" implied by the above policy.  Again, assume the slot has 4096MB of memory, for an initial slot weight of 4.  Suppose a job acquires 2048MB of that memory.  Then the match will reduce the partitionable slot's weight from 4 to 2, for a match cost of 4-2=2.  The submitter's usage will increase by 2.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  concurrency limits and accounting groups
+ </h4>
+ Consumption Policies and negotiator p-slot splitting properly respect both accounting group quotas and concurrency limits.
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Heterogeneous Resource Models
+ </h2>
+ Consumption Policies are configurable on a per-slot basis, which makes it straightforward to support multiple resource consumption models on a single pool.
+ <p>
+  For example, the following is a cpu-centric resource consumption policy:
+ </p>
+ <div class="code">
+  <pre class="code"># cpus will generally be exhausted first:
+CONSUMPTION_CPUS = target.RequestCpus
+CONSUMPTION_MEMORY = quantize(target.RequestMemory, {32})
+CONSUMPTION_DISK = quantize(target.RequestDisk, {128})
+SLOT_WEIGHT = Cpus
+</pre>
+ </div>
+ <p>
+  Another slot might be configured with a memory-centric policy:
+ </p>
+ <div class="code">
+  <pre class="code"># memory will generally be exhausted first:
+CONSUMPTION_CPUS = 1
+CONSUMPTION_MEMORY = quantize(target.RequestMemory, {1024})
+CONSUMPTION_DISK = quantize(target.RequestDisk, {128})
+SLOT_WEIGHT = floor(Memory / 1024)
+</pre>
+ </div>
+ <p>
+  Note that the slot weight expression is typically configured to correspond to the "most limiting" resource, and furthermore behaves as a
+  <em>
+   measure of the number of potential matches remaining on the partitionable slot
+  </em>
+  .
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Mixed Pools
+ </h2>
+ Consumption Policy logic is enabled by attributes defined on individual partitionable slots, and is detected on a per-slot basis.  This allows HTCondor pools to configure slots having Consumption Policies along side slots without them.
+ <p>
+  Additionally, it is valid to configure slots having Consumpion Policies on the same pool with slots using scheduler splitting (CLAIM_PARTITIONABLE_LEFTOVERS).
+ </p>
+ <p>
+  <strong>
+   NOTE
+  </strong>
+  : Configuring the same execute node with both Consumption Policies
+  <em>
+   and
+  </em>
+  CLAIM_PARTITIONABLE_LEFTOVERS is
+  <strong>
+   not supported
+  </strong>
+  .  If an execute node enables Consumption Policies, it cannot enable CLAIM_PARTITIONABLE_LEFTOVERS, and vice versa.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Consumption Policy Examples
+ </h2>
+ In the preceding discussion, examples of a cpu-centric and a memory-centric Consumption Policy were provided.   A few other examples are listed here.
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Extensible Resources
+ </h4>
+ All resource assets are required to have a Consumption Policy configured.  This includes Extensible Resources, if any are also present:
+ <div class="code">
+  <pre class="code"># declare an extensible resource for a claim-based consumption policy
+MACHINE_RESOURCE_tokens = 3
+# always consume 1 token, and none of anything else
+CONSUMPTION_TOKENS = 1
+CONSUMPTION_CPUS = 0
+CONSUMPTION_MEMORY = 0
+CONSUMPTION_DISK = 0
+# define cost in terms of available tokens for serving jobs
+SLOT_WEIGHT = Tokens
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Handle missing request attributes
+ </h4>
+ <span class="wiki">
+  <a class="missing" href="/web-preview/preview-v3/wiki-archive/pages/RequestXxx" title="Request Xxx">
+   RequestXxx
+  </a>
+ </span>
+ attributes are not always guaranteed to be present, so Consumption Policy expressions should take this into account. For example a policy that involves Extensible Resources cannot assume jobs will be requesting such a resource.
+ <div class="code">
+  <pre class="code"># declare an extensible resource
+MACHINE_RESOURCE_actuators = 8
+# policy for actuators that interprets missing request as 'zero', which is a good idiom for extensibe resources that many jobs are likely to not use or care about
+CONSUMPTION_ACTUATORS = ifThenElse(target.RequestActuators =!= undefined, target.RequestActuators, 0)
+</pre>
+ </div>
+ <span class="subsubsection">
+  <h4>
+   emulate a static slot
+  </h4>
+ </span>
+ This example uses a consumption policy to emulate static slot behavior
+ <div class="code">
+  <pre class="code"># consume all resources - emulate static slot
+CONSUMPTION_CPUS = TotalSlotCpus
+CONSUMPTION_MEMORY = TotalSlotMemory
+# Disk is unreliable -- TotalSlotDisk != Disk even on a virgin slot
+CONSUMPTION_DISK = floor(0.9 * TotalSlotDisk)
+# define weight to be 1, since this slot supports exactly one match
+SLOT_WEIGHT = 1
+</pre>
+ </div>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Multi-Centric Policy
+ </h4>
+ Which resource asset is "most limiting" might be contingent on job requirements.   It is possible to define slot weight to take this into account, as in this example:
+ <div class="code">
+  <pre class="code"># Either Cpus or Memory might be limiting, depending on job requirements
+CONSUMPTION_CPUS = target.RequestCpus
+CONSUMPTION_MEMORY = quantize(target.RequestMemory, {256})
+CONSUMPTION_DISK = quantize(target.RequestDisk, {128})
+# define slot weight as minimum of remaining-match estimate based on either cpus or memory:
+SLOT_WEIGHT = ifThenElse(Cpus &lt; floor(Memory/256), Cpus, floor(Memory/256))
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 justify-content-center">
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://ls.wisc.edu/">
+                    <img class="mw-100" height="75" src="/web-preview/preview-v3/assets/images/UW_Madison_Logo.png" alt="UW Madison Logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="px-3 d-block m-auto" href="https://www.nsf.org">
+                    <img class="" height="100" src="/web-preview/preview-v3/assets/images/NSF_Logo.png" alt="NSF Logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://morgridge.org/">
+                    <img class="" height="40" src="/web-preview/preview-v3/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-lg-8 text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
