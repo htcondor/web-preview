@@ -116,6 +116,8 @@
         
             <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></li>
         
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></li>
+        
             <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
         
     </ul>
@@ -131,11 +133,11 @@
         
             <li><a class="dropdown-item" href="/web-preview/preview-v3/new">News</a></li>
         
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
+        
             <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
-        
-            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
         
     </ul>
 </li>
@@ -421,6 +423,8 @@
             
                 <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></td></tr>
             
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></td></tr>
+            
                 <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
             
         </table>
@@ -432,11 +436,11 @@
             
                 <tr><td><a href="/web-preview/preview-v3/new">News</a></td></tr>
             
+                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+            
                 <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
             
                 <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
-            
-                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
             
         </table>
     </div>
@@ -828,15 +832,36 @@
         
         <b>5.1.1</b>
         <div>
-            
-<p>The HTCondor team is pleased to announce the release of HTCondor-CE 5.1.1.  Highlights of this release are: Improved restart time of HTCondor-CE View; Fixed bug that caused HTCondor-CE to ignore incoming BatchRuntime requests; Fixed RPM dependency issue when installing for non-HTCondor batch systems.  Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5"> update instructions</a> to update to this version:  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#511"> version history</a>. HTCondor-CE 5.1.1 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
+            <p>Highlights of this release are:</p>
+
+<ul>
+  <li>Improved restart time of HTCondor-CE View;</li>
+  <li>Fixed bug that caused HTCondor-CE to ignore incoming BatchRuntime requests;</li>
+  <li>Fixed RPM dependency issue when installing for non-HTCondor batch systems.</li>
+</ul>
+
+<p>Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5\">update instructions</a> to update to this version.</p>
 
         </div>
         
         <b>5.1.0</b>
         <div>
             
-<p>The HTCondor team is pleased to announce the release of HTCondor-CE 5.1.0.  Highlights of this release are: Add support for ClassAd transforms to the JobRouter; Add mapped user and X.509 attribute to local HTCondor pool AccountingGroup mappings to Job Routers configured to use the ClassAd transform syntax; Accept BatchRuntime attributes from incoming jobs to set their maximum walltime; Update the HTCondor-CE registry to Python 3; Enable SSL authentication by default for READ/WRITE authorization levels; APEL reporting scripts now use history files in the local HTCondor PER_JOB_HISTORY_DIR to collect job data; Use the GlobalJobID attribute as the APEL record lrmsID.  Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5"> update instructions</a> to update to this version:  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#510"> version history</a>. HTCondor-CE 5.1.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Add support for ClassAd transforms to the JobRouter;
+Add mapped user and X.509 attribute to local HTCondor pool AccountingGroup mappings
+to Job Routers configured to use the ClassAd transform syntax;</li>
+  <li>Accept BatchRuntime attributes from incoming jobs to set their maximum walltime;</li>
+  <li>Update the HTCondor-CE
+registry to Python 3;</li>
+  <li>Enable SSL authentication by default for READ/WRITE authorization levels;</li>
+  <li>APEL reporting scripts now use history files in the local HTCondor PER_JOB_HISTORY_DIR
+to collect job data;</li>
+  <li>Use the GlobalJobID attribute as the APEL record lrmsID.</li>
+</ul>
+
+<p>Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5\">update instructions</a> to update to this version.</p>
 
         </div>
         
