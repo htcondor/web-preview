@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-test/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-test/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-test/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-test/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-test/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-test/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-test/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>Transfer Daemon Manager And Schedd Meditation</title>
+
+    <script src="/web-preview/preview-test/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-test/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-test/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-test/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-test/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-test/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor/release-highlights">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor/release-plan">Release Schedule</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor-ce/release-highlights">Release Highlights</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/new">News</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/downloads/">Download</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/mail-lists#user">Users</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/mail-lists#world">World</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/mail-lists#developer">Developers</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/past_condor_weeks.html">Content Archives</a></li>
+        
+            <li><a class="dropdown-item" href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/description">What is HTCSS?</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-test/logos">Logos</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-test/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-test/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+                
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor/release-highlights">Release Highlights</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor/release-plan">Release Schedule</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor-ce/release-highlights">Release Highlights</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/new">News</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/downloads/">Download</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a></h3>
+                            <div>
+                                <span class="text-muted">September 22, 2021</span>
+                            </div>
+                            <hr/>
+                            <a href="/web-preview/preview-test/new">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-test/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/mail-lists#user">Users</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/mail-lists#world">World</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/mail-lists#developer">Developers</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+                <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-md-block col-lg-4 my-2">
+                    <a href="/featured-users"><b>Featured Users</b></a>
+                    
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/featured-users/2021-11-30-banq">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Centuries of newspapers are now easily searchable thanks to HTCSS
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 30, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/featured-users/2021-11-29-usgs">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Protecting ecosystems with HTC
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 29, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                </div>
+                <div class="d-none d-xl-block col-xl-4 my-2">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-test/assets/images/banq-mw.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/featured-users/2021-11-30-banq">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
+                            <hr/>
+                            <a href="/web-preview/preview-test/featured-users">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-test/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Featured Users
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCSS</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/description">What is HTCSS?</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-test/logos">Logos</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/description.html">What is HTCSS?</a></h5>
+                            <hr class="mb-2">
+                            <div>
+                                HTCondor Software Suite (HTCSS) provides an array of services for automating
+                                and managing batch workloads and computing resources.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>Transfer Daemon Manager And Schedd Meditation</h1>
+<div id="content">
+ <div class="verbatim">
+  <pre>This describes the "Transfer Daemon Manager" and schedd functionality to
+talk to a transferd.
+
+There are two objects of note, the TransferDaemon object, and the
+TDMan object.  The schedd creates a single TDMan object which manages
+more then one TransferDaemon object. It is ultimately intended that the
+TDMan object become its own first class daemon that can be matched
+to a schedd for the purposes of handling I/O.
+
+---------------------
+TransferDaemon Object
+---------------------
+
+The TransferDaemon object is the client interface (but not necessarily
+in the sense of a Daemon object) to a running transfer daemon
+instance. TransferDaemons are identified by the fully qualified name
+of the user for which the transferd was created, an identification
+token unique to each transferd and a status which dictates if it in the
+process of starting up, ready for work, etc. The object is responsible
+for accepting and handling the pushing of TransferRequests to and from
+the transferd and handling updates from the transferd. There are certain
+callbacks that the schedd will poke into the TransferDaemon object to make
+it easier to handle certain state changes of a TransferDaemon. Examples
+are when the actual transferd finishes its registration with the schedd,
+or when it dies and needs reaping.
+
+An important thing to realize is that the TransferDaemon object is
+responsible for calling the callbacks the schedd associated with the
+TransferRequests at opportune times when managing the TransferRequests.
+
+Also, note that for each transferd there is a socket connection from it to
+the schedd, and from the schedd to it. The former is used to accept the
+initial registration and then handle updates of TransferRequests, and the
+latter used to push more work to the transferd. This architecture is not
+set in stone but was convenient at the time.
+
+Here are the main things that the TransferDaemon object does. I will describe
+them as control flows:
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FUNCTION TransferDaemon::add_transfer_request(TransferRequest *treq)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
++ Append the transfer request to the end of a list in the TransferDaemon
+  object of such things.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FUNCTION TransferDaemon::push_transfer_requests(void)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
++ Assert the TransferDaemon has a socket to the actual transferd.
++ Processing the TransferRequests serially:
+ + Call the "pre push callback" on the TransferRequest
+   + If the returned behavioral control enum was TREQ_ACTION_CONTINUE, then
+     stop processing the TransferRequest and go on to the next one.
+   + If the returned behavioral control enum was TREQ_ACTION_FORGET, then
+     remove the TransferRequest from future consideration and go on to the
+     next one.
+   + If the returned behavioral control enum was TREQ_ACTION_TERMINATE,
+     then remove the TransferRequest from future consideration, actually
+     free it, and move on to the next one.
+ + Send the TransferRequest to the transferd. The transferd will create a
+   "capability" string which represents a token that can be used to talk about
+   or identify the TransferRequest at a future time. It returns this string
+   as an attribute in a classad along with another attribute that represents
+   success/failure of the operation.
+ + If the transferd accepted the TransferRequest, then associate the capability
+    with the TransferRequest in an "in progress" hash table that the
+    TransferDaemon object is maintaining. Otherwise, poke into the
+    TransferRequest the reason for failure.
+ + Now we call the "post push callback" the schedd had associated with this
+   TransferRequest and another behavioral control enum is returned.
+   The current handling of this is unfinished and we assume
+   TREQ_ACTION_CONTINUE and don't handle what happens if the callback suddenly
+   wanted to forget about or terminate the TransferRequest while it is
+   delegated to the transferd itself.
++ end of the function
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FUNCTION TransferDaemon::update_transfer_request(ClassAd *update)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
++ Get the capability string out of the update classad. This capability is
+  associated with the in progress TransferRequest.
++ If we don't have an in progress TransferRequest then ignore and return.
++ Call the "update" callback on the TransferRequest passing in the update ad.
+  + Do a similar behavor to "pre/post push callback" in the above description.
++ Return from the function
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FUNCTION TransferDaemon::reap_all_transfer_requests(void)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
++ Iterate over all non in progress TransferRequest objects.
+ + Call the "reaper" call back for the TransferRequest.
+ + Assert that the callback returned TREQ_ACTION_TERMINATE, since other
+   values are meaningless at this time.
+ + Free the TransferRequest.
++ Iterate over all in progress TransferRequest objects.
+ + Call the "reaper" call back for the TransferRequest.
+ + Assert that the callback returned TREQ_ACTION_TERMINATE, since other
+   values are meaningless at this time.
+ + Free the TransferRequest.
+
+------------
+TDMan Object
+------------
+
+The TDMan object is a Service and manages multiple TransferDaemon objects.
+It does a little work during the transferd registration phase to ensure
+the right transferd goes with the right user.
+
+Primarily, the TDMan object:
+  1. Finds/Invokes new transferd instances as needed.
+  2. Associates the transferd with a user and an identity specific to the
+     transferd.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+FUNCTION TDMan::invoke_a_td(TransferDaemon *td)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+The purpose of this function is to invoke a transfer daemon and set up the
+object passed in with information about the newly created transferd.
+
++ Assert that the passed in argument isn't null.
++ Now we check the status of the passed in TransferDaemon object.
+ + If it is TD_PRE_INVOKED (the usual case), TD_INVOKED (it died after
+   invocation, but before registering), or TD_MIA (not implemented fully, it
+   means something else killed the transferd and we noticed at a different
+   place in the control flow) we keep going.
+ + If it is TD_REGISTERED, we return false, since the daemon is already up
+   and running in a manner we expect.
++ Store the TransferDaemon pointer into a table holding all TransferDaemons.
++ Associate the TransferDaemon object with its own identity.
++ Find the executable we'll be running by paraming for TRANSFERD, except
+  if it isn't present.
++ Construct the argument list for the transferd, we'll be passing:
+  -f because it is daemoncore
+  --schedd &lt;schedd's sinful string&gt;
+  --id &lt;the id stored in the TransferDaemon object&gt;
+  --timeout 1200 # twenty minutes to time out
++ Register a TDMan::transferd_reaper() reaper callback for the newly invoked
+  transferd.
++ Create_Process() the transferd. TODO, currently, this happens as root, but it
+  needs to happen as the user. This portion of the code hadn't been finished.
++ Keep track of the transferd daemon in a pid table so the reaper knows which
+  transferd exited when that happens.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+REAPER TDMan::transferd_reaper(long pid, int status)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
++ Remove the association of the pid to the TransferDaemon.
++ Remove the association of the user and identity from their respective tables.
++ Call the "reaper" callback on the TransferDaemon and perform whatever
+  behavor is returned. HOWEVER, we expect TD_ACTION_TERMINATE and anything
+  else is met with EXCEPT.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+HANDLER TDMan::transferd_registration()
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+The purpose of this function is to figure out what to do when an invoked
+transferd comes back and registers itself with the schedd for general use for
+that user.
+
++ Since this is a handler, we are passed a command and a socket.
++ We authenticate the socket and bail if it goes wrong.
++ We get the socket's fully qualified user name.
++ We accept a "registration classad" from the transferd which will contain:
+  ATTR_TD_SINFUL = &lt;the sinful string of the transferd&gt;
+  ATTR_TD_ID = &lt;the id the transferd was invoked with on the command line&gt;
++ Now we validate that we actually have a TransferDaemon object associated
+  with that id and user in the right internal tables. The TransferDaemon
+  must also be in the TD_INVOKED state. If any of these aren't true,
+  send back a failure classad containing ATTR_TREQ_INVALID_REQUEST and
+  ATTR_TREQ_INVALID_REASON and close the connection. Otherwise, send a
+  classad back with ATTR_TREQ_INVALID_REQUEST set to FALSE.
++ Set the status of the in memory TransferDaemon object to TD_REGISTERED.
++ Store the sinful string of the transferd.
++ Store the socket which we'll use later for updates.
+
+At this point, we need two sockets, one from the transferd to the schedd
+(which is the transferd registration socket and in whose handler we now reside)
+and one from the schedd back to the transferd, which we now create. It is
+VITALLY important that these are non-blocking connections, and that the
+control flow on the transferd side has gone back to daemoncore when the schedd
+attempts to contact it. Otherwise, we get deadlock.
+
++ Create a DCTransferD object and call its setup_treq_channel() to get a
+  socket to the transferd.
++ Store the socket into the TransferDaemon object.
++ We'll be expecting updates from the TransferD, so Register_Socket
+  TDMan::transferd_update() on the socket we got back from setup_treq_channel().
++ We create a TDUpdateContinuation object which stashes a pile of variables
+  that we Register_DataPtr() with so the update handler knows for whom it is
+  working when it is invoked.
++ Now we call any "registration callback" that had been associated with the
+  TransferDaemon by the schedd. This can do any other work the schedd needs on
+  behalf of registration. We're going to expect the TD_ACTION_CONTINUE behavior
+  and EXCEPT otherwise.
++ Push any TransferRequests which had been added to the TransferDaemon.
++ Return KEEP_STREAM.
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+SOCKET_HANDLER transferd_update(Stream *sock)
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+The purpose of this function is to handle any updates about complete
+TransferRequests that the transferd sends back to the schedd.
+
++ Get the associated DataPtr from daemon core about this handler. This
+  represents the context of whish TransferDaemon for which this handler
+  is associated, among other things.
++ Get the "update ad" from the transferd. It must contain:
+  ATTR_TREQ_CAPABILITY = &lt;a string&gt;
+  ATTR_TREQ_UPDATE_STATUS = &lt;a string&gt;
+  ATTR_TREQ_UPDATE_REASON = &lt;a string&gt;
++ Look up the TransferDaemon by its ID.
++ Call td-&gt;update_transfer_request() and pass it the update. This function
+  does the real work with this update ad.
++ return KEEP_STREAM
+
+----------------------
+How the Schedd Uses It
+----------------------
+
+The schedd cares about the transferd currently in two contexts:
+  1. When condor_submit wants to submit a job.
+     This is pretty much implemented and has been known to function.
+     This control flow may start a transferd.
+
+  2. When the schedd wants to start a job.
+     The control flow is tentatively implemented, but is incomplete.
+     This control flow may start a transferd.
+
+------
+CASE 1
+------
+
+The main method by which this occurs is a new handler in the schedd called
+Scheduler::requestSandboxLocation(int mode, Stream* s) which is associated
+with the REQUEST_SANDBOX_LOCATION command integer.
+
+The high level view of what condor_submit does is:
+ 1. Contact the schedd to get a cluster id &amp; submit job ad.
+ 2. Contact the schedd with the REQUEST_SANDBOX_LOCATION command to have
+    it locate/start a transferd and give back the sinful string to contact it.
+ 3. Contact the transferd with the TRANSFERD_WRITE_FILES command and
+    actually upload the files specified in the jobad.
+
+The reason it does three contacts is because this is the best method to
+ensure backwards compatibility with previous protocols in addition to easy
+indirection and delegation of the "scheduler", "where should my files go",
+and "please accept my files, here they are" services that HTCondor provides.
+
+I would do control flow explanations here, but frankly I'm out of time for
+documenting this. Therefore:
+
+Check out these functions:
+ Scheduler::requestSandboxLocation()
+  The schedd's means by which it starts a transferd and gives the sinful string
+  back to condor_submit.
+
+ DCTransferD::upload_job_files()
+  The means by which condor_submit actually send the sandbox to a transferd.
+
+ And look for 'case STM_USE_TRANSFERD' in condor_submit.V6/submit.cpp
+  This will tell you how condor_submit actualy interacts with the schedd.
+  We default the "Sandbox Transfer Method" AKA "STMethod" to
+  STM_USE_SCHEDD_ONLY for now. Ultimately, this should be changed to
+  STM_USE_TRANSFERD to enable the transferd functionality on submit.
+
+------
+CASE 2
+------
+
+The motivation of this code was that the schedd would notice if a job
+needed a transferd, and if so, start one up, ensure that it is registered
+and ready to go, then start up the transferd, and then the shadow,
+telling it what transferd it should use. When the starter is created on the
+remote side, the shadow tells it the sinful string of the submit side transferd
+and the starter would create the execute side transferd, tell it the
+submit side transferd sinful string, and then the transfer would commence.
+
+A converse-like operation would occur when it would be time for the files
+to come home. Basically, the starter ask the shadow for a sinful string of a
+submit side transferd and then tell the execute side transferd to upload its
+files there.
+
+The control flow for this starts in Scheduler:StartJobHandler().
+The important part is that if privsep is enabled, and the job needs a
+transferd, we then start up a transferd and put the job back into the queue
+until the transferd has registered itself.
+
+The functions to be cognizant of are:
+ Scheduler::jobNeedsTransferd() # returns false, feature wasn't completed.
+ Scheduler::availableTransferd()
+ Scheduler::startTransferd()
+
+The CASE 2 portion of the transferd code base is the least developed.
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-test/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-test/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-test/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-test/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-test/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-test/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-test/license">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-test/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-test/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="/web-preview/preview-test/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-test/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 justify-content-center">
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://ls.wisc.edu/">
+                    <img class="mw-100" height="75" src="/web-preview/preview-test/assets/images/UW_Madison_Logo.png" alt="UW Madison Logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="px-3 d-block m-auto" href="https://www.nsf.org">
+                    <img class="" height="100" src="/web-preview/preview-test/assets/images/NSF_Logo.png" alt="NSF Logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://morgridge.org/">
+                    <img class="" height="40" src="/web-preview/preview-test/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-lg-8 text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
