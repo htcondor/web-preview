@@ -1,0 +1,150 @@
+diff --git a/src/condor_q.V6/queue.cpp b/src/condor_q.V6/queue.cpp
+index 3662032..d51d468 100644
+--- a/src/condor_q.V6/queue.cpp
++++ b/src/condor_q.V6/queue.cpp
+@@ -4054,8 +4054,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",RUNNING);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",RUNNING);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4091,10 +4094,16 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",COMPLETED);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",COMPLETED);
++	}
+ 
+-	jobClassAd->Insert("LastRemoteHost",jobClassAd->Remove("RemoteHost"));
++	{
++	  ExprTree *oldhost=jobClassAd->Remove("RemoteHost");
++	  jobClassAd->Insert("LastRemoteHost",oldhost);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4151,8 +4160,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",SUSPENDED);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",SUSPENDED);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4177,8 +4189,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",RUNNING);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",RUNNING);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4194,8 +4209,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",IDLE);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",IDLE);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4218,8 +4236,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",IDLE);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",IDLE);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4246,8 +4267,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",IDLE);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",IDLE);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4272,8 +4296,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	}
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",HELD);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",HELD);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4306,8 +4333,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",IDLE);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",IDLE);
++	}
+ 
+ 	// Update the time attributes
+ 	{
+@@ -4326,8 +4356,11 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ 	ClassAd *jobClassAd = cmap[jobid];
+ 
+ 	// Change status, preserving the old one
+-	jobClassAd->Insert("LastJobStatus",jobClassAd->Remove("JobStatus"));
+-	jobClassAd->InsertAttr("JobStatus",REMOVED);
++        {
++	  ExprTree *oldstatus=jobClassAd->Remove("JobStatus");
++	  jobClassAd->Insert("LastJobStatus",oldstatus);
++	  jobClassAd->InsertAttr("JobStatus",REMOVED);
++	}
+ 
+ 	// Update the time attributes
+ 	{
