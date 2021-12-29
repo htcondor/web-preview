@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-v3/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-v3/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-v3/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-v3/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-v3/assets/images/favicons/safari-pinned-tab.svg" color="#5bbad5">
+    <link rel="shortcut icon" href="/web-preview/preview-v3/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-v3/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCondor">
+    <meta name="description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCondor">
+    <meta property="og:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCondor">
+    <meta property="twitter:description" content="HTCondor is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCondor made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/assets/images/HTC.png">
+
+    <title>How To Suspend Jobs</title>
+
+    <script src="/web-preview/preview-v3/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-v3/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-v3/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/release-highlights">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/release-plan">Release Schedule</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/new">News</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/downloads/">Download</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#user">Users</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#world">World</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#developer">Developers</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></li>
+        
+            <li><a class="dropdown-item" href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/description">What is HTCSS?</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/logos">Logos</a></li>
+        
+    </ul>
+</li>
+            
+                
+
+<li class="dropdown">
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-v3/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+                
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/release-highlights">Release Highlights</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/release-plan">Release Schedule</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor-CE</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">Overview</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/download/">Download</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>General</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/new">News</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a></h3>
+                            <div>
+                                <span class="text-muted">September 22, 2021</span>
+                            </div>
+                            <hr/>
+                            <a href="/web-preview/preview-v3/new">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Documentation</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor/documentation">HTCondor</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-ce/documentation">HTCondor-CE</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Support</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+            
+        </table>
+    </div>
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>Email Lists</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#user">Users</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#world">World</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#developer">Developers</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCondor Week</th></tr>
+            
+                <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">Content Archives</a></td></tr>
+            
+                <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-md-block col-lg-4 my-2">
+                    <a href="/featured-users"><b>Featured Users</b></a>
+                    
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/featured-users/2021-11-30-banq">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Centuries of newspapers are now easily searchable thanks to HTCSS
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 30, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/featured-users/2021-11-29-usgs">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Protecting ecosystems with HTC
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 29, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                </div>
+                <div class="d-none d-xl-block col-xl-4 my-2">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-v3/assets/images/banq-mw.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/featured-users/2021-11-30-banq">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
+                            <hr/>
+                            <a href="/web-preview/preview-v3/featured-users">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-v3/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Featured Users
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+
+
+                
+                
+                
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>HTCSS</th></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/description">What is HTCSS?</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/logos">Logos</a></td></tr>
+            
+        </table>
+    </div>
+
+    <div class="col-auto mx-4 my-2">
+        <table>
+            <tr><th>CHTC</th></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+            
+                <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+            
+        </table>
+    </div>
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/description.html">What is HTCSS?</a></h5>
+                            <hr class="mb-2">
+                            <div>
+                                HTCondor Software Suite (HTCSS) provides an array of services for automating
+                                and managing batch workloads and computing resources.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>How To Suspend Jobs</h1>
+<div id="content">
+ <span class="section">
+  <h2>
+   How to suspend jobs in place of preemption
+  </h2>
+ </span>
+ <p>
+  <br/>
+  <br/>
+ </p>
+ <hr/>
+ <strong>
+  NOTE:
+ </strong>
+ Current versions of HTCondor include the command-line tool
+ <code>
+  condor_suspend
+ </code>
+ to easily suspend jobs. See the
+ <a class="external" href="http://research.cs.wisc.edu/htcondor/manual/current/condor_suspend.html">
+  condor_suspend manual page
+ </a>
+ .
+ <p>
+  <strong>
+   The below is kept just for historical purposes
+  </strong>
+ </p>
+ <p>
+ </p>
+ <hr/>
+ <br/>
+ <br/>
+ <br/>
+ <p>
+  Known to work with HTCondor version: 7.0
+ </p>
+ <p>
+  HTCondor can suspend a process and then later resume right where it left off.  This is similar to standard universe checkpointing, except it cannot move the suspended job from one machine to another.  The mechanism works with all types of jobs, without any special preparation of the job.
+ </p>
+ <p>
+  There are two cases where you might prefer suspension in place of killing jobs.  One is preemption caused by other activity on the machine (e.g. a user coming back to their desktop).  The other is preemption caused by higher priority jobs getting matched to machines that are already busy.  Both of these cases are covered below.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to suspend jobs instead of killing them when higher priority jobs need to run
+ </h3>
+ <p>
+  There is a section in the HTCondor Manual on this topic
+  <a class="external" href="http://www.cs.wisc.edu/condor/manual/v7.0/3_5Startd_Policy.html#SECTION00459600000000000000">
+   here
+  </a>
+  .  The example in the manual requires that you divide jobs into two classes: high priority and low priority.  When the high priority jobs arrive on a machine, existing low priority jobs get suspended.
+ </p>
+ <p>
+  Below is an example in which the relative priority of the jobs to be suspended and the other class of jobs is left up to the usual mechanisms of startd RANK and user priority.  You still have to divide the jobs into two classes: normal jobs and those that should be suspended when they are preempted by normal jobs.  This is useful, for example, when you have a special class of jobs which are long running and not checkpointable, but you don't want them to unfairly hog the pool.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># You may want to advertise double the amount of system memory
+# if you have enough virtual memory to allow the foreground job
+# to consume all of memory while the suspended job gets pushed
+# into swap memory.  There is currently no convenient way to
+# tell HTCondor you want to oversubscribe your memory, so you
+# have to hard-code the amount of memory you want to advertise
+# by uncommenting and filling in the following:
+# Memory = TWICE_YOUR_SYSTEM_MEMORY
+
+NUM_CPUS = 2
+
+# So that the suspension slot can see the state
+# of the other slot, we need to have some things
+# advertised about each slot in the ClassAds of
+# all the other slots on the same machine:
+STARTD_SLOT_EXPRS = $(STARTD_SLOT_EXPRS) State, CurrentRank
+
+# For informational purposes, put IsSuspensionSlot
+# in the startd ClassAd:
+STARTD_ATTRS = $(STARTD_ATTRS) IsSuspensionSlot
+
+# Slot 1 is the "normal" batch slot
+SLOT1_IsSuspensionSlot = False
+# Slot 2 suspends its job, rather than preempting it
+SLOT2_IsSuspensionSlot = True
+
+
+START    = SlotID == 1 &amp;&amp; ($(SLOT1_START)) || \
+           SlotID == 2 &amp;&amp; ($(SLOT2_START))
+CONTINUE = SlotID == 1 &amp;&amp; ($(SLOT1_CONTINUE)) || \
+           SlotID == 2 &amp;&amp; ($(SLOT2_CONTINUE))
+PREEMPT  = SlotID == 1 &amp;&amp; ($(SLOT1_PREEMPT)) || \
+           SlotID == 2 &amp;&amp; ($(SLOT2_PREEMPT))
+SUSPEND  = SlotID == 1 &amp;&amp; ($(SLOT1_SUSPEND)) || \
+           SlotID == 2 &amp;&amp; ($(SLOT2_SUSPEND))
+
+
+# The purpose of the following expression is to prevent a
+# job from starting on slot 1 if it has less priority to run
+# than the job already running on slot 2, because once we let
+# a job run on slot 1, the slot 2 job will be suspended.
+# This expression refers to attributes that are only defined
+# when requirements are being evaluated by the Negotiator:
+# SubmittorPrio [sic] and RemoteUserPrio
+
+SLOT1_HAS_PRIO = SubmittorPrio =?= UNDEFINED || \
+                vm2_RemoteUserPrio =?= UNDEFINED || \
+                SubmittorPrio &lt; 1.2 * vm2_RemoteUserPrio || \
+                vm2_CurrentRank =?= UNDEFINED || \
+                MY.Rank &gt; vm2_CurrentRank
+
+# Slot 1 is a normal execution slot
+SLOT1_START    = TARGET.IsSuspensionJob =!= true &amp;&amp; ($(SLOT1_HAS_PRIO))
+SLOT1_CONTINUE = True
+SLOT1_PREEMPT  = False
+SLOT1_SUSPEND  = False
+
+# Slot 2 is for jobs that get suspended while slot 1 is busy
+SLOT2_START    = TARGET.IsSuspensionJob =?= true
+SLOT2_CONTINUE = slot1_State =?= "Unclaimed" || slot1_State =?= "Owner"
+SLOT2_PREEMPT  = FALSE
+SLOT2_SUSPEND  = slot1_State =?= href="/web-preview/preview-v3/wiki-archive/pages/Claimed" </pre>
+ </div>
+ <p>
+  To submit a suspension job, you could put something like the following in your submit file:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">+IsSuspensionJob = True
+requirements = TARGET.IsSuspensionSlot
+</pre>
+ </div>
+ <p>
+  The example policy above does not prevent preemption of suspension jobs by other suspension jobs.  It only prevents preemption of suspension jobs by other normal jobs.  If you want to prevent that, you could do something like this:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code"># Do not preempt suspension jobs (for up to 24 hours)
+MaxJobRetirementTime = (MY.IsSuspensionSlot =?= True) * 3600 * 24
+</pre>
+ </div>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  How to suspend jobs instead of killing them when the machine is busy
+ </h3>
+ <p>
+  You just need to make sure WANT_SUSPEND and SUSPEND are true in the cases where you want suspension.  The following example is similar to the default policy that ships in HTCondor's configuration file.  It has been made more aggressive in what types of jobs it suspends (everything) and for how long it suspends them before giving up and killing them.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">KeyboardBusy            = (KeyboardIdle &lt; $(MINUTE))
+# Suspend jobs for up to one day
+MaxSuspendTime          = (3600 * 24)
+ContinueIdleTime        =  60 * $(MINUTE)
+
+
+# Suspend jobs if:
+# 1) the keyboard has been touched, OR
+# 2a) The cpu has been busy for more than 2 minutes, AND
+# 2b) the job has been running for more than 90 seconds
+SUSPEND = ( $(KeyboardBusy) || \
+            ( (CpuBusyTime &gt; 2 * $(MINUTE)) \
+              &amp;&amp; $(ActivationTimer) &gt; 90 ) )
+
+WANT_SUSPEND = SUSPEND
+
+
+# Preempt jobs if:
+# 1) The job is suspended and has been suspended longer than we want
+# 2) OR, we don't want to suspend this job, but the conditions to
+#    suspend jobs have been met (someone is using the machine)
+PREEMPT = ( ((Activity == "Suspended") &amp;&amp; \
+            ($(ActivityTimer) &gt; $(MaxSuspendTime))) \
+           || (SUSPEND &amp;&amp; (WANT_SUSPEND == False)) )
+
+CONTINUE = ( $(CPUIdle) &amp;&amp; ($(ActivityTimer) &gt; 10) \
+             &amp;&amp; (KeyboardIdle &gt; $(ContinueIdleTime)) )
+
+</pre>
+ </div>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-v3/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/security/">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/license">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="/web-preview/preview-v3/uw-support/">Contract Support</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 justify-content-center">
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://ls.wisc.edu/">
+                    <img class="mw-100" height="75" src="/web-preview/preview-v3/assets/images/UW_Madison_Logo.png" alt="UW Madison Logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="px-3 d-block m-auto" href="https://www.nsf.org">
+                    <img class="" height="100" src="/web-preview/preview-v3/assets/images/NSF_Logo.png" alt="NSF Logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://morgridge.org/">
+                    <img class="" height="40" src="/web-preview/preview-v3/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                <script type="text/javascript">
+                    document.write("Updated &raquo; "+lastMod(document.lastModified))
+                </script>
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-lg-8 text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
