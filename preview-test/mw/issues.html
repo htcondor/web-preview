@@ -1,0 +1,142 @@
+<!DOCTYPE html> 
+<!-- 
+-     DON'T EDIT THIS!
+-     It's a generated page, you need to edit the source and rebuild
+-     git clone /afs/cs.wisc.edu/p/condor/repository/condor-web.git
+-     cd condor-web
+-     &lt;edit pages under src&gt;
+-     git add
+-     git commit
+-     git push
+-     ./generate_html --live
+-->
+<html>
+
+<head>
+    <!-- Elements common to many pages -->
+    <meta charset="UTF-8" />
+    <meta name="description" content="HTCondor Homepage" />
+    <link rel="stylesheet" type="text/css" href="https://research.cs.wisc.edu/htcondor/prosimii-screen.css" media="screen, tv, projection" title="Default" />
+	<!-- javascript used throughout the site -->
+    <script src="https://research.cs.wisc.edu/htcondor/sitewide.js" type="text/javascript"></script>
+     
+    <!-- Items for specific pages -->
+    <title>HTCondor - Master-Worker - Known Issues</title>
+    
+  </head>
+
+  <body>
+    <!-- For non-visual user agents: -->
+      <div id="top"><a href="#main-copy" class="doNotDisplay doNotPrint">Skip to main content.</a></div>
+
+      <div id="container">
+
+    <!-- ##### Header ##### -->
+
+    <div id="header">
+    	<div class="midHeader">
+	  <div class="iconHeader">
+	    <a href="https://research.cs.wisc.edu/htcondor/index.html"><img src="https://research.cs.wisc.edu/htcondor/images/white_bird_logo.png" alt="HTCondor High Throughput Computing" height="75"></a>
+	  </div>
+       
+       <div class="navAndSearch">
+    	<div class="navBar">
+  	  <span class="doNotDisplay">Navigation:</span>
+	  <a href="https://research.cs.wisc.edu/htcondor/index.html">Home</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/new.html">News</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/downloads/">Download</a> |
+	  <a href="https://research.cs.wisc.edu/htcondor/publications.html">Publications</a> |
+	  <a href="mailto:htcondor-admin@cs.wisc.edu">Contact Us</a>
+	</div>
+
+	<div class="searchForm" >
+<script>
+  (function() {
+    var cx = '010754594835990937497:xijuwhbknew';
+    var gcse = document.createElement('script');
+    gcse.type = 'text/javascript';
+    gcse.async = true;
+    gcse.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') +
+        '//www.google.com/cse/cse.js?cx=' + cx;
+    var s = document.getElementsByTagName('script')[0];
+    s.parentNode.insertBefore(gcse, s);
+  })();
+</script>
+<gcse:searchbox-only></gcse:searchbox-only>
+	</div>
+	</div>
+	</div>
+</div>
+
+    <!-- ##### Main Copy ##### -->
+
+    <div id="main-copy">
+
+
+<!-- Page body -->
+<table width="600" border=0 cellspacing=0 cellpadding=0>
+<tr>
+ <td width=170 valign=top>
+ <a href="index.html"><img src="MWLogo.gif" height=227 width=158 border=0></a>
+ <p>
+ <ul>
+  <li><a href="overview.html">Overview</a>
+  <li><a href="papers.html">MW Paper</a>
+  <li><a href="mw/examples/matmul/Matmul.html/">Base Class Docs</a>
+  <li><a href="mw/examples/matmul/Matmul.html/">Example App Docs</a>
+        <li><a href="talks/dec99.ps.gz">Winter 1999 Talk</a> </li>
+        <li><a href="talks/jun99/index.htm">Summer 1999 Talk</a> </li>
+        <li><a href="talks/feb99/index.htm">Spring 1999 Talk</a> </li>
+        <li><a href="talks/mar00/index.htm">March 2000 Talk</a> </li>
+        <li><A href="talks/feb04/mw.pdf">February 2004 Talk</a> </li>
+  <li><a href="solvers.html">Solvers</a>
+        <li><a href="doc/html">Documentation</a> </li>
+
+ </ul>
+ <td width=10>
+ <td valign=top>
+
+<h2>Known Issues</h2> 
+
+The following are known issues when compiling MW:
+
+<ul>
+ <li>Since MW uses condor_compile, only certain versions of gcc can be used to compile MW. See <a href="http://www.cs.wisc.edu/condor/uwcs/">here</a> for more info.
+ <li>The -ldl flag is required when linking with libcondorapi.a
+</ul>
+
+<p>
+
+The following are known issues when running MW:
+<ul>
+ <li>
+With the short-running examples, the master starts sending tasks to the 
+first worker that reports back to it.  It can often take condor a few 
+seconds (or longer) to get the other workers going.  In this short time 
+frame, all of the tasks can be finished by the first worker. Even there are
+a lot of workers available, all the tasks will just run on one.
+
+A quick way to check to see if this is the case is to simply make the worker do more work for each task.  Add a long sleep to the worker's execute_task method, or add a busy loop.  Then, you'll see the parallelism kick in.
+</ul>
+
+</table>
+
+    </div>
+
+    <!-- ##### Footer ##### -->
+
+    <div id="footer">
+        For comments or questions about this website, please
+	<a href="mailto:htcondor-admin@cs.wisc.edu">email htcondor-admin@cs.wisc.edu</a><br />
+	This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+      <script type="text/javascript">
+	      document.write("Updated &raquo; "+lastMod(document.lastModified))
+      </script>
+    </div>
+
+
+
+    </div> <!-- end of div#container -->
+  </body>
+</html>
+

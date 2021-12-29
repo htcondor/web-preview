@@ -1,0 +1,44 @@
+#######################################################################
+#
+#  The (base) Makefile for MW
+#
+#######################################################################
+
+# This stuff will be changed when switching to autoconf
+PREFIX = /p/condor/workspaces/shared.1/metaneos/linderot/NEW/MW
+EXEC_PREFIX = $(PREFIX)
+
+SHELL=/bin/sh
+
+# Now the targets
+
+all: source
+
+source:
+	cd ./src; make all; cd ..
+
+ex:
+	cd ./examples/fib; make all; cd ../..
+
+install: all install-directories
+	echo "Copying libraries"
+	cp -f ./src/libMW.a $(EXEC_PREFIX)/lib
+	cp -f ./src/RMComm/MW-File/libMWfilemaster.a $(EXEC_PREFIX)/lib
+	cp -f ./src/RMComm/MW-File/libMWfileworker.a $(EXEC_PREFIX)/lib
+	cp -f ./src/RMComm/MW-CondorPVM/libMWcondorpvmmaster.a $(EXEC_PREFIX)/lib
+	cp -f ./src/RMComm/MW-CondorPVM/libMWcondorpvmworker.a $(EXEC_PREFIX)/lib
+	echo "Copying include files"
+	cp -f src/MW.h src/MWDriver.h src/MWStats.h src/MWTask.h\
+		src/MWWorker.h  src/MWWorkerID.h  src/MWprintf.h\
+		src/RMComm/MWRMComm.h $(EXEC_PREFIX)/include
+
+install-directories:
+	$(SHELL) mkinstalldirs $(EXEC_PREFIX)/lib $(EXEC_PREFIX)/include
+
+clean:
+	cd src; make clean; cd ..
+	cd ./examples/fib; make clean; cd ../..
+
+distclean: clean
+	rm -rf $(EXEC_PREFIX)/lib
+#	rm config.log config.cache (and Makefile)

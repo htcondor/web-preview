@@ -1,0 +1,212 @@
+MW/FATCOP TODO list   
+-------------------
+
+
+
+-- Lots of experiments and debugging to do!!!!!
+
+-- Advanced branching rules
+ 
+   -- Strong branching.  Merge in Qun's code, though I would use the
+        PseudoCostManager to do this directly.
+
+        Qun has done this -- test it out and see if it makes sense.
+
+
+-- Different node selection rules within the Driver.  Generally, I
+    think you would want to do best bound (maybe best estimate -- but
+    I don't compute estimates right now).  When the active set gets
+    too large, switch to sending "deep" nodes to the workers.
+
+    Qun has also implemented this.
+   
+
+-- There are lots of "strategy" issues to be worked out.
+   
+   #1)  We need more than two "levels" of grainsize.  
+        Once the size of the task pool starts "going down",
+        we might want to reduce the grainsize so that we can try to
+        ensure that everyone will have work to do towards the end.
+
+   a) The grainsize must be smaller at the first nodes.
+
+   b) Information such as cuts and pseudocosts might only want to be passed
+      towards the top of the tree.  Or passed at all?  I have things set
+      up so that they can be passed.  Should this information be passed
+      only at initialization, or "updated" each time a task is sent. 
+
+-- All tasks should have a "minimum" time, like 5 seconds, if you
+   haven't fathomed the whole subtree
+
+
+-- Root reduced cost fixing
+
+   -- Qun implemented this, and it appears to be working.
+
+-- Heuristics
+   -- Diving  -- Jeff implemented.
+
+   -- Locking?
+   -- User defined...
+
+-- DOC++ Everything
+
+
+-- Put timers in the various sections of the code?
+
+   Jeff did this.  More timers may be needed.  (Try to account for *all* the
+   time that the workers spend doing things).
+
+-- It is possible to do (local) reduced cost fixing, but then we need
+   to rewrite the stack classes.  (You will need to do this if you ever want to
+   do GUB branching).	 
+
+   -- Right now we do it at the top of the subtree.
+
+-- Turn off cuts if they're not working
+ 
+   -- Jeff did this.
+
+
+-- GCD cutoff logic in getStopTol()
+    -- CPLEX even has "gcd"logic if *fractional* objective function.
+       Look at vpm2!
+
+-- Optimized cut passing?
+
+-- remove couts and replace them with MWprintfs where possible...
+   Also -- keep a consitent "level" as to what is printed and document this.
+
+-- Set the target_num_workers() better based on how things are progressing.
+
+
+-- Can you use quantify?  Where can the code be sped up? 
+
+
+
+Quasi-BUGS
+----------
+
+
+-- Handle objective sense better.
+
+
+
+Unexplained Bugs
+----------------
+
+Once upon a time, The "running" list got messed up on pk1, 
+and the problem never stopped.   Can you reproduce it with the
+new fatcop version.
+
+ -- This was fixed.
+
+
+LPSolver things
+---------------
+-- What happens to CPLEX license on suspend?
+
+-- SOPLEX returns infeasible, CPLEX returns (dual) unbounded?
+
+
+qun
+----------
+
+-- solved vs unsolved
+
+-- node preprocessing, and local reduced cost fixing
+
+-- fathom more at master
+
+-- pseudocost passing
+
+-- measure congestion
+
+-- a possible bug on modglob
+
+-- minos does not have LPGetItCount() and LPSetSimplexUpperBound()
+   LPSolveDual() is the same as LPSolvePrimal()
+
+-- user defined heuristics
+
+-- OSL
+
+-- let preprocess return a state
+
+changed
+-----------
+
+cproblemspec:
+
+add copy constructor
+add a function copy() that copies a matrix and lower (upper) bound 
+preprocess() interface changed
+
+PRINO:
+
+add some access function to build copy constructor
+
+
+Presolve:
+
+Make sure node preprocessing doesnot change matrix size
+Make sure only non-fixed vars are processed to modify coefs and bounds
+
+FATCOP-worker:
+
+keep local cut pool
+save original formulation
+node preprocessing
+local reduced cost fixing
+modify gencuts() to avoid cuts overwriting
+
+FATCOP-driver
+
+check bounds before put new nodes to active pool
+build an option on nodepreprocessing
+
+FATCOP-task
+
+add nodepreprocessing 
+
+pseudocost
+
+only pack when needed
+
+
+
+
+Jeff's latest things
+--------------------
+
+-- Should have consistent use of "tol", EPSILON, DBL_MAX, hinf, linf, etc...
+
+-- "flags" should be sent as part of driver_task_data()
+    (like for node preprocessing, cuts, and heuristic)
+
+
+??? What search strategies actually exist?
+
+
+
+-- We may need a "cutpool" on the worker, especially if we start
+   broadcasting cuts.
+
+   Maybe if you fill up the cut pool, you should throw all cuts out
+   and just start generating all over again?
+
+-- You also need to update the checkpointing to write out all the
+    strategy information
+
+-- Another idea.  "Local" cut generation at the root of the subtree.
+   (Especially if you get implication and clique inequalities).  
+   Then, just thorw the cuts away when you are done...
+
+-- I am becoming less and less enamored with the current node
+   preprocessing.  Why can't be just do some bound fixing -- without
+   having to save and load all our cuts all the time.  
+
+
+
+-- Better use of basis information.  When should we use the "root"
+   basis, and when should we use the "last" basis.
