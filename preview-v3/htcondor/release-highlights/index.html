@@ -118,8 +118,6 @@
         
             <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></li>
         
-            <li><a class="dropdown-item" href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></li>
-        
     </ul>
 </li>
             
@@ -425,8 +423,6 @@
             
                 <tr><td><a href="/web-preview/preview-v3/htcondor-ce/release-highlights">Release Highlights</a></td></tr>
             
-                <tr><td><a href="https://htcondor.com/htcondor-ce/v5/releases/#htcondor-ce-5-version-history">Release Notes&#11023;</a></td></tr>
-            
         </table>
     </div>
 
@@ -608,16 +604,10 @@
                     </div>
                 </div>
             </div>
+
             <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
 
-                <div class="d-none d-lg-block col-lg-4">
-                    <div class="card h-100">
-                        <img src="/web-preview/preview-v3/assets/images/team-2021.jpg" class="card-img-top" alt="Card Image">
-                        <div class="card-body d-flex flex-column">
-                            <h5><a class="text-decoration-none" href="https://chtc.cs.wisc.edu/people">CHTC Team Photo</a></h5>
-                        </div>
-                    </div>
-                </div>
+
 
                 
                 
@@ -646,6 +636,18 @@
     </div>
 
 
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/description.html">What is HTCSS?</a></h5>
+                            <hr class="mb-2">
+                            <div>
+                                HTCondor Software Suite (HTCSS) provides an array of services for automating
+                                and managing batch workloads and computing resources.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -855,22 +857,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
     
-      <b>9.2.0</b>
-      <div>
-        <p>This release contains all of the bug fixes from the 9.0.6 LTS release and the 9.1.4, 9.1.5, 9.1.6 limited patch releases.</p>
-
-<p>Enhancements in the release include:</p>
-
-<ul>
-  <li>Add SERVICE node that runs alongside the DAG for the duration of the DAG</li>
-  <li>Fix problem where proxy delegation to older HTCondor versions failed</li>
-  <li>Jobs are now re-run if the execute directory unexpectedly disappears</li>
-  <li>HTCondor counts the number of files transfered at the submit node</li>
-  <li>Fix a bug that caused jobs to fail when using newer Singularity versions</li>
-</ul>
-
-      </div>
-    
       <b>9.1.3</b>
       <div>
         
@@ -938,24 +924,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.8.13</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.13. A stable series release contains significant bug fixes.  Highlights of this release are: condor_ssh_to_job now maps CR and NL to work with editors like nano; Improved the performance of data transfer in condor_ssh_to_job; HA replication now accepts SHA-2 checksums to prepare for MD5 removal; Submission to NorduGrid ARC CE works with newer ARC CE versions; Fixed condor_annex crashes on platforms with newer compilers; Fixed “use feature: GPUsMonitor” to locate the monitor binary on Windows; Fixed a bug that prevented using the “@” character in an event log path.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-13"> Version History</a>.  HTCondor 8.8.13 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.9.10</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.9.10. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.8.12 stable release.  Enhancements in the release include: Fix bug where negotiator stopped making matches when group quotas are used; Support OAuth, SciTokens, and Kerberos credentials in local universe jobs; The Python schedd.submit method now takes a Submit object; DAGMan can now optionally run a script when a job goes on hold; DAGMan now provides a method for inline jobs to share submit descriptions; Can now add arbitrary tags to condor annex instances; Runs the “singularity test” before running the a singularity job.  Further details can be found in the <a href="https://htcondor.readthedocs.io/en/latest/version-history/development-release-series-89.html#version-8-9-10"> Development Version History</a> and the <a href="https://htcondor.readthedocs.io/en/latest/version-history/stable-release-series-88.html#version-8-8-12"> Stable Version History</a>. HTCondor 8.9.10 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.12</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.12. A stable series release contains significant bug fixes.  Highlights of this release are: Added a family of version comparison functions to ClassAds; Increased default Globus proxy key length to meet current NIST guidance.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-12"> Version History</a>.  HTCondor 8.8.12 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -966,24 +938,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.8.11</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.11. A stable series release contains significant bug fixes.  Highlights of this release are: HTCondor now properly tracks usage over vanilla universe checkpoints; New ClassAd equality and inequality operators in the Python bindings; Fixed a bug where removing in-use routes could crash the job router; Fixed a bug where condor_chirp would abort after success on Windows; Fixed a bug where using MACHINE_RESOURCE_NAMES could crash the startd; Improved condor c-gahp to prioritize commands over file transfers; Fixed a rare crash in the schedd when running many local universe jobs; With GSI, avoid unnecessary reverse DNS lookup when HOST_ALIAS is set; Fix a bug that could cause grid universe jobs to fail upon proxy refresh.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-11"> Version History</a>.  HTCondor 8.8.11 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.9.8</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.9.8. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.8.10 stable release.  Enhancements in the release include: Added htcondor.dags and htcondor.htchirp to the HTCondor Python bindings; New condor_watch_q tool that efficiently provides live job status updates; Added support for marking a GPU offline while other jobs continue; The condor_master command does not return until it is fully started; Deprecated several Python interfaces in the Python bindings.  Further details can be found in the <a href="https://htcondor.readthedocs.io/en/latest/version-history/development-release-series-89.html#version-8-9-8"> Development Version History</a> and the <a href="https://htcondor.readthedocs.io/en/latest/version-history/stable-release-series-88.html#version-8-8-10"> Stable Version History</a>. HTCondor 8.9.8 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.10</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.10. A stable series release contains significant bug fixes.  Highlights of this release are: condor_qedit can no longer be used to disrupt the condor_schedd; Fixed a bug where the SHARED_PORT_PORT configuration setting was ignored; Ubuntu 20.04 and Amazon Linux 2 are now supported; In MacOSX, HTCondor now requires LibreSSL, available since MacOSX 10.13.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-10"> Version History</a>.  HTCondor 8.8.10 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -994,24 +952,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.8.9</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.9. A stable series release contains significant bug fixes.  Highlights of this release are: Proper tracking of maximum memory used by Docker universe jobs Fixed preempting a GPU slot for a GPU job when all GPUs are in use; Fixed a Python crash when queue_item_data iterator raises an exception; Fixed a bug where slot attribute overrides were ignored; Calculates accounting group quota correctly when more than 1 CPU requested; Updated HTCondor Annex to accommodate API change for AWS Spot Fleet; Fixed a problem where HTCondor would not start on AWS Fargate; Fixed where the collector could wait forever for a partial message; Fixed streaming output to large files (&gt;2Gb) when using the 32-bit shadow.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.9/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.9 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.9.5</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.9.5. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.8.7 stable release.  Enhancements in the release include: Added a new mode that skips jobs whose outputs are newer than their inputs; Added command line tool to help debug ClassAd expressions; Added port forwarding to Docker containers; You may now change some DAGMan throttles while the DAG is running; Added support for session tokens for pre-signed S3 URLs; Improved the speed of the negotiator when custom resources are defined; Fixed interactive submission of Docker jobs; Fixed a bug where jobs would not be killed when getting an OOM notification.  Further details can be found in the <a href="http://htcondor.org/manual/v8.9.5/DevelopmentReleaseSeries89.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.9.5/StableReleaseSeries88.html"> Stable Version History</a>. HTCondor 8.9.5 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.7</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.7. A stable series release contains significant bug fixes.  Highlights of this release are: Updated condor_annex to work with upcoming AWS Lambda function changes; Added the ability to specify the order that job routes are applied; Fixed a bug that could cause remote condor submits to fail; Fixed condor_wait to work when the job event log is on AFS; Fixed RPM packaging to be able to install condor-all on CentOS 8; Period (‘.’) is allowed again in DAGMan node names.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.7/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.7 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1022,31 +966,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.8.6</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.6. A stable series release contains significant bug fixes.  Highlights of this release are: Initial support for CentOS 8; Fixed a memory leak in SSL authentication; Fixed a bug where “condor_submit -spool” would only submit the first job; Reduced encrypted file transfer CPU usage by a factor of six; “condor_config_val -summary” displays changes from a default configuration; Improved the ClassAd documentation, added many functions that were omitted.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.6/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.6 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.9.3</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.9.3. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.8.5 stable release.  Enhancements in the release include: TOKEN and SSL authentication methods are now enabled by default; The job and global event logs use ISO 8601 formatted dates by default; Added Google Drive multifile transfer plugin; Added upload capability to Box multifile transfer plugin; Added Python bindings to submit a DAG; Python ‘JobEventLog’ can be pickled to facilitate intermittent readers; 2x matchmaking speed for partitionable slots with simple START expressions; Improved the performance of the condor_schedd under heavy load; Reduced the memory footprint of condor_dagman; Initial implementation to record the circumstances of a job’s termination.  Further details can be found in the <a href="http://htcondor.org/manual/v8.9.3/DevelopmentReleaseSeries89.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.9.3/StableReleaseSeries88.html"> Stable Version History</a>. HTCondor 8.9.3 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.5</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.5. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed two performance problems on Windows; Fixed Java universe on Debian and Ubuntu systems; Added two knobs to improve performance on large scale pools; Fixed a bug where requesting zero GPUs would require a machine with GPUs; HTCondor can now recognize nVidia Volta and Turing GPUs.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.5/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.5 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.4</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.4. A stable series release contains significant bug fixes.  Highlights of this release are: Python 3 bindings - see version history for details (requires EPEL on EL7); Can configure DAGMan to dramatically reduce memory usage on some DAGs; Improved scalability when using the python bindings to qedit jobs; Fixed infrequent schedd crashes when removing scheduler universe jobs; The condor_master creates run and lock directories when systemd doesn’t; The condor daemon obituary email now contains the last 200 lines of log.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.4/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.4 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1057,24 +980,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.8.3</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.3. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where jobs were killed instead of peacefully shutting down; Fixed a bug where a restarted schedd wouldn’t connect to its running jobs; Improved file transfer performance when sending multiple files; Fix a bug that prevented interactive submit from working with Singularity; Orphaned Docker containers are now cleaned up on execute nodes; Restored a deprecated Python interface that is used to read the event log.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.3/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.3 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.9.1</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.9.1. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.8.2 stable release.  Enhancements in the release include: An efficient curl plugin that supports uploads and authentication tokens; HTCondor automatically supports GPU jobs in Docker and Singularity; File transfer times are now recorded in the user job log and the job ad.  Further details can be found in the <a href="http://htcondor.org/manual/v8.9.1/DevelopmentReleaseSeries89.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.9.1/StableReleaseSeries88.html"> Stable Version History</a>. HTCondor 8.9.1 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.2</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.2. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed problems with condor_ssh_to_job and Singularity jobs; Fixed a problem that could cause condor_annex to crash; Fixed a problem where the job queue would very rarely be corrupted; condor_userprio can report concurrency limits again; Fixed the GPU discovery and monitoring code to map GPUs in the same way; Made the CHIRP_DELAYED_UPDATE_PREFIX configuration knob work again; Fixed restarting HTCondor from the Service Control Manager on Windows; Fixed a problem where local universe jobs could not use condor_submit; Restored a deprecated Python interface that is used to read the event log; Fixed a problem where condor_shadow reuse could confuse DAGMan.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.2/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.2 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1085,31 +994,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.8.1</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.1. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed excessive CPU consumption with GPU monitoring; GPU monitoring is off by default; enable with “use feature: GPUsMonitor”; HTCondor now works with the new CUDA version 10 libraries; Fixed a bug where sometimes jobs would not start on a Windows execute node; Fixed a bug that could cause DAGman to go into an infinite loop on exit; The JobRouter doesn’t forward the USER attribute between two UID Domains; Made Collector.locateAll() more efficient in the Python bindings; Improved efficiency of the negotiation code in the condor_schedd.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.1/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.1 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.8.0</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.0. After a year and a half of development, this is the first release of the new stable series.  Highlights of this release are: Automatically add AWS resources to your pool using HTCondor Annex; The Python bindings now include submit functionality; Added the ability to run a job immediately by replacing a running job; A new mini(ht)condor package makes single node installations easy; HTCondor now tracks and reports GPU utilization; Several performance enhancements in the collector; The grid universe can create and manage VM instances in Microsoft Azure; The MUNGE security method is now supported on all Linux platforms.  More details about the new features can be found in the <a href="http://htcondor.org/manual/v8.8.0/Upgradingfromthe86seriestothe88seriesofHTCondor.html"> Upgrade Section</a>.  A few bugs and memory leaks were fixed during our stabilization effort.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.0/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.0 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.7.10</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.7.10. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.6.13 stable release.  Enhancements in the release include: Can now interactively submit Docker jobs; The administrator can now add arguments to the Singularity command line; The MUNGE security method is now supported on all Linux platforms; The grid universe can create and manage VM instances in Microsoft Azure; Added a single-node package to facilitate using a personal HTCondor.  Further details can be found in the <a href="http://htcondor.org/manual/v8.7.10/DevelopmentReleaseSeries87.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.7.10/StableReleaseSeries86.html"> Stable Version History</a>. HTCondor 8.7.10 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.13</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.13. A stable series release contains significant bug fixes.  Highlights of this release are: Made the Python ‘in’ operator case-insensitive for ClassAd attributes; Python bindings are now built for the Debian and Ubuntu platforms; Fixed a memory leak in the Python bindings; Fixed a bug where absolute paths failed for output/error files on Windows; Fixed a bug using Condor-C to run Condor-C jobs; Fixed a bug where Singularity could not be used if Docker was not present.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.13/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.13 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1120,31 +1008,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.6.12</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.12. A stable series release contains significant bug fixes.  Highlights of this release are: Support for Debian 9, Ubuntu 16, and Ubuntu 18; Fixed a memory leak that occurred when SSL authentication fails; Fixed a bug where invalid transform REQUIREMENTS caused a Job to match; Fixed a bug to allow a queue super user to edit protected attributes; Fixed a problem setting the job environment in the Singularity container; Fixed several other minor problems.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.12/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.12 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.11</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.11. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a problem where condor_preen would crash on an active submit node; Improved systemd configuration to clean up processes if the master crashes; Fixed several other minor problems.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.11/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.11 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.7.8</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.7.8. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.6.11 stable release.  Enhancements in the release include: The condor annex can easily use multiple regions simultaneously; HTCondor now uses CUDA_VISIBLE_DEVICES to tell which GPU devices to manage; HTCondor now reports GPU memory utilization.  Further details can be found in the <a href="http://htcondor.org/manual/v8.7.8/DevelopmentReleaseSeries87.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.7.8/StableReleaseSeries86.html"> Stable Version History</a>. HTCondor 8.7.8 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.10</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.10. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a problem where condor_preen would crash on an active submit node; Improved systemd configuration to clean up processes if the master crashes; Fixed several other minor problems.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.10/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.10 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1162,31 +1029,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.6.9</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.9. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where some Accounting Groups could get too much surplus quota; Fixed a Python binding bug where some queries could corrupt memory; Fixed a problem where preen could block the schedd for a long time; Fixed a bug in Windows where the job sandbox would not be cleaned up; Fixed problems with the interaction between the master and systemd; Fixed a bug where MAX_JOBS_SUBMITTED could be permanently reduced; Fixed problems with very large disk requests.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.9/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.9 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.7</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.7. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where memory limits might not be updated in cgroups; Add SELinux type enforcement rules to allow condor_ssh_to_job to work; Updated systemd configuration to shutdown HTCondor in an orderly fashion; The curl_plugin utility can now do HTTPS transfers; Specifying environment variables now works with the Python Submit class.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.7/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.7 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.7.4</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.7.4. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.6.7 stable release.  Enhancements in the release include: Improvements to DAGMan including support for late job materialization; Updates to condor_annex including improved status reporting; When submitting jobs, HTCondor can now warn about job requirements; Fixed a bug where remote CPU time was not recorded in the history; Improved support for OpenMPI jobs; The high availability daemon now works with IPV6 and shared_port; The HTCondor Python bindings are now available for Python 2 and 3 in pip.  Further details can be found in the <a href="http://htcondor.org/manual/v8.7.4/11_2Development_Release.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.7.4/11_4Stable_Release.html"> Stable Version History</a>. HTCondor 8.7.4 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.6</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.6. A stable series release contains significant bug fixes.  Highlights of this release are: HTCondor daemons no longer crash on reconfig if syslog is used for logging; HTCondor daemons now reliably leave a core file when killed by a signal; Negotiator won’t match machines with incompatible IPv{4,6} protocol; On Ubuntu, send systemd alive messages to avoid restarting HTCondor; Fixed a problem parsing old ClassAd string escapes in the python bindings; Properly parse CPU time for Slurm grid universe jobs; Claims are released when parallel univ jobs are removed while claiming; Starter won’t get stuck when a job is removed with JOB_EXIT_HOOK defined; To reduce audit logging, added cgroup rules to SELinux profile.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.6/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.6 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1197,31 +1043,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.6.5</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.5. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a memory leak that would cause the condor_collector to slowly grow; Prevent the condor_starter from hanging when using cgroups on Debian; Fixed several issues that occur when IPv6 is in use; Support for using an ImDisk RAM drive on Windows as the execute directory; Fixed a bug where condor_rm rarely removed another one of the user’s jobs; Fixed a bug with parallel universe jobs starting on partitionable slots.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.5/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.5 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.4</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.4. A stable series release contains significant bug fixes.  Highlights of this release are: Python bindings are now available on MacOSX; Fixed a bug where PASSWORD authentication could fail to exchange keys; Pslot preemption now properly handles custom resources, such as GPUs; condor_submit now checks X.509 proxy expiration.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.4/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.4 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.7.2</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.7.2. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.6.4 stable release.  Enhancements in the release include: Improved condor_schedd performance by turning off file checks by default; condor_annex -status finds VM instances that have not joined the pool; Able to update an annex’s lease without adding new instances; condor_annex now keeps a command log; condor_q produces an expanded multi-line summary; Automatically retry and/or resume http file transfers when appropriate; Reduced load on the condor_collector by optimizing queries; A python based condor_top tool.  Further details can be found in the <a href="http://htcondor.org/manual/v8.7.2/11_2Development_Release.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.7.2/11_4Stable_Release.html"> Stable Version History</a>. HTCondor 8.7.2 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.3</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.3. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where using an X.509 proxy might corrupt the job queue log; Fixed a memory leak in the Python bindings.  More details about the fixes can be found in the <a href="manual/v8.6.3/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1232,45 +1057,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.6.2</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.2. A stable series release contains significant bug fixes.  Highlights of this release are: New metaknobs for mapping users to groups; Now case-insensitive with Windows user names when storing credentials; Signal handling in the OpenMPI script; Report RemoteSysCpu for Docker jobs; Allow SUBMIT_REQUIREMENT to refer to X509 secure attributes; Linux kernel tuning script takes into account the machine’s role.  More details about the fixes can be found in the <a href="manual/v8.6.2/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.1</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.1.  Highlights of this release are: condor_q works in situations where user authentication is not configured; Updates to work with Docker version 1.13; Fixed several problems with the Job Router; Update scripts to support current versions of Open MPI and MPICH2; Fixed a bug that could corrupt the job queue log when the disk is full.  More details about the fixes can be found in the <a href="manual/v8.6.1/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.1 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.7.0</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.7.0. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.6.1 stable release.  Enhancements in the release include: Performance improvements in collector’s ingestion of ClassAds; Added collector attributes to report query times and forks; Removed extra white space around parentheses when unparsing ClassAds; Technology preview of the HTCondor Annex.  Further details can be found in the <a href="manual/v8.7.0/10_2Development_Release.html"> Development Version History</a> and the <a href="manual/v8.7.0/10_4Stable_Release.html"> Stable Version History</a>. HTCondor 8.7.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.6.0</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.0. After a year of development, this is the first release of the new stable series.  Highlights of this release are: condor_q shows shows only the current user’s jobs by default; condor_q summarizes related jobs (batches) on a single line by default; Users can define their own job batch name at job submission time; Immutable/protected job attributes make SUBMIT_REQUIREMENTS more useful; The shared port daemon is enabled by default; Jobs run in cgroups by default; HTCondor can now use IPv6 addresses (Prefers IPv4 when both present); DAGMan: Able to easily define SCRIPT, VARs, etc., for all nodes in a DAG; DAGMan: Revamped priority implementation; DAGMan: New splice connection feature; New slurm grid type in the grid universe for submitting to Slurm; Numerous improvements to Docker support; Several enhancements in the python bindings.  Further details can be found in the <a href="manual/v8.6.0/10_2Upgrading_from.html">Upgrade Section</a>.  A few bugs were fixed during our stabilization effort.  More details about the fixes can be found in the <a href="manual/v8.6.0/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.11</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.11. A stable series release contains significant bug fixes. This release is the last planned release of the 8.4 series.  Highlights of this release are: Fixed a bug which delayed startd access to stard cron job results; Fixed a bug in pslot preemption that could delay jobs starting; Fixed a bug in job cleanup at job lease expiration if using glexec; Fixed a bug in locating ganglia shared libraries on Debian and Ubuntu.  Further details can be found in the <a href="manual/v8.4.11/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.11 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.10</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.10. A stable series release contains significant bug fixes.  Highlights of this release are: Updated SELinux profile for Enterprise Linux; Fixed a performance problem in the schedd when RequestCpus was an expression; Preserve permissions when transferring sub-directories of the job’s sandbox; Fixed HOLD_IF_CPUS_EXCEEDED and LIMIT_JOB_RUNTIMES metaknobs; Fixed a bug in handling REMOVE_SIGNIFICANT_ATTRIBUTES.  Further details can be found in the <a href="manual/v8.4.10/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.10 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1288,31 +1078,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.4.9</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.9. A stable series release contains significant bug fixes.  Highlights of this release are: The condor_startd removes orphaned Docker containers on restart; Job Router and HTCondor-C job submission prompts schedd reschedule; Fixed bugs in the Job Router’s hooks; Improved systemd integration on Enterprise Linux 7; Upped default number of Chirp attributes to 100, and made it configurable; Fixed a bug where variables starting with STARTD. or STARTER. were ignored.  Further details can be found in the <a href="manual/v8.4.9/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.9 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.5.6</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.5.6. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.4.8 stable release.  Highlights of the release are: The -batch output for condor_q is now the default; Python bindings for job submission and machine draining; Numerous Docker usability changes; New options to limit condor_history results to jobs since last invocation; Shared port daemon can be used with high availability and replication; ClassAds can be written out in JSON format; More flexible ordering of DAGMan commands; Efficient PBS and SLURM job monitoring; Simplified leases for grid universe jobs.  Further details can be found in the <a href="manual/v8.5.6/10_2Development_Release.html"> Development Version History</a> and the <a href="manual/v8.5.6/10_4Stable_Release.html"> Stable Version History</a>. HTCondor 8.5.6 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.8</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.8. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a memory leak triggered by the python htcondor.Schedd().query() call; Fixed a bug that could cause Bosco file transfers to fail; Fixed a bug that could cause the schedd to crash when using schedd cron jobs; condor_schedd now rejects jobs when owner has no account on the machine; Fixed a new bug in 8.4.7 where remote condor_history failed without -limit; Fixed bugs triggered by the reconfiguration of the high-availability daemon; Fixed a bug where condor_master could hang when using shared port on Windows; Fixed a bug with the -xml option on condor_q and condor_status; A few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.8/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.7</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.7. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug that could cause the schedd to become unresponsive; Fixed a bug where the Docker Universe would not set the group ID; Docker Universe jobs now drop all Linux capabilities by default; Fixed a bug where subsystem specific configuration parameters were ignored; Fixed bugs with history file processing on the Windows platform; A few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.7/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.7 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1330,24 +1099,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.4.6</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.6. A stable series release contains significant bug fixes.  Highlights of this release are: fixed a bug that could cause a job to fail to start in a dynamic slot; fixed a negotiator memory leak when using partitionable slot preemption; fixed a bug that caused supplemental groups to be wrong during file transfer; properly identify the Windows 10 platform; fixed a typographic error in the LIMIT_JOB_RUNTIMES policy; fixed a bug where maximum length IPv6 addresses were not parsed; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.6/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.6 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.5.3</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.5.3. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.4.5 stable release.  Enhancements in the release include: Use IPv6 (and IPv4) interfaces if they are detected; Prefer IPv4 addresses when both are available; Count Idle and Running jobs in Submitter Ads for Local and Scheduler universes; Can submit jobs to SLURM with the new “slurm” type in the Grid universe; HTCondor is built and linked with Globus 6.0.  Further details can be found in the <a href="manual/v8.5.3/10_2Development_Release.html">Version History</a>. HTCondor 8.5.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.5</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.5. A stable series release contains significant bug fixes.  Highlights of this release are: fixed a bug that would cause the condor_schedd to send no flocked jobs; fixed a bug that caused a 60 second delay using tools when DNS lookup failed; prevent using accounting groups with embedded spaces that crash the negotiator; fixed a bug that could cause use of ports outside the port range on Windows; fixed a bug that could prevent dynamic slot reuse when using many slots; fixed a bug that prevented correct utilization reports from the job router; tune kernel when using cgroups to avoid OOM killing of jobs doing heavy I/O; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.5/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.5 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1358,45 +1113,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.4.4</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.4. A stable series release contains significant bug fixes.  Highlights of this release are: fixed a bug that could cause the collector to crash when DNS lookup fails; fixed a bug that caused Condor-C jobs with short lease durations to fail; fixed bugs that affected EC2 grid universe jobs; fixed a bug that prevented startup if a prior version shared port file exists; fixed a bug that could cause the condor_shadow to hang on Windows; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.4/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.4 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.5.1</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.5.1. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.4.3 stable release.  Enhancements in the release include: the shared port daemon is enabled by default; the condor_startd now records the peak memory usage instead of recent; the condor_startd advertises CPU submodel and cache size; authorizations are automatically setup when “Match Password” is enabled; added a schedd-constraint option to condor_q.  With the shared port daemon enabled, all HTCondor daemons share a single inbound network port. This change makes it much easier to construct a firewall configuration that allows HTCondor use.  Further details can be found in the <a href="manual/v8.5.1/10_2Development_Release.html">Version History</a>. HTCondor 8.5.1 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.3</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.3. A stable series release contains significant bug fixes.  Highlights of this release are: fixed the processing of the -append option in the condor_submit command; fixed a bug to run more that 100 dynamic slots on a single execute node; fixed bugs that would delay daemon startup when using shared port on Windows; fixed a bug where the cgroup VM limit would not be set for sizes over 2 GiB; fixed a bug to use the ec2_iam_profile_name for Amazon EC2 Spot instances; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.3/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.2</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.2. A stable series release contains significant bug fixes.  Highlights of this release are: a bug fix to prevent the condor_schedd from crashing; a bug fix to honor TCP_FORWARDING_HOST; Standard Universe works properly in RPM installations of HTCondor; the RPM packages no longer claim to provide Globus libraries; bug fixes to DAGMan’s “maximum idle jobs” throttle; several other bug fixes, consult the version history.   Further details can be found in the <a href="manual/v8.4.2/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.4.1</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.1. A stable series release contains significant bug fixes.  This release contains all of the bug fixes from the recent HTCondor 8.2.10 release.  Highlights of this release are: four new policy metaknobs to make configuration easier; a bug fix to prevent condor daemons from crashing on reconfiguration; an option natural sorting option on condor_status; support of admin to mount certain directories into Docker containers; many other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.1/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.1 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.10</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.2.10. A stable series release contains significant bug fixes.  Highlights of this release are: an updated RPM to work with SELinux on EL7 platforms; fixes to the condor_kbdd authentication to the X server; a fix to allow the condor_kbdd to work with shared port enabled; avoid crashes when using more than 1024 file descriptors on EL7; fixed a memory leak in the ClassAd split() function; condor_vacate will error out rather than ignore conflicting arguments; a bug fix to the JobRouter to properly process the queue on restart; a bug fix to prevent sending spurious data on a SOAP file transfer; a bug fix to always present jobs in order in condor_history.  A complete list of fixed bugs can be found in the <a href="manual/v8.2.10/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.10 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1407,24 +1127,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.4.0</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor version 8.4.0. After a year of development, this is the first release of the new stable series.  This version contains: a Docker Universe to run a Docker container as an HTCondor job; the submit file can queue a job for each file found; the submit file can contain macros; a dry-run option to condor_submit to test the submit file without any actions; HTCondor pools can use IPv4 and IPv6 simultaneously; execute directories can be encrypted upon user or administrator request; Vanilla Universe jobs can utilize periodic application-level checkpoints; the administrator can establish job requirements; numerous scalability changes.  Further details can be found in the <a href="manual/v8.4.0/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.3.8</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.3.8. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.2.9 stable release.  Enhancements in the release include: a script to tune Linux kernel parameters for better scalability; support for python bindings on Windows platforms; a mechanism to remove Docker images from the local machine.  Static analysis tools were used to identify and fix memory leaks and other code deficiencies.  Further details can be found in the <a href="manual/v8.3.8/10_3Development_Release.html">Version History</a>. HTCondor 8.3.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.9</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.9. A stable series release contains significant bug and security fixes. This version contains: a mechanism for the preemption of dynamic slots, such that the partitionable slot may use the dynamic slot in the match of a different job; default configuration bug fixes for the desktop policy, such that it can both start jobs and monitor the keyboard.  A complete list of fixed bugs can be found in the <a href="manual/v8.2.9/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.9 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1449,13 +1155,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.2.8</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.8. A stable series release contains significant bug and security fixes. This version contains: a bug fix to reconnect a TCP session when an HTCondorView collector restarts; a bug fix to avoid starting too many jobs, only to kill some chosen at random. A complete list of fixed bugs can be found in the <a href="manual/v8.2.8/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.3.4</b>
       <div>
         
@@ -1470,45 +1169,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>8.2.7</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.7. A stable series release contains significant bug and security fixes. This version contains: sendmail is used by default for sending notifications (CVE-2014-8126); corrected input validation, which prevents daemon crashes; an update, such that grid jobs work within the current Google Compute Engine; a bug fix to prevent an infinite loop in the python bindings; a bug fix to prevent infinite recursion when evaluating ClassAd attributes. A complete list of fixed bugs can be found in the <a href="manual/v8.2.7/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.7 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>8.3.2</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.3.2. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.2.6 stable release. This new version contains: the next installment of IPv4/IPv6 mixed mode support: a submit node can simultaneously interact with an IPv4 and an IPv6 HTCondor pool; scalability improvements: a reduced memory foot-print of daemons, a reduced number of TCP connections between submit and execute machines, and an improved responsiveness from a busy condor_schedd to queries. A complete list of new features and fixed bugs can be found in the <a href="manual/v8.3.2/10_3Development_Release.html">Version History</a>. HTCondor 8.3.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.6</b>
-      <div>
-        
-<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.6. This new version contains: a bug fix to the log rotation of the condor_schedd on Linux platforms; transfer_input_files now works for directories on Windows platforms; a correction of the flags passed to the mail program on Linux platforms; a RHEL 7 platform fix of a directory permission that prevented daemons from starting. A complete list of fixed bugs can be found in the <a href="manual/v8.2.6/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.6 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.5</b>
-      <div>
-        
-<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.5. This new version contains: an updated RPM installation script that preserves a modified condor_config.local file; OpenSSL version 1.0.1j for Windows platforms. a complete list of fixed bugs and features can be found in the <a href="manual/v8.2.5/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.5 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.4</b>
-      <div>
-        
-<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.4. This new version contains: a bug fix for an 8.2.3 condor_schedd that could not obtain a claim from an 8.0.x condor_startd; a bug fix for removed jobs that return to the queue; a workaround for a condor_schedd performance issue when handling a large number of jobs; a bug fix to prevent the condor_kbdd from crashing on Windows; a bug fix to correct the reporting of available disk on Windows. a complete list of bugs fixed and features can be found in the <a href="manual/v8.2.4/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.4 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.3</b>
-      <div>
-        
-<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.3. This new version contains support for Ubuntu 14.04 LTS, including support for the standard universe. It also contains many bug fixes for minor problems. A complete list of bugs fixed and features can be found in the <a href="manual/v8.2.3/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1523,20 +1187,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
       <div>
         
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.3.0.  This development release contains all the bug fixes from the stable release version 8.2.2. This first release of the 8.3 series contains performance improvements. In one improvement, the condor_negotiator can request the batching of resource requests from the condor_schedd, improving performance over high latency (wide-area) network links. A complete list of bugs fixed and features can be found in the <a href="manual/v8.3.0/10_3Development_Release.html">Version History</a>. HTCondor 8.3.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.2</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.2. This new version contains: support for RHEL 7, and the RPM is modernized; a bug fix for the condor_shared_port daemon eliminates a periodic two-week restart; a bug fix in the detection of hyper-threaded cores on Linux and Mac OSX; a bug fix for condor_q when using the -format option; the condor_collector daemon on a Linux 3.14 or more recent kernel responds faster after a bug fix. A complete list of bugs fixed can be found in the <a href="manual/v8.2.2/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>8.2.0</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 8.2.0. This new version contains: configuration is more powerful with new syntax and features, and the default configuration policy does not preempt jobs, monitoring is enhanced and now integrates with Ganglia, automated detection and management of GPUs, numerous scalability enhancements improve performance, an improved Python API including support for Python 3, new native packaging and ports are available for the latest Linux distributions including Red Hat 7 Beta and Debian 7, cloud computing improvements including support for EC2 spot instances, OpenStack, and condor_ssh_to_job directly into EC2 jobs, grid universe jobs can now target Google Compute Engine and BOINC servers, partitionable slots now are compatible with condor_startd RANK expressions, and consumption policies permit partitionable slots to be split into dynamic slots at negotiation time, improved data management including dynamic adjustment of the level of file transfer concurrency based on disk load, and experimental support to allow the execution of a job to be overlaid with the transfer of output files from the previous different job, and the new condor_sos tool helps administrators manage overloaded daemons. A complete list of bugs fixed can be found in the <a href="manual/v8.2.0/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -1596,13 +1246,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.8.8</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 7.8.8. This release contains bug fixes for reconnection failure when using CCB,  introduces automatic retries for some glexec errors,  and fixes several other grid related bugs. A complete list of bugs fixed can be found in the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a>. HTCondor 7.8.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>7.9.4</b>
       <div>
         
@@ -1617,24 +1260,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.8.7</b>
-      <div>
-        
-<p>The HTCondor team is pleased to announce the release of HTCondor 7.8.7. This release contains several bug fixes related to grid jobs, including EC2 resource jobs.  It has bug fixes for glexec, privilege separation, condor_chirp, and a bug that prevented HTCondor from being stopped on system shutdown on Red Hat Linux systems. A complete list of bugs fixed can be found in the  <a href="manual/v7.8/9_3Stable_Release.html">Version History</a>.  HTCondor 7.8.7 and source code are available from our <a href="downloads/">Downloads page</a>.</p>
-
-      </div>
-      
       <b>7.9.2</b>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 7.9.2. Now with more HT.  This release contains all of the bug fixes added to the 7.8.6 stable release, and most of those added to the  upcoming 7.8.7 stable release. This release also contains improvements in DAGMan, use of cgroups, and changes to improve the privacy of user data.  This release has known problems with glexec that we expect to have fixed in the next developer release.  Users of glexec should skip this release.  A complete list of bugs and features can be found in the  <a href="manual/v7.9/9_3Development_Release.html">Version History</a>.  HTCondor 7.9.2 binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
-
-      </div>
-      
-      <b>7.8.5</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.8.5, which includes fixes for several bugs.  Details on obugs fixed can be found <a href="manual/v7.8/9_3Stable_Release.html#SECTION001031000000000000000">here</a>, and Condor binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
 
       </div>
       
@@ -1645,45 +1274,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.6.107.8.4</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the releases of Condor 7.6.10 and 7.8.4. These releases contain several important security fixes.  However, none of the security vulnerabilities are rated worse than “Moderate” though users are still encouraged to upgrade as soon as possible.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
-
-      </div>
-      
-      <b>7.8.3</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.8.3. This release fixes several important bugs in 7.8.2 and earlier versions of Condor.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor 7.8.3 binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
-
-      </div>
-      
       <b>7.9.0</b>
       <div>
         
 <p>The Condor team is pleased to announce the release of Condor 7.9.0.  This is the first release in a new development series.  Condor 7.9.0 contains all the bug fixes from Condor version 7.8.2.  The <a href="manual/v7.9/9_3Development_Release.html">Version History</a>  lists the changes.  Condor 7.9.0 binaries and source code are available  from <a href="downloads/">our Downloads page</a>.</p>
-
-      </div>
-      
-      <b>7.8.1</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.8.1. This release fixes several important bugs in 7.8.0 and earlier versions of Condor.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor 7.8.1 binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
-
-      </div>
-      
-      <b>7.8.0</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the release of Condor 7.8.0.  This is the first entry in a new stable series, contains all  the features and bug fixes in the 7.7 development series.  See the <a href="manual/v7.8/9_3Stable_Release.html"> version History</a> for a complete list of changes.</p>
-
-      </div>
-      
-      <b>7.6.7</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the newest release in our development series, 7.6.7.  This release fixes several important bugs, and we believe this will be the last release in the 7.6 series.  Please see the <a href="manual/latest-stable/9_Version_History.html">release notes</a> for a complete list.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
 
       </div>
       
@@ -1701,31 +1295,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.6.6</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the newest release in our stable series, 7.6.6.  This release fixes several important bugs in 7.6.5 and earlier versions of Condor, including a problem which would cause the schedd to abort, a problem which prevented the checkpoint server from running on RHEL 6, and a memory leak in the schedd. Please see the <a href="manual/latest-stable/9_Version_History.html">release notes</a> for a complete list.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.6.5</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the newest release in our development series, 7.6.5.  This release fixes several important bugs, including a problem with chirp. It includes changes to the negotiation to fix incompatibilities with group quotas which were introduced in the 7.4 series. Please see the <a href="manual/latest-stable/9_Version_History.html">release notes</a> for a complete list.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
       <b>7.7.4</b>
       <div>
         
 <p>The Condor team is pleased to announce the newest release in our development series, 7.7.4.  This introduces support for IPv6 based networks, changes the way accounting group quotas are managed to be more compatible with the way it worked in 7.4.x, fixes a Chirp bug that caused problems for the vanilla universe, and contains initial  support for draining off jobs out of startds.  Please see the <a href="manual/latest-dev/9_Version_History.html">release notes</a> for a complete list.  Please note that we are skipping the 7.7.3 release, and that this 7.7.4 release is the next release available after 7.7.2.  has a list of the major changes.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.6.4</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the release of Condor version 7.6.4.  This is the fourth release in the stable series.  This release fixes a rare, but serious bug which can cause the collector to crash.  The <a href="manual/latest-stable/9_Version_History.html">Version History</a>  has a list of the major changes.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
 
       </div>
       
@@ -1743,38 +1316,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.6.3</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the release of Condor 7.6.3.  This is the third release in the stable series.  This release fixes some critical bugs in the parallel universe dealing with job leases and the ability to restart parallel jobs when the schedd restarts..  The <a href="manual/latest-stable/9_Version_History.html">Version History</a>  has a list of the major changes.  Condor binaries and source code are available  from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
       <b>7.7.0</b>
       <div>
         
 <p>The Condor team is pleased to announce the release of Condor 7.7.0.  This is the first release in a new development series.  In addition to other major new features, the schedd now publishes performance statistics, and PERIODIC_HOLD can now send the hold reason and hold reason code fields.  Condor 7.7.0 contains all the bug fixes from Condor version 7.6.2.  A partial <a href="manual/latest-dev/9_Version_History.html">Version History</a>  has a list of some of the changes.  Condor 7.7.0 binaries and source code are available  from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.6.2</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the release of Condor 7.6.2.  This version fixes problems with <i>ssh_to_job</i>.  It fixes a crash in the schedd that was common with parallel universe jobs.  7.6 still has a known problem running parallel universe jobs that will be fixed in 7.6.3, which is planned for the first half of August.    See the <a href="manual/latest-stable/9_Version_History.html">Version History</a>  for a complete list of changes.  Condor 7.6.2 binaries and source code are available  from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.6.1</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the release of Condor 7.6.1.  See the <a href="manual/latest-stable/9_Version_History">Version History</a> for a complete list of changes.  Condor 7.6.1 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.6.0</b>
-      <div>
-        
-<p>The Condor team is pleased to announce the release of Condor 7.6.0.  This is the first entry in a new stable series, contains all  the features and bug fixes in the 7.5 development series.  See the <a href="manual/latest-stable/9_Version_History.html"> version History</a> for a complete list of changes.</p>
 
       </div>
       
@@ -1799,20 +1344,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.4.4</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.4.4. This is a stable release of Condor.  It includes a security fix for users submitting Amazon EC2 jobs (universe=grid and grid_resource=amazon) with the amazon_keypair_file. See the <a href="manual/latest-stable/9_Version_History.html"> Version History</a> for a complete list of changes.  Condor 7.4.4 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.4.3</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.4.3. This is a stable release of Condor. This fixes several bugs in the 7.4.2 release. See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.3 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
       <b>7.5.3</b>
       <div>
         
@@ -1824,13 +1355,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 7.5.2. This is a development release of Condor. The main new features are performance enhancements in the scheduler daemon, improved user job log locking support for distributed file systems, and DAGMan allowing lazy generation of DAGMan submit files in nested DAGs. All bug fixes currently scheduled to go into 7.4.3 are included in 7.5.2. See the <a href="manual/latest-dev/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.5.2 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.4.2</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.4.2.   This is a stable release of Condor which includes numerous bug fixes to 7.4.1. See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.2 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
 
       </div>
       
@@ -1848,38 +1372,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.2.5</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.2.5.  This release patches a security vulnerability and includes a few fixes for bugs found in 7.2.4.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.2.5 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.4.1</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.4.1.  This release patches a security vulnerability and includes many fixes for bugs found in 7.4.0.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.1 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.4.0</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.4.0. This first release in a new stable series includes all new features added in the 7.3 development series.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.0 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
       <b>7.3.2</b>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 7.3.2. This release improves the behavior of the checkpoint server in mixed 32/64 bit architecture pools, provides a new tool called condor_ssh_to_job to allow interactive debugging of running jobs, some performance enhancements, lazy log file processing for DAGMan jobs, plugins for utilizing a host’s power management capabilities, and many other new features in addition to many bug fixes.	Please see <a href="manual/latest-dev/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.3.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>7.2.4</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.2.4. This is a bugfix release to the stable series of Condor.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes. Condor 7.2.4 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
 
       </div>
       
@@ -1890,38 +1386,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>7.2.3</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.2.3. This release adds standard universe support for Debian 5.0 on x86_64. It also fixes a memory leak in the collector that has affected many users. Other bug fixes include file descriptor leaks in the schedd, encryption working with parallel jobs, and remote attributes in Condor-C job ads. See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes. Condor 7.2.3 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
-      <b>7.2.2</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.2.2. This release includes a new full port to Debian 5.0 x86 and a clipped port to Debian 5 x86_64.  Also, it includes a large number of bug fixes in the Hibernation code as well as the SOAP interface, among other systems.  This release has also been made to be forward compatible with the up and coming 7.3 release, when using CCB (which will be detailed in the next 7.3 release). See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes. Condor 7.2.2 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
-
-      </div>
-      
       <b>7.3.0</b>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 7.3.0. This development release contains all bug fixes from the 7.2.1 stable release plus new features, including improved support for private networks, scalability, controlling cpu affinity, DAGMan enhancements, and more.  See the <a href="manual/latest-dev/9_Version_History.html">version history</a> for a detailed list of changes. Condor 7.3.0 binaries and source code are available from <a href="downloads/">our downloads page</a>.</p>
-
-      </div>
-      
-      <b>7.2.1</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.2.1. This release addresses a handful of critical Windows-specific problems that were discovered after the release of Condor 7.2.0. This release also adds a native clipped port to Debian 5.0 (Lenny), support for the gfortran compiler in standard universe, support for standard output and error files larger than 2GB, and several other bug fixes. See the <a href="manual/latest-stable/9_Version_History.html">version history</a> for a detailed list of changes. Condor 7.2.1 binaries and source code are available from <a href="downloads/">our downloads page</a>.</p>
-
-      </div>
-      
-      <b>7.2.0</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 7.2.0. This first release in a new stable series contains all the new features from the 7.1.X development series in addition to numerous bug fixes.  See our <a href="manual/latest-stable/9_Version_History.html">Release Notes</a> for more details.  As usual, binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
 
       </div>
       
@@ -1960,31 +1428,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.8.8</b>
-      <div>
-        
-<p>The Condor Team announces the release of Condor 6.8.8. Condor 6.8.8 introduces several fixes for bugs, including a security-related problem.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for  a complete list of changes. Condor 6.8.8 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.8.7</b>
-      <div>
-        
-<p>The Condor Team announces the release of Condor 6.8.7. Condor 6.8.7 introduces several fixes for bugs.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for  a complete list of changes. Condor 6.8.7 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>6.9.5</b>
       <div>
         
 <p>The Condor Team announces the release of Condor 6.9.5. Condor 6.9.5 highlights include numerous scalability and performance improvements, updates between the starter and startd which allow more accurate job eviction policies, enhancements to Condor’s privilege separation, and numerous bug fixes including a critical bug in standard universe introduce in 6.9.4 that could result in data corruption of binary files.  See the <a href="manual/latest-dev/9_Version_History.html">Version History and Release Notes</a> for further details and a complete list of changes. Condor 6.9.5 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.8.6</b>
-      <div>
-        
-<p>The Condor Team announces Condor 6.8.6.  This new stable series release fixes numerous bugs, faster submission to Globus WS-GRAM, and also adds official support for Microsoft Vista and MacOS 10.4 on Intel CPUs. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.6 is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2002,24 +1449,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.8.5</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 6.8.5. Condor 6.8.5 is primarily a bugfix release.  See the <a href="manual/latest-stable/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.8.5 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>6.9.2</b>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 6.9.2. Condor 6.9.2 contains all bugfixes from the recent 6.8.4 release and adds several new features.  See the <a href="manual/latest-dev/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.9.2 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.8.4</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 6.8.4. Condor 6.8.4 is primarily a bugfix release, including fixes in Quill, DAGMan, and the “local universe”.  See the <a href="manual/latest-stable/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.8.4 is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2030,38 +1463,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.8.3</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 6.8.3. Condor 6.8.3 fixes a number of bugs, adds several minor features, and adds clipped support for SuSE Linux Enterprise Server 9 on PowerPCs.  See the <a href="manual/latest-stable/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.8.3 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>6.9.0</b>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 6.9.0. Condor 6.9.0 is the first release of a new development series based on the 6.8.x stable code.  The primary new feature in 6.9.0 is initial support for privilege separation using glexec.  See the <a href="manual/latest-dev/9_Version_History.html"> Version History and Release Notes</a> for further details. As a development release, 6.9.0 is <b>not</b> recommended for production use.  Condor 6.9.0 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.8.2</b>
-      <div>
-        
-<p>The Condor Team is pleased to <a href="https://lists.cs.wisc.edu/archive/condor-users/2006-October/msg00118.shtml">announce</a> the release of Condor 6.8.2. Condor 6.8.2 release fixes a number of bugs and adds support for x86_64 standard universe.  See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.2 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.8.1</b>
-      <div>
-        
-<p>The Condor Team is pleased to <a href="https://lists.cs.wisc.edu/archive/condor-users/2006-September/msg00155.shtml">announce</a> the release of Condor 6.8.1. Condor 6.8.1 release fixes a number of important bugs, including some potential security vulnerabilities.  All users are encouraged to upgrade immediately. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.1 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.8.0</b>
-      <div>
-        
-<p>The Condor Team is pleased to <a href="https://lists.cs.wisc.edu/archive/condor-users/2006-July/msg00212.shtml">announce</a> the release of Condor 6.8.0. Condor 6.8.0 begins a new stable series of Condor and contains the new features and bug fixes from the Condor 6.7 development series. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.0 is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2076,13 +1481,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 6.7.19.  This release features an important security fix to checkpoint server, submission to PBS and LSF systems, ClassAd functions, and many other improvements.  See the <a href="manual/latest-dev/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.7.19 is available from our <a href="downloads/">Downloads</a> page.  We strongly recommend sites running earlier versions of Condor in the 6.7 development series upgrade to 6.7.19 as soon as feasible.  We believe 6.7.19 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
-
-      </div>
-      
-      <b>6.6.11</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 6.6.11.  Version 6.6.11 is strictly for bug and security fixes. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6.11 is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2156,24 +1554,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.6.10</b>
-      <div>
-        
-<p>The Condor Team is pleased to announce the release of Condor 6.6.10.  Version 6.6.10 is strictly for bug fixes. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6.10 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>6.7.7</b>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 6.7.7.  6.7.7 is primarily for improvements to the grid universe.  It includes support for strong authentication and multiple users for the “condor” gridtype, and full support for the Globus Toolkit 4.0.0 release.  See the <a href="manual/latest-dev/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.7.7 is available from our <a href="downloads/">Downloads</a> page.  We believe 6.7.7 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.  6.7.6 users who are using the Globus Toolkit 4.0 are strongly urged to upgrade to 6.7.7.</p>
-
-      </div>
-      
-      <b>6.6.9</b>
-      <div>
-        
-<p>6.6.9 is the latest release of our stable series. 6.6.9 contains several critical bug fixes and all users are encouraged to upgrade immediately. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details.  Condor 6.6.9 is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2191,24 +1575,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.6.8</b>
-      <div>
-        
-<p>6.6.8 is the latest release of our stable series. 6.6.8 is primarily a bug fix release. 6.6.8, and all future releases will no longer support Redhat Linux on IA64, Digital UNIX 4.0f, and Solaris 7.  See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details.  Condor 6.6.8 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>6.7.3</b>
       <div>
         
 <p>6.7.3 is the fourth release of our development series. 6.7.3 is primarily a new feature release. 6.7.3 is the first release to fully support  checkpointing on Linux distributions Fedora Core 1, 2, and 3.   6.7.3 also includes preliminary support for a new remote submission feature that will complement flocking and the grid universe. See the  <a href="manual/latest-dev/9_Version_History.html">Version History and Release Notes</a> for details. Condor 6.7.3 is available from our  <a href="downloads/">Downloads</a> page. We believe 6.7.3 is fairly stable, but it is not recommended  for production systems, unless you require checkpointing support for a  Linux distribution not supported by our 6.6 releases. Users of previous  6.7 versions are urged to upgrade.</p>
-
-      </div>
-      
-      <b>6.6.7</b>
-      <div>
-        
-<p>6.6.7 is the latest release of our stable series. 6.6.7 is primarily a bug fix release.  New features include support for the Windows Firewall on Windows XP SP2. 6.6.7, and all future releases  will no longer support HP-UX 10.20, Digital UNIX 4.0f, and Solaris 7.  See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details.  Condor 6.6.7 is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2226,38 +1596,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.6.6</b>
-      <div>
-        
-<p>6.6.6 is the latest version of our current stable     release series. See the  <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.6.5</b>
-      <div>
-        
-<p>6.6.5 is the latest version of our current stable     release series. See the  <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.6.36.6.4</b>
-      <div>
-        
-<p>6.6.4 and 6.6.3 are the latest version of our current stable release series. 6.6.4 is for MacOS X and Windows only, and is otherwise identical to 6.6.3.  6.6.3 includes support for Globus 3.2, and removes support for Globus releases prior to 2.2.  If you are not using  the Globus universe, there is very little difference between 6.6.2 and 6.6.3. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
       <b>6.7.0</b>
       <div>
         
 <p>6.7.0 is the first release of our development series. It includes  some exciting new features, including support for jobs to tolerate network failures between the submit and execute sites, job mirroring between multiple submit points, high availability between some daemons, DRMAA support, the ability to submit into grids managed by GT3 web services, NorduGrid, and Oracle jobs, support for  MyProxy Online Credential Management, over two gigabyte file transfer support, steaming output from vanilla jobs, and many other features. See the <a href="manual/latest-dev/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.7.0 is available from our <a href="downloads/">Downloads</a> page.</p>
-
-      </div>
-      
-      <b>6.4.7</b>
-      <div>
-        
-<p>Condor 6.4.7 for both UNIX and Windows has been released. 6.4.7 corrects a critical bug with Condor that caused a misreporting of jobs in the pool.  It is available from our <a href="downloads/">Downloads</a> page.</p>
 
       </div>
       
@@ -2268,24 +1610,10 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
-      <b>6.2.1</b>
-      <div>
-        
-<p>Condor Version 6.2.1 has been released, and is available on the <a href="downloads/"> downloads</a> page. 6.2.1 is the second release in the 6.2 <i>stable</i> series. The main focus of this release was bug fixes over the 6.2.0 release, and all 6.2.0 users are urged to upgrade to 6.2.1. The complete list of changes can be found <a href="manual/latest-stable/9_Version_History.html">here</a></p>
-
-      </div>
-      
       <b>6.3.0</b>
       <div>
         
 <p>Condor Version 6.3.0 has been released, and is available on the <a href="downloads/"> downloads</a> page. 6.3.0 is the first release in the 6.3 <i>development</i> series. Future 6.3 releases will contain many new features, primarily in the areas of MPI support, Globus support,  firewall support, an improved DAGMan, improved error handling / propagation, and bandwidth regulation.  For more info on our version-number system, please read <a href="version_number.html">this</a>. &lt;p&gt; The UNIX builds are now available on the website. The primary focus of 6.3.0 has been in preliminary support for MPI jobs on dedicated clusters of  machines. 6.3.0 is not as well-tested as 6.2.0, and undoubtedly contains a number of bugs. It should not be used by those requiring a tried and tested system; for that we recommend the 6.2 stable series.</p>
-
-      </div>
-      
-      <b>6.2.0</b>
-      <div>
-        
-<p>Condor Version 6.2.0 has been released, and is available on the <a href="downloads/"> downloads</a> page. 6.2.0 is the first release in the 6.2 <i>stable</i> series. Future 6.2.X releases will be mainly bug fixes. For more info on our version-number system, please read <a href="version_number.html">this</a>.   &lt;p&gt; The UNIX and NT builds are now available on the website, and 6.0 and 6.1 releases have been removed.  The 6.2.0 manual is also available, and includes a section on how to upgrade your pool from 6.0.3 to 6.2.0. The 6.3 DAGMan will also be released very soon.</p>
 
       </div>
       
@@ -2425,6 +1753,22 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
     </div>
     
+    <b>9.2.0</b>
+    <div>
+      <p>This release contains all of the bug fixes from the 9.0.6 LTS release and the 9.1.4, 9.1.5, 9.1.6 limited patch releases.</p>
+
+<p>Enhancements in the release include:</p>
+
+<ul>
+  <li>Add SERVICE node that runs alongside the DAG for the duration of the DAG</li>
+  <li>Fix problem where proxy delegation to older HTCondor versions failed</li>
+  <li>Jobs are now re-run if the execute directory unexpectedly disappears</li>
+  <li>HTCondor counts the number of files transfered at the submit node</li>
+  <li>Fix a bug that caused jobs to fail when using newer Singularity versions</li>
+</ul>
+
+    </div>
+    
     <b>9.0.6</b>
     <div>
       
@@ -2474,13 +1818,13 @@ using GSI, you must migrate to a different authorization mechanism.</p>
     <div>
       <p>Highlights of this release are:</p>
 <ul>
-  <li>Fix problem where X.509 proxy refresh kills job when using AES encryption;</li>
-  <li>Fix problem when jobs require a different machine after a failure;</li>
-  <li>Fix problem where a job matched a machine it can’t use, delaying job start;</li>
-  <li>Fix exit code and retry checking when a job exits because of a signal;</li>
-  <li>Fix a memory leak in the job router when a job is removed via job policy;</li>
-  <li>Fixed the back-end support for the ‘bosco_cluster –add’ command;</li>
-  <li>An updated Windows installer that supports IDTOKEN authentication.</li>
+  <li>Fix problem where X.509 proxy refresh kills job when using AES encryption</li>
+  <li>Fix problem when jobs require a different machine after a failure</li>
+  <li>Fix problem where a job matched a machine it can’t use, delaying job start</li>
+  <li>Fix exit code and retry checking when a job exits because of a signal</li>
+  <li>Fix a memory leak in the job router when a job is removed via job policy</li>
+  <li>Fixed the back-end support for the ‘bosco_cluster –add’ command</li>
+  <li>An updated Windows installer that supports IDTOKEN authentication</li>
 </ul>
 
     </div>
@@ -2494,16 +1838,16 @@ of the file transfer plugins.</p>
 
 <p>Highlights of this release are:</p>
 <ul>
-  <li>Absent any configuration, a new HTCondor installation denies authorization to all users;</li>
-  <li>AES encryption is used for all communication and file transfers by default (Hardware accelerated when available);</li>
-  <li>New IDTOKEN authentication method enables fine-grained authorization control designed to replace GSI authentication;</li>
-  <li>Improved support for GPUs, including machines with multiple GPUs;</li>
-  <li>New condor_watch_q tool that efficiently provides live job status updates;</li>
-  <li>Many improvements to the Python bindings, including new bindings for DAGMan and chirp;</li>
-  <li>Improved curl, https, box, Amazon S3, and google drive file transfer plugins supporting uploads and authentication;</li>
-  <li>File transfer times are now recorded in the job log;</li>
-  <li>Added support for jobs that need to acquire and use OAUTH tokens;</li>
-  <li>Many memory footprint and performance improvements in DAGMan;</li>
+  <li>Absent any configuration, a new HTCondor installation denies authorization to all user</li>
+  <li>AES encryption is used for all communication and file transfers by default (Hardware accelerated when available)</li>
+  <li>New IDTOKEN authentication method enables fine-grained authorization control designed to replace GSI authentication</li>
+  <li>Improved support for GPUs, including machines with multiple GPUs</li>
+  <li>New condor_watch_q tool that efficiently provides live job status updates</li>
+  <li>Many improvements to the Python bindings, including new bindings for DAGMan and chirp</li>
+  <li>Improved curl, https, box, Amazon S3, and google drive file transfer plugins supporting uploads and authentication</li>
+  <li>File transfer times are now recorded in the job log</li>
+  <li>Added support for jobs that need to acquire and use OAUTH tokens</li>
+  <li>Many memory footprint and performance improvements in DAGMan</li>
   <li>Submitter ceilings allow administrators to set limits on the number of running jobs per user across the pool.</li>
 </ul>
 
@@ -2529,6 +1873,342 @@ of the file transfer plugins.</p>
 
 
 
+      
+      <b>8.8.13</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.13. A stable series release contains significant bug fixes.  Highlights of this release are: condor_ssh_to_job now maps CR and NL to work with editors like nano; Improved the performance of data transfer in condor_ssh_to_job; HA replication now accepts SHA-2 checksums to prepare for MD5 removal; Submission to NorduGrid ARC CE works with newer ARC CE versions; Fixed condor_annex crashes on platforms with newer compilers; Fixed “use feature: GPUsMonitor” to locate the monitor binary on Windows; Fixed a bug that prevented using the “@” character in an event log path.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-13"> Version History</a>.  HTCondor 8.8.13 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.12</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.12. A stable series release contains significant bug fixes.  Highlights of this release are: Added a family of version comparison functions to ClassAds; Increased default Globus proxy key length to meet current NIST guidance.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-12"> Version History</a>.  HTCondor 8.8.12 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.11</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.11. A stable series release contains significant bug fixes.  Highlights of this release are: HTCondor now properly tracks usage over vanilla universe checkpoints; New ClassAd equality and inequality operators in the Python bindings; Fixed a bug where removing in-use routes could crash the job router; Fixed a bug where condor_chirp would abort after success on Windows; Fixed a bug where using MACHINE_RESOURCE_NAMES could crash the startd; Improved condor c-gahp to prioritize commands over file transfers; Fixed a rare crash in the schedd when running many local universe jobs; With GSI, avoid unnecessary reverse DNS lookup when HOST_ALIAS is set; Fix a bug that could cause grid universe jobs to fail upon proxy refresh.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-11"> Version History</a>.  HTCondor 8.8.11 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.10</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.10. A stable series release contains significant bug fixes.  Highlights of this release are: condor_qedit can no longer be used to disrupt the condor_schedd; Fixed a bug where the SHARED_PORT_PORT configuration setting was ignored; Ubuntu 20.04 and Amazon Linux 2 are now supported; In MacOSX, HTCondor now requires LibreSSL, available since MacOSX 10.13.  More details about the fixes can be found in the <a href="https://htcondor.readthedocs.io/en/v8_8/version-history/stable-release-series-88.html#version-8-8-10"> Version History</a>.  HTCondor 8.8.10 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.9</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.9. A stable series release contains significant bug fixes.  Highlights of this release are: Proper tracking of maximum memory used by Docker universe jobs Fixed preempting a GPU slot for a GPU job when all GPUs are in use; Fixed a Python crash when queue_item_data iterator raises an exception; Fixed a bug where slot attribute overrides were ignored; Calculates accounting group quota correctly when more than 1 CPU requested; Updated HTCondor Annex to accommodate API change for AWS Spot Fleet; Fixed a problem where HTCondor would not start on AWS Fargate; Fixed where the collector could wait forever for a partial message; Fixed streaming output to large files (&gt;2Gb) when using the 32-bit shadow.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.9/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.9 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.7</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.7. A stable series release contains significant bug fixes.  Highlights of this release are: Updated condor_annex to work with upcoming AWS Lambda function changes; Added the ability to specify the order that job routes are applied; Fixed a bug that could cause remote condor submits to fail; Fixed condor_wait to work when the job event log is on AFS; Fixed RPM packaging to be able to install condor-all on CentOS 8; Period (‘.’) is allowed again in DAGMan node names.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.7/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.7 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.6</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.6. A stable series release contains significant bug fixes.  Highlights of this release are: Initial support for CentOS 8; Fixed a memory leak in SSL authentication; Fixed a bug where “condor_submit -spool” would only submit the first job; Reduced encrypted file transfer CPU usage by a factor of six; “condor_config_val -summary” displays changes from a default configuration; Improved the ClassAd documentation, added many functions that were omitted.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.6/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.6 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.5</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.5. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed two performance problems on Windows; Fixed Java universe on Debian and Ubuntu systems; Added two knobs to improve performance on large scale pools; Fixed a bug where requesting zero GPUs would require a machine with GPUs; HTCondor can now recognize nVidia Volta and Turing GPUs.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.5/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.5 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.4</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.4. A stable series release contains significant bug fixes.  Highlights of this release are: Python 3 bindings - see version history for details (requires EPEL on EL7); Can configure DAGMan to dramatically reduce memory usage on some DAGs; Improved scalability when using the python bindings to qedit jobs; Fixed infrequent schedd crashes when removing scheduler universe jobs; The condor_master creates run and lock directories when systemd doesn’t; The condor daemon obituary email now contains the last 200 lines of log.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.4/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.4 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.3</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.3. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where jobs were killed instead of peacefully shutting down; Fixed a bug where a restarted schedd wouldn’t connect to its running jobs; Improved file transfer performance when sending multiple files; Fix a bug that prevented interactive submit from working with Singularity; Orphaned Docker containers are now cleaned up on execute nodes; Restored a deprecated Python interface that is used to read the event log.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.3/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.3 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.2</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.2. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed problems with condor_ssh_to_job and Singularity jobs; Fixed a problem that could cause condor_annex to crash; Fixed a problem where the job queue would very rarely be corrupted; condor_userprio can report concurrency limits again; Fixed the GPU discovery and monitoring code to map GPUs in the same way; Made the CHIRP_DELAYED_UPDATE_PREFIX configuration knob work again; Fixed restarting HTCondor from the Service Control Manager on Windows; Fixed a problem where local universe jobs could not use condor_submit; Restored a deprecated Python interface that is used to read the event log; Fixed a problem where condor_shadow reuse could confuse DAGMan.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.2/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.2 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.1</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.1. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed excessive CPU consumption with GPU monitoring; GPU monitoring is off by default; enable with “use feature: GPUsMonitor”; HTCondor now works with the new CUDA version 10 libraries; Fixed a bug where sometimes jobs would not start on a Windows execute node; Fixed a bug that could cause DAGman to go into an infinite loop on exit; The JobRouter doesn’t forward the USER attribute between two UID Domains; Made Collector.locateAll() more efficient in the Python bindings; Improved efficiency of the negotiation code in the condor_schedd.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.1/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.1 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.0</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.8.0. After a year and a half of development, this is the first release of the new stable series.  Highlights of this release are: Automatically add AWS resources to your pool using HTCondor Annex; The Python bindings now include submit functionality; Added the ability to run a job immediately by replacing a running job; A new mini(ht)condor package makes single node installations easy; HTCondor now tracks and reports GPU utilization; Several performance enhancements in the collector; The grid universe can create and manage VM instances in Microsoft Azure; The MUNGE security method is now supported on all Linux platforms.  More details about the new features can be found in the <a href="http://htcondor.org/manual/v8.8.0/Upgradingfromthe86seriestothe88seriesofHTCondor.html"> Upgrade Section</a>.  A few bugs and memory leaks were fixed during our stabilization effort.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.0/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.0 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.13</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.13. A stable series release contains significant bug fixes.  Highlights of this release are: Made the Python ‘in’ operator case-insensitive for ClassAd attributes; Python bindings are now built for the Debian and Ubuntu platforms; Fixed a memory leak in the Python bindings; Fixed a bug where absolute paths failed for output/error files on Windows; Fixed a bug using Condor-C to run Condor-C jobs; Fixed a bug where Singularity could not be used if Docker was not present.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.13/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.13 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.12</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.12. A stable series release contains significant bug fixes.  Highlights of this release are: Support for Debian 9, Ubuntu 16, and Ubuntu 18; Fixed a memory leak that occurred when SSL authentication fails; Fixed a bug where invalid transform REQUIREMENTS caused a Job to match; Fixed a bug to allow a queue super user to edit protected attributes; Fixed a problem setting the job environment in the Singularity container; Fixed several other minor problems.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.12/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.12 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.11</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.11. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a problem where condor_preen would crash on an active submit node; Improved systemd configuration to clean up processes if the master crashes; Fixed several other minor problems.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.11/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.11 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.10</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.10. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a problem where condor_preen would crash on an active submit node; Improved systemd configuration to clean up processes if the master crashes; Fixed several other minor problems.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.10/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.10 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.9</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.9. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where some Accounting Groups could get too much surplus quota; Fixed a Python binding bug where some queries could corrupt memory; Fixed a problem where preen could block the schedd for a long time; Fixed a bug in Windows where the job sandbox would not be cleaned up; Fixed problems with the interaction between the master and systemd; Fixed a bug where MAX_JOBS_SUBMITTED could be permanently reduced; Fixed problems with very large disk requests.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.9/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.9 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.7</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.7. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where memory limits might not be updated in cgroups; Add SELinux type enforcement rules to allow condor_ssh_to_job to work; Updated systemd configuration to shutdown HTCondor in an orderly fashion; The curl_plugin utility can now do HTTPS transfers; Specifying environment variables now works with the Python Submit class.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.7/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.7 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.6</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.6. A stable series release contains significant bug fixes.  Highlights of this release are: HTCondor daemons no longer crash on reconfig if syslog is used for logging; HTCondor daemons now reliably leave a core file when killed by a signal; Negotiator won’t match machines with incompatible IPv{4,6} protocol; On Ubuntu, send systemd alive messages to avoid restarting HTCondor; Fixed a problem parsing old ClassAd string escapes in the python bindings; Properly parse CPU time for Slurm grid universe jobs; Claims are released when parallel univ jobs are removed while claiming; Starter won’t get stuck when a job is removed with JOB_EXIT_HOOK defined; To reduce audit logging, added cgroup rules to SELinux profile.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.6/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.6 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.5</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.5. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a memory leak that would cause the condor_collector to slowly grow; Prevent the condor_starter from hanging when using cgroups on Debian; Fixed several issues that occur when IPv6 is in use; Support for using an ImDisk RAM drive on Windows as the execute directory; Fixed a bug where condor_rm rarely removed another one of the user’s jobs; Fixed a bug with parallel universe jobs starting on partitionable slots.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.5/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.5 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.4</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.4. A stable series release contains significant bug fixes.  Highlights of this release are: Python bindings are now available on MacOSX; Fixed a bug where PASSWORD authentication could fail to exchange keys; Pslot preemption now properly handles custom resources, such as GPUs; condor_submit now checks X.509 proxy expiration.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.4/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.4 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.3</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.3. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where using an X.509 proxy might corrupt the job queue log; Fixed a memory leak in the Python bindings.  More details about the fixes can be found in the <a href="manual/v8.6.3/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.2</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.2. A stable series release contains significant bug fixes.  Highlights of this release are: New metaknobs for mapping users to groups; Now case-insensitive with Windows user names when storing credentials; Signal handling in the OpenMPI script; Report RemoteSysCpu for Docker jobs; Allow SUBMIT_REQUIREMENT to refer to X509 secure attributes; Linux kernel tuning script takes into account the machine’s role.  More details about the fixes can be found in the <a href="manual/v8.6.2/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.1</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.1.  Highlights of this release are: condor_q works in situations where user authentication is not configured; Updates to work with Docker version 1.13; Fixed several problems with the Job Router; Update scripts to support current versions of Open MPI and MPICH2; Fixed a bug that could corrupt the job queue log when the disk is full.  More details about the fixes can be found in the <a href="manual/v8.6.1/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.1 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.0</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.6.0. After a year of development, this is the first release of the new stable series.  Highlights of this release are: condor_q shows shows only the current user’s jobs by default; condor_q summarizes related jobs (batches) on a single line by default; Users can define their own job batch name at job submission time; Immutable/protected job attributes make SUBMIT_REQUIREMENTS more useful; The shared port daemon is enabled by default; Jobs run in cgroups by default; HTCondor can now use IPv6 addresses (Prefers IPv4 when both present); DAGMan: Able to easily define SCRIPT, VARs, etc., for all nodes in a DAG; DAGMan: Revamped priority implementation; DAGMan: New splice connection feature; New slurm grid type in the grid universe for submitting to Slurm; Numerous improvements to Docker support; Several enhancements in the python bindings.  Further details can be found in the <a href="manual/v8.6.0/10_2Upgrading_from.html">Upgrade Section</a>.  A few bugs were fixed during our stabilization effort.  More details about the fixes can be found in the <a href="manual/v8.6.0/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.11</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.11. A stable series release contains significant bug fixes. This release is the last planned release of the 8.4 series.  Highlights of this release are: Fixed a bug which delayed startd access to stard cron job results; Fixed a bug in pslot preemption that could delay jobs starting; Fixed a bug in job cleanup at job lease expiration if using glexec; Fixed a bug in locating ganglia shared libraries on Debian and Ubuntu.  Further details can be found in the <a href="manual/v8.4.11/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.11 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.10</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.10. A stable series release contains significant bug fixes.  Highlights of this release are: Updated SELinux profile for Enterprise Linux; Fixed a performance problem in the schedd when RequestCpus was an expression; Preserve permissions when transferring sub-directories of the job’s sandbox; Fixed HOLD_IF_CPUS_EXCEEDED and LIMIT_JOB_RUNTIMES metaknobs; Fixed a bug in handling REMOVE_SIGNIFICANT_ATTRIBUTES.  Further details can be found in the <a href="manual/v8.4.10/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.10 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.9</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.9. A stable series release contains significant bug fixes.  Highlights of this release are: The condor_startd removes orphaned Docker containers on restart; Job Router and HTCondor-C job submission prompts schedd reschedule; Fixed bugs in the Job Router’s hooks; Improved systemd integration on Enterprise Linux 7; Upped default number of Chirp attributes to 100, and made it configurable; Fixed a bug where variables starting with STARTD. or STARTER. were ignored.  Further details can be found in the <a href="manual/v8.4.9/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.9 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.8</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.8. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a memory leak triggered by the python htcondor.Schedd().query() call; Fixed a bug that could cause Bosco file transfers to fail; Fixed a bug that could cause the schedd to crash when using schedd cron jobs; condor_schedd now rejects jobs when owner has no account on the machine; Fixed a new bug in 8.4.7 where remote condor_history failed without -limit; Fixed bugs triggered by the reconfiguration of the high-availability daemon; Fixed a bug where condor_master could hang when using shared port on Windows; Fixed a bug with the -xml option on condor_q and condor_status; A few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.8/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.7</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.7. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug that could cause the schedd to become unresponsive; Fixed a bug where the Docker Universe would not set the group ID; Docker Universe jobs now drop all Linux capabilities by default; Fixed a bug where subsystem specific configuration parameters were ignored; Fixed bugs with history file processing on the Windows platform; A few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.7/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.7 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.6</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.6. A stable series release contains significant bug fixes.  Highlights of this release are: fixed a bug that could cause a job to fail to start in a dynamic slot; fixed a negotiator memory leak when using partitionable slot preemption; fixed a bug that caused supplemental groups to be wrong during file transfer; properly identify the Windows 10 platform; fixed a typographic error in the LIMIT_JOB_RUNTIMES policy; fixed a bug where maximum length IPv6 addresses were not parsed; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.6/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.6 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.5</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.5. A stable series release contains significant bug fixes.  Highlights of this release are: fixed a bug that would cause the condor_schedd to send no flocked jobs; fixed a bug that caused a 60 second delay using tools when DNS lookup failed; prevent using accounting groups with embedded spaces that crash the negotiator; fixed a bug that could cause use of ports outside the port range on Windows; fixed a bug that could prevent dynamic slot reuse when using many slots; fixed a bug that prevented correct utilization reports from the job router; tune kernel when using cgroups to avoid OOM killing of jobs doing heavy I/O; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.5/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.5 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.4</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.4. A stable series release contains significant bug fixes.  Highlights of this release are: fixed a bug that could cause the collector to crash when DNS lookup fails; fixed a bug that caused Condor-C jobs with short lease durations to fail; fixed bugs that affected EC2 grid universe jobs; fixed a bug that prevented startup if a prior version shared port file exists; fixed a bug that could cause the condor_shadow to hang on Windows; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.4/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.4 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.3</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.3. A stable series release contains significant bug fixes.  Highlights of this release are: fixed the processing of the -append option in the condor_submit command; fixed a bug to run more that 100 dynamic slots on a single execute node; fixed bugs that would delay daemon startup when using shared port on Windows; fixed a bug where the cgroup VM limit would not be set for sizes over 2 GiB; fixed a bug to use the ec2_iam_profile_name for Amazon EC2 Spot instances; a few other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.3/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.2</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.2. A stable series release contains significant bug fixes.  Highlights of this release are: a bug fix to prevent the condor_schedd from crashing; a bug fix to honor TCP_FORWARDING_HOST; Standard Universe works properly in RPM installations of HTCondor; the RPM packages no longer claim to provide Globus libraries; bug fixes to DAGMan’s “maximum idle jobs” throttle; several other bug fixes, consult the version history.   Further details can be found in the <a href="manual/v8.4.2/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.1</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.4.1. A stable series release contains significant bug fixes.  This release contains all of the bug fixes from the recent HTCondor 8.2.10 release.  Highlights of this release are: four new policy metaknobs to make configuration easier; a bug fix to prevent condor daemons from crashing on reconfiguration; an option natural sorting option on condor_status; support of admin to mount certain directories into Docker containers; many other bug fixes, consult the version history.  Further details can be found in the <a href="manual/v8.4.1/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.1 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.10</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.2.10. A stable series release contains significant bug fixes.  Highlights of this release are: an updated RPM to work with SELinux on EL7 platforms; fixes to the condor_kbdd authentication to the X server; a fix to allow the condor_kbdd to work with shared port enabled; avoid crashes when using more than 1024 file descriptors on EL7; fixed a memory leak in the ClassAd split() function; condor_vacate will error out rather than ignore conflicting arguments; a bug fix to the JobRouter to properly process the queue on restart; a bug fix to prevent sending spurious data on a SOAP file transfer; a bug fix to always present jobs in order in condor_history.  A complete list of fixed bugs can be found in the <a href="manual/v8.2.10/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.10 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.4.0</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor version 8.4.0. After a year of development, this is the first release of the new stable series.  This version contains: a Docker Universe to run a Docker container as an HTCondor job; the submit file can queue a job for each file found; the submit file can contain macros; a dry-run option to condor_submit to test the submit file without any actions; HTCondor pools can use IPv4 and IPv6 simultaneously; execute directories can be encrypted upon user or administrator request; Vanilla Universe jobs can utilize periodic application-level checkpoints; the administrator can establish job requirements; numerous scalability changes.  Further details can be found in the <a href="manual/v8.4.0/10_3Stable_Release.html">Version History</a>. HTCondor 8.4.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.9</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.9. A stable series release contains significant bug and security fixes. This version contains: a mechanism for the preemption of dynamic slots, such that the partitionable slot may use the dynamic slot in the match of a different job; default configuration bug fixes for the desktop policy, such that it can both start jobs and monitor the keyboard.  A complete list of fixed bugs can be found in the <a href="manual/v8.2.9/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.9 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.8</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.8. A stable series release contains significant bug and security fixes. This version contains: a bug fix to reconnect a TCP session when an HTCondorView collector restarts; a bug fix to avoid starting too many jobs, only to kill some chosen at random. A complete list of fixed bugs can be found in the <a href="manual/v8.2.8/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.7</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.7. A stable series release contains significant bug and security fixes. This version contains: sendmail is used by default for sending notifications (CVE-2014-8126); corrected input validation, which prevents daemon crashes; an update, such that grid jobs work within the current Google Compute Engine; a bug fix to prevent an infinite loop in the python bindings; a bug fix to prevent infinite recursion when evaluating ClassAd attributes. A complete list of fixed bugs can be found in the <a href="manual/v8.2.7/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.7 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.6</b>
+      <div>
+        
+<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.6. This new version contains: a bug fix to the log rotation of the condor_schedd on Linux platforms; transfer_input_files now works for directories on Windows platforms; a correction of the flags passed to the mail program on Linux platforms; a RHEL 7 platform fix of a directory permission that prevented daemons from starting. A complete list of fixed bugs can be found in the <a href="manual/v8.2.6/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.6 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.5</b>
+      <div>
+        
+<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.5. This new version contains: an updated RPM installation script that preserves a modified condor_config.local file; OpenSSL version 1.0.1j for Windows platforms. a complete list of fixed bugs and features can be found in the <a href="manual/v8.2.5/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.5 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.4</b>
+      <div>
+        
+<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.4. This new version contains: a bug fix for an 8.2.3 condor_schedd that could not obtain a claim from an 8.0.x condor_startd; a bug fix for removed jobs that return to the queue; a workaround for a condor_schedd performance issue when handling a large number of jobs; a bug fix to prevent the condor_kbdd from crashing on Windows; a bug fix to correct the reporting of available disk on Windows. a complete list of bugs fixed and features can be found in the <a href="manual/v8.2.4/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.4 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.3</b>
+      <div>
+        
+<p>The HTCondor Team is pleased to announce the release of HTCondor version 8.2.3. This new version contains support for Ubuntu 14.04 LTS, including support for the standard universe. It also contains many bug fixes for minor problems. A complete list of bugs fixed and features can be found in the <a href="manual/v8.2.3/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.3 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.2</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor version 8.2.2. This new version contains: support for RHEL 7, and the RPM is modernized; a bug fix for the condor_shared_port daemon eliminates a periodic two-week restart; a bug fix in the detection of hyper-threaded cores on Linux and Mac OSX; a bug fix for condor_q when using the -format option; the condor_collector daemon on a Linux 3.14 or more recent kernel responds faster after a bug fix. A complete list of bugs fixed can be found in the <a href="manual/v8.2.2/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.2 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.2.0</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 8.2.0. This new version contains: configuration is more powerful with new syntax and features, and the default configuration policy does not preempt jobs, monitoring is enhanced and now integrates with Ganglia, automated detection and management of GPUs, numerous scalability enhancements improve performance, an improved Python API including support for Python 3, new native packaging and ports are available for the latest Linux distributions including Red Hat 7 Beta and Debian 7, cloud computing improvements including support for EC2 spot instances, OpenStack, and condor_ssh_to_job directly into EC2 jobs, grid universe jobs can now target Google Compute Engine and BOINC servers, partitionable slots now are compatible with condor_startd RANK expressions, and consumption policies permit partitionable slots to be split into dynamic slots at negotiation time, improved data management including dynamic adjustment of the level of file transfer concurrency based on disk load, and experimental support to allow the execution of a job to be overlaid with the transfer of output files from the previous different job, and the new condor_sos tool helps administrators manage overloaded daemons. A complete list of bugs fixed can be found in the <a href="manual/v8.2.0/10_3Stable_Release.html">Version History</a>. HTCondor 8.2.0 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
       
       <b>8.0.7</b>
       <div>
@@ -2586,6 +2266,188 @@ of the file transfer plugins.</p>
 
       </div>
       
+      <b>7.8.8</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 7.8.8. This release contains bug fixes for reconnection failure when using CCB,  introduces automatic retries for some glexec errors,  and fixes several other grid related bugs. A complete list of bugs fixed can be found in the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a>. HTCondor 7.8.8 binaries and source code are available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>7.8.7</b>
+      <div>
+        
+<p>The HTCondor team is pleased to announce the release of HTCondor 7.8.7. This release contains several bug fixes related to grid jobs, including EC2 resource jobs.  It has bug fixes for glexec, privilege separation, condor_chirp, and a bug that prevented HTCondor from being stopped on system shutdown on Red Hat Linux systems. A complete list of bugs fixed can be found in the  <a href="manual/v7.8/9_3Stable_Release.html">Version History</a>.  HTCondor 7.8.7 and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.8.5</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.8.5, which includes fixes for several bugs.  Details on obugs fixed can be found <a href="manual/v7.8/9_3Stable_Release.html#SECTION001031000000000000000">here</a>, and Condor binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.6.107.8.4</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the releases of Condor 7.6.10 and 7.8.4. These releases contain several important security fixes.  However, none of the security vulnerabilities are rated worse than “Moderate” though users are still encouraged to upgrade as soon as possible.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.8.3</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.8.3. This release fixes several important bugs in 7.8.2 and earlier versions of Condor.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor 7.8.3 binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.8.1</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.8.1. This release fixes several important bugs in 7.8.0 and earlier versions of Condor.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor 7.8.1 binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.8.0</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the release of Condor 7.8.0.  This is the first entry in a new stable series, contains all  the features and bug fixes in the 7.7 development series.  See the <a href="manual/v7.8/9_3Stable_Release.html"> version History</a> for a complete list of changes.</p>
+
+      </div>
+      
+      <b>7.6.7</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the newest release in our development series, 7.6.7.  This release fixes several important bugs, and we believe this will be the last release in the 7.6 series.  Please see the <a href="manual/latest-stable/9_Version_History.html">release notes</a> for a complete list.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.6</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the newest release in our stable series, 7.6.6.  This release fixes several important bugs in 7.6.5 and earlier versions of Condor, including a problem which would cause the schedd to abort, a problem which prevented the checkpoint server from running on RHEL 6, and a memory leak in the schedd. Please see the <a href="manual/latest-stable/9_Version_History.html">release notes</a> for a complete list.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.5</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the newest release in our development series, 7.6.5.  This release fixes several important bugs, including a problem with chirp. It includes changes to the negotiation to fix incompatibilities with group quotas which were introduced in the 7.4 series. Please see the <a href="manual/latest-stable/9_Version_History.html">release notes</a> for a complete list.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.4</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the release of Condor version 7.6.4.  This is the fourth release in the stable series.  This release fixes a rare, but serious bug which can cause the collector to crash.  The <a href="manual/latest-stable/9_Version_History.html">Version History</a>  has a list of the major changes.  Condor binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.3</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the release of Condor 7.6.3.  This is the third release in the stable series.  This release fixes some critical bugs in the parallel universe dealing with job leases and the ability to restart parallel jobs when the schedd restarts..  The <a href="manual/latest-stable/9_Version_History.html">Version History</a>  has a list of the major changes.  Condor binaries and source code are available  from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.2</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the release of Condor 7.6.2.  This version fixes problems with <i>ssh_to_job</i>.  It fixes a crash in the schedd that was common with parallel universe jobs.  7.6 still has a known problem running parallel universe jobs that will be fixed in 7.6.3, which is planned for the first half of August.    See the <a href="manual/latest-stable/9_Version_History.html">Version History</a>  for a complete list of changes.  Condor 7.6.2 binaries and source code are available  from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.1</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the release of Condor 7.6.1.  See the <a href="manual/latest-stable/9_Version_History">Version History</a> for a complete list of changes.  Condor 7.6.1 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.6.0</b>
+      <div>
+        
+<p>The Condor team is pleased to announce the release of Condor 7.6.0.  This is the first entry in a new stable series, contains all  the features and bug fixes in the 7.5 development series.  See the <a href="manual/latest-stable/9_Version_History.html"> version History</a> for a complete list of changes.</p>
+
+      </div>
+      
+      <b>7.4.4</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.4.4. This is a stable release of Condor.  It includes a security fix for users submitting Amazon EC2 jobs (universe=grid and grid_resource=amazon) with the amazon_keypair_file. See the <a href="manual/latest-stable/9_Version_History.html"> Version History</a> for a complete list of changes.  Condor 7.4.4 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.4.3</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.4.3. This is a stable release of Condor. This fixes several bugs in the 7.4.2 release. See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.3 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.4.2</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.4.2.   This is a stable release of Condor which includes numerous bug fixes to 7.4.1. See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.2 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.2.5</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.2.5.  This release patches a security vulnerability and includes a few fixes for bugs found in 7.2.4.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.2.5 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.4.1</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.4.1.  This release patches a security vulnerability and includes many fixes for bugs found in 7.4.0.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.1 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.4.0</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.4.0. This first release in a new stable series includes all new features added in the 7.3 development series.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.4.0 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.2.4</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.2.4. This is a bugfix release to the stable series of Condor.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes. Condor 7.2.4 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.2.3</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.2.3. This release adds standard universe support for Debian 5.0 on x86_64. It also fixes a memory leak in the collector that has affected many users. Other bug fixes include file descriptor leaks in the schedd, encryption working with parallel jobs, and remote attributes in Condor-C job ads. See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes. Condor 7.2.3 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.2.2</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.2.2. This release includes a new full port to Debian 5.0 x86 and a clipped port to Debian 5 x86_64.  Also, it includes a large number of bug fixes in the Hibernation code as well as the SOAP interface, among other systems.  This release has also been made to be forward compatible with the up and coming 7.3 release, when using CCB (which will be detailed in the next 7.3 release). See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes. Condor 7.2.2 binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>7.2.1</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.2.1. This release addresses a handful of critical Windows-specific problems that were discovered after the release of Condor 7.2.0. This release also adds a native clipped port to Debian 5.0 (Lenny), support for the gfortran compiler in standard universe, support for standard output and error files larger than 2GB, and several other bug fixes. See the <a href="manual/latest-stable/9_Version_History.html">version history</a> for a detailed list of changes. Condor 7.2.1 binaries and source code are available from <a href="downloads/">our downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.2.0</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.2.0. This first release in a new stable series contains all the new features from the 7.1.X development series in addition to numerous bug fixes.  See our <a href="manual/latest-stable/9_Version_History.html">Release Notes</a> for more details.  As usual, binaries and source code are available from <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
       <b>7.0.56.8.9</b>
       <div>
         
@@ -2625,6 +2487,146 @@ of the file transfer plugins.</p>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 7.0.0. This first release in a new stable series includes all new features added in the 6.9 development series.  See the  <a href="manual/latest-stable/9_Version_History.html">Version History</a> for a complete list of changes.  Condor 7.0.0 binaries and source code are available from  <a href="downloads/">our Downloads page.</a></p>
+
+      </div>
+      
+      <b>6.8.8</b>
+      <div>
+        
+<p>The Condor Team announces the release of Condor 6.8.8. Condor 6.8.8 introduces several fixes for bugs, including a security-related problem.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for  a complete list of changes. Condor 6.8.8 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.7</b>
+      <div>
+        
+<p>The Condor Team announces the release of Condor 6.8.7. Condor 6.8.7 introduces several fixes for bugs.  See the <a href="manual/latest-stable/9_Version_History.html">Version History</a> for  a complete list of changes. Condor 6.8.7 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.6</b>
+      <div>
+        
+<p>The Condor Team announces Condor 6.8.6.  This new stable series release fixes numerous bugs, faster submission to Globus WS-GRAM, and also adds official support for Microsoft Vista and MacOS 10.4 on Intel CPUs. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.6 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.5</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 6.8.5. Condor 6.8.5 is primarily a bugfix release.  See the <a href="manual/latest-stable/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.8.5 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.4</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 6.8.4. Condor 6.8.4 is primarily a bugfix release, including fixes in Quill, DAGMan, and the “local universe”.  See the <a href="manual/latest-stable/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.8.4 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.3</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 6.8.3. Condor 6.8.3 fixes a number of bugs, adds several minor features, and adds clipped support for SuSE Linux Enterprise Server 9 on PowerPCs.  See the <a href="manual/latest-stable/9_Version_History.html">Version History and Release Notes</a> for further details. Condor 6.8.3 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.2</b>
+      <div>
+        
+<p>The Condor Team is pleased to <a href="https://lists.cs.wisc.edu/archive/condor-users/2006-October/msg00118.shtml">announce</a> the release of Condor 6.8.2. Condor 6.8.2 release fixes a number of bugs and adds support for x86_64 standard universe.  See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.2 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.1</b>
+      <div>
+        
+<p>The Condor Team is pleased to <a href="https://lists.cs.wisc.edu/archive/condor-users/2006-September/msg00155.shtml">announce</a> the release of Condor 6.8.1. Condor 6.8.1 release fixes a number of important bugs, including some potential security vulnerabilities.  All users are encouraged to upgrade immediately. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.1 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.8.0</b>
+      <div>
+        
+<p>The Condor Team is pleased to <a href="https://lists.cs.wisc.edu/archive/condor-users/2006-July/msg00212.shtml">announce</a> the release of Condor 6.8.0. Condor 6.8.0 begins a new stable series of Condor and contains the new features and bug fixes from the Condor 6.7 development series. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for further details. Condor 6.8.0 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.11</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 6.6.11.  Version 6.6.11 is strictly for bug and security fixes. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6.11 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.10</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 6.6.10.  Version 6.6.10 is strictly for bug fixes. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6.10 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.9</b>
+      <div>
+        
+<p>6.6.9 is the latest release of our stable series. 6.6.9 contains several critical bug fixes and all users are encouraged to upgrade immediately. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details.  Condor 6.6.9 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.8</b>
+      <div>
+        
+<p>6.6.8 is the latest release of our stable series. 6.6.8 is primarily a bug fix release. 6.6.8, and all future releases will no longer support Redhat Linux on IA64, Digital UNIX 4.0f, and Solaris 7.  See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details.  Condor 6.6.8 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.7</b>
+      <div>
+        
+<p>6.6.7 is the latest release of our stable series. 6.6.7 is primarily a bug fix release.  New features include support for the Windows Firewall on Windows XP SP2. 6.6.7, and all future releases  will no longer support HP-UX 10.20, Digital UNIX 4.0f, and Solaris 7.  See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details.  Condor 6.6.7 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.6</b>
+      <div>
+        
+<p>6.6.6 is the latest version of our current stable     release series. See the  <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.5</b>
+      <div>
+        
+<p>6.6.5 is the latest version of our current stable     release series. See the  <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.36.6.4</b>
+      <div>
+        
+<p>6.6.4 and 6.6.3 are the latest version of our current stable release series. 6.6.4 is for MacOS X and Windows only, and is otherwise identical to 6.6.3.  6.6.3 includes support for Globus 3.2, and removes support for Globus releases prior to 2.2.  If you are not using  the Globus universe, there is very little difference between 6.6.2 and 6.6.3. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.4.7</b>
+      <div>
+        
+<p>Condor 6.4.7 for both UNIX and Windows has been released. 6.4.7 corrects a critical bug with Condor that caused a misreporting of jobs in the pool.  It is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.2.1</b>
+      <div>
+        
+<p>Condor Version 6.2.1 has been released, and is available on the <a href="downloads/"> downloads</a> page. 6.2.1 is the second release in the 6.2 <i>stable</i> series. The main focus of this release was bug fixes over the 6.2.0 release, and all 6.2.0 users are urged to upgrade to 6.2.1. The complete list of changes can be found <a href="manual/latest-stable/9_Version_History.html">here</a></p>
+
+      </div>
+      
+      <b>6.2.0</b>
+      <div>
+        
+<p>Condor Version 6.2.0 has been released, and is available on the <a href="downloads/"> downloads</a> page. 6.2.0 is the first release in the 6.2 <i>stable</i> series. Future 6.2.X releases will be mainly bug fixes. For more info on our version-number system, please read <a href="version_number.html">this</a>.   &lt;p&gt; The UNIX and NT builds are now available on the website, and 6.0 and 6.1 releases have been removed.  The 6.2.0 manual is also available, and includes a section on how to upgrade your pool from 6.0.3 to 6.2.0. The 6.3 DAGMan will also be released very soon.</p>
 
       </div>
       
