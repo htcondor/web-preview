@@ -447,7 +447,7 @@
                 <div class="d-none d-lg-block col-lg-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <h3><a class="text-decoration-none" href="/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a></h3>
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-v3/news/New_HTCondor_Version_Scheme/">New HTCondor Version Scheme</a></h3>
                             <div>
                                 <span class="text-muted">September 22, 2021</span>
                             </div>
@@ -861,6 +861,22 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
     
+      <b>9.2.0</b>
+      <div>
+        <p>This release contains all of the bug fixes from the 9.0.6 LTS release and the 9.1.4, 9.1.5, 9.1.6 limited patch releases.</p>
+
+<p>Enhancements in the release include:</p>
+
+<ul>
+  <li>Add SERVICE node that runs alongside the DAG for the duration of the DAG</li>
+  <li>Fix problem where proxy delegation to older HTCondor versions failed</li>
+  <li>Jobs are now re-run if the execute directory unexpectedly disappears</li>
+  <li>HTCondor counts the number of files transfered at the submit node</li>
+  <li>Fix a bug that caused jobs to fail when using newer Singularity versions</li>
+</ul>
+
+      </div>
+    
       <b>9.1.3</b>
       <div>
         
@@ -872,6 +888,19 @@ using GSI, you must migrate to a different authorization mechanism.</p>
   <li>Globus GSI authentication is disabled by default</li>
   <li>If a user job policy expression evaluates to undefined, it is ignored</li>
   <li>The job ad now contains a history of job holds and hold reasons</li>
+</ul>
+
+      </div>
+    
+      <b>9.1.2</b>
+      <div>
+        <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible. More details on the security
+issues are in the Vulnerability Reports:</p>
+
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
 </ul>
 
       </div>
@@ -928,6 +957,18 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
       </div>
       
+      <b>8.9.11</b>
+      <div>
+        <p>This release contains important fixes for security issues. Affected users should update as soon as possible.
+More details on the security issues are in the Vulnerability Reports:</p>
+
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0001">HTCONDOR-2021-01</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0002">HTCONDOR-2021-02</a></li>
+</ul>
+
+      </div>
+      
       <b>8.9.10</b>
       <div>
         
@@ -953,6 +994,21 @@ using GSI, you must migrate to a different authorization mechanism.</p>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.9.7. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.8.9 stable release.  Enhancements in the release include: Multiple enhancements in the file transfer code; Support for more regions in s3:// URLs; Much more flexible job router language; Jobs may now specify cuda_version to match equally-capable GPUs; TOKENS are now called IDTOKENS to differentiate from SCITOKENS; Added the ability to blacklist TOKENS via an expression; Can simultaneously handle Kerberos and OAUTH credentials; The getenv submit command now supports a blacklist and whitelist; The startd supports a remote history query similar to the schedd; condor_q -submitters now works with accounting groups; Fixed a bug reading service account credentials for Google Compute Engine.  Further details can be found in the <a href="http://htcondor.org/manual/v8.9.7/DevelopmentReleaseSeries89.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.9.7/StableReleaseSeries88.html"> Stable Version History</a>. HTCondor 8.9.7 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.9.6</b>
+      <div>
+        <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issues are in the Vulnerability Reports:</p>
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0001.html">HTCONDOR-2020-01</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0002.html">HTCONDOR-2020-02</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0003.html">HTCONDOR-2020-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0004.html">HTCONDOR-2020-04</a></li>
+</ul>
 
       </div>
       
@@ -1030,6 +1086,13 @@ using GSI, you must migrate to a different authorization mechanism.</p>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.7.6. This development series release contains new features that are under development. This release contains all of the bug fixes from the 8.6.9 stable release.  Enhancements in the release include: Machines won’t enter “Owner” state unless using the Desktop policy; One can use SCHEDD and JOB instead of MY and TARGET in SUBMIT_REQUIREMENTS; HTCondor now reports all submit warnings, not just the first one; DAGMan now updates the schedd periodically instead of every state change; The HTCondor Python bindings in pip are now built from the release branch.  Further details can be found in the <a href="http://htcondor.org/manual/v8.7.6/11_2Development_Release.html"> Development Version History</a> and the <a href="http://htcondor.org/manual/v8.7.6/11_4Stable_Release.html"> Stable Version History</a>. HTCondor 8.7.6 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.7.5</b>
+      <div>
+        <p>More details on the security issue are in the
+<a href="/security/vulnerabilities/HTCONDOR-2017-0001.html">Vulnerability Report</a>.</p>
 
       </div>
       
@@ -1757,22 +1820,6 @@ using GSI, you must migrate to a different authorization mechanism.</p>
 
     </div>
     
-    <b>9.2.0</b>
-    <div>
-      <p>This release contains all of the bug fixes from the 9.0.6 LTS release and the 9.1.4, 9.1.5, 9.1.6 limited patch releases.</p>
-
-<p>Enhancements in the release include:</p>
-
-<ul>
-  <li>Add SERVICE node that runs alongside the DAG for the duration of the DAG</li>
-  <li>Fix problem where proxy delegation to older HTCondor versions failed</li>
-  <li>Jobs are now re-run if the execute directory unexpectedly disappears</li>
-  <li>HTCondor counts the number of files transfered at the submit node</li>
-  <li>Fix a bug that caused jobs to fail when using newer Singularity versions</li>
-</ul>
-
-    </div>
-    
     <b>9.0.6</b>
     <div>
       
@@ -1799,6 +1846,19 @@ using GSI, you must migrate to a different authorization mechanism.</p>
   <li>The online  manual now has detailed instructions for installing on MacOS</li>
   <li>Fix bug where misconfigured MIG devices confused condor_gpu_discovery</li>
   <li>The transfer _checkpoint_file list may now include input files</li>
+</ul>
+
+    </div>
+    
+    <b>9.0.4</b>
+    <div>
+      <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible. More details on the security
+issues are in the Vulnerability Reports:</p>
+
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
 </ul>
 
     </div>
@@ -1878,6 +1938,19 @@ of the file transfer plugins.</p>
 
 
       
+      <b>8.8.15</b>
+      <div>
+        <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible. More details on the security
+issues are in the Vulnerability Reports:</p>
+
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
+</ul>
+
+      </div>
+      
       <b>8.8.13</b>
       <div>
         
@@ -1910,6 +1983,21 @@ of the file transfer plugins.</p>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.8.9. A stable series release contains significant bug fixes.  Highlights of this release are: Proper tracking of maximum memory used by Docker universe jobs Fixed preempting a GPU slot for a GPU job when all GPUs are in use; Fixed a Python crash when queue_item_data iterator raises an exception; Fixed a bug where slot attribute overrides were ignored; Calculates accounting group quota correctly when more than 1 CPU requested; Updated HTCondor Annex to accommodate API change for AWS Spot Fleet; Fixed a problem where HTCondor would not start on AWS Fargate; Fixed where the collector could wait forever for a partial message; Fixed streaming output to large files (&gt;2Gb) when using the 32-bit shadow.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.8.9/StableReleaseSeries88.html"> Version History</a>.  HTCondor 8.8.9 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.8.8</b>
+      <div>
+        <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issues are in the Vulnerability Reports:</p>
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0001.html">HTCONDOR-2020-01</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0002.html">HTCONDOR-2020-02</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0003.html">HTCONDOR-2020-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2020-0004.html">HTCONDOR-2020-04</a></li>
+</ul>
 
       </div>
       
@@ -2001,6 +2089,13 @@ of the file transfer plugins.</p>
       <div>
         
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.6.9. A stable series release contains significant bug fixes.  Highlights of this release are: Fixed a bug where some Accounting Groups could get too much surplus quota; Fixed a Python binding bug where some queries could corrupt memory; Fixed a problem where preen could block the schedd for a long time; Fixed a bug in Windows where the job sandbox would not be cleaned up; Fixed problems with the interaction between the master and systemd; Fixed a bug where MAX_JOBS_SUBMITTED could be permanently reduced; Fixed problems with very large disk requests.  More details about the fixes can be found in the <a href="http://htcondor.org/manual/v8.6.9/10_3Stable_Release.html">Version History</a>.  HTCondor 8.6.9 binaries and source code are available from our <a href="http://htcondor.org/downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>8.6.8</b>
+      <div>
+        <p>More details on the security issue are in the
+<a href="/security/vulnerabilities/HTCONDOR-2017-0001.html">Vulnerability Report</a>.</p>
 
       </div>
       
@@ -2207,6 +2302,14 @@ of the file transfer plugins.</p>
 
       </div>
       
+      <b>8.2.1</b>
+      <div>
+        <p>This release contains an important fix for a security issue introduced in version 8.1.4.
+Affected users should update as soon as possible.
+More details on the security issue can be found on the <a href="/security/vulnerabilities/HTCONDOR-2014-0001">Vulnerability Page</a></p>
+
+      </div>
+      
       <b>8.2.0</b>
       <div>
         
@@ -2284,6 +2387,13 @@ of the file transfer plugins.</p>
 
       </div>
       
+      <b>7.8.6</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the release of Condor 7.8.6. which contains an important security fix that was incorrectly documented as being in the 7.8.5 release.  This release is otherwise identical to the 7.8.5 release.  Affected users should upgrade as soon as possible.  More details on the security issue can be found on the <a href="/security/vulnerabilities/CONDOR-2012-0003">Vulnerabilities Page</a>.</p>
+
+      </div>
+      
       <b>7.8.5</b>
       <div>
         
@@ -2291,10 +2401,17 @@ of the file transfer plugins.</p>
 
       </div>
       
-      <b>7.6.107.8.4</b>
+      <b>7.6.10</b>
       <div>
         
-<p>The Condor Team is pleased to announce the releases of Condor 7.6.10 and 7.8.4. These releases contain several important security fixes.  However, none of the security vulnerabilities are rated worse than “Moderate” though users are still encouraged to upgrade as soon as possible.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+<p>The Condor Team is pleased to announce the releases of Condor 7.6.10 and 7.8.4. These releases contain several important security fixes.  However, none of the security vulnerabilities are rated worse than “Moderate” though users are still encouraged to upgrade as soon as possible.  See the version history for a complete list of changes. Condor binaries and source code are available from our <a href="/downloads">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.8.4</b>
+      <div>
+        
+<p>The Condor Team is pleased to announce the releases of Condor 7.6.10 and 7.8.4. These releases contain several important security fixes.  However, none of the security vulnerabilities are rated worse than “Moderate” though users are still encouraged to upgrade as soon as possible. Condor binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
 
       </div>
       
@@ -2302,6 +2419,29 @@ of the file transfer plugins.</p>
       <div>
         
 <p>The Condor Team is pleased to announce the release of Condor 7.8.3. This release fixes several important bugs in 7.8.2 and earlier versions of Condor.  See the <a href="manual/v7.8/9_3Stable_Release.html">Version History</a> for a complete list of changes. Condor 7.8.3 binaries and source code are available from our <a href="downloads/">Downloads page</a>.</p>
+
+      </div>
+      
+      <b>7.6.9</b>
+      <div>
+        <p>Regrettably, due to an error in building 7.6.8, it is not a valid release
+and has been pulled from the web.  Please update to version 7.6.9 or 7.8.2 instead
+to address the security issue posted yesterday.  More details on the security
+problem can be found on the <a href="/security/vulnerabilities/CONDOR-2012-0002">vulnerabilities page</a></p>
+
+      </div>
+      
+      <b>7.8.2</b>
+      <div>
+        <p>All users should upgrade as soon as possible.
+More details on the security problem can be found on the <a href="/security/vulnerabilities/CONDOR-2012-0002">Vulnerabilities Page</a>.</p>
+
+      </div>
+      
+      <b>7.8.2</b>
+      <div>
+        <p>All users should upgrade as soon as possible.
+More details on the security problem can be found on the <a href="/security/vulnerabilities/CONDOR-2012-0002">Vulnerabilities Page</a>.</p>
 
       </div>
       
@@ -2452,7 +2592,14 @@ of the file transfer plugins.</p>
 
       </div>
       
-      <b>7.0.56.8.9</b>
+      <b>7.0.5</b>
+      <div>
+        
+<p>The Condor Team announces the release of Condor 7.0.5.  This release contains many bug fixes and some improvements to error handling of Local Universe jobs. Note that some of the bug fixes are security-related; therefore, we recommend sites either upgrade Condor, or restrict permissions on who is allowed to submit Condor jobs to trusted users. Bug fixes that are security related are clearly marked in the Bugs Fixed section of the  <a href="manual/latest-stable/9_Version_History.html">Release Notes</a>, with a description of the potential security impact. The Condor Project believes in the full disclosure of information, and therefore  <a href="security/">  publishes complete vulnerability details</a>. However, in order to give an adequate upgrade window for production installations, we will delay posting the full vulnerability details fixed in this release for 30 days (until the week of November 3rd 2008). In addition, we took just the security bug fixes in v7.0.5 and back-ported them to v6.8; this effort has been released as version 6.8.9. Binaries for both releases, as well as sources for v7.0.5, are available from  <a href="downloads/">our Downloads page</a>.</p>
+
+      </div>
+      
+      <b>6.8.9</b>
       <div>
         
 <p>The Condor Team announces the release of Condor 7.0.5.  This release contains many bug fixes and some improvements to error handling of Local Universe jobs. Note that some of the bug fixes are security-related; therefore, we recommend sites either upgrade Condor, or restrict permissions on who is allowed to submit Condor jobs to trusted users. Bug fixes that are security related are clearly marked in the Bugs Fixed section of the  <a href="manual/latest-stable/9_Version_History.html">Release Notes</a>, with a description of the potential security impact. The Condor Project believes in the full disclosure of information, and therefore  <a href="security/">  publishes complete vulnerability details</a>. However, in order to give an adequate upgrade window for production installations, we will delay posting the full vulnerability details fixed in this release for 30 days (until the week of November 3rd 2008). In addition, we took just the security bug fixes in v7.0.5 and back-ported them to v6.8; this effort has been released as version 6.8.9. Binaries for both releases, as well as sources for v7.0.5, are available from  <a href="downloads/">our Downloads page</a>.</p>
@@ -2606,7 +2753,14 @@ of the file transfer plugins.</p>
 
       </div>
       
-      <b>6.6.36.6.4</b>
+      <b>6.6.4</b>
+      <div>
+        
+<p>6.6.4 and 6.6.3 are the latest version of our current stable release series. 6.6.4 is for MacOS X and Windows only, and is otherwise identical to 6.6.3.  6.6.3 includes support for Globus 3.2, and removes support for Globus releases prior to 2.2.  If you are not using  the Globus universe, there is very little difference between 6.6.2 and 6.6.3. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
+
+      </div>
+      
+      <b>6.6.3</b>
       <div>
         
 <p>6.6.4 and 6.6.3 are the latest version of our current stable release series. 6.6.4 is for MacOS X and Windows only, and is otherwise identical to 6.6.3.  6.6.3 includes support for Globus 3.2, and removes support for Globus releases prior to 2.2.  If you are not using  the Globus universe, there is very little difference between 6.6.2 and 6.6.3. See the <a href="manual/latest-stable/9_Version_History.html"> Version History and Release Notes</a> for details. Condor 6.6 is available from our <a href="downloads/">Downloads</a> page.</p>
@@ -2657,8 +2811,7 @@ of the file transfer plugins.</p>
       
       <b>6.0.1 Beta</b>
       <div>
-        
-<p>You can read about what’s new&lt;/a&gt; in this version.</p>
+        <p>You can read about what’s new in this version.</p>
 
       </div>
       
