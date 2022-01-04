@@ -819,6 +819,8 @@
 
 
 
+
+
         
         <b>5.1.2</b>
         <div>
@@ -888,11 +890,27 @@
 
 
 
+
+
             
             <b>4.4.1</b>
             <div>
                 
 <p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.4.1.  Highlights of this release are: Fixed a stacktrace with the BDII provider when “HTCONDORCE_SPEC” isn’t defined in the local HTCondor configuration; Fixed a race condition that could result in removed jobs being put on hold; Improved performance of the HTCondor-CE View.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.4.1 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
+
+            </div>
+            
+            <b>4.4.0</b>
+            <div>
+                
+<p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.4.0.  Highlights of this release are: Add plug-in interface to HTCondor-CE View and separate out OSG-specific code and configuration; Add configuration option (COMPLETED_JOB_EXPIRATION) for how many days completed jobs may stay in the queue; Replace APEL uploader SchedD cron with init and systemd services; Fix HTCondor-CE View SchedD query that caused “Info” tables to be blank; Add the CE registry web application to the Central Collector; Identify broken job routes upon startup; Add benchmarking parameters to the BDII provider via <code>HTCONDORCE_SPEC</code> in the configuration; Fix handling of unmapped GSI users in the Central Collector; Fix reference to old BDII configuration values; Drop vestigial Central Collector configuration generator script and service; Fix unmapped GSI/SSL regular expressions and allow unmapped entities to advertise to the Central Collector; Add SSL support for reporting to Central Collectors; GLUE2 validation improvements for the BDII provider.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.4.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
+
+            </div>
+            
+            <b>4.1.0</b>
+            <div>
+                
+<p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.1.0.  HTCondor-CE is a grid gateway that forwards resource provisioning requests to your local cluster. HTCondor-CE was originally developed by the Open Science Grid (OSG). The Center for High-Throughput Computing (CHTC) now distributes and supports HTCondor-CE for use outside of the OSG.  Highlights of this release are: Added the ability to configure the environment of routed jobs; Simplified APEL configuration; Fixed the ability to specify certificate locations for SSL authentication; Refined the APEL record filter to ignore jobs that have not yet started; Fixed an issue where “condor_ce_q” required authentication; Re-enabled the ability for local users to submit jobs to the CE queue; Fixed an issue where some jobs were capped at 72 mins instead of 72 hrs; Improved BDII provider error handling.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.1.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
 
             </div>
             
@@ -910,24 +928,10 @@
 
             </div>
             
-            <b>4.4.0</b>
-            <div>
-                
-<p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.4.0.  Highlights of this release are: Add plug-in interface to HTCondor-CE View and separate out OSG-specific code and configuration; Add configuration option (COMPLETED_JOB_EXPIRATION) for how many days completed jobs may stay in the queue; Replace APEL uploader SchedD cron with init and systemd services; Fix HTCondor-CE View SchedD query that caused “Info” tables to be blank; Add the CE registry web application to the Central Collector; Identify broken job routes upon startup; Add benchmarking parameters to the BDII provider via <code>HTCONDORCE_SPEC</code> in the configuration; Fix handling of unmapped GSI users in the Central Collector; Fix reference to old BDII configuration values; Drop vestigial Central Collector configuration generator script and service; Fix unmapped GSI/SSL regular expressions and allow unmapped entities to advertise to the Central Collector; Add SSL support for reporting to Central Collectors; GLUE2 validation improvements for the BDII provider.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.4.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
-
-            </div>
-            
             <b>3.4.0</b>
             <div>
                 
 <p>The HTCondor team is pleased to announce the release of HTCondor-CE 3.4.0.  HTCondor-CE is a grid gateway that forwards resource provisioning requests to your local cluster. HTCondor-CE was originally developed by the Open Science Grid (OSG). The Center for High-Throughput Computing (CHTC) now distributes and supports HTCondor-CE for use outside of the OSG.  Highlights of this release are: Added the ability to configure the environment of routed jobs; Simplified APEL configuration; Refined the APEL record filter to ignore jobs that have not yet started; Improved BDII provider error handling.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/stable/releases/#htcondor-ce-3-version-history"> version history</a>. HTCondor-CE 3.4.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
-
-            </div>
-            
-            <b>4.1.0</b>
-            <div>
-                
-<p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.1.0.  HTCondor-CE is a grid gateway that forwards resource provisioning requests to your local cluster. HTCondor-CE was originally developed by the Open Science Grid (OSG). The Center for High-Throughput Computing (CHTC) now distributes and supports HTCondor-CE for use outside of the OSG.  Highlights of this release are: Added the ability to configure the environment of routed jobs; Simplified APEL configuration; Fixed the ability to specify certificate locations for SSL authentication; Refined the APEL record filter to ignore jobs that have not yet started; Fixed an issue where “condor_ce_q” required authentication; Re-enabled the ability for local users to submit jobs to the CE queue; Fixed an issue where some jobs were capped at 72 mins instead of 72 hrs; Improved BDII provider error handling.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.1.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
 
             </div>
             
