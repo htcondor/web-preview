@@ -1,0 +1,983 @@
+diff --git a/src/classad_analysis/analysis.cpp b/src/classad_analysis/analysis.cpp
+index 9b8a0d4..362369b 100644
+--- a/src/classad_analysis/analysis.cpp
++++ b/src/classad_analysis/analysis.cpp
+@@ -1198,7 +1198,7 @@ SuggestConditionModify( Profile *p, ResourceGroup &rg )
+ 	int vrNum = 0;
+ 	ExtArray<classad::Operation::OpKind> ops ( numConds );
+ 	ExtArray<Condition*> conds ( numConds );
+-    ExtArray<bool> tooComplex ( numConds ); 
++	ExtArray<bool> tooComplex ( numConds ); 
+ //	classad::Operation::OpKind op1, op2;
+ 	classad::Value val;
+ 	p->Rewind( );
+diff --git a/src/condor_c-gahp/cgahp_common.cpp b/src/condor_c-gahp/cgahp_common.cpp
+index a13430f..2ccbebe 100644
+--- a/src/condor_c-gahp/cgahp_common.cpp
++++ b/src/condor_c-gahp/cgahp_common.cpp
+@@ -31,8 +31,6 @@ parse_gahp_command (const char* raw, Gahp_Args* args) {
+ 
+ 	args->reset();
+ 
+-	int beginning = 0;
+-
+ 	int len=strlen(raw);
+ 
+ 	char * buff = (char*)malloc(len+1);
+@@ -58,8 +56,6 @@ parse_gahp_command (const char* raw, Gahp_Args* args) {
+ 			buff[buff_len++] = '\0';
+ 			args->add_arg( strdup(buff) );
+ 			buff_len = 0;	// re-set temporary buffer
+-
+-			beginning = i+1; // next char will be one after whitespace
+ 		}
+ 		else {
+ 			// It's just a regular character, save it
+diff --git a/src/condor_chirp/condor_chirp.cpp b/src/condor_chirp/condor_chirp.cpp
+index 4382491..36977f8 100644
+--- a/src/condor_chirp/condor_chirp.cpp
++++ b/src/condor_chirp/condor_chirp.cpp
+@@ -91,7 +91,7 @@ chirp_client_connect_starter()
+ 	MyString path;
+     int port;
+     int result;
+-	char *dir;
++	const char *dir;
+ 
+ 	if (NULL == (dir = getenv("_CONDOR_SCRATCH_DIR"))) {
+ 		dir = ".";
+@@ -292,7 +292,8 @@ int chirp_fetch(int argc, char **argv) {
+ int chirp_put(int argc, char **argv) {
+ 
+ 	int fileOffset = 2;
+-	char *mode = "cwt";
++	char default_mode [] = "cwt";
++	char *mode = default_mode;
+ 	unsigned perm = 0777;
+ 
+ 	bool more = true;
+diff --git a/src/condor_collector.V6/collector.cpp b/src/condor_collector.V6/collector.cpp
+index b3204c7..af02dfc 100644
+--- a/src/condor_collector.V6/collector.cpp
++++ b/src/condor_collector.V6/collector.cpp
+@@ -1441,8 +1441,9 @@ void CollectorDaemon::sendCollectorAd()
+ 		return ;
+ 	}
+ 	if ( updateRemoteCollector ) {
++		char update_addr_default [] = "(null)";
+ 		char *update_addr = updateRemoteCollector->addr();
+-		if (!update_addr) update_addr = "(null)";
++		if (!update_addr) update_addr = update_addr_default;
+ 		if( ! updateRemoteCollector->sendUpdate(UPDATE_COLLECTOR_AD, ad, NULL, false) ) {
+ 			dprintf( D_ALWAYS, "Can't send UPDATE_COLLECTOR_AD to collector "
+ 					 "(%s): %s\n", update_addr,
+diff --git a/src/condor_collector.V6/collector_engine.cpp b/src/condor_collector.V6/collector_engine.cpp
+index 096d9ed..2a424a1 100644
+--- a/src/condor_collector.V6/collector_engine.cpp
++++ b/src/condor_collector.V6/collector_engine.cpp
+@@ -69,8 +69,8 @@ CollectorEngine::CollectorEngine (CollectorStats *stats ) :
+ 	CollectorAds  (LESSER_TABLE_SIZE , &adNameHashFunction),
+ 	NegotiatorAds (LESSER_TABLE_SIZE , &adNameHashFunction),
+ 	HadAds        (LESSER_TABLE_SIZE , &adNameHashFunction),
+-	GridAds       (LESSER_TABLE_SIZE , &adNameHashFunction),
+ 	LeaseManagerAds(LESSER_TABLE_SIZE , &adNameHashFunction),
++	GridAds       (LESSER_TABLE_SIZE , &adNameHashFunction),
+ 	GenericAds    (LESSER_TABLE_SIZE , &stringHashFunction)
+ {
+ 	clientTimeout = 20;
+@@ -1013,7 +1013,7 @@ updateClassAd (CollectorHashTable &hashTable,
+ ClassAd * CollectorEngine::
+ mergeClassAd (CollectorHashTable &hashTable,
+ 			   const char *adType,
+-			   const char *label,
++			   const char * /*label*/,
+ 			   ClassAd *new_ad,
+ 			   AdNameHashKey &hk,
+ 			   const MyString &hashString,
+diff --git a/src/condor_collector.V6/offline_plugin.cpp b/src/condor_collector.V6/offline_plugin.cpp
+index a844259..26c8532 100644
+--- a/src/condor_collector.V6/offline_plugin.cpp
++++ b/src/condor_collector.V6/offline_plugin.cpp
+@@ -311,7 +311,7 @@ OfflineCollectorPlugin::mergeClassAd (
+ 	ClassAd &ad,
+ 	char const *key )
+ {
+-	ClassAd *old_ad;
++	ClassAd *old_ad = NULL;
+ 
+ 	_ads->BeginTransaction ();
+ 
+diff --git a/src/condor_collector.V6/view_server.cpp b/src/condor_collector.V6/view_server.cpp
+index 88a5ae4..d224f99 100644
+--- a/src/condor_collector.V6/view_server.cpp
++++ b/src/condor_collector.V6/view_server.cpp
+@@ -218,7 +218,7 @@ void ViewServer::Shutdown()
+ // HandleQuery to take care of replying to the query
+ //-------------------------------------------------------------------
+ 
+-int ViewServer::ReceiveHistoryQuery(Service* s, int command, Stream* sock)
++int ViewServer::ReceiveHistoryQuery(Service* /*s*/, int command, Stream* sock)
+ {
+ 	dprintf(D_ALWAYS,"Got history query %d\n",command);
+ 
+@@ -561,7 +561,7 @@ ViewServer::addNewOffset(FILE* &fp, int &offset_ctr, int read_time, ExtIntArray*
+ //-------------------------------------------------------------------
+ 
+ fpos_t*
+-ViewServer::findOffset(FILE* &fp, int FromDate, int ToDate, ExtIntArray* times_array, ExtOffArray* offsets) {
++ViewServer::findOffset(FILE* & /*fp*/, int FromDate, int ToDate, ExtIntArray* times_array, ExtOffArray* offsets) {
+ 	fpos_t* search_offset_ptr = NULL;
+ 	if( times_array->length() == 0 ) {
+ 
+diff --git a/src/condor_credd/classadUtil.cpp b/src/condor_credd/classadUtil.cpp
+index a8c6e47..54982c9 100644
+--- a/src/condor_credd/classadUtil.cpp
++++ b/src/condor_credd/classadUtil.cpp
+@@ -114,21 +114,21 @@ bool putOldClassAd ( Stream *sock, ClassAd& ad )
+ 		}
+ 		buf += " = ";
+ 		unp.Unparse( buf, expr );
+-		if (!sock->put((char*)buf.c_str())) return false;
++		if (!sock->put(buf.c_str())) return false;
+ 	}
+ 
+ 	// Send the type
+ 	if (!ad.EvaluateAttrString("MyType",buf)) {
+ 		buf="(unknown type)";
+ 	}
+-	if (!sock->put((char*)buf.c_str())) {
++	if (!sock->put(buf.c_str())) {
+ 		return false;
+ 	}
+ 
+ 	if (!ad.EvaluateAttrString("TargetType",buf)) {
+ 		buf="(unknown type)";
+ 	}
+-	if (!sock->put((char*)buf.c_str())) {
++	if (!sock->put(buf.c_str())) {
+ 		return false;
+ 	}
+ 
+diff --git a/src/condor_credd/credd.cpp b/src/condor_credd/credd.cpp
+index 549d2a2..b275a7e 100644
+--- a/src/condor_credd/credd.cpp
++++ b/src/condor_credd/credd.cpp
+@@ -60,7 +60,7 @@ int default_cred_expire_threshold;
+ 
+ 
+ int 
+-store_cred_handler(Service * service, int i, Stream *stream) {
++store_cred_handler(Service * /*service*/, int /*i*/, Stream *stream) {
+   void * data = NULL;
+   int rtnVal = FALSE;
+   int rc;
+@@ -222,7 +222,7 @@ EXIT:
+ 
+ 
+ int 
+-get_cred_handler(Service * service, int i, Stream *stream) {
++get_cred_handler(Service * /*service*/, int /*i*/, Stream *stream) {
+   char * name = NULL;
+   int rtnVal = FALSE;
+   bool found_cred=false;
+@@ -334,7 +334,7 @@ EXIT:
+ 
+ 
+ int 
+-query_cred_handler(Service * service, int i, Stream *stream) {
++query_cred_handler(Service * /*service*/, int /*i*/, Stream *stream) {
+ 
+   classad::ClassAdUnParser unparser;
+   std::string adbuffer;
+@@ -413,7 +413,7 @@ EXIT:
+ 
+ 
+ int 
+-rm_cred_handler(Service * service, int i, Stream *stream) {
++rm_cred_handler(Service * /*service*/, int /*i*/, Stream *stream) {
+   char * name = NULL;
+   int rtnVal = FALSE;
+   int rc;
+@@ -622,7 +622,7 @@ CheckCredentials () {
+     priv_state priv = set_user_priv();
+ 
+     time_t time = pCred->cred->GetRealExpirationTime();
+-    dprintf (D_FULLDEBUG, "Checking %s:%s = %d\n",
++    dprintf (D_FULLDEBUG, "Checking %s:%s = %ld\n",
+ 	       pCred->cred->GetOwner(),
+                pCred->cred->GetName(),
+ 	       time);
+@@ -1102,7 +1102,8 @@ init_user_id_from_FQN (const char * _fqn) {
+   char * uid = NULL;
+   char * domain = NULL;
+   char * fqn = NULL;
+-  
++  char default_uid [] = "nobody";
++
+   if (_fqn) {
+     fqn = strdup (_fqn);
+     uid = fqn;
+@@ -1116,7 +1117,7 @@ init_user_id_from_FQN (const char * _fqn) {
+   }
+   
+   if (uid == NULL) {
+-    uid = "nobody";
++    uid = default_uid;
+   }
+ 
+   int rc = init_user_ids (uid, domain);
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index c458868..bf98829 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -3021,7 +3021,6 @@ void DaemonCore::Driver()
+ 	int			i;
+ 	int			tmpErrno;
+ 	time_t		timeout;
+-	int result;
+ 	time_t min_deadline;
+ 
+ #ifndef WIN32
+@@ -3521,11 +3520,11 @@ void DaemonCore::Driver()
+ 						recheck_status = true;
+ 						if ( (*pipeTable)[i].handler )
+ 							// a C handler
+-							result = (*( (*pipeTable)[i].handler))( (*pipeTable)[i].service, pipe_end);
++							(*( (*pipeTable)[i].handler))( (*pipeTable)[i].service, pipe_end);
+ 						else
+ 						if ( (*pipeTable)[i].handlercpp )
+ 							// a C++ handler
+-							result = ((*pipeTable)[i].service->*( (*pipeTable)[i].handlercpp))(pipe_end);
++							((*pipeTable)[i].service->*( (*pipeTable)[i].handlercpp))(pipe_end);
+ 						else
+ 						{
+ 							// no handler registered
+@@ -4245,7 +4244,6 @@ int DaemonCore::HandleReq(Stream *insock, Stream* asock)
+ 	int					index;
+ 	int					reqFound = FALSE;
+ 	int					result = FALSE;
+-	int					old_timeout;
+     int                 perm         = USER_AUTH_FAILURE;
+ 	MyString            user;
+     ClassAd *the_policy     = NULL;
+@@ -4607,7 +4605,7 @@ int DaemonCore::HandleReq(Stream *insock, Stream* asock)
+ 
+ 	// read in the command from the sock with a timeout value of just 1 second,
+ 	// since we know there is already some data waiting for us.
+-	old_timeout = sock->timeout(1);
++	sock->timeout(1);
+ 	result = sock->code(req);
+ 	// For now, lets set a 20 second timeout, so all command handlers are called with
+ 	// a timeout of 20 seconds on their socket.
+@@ -8179,6 +8177,9 @@ int DaemonCore::Create_Process(
+ 		}
+ 	}
+ #else
++	// Squash compiler warning about inherit_handles being set but not used on Linux
++	if (inherit_handles) {}
++
+ 	// START A NEW PROCESS ON UNIX
+ 
+ 		// We have to do some checks on the executable name and the
+diff --git a/src/condor_daemon_core.V6/daemon_core_main.cpp b/src/condor_daemon_core.V6/daemon_core_main.cpp
+index 5f39e47..d755a78 100644
+--- a/src/condor_daemon_core.V6/daemon_core_main.cpp
++++ b/src/condor_daemon_core.V6/daemon_core_main.cpp
+@@ -1419,6 +1419,7 @@ dc_reconfig()
+ 			ptmp = NULL;
+ 			char segfault;	
+ 			segfault = *ptmp; // should blow up here
++			if (segfault) {} // Line to avoid compiler warnings.
+ 			ptmp[0] = 'a';
+ 			
+ 			// should never make it to here!
+@@ -1535,7 +1536,6 @@ int dc_main( int argc, char** argv )
+ 	char**	ptr;
+ 	int		command_port = -1;
+ 	char const *daemon_sock_name = NULL;
+-	int 	http_port = -1;
+ 	int		dcargs = 0;		// number of daemon core command-line args found
+ 	char	*ptmp, *ptmp1;
+ 	int		i;
+@@ -1816,14 +1816,8 @@ int dc_main( int argc, char** argv )
+ 					// specify an HTTP port
+ 				ptr++;
+ 				if( ptr && *ptr ) {
+-					http_port = atoi( *ptr );
+-					dcargs += 2;
+-				} else {
+ 					fprintf( stderr, 
+-							 "DaemonCore: ERROR: -http needs another argument.\n" );
+-					fprintf( stderr, 
+-					   "   Please specify the port to use for the HTTP socket.\n" );
+-
++							 "DaemonCore: ERROR: -http no longer accepted.\n" );
+ 					exit( 1 );
+ 				}
+ 			} else {
+diff --git a/src/condor_daemon_core.V6/self_draining_queue.cpp b/src/condor_daemon_core.V6/self_draining_queue.cpp
+index 035f18d..97317a9 100644
+--- a/src/condor_daemon_core.V6/self_draining_queue.cpp
++++ b/src/condor_daemon_core.V6/self_draining_queue.cpp
+@@ -165,7 +165,7 @@ SelfDrainingQueue::timerHandler( void )
+ 	}
+ 	int count;
+ 	for( count=0; count<m_count_per_interval && !queue.IsEmpty(); count++ ) {
+-		ServiceData* d;
++		ServiceData* d = NULL;
+ 		queue.dequeue(d);
+ 
+ 		SelfDrainingHashItem hash_item(d);
+diff --git a/src/condor_daemon_core.V6/timer_manager.cpp b/src/condor_daemon_core.V6/timer_manager.cpp
+index 948a620..b208a96 100644
+--- a/src/condor_daemon_core.V6/timer_manager.cpp
++++ b/src/condor_daemon_core.V6/timer_manager.cpp
+@@ -573,7 +573,6 @@ void TimerManager::DumpTimerList(int flag, const char* indent)
+ void TimerManager::Start()
+ {
+ 	struct timeval		timer;
+-	int					rv;
+ 
+ 	for(;;)
+ 	{
+@@ -590,12 +589,12 @@ void TimerManager::Start()
+ 			// no timer events registered...  only a signal
+ 			// can save us now!!
+ 			dprintf(D_DAEMONCORE,"TimerManager::Start() about to block with no events!\n");
+-			rv = select(0,0,0,0,NULL);
++			select(0,0,0,0,NULL);
+ 		} else {
+ 			dprintf(D_DAEMONCORE,
+ 				"TimerManager::Start() about to block, timeout=%ld\n",
+ 				(long)timer.tv_sec);
+-			rv = select(0,0,0,0, &timer);
++			select(0,0,0,0, &timer);
+ 		}		
+ 	}
+ }
+diff --git a/src/condor_privsep/privsep_client.UNIX.cpp b/src/condor_privsep/privsep_client.UNIX.cpp
+index 650958f..afa610d 100644
+--- a/src/condor_privsep/privsep_client.UNIX.cpp
++++ b/src/condor_privsep/privsep_client.UNIX.cpp
+@@ -281,7 +281,7 @@ privsep_exec_set_args(FILE* fp, ArgList& args)
+ {
+ 	int num_args = args.Count();
+ 	for (int i = 0; i < num_args; i++) {
+-		fprintf(fp, "exec-arg<%d>\n", strlen(args.GetArg(i)));
++		fprintf(fp, "exec-arg<%lu>\n", strlen(args.GetArg(i)));
+ 		fprintf(fp, "%s\n", args.GetArg(i));
+ 	}
+ }
+@@ -291,7 +291,7 @@ privsep_exec_set_env(FILE* fp, Env& env)
+ {
+ 	char** env_array = env.getStringArray();
+ 	for (char** ptr = env_array; *ptr != NULL; ptr++) {
+-		fprintf(fp, "exec-env<%d>\n", strlen(*ptr));
++		fprintf(fp, "exec-env<%lu>\n", strlen(*ptr));
+ 		fprintf(fp, "%s\n", *ptr);
+ 	}
+ 	deleteStringArray(env_array);
+diff --git a/src/condor_schedd.V6/autocluster.cpp b/src/condor_schedd.V6/autocluster.cpp
+index 2e58c78..63655c5 100644
+--- a/src/condor_schedd.V6/autocluster.cpp
++++ b/src/condor_schedd.V6/autocluster.cpp
+@@ -251,7 +251,7 @@ int AutoCluster::getAutoClusterid( ClassAd *job )
+ 	}
+ 	else {
+ 		cur_id = next_id++;
+-		if( next_id < cur_id ) {
++		if( cur_id < 0 ) {
+ 				// We've wrapped around MAX_INT!
+ 				// In config() we take steps to avoid this unlikely condition.
+ 			EXCEPT("Auto cluster IDs exhausted! (allocated %d)",cur_id);
+diff --git a/src/condor_schedd.V6/dedicated_scheduler.cpp b/src/condor_schedd.V6/dedicated_scheduler.cpp
+index 975a938..9fbf6ad 100644
+--- a/src/condor_schedd.V6/dedicated_scheduler.cpp
++++ b/src/condor_schedd.V6/dedicated_scheduler.cpp
+@@ -2768,19 +2768,6 @@ DedicatedScheduler::createAllocations( CAList *idle_candidates,
+ 	AllocationNode *alloc;
+ 	MRecArray* matches=NULL;
+ 
+-		// Debugging hack: allow config file to specify which
+-		// ip address we want the master to run on.
+-	    // TODO: resurrect this?
+-
+-	int last;
+-	char* master_ip = param( "mpi_master_ip" );
+-	int m_ip_len = 0;
+-	if( master_ip ) {
+-		m_ip_len = strlen( master_ip );
+-		last = 1;
+-	}
+-
+-
+ 	alloc = new AllocationNode( cluster, nprocs );
+ 	alloc->num_resources = idle_candidates->Number();
+ 
+@@ -2848,11 +2835,6 @@ DedicatedScheduler::createAllocations( CAList *idle_candidates,
+ 		// Show world what we did
+ 	alloc->display();
+ 
+-		// Get rid of our master_ip string, so we don't leak
+-		// memory. 
+-	if( master_ip ) {
+-		free( master_ip );
+-	}
+ }
+ 
+ 
+@@ -3488,7 +3470,7 @@ void
+ DedicatedScheduler::displayResourceRequests( void )
+ {
+ 	dprintf( D_FULLDEBUG,
+-			 "Waiting to negotiate for %d dedicated resource request(s)\n",
++			 "Waiting to negotiate for %lu dedicated resource request(s)\n",
+ 			 resource_requests.size() );
+ }
+ 
+@@ -4359,7 +4341,7 @@ clusterSortByPrioAndDate( const void *ptr1, const void* ptr2 )
+ 
+ 
+ void
+-displayResource( ClassAd* ad, char* str, int debug_level )
++displayResource( ClassAd* ad, const char* str, int debug_level )
+ {
+ 	char arch[128], opsys[128], name[128];
+ 	ad->LookupString( ATTR_NAME, name );
+diff --git a/src/condor_schedd.V6/dedicated_scheduler.h b/src/condor_schedd.V6/dedicated_scheduler.h
+index 77cf85b..3f5f6c7 100644
+--- a/src/condor_schedd.V6/dedicated_scheduler.h
++++ b/src/condor_schedd.V6/dedicated_scheduler.h
+@@ -488,7 +488,7 @@ int
+ RankSorter( const void *ptr1, const void* ptr2 );
+ 
+ // Print out
+-void displayResource( ClassAd* ad, char* str, int debug_level );
++void displayResource( ClassAd* ad, const char* str, int debug_level );
+ void displayRequest( ClassAd* ad, char* str, int debug_level );
+ 
+ // Clear out all the fields in the match record that have anything to
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index a97ca83..9a99531 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -143,7 +143,7 @@ static void ScheduleJobQueueLogFlush();
+ bool qmgmt_all_users_trusted = false;
+ static char	**super_users = NULL;
+ static int	num_super_users = 0;
+-static char *default_super_user =
++static const char *default_super_user =
+ #if defined(WIN32)
+ 	"Administrator";
+ #else
+@@ -1587,7 +1587,8 @@ int get_myproxy_password_handler(Service * /*service*/, int /*i*/, Stream *socke
+ 		return -1;
+ 	}
+ 
+-	char * password = "";
++	char pwd[] = "";
++	char * password = pwd;
+ 
+ 	if (GetMyProxyPassword (cluster_id, proc_id, &password) != 0) {
+ 		// Try not specifying a proc
+@@ -2441,7 +2442,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 	int universe;
+ 	GetAttributeInt( cluster_id, proc_id, ATTR_JOB_STATUS, &status );
+ 	GetAttributeInt( cluster_id, proc_id, ATTR_JOB_UNIVERSE, &universe );
+-	if( ( flags & SETDIRTY ) && ( status == RUNNING || ( universe == CONDOR_UNIVERSE_GRID ) && jobExternallyManaged( ad ) ) ) {
++	if( ( flags & SETDIRTY ) && ( status == RUNNING || (( universe == CONDOR_UNIVERSE_GRID ) && jobExternallyManaged( ad ) ) ) ) {
+ 		// Add the key to list of dirty classads
+ 		DirtyJobIDs.rewind();
+ 		if( ! DirtyJobIDs.contains( key ) ) {
+@@ -2684,9 +2685,6 @@ char * simple_encode (int key, const char * src) {
+ 
+   char * result = (char*)strdup (src);
+ 
+-  char buff[2];
+-  buff [1]='\n';
+-
+   unsigned int i= 0;
+   for (; i<strlen (src); i++) {
+     int c = (int)src[i]-(int)' ';
+@@ -2767,7 +2765,7 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 		int cluster_id;
+ 		int old_cluster_id = -10;
+ 		int proc_id;
+-		ClassAd *procad;
++		ClassAd *procad = NULL;
+ 		ClassAd *clusterad;
+ 
+ 		int counter = 0;
+@@ -3118,7 +3116,7 @@ GetDirtyAttributes(int cluster_id, int proc_id, ClassAd *updated_attrs)
+ int
+ DeleteAttribute(int cluster_id, int proc_id, const char *attr_name)
+ {
+-	ClassAd				*ad;
++	ClassAd				*ad = NULL;
+ 	char				key[PROC_ID_STR_BUFLEN];
+ //	LogDeleteAttribute	*log;
+ 	char				*attr_val = NULL;
+diff --git a/src/condor_schedd.V6/qmgmt_send_stubs.cpp b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+index 74dca19..709ae2f 100644
+--- a/src/condor_schedd.V6/qmgmt_send_stubs.cpp
++++ b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+@@ -32,6 +32,7 @@
+ #endif
+ 
+ #define assert(x) if (!(x)) { errno = ETIMEDOUT; return -1; }
++#define etimedout_assert(x) if (!(x)) { errno = ETIMEDOUT; return -1; }
+ 
+ static int CurrentSysCall;
+ extern ReliSock *qmgmt_sock;
+@@ -660,6 +661,44 @@ CloseSocket()
+ 	return 0;
+ }
+ 
++int
++GetAllJobsByConstraint_Start( char const *constraint, char const *projection)
++{
++CurrentSysCall = CONDOR_GetAllJobsByConstraint;
++
++	qmgmt_sock->encode();
++	assert(qmgmt_sock->code(CurrentSysCall));
++	assert( qmgmt_sock->put(constraint) );
++	assert( qmgmt_sock->put(projection) );
++	assert( qmgmt_sock->end_of_message() );
++
++	qmgmt_sock->decode();
++	return 0;
++}
++
++int
++GetAllJobsByConstraint_Next( ClassAd &ad )
++{
++	int rval = -1;
++
++	assert( CurrentSysCall == CONDOR_GetAllJobsByConstraint );
++
++	assert( qmgmt_sock->code(rval) );
++	if( rval < 0 ) {
++		assert( qmgmt_sock->code(terrno) );
++		assert( qmgmt_sock->end_of_message() );
++		errno = terrno;
++		return -1;
++	}
++
++	if ( ! (ad.initFromStream(*qmgmt_sock)) ) {
++		errno = ETIMEDOUT;
++		return -1;
++	}
++
++	return 0;
++}
++
+ #if defined(assert)
+ #undef assert
+ #endif
+@@ -850,44 +889,6 @@ GetAllJobsByConstraint( char const *constraint, char const *projection, ClassAdL
+ 	GetAllJobsByConstraint_imp(constraint,projection,list);
+ }
+ 
+-int
+-GetAllJobsByConstraint_Start( char const *constraint, char const *projection)
+-{
+-	CurrentSysCall = CONDOR_GetAllJobsByConstraint;
+-
+-	qmgmt_sock->encode();
+-	assert( qmgmt_sock->code(CurrentSysCall) );
+-	assert( qmgmt_sock->put(constraint) );
+-	assert( qmgmt_sock->put(projection) );
+-	assert( qmgmt_sock->end_of_message() );
+-
+-	qmgmt_sock->decode();
+-	return 0;
+-}
+-
+-int
+-GetAllJobsByConstraint_Next( ClassAd &ad )
+-{
+-	int rval = -1;
+-
+-	assert( CurrentSysCall == CONDOR_GetAllJobsByConstraint );
+-
+-	assert( qmgmt_sock->code(rval) );
+-	if( rval < 0 ) {
+-		assert( qmgmt_sock->code(terrno) );
+-		assert( qmgmt_sock->end_of_message() );
+-		errno = terrno;
+-		return -1;
+-	}
+-
+-	if ( ! (ad.initFromStream(*qmgmt_sock)) ) {
+-		errno = ETIMEDOUT;
+-		return -1;
+-	}
+-
+-	return 0;
+-}
+-
+ ClassAd *
+ GetNextDirtyJobByConstraint( char const *constraint, int initScan )
+ {
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 93b7296..7a801a9 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -2368,23 +2368,18 @@ abort_job_myself( PROC_ID job_id, JobAction action, bool log_hold,
+ 					 job_id.cluster, job_id.proc );
+ 
+ 			int handler_sig=0;
+-			const char* handler_sig_str;
+ 			switch( action ) {
+ 			case JA_HOLD_JOBS:
+ 				handler_sig = SIGUSR1;
+-				handler_sig_str = "SIGUSR1";
+ 				break;
+ 			case JA_REMOVE_JOBS:
+ 				handler_sig = SIGUSR1;
+-				handler_sig_str = "SIGUSR1";
+ 				break;
+ 			case JA_VACATE_JOBS:
+ 				handler_sig = DC_SIGSOFTKILL;
+-				handler_sig_str = "DC_SIGSOFTKILL";
+ 				break;
+ 			case JA_VACATE_FAST_JOBS:
+ 				handler_sig = DC_SIGHARDKILL;
+-				handler_sig_str = "DC_SIGHARDKILL";
+ 				break;
+ 			default:
+ 				EXCEPT( "unknown action (%d %s) in abort_job_myself()",
+@@ -2411,7 +2406,7 @@ abort_job_myself( PROC_ID job_id, JobAction action, bool log_hold,
+ 				dprintf( D_FULLDEBUG, "This job does not have a match\n");
+             }
+ 			int shadow_sig=0;
+-			const char* shadow_sig_str;
++			const char* shadow_sig_str = "UNKNOWN";
+ 			switch( action ) {
+ 			case JA_HOLD_JOBS:
+ 					// for now, use the same as remove
+@@ -2633,10 +2628,6 @@ PeriodicExprEval( ClassAd *jobad )
+ 
+ 	if(cluster<0 || proc<0 || status<0) return 1;
+ 
+-	PROC_ID job_id;
+-	job_id.cluster = cluster;
+-	job_id.proc = proc;
+-
+ 	UserPolicy policy;
+ 	policy.Init(jobad);
+ 
+@@ -6564,7 +6555,6 @@ void
+ Scheduler::StartJob(match_rec *rec)
+ {
+ 	PROC_ID id;
+-	bool ReactivatingMatch;
+ 
+ 	ASSERT( rec );
+ 	switch(rec->status) {
+@@ -6591,7 +6581,6 @@ Scheduler::StartJob(match_rec *rec)
+ 		// This is the case we want to try and start a job.
+ 	id.cluster = rec->cluster;
+ 	id.proc = rec->proc; 
+-	ReactivatingMatch = (id.proc == -1);
+ 	if(!Runnable(&id)) {
+ 			// find the job in the cluster with the highest priority
+ 		id.proc = -1;
+@@ -13946,9 +13935,9 @@ Scheduler::RecycleShadow(int /*cmd*/, Stream *stream)
+ 
+ 		// currently we only support serial jobs here
+ 	if( !mrec || !mrec->user ||
+-		srec->universe != CONDOR_UNIVERSE_VANILLA &&
+-		srec->universe != CONDOR_UNIVERSE_JAVA &&
+-		srec->universe != CONDOR_UNIVERSE_VM )
++		(srec->universe != CONDOR_UNIVERSE_VANILLA &&
++		 srec->universe != CONDOR_UNIVERSE_JAVA &&
++		 srec->universe != CONDOR_UNIVERSE_VM) )
+ 	{
+ 		stream->encode();
+ 		stream->put((int)0);
+@@ -14041,7 +14030,6 @@ Scheduler::finishRecycleShadow(shadow_rec *srec)
+ 
+ 	int shadow_pid = srec->pid;
+ 	PROC_ID new_job_id = srec->job_id;
+-	PROC_ID prev_job_id = srec->prev_job_id;
+ 
+ 	ASSERT( stream );
+ 
+diff --git a/src/condor_schedd.V6/schedd_stats.cpp b/src/condor_schedd.V6/schedd_stats.cpp
+index 133c2ca..527a290 100644
+--- a/src/condor_schedd.V6/schedd_stats.cpp
++++ b/src/condor_schedd.V6/schedd_stats.cpp
+@@ -52,6 +52,7 @@ void ScheddStatistics::SetWindowSize(int window)
+ // 
+ void ScheddStatistics::Init() 
+ { 
++   /*
+    static const int64_t sizes[] = {
+       (int64_t)0x10000 * 0x1,        (int64_t)0x10000 * 0x4,      // 64Kb, 256Kb
+       (int64_t)0x10000 * 0x10,       (int64_t)0x10000 * 0x40,     //  1Mb,   4Mb
+@@ -60,6 +61,7 @@ void ScheddStatistics::Init()
+       (int64_t)0x10000 * 0x10000,    (int64_t)0x10000 * 0x40000,  //  4Gb,  16Gb
+       (int64_t)0x10000 * 0x100000,   (int64_t)0x10000 * 0x400000, // 64Gb, 256Gb
+       };
++   */
+    //JobSizes.value.set_levels(COUNTOF(sizes), sizes);
+    //JobSizes.recent.set_levels(COUNTOF(sizes), sizes);
+ 
+diff --git a/src/condor_schedd.V6/schedd_td.cpp b/src/condor_schedd.V6/schedd_td.cpp
+index 7745b6f..d0f482c 100644
+--- a/src/condor_schedd.V6/schedd_td.cpp
++++ b/src/condor_schedd.V6/schedd_td.cpp
+@@ -496,8 +496,8 @@ Scheduler::requestSandboxLocation(int mode, Stream* s)
+ 	// Ok, figure out if I have a transferd already setup for this user.
+ 	td = m_tdman.find_td_by_user(fquser);
+ 	if (td == NULL || 
+-		(td->get_status() != TD_REGISTERED) && 
+-			(td->get_status() != TD_INVOKED)) 
++		((td->get_status() != TD_REGISTERED) && 
++			(td->get_status() != TD_INVOKED)) )
+ 	{
+ 		// Since it looks like I'm going to have to wait for a transferd
+ 		// to wake up and register to this schedd, let the client know we
+diff --git a/src/condor_schedd.V6/shadow_mgr.cpp b/src/condor_schedd.V6/shadow_mgr.cpp
+index 1067b97..7607d38 100644
+--- a/src/condor_schedd.V6/shadow_mgr.cpp
++++ b/src/condor_schedd.V6/shadow_mgr.cpp
+@@ -286,7 +286,7 @@ ShadowMgr::makeShadow( const char* path )
+ {
+ 	Shadow* new_shadow;
+ 	FILE* fp;
+-	char *args[] = {const_cast<char*>(path), "-classad", NULL};
++	const char *args[] = {const_cast<char*>(path), "-classad", NULL};
+ 	char buf[1024];
+ 
+ 		// first, try to execute the given path with a "-classad"
+diff --git a/src/condor_schedd.V6/tdman.cpp b/src/condor_schedd.V6/tdman.cpp
+index 6af99b4..53c6000 100644
+--- a/src/condor_schedd.V6/tdman.cpp
++++ b/src/condor_schedd.V6/tdman.cpp
+@@ -169,7 +169,7 @@ TransferDaemon::push_transfer_requests(void)
+ 	TreqAction ret;
+ 	MyString capability;
+ 	MyString rej_reason;
+-	char *encap = "ENCAPSULATION_METHOD_OLD_CLASSADS\n";
++	char encap[] = "ENCAPSULATION_METHOD_OLD_CLASSADS\n";
+ 	ClassAd respad;
+ 	int invalid;
+ 
+@@ -240,7 +240,7 @@ TransferDaemon::push_transfer_requests(void)
+ 
+ 		// Let's use the only encapsulation protocol we have at the moment.
+ 		m_treq_sock->encode();
+-		m_treq_sock->code(encap);
++		m_treq_sock->code((unsigned char *)encap);
+ 		m_treq_sock->end_of_message();
+ 
+ 		// This only puts a small amount of the treq onto the channel. The
+diff --git a/src/condor_schedd.V6/transfer_queue.cpp b/src/condor_schedd.V6/transfer_queue.cpp
+index 2bacf03..feed4d5 100644
+--- a/src/condor_schedd.V6/transfer_queue.cpp
++++ b/src/condor_schedd.V6/transfer_queue.cpp
+@@ -287,10 +287,10 @@ TransferQueueManager::CheckTransferQueue() {
+ 			}
+ 		}
+ 		else {
+-			if( client->m_downloading && 
+-				(downloading < m_max_downloads || m_max_downloads <= 0) ||
+-				!client->m_downloading &&
+-				(uploading < m_max_uploads || m_max_uploads <= 0) )
++			if( (client->m_downloading && 
++				(downloading < m_max_downloads || m_max_downloads <= 0)) ||
++				((!client->m_downloading) &&
++				(uploading < m_max_uploads || m_max_uploads <= 0)) )
+ 			{
+ 				dprintf(D_FULLDEBUG,
+ 						"TransferQueueManager: sending GoAhead to %s.\n",
+diff --git a/src/condor_sysapi/arch.cpp b/src/condor_sysapi/arch.cpp
+index 76fa0fe..832f845 100644
+--- a/src/condor_sysapi/arch.cpp
++++ b/src/condor_sysapi/arch.cpp
+@@ -425,9 +425,9 @@ sysapi_translate_opsys( const char *sysname,
+ }
+ 
+ int sysapi_translate_opsys_version( 
+-    const char *sysname,
++    const char * /*sysname*/,
+ 	const char *release,
+-	const char *version )
++	const char * /*version*/ )
+ {
+     const char * psz = release;
+ 
+diff --git a/src/condor_sysapi/free_fs_blocks.cpp b/src/condor_sysapi/free_fs_blocks.cpp
+index 36abe59..af87c4c 100644
+--- a/src/condor_sysapi/free_fs_blocks.cpp
++++ b/src/condor_sysapi/free_fs_blocks.cpp
+@@ -108,7 +108,7 @@ reserve_for_afs_cache()
+ #else
+ 	int		answer;
+ 	FILE	*fp;
+-	char	*args[] = {FS_PROGRAM, FS_COMMAND, NULL};
++	const char	*args[] = {FS_PROGRAM, FS_COMMAND, NULL};
+ 	int		cache_size, cache_in_use;
+ 	int		do_it;
+ 
+diff --git a/src/condor_sysapi/idle_time.cpp b/src/condor_sysapi/idle_time.cpp
+index b6c9ac0..3a9f803 100644
+--- a/src/condor_sysapi/idle_time.cpp
++++ b/src/condor_sysapi/idle_time.cpp
+@@ -209,8 +209,8 @@ calc_idle_time_cpp( time_t & m_idle, time_t & m_console_idle )
+ #define UTMP_KIND utmp
+ 
+ #if defined(LINUX)
+-static char *UtmpName = "/var/run/utmp";
+-static char *AltUtmpName = "/var/adm/utmp";
++static const char *UtmpName = "/var/run/utmp";
++static const char *AltUtmpName = "/var/adm/utmp";
+ #elif defined(CONDOR_FREEBSD)
+ static char *UtmpName = "/var/run/utmp";
+ static char *AltUtmpName = "";
+diff --git a/src/condor_sysapi/vsyscall_gate_addr.cpp b/src/condor_sysapi/vsyscall_gate_addr.cpp
+index f78392c..5f59819 100644
+--- a/src/condor_sysapi/vsyscall_gate_addr.cpp
++++ b/src/condor_sysapi/vsyscall_gate_addr.cpp
+@@ -43,7 +43,6 @@ const char *
+ sysapi_vsyscall_gate_addr_raw(void)
+ {
+ 	char *tmp;
+-	char *cmd[3];
+ 	FILE *fin;
+ 	char buf[BUFFER_SIZE];
+ 	char addr[BUFFER_SIZE];
+@@ -65,9 +64,7 @@ sysapi_vsyscall_gate_addr_raw(void)
+ 		}
+ 
+ 		/* exec probe */
+-		cmd[0] = tmp;
+-		cmd[1] = "--vdso-addr";
+-		cmd[2] = NULL;
++		const char *cmd[] = {tmp, "--vdso-addr", NULL};
+ 		fin = my_popenv(cmd, "r", TRUE);
+ 		free(tmp);
+ 		if (fin == NULL) {
+diff --git a/src/condor_utils/dprintf_config.cpp b/src/condor_utils/dprintf_config.cpp
+index 6225628..a725383 100644
+--- a/src/condor_utils/dprintf_config.cpp
++++ b/src/condor_utils/dprintf_config.cpp
+@@ -199,7 +199,6 @@ dprintf_config( const char *subsys, param_functions *p_funcs )
+ 
+ 					// No default value found, so use $(LOG)/$(SUBSYSTEM)Log
+ 					if(!logPathParam) {
+-						char *str;
+ 						char *log = param("LOG");
+ 						char *lsubsys = param("SUBSYSTEM");
+ 						if(!log || !lsubsys) {
+diff --git a/src/condor_utils/generic_stats.cpp b/src/condor_utils/generic_stats.cpp
+index a16e103..acebf45 100644
+--- a/src/condor_utils/generic_stats.cpp
++++ b/src/condor_utils/generic_stats.cpp
+@@ -677,17 +677,17 @@ void StatisticsPool::InsertPublish (
+    pub.insert(name, item);
+ }
+ 
+-double StatisticsPool::SetSample(const char * probe_name, double sample)
++double StatisticsPool::SetSample(const char *, double sample)
+ {
+    return sample;
+ }
+ 
+-int StatisticsPool::SetSample(const char * probe_name, int sample)
++int StatisticsPool::SetSample(const char *, int sample)
+ {
+    return sample;
+ }
+ 
+-int64_t StatisticsPool::SetSample(const char * probe_name, int64_t sample)
++int64_t StatisticsPool::SetSample(const char *, int64_t sample)
+ {
+    return sample;
+ }
+diff --git a/src/condor_utils/globus_utils.cpp b/src/condor_utils/globus_utils.cpp
+index 1f51445..b25a884 100644
+--- a/src/condor_utils/globus_utils.cpp
++++ b/src/condor_utils/globus_utils.cpp
+@@ -1346,6 +1346,7 @@ x509_receive_delegation( const char *destination_file,
+ 	globus_gsi_proxy_handle_t request_handle = NULL;
+ 	char *buffer = NULL;
+ 	int buffer_len = 0;
++	char *destination_file_tmp = NULL;
+ 	BIO *bio = NULL;
+ 
+ 	if ( activate_globus_gsi() != 0 ) {
+@@ -1413,9 +1414,12 @@ x509_receive_delegation( const char *destination_file,
+ 	}
+ 
+ 	/* globus_gsi_cred_write_proxy() declares its second argument non-const,
+-	 * but never modifies it. The cast gets rid of compiler warnings.
++	 * but never modifies it. The copy gets rid of compiler warnings.
+ 	 */
+-	result = globus_gsi_cred_write_proxy( proxy_handle, (char *)destination_file );
++	destination_file_tmp = new char[strlen(destination_file)+1];
++	strcpy(destination_file_tmp, destination_file);
++	result = globus_gsi_cred_write_proxy( proxy_handle, destination_file_tmp );
++	delete[] destination_file_tmp;
+ 	if ( result != GLOBUS_SUCCESS ) {
+ 		rc = -1;
+ 		error_line = __LINE__;
+diff --git a/src/condor_utils/history_utils.h b/src/condor_utils/history_utils.h
+index a2c6dd7..e603047 100644
+--- a/src/condor_utils/history_utils.h
++++ b/src/condor_utils/history_utils.h
+@@ -27,8 +27,8 @@
+ 
+ //------------------------------------------------------------------------
+ 
+-static void displayJobShort(AttrList* ad);
+-static void short_header(void);
++void displayJobShort(AttrList* ad);
++void short_header(void);
+ static void short_print(int,int,const char*,int,int,int,int,int,int,const char *);
+ static void shorten (char *, int);
+ static const char* format_date( time_t date );
+@@ -40,7 +40,7 @@ static char encode_status( int status );
+ 
+ //------------------------------------------------------------------------
+ 
+-static void
++void
+ displayJobShort(AttrList* ad)
+ {
+     int cluster, proc, date, status, prio, image_size, CompDate;
+@@ -96,7 +96,7 @@ displayJobShort(AttrList* ad)
+ 
+ //------------------------------------------------------------------------
+ 
+-static void
++void
+ short_header (void)
+ {
+     printf( " %-7s %-14s %11s %12s %-2s %11s %-15s\n",
+diff --git a/src/condor_utils/libcondorapi_stubs.cpp b/src/condor_utils/libcondorapi_stubs.cpp
+index db1cb3c..8676ee3 100644
+--- a/src/condor_utils/libcondorapi_stubs.cpp
++++ b/src/condor_utils/libcondorapi_stubs.cpp
+@@ -157,7 +157,9 @@ int param_integer_c(const char *, int default_value, int /*min_val*/, int /*max_
+ #  include "pcre.h"
+ #endif
+ 
++#if (! __GNUC__ )
+ #pragma warning(disable : 4273) // inconsistent dll linkage
++#endif
+ 
+ pcre *pcre_compile(const char *, int, const char **, int *,
+ 				   const unsigned char *)
+@@ -174,7 +176,9 @@ int  pcre_fullinfo(const pcre *, const pcre_extra *, int, void *)
+ int  pcre_get_substring_list(const char *, int *, int, const char ***)
+ { return not_impl(); }
+ 
++#if (! __GNUC__ )
+ #pragma warning(default : 4273) // inconsistent dll linkage
++#endif
+ 
+ #endif
+ 

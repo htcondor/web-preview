@@ -1,0 +1,12 @@
+diff -rNup condor-7.6.4.orig/src/condor_procapi/procapi.cpp condor-7.6.4/src/condor_procapi/procapi.cpp
+--- condor-7.6.4.orig/src/condor_procapi/procapi.cpp	2011-10-20 16:26:06.000000000 -0400
++++ condor-7.6.4/src/condor_procapi/procapi.cpp	2012-11-14 08:49:44.079595380 -0500
+@@ -488,7 +488,7 @@ ProcAPI::getProcInfoRaw( pid_t pid, proc
+ 	unsigned long long imgsize_bytes;
+ 	char c;
+ 	char s[256];
+-	int num_attempts = 5;
++	int num_attempts = param_integer("PROC_NUM_ATTEMPTS",5);
+ 
+ 		// assume success
+ 	status = PROCAPI_OK;
