@@ -1,0 +1,96 @@
+CondorTest::StartCondorWithParams:condor_name unset in CondorTest::StartCondorWithParams
+CondorTest::StartCondorWithParams:Using:condor1
+StartCondorWithParams:<condor1> not in condor_personal hash yet
+append_condor_config:JOB_ROUTER.USE_SHARED_PORT = FALSE
+
+condor_name:condor1
+test_name:job_dagman_submit_parse
+Calling CondorPersonal::StartCondorWithParam
+Effective config now:derived_condor_config
+CreateAndStoreCondorInstance: version:<condor1> config: C:/condor/execute/dir_5468/userdir/condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1\condor_config
+StartPersonal: native perl config after convert:C:\condor\execute\dir_5468\userdir\condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1\condor_config
+StoreCondorInstance: caller:CreateAndStoreCondorInstance name:condor1 assign instance:PersonalCondorInstance=HASH(0x1e660e8)
+Condor instance returned:  PersonalCondorInstance=HASH(0x1e660e8)
+
++-------------------------------------------------------------------------------
++ runCondorTool: Cmd: condor_config_val -config Attempt: 0
++-------------------------------------------------------------------------------
++ CMD[11:25:55]: condor_config_val -config
++ SIGNALED: NO, RETURNED: 0, TIME 0.085029 
++ BEGIN STDOUT
+	C:\condor\execute\dir_5468\userdir\condor_tests\derived_condor_config
+	C:\condor\execute\dir_5468\userdir\condor\condor_config.local
++ END STDOUT
++ BEGIN STDERR
+Configuration source:
+Local configuration source:
+
++ END STDERR
++-------------------------------------------------------------------------------
+Configuration source:
+Local configuration source:
+
+ Volume in drive C has no label.
+ Volume Serial Number is 300E-C6E2
+
+ Directory of C:\condor\execute\dir_5468\userdir\condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1
+
+11/04/2015  11:25 AM    <DIR>          .
+11/04/2015  11:25 AM    <DIR>          ..
+               0 File(s)              0 bytes
+               2 Dir(s)  189,554,601,984 bytes free
+ Volume in drive C has no label.
+ Volume Serial Number is 300E-C6E2
+
+ Directory of C:\condor\execute\dir_5468\userdir\condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1
+
+11/04/2015  11:25 AM    <DIR>          .
+11/04/2015  11:25 AM    <DIR>          ..
+11/04/2015  11:25 AM    <DIR>          execute
+11/04/2015  11:25 AM    <DIR>          log
+11/04/2015  11:25 AM    <DIR>          spool
+               0 File(s)              0 bytes
+               5 Dir(s)  189,554,647,040 bytes free
+save # could be comment before environment label
+Not environment label, drop both lines
+save # could be comment before environment label
+save # could be comment before environment label
+TunePersonalCondor ************************** forcing LOCAL_DIR to :  C:\condor\execute\dir_5468\userdir\condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1
+save # could be comment before environment label
+PostTunePersonalCondor trying to process daemon_list
+config file is C:/condor/execute/dir_5468/userdir/condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1\condor_config
+
++-------------------------------------------------------------------------------
++ runCondorTool: Cmd: condor_config_val daemon_list Attempt: 0
++-------------------------------------------------------------------------------
++ CMD[11:25:55]: condor_config_val daemon_list
++ SIGNALED: NO, RETURNED: 0, TIME 0.0825 
++ BEGIN STDOUT
+MASTER STARTD SCHEDD COLLECTOR NEGOTIATOR
++ END STDOUT
++-------------------------------------------------------------------------------
+>& was unexpected at this time.
+>& was unexpected at this time.
+StateChange: up/C:/condor/execute/dir_5468/userdir/condor_tests\job_dagman_submit_parse.saveme\pdir20864\pdir20864condor1\condor_config time:120 MasterTime:30
+Waiting for condor to start. MASTER STARTD SCHEDD COLLECTOR NEGOTIATOR
+Condor is running. (6 of 120 seconds)
+Back From Calling CondorPersonal::StartCondorWithParam
+CondorTest::StartCondorWithParams: Full config and run
+
+Current date and load follow:
+Wed Nov  4 11:26:08 2015
+
+
+Dagman Test....
+ref said type is <<>>
+No longer assuming one log file because of submit foreach
+Exploring logs in GatherUserLogs
+Dry-Run job(s).
+1 job(s) dry-run to cluster 1.
+Found 1 userlogs
+userlog:C:\condor\execute\dir_5468\userdir\condor_tests\job_dagman_submit_parse.dag.dagman.log
+There are  1 logs and 1 jobs
+transferring 1 UserLogs to CondorTest module
+Entering Monitor
+11:26:12 Test: submitted: This test will see submit, executing and failed completion
+11:26:12 Test: Good. We need the dag to run<1>
