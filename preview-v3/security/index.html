@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <meta name="description" content="HTCondor Homepage">
@@ -179,9 +179,11 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></li>
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/uw-support/">HTCSS Contract Support</a></li>
         
-            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></li>
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/mail-lists#user">Community Mailing List</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-v3/htcondor-support#external-support-options">External Support Organizations</a></li>
         
     </ul>
 </li>
@@ -486,9 +488,11 @@
         <table>
             <tr><th>Support</th></tr>
             
-                <tr><td><a href="/web-preview/preview-v3/uw-support/">Internal Contract Support</a></td></tr>
+                <tr><td><a href="/web-preview/preview-v3/uw-support/">HTCSS Contract Support</a></td></tr>
             
-                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support/">Outside Support</a></td></tr>
+                <tr><td><a href="/web-preview/preview-v3/mail-lists#user">Community Mailing List</a></td></tr>
+            
+                <tr><td><a href="/web-preview/preview-v3/htcondor-support#external-support-options">External Support Organizations</a></td></tr>
             
         </table>
     </div>
@@ -655,98 +659,81 @@
 
 <main id="main-copy" tabindex="-1">
     <div class="container-xxl py-4">
-    <h1>HTCSS Security</h1>
-<hr noshade>
-<p>
-This page contains information about security policies and procedures in the HTCSS.
-</p>
+    <div class="row justify-content-center">
+    <div  class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+        <h1>HTCSS Security</h1>
+        <hr noshade>
+        <p>This page contains information about security policies and procedures in the HTCSS.</p>
 
-<h3> Overview </h3>
-<p>
-We at HTCondor appreciate the community's efforts to help us find and fix
+<h3 id="overview">Overview</h3>
+
+<p>We at HTCondor appreciate the community’s efforts to help us find and fix
 security problems.  Following these general guidelines will keep things simple
-and straightforward.
-<p>
+and straightforward.</p>
 
+<h3 id="duration-of-support">Duration of Support</h3>
 
-<h3>Duration of Support</h3>
-<p>
-HTCondor will provide security fixes for the current stable series.  After
+<p>HTCondor will provide security fixes for the current stable series.  After
 beginning a new stable series, we will also continue to support the previous
 stable series for six months.  Please see our online manual on the
 <a href="https://htcondor.readthedocs.io/en/latest/version-history/introduction-version-history.html#htcondor-version-number-scheme">
-HTCondor Version Number Scheme</a> for more information.
-<p>
+HTCondor Version Number Scheme</a> for more information.</p>
 
+<h3 id="discovery-and-reporting">Discovery and Reporting</h3>
 
-<h3> Discovery and Reporting </h3>
-<p>
-If you suspect or have confirmed a security problem with the HTCondor software,
+<p>If you suspect or have confirmed a security problem with the HTCondor software,
 please email us at <a href="email:htcondor-security@cs.wisc.edu">htcondor-security@cs.wisc.edu</a>.
 As the person who discovered the vulnerability, we will work with you to
 establish a mutally agreeable timeline for announcing the vulnerability and
-releasing a new version.
-</p>
+releasing a new version.</p>
 
-<p>
-Given the nature of security vulnerabilities, we prefer that you keep your
+<p>Given the nature of security vulnerabilities, we prefer that you keep your
 findings strictly confidential.  Please work with the HTCondor team to assess
-the full impact and create a timeline.
-<p>
+the full impact and create a timeline.</p>
 
+<h3 id="fixing-the-problem">Fixing the Problem</h3>
 
-<h3> Fixing the Problem </h3>
-<p>
-It is the responsiblity of the HTCondor developers to fix the problem.
+<p>It is the responsiblity of the HTCondor developers to fix the problem.
 However, you may send your patch to
 <a href="email:htcondor-security@cs.wisc.edu">htcondor-security@cs.wisc.edu</a>
-for review by the HTCondor developers.
-</p>
+for review by the HTCondor developers.</p>
 
+<h3 id="coordinating-with-downstream-providers">Coordinating with Downstream Providers</h3>
 
-<h3> Coordinating with Downstream Providers </h3>
-<p>
-Before the public announcment, the HTCondor team will coordinate with
+<p>Before the public announcment, the HTCondor team will coordinate with
 downstream providers of the HTCondor software to let them know a new release is
 imminent, and we may provide updated source code and/or binaries to
-various parties at our discretion.
-</p>
+various parties at our discretion.</p>
 
-<h3> Publicly Announcing and Releasing </h3>
-<p>
-All public announcements will be made Monday through Thursday between 9AM and
+<h3 id="publicly-announcing-and-releasing">Publicly Announcing and Releasing</h3>
+
+<p>All public announcements will be made Monday through Thursday between 9AM and
 5PM central time.  The announcement will be sent to the HTCondor-users and
 HTCondor-world mailing lists; the HTCondor team keeps a web page listing
 <a href="/web-preview/preview-v3/security/vulnerabilities/">all
-announced vulnerabilities</a>.
-</p>
+announced vulnerabilities</a>.</p>
 
-<p>
-When announcing the existence of a vulnerability, we will supply high-level
+<p>When announcing the existence of a vulnerability, we will supply high-level
 details.  The idea is to give just enough
 information so people can assess their risk and exposure, without giving away
 enough information to actually exploit the problem.  These goals can be at odds
 with each other, and we generally tend towards being more vague if there is
-such a conflict.
-</p>
+such a conflict.</p>
 
-<p>
-The binaries and source code that fix the problem will be available from the
-HTCondor download page when the announcement is made.
-</p>
+<p>The binaries and source code that fix the problem will be available from the
+HTCondor download page when the announcement is made.</p>
 
+<h3 id="embargo">Embargo</h3>
 
-<h3> Embargo </h3>
-<p>
-After publicly announcing the vulnerability and making the new version available,
+<p>After publicly announcing the vulnerability and making the new version available,
 the full details will be embargoed for a minimum of 30 days.  The embargo will
 be lifted at a date that is agreed upon by the HTCondor team and the person
 reporting the vulnerability.  After that point, full details may be made public
 by any party and the vulnerability report posted on the HTCondor web site will
-be updated.
-</p>
-</p></p></p></p></p></p>
+be updated.</p>
 
+    </div>
+</div>
 </div>
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
@@ -793,12 +780,24 @@ be updated.
         <div class="row my-4 justify-content-center">
             <div class="col-auto d-flex">
                 <a class="d-block m-auto" href="https://ls.wisc.edu/">
-                    <img class="mw-100" height="75" src="/web-preview/preview-v3/assets/images/UW_Madison_Logo.png" alt="UW Madison Logo" />
+                    <div style="height:75px;">
+    <picture>
+        <source type="image/webp" srcset="assets/images/UW_Madison_Logo.webp">
+        <img class="h-100" src="assets/images/UW_Madison_Logo.png" alt="UW-Madison Logo">
+    </picture>
+</div>
+
                 </a>
             </div>
             <div class="col-auto d-flex">
                 <a class="px-3 d-block m-auto" href="https://www.nsf.org">
-                    <img class="" height="100" src="/web-preview/preview-v3/assets/images/NSF_Logo.png" alt="NSF Logo" />
+                    <div style="height:100px;">
+    <picture>
+        <source type="image/webp" srcset="assets/images/NSF_Logo.webp">
+        <img class="h-100" src="assets/images/NSF_Logo.jpg" alt="NSF Logo">
+    </picture>
+</div>
+
                 </a>
             </div>
             <div class="col-auto d-flex">
@@ -813,15 +812,12 @@ be updated.
                 For comments or questions about this website, please email
                 <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
                 This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
-                <script type="text/javascript">
-                    document.write("Updated &raquo; "+lastMod(document.lastModified))
-                </script>
             </div>
         </div>
         <div class="row justify-content-center pb-4">
             <div class="col-lg-8 text-center">
                 <span class="text-center">
-                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, click <a href="http://www.phoenixsoftware.com">here</a>.
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, you can find more information on their <a href="http://www.phoenixsoftware.com">website</a>.
                 </span>
             </div>
         </div>
