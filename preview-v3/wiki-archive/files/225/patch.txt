@@ -1,0 +1,13 @@
+diff --git a/src/aclocal.m4 b/src/aclocal.m4
+index 8e093ad..b8b8c7f 100644
+--- a/src/aclocal.m4
++++ b/src/aclocal.m4
+@@ -494,7 +494,7 @@ EOF
+  # but they always seem to say "option" in there.... Also sometimes an
+  # executable is produced, other times not. So we'll assume that if the word
+  # "option" shows up at all in the stderr of the compiler, it is unrecognized.
+- [[_cv_$3]=`$1 $2 $4 conf_flag.c -c -o conf_flag.o 2>&1 | grep "option" > /dev/null 2>&1`
++ [[_cv_$3]=`$1 $2 $4 conf_flag.c -c -o conf_flag.o 2>&1 | grep -e "\\(option\\|not found\\)" > /dev/null 2>&1`
+   _comp_status=$?
+   # the test seems inverted because the failure of grep to find the 
+   # sentinel value means gcc accepted it

@@ -1,0 +1,62 @@
+<H2><A NAME="SECTION00426000000000000000"></A><A NAME="sec:install-rpms"></A>
+<BR>
+3.2.6  FreeBSD Ports
+</H2>
+
+<P>
+<A NAME="10843"></A>
+<A NAME="10844"></A>
+A FreeBSD port is available for HTCondor Version 8.2.8.  The port is
+maintained by individuals outside the HTCondor project.
+
+<P>
+Here is an ordered set of steps that get HTCondor running using the FreeBSD port.
+
+<OL>
+<LI>The HTCondor package will automatically add a <TT>condor</TT> user/group,
+if it does not exist already.
+Sites wishing to control the attributes of this user/group 
+should add the <TT>condor</TT> user/group manually before installation.
+
+<P>
+</LI>
+
+<P>
+</LI>
+<LI>Install HTCondor.
+<PRE>
+  pkg install condor
+</PRE>
+
+<P>
+</LI>
+<LI>As needed, edit the HTCondor configuration files to customize.
+The configuration files are in the directory <TT>${PREFIX}/etc</TT> .
+Do <I>not</I> use <I>condor_configure</I> or <I>condor_install</I> for
+configuration.
+The installation will be able to find configuration files without
+additional administrative intervention,
+as the configuration files are placed in <TT>${PREFIX}/etc</TT>,
+and HTCondor searches this directory.
+
+<P>
+</LI>
+<LI>Start HTCondor daemons:
+<PRE>
+  service condor start
+</PRE>
+
+<P>
+</LI>
+</OL>
+
+<P>
+The FreeBSD port also installs a convenience script called "condor-config"
+(with a dash, not an underscore) for editing condor_config.local and
+restarting the daemons.
+
+<H2><A NAME="SECTION00427000000000000000"></A><A NAME="sec:install-debs"></A>
+<A NAME="10872"></A>
+<A NAME="10873"></A>
+<BR>
+
