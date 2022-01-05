@@ -1,0 +1,272 @@
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 02065c9..3b3bcc6 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -55,6 +55,7 @@
+ #include "directory.h"
+ #include "filename_tools.h"
+ #include "spool_version.h"
++#include "condor_holdcodes.h"
+ 
+ #if defined(WANT_CONTRIB) && defined(WITH_MANAGEMENT)
+ #if defined(HAVE_DLOPEN) || defined(WIN32)
+@@ -2777,7 +2778,6 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 	// submit events into the EVENT_LOG here.
+ 	if ( !new_ad_keys.empty() ) {
+ 		int cluster_id;
+-		int old_cluster_id = -10;
+ 		int proc_id;
+ 		ClassAd *procad;
+ 		ClassAd *clusterad;
+@@ -2787,10 +2787,6 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 			has_event_log = true;
+ 			free(evt_log);
+ 		}
+-			// keep usr_log in outer scope so we don't open/close the 
+-			// event log over and over.
+-		WriteUserLog usr_log;
+-		usr_log.setCreatorName( Name );
+ 
+ 		int counter = 0;
+ 		int ad_keys_size = new_ad_keys.size();
+@@ -2799,19 +2795,9 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 			++counter;
+ 			char const *key = it->c_str();
+ 			StrToId(key,cluster_id,proc_id);
+-			// do we want to fsync the userLog?
+-			bool doFsync = false;
+ 			if( proc_id == -1 ) {
+ 				continue; // skip over cluster ads
+ 			}
+-			// we want to fsync per cluster and on the last ad
+-			if ( old_cluster_id == -10 ) {
+-				old_cluster_id = cluster_id;
+-			}
+-			if ( old_cluster_id != cluster_id || counter == ad_keys_size ) {
+-				doFsync = true;
+-				old_cluster_id = cluster_id;
+-			}
+ 
+ 			char cluster_key[PROC_ID_STR_BUFLEN];
+ 			IdToStr(cluster_id,-1,cluster_key);
+@@ -2824,66 +2810,20 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 					// chain proc ads to cluster ad
+ 				procad->ChainToAd(clusterad);
+ 
+-					// Skip writing submit events for procid != 0 for parallel jobs
+-				int universe = -1;
+-				procad->LookupInteger(ATTR_JOB_UNIVERSE, universe);
+-				if ( universe == CONDOR_UNIVERSE_PARALLEL) {
+-					doFsync = true; // only writing first proc, make sure to sync
+-					if ( proc_id > 0) {
+-						continue;
+-					}
+-				}
+-	
+ 					// convert any old attributes for backwards compatbility
+ 				ConvertOldJobAdAttrs(procad, false);
+ 
+-					// write submit event to global event log
+-				std::string owner, ntdomain, simple_name, gjid, submitUserNotes, submitEventNotes, version;
+-				bool use_xml = false;
+-				SubmitEvent jobSubmit;
+-				procad->LookupString(ATTR_ULOG_FILE, simple_name);
+-
+-				if ( procad->LookupString( ATTR_VERSION, version ) ) {
+-					CondorVersionInfo vers( version.c_str() );
+-					// CRUFT If the submitter is older than 7.5.4, then
+-					// they are responsible for writing the submit event
+-					// to the user log.
+-					if ( !vers.built_since_version( 7, 5, 4 ) ) {
+-						simple_name = "";
+-					}
+-				}
+-
+-				strcpy (jobSubmit.submitHost, daemonCore->privateNetworkIpAddr());
+-				if ( procad->LookupString(ATTR_SUBMIT_EVENT_NOTES, submitEventNotes) ) {
+-					jobSubmit.submitEventLogNotes = strnewp(submitEventNotes.c_str());
+-				}
+-				if ( procad->LookupString(ATTR_SUBMIT_EVENT_USER_NOTES, submitUserNotes) ) {
+-					jobSubmit.submitEventUserNotes = strnewp(submitUserNotes.c_str());
+-				}
+-
+-					// userLog is defined in the job ad
+-				if (simple_name.size() > 0) {
+-
+-					procad->LookupString(ATTR_OWNER, owner);
+-					procad->LookupString(ATTR_NT_DOMAIN, ntdomain);
+-					procad->LookupString(ATTR_GLOBAL_JOB_ID, gjid);
+-					procad->LookupBool(ATTR_ULOG_USE_XML, use_xml);
+-
+-					usr_log.setEnableUserLog(true); 
+-					usr_log.setUseXML(use_xml);     
+-					usr_log.setEnableFsync(doFsync);
+-					usr_log.initialize(owner.c_str(), ntdomain.c_str(), simple_name.c_str(),
+-									   0, 0, 0, gjid.c_str());
+-                                       
+-				} else if (has_event_log) {  // EventLog is defined but not UserLog
+-					usr_log.setEnableUserLog(false);
+-					usr_log.initialize(0,0,0,NULL);
+-				}
+-				// we only want to write if there is something to write to - either UserLog or 
+-				if (has_event_log || (simple_name.size() > 0) ) {
+-					usr_log.setGlobalCluster(cluster_id);
+-					usr_log.setGlobalProc(proc_id);
+-					usr_log.writeEvent(&jobSubmit,procad);
++					// Write the submit event if we're not waiting for
++					// input files to be spooled.
++				int job_status = -1;
++				int hold_code = -1;
++				procad->LookupInteger(ATTR_JOB_STATUS, job_status);
++				procad->LookupInteger(ATTR_HOLD_REASON_CODE, hold_code);
++				if ( job_status != HELD || hold_code != CONDOR_HOLD_CODE_SpoolingInput ) {
++					PROC_ID job_id;
++					job_id.cluster = cluster_id;
++					job_id.proc = proc_id;
++					scheduler.WriteSubmitToUserLog( job_id );
+ 				}
+ 			}	
+ 		}	// end of loop thru clusters
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 3138d7d..c29dc02 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -1887,13 +1887,13 @@ ResponsibleForPeriodicExprs( ClassAd *jobad )
+ 		// temporary for 7.2 only: avoid evaluating periodic
+ 		// expressions when the job is on hold for spooling
+ 	if( status == HELD ) {
+-		MyString hold_reason;
+-		jobad->LookupString(ATTR_HOLD_REASON,hold_reason);
+-		if( hold_reason == "Spooling input data files" ) {
++		int hold_reason_code = -1;
++		jobad->LookupInteger(ATTR_HOLD_REASON_CODE,hold_reason_code);
++		if( hold_reason_code == CONDOR_HOLD_CODE_SpoolingInput ) {
+ 			int cluster = -1, proc = -1;
+ 			jobad->LookupInteger(ATTR_CLUSTER_ID, cluster);
+ 			jobad->LookupInteger(ATTR_PROC_ID, proc);
+-			dprintf(D_FULLDEBUG,"Skipping periodic expressions for job %d.%d, because hold reason is '%s'\n",cluster,proc,hold_reason.Value());
++			dprintf(D_FULLDEBUG,"Skipping periodic expressions for job %d.%d, because hold reason code is '%d'\n",cluster,proc,hold_reason_code);
+ 			return 0;
+ 		}
+ 	}
+@@ -2500,6 +2500,48 @@ Scheduler::InitializeUserLog( PROC_ID job_id )
+ 
+ 
+ bool
++Scheduler::WriteSubmitToUserLog( PROC_ID job_id )
++{
++	std::string submitUserNotes, submitEventNotes;
++
++		// Skip writing submit events for procid != 0 for parallel jobs
++	int universe = -1;
++	GetAttributeInt( job_id.cluster, job_id.proc, ATTR_JOB_UNIVERSE, &universe );
++	if ( universe == CONDOR_UNIVERSE_PARALLEL ) {
++		if ( job_id.proc > 0) {
++			return true;;
++		}
++	}
++	
++	WriteUserLog* ULog = this->InitializeUserLog( job_id );
++	if( ! ULog ) {
++			// User didn't want log
++		return true;
++	}
++	SubmitEvent event;
++	ClassAd *job_ad = GetJobAd(job_id.cluster,job_id.proc);
++
++	strcpy (event.submitHost, daemonCore->privateNetworkIpAddr());
++	if ( job_ad->LookupString(ATTR_SUBMIT_EVENT_NOTES, submitEventNotes) ) {
++		event.submitEventLogNotes = strnewp(submitEventNotes.c_str());
++	}
++	if ( job_ad->LookupString(ATTR_SUBMIT_EVENT_USER_NOTES, submitUserNotes) ) {
++		event.submitEventUserNotes = strnewp(submitUserNotes.c_str());
++	}
++
++	bool status = ULog->writeEvent(&event, job_ad);
++	delete ULog;
++
++	if (!status) {
++		dprintf( D_ALWAYS,
++				 "Unable to log ULOG_SUBMIT event for job %d.%d\n",
++				 job_id.cluster, job_id.proc );
++		return false;
++	}
++	return true;
++}
++
++bool
+ Scheduler::WriteAbortToUserLog( PROC_ID job_id )
+ {
+ 	WriteUserLog* ULog = this->InitializeUserLog( job_id );
+@@ -3067,6 +3109,8 @@ Scheduler::spoolJobFilesReaper(int tid,int exit_status)
+ 			// And now release the job.
+ 		releaseJob(cluster,proc,"Data files spooled",false,false,false,false);
+ 		CommitTransaction();
++
++		WriteSubmitToUserLog( (*jobs)[jobIndex] );
+ 	}
+ 
+ 	daemonCore->Register_Timer( 0, 
+@@ -3915,8 +3959,11 @@ Scheduler::actOnJobs(int, Stream* s)
+ 			snprintf( buf, 256, "(%s!=%d) && (", ATTR_JOB_STATUS, HELD );
+ 			break;
+ 		case JA_RELEASE_JOBS:
+-				// Only release held jobs
+-			snprintf( buf, 256, "(%s==%d) && (", ATTR_JOB_STATUS, HELD );
++				// Only release held jobs which aren't waiting for
++				// input files to be spooled
++			snprintf( buf, 256, "(%s==%d && %s=!=%d) && (", ATTR_JOB_STATUS,
++					  HELD, ATTR_HOLD_REASON_CODE,
++					  CONDOR_HOLD_CODE_SpoolingInput );
+ 			break;
+ 		case JA_VACATE_JOBS:
+ 		case JA_VACATE_FAST_JOBS:
+@@ -4095,6 +4142,7 @@ Scheduler::actOnJobs(int, Stream* s)
+ 				// the command we're trying to perform
+ 			int status;
+ 			int on_release_status = IDLE;
++			int hold_reason_code = -1;
+ 			if( GetAttributeInt(tmp_id.cluster, tmp_id.proc, 
+ 								ATTR_JOB_STATUS, &status) < 0 ) {
+ 				results.record( tmp_id, AR_NOT_FOUND );
+@@ -4109,7 +4157,9 @@ Scheduler::actOnJobs(int, Stream* s)
+ 				}
+ 				break;
+ 			case JA_RELEASE_JOBS:
+-				if( status != HELD ) {
++				GetAttributeInt(tmp_id.cluster, tmp_id.proc,
++								ATTR_HOLD_REASON_CODE, &hold_reason_code);
++				if( status != HELD || hold_reason_code == CONDOR_HOLD_CODE_SpoolingInput ) {
+ 					results.record( tmp_id, AR_BAD_STATUS );
+ 					continue;
+ 				}
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index 143466d..b04d4ec 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -353,6 +353,7 @@ class Scheduler : public Service
+ 						TransferDaemon *&td_ref ); 
+ 	bool			startTransferd( int cluster, int proc ); 
+ 	WriteUserLog*	InitializeUserLog( PROC_ID job_id );
++	bool			WriteSubmitToUserLog( PROC_ID job_id );
+ 	bool			WriteAbortToUserLog( PROC_ID job_id );
+ 	bool			WriteHoldToUserLog( PROC_ID job_id );
+ 	bool			WriteReleaseToUserLog( PROC_ID job_id );
+diff --git a/src/condor_utils/file_transfer.cpp b/src/condor_utils/file_transfer.cpp
+index 4e86be1..317dd0c 100644
+--- a/src/condor_utils/file_transfer.cpp
++++ b/src/condor_utils/file_transfer.cpp
+@@ -320,9 +320,11 @@ FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 	}
+ 	if ( Ad->LookupString(ATTR_ULOG_FILE, buf) == 1 ) {
+ 		UserLogFile = strdup(condor_basename(buf));
+-			// add to input files if sending from submit to the schedd
++			// add to input files if sending from submit to the schedd,
++			// but only if the file exists and isn't the null file
+ 		if ( (simple_init) && (!nullFile(buf)) ) {			
+-			if ( !InputFiles->file_contains(buf) )
++			StatInfo st( buf );
++			if ( !st.Error() && !InputFiles->file_contains(buf) )
+ 				InputFiles->append(buf);			
+ 		}
+ 	}

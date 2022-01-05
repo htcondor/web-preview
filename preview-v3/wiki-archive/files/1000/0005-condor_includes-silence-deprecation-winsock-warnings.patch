@@ -1,0 +1,58 @@
+From 40460f2f7a3be3361607c5e4a64d27da072a090c Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 13 Apr 2017 13:03:02 +0100
+Subject: [PATCH 5/6] condor_includes: silence deprecation winsock warnings
+
+These occur with Visual Studio 2013+.
+---
+ src/condor_includes/condor_ipv6.WINDOWS.h | 4 ++++
+ src/condor_includes/condor_sys_nt.h       | 3 +++
+ src/condor_includes/safe_sock.h           | 3 +++
+ 3 files changed, 10 insertions(+)
+
+diff --git a/src/condor_includes/condor_ipv6.WINDOWS.h b/src/condor_includes/condor_ipv6.WINDOWS.h
+index f8f19b8e55..bffa1760ea 100644
+--- a/src/condor_includes/condor_ipv6.WINDOWS.h
++++ b/src/condor_includes/condor_ipv6.WINDOWS.h
+@@ -20,6 +20,10 @@
+ #ifndef CONDOR_WIN_IPV6_H
+ #define CONDOR_WIN_IPV6_H
+ 
++#ifndef _WINSOCK_DEPRECATED_NO_WARNINGS // Shut up Visual Studio 2013+
++#define _WINSOCK_DEPRECATED_NO_WARNINGS
++#endif
++
+ #include "winsock2.h"
+ #include "ws2tcpip.h"
+ 
+diff --git a/src/condor_includes/condor_sys_nt.h b/src/condor_includes/condor_sys_nt.h
+index 5f72d5d29a..5eed9eb396 100644
+--- a/src/condor_includes/condor_sys_nt.h
++++ b/src/condor_includes/condor_sys_nt.h
+@@ -72,6 +72,9 @@
+ // the ordering of the two following header files 
+ // is important! Starting with the new SDK, we want 
+ // winsock2.h not winsock.h, so we include it first. 
++#ifndef _WINSOCK_DEPRECATED_NO_WARNINGS // Shut up Visual Studio 2013+
++#define _WINSOCK_DEPRECATED_NO_WARNINGS
++#endif
+ #include <winsock2.h>
+ #include <windows.h>
+ 
+diff --git a/src/condor_includes/safe_sock.h b/src/condor_includes/safe_sock.h
+index 8521ff0f4c..5fde501655 100644
+--- a/src/condor_includes/safe_sock.h
++++ b/src/condor_includes/safe_sock.h
+@@ -22,6 +22,9 @@
+ #define SAFE_SOCK_H
+ 
+ #if defined(WIN32)
++#ifndef _WINSOCK_DEPRECATED_NO_WARNINGS // Shut up Visual Studio 2013+
++#define _WINSOCK_DEPRECATED_NO_WARNINGS
++#endif
+ #include <winsock2.h>
+ #else
+ #include <netinet/in.h>
+-- 
+2.13.5
+
