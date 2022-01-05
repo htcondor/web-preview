@@ -1,5 +1,5 @@
 let SoftwareDisplay = function(){
-    this.software_headers = document.getElementsByClassName("accordion-header")
+    this.software_headers = document.getElementsByClassName("desktop-header")
     this.software_briefs = document.getElementsByClassName("desktop-software-brief")
 
     for (const software_brief of this.software_briefs) {
