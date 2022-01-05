@@ -1,0 +1,97 @@
+diff --git a/src/condor_c++_util/store_cred.cpp b/src/condor_c++_util/store_cred.cpp
+index 7e4f6d2..83c0e0e 100644
+--- a/src/condor_c++_util/store_cred.cpp
++++ b/src/condor_c++_util/store_cred.cpp
+@@ -836,38 +836,74 @@ static void echo_on(void)
+ // reads at most maxlength chars without echoing to the terminal into buf
+ bool
+ read_from_keyboard(char* buf, int maxlength, bool echo) {
++#if !defined(WIN32)
+ 	int ch, ch_count;
+ 
+ 	ch = ch_count = 0;
+ 	fflush(stdout);
+ 
+-#if !defined(WIN32)
++
+ 	const char end_char = '\n';
+ 	if (!echo) echo_off();
+-#else
++
+ 	const char end_char = '\r';
+-#endif
+ 			
+ 	while ( ch_count < maxlength-1 ) {
+-#if defined(WIN32)
+-		ch = echo ? _getche() : _getch();
+-#else
+-		ch = getchar();
+-#endif
+-		if ( ch == end_char ) {
+-			break;
+-		} else if ( ch == '\b') { // backspace
+-			if ( ch_count > 0 ) { ch_count--; }
+-			continue;
+-		} else if ( ch == '\003' ) { // CTRL-C
+-			return FALSE;
+-		}
+-		buf[ch_count++] = (char) ch;
++
++	ch = getchar();
++
++	if ( ch == end_char ) {
++		break;
++	} else if ( ch == '\b') { // backspace
++		if ( ch_count > 0 ) { ch_count--; }
++		continue;
++	} else if ( ch == '\003' ) { // CTRL-C
++		return FALSE;
++	}
++	buf[ch_count++] = (char) ch;
+ 	}
+ 	buf[ch_count] = '\0';
+ 
+-#if !defined(WIN32)
+ 	if (!echo) echo_on();
++#else
++	HANDLE hStdin = GetStdHandle(STD_INPUT_HANDLE);
++
++	DWORD oldMode;
++	DWORD readCount;
++
++	//UINT cPage = GetConsoleCP();
++
++	//printf("Console CP: %d\n", cPage);
++
++	GetConsoleMode(hStdin, &oldMode);
++	if(echo)
++	{
++		SetConsoleMode(hStdin, oldMode | ENABLE_LINE_INPUT | ENABLE_PROCESSED_INPUT);
++	}
++	else
++	{
++		SetConsoleMode(hStdin, ENABLE_LINE_INPUT | ENABLE_PROCESSED_INPUT);
++	}
++
++	wchar_t *wbuffer = new wchar_t[maxlength];
++	ReadConsoleW(hStdin, wbuffer, maxlength, &readCount, NULL);
++	SetConsoleMode(hStdin, oldMode);
++	if(readCount < maxlength)
++		wbuffer[readCount] = '\0';
++	else
++		wbuffer[maxlength-1] = '\0';
++
++	for(int walkBack = readCount - 1; walkBack >= 0; --walkBack)
++	{
++		if(wbuffer[walkBack] == '\r' || wbuffer[walkBack] == '\n' || wbuffer[walkBack] == '\t')
++			wbuffer[walkBack] = '\0';
++		else
++			break;
++	}
++
++	int converted = WideCharToMultiByte(CP_ACP, WC_COMPOSITECHECK, wbuffer, -1, buf, maxlength, NULL, NULL);
++
++	delete wbuffer;
+ #endif
+ 
+ 	return TRUE;
