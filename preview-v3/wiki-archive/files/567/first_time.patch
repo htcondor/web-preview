@@ -1,0 +1,11 @@
+diff -rNup condor-7.6.4.orig/src/condor_negotiator.V6/Accountant.cpp condor-7.6.4/src/condor_negotiator.V6/Accountant.cpp
+--- condor-7.6.4.orig/src/condor_negotiator.V6/Accountant.cpp	2012-05-15 08:38:38.000000000 -0400
++++ condor-7.6.4/src/condor_negotiator.V6/Accountant.cpp	2012-05-31 12:02:28.000000000 -0400
+@@ -290,6 +290,7 @@ void Accountant::Initialize(GroupEntry* 
+ 			  total_overestimated_resourcesRW,total_overestimated_users,
+ 			  users.number() );
+ 	  }
++	  first_time = false;
+   }
+ 
+   // Ensure that table entries for acct groups get created on startup and reconfig
