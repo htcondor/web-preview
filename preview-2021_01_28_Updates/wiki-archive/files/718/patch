@@ -1,0 +1,55 @@
+diff --git a/cbcdcc1 b/2a1fcf2
+index cbcdcc1..2a1fcf2 100644
+--- a/cbcdcc1
++++ b/2a1fcf2
+@@ -990,11 +990,15 @@ Scheduler::count_jobs()
+ 			// is down or simply ignoring us because our priority is so low
+ 			if ((current_time - Owners[i].NegotiationTimestamp >
+ 				 SchedDInterval.getDefaultInterval()*2) && (Owners[i].FlockLevel < MaxFlockLevel)) {
+-				Owners[i].FlockLevel++;
++				int old_flocklevel = Owners[i].FlockLevel;
++				Owners[i].FlockLevel += param_integer("FLOCK_INCREMENT",1,1);
++				if(Owners[i].FlockLevel > MaxFlockLevel) {
++					Owners[i].FlockLevel = MaxFlockLevel;
++				}
+ 				Owners[i].NegotiationTimestamp = current_time;
+ 				dprintf(D_ALWAYS,
+-						"Increasing flock level for %s to %d due to lack of activity from negotiator at level %d.\n",
+-						Owners[i].Name, Owners[i].FlockLevel, Owners[i].FlockLevel-1);
++						"Increasing flock level for %s to %d from %d. (Due to lack of activity from negotiator)\n",
++						Owners[i].Name, Owners[i].FlockLevel, old_flocklevel);
+ 			}
+ 			if (Owners[i].FlockLevel > FlockLevel) {
+ 				FlockLevel = Owners[i].FlockLevel;
+@@ -5032,10 +5012,10 @@ Scheduler::negotiationFinished( char const *owner, char const *remote_pool, bool
+ 	if( satisfied ) {
+ 		// We are out of jobs.  Stop flocking with less desirable pools.
+ 		if (Owners[owner_num].FlockLevel > flock_level ) {
+-			Owners[owner_num].FlockLevel = flock_level;
+ 			dprintf(D_ALWAYS,
+-					"Decreasing flock level for %s to %d.\n",
+-					owner, Owners[owner_num].FlockLevel);
++					"Decreasing flock level for %s to %d from %d.\n",
++					owner, flock_level, Owners[owner_num].FlockLevel);
++			Owners[owner_num].FlockLevel = flock_level;
+ 		}
+ 
+ 		timeout(); // invalidate our ads immediately
+@@ -5043,10 +5023,14 @@ Scheduler::negotiationFinished( char const *owner, char const *remote_pool, bool
+ 		if (Owners[owner_num].FlockLevel < MaxFlockLevel &&
+ 		    Owners[owner_num].FlockLevel == flock_level)
+ 		{ 
+-			Owners[owner_num].FlockLevel++;
++			int oldlevel = Owners[owner_num].FlockLevel;
++			Owners[owner_num].FlockLevel+= param_integer("FLOCK_INCREMENT",1,1);
++			if(Owners[owner_num].FlockLevel > MaxFlockLevel) {
++				Owners[owner_num].FlockLevel = MaxFlockLevel;
++			}
+ 			dprintf(D_ALWAYS,
+-					"Increasing flock level for %s to %d.\n",
+-					owner, Owners[owner_num].FlockLevel);
++					"Increasing flock level for %s to %d from %d.\n",
++					owner, Owners[owner_num].FlockLevel,oldlevel);
+ 
+ 			timeout(); // flock immediately
+ 		}
