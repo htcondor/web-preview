@@ -1,0 +1,143 @@
+diff --git a/src/condor_includes/util_lib_proto.h b/src/condor_includes/util_lib_proto.h
+index bc19df3..dd3c1a2 100644
+--- a/src/condor_includes/util_lib_proto.h
++++ b/src/condor_includes/util_lib_proto.h
+@@ -60,7 +60,7 @@ void detach ( void );
+ int do_connect ( const char *host, const char *service, u_short port );
+ int udp_connect ( char *host, u_short port );
+ void dprintf ( int flags, const char* fmt, ... ) CHECK_PRINTF_FORMAT(2,3);
+-FILE * debug_lock ( int debug_level );
++FILE * debug_lock ( int debug_level, const char *mode );
+ void debug_unlock ( int debug_level );
+ void _EXCEPT_ ( const char *fmt, ... ) CHECK_PRINTF_FORMAT(1,2);
+ void condor_except_should_dump_core( int flag );
+diff --git a/src/condor_util_lib/dprintf.c b/src/condor_util_lib/dprintf.c
+index 11d1c6b..65382b1 100644
+--- a/src/condor_util_lib/dprintf.c
++++ b/src/condor_util_lib/dprintf.c
+@@ -52,7 +52,7 @@
+ #include "util_lib_proto.h"		// for mkargv() proto
+ #include "condor_threads.h"
+ 
+-FILE *debug_lock(int debug_level);
++FILE *debug_lock(int debug_level, const char *mode);
+ FILE *open_debug_file( int debug_level, char flags[] );
+ void debug_unlock(int debug_level);
+ void preserve_log_file(int debug_level);
+@@ -307,7 +307,7 @@ _condor_dprintf_va( int flags, const char* fmt, va_list args )
+ 			int result;
+ 
+ 				/* Open and lock the log file */
+-			(void)debug_lock(debug_level);
++			(void)debug_lock(debug_level, NULL);
+ 
+ 			if (DebugFP) {
+ 
+@@ -473,12 +473,17 @@ _condor_open_lock_file(const char *filename,int flags, mode_t perm)
+ }
+ 
+ FILE *
+-debug_lock(int debug_level)
++debug_lock(int debug_level, const char *mode)
+ {
+ 	off_t		length = 0; // this gets assigned return value from lseek()
+ 	priv_state	priv;
+ 	int save_errno;
+ 	char msg_buf[DPRINTF_ERR_MAX];
++	struct stat fstatus;
++
++	if ( mode == NULL ) {
++		mode = "a";
++	}
+ 
+ 	if ( DebugFP == NULL ) {
+ 		DebugFP = stderr;
+@@ -502,13 +507,23 @@ debug_lock(int debug_level)
+ 
+ 		/* Acquire the lock */
+ 	if( DebugLock ) {
+-		if( use_kernel_mutex == FALSE && LockFd < 0 ) {
+-			LockFd = _condor_open_lock_file(DebugLock,O_CREAT|O_WRONLY,0660);
+-			if( LockFd < 0 ) {
+-				save_errno = errno;
+-				snprintf( msg_buf, sizeof(msg_buf), "Can't open \"%s\"\n", DebugLock );
+-				_condor_dprintf_exit( save_errno, msg_buf );
++		
++		if( use_kernel_mutex == FALSE) {
++			if (LockFd > 0 ) {
++				fstat(LockFd, &fstatus);
++				if (fstatus.st_nlink == 0){
++					close(LockFd);
++					LockFd = -1;
++				}	
+ 			}
++			if (LockFd < 0) {
++				LockFd = _condor_open_lock_file(DebugLock,O_CREAT|O_WRONLY,0660);
++				if( LockFd < 0 ) {
++					save_errno = errno;
++					snprintf( msg_buf, sizeof(msg_buf), "Can't open \"%s\"\n", DebugLock );
++					_condor_dprintf_exit( save_errno, msg_buf );
++				} 
++			}	
+ 		}
+ 
+ 		errno = 0;
+@@ -528,7 +543,7 @@ debug_lock(int debug_level)
+ 	if( DebugFile[debug_level] ) {
+ 		errno = 0;
+ 
+-		DebugFP = open_debug_file(debug_level, "a");
++		DebugFP = open_debug_file(debug_level, mode);
+ 
+ 		if( DebugFP == NULL ) {
+ 			if (debug_level > 0) return NULL;
+diff --git a/src/condor_util_lib/dprintf_config.c b/src/condor_util_lib/dprintf_config.c
+index 616a32f..d30d093 100644
+--- a/src/condor_util_lib/dprintf_config.c
++++ b/src/condor_util_lib/dprintf_config.c
+@@ -183,10 +183,19 @@ dprintf_config( const char *subsys )
+ 					} 
+ 					free(pval);
+ 				}
++
++				if (debug_level == 0) {
++					(void)sprintf(pname, "%s_LOCK", subsys);
++					if (DebugLock) {
++						free(DebugLock);
++					}
++					DebugLock = param(pname);
++				}
++
+ 				if( first_time && want_truncate ) {
+-					DebugFP = open_debug_file(debug_level, "w");
++					DebugFP = debug_lock(debug_level, "w");
+ 				} else {
+-					DebugFP = open_debug_file(debug_level, "a");
++					DebugFP = debug_lock(debug_level, "a");
+ 				}
+ 
+ 				if( DebugFP == NULL && debug_level == 0 ) {
+@@ -194,7 +203,7 @@ dprintf_config( const char *subsys )
+ 						   DebugFile[debug_level]);
+ 				}
+ 
+-				if (DebugFP) (void)fclose( DebugFP );
++				if (DebugFP) (void)debug_unlock( debug_level );
+ 				DebugFP = (FILE *)0;
+ 
+ 				if (debug_level == 0) {
+@@ -210,14 +219,6 @@ dprintf_config( const char *subsys )
+ 				} else {
+ 					MaxLog[debug_level] = 1024*1024;
+ 				}
+-
+-				if (debug_level == 0) {
+-					(void)sprintf(pname, "%s_LOCK", subsys);
+-					if (DebugLock) {
+-						free(DebugLock);
+-					}
+-					DebugLock = param(pname);
+-				}
+ 			}
+ 		}
+ 	} else {
