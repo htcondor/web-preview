@@ -1,0 +1,30 @@
+From 552e3d2a78a4a88000956cac238cbb0a6e05d96f Mon Sep 17 00:00:00 2001
+From: Ben Cotton <ben.cotton@cyclecomputing.com>
+Date: Wed, 6 Aug 2014 17:23:43 -0400
+Subject: [PATCH] Check for other ways to specify the operating system
+
+---
+ src/condor_submit.V6/submit.cpp | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index b491522..1303a89 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -6907,7 +6907,12 @@ check_requirements( char const *orig, MyString &answer )
+ 	req_ad.GetExprReferences(answer.Value(),job_refs,machine_refs);
+ 
+ 	checks_arch = machine_refs.contains_anycase( ATTR_ARCH );
+-	checks_opsys = machine_refs.contains_anycase( ATTR_OPSYS );
++	checks_opsys = machine_refs.contains_anycase( ATTR_OPSYS ) ||
++		machine_refs.contains_anycase( ATTR_OPSYS_AND_VER ) ||
++		machine_refs.contains_anycase( ATTR_OPSYS_LONG_NAME ) ||
++		machine_refs.contains_anycase( ATTR_OPSYS_SHORT_NAME ) ||
++		machine_refs.contains_anycase( ATTR_OPSYS_NAME ) ||
++		machine_refs.contains_anycase( ATTR_OPSYS_LEGACY );
+ 	checks_disk =  machine_refs.contains_anycase( ATTR_DISK );
+ 	checks_cpus =   machine_refs.contains_anycase( ATTR_CPUS );
+ 	checks_tdp =  machine_refs.contains_anycase( ATTR_HAS_TDP );
+-- 
+2.0.1
+

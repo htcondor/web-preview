@@ -1,0 +1,13 @@
+diff --git a/src/condor_gridmanager/creamresource.cpp b/src/condor_gridmanager/creamresource.cpp
+index 14deb98..682310b 100644
+--- a/src/condor_gridmanager/creamresource.cpp
++++ b/src/condor_gridmanager/creamresource.cpp
+@@ -727,7 +727,7 @@ GahpClient * CreamResource::BatchGahp() { return status_gahp; }
+ const char *CreamResource::getLeaseId()
+ {
+ 	// TODO trigger a DoUpdateLeases() if we don't have a lease set yet
+-	if ( m_sharedLeaseExpiration ) {
++	if ( lastUpdateLeases ) {
+ 		return m_leaseId.c_str();
+ 	} else {
+ 		return NULL;

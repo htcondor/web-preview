@@ -1,0 +1,1173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/safari-pinned-tab.svg" color="#d31145">
+    <link rel="shortcut icon" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCSS">
+    <meta name="description" content="HTCSS is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCSS was made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCSS">
+    <meta property="og:description" content="HTCSS is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCSS was made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/logos/htcondor_logos/PNG/HTCondor_red_blk.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCSS">
+    <meta property="twitter:description" content="HTCSS is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCSS was made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/logos/htcondor_logos/PNG/HTCondor_red_blk.png">
+
+    <title>How To Set Up Elastic Compute Cloud Pools</title>
+
+    <script src="/web-preview/preview-2021_01_28_Updates/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-2021_01_28_Updates/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-2021_01_28_Updates/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-2021_01_28_Updates/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-2021_01_28_Updates/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-2021_01_28_Updates/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/release-highlights/">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/release-plan/">Release Schedule</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/release-highlights/">Release Highlights</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/new.html">News</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/downloads/">Download</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">HTCondor-CE</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/uw-support/">HTCSS Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Community Mailing List</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-support/#external-support-options">External Support Organizations</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Users</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#world">World</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#developer">Developers</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/past_condor_weeks.html">Content Archives</a></li>
+        
+            <li><a class="dropdown-item" href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/featured-users.html" >
+        Featured Users
+    </a>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/description.html">What is HTCSS?</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/logos/">Logos</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-2021_01_28_Updates/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-2021_01_28_Updates/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+                
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/overview/">Overview</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/download/">Download</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/release-highlights/">Release Highlights</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/release-plan/">Release Schedule</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor-CE</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/overview/">Overview</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/download/">Download</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/release-highlights/">Release Highlights</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>General</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/new.html">News</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/security/">Security</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/manual/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/downloads/">Download</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-2021_01_28_Updates/news/Software_Integration_Developer/">New Full-Time Position: Software Integration Developer</a></h3>
+                            <div>
+                                <span class="text-muted">December  8, 2021</span>
+                            </div>
+                            <hr/>
+                            <a href="/web-preview/preview-2021_01_28_Updates/new.html">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-2021_01_28_Updates/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Documentation</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">HTCondor</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">HTCondor-CE</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Support</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/uw-support/">HTCSS Contract Support</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Community Mailing List</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-support/#external-support-options">External Support Organizations</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Email Lists</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Users</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#world">World</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#developer">Developers</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor Week</th></tr>
+                
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/past_condor_weeks.html">Content Archives</a></td></tr>
+                
+                    <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+
+
+                <div class="d-none d-md-block col-lg-4 my-2">
+                    <a href="/web-preview/preview-2021_01_28_Updates/featured-users.html"><b>Featured Users</b></a>
+                    
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-12-16-precision-mental-health.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Harnessing HTC-enabled precision mental health to capture the complexity of smoking cessation
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">December 16, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-11-30-banq.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Centuries of newspapers are now easily searchable thanks to HTCSS
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 30, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-11-29-usgs.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Protecting ecosystems with HTC
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 29, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                </div>
+                <div class="d-none d-xl-block col-xl-4 my-2">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-2021_01_28_Updates/assets/images/banq-mw.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-11-30-banq.html">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
+                            <hr/>
+                            <a href="/web-preview/preview-2021_01_28_Updates/featured-users.html">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-2021_01_28_Updates/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Featured Users
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCSS</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/description.html">What is HTCSS?</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/logos/">Logos</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>CHTC</th></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/web-preview/preview-2021_01_28_Updates/description.html">What is HTCSS?</a></h5>
+                            <hr class="mb-2">
+                            <div>
+                                HTCondor Software Suite (HTCSS) provides an array of services for automating
+                                and managing batch workloads and computing resources.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>How To Set Up Elastic Compute Cloud Pools</h1>
+<div id="content">
+ This document describes an HTCondor configuration known to scale to 5000 execute nodes in EC2; the central manager and submitter remain hosted on-site.  This document ay also assist in constructing other pools across a wide-area, or otherwise high-latency, network.  We present the configuration as a series scalability problems and solutions, in order of severity.  This document generally refers to the 7.8 and 7.9 release series.
+ <p>
+  Before we begin, however, a few recommendations (especially for those readers constructing new pools):
+ </p>
+ <p>
+ </p>
+ <ul>
+  <li>
+   Use different machines for the central manager and submit nodes.
+  </li>
+  <li>
+   Expand slowly; this will allow you tackle one problem at a time.
+  </li>
+  <li>
+   If possible, use dummy jobs for testing – jobs which behave something like your intended workload, but which don't produce any results you care about.  This allows you to throw away jobs if doing so becomes convenient, as it might if you need to reconfigure something to improve its scalability.  Dummy jobs may simply be real jobs whose results you have already obtained.
+  </li>
+ </ul>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Network Connectivity
+ </h3>
+ <p>
+  Because Amazon provides public IP addresses to running instances, you don't need to use CCB.  Instead, with the help of the following script, you can use
+  <strong>
+   TCP_FORWARDING_HOST
+  </strong>
+  , which incurs no additional load on the collector.  (Arrange for this script to be run on execute-node start-up.)  You will, of course, need to adjust (or create) a security group to allow inbound connections; consider using the shared port service (see below) to simplify this.
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">  cat &gt; /etc/condor/config.d/ec2.local &lt;&lt;EOF
+EC2PublicIP = $(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/public-ipv4)
+EC2InstanceID = "$(/usr/bin/curl -s http://169.254.169.254/latest/meta-data/instance-id)"
+STARTD_EXPRS = \$(STARTD_EXPRS) EC2PublicIP EC2InstanceID
+EOF
+  chmod a+r /etc/condor/config.d/ec2.local
+</pre>
+ </div>
+ <p>
+  This script requires that
+  <strong>
+   LOCAL_CONFIG_DIR
+  </strong>
+  be set to
+  <strong>
+   /etc/condor/config.d
+  </strong>
+  , the default for many distributions.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Example Configuration
+ </h2>
+ <p>
+  For the execute node(s):
+ </p>
+ <div class="code">
+  <pre class="code"># See the "Network Connectivity" subsection.
+LOCAL_CONFIG_DIR = /etc/condor/config.d
+TCP_FORWARDING_HOST = $(EC2PublicIP)
+
+# See the "Shared Port" section.
+# This reduces the number of inbound ports you need to add to your
+# security group to 1.
+USE_SHARED_PORT = TRUE
+DAEMON_LIST = MASTER, STARTD, SHARED_PORT
+
+# See the "CCB" section.
+# CCB_ADDRESS = $(COLLECTOR_HOST)
+
+# See the "TCP Updates" section.
+# TCP updates are more expensive but more reliable over a WAN.
+UPDATE_COLLECTOR_WITH_TCP = TRUE
+
+# See the "Claim ID Security" section.
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+ALLOW_DAEMON = condor_pool@*, submit-side@matchsession/&lt;submitter-ip-address&gt;
+</pre>
+ </div>
+ <p>
+  For the submit node(s):
+ </p>
+ <div class="code">
+  <pre class="code"># See the "Shared Port" section.
+# This reduces the number of inbound ports you need to add to your
+# firewall to 1.
+USE_SHARED_PORT = TRUE
+DAEMON_LIST = MASTER, SCHEDD, SHARED_PORT
+
+# See the "Claim ID Security" section.
+SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION = TRUE
+
+# See the "Increase File Descriptor Limits" section.
+SCHEDD_MAX_FILE_DESCRIPTORS = 20000
+</pre>
+ </div>
+ <p>
+  For the central manager:
+ </p>
+ <div class="code">
+  <pre class="code"># See the "Tiered Collectors" section.
+COLLECTOR02 = $(COLLECTOR)
+COLLECTOR03 = $(COLLECTOR)
+COLLECTOR04 = $(COLLECTOR)
+
+# These port numbers are somewhat arbitrary; edit as required.
+COLLECTOR02_ARGS = -f -p 10002
+COLLECTOR03_ARGS = -f -p 10003
+COLLECTOR04_ARGS = -f -p 10004
+
+# The master complains if these aren't set, although they don't	work.
+COLLECTOR02_LOG	= $(LOG)/Collector02Log
+COLLECTOR03_LOG	= $(LOG)/Collector03Log
+COLLECTOR04_LOG	= $(LOG)/Collector04Log
+
+# Setting the log file in the environment, however, does.
+COLLECTOR02_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector02Log"
+COLLECTOR03_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector03Log"
+COLLECTOR04_ENVIRONMENT = "_CONDOR_COLLECTOR_LOG=$(LOG)/Collector04Log"
+
+DAEMON_LIST = MASTER, NEGOTIATOR, COLLECTOR, COLLECTOR02, COLLECTOR03, COLLECTOR04
+
+CONDOR_VIEW_HOST = $(COLLECTOR_HOST)
+
+# See the "Shared Port" section.
+COLLECTOR.USE_SHARED_PORT = FALSE
+
+# See the "Increase File Descriptor Limits" section.
+COLLECTOR_MAX_FILE_DESCRIPTORS = 20000
+
+# See the "Turn Off Match Notification" section.
+NEGOTIATOR_INFORM_STARTD = FALSE
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Tiered Collectors
+ </h2>
+ <p>
+  Because the collector blocks on I/O, the number of nodes to which it can promptly respond is limited by the latencies of its connections to them.  Stronger security methods (pool password, Kerberos, SSL, and GSI) require more round-trips between the collector and the startd to establish trust, and may thus intensify this bottleneck.
+ </p>
+ <p>
+  However, an HTCondor pool can use more than a single collector.  Instead, a number of secondary collectors communicate with the startds and forward the results to the primary collector, which all the other HTCondor tools and daemons use (as normal).  This allows HTCondor to perform multiple simultaneous I/O operations (and overlap them with computation) by using the operating system's whole-process scheduler.
+ </p>
+ <p>
+  The recipe for this tiered collector set up is included in the example configurations above; you may also want to read
+  <span class="wiki">
+   <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/HowToConfigCollectors/index.html" title="How To Config Collectors">
+    HowToConfigCollectors
+   </a>
+  </span>
+  .  However, the example execute configuration is incomplete: it does not specify the secondary collector to which it should connect.  You may use the solution from
+  <span class="wiki">
+   <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/HowToConfigCollectors/index.html" title="How To Config Collectors">
+    HowToConfigCollectors
+   </a>
+  </span>
+  :
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">COLLECTOR_HOST=$RANDOM_CHOICE(collector.hostname:10002,collector.hostname:10003,collector.hostname:10004)</pre>
+ </div>
+ <p>
+  but this may cause confusion, as different daemons may connect to different secondary collectors.  To avoid this problem, add script like the following to the start-up sequence of the execute node VMs:
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">COLLECTOR_PORT=$((($RANDOM % 3) + 10001))
+echo "COLLECTOR_HOST = collector.hostname:${COLLECTOR_PORT}" &gt; /etc/condor/config.d/collector-host.local
+chmod a+r /etc/condor/config.d/collector-host.local
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  CCB
+ </h2>
+ <p>
+  If you're using an EC2-compatible service which doesn't provide public IPs, you may need to use CCB.  (You may also need to use CCB if you don't control the firewall around your VM instances.)  Using CCB increases the load on the collector, so you may need to increase the number of secondary collectors in your tiered configuration.
+ </p>
+ <p>
+  Using CCB conjunction with the shared port service further reduces the port usage of HTCondor; thus, in certain circumstances, it may become useful independent of its ability to work around private IPs and firewalls.  See below.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Shared Port
+ </h2>
+ <p>
+  In its default configuration, HTCondor acquires two ports on the submit node for the lifetime of each running job, one inbound and one outbound.  Although this limits the maximum number of running jobs per submit node (to about 23000), in practice, the firewall tends to become a problem before then.  You can reduce the requirement for inbound ports to the schedd to 1 by using the shared port service, a multiplexer.
+ </p>
+ <p>
+  You can eliminate the requirement for outbound ports by using CCB in conjunction with the shared port service; doing so converts outbound connections from the submit node to the execute node into inbound connections from the execute node to the shared port on the submit node.  However, using CCB increases the load on the collector(s).
+ </p>
+ <p>
+  Additionally, using CCB in conjunction with the shared port service reduces the total socket on the central manager, as CCB routes all communications with the execute node through its single shared port.
+ </p>
+ <p>
+  The shared port service may also be of benefit on the execute node when configuring its firewall.
+ </p>
+ <p>
+  Using the shared port service may mean that the scaling limit of this configuration is RAM on the submit node: each running job requires a shadow, which in the latest version of HTCondor, uses roughly 1200KB.  (Or about 950KB for a 32-bit installation of HTCondor.)
+ </p>
+ <p>
+  The shared port service is enabled in the example configurations above.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  TCP Updates
+ </h2>
+ <p>
+  By default, HTCondor uses UDP to maintain its pool membership list.  On a LAN, doing so is cheaper and very nearly as reliable.  On a WAN, it becomes much more likely that HTCondor will mistakenly think an execute node has gone away.  Doing so is expensive (and confusing), so we recommend using TCP updates.
+ </p>
+ <p>
+  TCP updates are enable in the example configurations above.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Claim ID Security
+ </h2>
+ <p>
+  By default, HTCondor creates a secure session from scratch for each daemon-to-daemon connection.  However, it's possible to use an existing shared secret (the claim ID) to jump-start the security negotiation in some cases, eliminating a few round-trips over the WAN.
+ </p>
+ <p>
+  Claim ID security is enabled in the example configurations above.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Increase File Descriptor Limits
+ </h2>
+ <p>
+  You may need to increase the total number of kernel-level file descriptors on the submit node.  Each job gets its own shadow, each of which needs dozens of file descriptors to open all of its libraries.
+ </p>
+ <p>
+  You may also need to increase the per-process limit on file descriptors on both the central manager (for the collectors) and the submit node (for the schedd).
+ </p>
+ <p>
+  To increase the total number of system-wide file descriptors, echo the new value to
+  <em>
+   /proc/sys/file-max
+  </em>
+  .  (You may cat this file for the current value.)  For most distributions, appending
+  <strong>
+   fs.file-max = &lt;number&gt;
+  </strong>
+  to
+  <em>
+   /etc/sysctl.conf
+  </em>
+  will make this change persist across reboots.  A million should be more than enough.
+ </p>
+ <p>
+  The example configurations above, if started as root, will increase the file descriptor limits for the schedd and the collector.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Increase kernel firewall connection tracking table size
+ </h2>
+ <p>
+  For collectors with a very large number of connections running on Linux machine
+with a kernel firewall, the size of the connection tracking table in the firewall may become a bottleneck.  On many systems, there is a limit of 64k connections.  This can be raised by setting a new limit in
+ </p>
+ <p>
+ </p>
+ <div class="code">
+  <pre class="code">/proc/sys/net/netfilter/nf_conntrack_max
+</pre>
+ </div>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Turn Off Match Notification
+ </h2>
+ <p>
+  In HTCondor's default configuration, the negotiator notifies a startd when a job matches it.  This can slow job dispatch for the entire pool if the startd has vanished but HTCondor hasn't noticed yet, because the notification has a blocking a time out.  For pools using spot instances (which may frequently vanish without warning), we recommend turning off match notification.
+ </p>
+ <p>
+  Match notification is disable in the example configurations above.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Manage Disk Space
+ </h2>
+ <p>
+  HTCondor itself doesn't use much disk, but it's easy to run out when running thousands of jobs.  This obviously causes HTCondor problems, but this problem is usually clearly reported in the logs.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Other Thoughts
+ </h2>
+ <p>
+ </p>
+ <ul>
+  <li>
+   Adding an execute node to the pool requires the brief but full attention of one of your secondary collectors, so there's a limit to how many nodes you can add at the same time without the congestion causing the existing nodes grief.  That is, the advice about “growing slowly” above applies even if you've shown that your current configuration will work for size to which you're growing the pool.
+  </li>
+  <li>
+   Likewise, if you're using spot instances to build your pool, considering using a less aggressive bidding strategy to minimize the amount of execute node churn.  Adding a node is expensive, and a terminated node's leases on various resources may not expire for quite some time (by default, 15 minutes).
+  </li>
+  <li>
+   Like execute node churn, but to a lesser degree, job churn may also cause your pool grief.
+  </li>
+ </ul>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-2021_01_28_Updates/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/security//">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/license.html">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/uw-support/">Internal Contract</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-support#external-support-options">External Organizations</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 justify-content-center">
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://ls.wisc.edu/">
+                    
+
+<div style="height:75px;">
+    <picture>
+        <source type="image/webp" srcset="/web-preview/preview-2021_01_28_Updates/assets/images/UW_Madison_Logo.webp">
+        <img class="h-100" src="/web-preview/preview-2021_01_28_Updates/assets/images/UW_Madison_Logo.png" alt="UW-Madison Logo">
+    </picture>
+</div>
+
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="px-3 d-block m-auto" href="https://www.nsf.org">
+                    
+
+<div style="height:100px;">
+    <picture>
+        <source type="image/webp" srcset="/web-preview/preview-2021_01_28_Updates/assets/images/NSF_Logo.webp">
+        <img class="h-100" src="/web-preview/preview-2021_01_28_Updates/assets/images/NSF_Logo.jpg" alt="NSF Logo">
+    </picture>
+</div>
+
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://morgridge.org/">
+                    <img class="" height="40" src="/web-preview/preview-2021_01_28_Updates/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-lg-8 text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, you can find more information on their <a href="http://www.phoenixsoftware.com">website</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
