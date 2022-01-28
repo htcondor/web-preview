@@ -1,0 +1,101 @@
+diff -rNup condor-7.9.1.orig/src/condor_shadow.V6.1/NTreceivers.cpp condor-7.9.1/src/condor_shadow.V6.1/NTreceivers.cpp
+--- condor-7.9.1.orig/src/condor_shadow.V6.1/NTreceivers.cpp	2012-08-16 15:51:24.000000000 -0400
++++ condor-7.9.1/src/condor_shadow.V6.1/NTreceivers.cpp	2013-03-20 14:18:44.948507572 -0400
+@@ -1298,35 +1298,37 @@ case CONDOR_putfile:
+ 		}
+ 		result = ( syscall_sock->end_of_message() );
+ 		ASSERT( result );
++		free((char*)path);
++		
++		if (length > 0){
++			int num = -1;
++			if(fd >= 0) {
++				syscall_sock->decode();
++				buffer = (char*)malloc( (unsigned)length );
++				ASSERT( buffer );
++				memset( buffer, 0, (unsigned)length );
++				result = ( syscall_sock->code_bytes_bool(buffer, length) );
++				ASSERT( result );
++				result = ( syscall_sock->end_of_message() );
++				ASSERT( result );
++				num = write(fd, buffer, length);
++			} else {
++				dprintf(D_SYSCALLS, "Unable to put file %s\n", path);
++			}
++			close(fd);
+ 		
+-		int num = -1;
+-		if(fd >= 0) {
+-			syscall_sock->decode();
+-			buffer = (char*)malloc( (unsigned)length );
+-			ASSERT( buffer );
+-			memset( buffer, 0, (unsigned)length );
+-			result = ( syscall_sock->code_bytes_bool(buffer, length) );
++			syscall_sock->encode();
++			result = ( syscall_sock->code(num) );
+ 			ASSERT( result );
++			if( num < 0 ) {
++				result = ( syscall_sock->code( terrno ) );
++				ASSERT( result );
++			}
++			
++			free((char*)buffer);
+ 			result = ( syscall_sock->end_of_message() );
+ 			ASSERT( result );
+-			num = write(fd, buffer, length);
+-		}
+-		else {
+-			dprintf(D_SYSCALLS, "Unable to put file %s\n", path);
+-		}
+-		close(fd);
+-		
+-		syscall_sock->encode();
+-		result = ( syscall_sock->code(num) );
+-		ASSERT( result );
+-		if( num < 0 ) {
+-			result = ( syscall_sock->code( terrno ) );
+-			ASSERT( result );
+ 		}
+-		free((char*)path);
+-		free((char*)buffer);
+-		result = ( syscall_sock->end_of_message() );
+-		ASSERT( result );
+ 		return 0;
+ 	}
+ case CONDOR_getlongdir:
+diff -rNup condor-7.9.1.orig/src/condor_starter.V6.1/io_proxy_handler.cpp condor-7.9.1/src/condor_starter.V6.1/io_proxy_handler.cpp
+--- condor-7.9.1.orig/src/condor_starter.V6.1/io_proxy_handler.cpp	2012-08-16 15:51:24.000000000 -0400
++++ condor-7.9.1/src/condor_starter.V6.1/io_proxy_handler.cpp	2013-03-20 14:14:19.907059896 -0400
+@@ -570,18 +572,20 @@ void IOProxyHandler::handle_standard_req
+ 		sprintf(line, "%d", convert(result, errno));
+ 		r->put_line_raw(line);
+ 
+-		if(result >= 0) {
+-			char *buffer = (char*) malloc(length);
+-			if(buffer) {
+-				result = r->get_bytes_raw(buffer,length);
+-
+-				// Now actually putfile
+-				result = REMOTE_CONDOR_putfile_buffer(buffer, length);
+-				sprintf(line, "%d", convert(result, errno));
+-				r->put_line_raw(line);
+-			} else {
+-				sprintf(line,"%d",CHIRP_ERROR_NO_MEMORY);
+-				r->put_line_raw(line);
++		if (length > 0){
++			if(result >= 0) {
++				char *buffer = (char*) malloc(length);
++				if(buffer) {	 
++					result = r->get_bytes_raw(buffer,length);
++
++					// Now actually putfile
++					result = REMOTE_CONDOR_putfile_buffer(buffer, length);
++					sprintf(line, "%d", convert(result, errno));
++					r->put_line_raw(line);
++				} else {
++					sprintf(line,"%d",CHIRP_ERROR_NO_MEMORY);
++					r->put_line_raw(line);
++				}
+ 			}
+ 		}
+ 

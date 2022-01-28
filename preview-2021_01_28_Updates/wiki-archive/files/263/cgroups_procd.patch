@@ -1,0 +1,1265 @@
+diff --git a/build/cmake/CondorConfigure.cmake b/build/cmake/CondorConfigure.cmake
+index f17a4f3..2d333c4 100644
+--- a/build/cmake/CondorConfigure.cmake
++++ b/build/cmake/CondorConfigure.cmake
+@@ -385,6 +385,7 @@ add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/krb5/1.4.3-p0)
+ add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/openssl/0.9.8h-p2)
+ add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/pcre/7.6)
+ add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/gsoap/2.7.10-p5)
++add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libcgroup/0.37)
+ add_subdirectory(${CONDOR_SOURCE_DIR}/src/classad)
+ 
+ if (NOT WIN_EXEC_NODE_ONLY)
+diff --git a/externals/bundles/libcgroup/0.37/CMakeLists.txt b/externals/bundles/libcgroup/0.37/CMakeLists.txt
+new file mode 100644
+index 0000000..418e9db
+--- /dev/null
++++ b/externals/bundles/libcgroup/0.37/CMakeLists.txt
+@@ -0,0 +1,70 @@
++ ###############################################################
++ # 
++ # Copyright (C) 1990-2010, Redhat. 
++ # 
++ # Licensed under the Apache License, Version 2.0 (the "License"); you 
++ # may not use this file except in compliance with the License.  You may 
++ # obtain a copy of the License at 
++ # 
++ #    http://www.apache.org/licenses/LICENSE-2.0 
++ # 
++ # Unless required by applicable law or agreed to in writing, software 
++ # distributed under the License is distributed on an "AS IS" BASIS, 
++ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ # See the License for the specific language governing permissions and 
++ # limitations under the License. 
++ # 
++ ############################################################### 
++
++option(WITH_LIBCGROUP "Compiling with support for libcgroup" ON)
++
++if (WITH_LIBCGROUP)
++
++	if ( NOT PROPER )
++
++		set (LIBCGROUP_VER libcgroup-0.37)
++
++		set (LIBCGROUP_CONFIGURE ./configure --prefix=${EXTERNAL_STAGE} --disable-dependency-tracking CPPFLAGS=-I${EXTERNAL_STAGE}/include/)
++		set (LIBCGROUP_MAKE make )
++		set (LIBCGROUP_INSTALL make install )
++
++		ExternalProject_Add( libcgroup
++				    PREFIX ${EXTERNAL_BUILD_PREFIX}/${LIBCGROUP_VER}
++				    #-- Download Step ----------
++				    DOWNLOAD_COMMAND wget -N http://cdnetworks-us-1.dl.sourceforge.net/project/libcg/libcgroup/v0.37/${LIBCGROUP_VER}.tar.bz2 ${CMD_TERM}
++				    DOWNLOAD_DIR ${EXTERNAL_DL}
++				    URL http://cdnetworks-us-1.dl.sourceforge.net/project/libcg/libcgroup/v0.37/${LIBCGROUP_VER}.tar.bz2
++				    #--Configure step ----------
++				    CONFIGURE_COMMAND cd ${LIBCGROUP_VER} ${CMD_TERM} ${LIBCGROUP_CONFIGURE}
++				    #--Build Step ----------
++				    BUILD_COMMAND cd ${LIBCGROUP_VER} ${CMD_TERM} ${LIBCGROUP_MAKE}
++				    BUILD_IN_SOURCE 1
++				    #--install Step ----------
++				    INSTALL_DIR ${EXTERNAL_STAGE}
++				    INSTALL_COMMAND cd ${LIBCGROUP_VER} ${CMD_TERM} ${LIBCGROUP_INSTALL} )
++
++		# Set the target dependencies which the rest of condor depends on.
++		set(LIBCGROUP_FOUND "${EXTERNAL_STAGE}/lib/libcgroup.a")
++
++		set ( LIBCGROUP_SHARE "${EXTERNAL_BUILD_PREFIX}/${LIBCGROUP_VER}/src/libcgroup/${LIBCGROUP_VER}/libcgroup" )
++		append_var (CONDOR_EXTERNALS libcgroup)
++
++	else( NOT PROPER )
++
++		find_multiple( "cgroup" LIBCGROUP_FOUND)
++
++	endif( NOT PROPER )
++
++	if (LIBCGROUP_FOUND)
++
++		set( LIBCGROUP_FOUND ${LIBCGROUP_FOUND} PARENT_SCOPE )
++		set( HAVE_EXT_LIBCGROUP ON PARENT_SCOPE )
++		message ( STATUS "external configured (LIBCGROUP_FOUND=${LIBCGROUP_FOUND})" )
++
++	endif (LIBCGROUP_FOUND)
++
++else(WITH_LIBCGROUP)
++
++	message (STATUS "external skipped (libcgroup)")
++
++endif(WITH_LIBCGROUP)
+diff --git a/src/condor_includes/config.h.cmake b/src/condor_includes/config.h.cmake
+index 3741575..d68f977 100644
+--- a/src/condor_includes/config.h.cmake
++++ b/src/condor_includes/config.h.cmake
+@@ -298,6 +298,9 @@
+ ///* Do we have the zlib external */
+ #cmakedefine HAVE_EXT_ZLIB
+ 
++///* Do we have the libcgroup external */
++#cmakedefine HAVE_EXT_LIBCGROUP
++
+ /* Define to 1 if you have the `fstat64' function. (USED)*/
+ #cmakedefine HAVE_FSTAT64 1
+ 
+diff --git a/src/condor_procd/CMakeLists.txt b/src/condor_procd/CMakeLists.txt
+index 2285aff..4a69a09 100644
+--- a/src/condor_procd/CMakeLists.txt
++++ b/src/condor_procd/CMakeLists.txt
+@@ -27,7 +27,7 @@ else(WINDOWS)
+     condor_selective_glob( "proc_family_client*;proc_family_io*;local_client.*;named_pipe_reader*;named_pipe_writer*;named_pipe_util*;named_pipe_watchdog*" ProcClientElements )
+ endif(WINDOWS)
+ 
+-condor_daemon(procd "${ProcdRmvElements}" "procapi;utils;${PROCD_WIN_LINK_LIBS}" "${C_SBIN}" OFF)
++condor_daemon(procd "${ProcdRmvElements}" "procapi;utils;${PROCD_WIN_LINK_LIBS};${LIBCGROUP_FOUND}" "${C_SBIN}" OFF)
+ 
+ if (LINUX)
+ 	condor_exe( procd_ctl "procd_ctl.cpp" ${C_SBIN} "${CONDOR_TOOL_LIBS};${PCRE_FOUND};${OPENSSL_FOUND};${KRB5_FOUND};${COREDUMPER_FOUND}" OFF)
+@@ -35,4 +35,4 @@ if (LINUX)
+ 	condor_exe( gidd_alloc "gidd_alloc.cpp" ${C_SBIN} "${CONDOR_TOOL_LIBS};${PCRE_FOUND};${OPENSSL_FOUND};${KRB5_FOUND};${COREDUMPER_FOUND}" OFF)
+ endif(LINUX)
+ 
+-condor_static_lib(procd_client "${ProcClientElements}")
++condor_static_lib(procd_client "${ProcClientElements};${LIBCGROUP_FOUND}")
+diff --git a/src/condor_procd/cgroup_tracker.linux.cpp b/src/condor_procd/cgroup_tracker.linux.cpp
+new file mode 100644
+index 0000000..d24207a
+--- /dev/null
++++ b/src/condor_procd/cgroup_tracker.linux.cpp
+@@ -0,0 +1,135 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2007, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++
++#include "condor_common.h"
++#include "cgroup_tracker.linux.h"
++#include "proc_family_monitor.h"
++
++#if defined(HAVE_EXT_LIBCGROUP)
++CGroupTracker::CGroupTracker(ProcFamilyMonitor* pfm) :
++	ProcFamilyTracker(pfm)
++{
++}
++
++bool
++CGroupTracker::add_mapping(ProcFamily* family, const char * cgroup)
++{
++	int err = family->set_cgroup(cgroup);
++	if (!err) {
++		m_cgroup_pool[cgroup] = family;
++		return true;
++	}
++	return false;
++}
++
++bool
++CGroupTracker::remove_mapping(ProcFamily* family)
++{
++	// O(n) iteration through the map
++	std::map<std::string, ProcFamily*>::const_iterator end = m_cgroup_pool.end();
++	for (std::map<std::string, ProcFamily*>::const_iterator it = m_cgroup_pool.begin(); it != end; ++it) {
++		if (it->second == family) {
++			m_cgroup_pool.erase(it->first);
++			return true;
++		}
++	}
++	return false;
++}
++
++bool
++CGroupTracker::check_process(procInfo* pi)
++{
++	// Really, the cgroup name should be part of the procInfo
++	// However, it is a string, and would lead to lots of allocation
++	// issues in the current code.
++	// The majority of this is code from the GroupTracker.
++
++	// prepare the pathname to open: /proc/<pid>/cgroup
++	//
++	char path[32];
++	int ret = snprintf(path, 32, "/proc/%u/cgroup", pi->pid);
++	if (ret < 0) {
++		dprintf(D_ALWAYS,
++			"GroupTracker (pid = %u): snprintf error: %s (%d)\n",
++			pi->pid,
++			strerror(errno),
++			errno);
++		return false;
++        }
++	if (ret >= 32) {
++		dprintf(D_ALWAYS,
++			"GroupTracker (pid = %u): error: path buffer too small\n",
++			pi->pid);
++		return false;
++	}
++
++	// do the fopen
++	//
++	FILE* fp = safe_fopen_wrapper(path, "r");
++	if (fp == NULL) {
++		dprintf(D_ALWAYS,
++			"GroupTracker (pid = %u): fopen error: %s (%d)\n",
++			pi->pid,
++			strerror(errno),
++			errno);
++		return false;
++	}
++	
++	char buffer[1024];
++	bool found_cgroup = false;
++	std::map<std::string, ProcFamily*>::const_iterator end = m_cgroup_pool.end();
++	while (fgets(buffer, 1024, fp)) {
++		// Iterate through all our keys
++		for (std::map<std::string, ProcFamily*>::const_iterator it = m_cgroup_pool.begin(); it != end; ++it) {
++			if (strstr(buffer, it->first.c_str())) {
++				m_monitor->add_member_to_family(it->second, pi, "CGROUP");
++				found_cgroup = true;
++			}
++		}
++	}
++	if (!found_cgroup) {
++		if (!feof(fp)) {
++			dprintf(D_ALWAYS,
++				"CGroupTracker (pid = %u): "
++				"error reading from status file: %s (%d)\n",
++				pi->pid,
++				strerror(errno),
++				errno);
++		}
++		fclose(fp);
++		return false;
++	}
++	fclose(fp);
++
++	// make sure we didn't get a partial line
++	//
++	int line_len = strlen(buffer);
++	if (buffer[line_len - 1] != '\n') {
++		dprintf(D_ALWAYS,
++			"GroupTracker (pid = %u): "
++			"read partial line from status file\n",
++			pi->pid);
++		return false;
++	}
++	return true;
++}
++
++#endif
++
+diff --git a/src/condor_procd/cgroup_tracker.linux.h b/src/condor_procd/cgroup_tracker.linux.h
+new file mode 100644
+index 0000000..59a0faa
+--- /dev/null
++++ b/src/condor_procd/cgroup_tracker.linux.h
+@@ -0,0 +1,44 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2007, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#ifndef _CGROUP_TRACKER_H
++#define _CGROUP_TRACKER_H
++
++#include <map>
++#include <string>
++
++#include "proc_family_tracker.h"
++
++class CGroupTracker : public ProcFamilyTracker {
++
++public:
++
++	CGroupTracker(ProcFamilyMonitor* pfm);
++
++	bool add_mapping(ProcFamily* family, const char * cgroup);
++	bool remove_mapping(ProcFamily* family);
++	bool check_process(procInfo* pi);
++
++private:
++	
++	std::map<std::string, ProcFamily*> m_cgroup_pool;
++};
++
++#endif
++
+diff --git a/src/condor_procd/group_tracker.linux.cpp b/src/condor_procd/group_tracker.linux.cpp
+index 9c0a14d..612117a 100644
+--- a/src/condor_procd/group_tracker.linux.cpp
++++ b/src/condor_procd/group_tracker.linux.cpp
+@@ -27,10 +27,10 @@ GroupTracker::GroupTracker(ProcFamilyMonitor* pfm,
+                            gid_t max_gid,
+ 						   bool allocating) :
+ 	ProcFamilyTracker(pfm),
+-	m_gid_pool(min_gid, max_gid, allocating),
+ 	// A GroupTracker is fixated to either be allocating or associating
+ 	// concerning the gids and process families.
+-	m_allocating(allocating)
++	m_allocating(allocating),
++	m_gid_pool(min_gid, max_gid, allocating)
+ {
+ }
+ 
+diff --git a/src/condor_procd/proc_family.cpp b/src/condor_procd/proc_family.cpp
+index b4d59e5..7b7974a 100644
+--- a/src/condor_procd/proc_family.cpp
++++ b/src/condor_procd/proc_family.cpp
+@@ -27,6 +27,20 @@
+ #include "glexec_kill.unix.h"
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++#include "libcgroup.h"
++#define MEMORY_CONTROLLER "memory"
++#define CPUACCT_CONTROLLER "cpuacct"
++#define FREEZE_CONTROLLER "freezer"
++
++#define FROZEN "FROZEN"
++#define THAWED "THAWED"
++
++bool ProcFamily::m_cgroup_initialized = false;
++#include <unistd.h>
++long ProcFamily::clock_tick = sysconf( _SC_CLK_TCK );
++#endif
++
+ ProcFamily::ProcFamily(ProcFamilyMonitor* monitor,
+                        pid_t              root_pid,
+                        birthday_t         root_birthday,
+@@ -45,6 +59,10 @@ ProcFamily::ProcFamily(ProcFamilyMonitor* monitor,
+ #if !defined(WIN32)
+ 	m_proxy = NULL;
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	m_cgroup_string = NULL;
++	m_cgroup = NULL;
++#endif
+ }
+ 
+ ProcFamily::~ProcFamily()
+@@ -70,8 +88,314 @@ ProcFamily::~ProcFamily()
+ 		free(m_proxy);
+ 	}
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	if (m_cgroup != NULL) {
++		cgroup_free(&m_cgroup);
++	}
++	if (m_cgroup_string != NULL) {
++		free(m_cgroup_string);
++	}
++#endif
+ }
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++
++// TODO:
++// When the cgroup is initially set, we need to migrate all tasks to it!
++
++int
++ProcFamily::set_cgroup(const char * cgroup)
++{
++	int err;
++	bool has_cgroup = true, changed_cgroup = false;
++
++	// Initialize library and data structures
++	if (m_cgroup_initialized == false) {
++		cgroup_init();
++	}
++	size_t cgroup_len = strlen(cgroup);
++	m_cgroup_string = (char *)malloc(sizeof(char)*cgroup_len);
++	strcpy(m_cgroup_string, cgroup);
++	m_cgroup = cgroup_new_cgroup(cgroup);
++	ASSERT(m_cgroup != NULL);
++
++	if (ECGROUPNOTEXIST == cgroup_get_cgroup(m_cgroup)) {
++		has_cgroup = false;
++	}
++
++	// Record if we don't have a particular subsystem, but it's not fatal.
++	// Add the controller if the cgroup didn't exist or it is not yet present.
++	if ((has_cgroup == false) || (cgroup_get_controller(m_cgroup, CPUACCT_CONTROLLER) == NULL)) {
++		changed_cgroup = true;
++		if (cgroup_add_controller(m_cgroup, CPUACCT_CONTROLLER) == NULL) {
++			dprintf(D_PROCFAMILY,
++				"Unable to initialize cgroup CPU accounting subsystem"
++				" for %s.\n",
++				cgroup);
++		}
++	}
++	if ((has_cgroup == false) || (cgroup_get_controller(m_cgroup, MEMORY_CONTROLLER) == NULL)) {
++		changed_cgroup = true;
++		if (cgroup_add_controller(m_cgroup, MEMORY_CONTROLLER) == NULL) {
++			dprintf(D_PROCFAMILY,
++				"Unable to initialize cgroup memory accounting subsystem"
++				" for %s.\n",
++				cgroup);
++		}
++	}
++	if ((has_cgroup == false) || (cgroup_get_controller(m_cgroup, FREEZE_CONTROLLER) == NULL)) {
++		changed_cgroup = true;
++		if (cgroup_add_controller(m_cgroup, FREEZE_CONTROLLER) == NULL) {
++			dprintf(D_PROCFAMILY,
++				"Unable to initialize cgroup subsystem for killing "
++				"processes for %s.\n",
++				cgroup);
++		}
++	}
++	// TODO: turn on hierarchical accounting for the memory
++
++	// This can fail if the cgroup exists, but some of the controllers are
++	// not available.  So, it's not a fatal condition
++	if ((has_cgroup == false) && (err = cgroup_create_cgroup(m_cgroup, 0))) {
++		dprintf(D_PROCFAMILY,
++			"Unable to create cgroup %s for ProcFamily %u."
++			"  Cgroup functionality will not work: %s\n",
++			cgroup, (unsigned)m_root_pid, cgroup_strerror(err));
++	} else if ((has_cgroup == true) && (changed_cgroup == true) && (err = cgroup_modify_cgroup(m_cgroup))) {
++		dprintf(D_PROCFAMILY,
++			"Unable to modify cgroup %s for ProcFamily %u."
++			"  Some cgroup functionality may not work: %s\n",
++			cgroup, (unsigned)m_root_pid, cgroup_strerror(err));
++	}
++
++	return 0;
++}
++
++int
++ProcFamily::freezer_cgroup(const char * state)
++{
++	// TODO: Freezing is advisory.  We are not guaranteed to be completely
++	// frozen upon return, only in the process of doing so.
++	int err = 0;
++	struct cgroup_controller* freezer;
++	struct cgroup *cgroup = cgroup_new_cgroup(m_cgroup_string);
++	ASSERT (cgroup != NULL);
++
++	freezer = cgroup_add_controller(cgroup, FREEZE_CONTROLLER);
++	if (NULL == freezer) {
++		dprintf(D_ALWAYS,
++			"Unable to access the freezer subsystem for ProcFamily %u "
++			"for cgroup %s\n",
++			(unsigned)m_root_pid, m_cgroup_string);
++		err = 2;
++		goto ret;
++	}
++
++	if ((err = cgroup_add_value_string(freezer, "freezer.state", state))) {
++		dprintf(D_ALWAYS,
++			"Unable to write %s to freezer for cgroup %s (ProcFamily %u). %u %s\n",
++			state, m_cgroup_string, (unsigned)m_root_pid, err, cgroup_strerror(err));
++		err = 3;
++		goto ret;
++	}
++	if ((err = cgroup_modify_cgroup(cgroup))) {
++		if (ECGROUPVALUENOTEXIST == err) {
++			dprintf(D_ALWAYS,
++				"Does not appear condor_procd is allowed to freeze"
++				" cgroup %s (ProcFamily %u).\n",
++				m_cgroup_string, (unsigned)m_root_pid);
++		} else {
++			dprintf(D_ALWAYS,
++				"Unable to commit freezer change %s for cgroup %s (ProcFamily %u). %u %s\n",
++				state, m_cgroup_string, (unsigned)m_root_pid, err, cgroup_strerror(err));
++		}
++		err = 4;
++		goto ret;
++	}
++
++	ret:
++	cgroup_free(&cgroup);
++	return err;
++}
++
++int
++ProcFamily::spree_cgroup(int sig)
++{
++	// The general idea here is we freeze the cgroup, give the signal,
++	// then thaw everything out.  This way, signals get applied at once.
++
++	freezer_cgroup(FROZEN);
++
++	ASSERT (m_cgroup != NULL);
++	cgroup_get_cgroup(m_cgroup);
++
++	void **handle = (void **)malloc(sizeof(void*));
++	ASSERT (handle != NULL);
++	pid_t pid;
++	int err;
++	ASSERT (m_cgroup_string != NULL);
++	err = cgroup_get_task_begin(m_cgroup_string, FREEZE_CONTROLLER, handle, &pid);
++	if ((err > 0) && (err != ECGEOF))
++		handle = NULL;
++	while (err != ECGEOF) {
++		if (err > 0) {
++			dprintf(D_ALWAYS,
++				"Unable to iterate through cgroup %s (ProcFamily %u): %u %s\n",
++				m_cgroup_string, (unsigned)m_root_pid, err, cgroup_strerror(err));
++			goto release;
++		}
++		send_signal(pid, sig);
++		err = cgroup_get_task_next(handle, &pid);
++	}
++	err = 0;
++
++	release:
++	if (handle != NULL) {
++		cgroup_get_task_end(handle);
++		free(handle);
++	}
++
++	freezer_cgroup(THAWED);
++
++	return err;
++}
++
++int
++ProcFamily::count_tasks_cgroup()
++{
++	int tasks = 0, err = 0;
++	pid_t pid;
++	void **handle = (void **)malloc(sizeof(void*));
++	ASSERT (handle != NULL)
++	*handle = NULL;
++
++	ASSERT (m_cgroup_string != NULL);
++	err = cgroup_get_task_begin(m_cgroup_string, CPUACCT_CONTROLLER, handle, &pid);
++	while (err != ECGEOF) {
++		if (err > 0) {
++			dprintf(D_PROCFAMILY,
++				"Unable to read cgroup %s memory stats (ProcFamily %u): %u %s.\n",
++				m_cgroup_string, (unsigned)m_root_pid, err, cgroup_strerror(err));
++			break;
++		}
++		tasks ++;
++		err = cgroup_get_task_next(handle, &pid);
++	}
++	// Reset err to 0 
++	if (err == ECGEOF)
++		err = 0;
++	if (*handle)
++		cgroup_get_task_end(handle);
++	if (handle)
++		free(handle);
++	if (err) {
++		return -err;
++	}
++	return tasks;
++
++}
++
++bool
++inline
++_check_stat_uint64(const struct cgroup_stat stats, const char* name, u_int64_t* result){
++	u_int64_t tmp;
++	if (0 == strcmp(name, stats.name)) {
++		errno = 0;
++		tmp = (u_int64_t)strtoll(stats.value, NULL, 0);
++		if (errno == 0) {
++			*result = tmp;
++			return true;
++		} else {
++			dprintf(D_PROCFAMILY,
++				"Invalid cgroup stat %s for %s.\n",
++				stats.value, name);
++			return false;
++		}
++	}
++	return false;
++}
++
++int
++ProcFamily::aggregate_usage_cgroup(ProcFamilyUsage* usage)
++{
++	int err;
++	struct cgroup_stat stats;
++	void **handle;
++	u_int64_t tmp = 0, image = 0;
++	bool found_rss;
++
++	// Update memory
++	handle = (void **)malloc(sizeof(void*));
++	ASSERT (handle != NULL);
++	*handle = NULL;
++
++	err = cgroup_read_stats_begin(MEMORY_CONTROLLER, m_cgroup_string, handle, &stats);
++	while (err != ECGEOF) {
++		if (err > 0) {
++			dprintf(D_PROCFAMILY,
++				"Unable to read cgroup %s memory stats (ProcFamily %u): %u %s.\n",
++				m_cgroup_string, (unsigned)m_root_pid, err, cgroup_strerror(err));
++			break;
++		}
++		if (_check_stat_uint64(stats, "total_rss", &tmp)) {
++			image += tmp;
++			usage->total_resident_set_size = tmp;
++			found_rss = true;
++		} else if (_check_stat_uint64(stats, "total_mapped_file", &tmp)) {
++			image += tmp;
++		} else if (_check_stat_uint64(stats, "total_swap", &tmp)) {
++			image += tmp;
++		}
++		err = cgroup_read_stats_next(handle, &stats);
++	}
++	if (*handle != NULL) {
++		cgroup_read_stats_end(handle);
++	}
++	if (found_rss) {
++		usage->total_image_size = image;
++	} else {
++		dprintf(D_PROCFAMILY,
++			"Unable to find all necesary memory structures for cgroup %s"
++			" (ProcFamily %u)\n",
++			m_cgroup_string, (unsigned)m_root_pid);
++	}
++	if (image > m_max_image_size) {
++		m_max_image_size = image;
++	}
++
++
++	// Update CPU
++	*handle = NULL;
++       	err = cgroup_read_stats_begin(CPUACCT_CONTROLLER, m_cgroup_string, handle, &stats);
++	while (err != ECGEOF) {
++		if (err > 0) {
++			dprintf(D_PROCFAMILY,	
++				"Unable to read cgroup %s cpuacct stats (ProcFamily %u): %s.\n",
++				m_cgroup_string, (unsigned)m_root_pid, cgroup_strerror(err));
++			break;
++		}
++		if (_check_stat_uint64(stats, "user", &tmp)) {
++			usage->user_cpu_time = tmp/clock_tick;
++		} else if (_check_stat_uint64(stats, "system", &tmp)) {
++			usage->sys_cpu_time = tmp/clock_tick;
++		}
++		err = cgroup_read_stats_next(handle, &stats);
++	}
++	if (*handle != NULL) {
++		cgroup_read_stats_end(handle);
++	}
++	free(handle);
++	
++	// Finally, update the list of tasks
++	if ((err = count_tasks_cgroup()) < 0) {
++		return -err;
++	} else {
++		usage->num_procs = err;
++	}
++	return 0;
++}
++#endif
++
+ unsigned long
+ ProcFamily::update_max_image_size(unsigned long children_imgsize)
+ {
+@@ -140,6 +464,13 @@ ProcFamily::aggregate_usage(ProcFamilyUsage* usage)
+ 	//
+ 	usage->user_cpu_time += m_exited_user_cpu_time;
+ 	usage->sys_cpu_time += m_exited_sys_cpu_time;
++
++#if defined(HAVE_EXT_LIBCGROUP)
++        if (m_cgroup != NULL) {
++		aggregate_usage_cgroup(usage);
++	}
++#endif
++
+ }
+ 
+ void
+@@ -157,6 +488,11 @@ ProcFamily::signal_root(int sig)
+ void
+ ProcFamily::spree(int sig)
+ {
++#if defined(HAVE_EXT_LIBCGROUP)
++	if ((NULL != m_cgroup_string) && (0 == spree_cgroup(sig)))
++		return;
++#endif
++
+ 	ProcFamilyMember* member;
+ 	for (member = m_member_list; member != NULL; member = member->m_next) {
+ #if !defined(WIN32)
+diff --git a/src/condor_procd/proc_family.h b/src/condor_procd/proc_family.h
+index 23f802e..b9ecd4f 100644
+--- a/src/condor_procd/proc_family.h
++++ b/src/condor_procd/proc_family.h
+@@ -25,6 +25,10 @@
+ #include "proc_family_member.h"
+ #include "proc_family_io.h"
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++#include "libcgroup.h"
++#endif
++
+ class ProcFamilyMonitor;
+ 
+ class ProcFamily {
+@@ -113,6 +117,11 @@ public:
+ 	void set_proxy(char*);
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++	// Set the cgroup to use for this family
++	int set_cgroup(const char *);
++#endif
++
+ 	// dump info about all processes in this family
+ 	//
+ 	void dump(ProcFamilyDump& fam);
+@@ -166,6 +175,18 @@ private:
+ 	//
+ 	char* m_proxy;
+ #endif
++
++#if defined(HAVE_EXT_LIBCGROUP)
++	static bool m_cgroup_initialized;
++	char* m_cgroup_string;
++	struct cgroup* m_cgroup;
++	static long clock_tick;
++
++	int count_tasks_cgroup();
++	int aggregate_usage_cgroup(ProcFamilyUsage*);
++	int freezer_cgroup(const char *);
++	int spree_cgroup(int);
++#endif
+ };
+ 
+ #endif
+diff --git a/src/condor_procd/proc_family_client.cpp b/src/condor_procd/proc_family_client.cpp
+index a41ca4f..c9bde10 100644
+--- a/src/condor_procd/proc_family_client.cpp
++++ b/src/condor_procd/proc_family_client.cpp
+@@ -364,6 +364,66 @@ ProcFamilyClient::track_family_via_associated_supplementary_group(pid_t pid,
+ }
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++bool
++ProcFamilyClient::track_family_via_cgroup(pid_t pid,
++                                          const char * cgroup,
++                                          bool& response)
++{
++	ASSERT(m_initialized);
++
++	dprintf(D_PROCFAMILY,
++		"About to tell ProcD to track family with root %u "
++		    "via cgroup %s\n",
++		pid,
++		cgroup);
++
++	size_t cgroup_len = strlen(cgroup);
++
++	int message_len = sizeof(proc_family_command_t) +
++			  sizeof(pid_t) +
++			  sizeof(size_t) +
++			  sizeof(char)*cgroup_len;
++	void* buffer = malloc(message_len);
++	ASSERT(buffer != NULL);
++	char* ptr = (char*)buffer;
++
++	*(proc_family_command_t*)ptr =
++		PROC_FAMILY_TRACK_FAMILY_VIA_CGROUP;
++	ptr += sizeof(proc_family_command_t);
++
++	*(pid_t*)ptr = pid;
++	ptr += sizeof(pid_t);
++
++	*(size_t*)ptr = cgroup_len;
++	ptr += sizeof(size_t);
++
++	memcpy((void *)ptr, (const void *)cgroup, sizeof(char)*cgroup_len);
++	ptr += cgroup_len*sizeof(char);
++
++	ASSERT(ptr - (char*)buffer == message_len);
++
++	if (!m_client->start_connection(buffer, message_len)) {
++		dprintf(D_ALWAYS,
++			"ProcFamilyClient: failed to start connection with ProcD\n");
++		free(buffer);
++		return false;
++        }
++	free(buffer);
++	proc_family_error_t err;
++	if (!m_client->read_data(&err, sizeof(proc_family_error_t))) {
++		dprintf(D_ALWAYS,
++			"ProcFamilyClient: failed to read response from ProcD\n");
++		return false;
++	}
++	m_client->end_connection();
++
++	log_exit("track_family_via_cgroup", err);
++	response = (err == PROC_FAMILY_ERROR_SUCCESS);
++	return true;
++}
++#endif
++
+ bool
+ ProcFamilyClient::use_glexec_for_family(pid_t pid,
+                                         const char* proxy,
+diff --git a/src/condor_procd/proc_family_client.h b/src/condor_procd/proc_family_client.h
+index e86de4d..11db171 100644
+--- a/src/condor_procd/proc_family_client.h
++++ b/src/condor_procd/proc_family_client.h
+@@ -70,6 +70,11 @@ public:
+ 		bool&);
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++	// Tell ProcD to track a given PID family by a cgroup.
++	bool track_family_via_cgroup(pid_t, const char *, bool&);
++#endif
++
+ 	// tell the ProcD it needs to use glexec (along with the given
+ 	// proxy) in order to signal the specified family
+ 	//
+diff --git a/src/condor_procd/proc_family_io.cpp b/src/condor_procd/proc_family_io.cpp
+index 5377978..29208f0 100644
+--- a/src/condor_procd/proc_family_io.cpp
++++ b/src/condor_procd/proc_family_io.cpp
+@@ -38,7 +38,8 @@ static const char* proc_family_error_strings[] = {
+ 	"ERROR: Bad login tracking information",
+ 	"ERROR: Bad information for using GLExec",
+ 	"ERROR: No group ID available for tracking",
+-	"ERROR: This ProcD is not able to use GLExec"
++	"ERROR: This ProcD is not able to use GLExec",
++	"ERROR: No cgroup available for tracking"
+ };
+ 
+ // helper for looking up error strings
+diff --git a/src/condor_procd/proc_family_io.h b/src/condor_procd/proc_family_io.h
+index 511af61..ffb5683 100644
+--- a/src/condor_procd/proc_family_io.h
++++ b/src/condor_procd/proc_family_io.h
+@@ -43,7 +43,8 @@ enum proc_family_command_t {
+ 	PROC_FAMILY_UNREGISTER_FAMILY,
+ 	PROC_FAMILY_TAKE_SNAPSHOT,
+ 	PROC_FAMILY_DUMP,
+-	PROC_FAMILY_QUIT
++	PROC_FAMILY_QUIT,
++	PROC_FAMILY_TRACK_FAMILY_VIA_CGROUP
+ };
+ 
+ // return codes for ProcD operations
+@@ -67,6 +68,7 @@ enum proc_family_error_t {
+ 	PROC_FAMILY_ERROR_BAD_GLEXEC_INFO,
+ 	PROC_FAMILY_ERROR_NO_GROUP_ID_AVAILABLE,
+ 	PROC_FAMILY_ERROR_NO_GLEXEC,
++	PROC_FAMILY_ERROR_NO_CGROUP_ID_AVAILABLE,
+ 	PROC_FAMILY_ERROR_MAX
+ };
+ 
+diff --git a/src/condor_procd/proc_family_monitor.cpp b/src/condor_procd/proc_family_monitor.cpp
+index fc342cb..c330578 100644
+--- a/src/condor_procd/proc_family_monitor.cpp
++++ b/src/condor_procd/proc_family_monitor.cpp
+@@ -33,6 +33,10 @@
+ #include "group_tracker.linux.h"
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++#include "cgroup_tracker.linux.h"
++#endif
++
+ ProcFamilyMonitor::ProcFamilyMonitor(pid_t pid,
+                                      birthday_t birthday,
+                                      int snapshot_interval,
+@@ -55,6 +59,9 @@ ProcFamilyMonitor::ProcFamilyMonitor(pid_t pid,
+ #if defined(LINUX)
+ 	m_group_tracker = NULL;
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	m_cgroup_tracker = NULL;
++#endif
+ 	m_login_tracker = new LoginTracker(this);
+ 	ASSERT(m_login_tracker != NULL);
+ 	m_environment_tracker = new EnvironmentTracker(this);
+@@ -117,6 +124,11 @@ ProcFamilyMonitor::~ProcFamilyMonitor()
+ 		delete m_group_tracker;
+ 	}
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	if (m_cgroup_tracker != NULL) {
++		delete m_cgroup_tracker;
++	}
++#endif
+ 	delete m_pid_tracker;
+ }
+ 
+@@ -135,6 +147,16 @@ ProcFamilyMonitor::enable_group_tracking(gid_t min_tracking_gid,
+ }
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++void
++ProcFamilyMonitor::enable_cgroup_tracking()
++{
++	ASSERT(m_cgroup_tracker == NULL);
++	m_cgroup_tracker = new CGroupTracker(this);
++	ASSERT(m_cgroup_tracker != NULL);
++}
++#endif
++
+ proc_family_error_t
+ ProcFamilyMonitor::register_subfamily(pid_t root_pid,
+                                       pid_t watcher_pid,
+@@ -328,6 +350,32 @@ ProcFamilyMonitor::track_family_via_supplementary_group(pid_t pid, gid_t& gid)
+ }
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++proc_family_error_t
++ProcFamilyMonitor::track_family_via_cgroup(pid_t pid, const char * cgroup)
++{
++	if (m_cgroup_tracker == NULL) {
++		return PROC_FAMILY_ERROR_NO_CGROUP_ID_AVAILABLE;
++	}
++
++	Tree<ProcFamily*>* tree = lookup_family(pid, true);
++	if (tree == NULL) {
++		dprintf(D_ALWAYS,
++			"track_family_via_cgroup failure: "
++				"family with root %u not found\n",
++			pid);
++		return PROC_FAMILY_ERROR_FAMILY_NOT_FOUND;
++	}
++
++	bool ok = m_cgroup_tracker->add_mapping(tree->get_data(), cgroup);
++	if (!ok) {
++		return PROC_FAMILY_ERROR_NO_CGROUP_ID_AVAILABLE;
++	}
++
++	return PROC_FAMILY_ERROR_SUCCESS;
++}
++#endif
++
+ proc_family_error_t
+ ProcFamilyMonitor::unregister_subfamily(pid_t pid)
+ {
+@@ -363,7 +411,7 @@ ProcFamilyMonitor::unregister_subfamily(pid_t pid)
+ proc_family_error_t
+ ProcFamilyMonitor::use_glexec_for_family(pid_t pid, char* proxy)
+ {
+-	// only allow this is the glexec_kill module has been
++	// only allow this if the glexec_kill module has been
+ 	// initialized
+ 	//
+ 	if (!glexec_kill_check()) {
+@@ -572,6 +620,11 @@ ProcFamilyMonitor::snapshot()
+ 		m_group_tracker->find_processes(pi_list);
+ 	}
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	if (m_cgroup_tracker != NULL) {
++		m_cgroup_tracker->find_processes(pi_list);
++	}
++#endif
+ 	m_login_tracker->find_processes(pi_list);
+ 	m_environment_tracker->find_processes(pi_list);
+ 	m_parent_tracker->find_processes(pi_list);
+diff --git a/src/condor_procd/proc_family_monitor.h b/src/condor_procd/proc_family_monitor.h
+index ae702ea..6c60500 100644
+--- a/src/condor_procd/proc_family_monitor.h
++++ b/src/condor_procd/proc_family_monitor.h
+@@ -32,6 +32,9 @@ class PIDTracker;
+ #if defined(LINUX)
+ class GroupTracker;
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++class CGroupTracker;
++#endif
+ class LoginTracker;
+ class EnvironmentTracker;
+ class ParentTracker;
+@@ -89,6 +92,14 @@ public:
+ 	proc_family_error_t use_glexec_for_family(pid_t, char* proxy);
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++	// Turn on the ability to track via a cgroup
++	void enable_cgroup_tracking();
++
++	// Associate a cgroup with a family
++	proc_family_error_t track_family_via_cgroup(pid_t, const char*);
++#endif
++
+ 	// for sending signals to a single process
+ 	//
+ 	proc_family_error_t signal_process(pid_t, int);
+@@ -167,6 +178,9 @@ private:
+ #if defined(LINUX)
+ 	GroupTracker*       m_group_tracker;
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	CGroupTracker*      m_cgroup_tracker;
++#endif
+ 	LoginTracker*       m_login_tracker;
+ 	EnvironmentTracker* m_environment_tracker;
+ 	ParentTracker*      m_parent_tracker;
+diff --git a/src/condor_procd/proc_family_server.cpp b/src/condor_procd/proc_family_server.cpp
+index c270544..09b2808 100644
+--- a/src/condor_procd/proc_family_server.cpp
++++ b/src/condor_procd/proc_family_server.cpp
+@@ -193,6 +193,25 @@ ProcFamilyServer::track_family_via_associated_supplementary_group()
+ }
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++void
++ProcFamilyServer::track_family_via_cgroup()
++{
++	pid_t pid;
++	read_from_client(&pid, sizeof(pid_t));
++
++	size_t cgroup_len;
++	read_from_client(&cgroup_len, sizeof(size_t));
++	char * cgroup = (char *)malloc(sizeof(char)*cgroup_len);
++	read_from_client(cgroup, sizeof(char)*cgroup_len);
++
++	proc_family_error_t err = m_monitor.track_family_via_cgroup(pid, cgroup);
++	write_to_client(&err, sizeof(proc_family_error_t));
++
++	free(cgroup);
++}
++#endif
++
+ #if !defined(WIN32)
+ void
+ ProcFamilyServer::use_glexec_for_family()
+@@ -434,6 +453,14 @@ ProcFamilyServer::wait_loop()
+ 				break;
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++			case PROC_FAMILY_TRACK_FAMILY_VIA_CGROUP:
++				dprintf(D_ALWAYS,
++					"PROC_FAMILY_TRACK_FAMILY_VIA_CGROUP\n");
++				track_family_via_cgroup();
++				break;
++#endif
++
+ #if !defined(WIN32)
+ 			case PROC_FAMILY_USE_GLEXEC_FOR_FAMILY:
+ 				dprintf(D_ALWAYS,
+diff --git a/src/condor_procd/proc_family_server.h b/src/condor_procd/proc_family_server.h
+index 14601a7..d5792a2 100644
+--- a/src/condor_procd/proc_family_server.h
++++ b/src/condor_procd/proc_family_server.h
+@@ -65,6 +65,9 @@ private:
+ 	void track_family_via_allocated_supplementary_group();
+ 	void track_family_via_associated_supplementary_group();
+ #endif
++#if defined(HAVE_EXT_LIBCGROUP)
++	void track_family_via_cgroup();
++#endif
+ #if !defined(WIN32)
+ 	void use_glexec_for_family();
+ #endif
+diff --git a/src/condor_procd/procd_ctl.cpp b/src/condor_procd/procd_ctl.cpp
+index 9ddf4b6..6723586 100644
+--- a/src/condor_procd/procd_ctl.cpp
++++ b/src/condor_procd/procd_ctl.cpp
+@@ -25,6 +25,8 @@
+ static int register_family(ProcFamilyClient& pfc, int argc, char* argv[]);
+ static int track_by_associated_gid(ProcFamilyClient& pfc, int argc, 
+ 	char* argv[]);
++static int track_by_associated_cgroup(ProcFamilyClient& pfc, int argc,
++	char* argv[]);
+ static int get_usage(ProcFamilyClient& pfc, int argc, char* argv[]);
+ static int dump(ProcFamilyClient& pfc, int argc, char* argv[]);
+ static int list(ProcFamilyClient& pfc, int argc, char* argv[]);
+@@ -46,6 +48,7 @@ list_commands()
+ 	fprintf(stderr,
+ 		"    REGISTER_FAMILY <pid> <watcher_pid> <max_snapshot_interval>\n");
+ 	fprintf(stderr, "    TRACK_BY_ASSOCIATED_GID <gid> [<pid>]\n");
++	fprintf(stderr, "    TRACK_BY_ASSOCIATED_CGROUP <cgroup> [<pid>]\n");
+ 	fprintf(stderr, "    GET_USAGE [<pid>]\n");
+ 	fprintf(stderr, "    DUMP [<pid>]\n");
+ 	fprintf(stderr, "    LIST [<pid>]\n");
+@@ -107,7 +110,7 @@ main(int argc, char* argv[])
+ 		}
+ 
+ 		// This is the failure case if we manage to pass all checks above.
+-		fprintf(stderr, "error: Don't understand option %s\n", cmd_argv);
++		fprintf(stderr, "error: Don't understand option %s\n", cmd_argv[0]);
+ 		list_commands();
+ 		return 1;
+ 	}
+@@ -147,6 +150,9 @@ main(int argc, char* argv[])
+ 	else if (strcasecmp(cmd_argv[0], "TRACK_BY_ASSOCIATED_GID") == 0) {
+ 		return track_by_associated_gid(pfc, cmd_argc, cmd_argv);
+ 	}
++	else if (strcasecmp(cmd_argv[0], "TRACK_BY_ASSOCIATED_CGROUP") == 0) {
++		return track_by_associated_cgroup(pfc, cmd_argc, cmd_argv);
++	}
+ 	else if (strcasecmp(cmd_argv[0], "GET_USAGE") == 0) {
+ 		return get_usage(pfc, cmd_argc, cmd_argv);
+ 	}
+@@ -231,7 +237,7 @@ track_by_associated_gid(ProcFamilyClient& pfc, int argc, char* argv[])
+ 	pid_t pid = 0;
+ 	if (argc == 3) {
+ 		pid = atoi(argv[2]);
+-		if (pid == 0) {
++		if (pid <= 0) {
+ 			fprintf(stderr, "error: invalid pid: %s\n", argv[2]);
+ 			return 1;
+ 		}
+@@ -251,6 +257,38 @@ track_by_associated_gid(ProcFamilyClient& pfc, int argc, char* argv[])
+ }
+ 
+ static int
++track_by_associated_cgroup(ProcFamilyClient& pfc, int argc, char* argv[])
++{
++	if ((argc != 2) && (argc != 3)) {
++		fprintf(stderr,
++			"error: argument synopsis for %s: <cgroup> [<pid>]\n",
++			argv[0]);
++		return 1;
++	}
++	const char * cgroup = argv[1];
++	pid_t pid = 0;
++	if (argc == 3) {
++		pid = atoi(argv[2]);
++		if (pid <= 0) {
++			fprintf(stderr, "error: invalid pid: %s\n", argv[2]);
++			return 1;
++		}
++	}
++	bool success;
++	if (!pfc.track_family_via_cgroup(pid, cgroup, success)) {
++		fprintf(stderr, "error: communication error with ProcD\n");
++		return 1;
++	}
++	if (!success) {
++		fprintf(stderr,
++			"error: %s command failed with ProcD\n",
++			argv[0]);
++		return 1;
++	}
++	return 0;
++}
++
++static int
+ dump(ProcFamilyClient& pfc, int argc, char* argv[])
+ {
+ 	if (argc > 2) {
+diff --git a/src/condor_procd/procd_main.cpp b/src/condor_procd/procd_main.cpp
+index 97ded69..7bd1de1 100644
+--- a/src/condor_procd/procd_main.cpp
++++ b/src/condor_procd/procd_main.cpp
+@@ -96,7 +96,7 @@ static inline void
+ fail_illegal_option(char* option)
+ {
+ 	fprintf(stderr,
+-	        "error: illegal option: %s",
++	        "error: illegal option: %s\n",
+ 	        option);
+ 	exit(1);
+ }
+@@ -269,7 +269,7 @@ parse_command_line(int argc, char* argv[])
+ 	// now that we're done parsing, enforce required options
+ 	//
+ 	if (local_server_address == NULL) {
+-		fprintf(stderr, "error: the \"-A\" option is required");
++		fprintf(stderr, "error: the \"-A\" option is required\n");
+ 		exit(1);
+ 	}
+ }
+@@ -282,11 +282,11 @@ get_parent_info(pid_t& parent_pid, birthday_t& parent_birthday)
+ 
+ 	int ignored;
+ 	if (ProcAPI::getProcInfo(getpid(), own_pi, ignored) != PROCAPI_SUCCESS) {
+-		fprintf(stderr, "error: getProcInfo failed on own PID");
++		fprintf(stderr, "error: getProcInfo failed on own PID\n");
+ 		exit(1);
+ 	}
+ 	if (ProcAPI::getProcInfo(own_pi->ppid, parent_pi, ignored) != PROCAPI_SUCCESS) {
+-		fprintf(stderr, "error: getProcInfo failed on parent PID");
++		fprintf(stderr, "error: getProcInfo failed on parent PID\n");
+ 		exit(1);
+ 	}
+ 
+@@ -300,7 +300,7 @@ get_parent_info(pid_t& parent_pid, birthday_t& parent_birthday)
+ 		an escalation of privileges granted to the authorized process, we 
+ 		exit if we determine that our parent is init. */
+ 	if (own_pi->ppid == 1) {
+-		fprintf(stderr, "error: Procd's ppid can't be 1!");
++		fprintf(stderr, "error: Procd's ppid can't be 1!\n");
+ 		exit(1);
+ 	}
+ #endif
+@@ -311,7 +311,7 @@ get_parent_info(pid_t& parent_pid, birthday_t& parent_birthday)
+ 		            PROCAPI_BIRTHDAY_FORMAT
+ 		            ") is later than our own ("
+ 		            PROCAPI_BIRTHDAY_FORMAT
+-		            ")",
++		            ")\n",
+ 		       parent_pi->birthday,
+ 		       own_pi->birthday);
+ 		exit(1);
+@@ -348,6 +348,12 @@ main(int argc, char* argv[])
+ 		int ignored;
+ 		int status = ProcAPI::getProcInfo(root_pid, pi, ignored);
+ 		if (status != PROCAPI_SUCCESS) {
++				if (pi != NULL) {
++					delete pi;
++				}
++				fprintf(stderr,
++					"getProcInfo failed on root PID %u\n",
++					 (unsigned)root_pid);
+ 				EXCEPT("getProcInfo failed on root PID %u",
+ 				(unsigned)root_pid);
+ 		}
+@@ -365,7 +371,7 @@ main(int argc, char* argv[])
+ 		debug_fp = safe_fopen_wrapper(log_file_name, "a");
+ 		if (debug_fp == NULL) {
+ 			fprintf(stderr,
+-			        "error: couldn't open file \"%s\" for logging: %s (%d)",
++			        "error: couldn't open file \"%s\" for logging: %s (%d)\n",
+ 					log_file_name,
+ 			        strerror(errno),
+ 			        errno);
+@@ -389,7 +395,7 @@ main(int argc, char* argv[])
+ 	//
+ 	if (max_snapshot_interval < -1) {
+ 		fprintf(stderr,
+-		        "error: maximum snapshot interval must be non-negative or -1");
++		        "error: maximum snapshot interval must be non-negative or -1\n");
+ 		exit(1);
+ 	}
+ 
+@@ -456,6 +462,10 @@ main(int argc, char* argv[])
+ 	}
+ #endif
+ 
++#if defined(HAVE_EXT_LIBCGROUP)
++	monitor.enable_cgroup_tracking();
++#endif
++
+ 	// initialize the server for accepting requests from clients
+ 	//
+ 	ProcFamilyServer server(monitor, local_server_address);
