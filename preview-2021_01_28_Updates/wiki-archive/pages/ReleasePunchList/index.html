@@ -1,0 +1,2024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="HTCondor Homepage">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/safari-pinned-tab.svg" color="#d31145">
+    <link rel="shortcut icon" href="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-2021_01_28_Updates/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="HTCSS">
+    <meta name="description" content="HTCSS is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCSS was made to increase your Computational Throughput.">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://htcondor.org/">
+    <meta property="og:title" content="HTCSS">
+    <meta property="og:description" content="HTCSS is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCSS was made to increase your Computational Throughput.">
+    <meta property="og:image" content="https://htcondor.org/logos/htcondor_logos/PNG/HTCondor_red_blk.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://htcondor.org/">
+    <meta property="twitter:title" content="HTCSS">
+    <meta property="twitter:description" content="HTCSS is a specialized workload management system for compute-intensive jobs. Built to be flexible, expressive, and compatible with Grid and Cloud computing environments HTCSS was made to increase your Computational Throughput.">
+    <meta property="twitter:image" content="https://htcondor.org/logos/htcondor_logos/PNG/HTCondor_red_blk.png">
+
+    <title>Release Punch List</title>
+
+    <script src="/web-preview/preview-2021_01_28_Updates/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-2021_01_28_Updates/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-2021_01_28_Updates/assets/js/bootstrap.js" type="text/javascript"></script>
+    
+
+    
+
+    <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-2021_01_28_Updates/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-2021_01_28_Updates/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-2021_01_28_Updates/assets/images/HTCondor_red_blk.svg" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/release-highlights/">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/release-plan/">Release Schedule</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/release-highlights/">Release Highlights</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/new.html">News</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/downloads/">Download</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">HTCondor-CE</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/uw-support/">HTCSS Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Community Mailing List</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/htcondor-support/#external-support-options">External Support Organizations</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Users</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#world">World</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/mail-lists/#developer">Developers</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/past_condor_weeks.html">Content Archives</a></li>
+        
+            <li><a class="dropdown-item" href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/featured-users.html" >
+        Featured Users
+    </a>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/description.html">What is HTCSS?</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-2021_01_28_Updates/logos/">Logos</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-2021_01_28_Updates/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-2021_01_28_Updates/assets/images/HTCondor_red_blk.svg"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+                
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/overview/">Overview</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/download/">Download</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/release-highlights/">Release Highlights</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/release-plan/">Release Schedule</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor-CE</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/overview/">Overview</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/download/">Download</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/release-highlights/">Release Highlights</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>General</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/new.html">News</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/security/">Security</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/manual/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/downloads/">Download</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-2021_01_28_Updates/news/New_Job_Posting/">New Full-Time Position: Software Engineer</a></h3>
+                            <div>
+                                <span class="text-muted">December  8, 2021</span>
+                            </div>
+                            <hr/>
+                            <a href="/web-preview/preview-2021_01_28_Updates/new.html">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-2021_01_28_Updates/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Documentation</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/documentation/">HTCondor</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/documentation/">HTCondor-CE</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Support</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/uw-support/">HTCSS Contract Support</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Community Mailing List</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-support/#external-support-options">External Support Organizations</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Email Lists</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#user">Users</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#world">World</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/#developer">Developers</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor Week</th></tr>
+                
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/1579/">Most Recent</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/past_condor_weeks.html">Content Archives</a></td></tr>
+                
+                    <tr><td><a href="https://youtube.com/playlist?list=PLO7gMRGDPNulf_yK_9Ue6yARxJh0gQXQI">Youtube Playlist  &#11023;</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+
+
+                <div class="d-none d-md-block col-lg-4 my-2">
+                    <a href="/web-preview/preview-2021_01_28_Updates/featured-users.html"><b>Featured Users</b></a>
+                    
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-12-16-precision-mental-health">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Harnessing HTC-enabled precision mental health to capture the complexity of smoking cessation
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">December 16, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-11-30-banq">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Centuries of newspapers are now easily searchable thanks to HTCSS
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 30, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-11-29-usgs">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Protecting ecosystems with HTC
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November 29, 2021</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                </div>
+                <div class="d-none d-xl-block col-xl-4 my-2">
+                    <div class="card h-100">
+                        <img src="/web-preview/preview-2021_01_28_Updates/assets/images/banq-mw.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/web-preview/preview-2021_01_28_Updates/featured-users/2021-11-30-banq">Centuries of newspapers are now easily searchable thanks to HTCSS</a></h5>
+                            <hr/>
+                            <a href="/web-preview/preview-2021_01_28_Updates/featured-users.html">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-2021_01_28_Updates/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Featured Users
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCSS</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/description.html">What is HTCSS?</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-2021_01_28_Updates/logos/">Logos</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>CHTC</th></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/web-preview/preview-2021_01_28_Updates/description.html">What is HTCSS?</a></h5>
+                            <hr class="mb-2">
+                            <div>
+                                HTCondor Software Suite (HTCSS) provides an array of services for automating
+                                and managing batch workloads and computing resources.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="container-xxl py-4">
+    <h1>Release Punch List</h1>
+<div id="content">
+ This is a living document that enumerates all the steps necessary to release a new version of HTCondor.
+ <p>
+  In parallel with this effort the wrangler should
+  <span class="wiki">
+   <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/PreparingVersionHistory" title="Preparing Version History">
+    prepare the version history
+   </a>
+  </span>
+ </p>
+ <p>
+  There are a few phases of the actual release:
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Preliminary work to freeze the code, make a release branch, etc. (this can take a few days, so start early)
+  </li>
+  <li>
+   Upgrading the pool(s) and watching for bugs
+  </li>
+  <li>
+   Release the binaries to the public and announce the release
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Building the right branches
+ </h2>
+ To setup per-commit builds of branches, edit
+ <div class="strike">
+  <strike>
+   {code}/p/condor/public/html/branches-to-build{endcode}
+  </strike>
+ </div>
+ <div class="code">
+  <pre class="code">submit-2.batlab.org:~condorauto/per-commit/branches-to-build</pre>
+ </div>
+ <p>
+  The format of the file is described at the top of the file.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Building the right binaries
+ </h2>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Coordinate a development code-freeze. This involves chasing down people who are trying to finish bug fixes, new features (if it's a development release), porting, or any other core development that is slated for a given release.
+   <p>
+   </p>
+  </li>
+  <li>
+   Ensure that the parent branch (e.g.
+   <code>
+    V7_0-branch
+   </code>
+   ) is building properly on all platforms. If any platforms aren't building, you need to either solve it yourself or track down the person who broke the builds and get them to fix it immediately. This can take days, so
+   <em>
+    start early
+   </em>
+   !
+   <p>
+   </p>
+  </li>
+  <li>
+   Notify the appropriate people about the update.
+   <ul>
+    <li>
+     For a
+     <strong>
+      stable release
+     </strong>
+     we update the CS pool.  Send email to the
+     <code>
+      uwcs-condor@cs.wisc.edu
+     </code>
+     list announcing our plans for the pool upgrade. We like to give users at least a few days notice so that if there are important paper deadlines, etc, they have time to finish their jobs, or to let us know they need us to delay the upgrade.
+    </li>
+    <li>
+     For a
+     <strong>
+      developer release
+     </strong>
+     we update the NMI pool and CHTC pool.  Let the admins of these pools know about the pending release (currently the HTCondor infrastructure team for NMI, and infrastructure or Dan Bradley for CHTC)
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Make a release branch. The main thing to know is that the branch should have the name
+   <code>
+    VX_Y_Z-branch
+   </code>
+   . Here's an example of the steps for a 7.0.3 release, from a known good NMI tag (assuming your working directory is inside of a clone of CONDOR_SRC.git):
+   <ul>
+    <li>
+     The preferred method for making a release branch is from a known good build tag on NMI.
+     <div class="code">
+      <pre class="code">git branch V7_0_3-branch BUILD-V7_0-branch-2008-6-24
+git push origin V7_0_3-branch
+</pre>
+     </div>
+    </li>
+    <li>
+     or, if you'd like to make the branch off of the V7_0-branch:
+     <div class="code">
+      <pre class="code">git branch V7_0_3-branch origin/V7_0-branch
+git push origin V7_0_3-branch
+</pre>
+     </div>
+    </li>
+    <li>
+     either way, be sure to update
+     <span class="wiki">
+      <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/GitBranchDescriptions" title="Git Branch Descriptions">
+       GitBranchDescriptions
+      </a>
+     </span>
+     and
+     <span class="wiki">
+      <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/SourceCodeBranches" title="Source Code Branches">
+       SourceCodeBranches
+      </a>
+     </span>
+     to document the new branch
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p>
+  <strong>
+   Skip the next step, because we need PRE_RELEASE on, in order for NMI to make builds with NMI buildids in it, which NMI needs to install in NMI.
+  </strong>
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Fix the version string in the release branch. However, in this case, the goal is to remove the "
+   <code>
+    PRE-RELEASE
+   </code>
+   " and other junk from the version string so you're left with an official version string for the final release.
+   <ul>
+    <li>
+     <code>
+      git checkout V7_0_3-branch
+     </code>
+    </li>
+    <li>
+     Edit the top-level
+     <code>
+      CMakeLists.txt
+     </code>
+     <ul>
+      <li>
+       Set
+       <code>
+        PRE_RELEASE
+       </code>
+       to
+       <code>
+        OFF
+       </code>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <code>
+      git diff
+     </code>
+     (to verify the change before you commit it)...
+    </li>
+    <li>
+     <code>
+      git commit -a -m "set official version string for 7.0.3"
+     </code>
+    </li>
+    <li>
+     <code>
+      git push origin V7_0_3-branch
+     </code>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Update
+   <code>
+    CMakeLists.txt
+   </code>
+   on the main-line development branch (e.g. V7_0-branch) to go to the next version number and to include the string "PRE-RELEASE-UWCS".
+   <ul>
+    <li>
+     <code>
+      git checkout V7_0-branch
+     </code>
+    </li>
+    <li>
+     Edit the top-level
+     <code>
+      CMakeLists.txt
+     </code>
+     <ul>
+      <li>
+       Set
+       <code>
+        PRE_RELEASE
+       </code>
+       to
+       <code>
+        "PRE-RELEASE-UWCS"
+       </code>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <code>
+      git diff
+     </code>
+     (to verify the change before you commit it)...
+    </li>
+    <li>
+     Edit the top-level
+     <code>
+      CMakeLists.txt
+     </code>
+     <ul>
+      <li>
+       Set VERSION to the new version
+      </li>
+     </ul>
+    </li>
+    <li>
+     Edit build/cmake/CondorPackageConfig.cmake
+     <ul>
+      <li>
+       <div class="strike">
+        <strike>
+         change the GUID value for CPACK_WIX_PRODUCT_GUID (at about line 190)
+        </strike>
+       </div>
+       this is now automatic - instead look at remote_pre output from the Windows build to verify that the GUID has changed.
+      </li>
+     </ul>
+    </li>
+    <li>
+     <code>
+      git commit -a -m "updated version string for 7.0.4"
+     </code>
+    </li>
+    <li>
+     <code>
+      git push origin V7_0-branch
+     </code>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   On the main branch of the manual (
+   <strong>
+    not
+   </strong>
+   the newly created release branch, but for example, the regular V7_0-branch), update condor-macros.tex to up the version number to the next version, and push those changes to CONDOR_SRC.git.
+   <p>
+   </p>
+  </li>
+  <li>
+   We are modifying our process to start with an upgrade request ticket whose body includes specific issues to note for the release. Essentially, the idea is to send in the NMI ticket same new release announcement we are going to send to our user community. This way, the NMI admins act as a 'beta site' for the relevancy of our release announcement. If we have issues upgrading, we will update the ticket text so that that it become the email that is ultimately sent to users.  Note this is only needed for development releases.
+   <p>
+   </p>
+  </li>
+  <li>
+   For old-batlab, make sure the nightly build tags are being made on the release branch:
+   <ul>
+    <li>
+     <code>
+      cd /p/condor/home/tools/cvs-tools
+     </code>
+    </li>
+    <li>
+     Edit
+     <code>
+      create_build_tag-input
+     </code>
+    </li>
+    <li>
+     Uncomment and modify a section that defines a nightly build tag on the appropriate release branch. See the other examples in the file for details. There's also a very complete comment at the top of the
+     <code>
+      create_build_tag
+     </code>
+     script itself.
+    </li>
+    <li>
+     <code>
+      cvs diff create_build_tag-input
+     </code>
+     (to verify the change before you commit it)...
+    </li>
+    <li>
+     <code>
+      cvs commit -m "added nightly build tags for V6_X_Y-branch" create_build_tag-input
+     </code>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Watch the nightly builds the next morning to ensure everything is working fine. This step does not apply to the new batlab; it has per-commit builds rather than nightly builds.
+   <p>
+   </p>
+  </li>
+  <li>
+   If you'd like to fire off a build immediately, then read the
+   <span class="wiki">
+    <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/NmiBuild" title="Nmi Build">
+     Building HTCondor with NMI
+    </a>
+   </span>
+   page. You'll need to start the build as cndrauto so follow the directions.
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Upgrade the Pools
+ </h2>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Settle on a build ID candidate that successfully built on all platforms.  Ensure that all tests passed.
+   <p>
+   </p>
+  </li>
+  <li>
+   Perform the
+   <span class="wiki">
+    <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/ManualRegressionTests" title="Manual Regression Tests">
+     ManualRegressionTests
+    </a>
+   </span>
+   , possibly assigning some to various staff members.
+   <p>
+   </p>
+  </li>
+  <li>
+   On submit-2, pin the build for 365 days using
+   <code>
+    /nmi/bin/nmi_pin
+   </code>
+   :
+   <div class="code">
+    <pre class="code">$ nmi_pin --days=365 --force &lt;runid&gt;
+</pre>
+   </div>
+   This buildid will be unpinned by the
+   <strong>
+    next
+   </strong>
+   wrangler when the
+   <strong>
+    next
+   </strong>
+   revision of HTCondor comes out in this series. Example: If you are the
+current release wrangler and have just pinned 7.0.0. The release wrangler
+for 7.0.1 will unpin the 7.0.0 release.
+   <p>
+   </p>
+  </li>
+  <li>
+   Make sure we've got a win32 build and releasable package (at this point, the nightly windows builds provide a MSI automatically).
+   <ul>
+    <li>
+     Verify the contents of the .ZIP file
+     <ul>
+      <li>
+       Check the layout of the file (some iterations had an extra directory)
+      </li>
+      <li>
+       Check to see that condor_mail.exe is not missing.
+      </li>
+      <li>
+       Check for debug binaries
+       <div class="code">
+        <pre class="code">link /dump /imports bin\* | grep -e "MSVC.*D"</pre>
+       </div>
+       If any of the HTCondor programs or dlls are linked with the debug c-runtime, there will be output. Otherwise there will not be.
+      </li>
+     </ul>
+    </li>
+    <li>
+     If ther is no MSI from batlab, TJ can create the Windows MSI
+    </li>
+    <li>
+     Test the MSI installer.  vm-crane.chtc.wisc.edu can be used for this.
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Deploy binaries onto production pool, start the "N-day" counter.
+Stable releases go onto the CS Dept. pool. Upgrading this pool is a complicated process in itself, which is documented on the
+   <a class="external" href="http://www.cs.wisc.edu/condor/developers/pool-update.html">
+    Upgrading the UW CS Pool
+   </a>
+   page. Developement releases go onto the
+   <span class="quote">
+    BaTLab
+   </span>
+   and CHTC pools. Talk to the infrastructure team to arrange upgrading these pools.
+   <ul>
+    <li>
+     N &gt;= 1 for a development series release
+    </li>
+    <li>
+     N &gt;= 3 for a bug fix release in a stable series (X.Y.&gt;0)
+    </li>
+    <li>
+     N &gt;= 28 for a new stable series (X.Y.0)
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   RUST-watcher must be diligent about looking for "bad things", bug reports from our users, etc.
+   <p>
+   </p>
+  </li>
+  <li>
+   Verify that the Version History in the manual is up to date.
+   <span class="wiki">
+    <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/PreparingVersionHistory" title="Preparing Version History">
+     PreparingVersionHistory
+    </a>
+   </span>
+   <p>
+   </p>
+  </li>
+  <li>
+   Verify the list of supported platforms in the manual.  The list is in
+   <code>
+    doc/overview/overview.tex
+   </code>
+   under 'Availability'. Furthermore, the platform-specific notes in the manual
+   <code>
+    doc/platforms/*
+   </code>
+   should be verified and updated if there have been any changes.
+   <p>
+   </p>
+  </li>
+  <li>
+   Tag Build ID w/ release tag. For example, to create "V7_0_3" as opposed to "BUILD-V7_0_3-branch-2008-6-15":
+   <ul>
+    <li>
+     (Assume a clone of CONDOR_SRC.git is present.)
+    </li>
+    <li>
+     <code>
+      cd CONDOR_SRC
+     </code>
+    </li>
+    <li>
+     <code>
+      git tag -a V7_0_3 BUILD-V7_0_3-branch-2008-6-15
+     </code>
+    </li>
+    <li>
+     <code>
+      git push origin V7_0_3
+     </code>
+     (This puts the V7_0_3 tag in the central CONDOR_SRC.git repo.)
+    </li>
+    <li>
+     <strong>
+      Note:
+     </strong>
+     Push the TAG name, not the branch name.
+    </li>
+    <li>
+     update
+     <span class="wiki">
+      <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/GitBranchDescriptions" title="Git Branch Descriptions">
+       GitBranchDescriptions
+      </a>
+     </span>
+     to document the new branch
+     <ul>
+      <li>
+       Name of the tag and date the tag was created.
+      </li>
+      <li>
+       The branch the tag was created on.
+      </li>
+      <li>
+       The official version string included in that release.
+      </li>
+      <li>
+       The original build tag that the release tag was created from. This last point is very important, since it contains the actual date the release's codebase came from, not just the date the release tag "alias" was created. This is important for date-based comparisons in git, for example.
+      </li>
+     </ul>
+    </li>
+    <li>
+     For example, here's the 6.9.5 tag's entry:
+     <div class="code">
+      <pre class="code">11/28/07 V6_9_5
+  The offical tag for 6.9.5, from the V6_9_5-branch.
+  Version string: $CondorVersion: 6.9.5 Nov 28 2007 BuildID: 65347 $
+  Original build tag: BUILD-V6_9_5-branch-2007-11-28
+</pre>
+     </div>
+     Note that in this case, everything was actually from the same date, but that's an exception. Usually, the date in the version string and original build tag will differ from the date the release tag itself was added.
+    </li>
+   </ul>
+  </li>
+ </ol>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Preparing to release to the world
+ </h2>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Release binary tarballs to the web.
+Releasing the binaries to the public is a two step process.  First, we put the binaries into AFS at
+   <code>
+    /p/condor/public/binaries/vX.Y/X.Y.Z
+   </code>
+   .  Then, we invoke the download system scripts to push these binaries from AFS out to the mirrors (this is a later step in these instructions).
+   <ul>
+    <li>
+     WINDOWS: With &lt;Current version +1&gt; hopefully Windows packages will be automatic. If you have only the tarballs and not the Windows MSI/ZIP, you can build them from the tarballs.  People who know how to make Windows packages: TJ, Z, Todd T.
+     <ol>
+      <li>
+       Unzip/untar the windows tarball into a working directory, c:\scratch\temp for instance.  You will end up with all of the files in c:\scratch\temp\public
+      </li>
+      <li>
+       Create a directory for the packagages, c:\scratch\temp\package for instance.
+      </li>
+      <li>
+       Set your git repository to the branch that you are releasing and make sure that it doesn't have any extraneous files.
+       <div class="code">
+        <pre class="code">&gt; cd CONDOR_SRC\msconfig
+&gt; dopackaging c:\scratch\temp\public c:\scratch\temp\package
+</pre>
+       </div>
+       this will make the .msi and .zip for Windows in the c:\scratch\temp\package directory.
+      </li>
+     </ol>
+     <p>
+     </p>
+    </li>
+    <li>
+     UNIX: Mostly this involves copying everything off of submit-2 and into /p/condor/public/binaries/...
+     <ul>
+      <li>
+       Login to submit-2, then do the following (make sure to substitute for X.Y, X.Y.Z, &lt;DATE&gt; and &lt;GID&gt;)
+       <div class="code">
+        <pre class="code"># Make a new directory for this release
+$ mkdir /scratch/release-X.Y.Z-&lt;DATE&gt;
+$ cd /scratch/release-X.Y.Z-&lt;DATE&gt;
+# Use the GID to find the tarballs.  First, verify the set of tarballs
+$ ls -l /nmi/run/cndrauto/201?/*/&lt;GID&gt;/userdir/*/results.tar.gz
+# Then unpack them into the current directory
+$ find /nmi/run/cndrauto/201?/*/&lt;GID&gt;/userdir -type f -name results.tar.gz | xargs -I {} tar zxf {}
+# Then transfer to AFS.  This can take awhile
+$ cd public
+$ scp *.deb *.rpm *.tar.gz tonic:/p/condor/public/binaries/vX.Y/X.Y.Z
+</pre>
+       </div>
+      </li>
+     </ul>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Pre-release source tarball. The source tarball used to be created every night as part of the nightly builds.  After the conversion to cmake, it is no longer created.  While releasing 7.5.5, I created it by hand by tarring the contents of
+   <code>
+    userdir/common
+   </code>
+   in the
+   <code>
+    rundir
+   </code>
+   of the NMI build.  I put these files in a top-level directory named
+   <code>
+    condor-X.Y.Z
+   </code>
+   and I removed the
+   <code>
+    soar
+   </code>
+   directory.
+The source should be placed in
+   <code>
+    /p/condor/public/binaries/vX.Y/X.Y.Z
+   </code>
+   using the name "
+   <code>
+    condor_src-X.Y.Z-all-all.tar.gz
+   </code>
+   ".  The source tarball is now automatically made again as of 7.7 branch, but not in the 7.6 branch.
+   <p>
+   </p>
+  </li>
+  <li>
+   Is this a new series release (x.x.0)?  There are some additional details:
+   <p>
+   </p>
+   <ul>
+    <li>
+     Add a new license agreement.  This is usually just copying the old license to a new name and changing the version number.
+     <div class="code">
+      <pre class="code">cvs -d /p/condor/repository/HTML co htcondor-web
+cd condor-web/src/downloads
+cp v7.3.license.html v7.4.license.html
+edit v7.4.license.html # change the HTCondor version numebr.
+cvs add v7.4.license.html
+cvs ci
+cd ../..
+./generate_html src
+</pre>
+     </div>
+     <p>
+     </p>
+    </li>
+    <li>
+     The download log files must exist; the download scripts won't create them if they don't.
+     <div class="code">
+      <pre class="code">cd /p/condor/public/license
+touch licensers-v7.4 problem-v7.4 sendfile-v7.4
+</pre>
+     </div>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Set the release date (the date the new version hit the HTCondor web site) in the HTCondor Manual's Version History item devoted
+to identifying the release date.  OR, tell Karen exactly what
+date to use, and she'll do it for you. (
+   <span class="ticket">
+    <a class="resolved" href="../../tickets/?ticket=1236" title="include release date in version history">
+     #1236
+    </a>
+   </span>
+   )
+  </li>
+ </ol>
+ <p>
+  Note:  this only works on tonic, and with the latex in /p/condor/workspaces/build/bin/latex
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Build the manual.
+   <div class="code">
+    <pre class="code">PATH=/s/gs/bin:$PATH
+git clone /p/condor/repository/CONDOR_SRC.git
+cd CONDOR_SRC
+git checkout -b V7_0_3-branch origin/V7_0_3-branch
+cd doc
+make release
+</pre>
+   </div>
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Release HTCondor to the world
+ </h3>
+ <p>
+  Once you start following these steps, HTCondor is available to the public.
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Release the manual.  Move the symlink in /p/condor/public/html/manual for whatever release series you're changing to point at the new version.
+   <div class="code">
+    <pre class="code">cd /p/condor/public/html/manual
+rm v7.0
+ln -s v7.0.3 v7.0
+
+If this is a development series, move the current symlink to the new directory:
+rm current
+ln -s v7.0.3 current
+
+Update the version for generation of the manual download table. For a new series, update the version numbers.  For a new release in an existing series, make a noninvasive change such as removing or adding a newline.  This change is necessary to trigger a rebuild of the manual download page.
+cvs -d /p/condor/repository/HTML co htcondor-web
+cd condor-web
+edit src/htcondor/manual/index.html
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Tell the new download system about the new binaries.
+   <ul>
+    <li>
+     All of the programs listed here take --help options, and the are all discussed to some extent in /p/condor/downloads/doc/operation.txt .
+    </li>
+    <li>
+     These tools require Python version 2.5. The /usr/bin/python on RHEL5 2.4.3, and these scripts won't run with it.  Here is how to get Python 2.5 on CSL machines:
+     <div class="code">
+      <pre class="code">$ python -V     # Note that this is a capital "V".
+Python 2.4.1
+$ export PATH=/s/python-2.5/bin:$PATH
+$ which python
+/s/python-2.5/bin/python
+$ python -V
+Python 2.5
+</pre>
+     </div>
+    </li>
+    <li>
+     For more complete documentation on the download tools, look at /p/condor/downloads/doc/operation.txt
+     <p>
+     </p>
+    </li>
+    <li>
+     <strong>
+      If this is a new series
+     </strong>
+     :
+     <p>
+     </p>
+     <ul>
+      <li>
+       Edit /p/condor/downloads/etc/downloads.conf and add a few lines. Search for the previous series and follow its example.  In particular, as a "[release 7.4] section, using a previous release as a template. Also, for each "[mirror SOMETHING]" section, add a release_7_4 entry, using previous releases as a template.
+       <p>
+       </p>
+      </li>
+      <li>
+       Update the download system's information.
+       <div class="code">
+        <pre class="code">download-versions update --lic=http://parrot.cs.wisc.edu/v7.4.license.html \
+  --inst=http://www.cs.wisc.edu/condor/manual/v7.4/3_2Installation.html 7.4.0
+</pre>
+       </div>
+      </li>
+     </ul>
+     <p>
+     </p>
+    </li>
+    <li>
+     Add a version to the new download "database". In this case, we'll install version 7.0.2, and we'll copy the release information from 7.0.1, except for the release date. Then, we'll edit the 7.0.1 description to reflect that it's no longer the most recent. Finally, we'll blow away 7.0.0 entirely. These steps are required. For all of the below commands, I'm going to assume that you've added
+     <code>
+      /p/condor/downloads/bin
+     </code>
+     to your PATH.
+     <p>
+     </p>
+     <ul>
+      <li>
+       List the current versions:
+       <div class="code">
+        <pre class="code">$ download-versions print
+</pre>
+       </div>
+      </li>
+      <li>
+       Create the 7.0.2 version:
+       <div class="code">
+        <pre class="code">$ download-versions --copy 7.0.1 --date 2008/06/10 add 7.0.2
+</pre>
+       </div>
+      </li>
+      <li>
+       Update the 7.0.1 description:
+       <div class="code">
+        <pre class="code">$ download-versions update --description "Recent Stable Release" 7.0.1
+</pre>
+       </div>
+      </li>
+     </ul>
+     <p>
+     </p>
+    </li>
+    <li>
+     Double check that the binaries you are about to publish are the correct ones.  If the build you are releasing is 666666, then run
+     <div class="code">
+      <pre class="code">ls -l /p/condor/public/binaries/v7.0/7.0.2/ | grep 666666
+</pre>
+     </div>
+     do you see the .deb and .rpm files that you expect?  Go grab a second pair of eyes and have them agree that this is the correct release, because once you go to the next step, the release is visible to the world.
+     <p>
+     </p>
+    </li>
+    <li>
+     Install the binaries into the new download system. This step is required.
+     <div class="code">
+      <pre class="code">$ download-install -v --mode symlink 7.0.2 /p/condor/public/binaries/v7.0/7.0.2
+</pre>
+     </div>
+     <p>
+     </p>
+    </li>
+    <li>
+     Push the new binaries out to the local mirror (parrot). If we didn't specify the "--mirror parrot", it'd push to all mirrors, including INFN, and that takes quite a while. A push to parrot usually takes on the order of 50 minutes or so. The binaries will be automatically pushed to all mirrors every AM, but this allows us to get it to one mirror at least. If you're prompted for a password, enter the password of the
+     <code>
+      condor
+     </code>
+     account on CSL machines.
+     <div class="code">
+      <pre class="code">$ download-push -v --mode real --mirror parrot 7.0.2
+</pre>
+     </div>
+     <p>
+     </p>
+    </li>
+    <li>
+     Generate symlinks to the binaries &amp; push them out to the local mirror. This is also done by cron, twice per hour, so, if you didn't do this step, it'd get done for you. However, it only takes a few minutes, so I included it here.
+     <div class="code">
+      <pre class="code">$ download-gen-symlinks -v --mirror parrot
+</pre>
+     </div>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Verify the downloads work.
+   <ol>
+    <li>
+     Download the binaries for one platform. Unpack them. Verify condor_version runs and returns the expected result.
+    </li>
+    <li>
+     Download the binaries for a different platform. Unpack them. Verify that they look right.
+    </li>
+    <li>
+     Download the source. Unpack it. Verify that it looks right.
+    </li>
+   </ol>
+   <p>
+   </p>
+  </li>
+  <li>
+   Push native packages into the repositories.
+   <ol>
+    <li>
+     This section could use some automation.
+    </li>
+    <li>
+     Copy the .rpm and .deb files into the appropriate directories (in
+     <code>
+      /p/condor/public/html/yum
+     </code>
+     and
+     <code>
+      /p/condor/public/html/debian
+     </code>
+     ).
+    </li>
+    <li>
+     If a new platform (OS or Arch) is added, see this
+     <span class="wiki">
+      <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/HtcondorRepos" title="Htcondor Repos">
+       documentation
+      </a>
+     </span>
+    </li>
+    <li>
+     Check the mapping file to see if release platforms are correct
+     <div class="code">
+      <pre class="code">cat /p/condor/public/html/yum/files/mapping.txt
+</pre>
+     </div>
+    </li>
+    <li>
+     Invoke the script to update the repositories. Verify the list of platforms to release. The script will wait for confirmation; proceed by pressing enter.
+     <div class="code">
+      <pre class="code">For stable:
+  /p/condor/public/html/yum/files/manage_repo.pl -u -b stable
+
+For development releases:
+  /p/condor/public/html/yum/files/manage_repo.pl -u -b development
+</pre>
+     </div>
+    </li>
+   </ol>
+  </li>
+ </ol>
+ <p>
+  This script has a mode to automatically download the binaries from NMI and extract the native packages but it might need updating for new NMI.  I (Scot) always just manually copy the files over from AFS (
+  <code>
+   /p/condor/public/binaries/...
+  </code>
+  ).
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Announce the Release
+ </h3>
+ <p>
+  Now the binaries are available for download.  HTCondor is released.  However, you need to promptly announce the release as well.
+ </p>
+ <p>
+ </p>
+ <ol>
+  <li>
+   Note that following announcements are very generic.  For minor bug fixes or features, that's fine.  But if there is a major bug fix, a security fix, or a major new feature, call it out in the announcement.
+   <p>
+   </p>
+  </li>
+  <li>
+   Update the web HTML regarding this release
+   <ul>
+    <li>
+     <code>
+      cd /nobackup/&lt;yourname&gt;
+     </code>
+    </li>
+    <li>
+     <code>
+      git clone /p/condor/repository/condor-web
+     </code>
+    </li>
+    <li>
+     <code>
+      cd condor-web
+     </code>
+    </li>
+    <li>
+     edit
+     <code>
+      src/htcondor/lib/news.mas
+     </code>
+     (to add an announcement 'Whats New?')
+     <ul>
+      <li>
+       Here is a sample announcement:
+       <div class="code">
+        <pre class="code">    { date =&gt; 'January 22, 2008',
+      title =&gt; 'HTCondor 7.0.0 released!',
+      news =&gt; &lt;&lt;ENDNEWS
+The HTCondor Team is pleased to announce the release of
+HTCondor 7.0.0. This first release in a new stable series
+includes all new features added in the 6.9 development
+series.  See the
+&lt;a href="manual/v7.0/8_3Stable_Release.html#sec:New-7-0-0"&gt;Version
+History&lt;/a&gt; for a complete list of changes.  HTCondor 7.0.0
+binaries and source code are available from
+&lt;a href="downloads/"&gt;our Downloads page.&lt;/a&gt;
+ENDNEWS
+    },
+</pre>
+       </div>
+      </li>
+     </ul>
+    </li>
+    <li>
+     <div class="strike">
+      <strike>
+       edit =src/downloads/index.html= (to fix the release-specific text on the main downloads page)
+      </strike>
+     </div>
+    </li>
+    <li>
+     <div class="strike">
+      <strike>
+       touch =src/index.html= (so the main page updates with the version information from the =downloads/index.html= page)
+      </strike>
+     </div>
+    </li>
+    <li>
+     touch
+     <code>
+      src/htcondor/manual/index.html
+     </code>
+     (so the manual links update with the version information from the
+     <code>
+      downloads/index.html
+     </code>
+     page).  You
+     <strong>
+      must
+     </strong>
+     do this after releasing the manual and updating the manual symlink in AFS if any of the manual filenames referenced on this page have changed.
+    </li>
+    <li>
+     NOTE: if you're doing the first release of a new release series, you'll also need to edit:
+     <ul>
+      <li>
+       <code>
+        src/htcondor/index.html
+       </code>
+       to:
+       <ul>
+        <li>
+         change the "The HTCondor Manual:" list of links (chances are good you'll want to remove something older when you add the new one -- we'll never want that list to be longer than 3 links).
+        </li>
+       </ul>
+      </li>
+      <li>
+       <code>
+        src/htcondor/developers/index.html
+       </code>
+       to add the new series to the "Manuals and Other Documentation" list.
+      </li>
+      <li>
+       edit
+       <code>
+        src/htcondor/manual/index.html
+       </code>
+       (to update which versions of each branch/release series are the current manual)
+      </li>
+     </ul>
+    </li>
+    <li>
+     <code>
+      git commit -a
+     </code>
+     (all of your changes in condor-web)
+    </li>
+    <li>
+     <code>
+      ./generate_html [--live|--test] ./src
+     </code>
+     (to update the HTML on the web with your changes -- note this only works on 32 bit machines (ingwe), the 64 bit lab machines (moria) are missing some perl module or another).
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   Send email to htcondor-world and htcondor-users. Here is a sample announcement:
+   <div class="code">
+    <pre class="code">Hello,
+
+The HTCondor Team is pleased to announce the release of HTCondor 7.0.0. This first
+release in a new stable series includes all new features added in the 6.9
+development series.  See the Version History for a complete list of changes.
+HTCondor 7.0.0 binaries and source code are available from our Downloads page.
+
+Version History:
+  http://www.cs.wisc.edu/htcondor/manual/v7.0/8_3Stable_Release.html#sec:New-7-0-0
+
+Downloads Page:
+  http://www.cs.wisc.edu/htcondor/downloads/
+
+
+Thank you for your interest in HTCondor!
+
+
+- The HTCondor Team
+</pre>
+   </div>
+  </li>
+ </ol>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Post Release
+ </h3>
+ <p>
+  These are just as important at the release process proper!
+ </p>
+ <ol>
+  <li>
+   Turn off the old downloads.  These steps take a long time to run.  Note that we typically want 5 different releases available for download: current stable (7.4.4), recent stable release (7.4.3), previous stable release (7.2.5), current developer release (7.5.4) and recent developer release (7.5.3).  The "recent" releases are so people can revert if something terrible happens.  The previous table release is for users who delay stable upgrades.
+   <ul>
+    <li>
+     Disable the 7.0.0 (X.X.n-2) release. This prevents it from appearing in the download list.
+     <div class="code">
+      <pre class="code">download-versions up 7.0.0 --disable
+</pre>
+     </div>
+    </li>
+    <li>
+     Delete the 7.0.0 release. The first step "download-delete" will delete the files maintained by the download subsystem. The second step "download-versions delete" will delete the version from the version database. So, do the following:
+     <div class="code">
+      <pre class="code">$ download-delete 7.0.0
+</pre>
+     </div>
+    </li>
+   </ul>
+   <p>
+   </p>
+  </li>
+  <li>
+   <span class="wiki">
+    <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/ArchivingHtcondorToDvd" title="Archiving Htcondor To Dvd">
+     Archive
+    </a>
+   </span>
+   release products to DVD. Send an email similar to this to condor-inf (make sure to change the directories to the right release versions):
+   <div class="code">
+    <pre class="code">Please burn the following contents to DVD, label the DVDs, and give
+them to Alan De Smet in office 4247.
+
+Put each of the contents of these directories into their own subdirectory.
+If possible, place both on the same DVD.
+/p/condor/public/binaries/v7.8/7.8.1
+/p/condor/public/html/htcondor/manual/v7.8.1
+
+Thanks,
+YOURNAME
+</pre>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Close out all
+   <a class="external" href="http://condor-wiki.cs.wisc.edu/index.cgi/rptview?rn=14">
+    tickets
+   </a>
+   fixed by this release.
+   <p>
+   </p>
+  </li>
+  <li>
+   Move unresolved tickets to the next release.  ticket-target-mover, documented at
+   <span class="wiki">
+    <a href="/web-preview/preview-2021_01_28_Updates/wiki-archive/pages/ScriptingGitTrac" title="Scripting Git Trac">
+     ScriptingGitTrac
+    </a>
+   </span>
+   may be assistance.
+   <p>
+   </p>
+  </li>
+  <li>
+   Update the
+   <a class="external" href="http://en.wikipedia.org/wiki/HTCondor">
+    HTCondor Wikipedia page
+   </a>
+   to indicate the current release. _Be sure to include "I work for the developers, the Center for High Throughput Computing" in the Edit summary per
+   <a class="external" href="https://blog.wikimedia.org/2014/06/16/change-terms-of-use-requirements-for-disclosure/">
+    Wikipedia's new terms of use.
+   </a>
+   (You can also put something like "I work for the Center for High Throughput Computing, developers of HTCondor" in your Wikipedia user page and fulfill the requirements.)
+   <p>
+   </p>
+  </li>
+  <li>
+   <div class="strike">
+    <strike>
+     Stop building the branch nightly by editing this file:
+{code}/p/condor/public/html/htcondor/branches-to-build{endcode}
+    </strike>
+   </div>
+   <p>
+   </p>
+  </li>
+  <li>
+   Stop building the branch per-commit builds by logging into to submit-2.batlab.org and editing this file:
+   <div class="code">
+    <pre class="code">/home/condorauto/per-commit/branches-to-build</pre>
+   </div>
+  </li>
+ </ol>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-4 d-none d-lg-flex">
+                <img class="my-auto" height="65" alt="Condor High Throughput Computing" src="/web-preview/preview-2021_01_28_Updates/assets/images/HTCondor_red_blk.svg" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/security//">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/license.html">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/uw-support/">Internal Contract</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-2021_01_28_Updates/htcondor-support#external-support-options">External Organizations</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 justify-content-center">
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://ls.wisc.edu/">
+                    
+
+<div style="height:75px;">
+    <picture>
+        <source type="image/webp" srcset="/web-preview/preview-2021_01_28_Updates/assets/images/UW_Madison_Logo.webp">
+        <img class="h-100" src="/web-preview/preview-2021_01_28_Updates/assets/images/UW_Madison_Logo.png" alt="UW-Madison Logo">
+    </picture>
+</div>
+
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="px-3 d-block m-auto" href="https://www.nsf.org">
+                    
+
+<div style="height:100px;">
+    <picture>
+        <source type="image/webp" srcset="/web-preview/preview-2021_01_28_Updates/assets/images/NSF_Logo.webp">
+        <img class="h-100" src="/web-preview/preview-2021_01_28_Updates/assets/images/NSF_Logo.jpg" alt="NSF Logo">
+    </picture>
+</div>
+
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://morgridge.org/">
+                    <img class="" height="40" src="/web-preview/preview-2021_01_28_Updates/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-lg-8 text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, you can find more information on their <a href="http://www.phoenixsoftware.com">website</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
