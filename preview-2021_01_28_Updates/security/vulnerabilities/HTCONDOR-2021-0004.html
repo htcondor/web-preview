@@ -730,117 +730,98 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl py-4">
-    <link href="/web-preview/preview-2021_01_28_Updates/assets/css/vulnerabilities.css" rel="stylesheet">
-
-<h1>
-    <p>HTCONDOR-2021-0004<p>
-    <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45102">CVE-2021-45102</a>
-</h1>
-<hr>
-<table width='100%' summary='whole page'>
-    <tr>
-        <td width='25%'><p class='h'>Summary:</p></td>
-        <td class='sv'><p class='v'>&nbsp;</p></td>
-    </tr>
-    <tr>
-        <td colspan='2' class='sv'><p>When authenticating to an HTCondor daemon using a SciToken,
+    <div class="bg-light mb-4">
+    <hr class="m-0">
+    <div class="container-xxl py-2">
+        <div class="row justify-content-between">
+            <div class="col-auto">
+                <h2 class="m-0">HTCONDOR-2021-0004</h2>
+            </div>
+            <div class="col-auto">
+                <h2 class="m-0"><a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-45102">CVE-2021-45102</a></h2>
+            </div>
+        </div>
+    </div>
+    <hr class="m-0">
+</div>
+<div class="container-xxl pb-4">
+    <b>Summary: </b>
+    <p>
+        When authenticating to an HTCondor daemon using a SciToken,
 a user may be granted authorizations beyond what the token should allow.
-</p></td>
-    </tr>
-    <tr><td colspan='2'>
-        <br><table class='sumtable' width='100%' summary='short values'>
-        <tr>
-            <th width='20%'>Component</th>
-            <th width='20%'>Vulnerable Versions</th>
-            <th width='20%'>Platform</th>
-            <th width='20%'>Availability</th>
-            <th width='20%'>Fix Available</th>
-        </tr>
-        <tr>
-            <td class='sv'>All daemons</td>
-            <td class='sv'>9.0.0 and above</td>
-            <td class='sv'>All</td>
-            <td class='sv'>Not known to be publicly exploited</td>
-            <td class='sv'>9.0.3, 9.1.1</td>
-        </tr>
-        <tr>
-            <th width='20%'>Status</th>
-            <th width='20%'>Access Required</th>
-            <th width='20%'>Host Type Required</th>
-            <th width='20%'>Effort Required</th>
-            <th width='20%'>Impact/Consequences</th>
-        </tr>
-        <tr>
-            <td class='sv'>Verified</td>
-            <td class='sv'>Possession of a certain type of SciToken</td>
-            <td class='sv'>Any</td>
-            <td class='sv'>Low</td>
-            <td class='sv'>Medium</td>
-        </tr>
-        <tr>
-            <th width='20%'>Fixed Date</th>
-            <th width='20%'>Credit</th>
-        </tr>
-        <tr>
-            <td class='sv'>2021-07-27</td>
-            <td class='sv'>Jeny Teheran</td>
-        </tr>
-    </table>
-    </td></tr>
-    <tr>
-        <td width='25%'><p class='h'>Access Required:</p></td>
-        <td class='sv'><p class='v'>Possession of a certain type of SciToken</p></td>
-    </tr>
-    <tr>
-        <td colspan='2' class='sv'><p>
-            An attacker needs to have a SciToken with certain attributes that HTCondor
-            will interpret as having more capabilities than it should.
-        </p></td>
-    </tr>
-    <tr>
-        <td width='25%'><p class='h'>Effort Required:</p></td>
-        <td class='sv'><p class='v'>Low</p></td>
-    </tr>
-    <tr>
-        <td colspan='2' class='sv'><p>
-            These types of tokens required to exploit this vulnerability can be
-            obtained using standard methods and do not require custom tools or
-            modifications to the token.
-        </p></td>
-    </tr>
-    <tr>
-        <td width='25%'><p class='h'>Impact/Consequences:</p></td>
-        <td class='sv'><p class='v'>High</p></td>
-    </tr>
-    <tr>
-        <td colspan='2' class='sv'><p>
-            Exploiting this vulnerability could allow a user to perform actions
-            that they should not be allowed to do, such as submitting a job.
-        </p></td>
-    </tr>
-    <tr>
-        <td width='25%'><p class='h'>Workaround:</p></td>
-    </tr>
-    <tr>
-        <td colspan='2' class='sv'><p>
-            You can work around this issue by not allowing SciTokens as an
-            authentication method.  This means overriding the list of
-            authentication methods (which includes SciTokens by default) by
-            setting SEC_DEFAULT_AUTHENTICATION_METHODS to all the methods you
-            would actually like to use.  To simply remove SciTokens, set it to
-            "FS,TOKEN,KERBEROS,GSI,SSL".
-        </p></td>
-    </tr>
 
-    <tr>
-        <td width='25%'><p class='h'>Full Details:</p></td>
-        <td class='sv'>
-            Embargoed until future notice.
-        </td>
-    </tr>
-</table>
+    </p>
+    <div class="p-1 my-2 mb-4 bg-light table-responsive">
+        <table class="table">
+            <tr>
+                <th width='20%'>Component</th>
+                <th width='20%'>Vulnerable Versions</th>
+                <th width='20%'>Platform</th>
+                <th width='20%'>Availability</th>
+                <th width='20%'>Fix Available</th>
+            </tr>
+            <tr>
+                <td class='sv'>All daemons</td>
+                <td class='sv'>9.0.0 and above</td>
+                <td class='sv'>All</td>
+                <td class='sv'>Not known to be publicly exploited</td>
+                <td class='sv'>9.0.3, 9.1.1</td>
+            </tr>
+            <tr>
+                <th width='20%'>Status</th>
+                <th width='20%'>Access Required</th>
+                <th width='20%'>Host Type Required</th>
+                <th width='20%'>Effort Required</th>
+                <th width='20%'>Impact/Consequences</th>
+            </tr>
+            <tr>
+                <td class='sv'>Verified</td>
+                <td class='sv'>Possession of a certain type of SciToken</td>
+                <td class='sv'>Any</td>
+                <td class='sv'>Low</td>
+                <td class='sv'>Medium</td>
+            </tr>
+            <tr>
+                <th width='20%'>Fixed Date</th>
+                <th width='20%'>Credit</th>
+            </tr>
+            <tr>
+                <td class='sv'>2021-07-27</td>
+                <td class='sv'>Jeny Teheran</td>
+            </tr>
+        </table>
+    </div>
+    <b>Access Required: </b><span>Possession of a certain type of SciToken</span>
+    <p>
+        An attacker needs to have a SciToken with certain attributes that HTCondor
+will interpret as having more capabilities than it should.
 
+    </p>
+    <b>Effort Required: </b><span>Low</span>
+    <p>
+        These types of tokens required to exploit this vulnerability can be
+obtained using standard methods and do not require custom tools or
+modifications to the token.
+
+    </p>
+    <b>Impact/Consequences Required: </b><span>Medium</span>
+    <p>
+        Exploiting this vulnerability could allow a user to perform actions
+that they should not be allowed to do, such as submitting a job.
+
+    </p>
+    <b>Workaround: </b>
+    <p>
+        You can work around this issue by not allowing SciTokens as an
+authentication method.  This means overriding the list of
+authentication methods (which includes SciTokens by default) by
+setting SEC_DEFAULT_AUTHENTICATION_METHODS to all the methods you
+would actually like to use.  To simply remove SciTokens, set it to
+"FS,TOKEN,KERBEROS,GSI,SSL".
+
+    </p>
+    <b>Full Details: </b>
+    <p>Embargoed until future notice.</p>
 </div>
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
