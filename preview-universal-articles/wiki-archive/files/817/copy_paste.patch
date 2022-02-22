@@ -1,0 +1,12 @@
+diff -r -u condor-8.0.5.orig/src/condor_utils/user_job_policy.cpp condor-8.0.5/src/condor_utils/user_job_policy.cpp
+--- condor-8.0.5.orig/src/condor_utils/user_job_policy.cpp	2013-12-02 20:25:26.000000000 +0100
++++ condor-8.0.5/src/condor_utils/user_job_policy.cpp	2014-01-02 09:23:55.000000000 +0100
+@@ -314,7 +314,7 @@
+ 		enabled. */
+ 	ExprTree *ph_expr = suspect->LookupExpr(ATTR_PERIODIC_HOLD_CHECK);
+ 	ExprTree *pr_expr = suspect->LookupExpr(ATTR_PERIODIC_REMOVE_CHECK);
+-	ExprTree *pl_expr = suspect->LookupExpr(ATTR_PERIODIC_REMOVE_CHECK);
++	ExprTree *pl_expr = suspect->LookupExpr(ATTR_PERIODIC_RELEASE_CHECK);
+ 	ExprTree *oeh_expr = suspect->LookupExpr(ATTR_ON_EXIT_HOLD_CHECK);
+ 	ExprTree *oer_expr = suspect->LookupExpr(ATTR_ON_EXIT_REMOVE_CHECK);
+ 
