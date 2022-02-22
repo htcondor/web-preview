@@ -1,0 +1,128 @@
+diff --git a/src/condor_c++_util/condor_attributes.cpp b/src/condor_c++_util/condor_attributes.cpp
+index 8e75b45..86a4cfb 100644
+--- a/src/condor_c++_util/condor_attributes.cpp
++++ b/src/condor_c++_util/condor_attributes.cpp
+@@ -250,6 +250,7 @@ const char * const ATTR_HAS_REMOTE_SYSCALLS      = "HasRemoteSyscalls";
+ const char * const ATTR_HAS_TDP                  = "HasTDP";
+ const char * const ATTR_HAS_SOAP_API            = "HasSOAPInterface";
+ const char * const ATTR_HAS_VM                   = "HasVM";
++const char * const ATTR_HAS_VM_DEFAULT_KERNEL    = "HasVMDefaultKernel";
+ const char * const ATTR_HAS_WIN_RUN_AS_OWNER     = "HasWindowsRunAsOwner";
+ const char * const ATTR_HELD_JOBS				 = "HeldJobs";
+ const char * const ATTR_HIBERNATION_LEVEL        = "HibernationLevel";
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index 4de45c0..2328b95 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -191,6 +191,7 @@ extern const char * const  ATTR_HAS_TDP;
+ extern const char * const  ATTR_HAS_SOAP_API;
+ extern const char * const  ATTR_HAS_WIN_RUN_AS_OWNER;
+ extern const char * const  ATTR_HAS_VM;
++extern const char * const  ATTR_HAS_VM_DEFAULT_KERNEL;
+ extern const char * const  ATTR_HELD_JOBS;
+ extern const char * const  ATTR_HIBERNATION_LEVEL;
+ extern const char * const  ATTR_HIBERNATION_STATE;
+diff --git a/src/condor_startd.V6/vmuniverse_mgr.cpp b/src/condor_startd.V6/vmuniverse_mgr.cpp
+index 529a0e6..6ecc74f 100644
+--- a/src/condor_startd.V6/vmuniverse_mgr.cpp
++++ b/src/condor_startd.V6/vmuniverse_mgr.cpp
+@@ -298,6 +298,15 @@ VMUniverseMgr::publish( ClassAd* ad, amask_t mask )
+ 
+ 	ad->Assign(ATTR_HAS_VM, true);
+ 
++	char *has_def_kern = param("XEN_DEFAULT_KERNEL");
++	if ( has_def_kern ) {
++		ad->Assign(ATTR_HAS_VM_DEFAULT_KERNEL, true);
++	}
++	else {
++		ad->Assign(ATTR_HAS_VM_DEFAULT_KERNEL, false);
++	}
++	free(has_def_kern);
++
+ 	// publish the number of still executable Virtual machines
+ 	if( m_vm_max_num > 0 ) {
+ 		int avail_vm_num = m_vm_max_num - numOfRunningVM();
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 9968d65..e9910cc 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -164,6 +164,7 @@ bool VMCheckpoint = false;
+ bool VMNetworking = false;
+ MyString VMNetworkType;
+ bool VMHardwareVT = false;
++bool VMNeedsDefaultKernel = false;
+ bool vm_need_fsdomain = false;
+ bool xen_has_file_to_be_transferred = false;
+ 
+@@ -7392,6 +7393,13 @@ void SetVMRequirements()
+ 		}
+ 	}
+ 
++	if( VMNeedsDefaultKernel ) {
++		vmanswer += "&& (";
++		vmanswer += ATTR_HAS_VM_DEFAULT_KERNEL;
++		vmanswer += " == True)";
++
++	}
++
+ 	if( VMNetworking ) {
+ 		bool checks_vmnetworking = false;
+ 		checks_vmnetworking = findClause( vmanswer, ATTR_VM_NETWORKING);
+@@ -7733,6 +7741,7 @@ SetVMParams()
+ 				// in a vmgahp config file on an execute machine
+ 				real_xen_kernel_file = false;
+ 				need_xen_root_device = true;
++				VMNeedsDefaultKernel = true;
+ 			}else if ( stricmp(fixedname.Value(), XEN_KERNEL_INCLUDED) == 0) {
+ 				// kernel image is included in a disk image file
+ 				// so we will use bootloader(pygrub etc.) defined 
+diff --git a/src/condor_vm-gahp/vmgahp_main.cpp b/src/condor_vm-gahp/vmgahp_main.cpp
+index 789c58b..e24a997 100644
+--- a/src/condor_vm-gahp/vmgahp_main.cpp
++++ b/src/condor_vm-gahp/vmgahp_main.cpp
+@@ -380,10 +380,10 @@ int main_init(int argc, char *argv[])
+ 
+ #if defined(LINUX)
+ 	if( (strcasecmp(vmtype.Value(), CONDOR_VM_UNIVERSE_XEN) == 0) || (strcasecmp(vmtype.Value(), CONDOR_VM_UNIVERSE_KVM) == 0)) {
+-		// Xen requires root priviledge 
++		// Xen and KVM require root priviledge 
+ 		if( !canSwitchUid() ) {
+-			vmprintf(D_ALWAYS, "VMGahp server for Xen requires "
+-					"root privilege\n");
++			vmprintf(D_ALWAYS, "VMGahp server for Xen or KVM "
++					"requires root privilege\n");
+ 			DC_Exit(1);
+ 		}
+ 	}
+diff --git a/src/condor_vm-gahp/xen_type.cpp b/src/condor_vm-gahp/xen_type.cpp
+index e807cab..d0af90f 100644
+--- a/src/condor_vm-gahp/xen_type.cpp
++++ b/src/condor_vm-gahp/xen_type.cpp
+@@ -1482,19 +1482,16 @@ XenType::checkXenParams(VMGahpConfig* config)
+ 	}
+ 	config->m_vm_script = fixedvalue;
+ 
+-	// Read XEN_DEFAULT_KERNEL (required parameter)
++	// Read XEN_DEFAULT_KERNEL (optional parameter)
+ 	config_value = param("XEN_DEFAULT_KERNEL");
+-	if( !config_value ) {
+-		vmprintf(D_ALWAYS, "\nERROR: You should define the default "
+-				"kernel for Xen\n");
+-		return false;
+-	}
+-	fixedvalue = delete_quotation_marks(config_value);
+-	free(config_value);
++	if( config_value ) {
++		fixedvalue = delete_quotation_marks(config_value);
++		free(config_value);
+ 
+-	// Can read default xen kernel ?
+-	if( check_vm_read_access_file(fixedvalue.Value(), true) == false ) {
+-		return false;
++		// Can read default xen kernel ?
++		if( check_vm_read_access_file(fixedvalue.Value(), true) == false ) {
++			return false;
++		}
+ 	}
+ 	
+ 	// Read XEN_DEFAULT_INITRD (optional parameter)
