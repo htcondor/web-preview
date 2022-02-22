@@ -1,0 +1,307 @@
+From 775b80b76213baadeafe255e07e54c83de0ceda1 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Sun, 13 May 2012 13:25:19 -0500
+Subject: [PATCH 1/2] Minor cleanups of cgroups.  Look at the max memory used
+ if swap accounting not used.
+
+---
+ src/condor_procd/proc_family.cpp          |   21 +++++++++++++++++----
+ src/condor_procd/proc_family.h            |    1 +
+ src/condor_starter.V6.1/cgroup.linux.cpp  |    7 -------
+ src/condor_starter.V6.1/cgroup_limits.cpp |    6 +++---
+ 4 files changed, 21 insertions(+), 14 deletions(-)
+
+diff --git a/src/condor_procd/proc_family.cpp b/src/condor_procd/proc_family.cpp
+index d93862c..3ab3c9f 100644
+--- a/src/condor_procd/proc_family.cpp
++++ b/src/condor_procd/proc_family.cpp
+@@ -36,6 +36,10 @@
+ 
+ #include <unistd.h>
+ long ProcFamily::clock_tick = sysconf( _SC_CLK_TCK );
++
++// Swap accounting is sometimes turned off.  We use this variable so we
++// warn about that situation only once.
++bool ProcFamily::have_warned_about_memsw = false;
+ #endif
+ 
+ ProcFamily::ProcFamily(ProcFamilyMonitor* monitor,
+@@ -425,10 +429,19 @@ ProcFamily::update_max_image_size_cgroup()
+ 		return;
+ 	}
+ 	if ((err = cgroup_get_value_uint64(memct, "memory.memsw.max_usage_in_bytes", &max_image))) {
+-		dprintf(D_PROCFAMILY,
+-			"Unable to load max memory usage for cgroup %s (ProcFamily %u): %u %s\n",
+-			m_cgroup_string.c_str(), m_root_pid, err, cgroup_strerror(err));
+-		return;
++		// On newer nodes, swap accounting is disabled by default.
++		// In some cases, swap accounting causes a kernel oops at the time of writing.
++		// So, we check memory.max_usage_in_bytes instead.
++		int err2 = cgroup_get_value_uint64(memct, "memory.max_usage_in_bytes", &max_image);
++		if (err2) {
++			dprintf(D_PROCFAMILY,
++				"Unable to load max memory usage for cgroup %s (ProcFamily %u): %u %s\n",
++				m_cgroup_string.c_str(), m_root_pid, err, cgroup_strerror(err));
++			return;
++		} else if (!have_warned_about_memsw) {
++			have_warned_about_memsw = true;
++			dprintf(D_ALWAYS, "Swap acounting is not available; only doing RAM accounting.\n");
++		}
+ 	}
+ 	m_max_image_size = max_image/1024;
+ }
+diff --git a/src/condor_procd/proc_family.h b/src/condor_procd/proc_family.h
+index 28a854c..d831d8e 100644
+--- a/src/condor_procd/proc_family.h
++++ b/src/condor_procd/proc_family.h
+@@ -181,6 +181,7 @@ private:
+ 	std::string m_cgroup_string;
+ 	CgroupManager &m_cm;
+ 	static long clock_tick;
++	static bool have_warned_about_memsw;
+ 
+ 	int count_tasks_cgroup();
+ 	int aggregate_usage_cgroup_blockio(ProcFamilyUsage*);
+diff --git a/src/condor_starter.V6.1/cgroup.linux.cpp b/src/condor_starter.V6.1/cgroup.linux.cpp
+index 97407b3..4fbd00d 100644
+--- a/src/condor_starter.V6.1/cgroup.linux.cpp
++++ b/src/condor_starter.V6.1/cgroup.linux.cpp
+@@ -185,13 +185,6 @@ int CgroupManager::create(const std::string &cgroup_string, Cgroup &cgroup,
+ 			has_cgroup, changed_cgroup)) {
+ 		return -1;
+ 	}
+-        if ((preferred_controllers & CPUACCT_CONTROLLER) &&
+-                initialize_controller(*cgroupp, CPUACCT_CONTROLLER,
+-                        CPUACCT_CONTROLLER_STR,
+-                        required_controllers & CPUACCT_CONTROLLER,
+-                        has_cgroup, changed_cgroup)) {
+-		return -1;
+-        }
+ 	if ((preferred_controllers & BLOCK_CONTROLLER) &&
+ 		initialize_controller(*cgroupp, BLOCK_CONTROLLER,
+ 			BLOCK_CONTROLLER_STR,
+diff --git a/src/condor_starter.V6.1/cgroup_limits.cpp b/src/condor_starter.V6.1/cgroup_limits.cpp
+index 71830a5..93e311c 100644
+--- a/src/condor_starter.V6.1/cgroup_limits.cpp
++++ b/src/condor_starter.V6.1/cgroup_limits.cpp
+@@ -20,7 +20,7 @@ CgroupLimits::CgroupLimits(std::string &cgroup) : m_cgroup_string(cgroup)
+ int CgroupLimits::set_memory_limit_bytes(uint64_t mem_bytes, bool soft)
+ {
+ 	if (!m_cgroup.isValid() || !CgroupManager::getInstance().isMounted(CgroupManager::MEMORY_CONTROLLER)) {
+-		dprintf(D_ALWAYS, "Unable to set memory limit because cgroup is invalid.");
++		dprintf(D_ALWAYS, "Unable to set memory limit because cgroup is invalid.\n");
+ 		return 1;
+ 	}
+ 
+@@ -55,7 +55,7 @@ int CgroupLimits::set_memory_limit_bytes(uint64_t mem_bytes, bool soft)
+ int CgroupLimits::set_cpu_shares(uint64_t shares)
+ {
+ 	if (!m_cgroup.isValid() || !CgroupManager::getInstance().isMounted(CgroupManager::CPU_CONTROLLER)) {
+-		dprintf(D_ALWAYS, "Unable to set CPU shares because cgroup is invalid.");
++		dprintf(D_ALWAYS, "Unable to set CPU shares because cgroup is invalid.\n");
+ 		return 1;
+ 	}
+ 
+@@ -89,7 +89,7 @@ int CgroupLimits::set_cpu_shares(uint64_t shares)
+ int CgroupLimits::set_blockio_weight(uint64_t weight)
+ {
+ 	if (!m_cgroup.isValid() || !CgroupManager::getInstance().isMounted(CgroupManager::BLOCK_CONTROLLER)) {
+-		dprintf(D_ALWAYS, "Unable to set blockio weight because cgroup is invalid.");
++		dprintf(D_ALWAYS, "Unable to set blockio weight because cgroup is invalid.\n");
+ 		return 1;
+ 	}
+ 
+-- 
+1.7.10.4
+
+
+From d5c0f1279ee1ea376cd23774429f577152d9aff9 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Thu, 17 May 2012 18:45:11 -0500
+Subject: [PATCH 2/2] Reset stats for existing cgroups.
+
+---
+ src/condor_procd/proc_family.cpp |   94 ++++++++++++++++++++++++++------------
+ src/condor_procd/proc_family.h   |    6 +++
+ 2 files changed, 71 insertions(+), 29 deletions(-)
+
+diff --git a/src/condor_procd/proc_family.cpp b/src/condor_procd/proc_family.cpp
+index 3ab3c9f..cb81ed1 100644
+--- a/src/condor_procd/proc_family.cpp
++++ b/src/condor_procd/proc_family.cpp
+@@ -58,7 +58,9 @@ ProcFamily::ProcFamily(ProcFamilyMonitor* monitor,
+ 	m_member_list(NULL)
+ #if defined(HAVE_EXT_LIBCGROUP)
+ 	, m_cgroup_string(""),
+-	m_cm(CgroupManager::getInstance())
++	m_cm(CgroupManager::getInstance()),
++	m_initial_user_cpu(0),
++	m_initial_sys_cpu(0)
+ #endif
+ {
+ #if !defined(WIN32)
+@@ -192,6 +194,7 @@ after_migrate:
+ 		cgroup_free(&orig_cgroup);
+ 	}
+ 
++
+ after_restore:
+ 	if (orig_cgroup_string != NULL) {
+ 		free(orig_cgroup_string);
+@@ -235,6 +238,27 @@ ProcFamily::set_cgroup(const std::string &cgroup_string)
+ 		member = member->m_next;
+ 	}
+ 
++	// Record the amount of pre-existing CPU usage here.
++	m_initial_user_cpu = 0;
++	m_initial_sys_cpu = 0;
++	get_cpu_usage_cgroup(m_initial_user_cpu, m_initial_sys_cpu);
++
++	// Reset block IO controller
++	if (m_cm.isMounted(CgroupManager::BLOCK_CONTROLLER)) {
++		struct cgroup *tmp_cgroup = cgroup_new_cgroup(m_cgroup_string.c_str());
++		struct cgroup_controller *blkio_controller = cgroup_add_controller(tmp_cgroup, BLOCK_CONTROLLER_STR);
++		ASSERT (blkio_controller != NULL); // Block IO controller should already exist.
++		cgroup_add_value_uint64(blkio_controller, "blkio.reset_stats", 0);
++		int err;
++		if ((err = cgroup_modify_cgroup(tmp_cgroup))) {
++			// Not allowed to reset stats?
++			dprintf(D_ALWAYS,
++				"Unable to reset cgroup %s block IO statistics. "
++				"Some block IO accounting will be inaccurate (ProcFamily %u): %u %s\n",
++				m_cgroup_string.c_str(), m_root_pid, err, cgroup_strerror(err));
++		}
++	}
++
+ 	return 0;
+ }
+ 
+@@ -499,6 +523,40 @@ ProcFamily::aggregate_usage_cgroup_blockio(ProcFamilyUsage* usage)
+ 	return 0;
+ }
+ 
++int ProcFamily::get_cpu_usage_cgroup(long &user_time, long &sys_time) {
++
++	if (!m_cm.isMounted(CgroupManager::CPUACCT_CONTROLLER)) {
++		return 1;
++	}
++
++	void * handle = NULL;
++	u_int64_t tmp = 0;
++	struct cgroup_stat stats;
++	int err = cgroup_read_stats_begin(CPUACCT_CONTROLLER_STR, m_cgroup_string.c_str(), &handle, &stats);
++	while (err != ECGEOF) {
++		if (err > 0) {
++			dprintf(D_PROCFAMILY,
++				"Unable to read cgroup %s cpuacct stats (ProcFamily %u): %s.\n",
++				m_cgroup_string.c_str(), m_root_pid, cgroup_strerror(err));
++			break;
++		}
++		if (_check_stat_uint64(stats, "user", &tmp)) {
++			user_time = tmp/clock_tick-m_initial_user_cpu;
++		} else if (_check_stat_uint64(stats, "system", &tmp)) {
++			sys_time = tmp/clock_tick-m_initial_sys_cpu;
++		}
++			err = cgroup_read_stats_next(&handle, &stats);
++	}
++	if (handle != NULL) {
++		cgroup_read_stats_end(&handle);
++	}
++	if (err != ECGEOF) {
++		dprintf(D_ALWAYS, "Internal cgroup error when retrieving CPU statistics: %s\n", cgroup_strerror(err));
++		return 1;
++	}
++	return 0;
++}
++
+ int
+ ProcFamily::aggregate_usage_cgroup(ProcFamilyUsage* usage)
+ {
+@@ -509,16 +567,13 @@ ProcFamily::aggregate_usage_cgroup(ProcFamilyUsage* usage)
+ 
+ 	int err;
+ 	struct cgroup_stat stats;
+-	void **handle;
++	void *handle = NULL;
+ 	u_int64_t tmp = 0, image = 0;
+ 	bool found_rss = false;
+ 
+ 	// Update memory
+-	handle = (void **)malloc(sizeof(void*));
+-	ASSERT (handle != NULL);
+-	*handle = NULL;
+ 
+-	err = cgroup_read_stats_begin(MEMORY_CONTROLLER_STR, m_cgroup_string.c_str(), handle, &stats);
++	err = cgroup_read_stats_begin(MEMORY_CONTROLLER_STR, m_cgroup_string.c_str(), &handle, &stats);
+ 	while (err != ECGEOF) {
+ 		if (err > 0) {
+ 			dprintf(D_PROCFAMILY,
+@@ -535,10 +590,10 @@ ProcFamily::aggregate_usage_cgroup(ProcFamilyUsage* usage)
+ 		} else if (_check_stat_uint64(stats, "total_swap", &tmp)) {
+ 			image += tmp;
+ 		}
+-		err = cgroup_read_stats_next(handle, &stats);
++		err = cgroup_read_stats_next(&handle, &stats);
+ 	}
+-	if (*handle != NULL) {
+-		cgroup_read_stats_end(handle);
++	if (handle != NULL) {
++		cgroup_read_stats_end(&handle);
+ 	}
+ 	if (found_rss) {
+ 		usage->total_image_size = image/1024;
+@@ -560,26 +615,7 @@ ProcFamily::aggregate_usage_cgroup(ProcFamilyUsage* usage)
+ 	//update_max_image_size_cgroup();
+ 
+ 	// Update CPU
+-	*handle = NULL;
+-	err = cgroup_read_stats_begin(CPUACCT_CONTROLLER_STR, m_cgroup_string.c_str(), handle, &stats);
+-	while (err != ECGEOF) {
+-		if (err > 0) {
+-			dprintf(D_PROCFAMILY,
+-				"Unable to read cgroup %s cpuacct stats (ProcFamily %u): %s.\n",
+-				m_cgroup_string.c_str(), m_root_pid, cgroup_strerror(err));
+-			break;
+-		}
+-		if (_check_stat_uint64(stats, "user", &tmp)) {
+-			usage->user_cpu_time = tmp/clock_tick;
+-		} else if (_check_stat_uint64(stats, "system", &tmp)) {
+-			usage->sys_cpu_time = tmp/clock_tick;
+-		}
+-		err = cgroup_read_stats_next(handle, &stats);
+-	}
+-	if (*handle != NULL) {
+-		cgroup_read_stats_end(handle);
+-	}
+-	free(handle);
++	get_cpu_usage_cgroup(usage->user_cpu_time, usage->sys_cpu_time);
+ 
+ 	aggregate_usage_cgroup_blockio(usage);
+ 
+diff --git a/src/condor_procd/proc_family.h b/src/condor_procd/proc_family.h
+index d831d8e..194ba23 100644
+--- a/src/condor_procd/proc_family.h
++++ b/src/condor_procd/proc_family.h
+@@ -182,6 +182,11 @@ private:
+ 	CgroupManager &m_cm;
+ 	static long clock_tick;
+ 	static bool have_warned_about_memsw;
++	// Sometimes Condor doesn't successfully clear out the cgroup from the
++	// previous run.  Hence, we subtract off any CPU usage found at the
++	// start of the job.
++	long m_initial_user_cpu;
++	long m_initial_sys_cpu;
+ 
+ 	int count_tasks_cgroup();
+ 	int aggregate_usage_cgroup_blockio(ProcFamilyUsage*);
+@@ -190,6 +195,7 @@ private:
+ 	int spree_cgroup(int);
+ 	int migrate_to_cgroup(pid_t);
+ 	void update_max_image_size_cgroup();
++	int get_cpu_usage_cgroup(long &user_cpu, long &sys_cpu);
+ #endif
+ };
+ 
+-- 
+1.7.10.4
+
