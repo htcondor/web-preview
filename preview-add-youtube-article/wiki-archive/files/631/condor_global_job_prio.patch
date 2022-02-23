@@ -1,0 +1,245 @@
+From af569ebf48393ef9c2bba52400db7b47da09167c Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Tue, 4 Sep 2012 17:42:11 -0500
+Subject: [PATCH 1/3] Change JOB_PRIO to a global maximum.
+
+---
+ src/condor_includes/condor_attributes.h |    1 +
+ src/condor_negotiator.V6/matchmaker.cpp |   26 ++++++++++++++++++++++++--
+ src/condor_negotiator.V6/matchmaker.h   |    5 +++--
+ src/condor_schedd.V6/schedd.cpp         |    9 +++++++++
+ src/condor_schedd.V6/scheduler.h        |    3 ++-
+ 5 files changed, 39 insertions(+), 5 deletions(-)
+
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index 3dc1b87..ffbb938 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -320,6 +320,7 @@
+ #define ATTR_POST_JOB_PRIO1  "PostJobPrio1"
+ #define ATTR_POST_JOB_PRIO2  "PostJobPrio2"
+ #define ATTR_JOB_PRIO  "JobPrio"
++#define ATTR_MAX_JOB_PRIO "MaxJobPrio"
+ #define ATTR_JOB_COMMITTED_TIME  "CommittedTime"
+ #define ATTR_JOB_LANGUAGE  "JobLanguage"
+ #define ATTR_JOB_LAST_START_DATE  "JobLastStartDate"
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index 34bda6a..9dc7d7e 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -2382,6 +2382,22 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 		pieLeftOrig = pieLeft;
+ 		scheddAdsCountOrig = scheddAds.MyLength();
+ 
++		// Determine the switchover job prio.
++		scheddAds.Open();
++		int max_job_prio = INT_MIN;
++		while( (schedd = scheddAds.Next()) )
++		{
++			int cur_max_job_prio;
++			if (!schedd->LookupInteger( ATTR_MAX_JOB_PRIO, cur_max_job_prio ) ) {
++				continue;
++			}
++			if (max_job_prio < cur_max_job_prio) {
++				max_job_prio = cur_max_job_prio;
++			}
++		}
++		scheddAds.Close();
++
++
+ 		// ----- Negotiate with the schedds in the sorted list
+ 		dprintf( D_ALWAYS, "Phase 4.%d:  Negotiating with schedds ...\n",
+ 			spin_pie );
+@@ -2541,7 +2557,7 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 					negotiation_cycle_stats[0]->active_schedds.insert(scheddAddr.Value());
+ 					result=negotiate(groupName, scheddName.Value(), schedd, submitterPrio,
+                                   submitterLimit, submitterLimitUnclaimed,
+-								  startdAds, claimIds, 
++								  startdAds, claimIds, max_job_prio,
+ 								  ignore_submitter_limit,
+                                   startTime, numMatched, pieLeft);
+ 					updateNegCycleEndTime(startTime, schedd);
+@@ -3031,7 +3047,7 @@ Matchmaker::MakeClaimIdHash(ClassAdList &startdPvtAdList, ClaimIdHash &claimIds)
+ int Matchmaker::
+ negotiate(char const* groupName, char const *scheddName, const ClassAd *scheddAd, double priority,
+ 		   double submitterLimit, double submitterLimitUnclaimed,
+-		   ClassAdListDoesNotDeleteAds &startdAds, ClaimIdHash &claimIds, 
++		   ClassAdListDoesNotDeleteAds &startdAds, ClaimIdHash &claimIds, int max_job_prio,
+ 		   bool ignore_schedd_limit, time_t startTime, 
+ 		   int& numMatched, double &pieLeft)
+ {
+@@ -3282,6 +3298,12 @@ negotiate(char const* groupName, char const *scheddName, const ClassAd *scheddAd
+ 		request.AddTargetRefs( TargetMachineAttrs );
+ #endif
+ 
++		// Check the job prio versus the maximum
++		int job_prio;
++		if (request.LookupInteger(ATTR_MAX_JOB_PRIO, job_prio) && (job_prio < max_job_prio)) {
++			break;
++		}
++
+         // information regarding the negotiating group context:
+         string negGroupName = (groupName != NULL) ? groupName : hgq_root_group->name.c_str();
+         request.Assign(ATTR_SUBMITTER_NEGOTIATING_GROUP, negGroupName);
+diff --git a/src/condor_negotiator.V6/matchmaker.h b/src/condor_negotiator.V6/matchmaker.h
+index acdf541..22b1b76 100644
+--- a/src/condor_negotiator.V6/matchmaker.h
++++ b/src/condor_negotiator.V6/matchmaker.h
+@@ -163,7 +163,7 @@ class Matchmaker : public Service
+ 			@param submitterLimit Give away this many matches max
+ 			@param startdAds
+ 			@param claimIds
+-			@param scheddVersion
++			@param max_job_prio Do not consider jobs below this priority.
+ 			@param ignore_schedd_limit After hit submitterLimit, keep 
+ 					negotiating but only consider startd rank.
+ 			@param numMatched on return this is set to number of machines
+@@ -176,7 +176,8 @@ class Matchmaker : public Service
+ 		int negotiate(char const* groupName, char const *scheddName, const ClassAd *scheddAd, 
+ 		   double priority,
+            double submitterLimit, double submitterLimitUnclaimed,
+-		   ClassAdListDoesNotDeleteAds &startdAds, ClaimIdHash &claimIds, 
++		   ClassAdListDoesNotDeleteAds &startdAds, ClaimIdHash &claimIds,
++		   int max_job_prio, 
+ 		   bool ignore_schedd_limit, time_t startTime, 
+            int& numMatched, double &pieLeft);
+ 
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index dc9e2a5..55e195e 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -794,6 +794,7 @@ Scheduler::count_jobs()
+ 		Owners[i].FlockLevel = 0;
+ 		Owners[i].OldFlockLevel = 0;
+ 		Owners[i].NegotiationTimestamp = current_time;
++		Owners[i].MaxJobPrio = INT_MIN;
+ 	}
+ 
+ 	GridJobOwners.clear();
+@@ -1050,6 +1051,9 @@ Scheduler::count_jobs()
+ 	  pAd.Assign(ATTR_NAME, submitter_name.Value());
+ 	  dprintf (D_FULLDEBUG, "Changed attribute: %s = %s@%s\n", ATTR_NAME, Owners[i].Name, UidDomain);
+ 
++	  pAd.Assign(ATTR_MAX_JOB_PRIO, Owners[i].MaxJobPrio);
++	  dprintf (D_FULLDEBUG, "Changed attribute: %s = %d\n", ATTR_MAX_JOB_PRIO, Owners[i].MaxJobPrio);
++
+ 	  dprintf( D_ALWAYS, "Sent ad to central manager for %s@%s\n", 
+ 			   Owners[i].Name, UidDomain );
+ 
+@@ -1649,6 +1653,11 @@ count( ClassAd *job )
+ 		scheduler.JobsRemoved++;
+ 	}
+ 
++	int job_prio;
++	if (job->LookupInteger(ATTR_JOB_PRIO, job_prio) && (job_prio > scheduler.Owners[OwnerNum].MaxJobPrio)) {
++		scheduler.Owners[OwnerNum].MaxJobPrio = job_prio;
++	}
++
+ 	#undef OTHER
+ 	return 0;
+ }
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index bb6e6c4..cff3bb8 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -124,8 +124,9 @@ struct OwnerData {
+ 		// successful negotiation at highest current flocking
+ 		// level.
+   time_t NegotiationTimestamp;
++  int MaxJobPrio;
+   OwnerData() { Name=NULL; Domain=NULL;
+-  NegotiationTimestamp=JobsRunning=JobsIdle=JobsHeld=JobsFlocked=FlockLevel=OldFlockLevel=0; }
++  NegotiationTimestamp=JobsRunning=JobsIdle=JobsHeld=JobsFlocked=FlockLevel=OldFlockLevel=0; MaxJobPrio=INT_MIN;}
+ };
+ 
+ class match_rec: public ClaimIdParser
+-- 
+1.7.4.1
+
+
+From 9b296cbbb09c990aeea891260ffffe3ab512663c Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Tue, 4 Sep 2012 17:45:37 -0500
+Subject: [PATCH 2/3] Optimization - do not respin if there's only one schedd.
+
+---
+ src/condor_negotiator.V6/matchmaker.cpp |    7 +++++++
+ 1 files changed, 7 insertions(+), 0 deletions(-)
+
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index 9dc7d7e..289d510 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -2385,6 +2385,7 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 		// Determine the switchover job prio.
+ 		scheddAds.Open();
+ 		int max_job_prio = INT_MIN;
++		unsigned int submitter_count = 0;
+ 		while( (schedd = scheddAds.Next()) )
+ 		{
+ 			int cur_max_job_prio;
+@@ -2394,6 +2395,12 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 			if (max_job_prio < cur_max_job_prio) {
+ 				max_job_prio = cur_max_job_prio;
+ 			}
++			submitter_count++;
++		}
++		// If there's only one submitter, we dont need to re-spin at priority
++		// changes, as the submitter handles this for us.
++		if (submitter_count < 2) {
++			max_job_prio = INT_MIN;
+ 		}
+ 		scheddAds.Close();
+ 
+-- 
+1.7.4.1
+
+
+From 1b6604f82aa5447d7e40783133d45e0ed617d619 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Tue, 4 Sep 2012 18:21:54 -0500
+Subject: [PATCH 3/3] Update the max job prio in the submitter ad so we don't kill the negotiation cycle completely.
+
+---
+ src/condor_negotiator.V6/matchmaker.cpp |    4 +++-
+ src/condor_negotiator.V6/matchmaker.h   |    2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index 289d510..5a766f6 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -3052,7 +3052,7 @@ Matchmaker::MakeClaimIdHash(ClassAdList &startdPvtAdList, ClaimIdHash &claimIds)
+ }
+ 
+ int Matchmaker::
+-negotiate(char const* groupName, char const *scheddName, const ClassAd *scheddAd, double priority,
++negotiate(char const* groupName, char const *scheddName, ClassAd *scheddAd, double priority,
+ 		   double submitterLimit, double submitterLimitUnclaimed,
+ 		   ClassAdListDoesNotDeleteAds &startdAds, ClaimIdHash &claimIds, int max_job_prio,
+ 		   bool ignore_schedd_limit, time_t startTime, 
+@@ -3308,6 +3308,8 @@ negotiate(char const* groupName, char const *scheddName, const ClassAd *scheddAd
+ 		// Check the job prio versus the maximum
+ 		int job_prio;
+ 		if (request.LookupInteger(ATTR_MAX_JOB_PRIO, job_prio) && (job_prio < max_job_prio)) {
++			// This is the current max job prio for this submitter.
++			scheddAd->Assign(ATTR_MAX_JOB_PRIO, job_prio);
+ 			break;
+ 		}
+ 
+diff --git a/src/condor_negotiator.V6/matchmaker.h b/src/condor_negotiator.V6/matchmaker.h
+index 22b1b76..fc595e1 100644
+--- a/src/condor_negotiator.V6/matchmaker.h
++++ b/src/condor_negotiator.V6/matchmaker.h
+@@ -173,7 +173,7 @@ class Matchmaker : public Service
+ 					MM_DONE if schedd got all the resources it wanted,
+ 					MM_ERROR if problem negotiating w/ this schedd.
+ 		**/
+-		int negotiate(char const* groupName, char const *scheddName, const ClassAd *scheddAd, 
++		int negotiate(char const* groupName, char const *scheddName, ClassAd *scheddAd, 
+ 		   double priority,
+            double submitterLimit, double submitterLimitUnclaimed,
+ 		   ClassAdListDoesNotDeleteAds &startdAds, ClaimIdHash &claimIds,
+-- 
+1.7.4.1
+
