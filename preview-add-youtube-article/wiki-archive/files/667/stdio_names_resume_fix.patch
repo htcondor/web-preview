@@ -1,0 +1,78 @@
+diff --git a/src/condor_starter.V6.1/jic_shadow.cpp b/src/condor_starter.V6.1/jic_shadow.cpp
+index 533e324..87cd268 100644
+--- a/src/condor_starter.V6.1/jic_shadow.cpp
++++ b/src/condor_starter.V6.1/jic_shadow.cpp
+@@ -1394,11 +1394,13 @@ JICShadow::initWithFileTransfer()
+ 		job_ad->LookupString( ATTR_JOB_OUTPUT, stdout_name );
+ 		job_ad->LookupString( ATTR_JOB_ERROR, stderr_name );
+ 		if ( job_ad->LookupBool( ATTR_STREAM_OUTPUT, stream ) && !stream &&
+-			 !nullFile( stdout_name.c_str() ) ) {
++			 !nullFile( stdout_name.c_str() ) &&
++			 condor_basename(stdout_name.c_str()) != stdout_name.c_str() ) {
+ 			job_ad->Assign( ATTR_JOB_OUTPUT, StdoutRemapName );
+ 		}
+ 		if ( job_ad->LookupBool( ATTR_STREAM_ERROR, stream ) && !stream &&
+-			 !nullFile( stderr_name.c_str() ) ) {
++			 !nullFile( stderr_name.c_str() ) &&
++			 condor_basename(stderr_name.c_str()) != stderr_name.c_str() ) {
+ 			if ( stdout_name == stderr_name ) {
+ 				job_ad->Assign( ATTR_JOB_ERROR, StdoutRemapName );
+ 			} else {
+@@ -2053,6 +2055,57 @@ JICShadow::transferCompleted( FileTransfer *ftrans )
+ 
+ 			set_priv( saved_priv );
+ 		}
++
++			// Compatibility code for 7.7.2 to 7.8.7
++			// If this job has spooled output in _condor_stdout/err,
++			// then make sure we are using that file as our stdout/err
++			// rather than the name specified by the user.
++
++		priv_state saved_priv = set_priv( PRIV_USER );
++
++		bool stream = false;
++		std::string stdout_name;
++		std::string stderr_name;
++		job_ad->LookupString( ATTR_JOB_OUTPUT, stdout_name );
++		job_ad->LookupString( ATTR_JOB_ERROR, stderr_name );
++		job_ad->LookupBool( ATTR_STREAM_OUTPUT, stream );
++
++		if( !stream && !nullFile( stdout_name.c_str() ) && strcmp(stdout_name.c_str(),StdoutRemapName) ) {
++			if( access(StdoutRemapName,F_OK)==0 ) {
++				if( access(stdout_name.c_str(),F_OK)==0 ) {
++					dprintf(D_FULLDEBUG,"Found output file %s and %s in execute directory; using former.\n",
++							stdout_name.c_str(), StdoutRemapName );
++				}
++				else {
++					dprintf(D_FULLDEBUG,"Found %s in execute directory, so using that for output.\n",
++							StdoutRemapName );
++					job_ad->Assign( ATTR_JOB_OUTPUT, StdoutRemapName );
++					free(job_output_name);
++					job_output_name = NULL;
++					initStdFiles();
++				}
++			}
++		}
++		if( !stream && !nullFile( stderr_name.c_str() ) && strcmp(stderr_name.c_str(),StderrRemapName) ) {
++			if( access(StderrRemapName,F_OK)==0 ) {
++				if( access(stderr_name.c_str(),F_OK)==0 ) {
++					dprintf(D_FULLDEBUG,"Found stderr file %s and %s in execute directory; using former.\n",
++							stderr_name.c_str(), StderrRemapName );
++				}
++				else {
++					dprintf(D_FULLDEBUG,"Found %s in execute directory, so using that for stderr.\n",
++							StderrRemapName );
++					job_ad->Assign( ATTR_JOB_ERROR, StderrRemapName );
++					free(job_error_name);
++					job_error_name = NULL;
++					initStdFiles();
++				}
++			}
++		}
++
++		set_priv( saved_priv );
++		
++
+ 	}
+ 
+ 	setX509ProxyExpirationTimer();
