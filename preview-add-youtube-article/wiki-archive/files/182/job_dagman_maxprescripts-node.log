@@ -1,0 +1,396 @@
+000 (164.000.000) 05/18 23:27:35 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE1
+...
+000 (165.000.000) 05/18 23:27:39 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE3
+...
+000 (166.000.000) 05/18 23:27:40 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE0
+...
+000 (167.000.000) 05/18 23:27:43 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE2
+...
+000 (168.000.000) 05/18 23:27:45 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE5
+...
+000 (169.000.000) 05/18 23:27:48 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE4
+...
+000 (170.000.000) 05/18 23:27:50 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE6
+...
+000 (171.000.000) 05/18 23:27:51 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE7
+...
+000 (172.000.000) 05/18 23:27:52 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE8
+...
+000 (173.000.000) 05/18 23:27:53 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE9
+...
+000 (174.000.000) 05/18 23:27:56 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE11
+...
+000 (175.000.000) 05/18 23:27:58 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE10
+...
+000 (176.000.000) 05/18 23:27:58 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE12
+...
+000 (177.000.000) 05/18 23:28:04 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE13
+...
+001 (164.000.000) 05/18 23:28:05 Job executing on host: <192.168.0.104:40785>
+...
+001 (165.000.000) 05/18 23:28:06 Job executing on host: <192.168.0.104:40785>
+...
+005 (164.000.000) 05/18 23:28:06 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (166.000.000) 05/18 23:28:07 Job executing on host: <192.168.0.104:40785>
+...
+005 (165.000.000) 05/18 23:28:07 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (167.000.000) 05/18 23:28:08 Job executing on host: <192.168.0.104:40785>
+...
+001 (177.000.000) 05/18 23:28:08 Job executing on host: <192.168.0.104:40785>
+...
+005 (166.000.000) 05/18 23:28:08 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (168.000.000) 05/18 23:28:08 Job executing on host: <192.168.0.104:40785>
+...
+001 (170.000.000) 05/18 23:28:09 Job executing on host: <192.168.0.104:40785>
+...
+005 (167.000.000) 05/18 23:28:09 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (169.000.000) 05/18 23:28:08 Job executing on host: <192.168.0.104:40785>
+...
+005 (177.000.000) 05/18 23:28:09 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (173.000.000) 05/18 23:28:10 Job executing on host: <192.168.0.104:40785>
+...
+005 (168.000.000) 05/18 23:28:10 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (175.000.000) 05/18 23:28:10 Job executing on host: <192.168.0.104:40785>
+...
+001 (174.000.000) 05/18 23:28:10 Job executing on host: <192.168.0.104:40785>
+...
+005 (170.000.000) 05/18 23:28:10 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+005 (173.000.000) 05/18 23:28:12 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+005 (169.000.000) 05/18 23:28:11 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (176.000.000) 05/18 23:28:11 Job executing on host: <192.168.0.104:40785>
+...
+001 (171.000.000) 05/18 23:28:09 Job executing on host: <192.168.0.104:40785>
+...
+005 (174.000.000) 05/18 23:28:13 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (178.000.000) 05/18 23:28:13 Job executing on host: <192.168.0.104:40785>
+...
+005 (176.000.000) 05/18 23:28:14 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+005 (171.000.000) 05/18 23:28:14 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+005 (178.000.000) 05/18 23:28:15 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (172.000.000) 05/18 23:28:09 Job executing on host: <192.168.0.104:40785>
+...
+000 (178.000.000) 05/18 23:28:11 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE14
+...
+005 (175.000.000) 05/18 23:28:12 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+005 (172.000.000) 05/18 23:28:17 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+016 (166.000.000) 05/18 23:28:31 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE0
+...
+016 (164.000.000) 05/18 23:28:32 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE1
+...
+016 (167.000.000) 05/18 23:28:32 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE2
+...
+016 (165.000.000) 05/18 23:28:33 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE3
+...
+016 (169.000.000) 05/18 23:28:33 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE4
+...
+016 (168.000.000) 05/18 23:28:33 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE5
+...
+016 (170.000.000) 05/18 23:28:33 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE6
+...
+016 (171.000.000) 05/18 23:28:33 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE7
+...
+016 (172.000.000) 05/18 23:28:34 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE8
+...
+016 (173.000.000) 05/18 23:28:36 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE9
+...
+016 (175.000.000) 05/18 23:28:36 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE10
+...
+016 (174.000.000) 05/18 23:28:36 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE11
+...
+016 (176.000.000) 05/18 23:28:36 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE12
+...
+016 (177.000.000) 05/18 23:28:36 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE13
+...
+000 (179.000.000) 05/18 23:28:40 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE15
+...
+000 (180.000.000) 05/18 23:28:41 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE16
+...
+000 (181.000.000) 05/18 23:28:42 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE17
+...
+000 (182.000.000) 05/18 23:28:43 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE18
+...
+000 (183.000.000) 05/18 23:28:44 Job submitted from host: <192.168.0.104:59492>
+    DAG Node: NODE19
+...
+001 (179.000.000) 05/18 23:28:51 Job executing on host: <192.168.0.104:40785>
+...
+001 (180.000.000) 05/18 23:28:52 Job executing on host: <192.168.0.104:40785>
+...
+005 (179.000.000) 05/18 23:28:52 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (181.000.000) 05/18 23:28:52 Job executing on host: <192.168.0.104:40785>
+...
+001 (182.000.000) 05/18 23:28:52 Job executing on host: <192.168.0.104:40785>
+...
+016 (179.000.000) 05/18 23:28:53 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE15
+...
+005 (180.000.000) 05/18 23:28:53 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+001 (183.000.000) 05/18 23:28:53 Job executing on host: <192.168.0.104:40785>
+...
+005 (181.000.000) 05/18 23:28:53 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+016 (180.000.000) 05/18 23:28:55 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE16
+...
+016 (181.000.000) 05/18 23:28:55 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE17
+...
+005 (183.000.000) 05/18 23:28:55 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+005 (182.000.000) 05/18 23:28:56 Job terminated.
+	(1) Normal termination (return value 3)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+016 (183.000.000) 05/18 23:28:56 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE19
+...
+016 (182.000.000) 05/18 23:28:57 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: NODE18
+...
