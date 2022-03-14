@@ -1,0 +1,38 @@
+From 780ba297e16c632cf3712e846a34ee199dc46db5 Mon Sep 17 00:00:00 2001
+From: Lukas Slebodnik <slebodnik@sors.com>
+Date: Fri, 23 Mar 2012 12:32:11 +0100
+Subject: [PATCH] Only attributes from parsed classad expression are appended to projection list.
+
+---
+ src/condor_status.V6/status.cpp |   15 ++++++++++++++-
+ 1 files changed, 14 insertions(+), 1 deletions(-)
+
+diff --git a/src/condor_status.V6/status.cpp b/src/condor_status.V6/status.cpp
+index 74fa0fc..8d6a66e 100644
+--- a/src/condor_status.V6/status.cpp
++++ b/src/condor_status.V6/status.cpp
+@@ -811,7 +811,20 @@ secondPass (int argc, char *argv[])
+ 		}
+ 		if (matchPrefix (argv[i], "-format", 2)) {
+ 			pm.registerFormat (argv[i+1], argv[i+2]);
+-			projList.AppendArg(argv[i+2]);
++
++			StringList attributes;
++			ClassAd ad;
++			if(!ad.GetExprReferences(argv[i+2],attributes,attributes)){
++				fprintf( stderr, "Error:  Parse error of: %s\n", argv[i+2]);
++				exit(1);
++			}
++
++			attributes.rewind();
++			char const *s;
++			while( (s=attributes.next()) ) {
++				projList.AppendArg(s);
++			}
++
+ 			if (diagnose) {
+ 				printf ("Arg %d --- register format [%s] for [%s]\n",
+ 						i, argv[i+1], argv[i+2]);
+-- 
+1.7.4.1
+
