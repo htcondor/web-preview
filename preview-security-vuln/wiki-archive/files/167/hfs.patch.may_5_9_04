@@ -1,0 +1,1303 @@
+diff -rNup condor-7.4.1.orig/src/condor_negotiator.V6/matchmaker.cpp condor-7.4.1/src/condor_negotiator.V6/matchmaker.cpp
+--- condor-7.4.1.orig/src/condor_negotiator.V6/matchmaker.cpp	2010-03-25 13:49:30.000000000 -0400
++++ condor-7.4.1/src/condor_negotiator.V6/matchmaker.cpp	2010-05-03 11:25:19.000000000 -0400
+@@ -834,9 +834,9 @@ negotiationTime ()
+ 	ClaimIdHash claimIds(MyStringHash);
+ 	ClassAdList scheddAds;
+ 	ClassAdList allAds;
+-	int unclaimedquota=0; 
+-	int staticquota=0;
+-	/**
++
++
++/**
+ 		Check if we just finished a cycle less than NEGOTIATOR_CYCLE_DELAY 
+ 		seconds ago.  If we did, reset our timer so at least 
+ 		NEGOTIATOR_CYCLE_DELAY seconds will elapse between cycles.  We do 
+@@ -845,16 +845,15 @@ negotiationTime ()
+ 		the same resource twice).  Note: we must do this check _before_ we 
+ 		reset GotRescheduledCmd to false to prevent postponing a new 
+ 		cycle indefinitely.
+-	**/
++**/
+ 	int elapsed = time(NULL) - completedLastCycleTime;
+ 	int cycle_delay = param_integer("NEGOTIATOR_CYCLE_DELAY",20,0);
+ 	if ( elapsed < cycle_delay ) {
+-		daemonCore->Reset_Timer(negotiation_timerID,
+-							cycle_delay - elapsed,
++		daemonCore->Reset_Timer(negotiation_timerID,cycle_delay - elapsed,
+ 							NegotiatorInterval);
+ 		dprintf(D_FULLDEBUG,
+ 			"New cycle requested but just finished one -- delaying %u secs\n",
+-			cycle_delay - elapsed);
++				cycle_delay - elapsed);
+ 		return FALSE;
+ 	}
+ 
+@@ -864,18 +863,17 @@ negotiationTime ()
+ 
+ 	// We need to nuke our MatchList from the previous negotiation cycle,
+ 	// since a different set of machines may now be available.
++
+ 	if (MatchList) delete MatchList;
+ 	MatchList = NULL;
+ 
+ 	// ----- Get all required ads from the collector
+ 	dprintf( D_ALWAYS, "Phase 1:  Obtaining ads from collector ...\n" );
+-	if( !obtainAdsFromCollector( allAds, startdAds, scheddAds,
+-		claimIds ) )
+-	{
++	if( !obtainAdsFromCollector( allAds, startdAds, scheddAds, claimIds ) ) {
+ 		dprintf( D_ALWAYS, "Aborting negotiation cycle\n" );
+ 		// should send email here
+ 		return FALSE;
+-	}
++		}
+ 
+ 	// Save this for future use.
+ 	// This _must_ come before trimming the startd ads.
+@@ -883,16 +881,17 @@ negotiationTime ()
+ 	int numDynGroupSlots = untrimmed_num_startds;
+ 	double minSlotWeight = 0;
+ 	double untrimmedSlotWeightTotal = sumSlotWeights(startdAds,&minSlotWeight);
+-	float unclaimed = 0;
+-	
++
++	dprintf( D_ALWAYS, "Phase 1: numDynGroupSlots %d  untrimmedSlotWeightTotal %f \n" ,numDynGroupSlots,untrimmedSlotWeightTotal  );
+ 	// Register a lookup function that passes through the list of all ads.
+ 	// ClassAdLookupRegister( lookup_global, &allAds );
+ 
+ 	// Compute the significant attributes to pass to the schedd, so
+ 	// the schedd can do autoclustering to speed up the negotiation cycles.
++
+ 	if ( job_attr_references ) {
+ 		free(job_attr_references);
+-	}
++		}
+ 	job_attr_references = compute_significant_attrs(startdAds);
+ 
+ 	// ----- Recalculate priorities for schedds
+@@ -905,381 +904,550 @@ negotiationTime ()
+ 	// any of the claimed machines!).
+ 	int num_trimmed = trimStartdAds(startdAds);
+ 	if ( num_trimmed > 0 ) {
+-		dprintf(D_FULLDEBUG,
+-			"Trimmed out %d startd ads not Unclaimed\n",num_trimmed);
++		dprintf(D_FULLDEBUG, "Trimmed out %d startd ads not Unclaimed\n",num_trimmed);
+ 	}
+ 
+-		// We insert NegotiatorMatchExprXXX attributes into the
+-		// "matched ad".  In the negotiator, this means the machine ad.
+-		// The schedd will later propogate these attributes into the
+-		// matched job ad that is sent to the startd.  So in different
+-		// matching contexts, the negotiator match exprs are in different
+-		// ads, but they should always be in at least one.
++	// We insert NegotiatorMatchExprXXX attributes into the
++	// "matched ad".  In the negotiator, this means the machine ad.
++	//The schedd will later propogate these attributes into the
++	// matched job ad that is sent to the startd.  So in different
++	// matching contexts, the negotiator match exprs are in different
++	// ads, but they should always be in at least one.
+ 	insertNegotiatorMatchExprs( startdAds );
+ 
+ 	if ( !groupQuotasHash ) {
+ 		groupQuotasHash = new groupQuotasHashType(100,HashFunc);
+ 		ASSERT(groupQuotasHash);
+-	}
+-
++		}
++	
++	// need to construct group structure
++	// groups is list of group names
++       // in form group.subgroup group.subgroup.subgroup etc
++	
+ 	char *groups = param("GROUP_NAMES");
+ 	if ( groups ) {
+ 
+-		// HANDLE GROUPS (as desired by CDF)
++	// HANDLE GROUPS (as desired by CDF)
++
++	// Populate the groupArray, which contains an entry for
++	// each group.
++	SimpleGroupEntry* groupArray;
++	int i;
++	StringList groupList;		
++	strlwr(groups); // the accountant will want lower case!!!
++	groupList.initializeFromString(groups);
++	free(groups);		
++	groupArray = new SimpleGroupEntry[ groupList.number()+2 ];
++	ASSERT(groupArray);
+ 
+-		// Populate the groupArray, which contains an entry for
+-		// each group.
+-		SimpleGroupEntry* groupArray;
+-		int i;
+-		StringList groupList;		
+-		strlwr(groups); // the accountant will want lower case!!!
+-		groupList.initializeFromString(groups);
+-		free(groups);		
+-		groupArray = new SimpleGroupEntry[ groupList.number()+1 ];
+-		ASSERT(groupArray);
+-		int* numsubmits = new int[groupList.number()+1];
+-		ASSERT(numsubmits);
+         // Restrict number of slots available for dynamic quotas.
+         if ( numDynGroupSlots && DynQuotaMachConstraint ) {
+-            int matchedSlots = startdAds.Count( DynQuotaMachConstraint );
+-            if ( matchedSlots ) {
+-                dprintf(D_FULLDEBUG,
+-                    "GROUP_DYNAMIC_MACH_CONSTRAINT constraint reduces machine "
+-                    "count from %d to %d\n", numDynGroupSlots, matchedSlots);
+-                numDynGroupSlots = matchedSlots;
+-            } else {
+-                dprintf(D_ALWAYS, "warning: 0 out of %d machines match "
+-                        "GROUP_DYNAMIC_MACH_CONSTRAINT for dynamic quotas\n",
+-                        numDynGroupSlots);
+-                numDynGroupSlots = 0;
+-            }
++		int matchedSlots = startdAds.Count( DynQuotaMachConstraint );
++            	if ( matchedSlots ) {
++                	dprintf(D_ALWAYS,"GROUP_DYNAMIC_MACH_CONSTRAINT constraint reduces machine "
++                		"count from %d to %d\n", numDynGroupSlots, matchedSlots);
++                	numDynGroupSlots = matchedSlots;
++            	} else {
++                	dprintf(D_ALWAYS, "warning: 0 out of %d machines match "
++                        	"GROUP_DYNAMIC_MACH_CONSTRAINT for dynamic quotas\n",
++                        	numDynGroupSlots);
++                	numDynGroupSlots = 0;
++            	}
+         }
+ 
+-		MyString tmpstr;
+-		i = 0;
+-		groupQuotasHash->clear();		
+-		int unusedslots=0;
+-		double quota_fraction;
+-		float totalgroupquota=0;
+-		groupList.rewind();
+-		while ((groups = groupList.next ()))
+-		{
+-			tmpstr.sprintf("GROUP_QUOTA_%s",groups);
+-			float quota = param_double(tmpstr.Value(), -1.0 );
+-			if ( quota >= 0.0 ) {
+-                // Static groups quotas take priority over any dynamic quota
+-                dprintf(D_FULLDEBUG, "group %s static quota = %.3f\n",
+-                        groups, quota);
+-		staticquota=1;	
+-            } else {
+-                // Next look for a floating point dynamic quota.
+-                tmpstr.sprintf("GROUP_QUOTA_DYNAMIC_%s", groups);
+-                double quota_fraction =
+-                    param_double(
+-                        tmpstr.Value(),     // name
+-                        0.0,                // default value
+-                        0.0,                // min value
+-                        1.0                 // max value
+-                    );
+-                if (quota_fraction != 0.0) {
+-                    // use specified dynamic quota
+-                    quota = rint(quota_fraction * numDynGroupSlots);
+-                    dprintf(D_FULLDEBUG,
+-                        "group %s dynamic quota for %d slots = %.3f\n",
+-                            groups, numDynGroupSlots, quota);
+-                } else {
+-                    // neither a static nor dynamic quota was defined
+-                    dprintf(D_ALWAYS,
+-                        "ERROR - no quota specified for group %s, ignoring\n",
+-                        groups);
+-                    continue;
+-                }
+-            }
+-            if ( quota <= 0 ) {
+-                // Quota for group may have been set to zero by admin.
+-                dprintf(D_ALWAYS,
+-                    "zero quota for group %s, ignoring\n",
+-                    groups);
+-                continue;
+-            }
+-
+-			// store this groups quota into our groupQuotas hash so we 
+-			// can easily retrieve the quota for this group elsewhere in 
+-			// this class.
+-			MyString groupQuotaKey(groups);
+-			groupQuotasHash->insert(groupQuotaKey,quota);
+-
+-			// fill in the info into the groupArray, so we can sort
+-			// the groups into the order we want to negotiate them.
+-			float usage = accountant.GetWeightedResourcesUsed(groups);
+-			groupArray[i].groupName = groups;  // don't free this! (in groupList)
+-			groupArray[i].maxAllowed = quota;
+-			groupArray[i].usage = usage;
+-				// the 'prio' field is used to sort the group array, i.e. to
+-				// decide which groups get to negotiate first.  
+-				// we sort groups based upon the percentage of their quota
+-				// currently being used, so that groups using the least 
+-				// percentage amount of their quota get to negotiate first.
+-			groupArray[i].prio = ( 100 * usage ) / quota;
+-			dprintf(D_FULLDEBUG,
+-				"Group Table : group %s quota %.3f usage %.3f prio %2.2f\n",
+-					groups,quota,usage,groupArray[i].prio);
+-		if (!staticquota){
++	MyString tmpstr;
++	i = 1; //first entry is top level parent
++	groupQuotasHash->clear();		
++	groupList.rewind();
++	
++	double quota_fraction;	
++	
++	while ((groups = groupList.next ())) {
++		tmpstr.sprintf("GROUP_QUOTA_%s",groups);
++		quota_fraction = param_double(tmpstr.Value(), -1.0 );
++		if ( quota_fraction >= 0.0 ) {
++                	// Static groups quotas take priority over any dynamic quota
++                	dprintf(D_FULLDEBUG, "group %s static quota = %.3f\n", groups, quota_fraction);
++			groupArray[i].staticquota=1;
++		} else {
++                	// Next look for a floating point dynamic quota.
++                	tmpstr.sprintf("GROUP_QUOTA_DYNAMIC_%s", groups);
++                	quota_fraction =
++                    		param_double(
++                        		tmpstr.Value(),     // name
++                        		0.0,                // default value
++                        		0.0,                // min value
++                        		1.0                 // max value
++                    			);
++                	if (quota_fraction != 0.0) {
++                    		// use specified dynamic quota
++                    		//quota = rint(quota_fraction * numDynGroupSlots);
++                    		dprintf(D_FULLDEBUG, "group %s dynamic quota for %d slots = %.3f\n",
++                            		groups, numDynGroupSlots, quota_fraction);
++                	} else {
++                    		// neither a static nor dynamic quota was defined
++                    		dprintf(D_ALWAYS, "ERROR - no quota specified for group %s, ignoring\n",
++                        		groups);
++                    		continue;
++                 	}
++			groupArray[i].staticquota=0;
++            	}
++            	if ( quota_fraction <= 0 ) {
++                	// Quota for group may have been set to zero by admin.
++                	dprintf(D_ALWAYS,"zero quota for group %s, ignoring\n", groups);
++                	continue;
++            	}
++
++		// store this groups quota into our groupQuotas hash so we 
++		// can easily retrieve the quota for this group elsewhere in 
++		// this class.
++		
++		MyString groupQuotaKey(groups);
++		groupQuotasHash->insert(groupQuotaKey,quota_fraction);
++
++		// fill in the info into the groupArray, so we can sort
++		// the groups into the order we want to negotiate them.
++		
++		float usage = accountant.GetWeightedResourcesUsed(groups);
++
++		strncpy(groupArray[i].groupName,groups,256);
++		
++              	groupArray[i].groupName[255]= '\0';
++		groupArray[i].maxAllowed = 0;  
++		groupArray[i].quota = quota_fraction;  
++		groupArray[i].nodequota=0;
++		groupArray[i].nodemaxAllowed=0;
++		groupArray[i].usage = usage;
++		groupArray[i].parent = -1;
++		groupArray[i].child = -1; 
++		groupArray[i].left =-1;
++		groupArray[i].right = -1;
++		groupArray[i].unused = 0;
++		groupArray[i].numsubmits=0;
++		groupArray[i].autoregroup = false;
++		
++		// the 'prio' field is used to sort the group array, i.e. to
++		// decide which groups get to negotiate first.  
++		// we sort groups based upon the percentage of their quota
++		// currently being used, so that groups using the least 
++		// percentage amount of their quota get to negotiate first.
++		
++		groupArray[i].prio = ( 100 * usage ) / quota_fraction;
++		dprintf(D_ALWAYS,"Group Table : group %s quota %.3f usage %.3f prio %2.2f\n",
++					groups,quota_fraction,usage,groupArray[i].prio);
++
+ 			//now count total number of group submitters  and fix up quota
+                 	int numrunning=0;
+ 			int numidle=0;
+ 			ClassAd *ad = NULL;
+ 			char scheddName[80];
+-			numsubmits[i]=0;
++			
+ 			scheddAds.Open();
+ 			while( (ad=scheddAds.Next()) ) {
+ 				if (!ad->LookupString(ATTR_NAME, scheddName, sizeof(scheddName))) {
+ 					continue;
+ 				}
+ 				scheddName[79] = '\0'; // make certain we have a terminating NULL
+-				char *sep = strchr(scheddName,'.');	// is there a group seperator?
++				char *sep = strrchr(scheddName,'@');	// is there a username seperator?
++				//look for last group seperator
++				//this should separate group from user
+ 				if ( !sep ) {
+ 					continue;
+ 				};
+ 				 *sep = '\0'; 
++				 sep = strrchr(scheddName,'.');	// is there a group/user seperator? 
++				if ( !sep ) {             //assuming here that the last delimited item is a username
++					continue;        //if the user leaves this off, the subitters will appear as users
++					}                     //at the parent level
++				*sep = '\0';
+ 				if ( strcasecmp(scheddName,groups)==0 ) { 
+ 					numidle=0;
+ 					numrunning=0;
+ 					ad->LookupInteger(ATTR_IDLE_JOBS, numidle);
+ 					ad->LookupInteger(ATTR_RUNNING_JOBS, numrunning);
+-		        		numsubmits[i]=numsubmits[i]+numrunning+numidle;
+-            			}
+-			} 		   
+-		   	if( numsubmits[i]==0){
+-		   		unusedslots=unusedslots+(int)groupArray[i].maxAllowed;		   
+-		   	} else if(numsubmits[i]<quota ) {
+-			 	unusedslots=unusedslots+(int)groupArray[i].maxAllowed-numsubmits[i];
+-			}
+-			totalgroupquota=totalgroupquota+quota;	
+-			dprintf(D_FULLDEBUG, "group %s numgroupsubmits=%d quota=%f totalgroupquota=%f unusedslots=%d\n",groups, numsubmits[i], quota,totalgroupquota, unusedslots);
+-		
+-			} //if notstaticquota
+-			i++;
+-		} //while groups
+-		int groupArrayLen = i;
+-		
+-
+-			// pull out the submitter ads that specify a group from the
+-			// scheddAds list, and insert them into a list specific to 
+-			// the specified group.
+-		ClassAd *ad = NULL;
+-		char scheddName[80];
++            				groupArray[i].numsubmits=groupArray[i].numsubmits+numrunning+numidle;					 
++					}
++           			
++			}
++			
++		bool default_autoregroup = param_boolean("GROUP_AUTOREGROUP",false);
++		MyString autoregroup_param;
++		autoregroup_param.sprintf("GROUP_AUTOREGROUP_%s",groupArray[i].groupName);	
++		if(param_boolean(autoregroup_param.Value(),default_autoregroup))groupArray[i].autoregroup=true;
++		else groupArray[i].autoregroup=false;
++		dprintf(D_FULLDEBUG,"negotiationtime: slots %d group %s autoregroup %s\n",
++			numDynGroupSlots, groupArray[i].groupName,(groupArray[i].autoregroup)?"true":"false");
++		i++;	
++	} //swhile ((groups = groupList.next ()))
++	// At this point all groups are in the group array and
++	// the group array has the number of submitters for each group at each level
++	// i will be the length of the group array	
++		
++	int groupArrayLen = i;
++		
++	//groupArray[0] is top of the tree and is a group created so that we can put all users
++	//into some place in the tree
++	//leave the name null for now so it doesn't trip up the sort 
++	
++        groupArray[0].groupName[255]= '\0';
++	groupArray[0].maxAllowed = (float)numDynGroupSlots;  
++	groupArray[0].quota = 1;  
++	groupArray[0].usage = 0;
++	groupArray[0].parent = -1;
++	groupArray[0].child = -1; 
++	groupArray[0].left =-1;
++	groupArray[0].right = -1;
++	groupArray[0].numsubmits=0; 
++	groupArray[0].nodequota=0;
++	groupArray[0].nodemaxAllowed=0;
++	groupArray[0].unused=0;
++	groupArray[0].autoregroup=true;
++	// sort the list here
++	// leave non group users at end of array
++	sort(groupArray,groupArrayLen);
++
++	
++	for (int i=0;i<groupArrayLen;i++) {
++		dprintf(D_FULLDEBUG,"negotiationtime: finished sort - slots %d group %s auto %s quota %f maxAllowed %f numsubmits %d parent %d child %d  left %d right %d i %d\n",
++			numDynGroupSlots, groupArray[i].groupName,(groupArray[i].autoregroup)?"true":"false", groupArray[i].quota, groupArray[i].maxAllowed,groupArray[i].numsubmits, 
++			groupArray[i].parent, groupArray[i].child, groupArray[i].left, groupArray[i].right ,i);
++     	}	
++
++	// pull out the submitter ads that specify a group from the
++	// scheddAds list, and insert them into a list specific to 
++	// the specified group.
++	ClassAd *ad = NULL;
++	char scheddName[80];
++	scheddAds.Open();
++	while( (ad=scheddAds.Next()) ) {
++		if (!ad->LookupString(ATTR_NAME, scheddName, sizeof(scheddName))) {
++			continue;
++		}
++		scheddName[79] = '\0'; // make certain we have a terminating NULL
++		// have to assume there is username attached to accounting group name in job submission
++		// go put 0 at last seperator
++		char *sep = strrchr(scheddName,'@');	// chop off hostname
++		if ( !sep ) {
++			continue;
++		}
++		*sep = '\0';
++		
++		sep = strrchr(scheddName,'.');	// is there a group/user seperator? 
++		if ( !sep ) {             //assuming here that the last delimited item is a username
++			continue;        //if the user leaves this off, the subitters will appear as groupless users
++		}                     //at the parent level
++		*sep = '\0';
++		for (i=1; i<groupArrayLen; i++) {
++			if ( strcasecmp(scheddName,groupArray[i].groupName)==0 ) {
++				groupArray[i].submitterAds.Insert(ad);
++				scheddAds.Delete(ad);
++				break;
++			}
++		}
++	}//while( (ad=scheddAds.Next()) )
++	
++	for (int i=0;i<groupArrayLen;i++) {
++		dprintf(D_FULLDEBUG,"negotiationtime: finished inserting submitters - slots %d group %s quota %f maxAllowed %f numsubmits %d  i %d\n",
++		numDynGroupSlots, groupArray[i].groupName, groupArray[i].quota, groupArray[i].maxAllowed,groupArray[i].numsubmits, i);
++     	}
++     
++	//now we need to convert the quota_fraction to an actual slot count
++	//which means walking down the tree
++	for (int pos=1;pos<groupArrayLen;pos++){
++		if (groupArray[pos].staticquota){
++			if (groupArray[groupArray[pos].parent].maxAllowed<=0){
++				groupArray[pos].quota=0;
++				groupArray[pos].maxAllowed=0;
++			} else {
++				if (groupArray[groupArray[pos].parent].maxAllowed <groupArray[pos].quota) { //this would be a config error if true
++					groupArray[pos].maxAllowed =groupArray[groupArray[pos].parent].maxAllowed;
++					dprintf(D_ALWAYS,"negotiationtime: Error in config. Subgroup %s static quota larger than parent group %s. Setting quota to match parent. \n",
++						groupArray[pos].groupName, groupArray[groupArray[pos].parent].groupName);	
++				}		
++				else groupArray[pos].maxAllowed=groupArray[pos].quota;
++				groupArray[pos].quota=groupArray[pos].maxAllowed/groupArray[groupArray[pos].parent].maxAllowed;
++			}
++		} else {
++			groupArray[pos].maxAllowed=groupArray[pos].quota*groupArray[groupArray[pos].parent].maxAllowed;	
++		}	
++		groupArray[pos].unused=0;
++	}//for (int pos=0;pos<groupArrayLen;pos++)
++	
++	//now we compute each non leaf node's quota for users not in a subgroup
++	for ( int pos=groupArrayLen-1;pos>0;pos--){ 
++		float grouptotal=0; 		//the sum of the quota for all subgroups 
++		int currentparent=groupArray[pos].parent; 
++		while (currentparent==groupArray[pos].parent){		
++			grouptotal=groupArray[pos].quota+grouptotal; 
++			pos--;
++		} 
++		pos++;			
++     		groupArray[groupArray[pos].parent].nodequota=1.0-grouptotal; // users get the remaining quota
++			
++	 	if (groupArray[groupArray[pos].parent].nodequota<0)groupArray[groupArray[pos].parent].nodequota=0; //check for negative
++			
++		groupArray[groupArray[pos].parent].nodemaxAllowed=
++			groupArray[groupArray[pos].parent].nodequota*groupArray[groupArray[pos].parent].maxAllowed;	 	
++	}
++	
++	
++	for (int i=0;i<groupArrayLen;i++) {
++		dprintf(D_FULLDEBUG,"negotiationtime: finished maxallowed calc -  slots %d group %s quota %f nodequota %f maxAllowed %f nodemaxAllowed %f numsubmits %d  i %d\n",
++			numDynGroupSlots, groupArray[i].groupName, groupArray[i].quota, groupArray[i].nodequota,
++			groupArray[i].maxAllowed,groupArray[i].nodemaxAllowed,groupArray[i].numsubmits,i);
++     	}
++	
++	//now we know number of submitters and max number of slots allowed at each group level
++	scheddAds.Open();
++		
++	// here we check for submitters that are not in a group at all or a group with no quota
++	int nongroupusers=scheddAds.Length();
++					
++	// if we have users not in a group, we attach them to groupArray[0]
++	// they get to negotiate for any slots not used by subgroups
++	//groupArray[0].autoregroup is always true
++	if (nongroupusers){
+ 		scheddAds.Open();
++		int numrunning=0;
++		int numidle=0;
++			
++		groupArray[0].numsubmits=0;
++		int totalsubmits=0;
++		float schedusagetotal=0;
++		float scheddUsage=0;
+ 		while( (ad=scheddAds.Next()) ) {
+-			if (!ad->LookupString(ATTR_NAME, scheddName, sizeof(scheddName))) {
+-				continue;
++			ad->LookupInteger(ATTR_RUNNING_JOBS, numrunning);
++			ad->LookupInteger(ATTR_IDLE_JOBS, numidle);
++			groupArray[0].numsubmits=groupArray[0].numsubmits+numrunning+numidle;
++			if (ad->LookupString(ATTR_NAME, scheddName, sizeof(scheddName))) {
++				scheddName[79] = '\0'; // make certain we have a terminating NULL
++				scheddUsage = accountant.GetWeightedResourcesUsed(scheddName);
++				schedusagetotal=scheddUsage+schedusagetotal;
++				groupArray[0].submitterAds.Insert(ad);
++				scheddAds.Delete(ad);
+ 			}
+-			scheddName[79] = '\0'; // make certain we have a terminating NULL
+-			char *sep = strchr(scheddName,'.');	// is there a group seperator?
+-			if ( !sep ) {
+-				continue;
++		}
++		//safe to chane the name now. We need a valid name because negotiate uses groupname as a flag.
++		strcpy(groupArray[0].groupName,"none\0");
++			
++		groupArray[0].usage = schedusagetotal;
++		groupArray[0].prio = 100;		
++
++	} //if (nongroupusers)
++		
++	// now need to fix up quotas for groups
++	// every group should have a quota description
++	// have to have quota declarations at all levels to enforce hfs at different levels
++	// what we have to do is at bottom level calc quota and unused quota
++	// we reassign unused quota to other subgroups at this level
++	// if no reassignment, we add this unused quota to the unused quota level above.
++	// we then attempt to assign this unused quota to groups below
++	// if we can't, we add it to the group level above.
++		
++	//assigns maxAllowed to be numsubmits if numsubmits is less than quota
++	//otherwise maxAllowed  is the amount of quota not used
++	// we also generate the total number of unused slots
++	// these are slots that can be given to users and groups that have more
++	//submits than quota
++		
++	// Array should be sorted tree
++	// We start at the very end of the array which should be greatest depth
++
++	for (i=groupArrayLen-1; i>=1; i--) {
++		int currentparent=groupArray[i].parent;
++		float unused=0;
++		float parentunused=0;
++		int totalsubmit=0;
++		int j;	
++		
++		groupArray[currentparent].unused=0;
++		//	if (currentparent!=-1){		
++		// we iterate backwards until the parent changes
++		// this gets us the number of unused slots in our peer groups
++		//and total number of submitters in our peer groups
++		for (j=i; j>=1 && currentparent==groupArray[j].parent; j--) {
++			if (groupArray[j].child==-1) { //leaf
++				unused=groupArray[j].maxAllowed-groupArray[j].numsubmits;	  
++			if (unused>0){
++				groupArray[j].unused=unused;
++				groupArray[j].maxAllowed=groupArray[j].numsubmits;
++			} else {
++				if  (unused==groupArray[j].maxAllowed)groupArray[j].maxAllowed=0; //no submitters
++				groupArray[j].unused=0;
++				unused=0;
+ 			}
+-			*sep = '\0';
+-			for (i=0; i<groupArrayLen; i++) {
+-				if ( strcasecmp(scheddName,groupArray[i].groupName)==0 ) {
+-					groupArray[i].submitterAds.Insert(ad);
+-					scheddAds.Delete(ad);
+-					break;
+-				}
++			groupArray[groupArray[j].parent].unused=groupArray[groupArray[j].parent].unused+unused;
++			} else { //not a leaf
++				if (groupArray[j].unused>0) 
++					groupArray[groupArray[j].parent].unused=groupArray[groupArray[j].parent].unused+groupArray[j].unused;
+ 			}
+ 		}
++		i=j+1;
+ 		
+-		if (!staticquota){
++		if (groupArray[groupArray[i].parent].nodemaxAllowed>0){ 
++			parentunused=groupArray[groupArray[i].parent].nodemaxAllowed-groupArray[groupArray[i].parent].numsubmits;
++			if (parentunused>0)
++				groupArray[groupArray[i].parent].unused=groupArray[groupArray[i].parent].unused+parentunused;		
++		}
++		if (groupArray[currentparent].autoregroup==true)				
++			groupArray[currentparent].unused=fairshare(groupArray,currentparent,groupArray[currentparent].unused);
++		else {
++			groupArray[currentparent].autoregroup=true;
++			groupArray[currentparent].unused=fairshare(groupArray,currentparent,groupArray[currentparent].unused);
++			groupArray[currentparent].autoregroup=false;
+ 		
+-		// totalgroupquota is num slots claimed in config for groups
+-		// unclamedquota is quota not claimed in config..could be for user jobs
+-		// unusedslots is number of totalgroupquota that goes unused due to lack of submitters
++		}
++		dprintf(D_FULLDEBUG,"negotiationtime: after fairshare setting parent unused ->group %s auto %s quota %f maxallowed %f  unused %f\n",
++			groupArray[currentparent].groupName, (groupArray[currentparent].autoregroup)?"true":"false", groupArray[currentparent].quota, 
++		 	groupArray[currentparent].maxAllowed, groupArray[currentparent].unused);			
++	} //for
++	
++	dprintf(D_FULLDEBUG,"negotiationtime: finished fairshare unable to use %d slots\n",groupArray[0].unused);
+ 
+-		unclaimed=numDynGroupSlots-totalgroupquota;
+-		unclaimedquota=numDynGroupSlots-(int)totalgroupquota;
++	for (int i=0;i<groupArrayLen;i++) {
++		dprintf(D_FULLDEBUG,"negotiationtime: finished fairshare - slots %d group %s auto %s quota %f maxAllowed %f nodemaxAllowed %f numsubmits %d i %d\n",
++			numDynGroupSlots, groupArray[i].groupName,(groupArray[i].autoregroup)?"true":"false",groupArray[i].quota, groupArray[i].maxAllowed, groupArray[i].nodemaxAllowed, groupArray[i].numsubmits, 
++			 i);
++     	}
++	for (i=0;i<groupArrayLen;i++) groupArray[i].unused=0;
++	
++	for (i=0;i<groupArrayLen;i++) {	
++		float unused=0;	
+ 		
+-		// to fix up roundoff
+-		if (unclaimed<1) unclaimedquota=0;
++		if (groupArray[i].child!=-1&&groupArray[i].numsubmits>0&&groupArray[i].nodemaxAllowed>0){
++			if (groupArray[i].unused>0){
++				float nodeshare=groupArray[i].nodequota*groupArray[i].unused;
++				groupArray[i].nodemaxAllowed=groupArray[i].nodemaxAllowed+nodeshare;
++				groupArray[i].unused=groupArray[i].unused-nodeshare; 
++			}
++		
++			unused=groupArray[i].nodemaxAllowed-floorf(groupArray[i].nodemaxAllowed)+groupArray[i].unused;			
++			groupArray[i].nodemaxAllowed=floorf(groupArray[i].nodemaxAllowed);
++			//hand out unused to our children
++			int currentchild=groupArray[i].child;
++			float childshare=0;
++
++		  	//now we iterate across children handing out pie
++			while (currentchild!=-1){ 
++				childshare=unused*groupArray[currentchild].quota; 
++ 				groupArray[currentchild].unused=childshare;
++				currentchild=groupArray[currentchild].left;
++			}				
++			groupArray[i].unused=0;				
++													
++		} else if (groupArray[i].child!=-1)  {
++			int currentchild=groupArray[i].child;
++			float childshare=0;
++		  	//now we iterate across children handing out pie
++			while (currentchild!=-1){ 
++				childshare=groupArray[i].unused*groupArray[currentchild].quota; 
++ 				groupArray[currentchild].unused=childshare;
++				currentchild=groupArray[currentchild].left;
++			}groupArray[i].unused=0;
+ 		
+-		dprintf(D_FULLDEBUG, " numDynGroupSlots=%d totalgroupquota=%f unclaimedquota=%d\n",numDynGroupSlots,totalgroupquota,unclaimedquota);
+-			
+-		scheddAds.Open();
+-		// here we check for submitters that are not in a group with quota
+-		int nongroupusers=scheddAds.Length();
+-		dprintf(D_FULLDEBUG, " nongroupusers=%d totalgroupquota=%f\n",nongroupusers,totalgroupquota);
+-		if (nongroupusers){
+-			scheddAds.Open();
+-			int numrunning=0;
+-			int numidle=0;
+-			
+-			numsubmits[groupArrayLen]=0;
+-			int totalsubmits=0;
+-			float schedusagetotal=0;
+-			float scheddUsage=0;
+-			while( (ad=scheddAds.Next()) ) {
+-				ad->LookupInteger(ATTR_RUNNING_JOBS, numrunning);
+-				ad->LookupInteger(ATTR_IDLE_JOBS, numidle);
+-				numsubmits[groupArrayLen]=numsubmits[groupArrayLen]+numrunning+numidle;
+-				if (ad->LookupString(ATTR_NAME, scheddName, sizeof(scheddName))) {
+-					scheddName[79] = '\0'; // make certain we have a terminating NULL
+-					scheddUsage = accountant.GetWeightedResourcesUsed(scheddName);
+-					schedusagetotal=scheddUsage+schedusagetotal;
+-					dprintf(D_FULLDEBUG, " nongroupusers=%d schedusagetotal=%f\n",nongroupusers,schedusagetotal);	
+-					groupArray[groupArrayLen].submitterAds.Insert(ad);
+-					scheddAds.Delete(ad);
+-				}
+-			}
+-			groupArray[groupArrayLen].groupName = "none\0"; 
+-			groupArray[groupArrayLen].maxAllowed = unclaimedquota;			
+-			groupArray[groupArrayLen].usage = schedusagetotal;
+-			groupArray[groupArrayLen].prio = 100;		
+-			if(numsubmits[groupArrayLen] ==0 ){
+-		 		  unusedslots=unusedslots+(int)groupArray[groupArrayLen].maxAllowed;
+-		   	} else if(numsubmits[groupArrayLen]<(int)groupArray[groupArrayLen].maxAllowed ) {
+-			 	unusedslots=unusedslots+(int)groupArray[groupArrayLen].maxAllowed-numsubmits[groupArrayLen];
++		} 
++
++	}
++	
++	
++	for (int i=0;i<groupArrayLen;i++) {
++		dprintf(D_FULLDEBUG,"negotiationtime: mid roundoff - slots %d group %s auto %s quota %f maxAllowed %f nodemaxAllowed %f unused %f numsubmits %d i %d\n",
++			numDynGroupSlots, groupArray[i].groupName,(groupArray[i].autoregroup)?"true":"false",groupArray[i].quota, groupArray[i].maxAllowed,
++			groupArray[i].nodemaxAllowed, groupArray[i].unused,  groupArray[i].numsubmits, 
++			 i);
++     	}
++	//at this point we focus on leaves
++	//roundoff that needs to be fixed is within maxAllowed
++	
++	float totalroundoff=0;
++	for (i=groupArrayLen-1; i>=1; i--) {
++		int currentparent=groupArray[i].parent;
++		float roundoff;
++		float unused=0;
++		float parentunused=0;
++		int j;	
++		//this gathers all partial slots for this family of groups
++		for (j=i; j>=1 && currentparent==groupArray[j].parent; j--) {			
++			if (groupArray[j].child==-1) { //leaf
++				if (groupArray[j].maxAllowed==0){
++					totalroundoff=totalroundoff+groupArray[j].unused;
++				
++				} else {
++					groupArray[j].maxAllowed=groupArray[j].maxAllowed+groupArray[j].unused;
++					roundoff =groupArray[j].maxAllowed-floor(groupArray[j].maxAllowed);
++					groupArray[j].maxAllowed=floor(groupArray[j].maxAllowed);
++					totalroundoff=totalroundoff+roundoff;
++				}
++	  
++			}
++		}
++		//This distributes round robin the slots as integers
++		//if we end up with a fraction of a slot, that partial slot is handed to the next family
++		//we want to ensure that all slots get used
++		//its possible that they all will and we will still have a fraction of a slot left over
++		//this is simply due to roundoff errors compounded 
++		int endofgroup=j+1;
++		int gavesome=1;
++		while (gavesome&&totalroundoff>=1){
++		gavesome=0;
++		for (j=i; j>=1 &&totalroundoff>=1&& currentparent==groupArray[j].parent; j--) {
++			if (groupArray[j].child==-1&&groupArray[j].maxAllowed>0) { //leaf
++				groupArray[j].maxAllowed=groupArray[j].maxAllowed+1;
++				totalroundoff=totalroundoff-1;
++				gavesome=1;
++	  
++	
+ 			}
+-			groupArrayLen=groupArrayLen+1;
+-		} else {
+-			unusedslots=unusedslots+unclaimedquota;
+ 		}
+-		dprintf(D_FULLDEBUG, " built array totalgroupquota=%f unusedslots=%d\n",totalgroupquota,unusedslots);
+-		
+-		// now we reassign unused slots for autogroup groups based upon percent group quota is of total slots
+-		// this keeps fair share percentages the same as unused slots are spread around
+-		float quotatotal=0;
+-		float* oldquota = new float[groupArrayLen]; 
+-		for (i=0;i<groupArrayLen;i++) { 
+-			oldquota[i]=groupArray[i].maxAllowed;
+-			quotatotal=quotatotal+oldquota[i];
+-		}
+-		//we know total unusedslots
+-		int saveunusedslots=unusedslots;		
+-		int unusedslotstotal=unusedslots;
+-		int slotflag=1; 
+-		int given=0;
+-                
+-		while (unusedslots>0 && slotflag){
+-		 	int myshare=0;
+-		  	slotflag=0;
+-			int leftoverpie=unusedslots;
+-			for (i=0; (i<groupArrayLen && unusedslots>0); i++){
+-				double percentofunused=0;
+-				dprintf(D_ALWAYS,"Group %s - unusedslots to give=%d maxallowed=%f \n",groupArray[i].groupName, unusedslots,groupArray[i].maxAllowed);
+-		 		if (numsubmits[i]>groupArray[i].maxAllowed) {
+-					// hand out unused slots to non group users if they had quota
+-					if((i==groupArrayLen-1)&&nongroupusers&&groupArray[i].maxAllowed>0){
+-						double piefraction=(double) leftoverpie*(double)oldquota[i]/(double)numDynGroupSlots;
+-						if (piefraction>0 && piefraction<1) {
+-							myshare=1;
+-						} else {
+-							myshare=rint((double)leftoverpie*(double)oldquota[i]/(double)numDynGroupSlots);
+-						}
+-						if (unusedslots<myshare) myshare=unusedslots;
+-						groupArray[i].maxAllowed=groupArray[i].maxAllowed+myshare;
+-						given=given+myshare;
+-						slotflag=1;
+-						unusedslots=unusedslots-myshare;
+-					} else {
+-						// hand out unused slots to group users with autoregroup
+-						bool default_autoregroup = param_boolean("GROUP_AUTOREGROUP",false);
+-						MyString autoregroup_param;
+-						autoregroup_param.sprintf("GROUP_AUTOREGROUP_%s",groupArray[i].groupName);
+-						if(param_boolean(autoregroup_param.Value(),default_autoregroup)){			
+-							double piefraction=(double) leftoverpie*(double)oldquota[i]/(double)numDynGroupSlots;
+-							if (piefraction>0 && piefraction<1) {
+-								myshare=1;
+-							} else {
+-								myshare=rint((double)leftoverpie*(double)oldquota[i]/(double)numDynGroupSlots);
+-							}
+-							if (unusedslots<myshare) myshare=unusedslots;
+-							groupArray[i].maxAllowed=groupArray[i].maxAllowed+myshare;
+-							given=given+myshare;
+-							slotflag=1;
+-							unusedslots=unusedslots-myshare;
+-						}
+-					} 
+-			    } else {
+-				groupArray[i].maxAllowed=(float)numsubmits[i];}
+-		 	
+-		 	}
+-			dprintf(D_ALWAYS,"totalunusedslots=%d given=%d \n", unusedslotstotal,given); 
+-			if(given==0)slotflag=0;
+-		}
+-		dprintf(D_ALWAYS,"totalunusedslots=%d given=%d \n", unusedslotstotal,given);
+-		
+-		delete [] oldquota;
+-		oldquota = NULL;
+-		} //if notstaticquota
+-
+-			// now sort the group array
+-		qsort(groupArray,groupArrayLen,sizeof(SimpleGroupEntry),groupSortCompare);		
+-
+-			// and negotiate for each group
++		}
++		i=endofgroup;
++	//get to this point and totalroundoff is handed to next family
++	}
++	
++	dprintf(D_ALWAYS,"negotiationtime: finished roundoff - unable to use %f\n",totalroundoff);
++	
++	for (int i=0;i<groupArrayLen;i++) {
++		dprintf(D_FULLDEBUG,"negotiationtime: finished roundoff - slots %d group %s auto %s quota %f maxAllowed %f nodemaxAllowed %f numsubmits %d i %d\n",
++			numDynGroupSlots, groupArray[i].groupName,(groupArray[i].autoregroup)?"true":"false",groupArray[i].quota, groupArray[i].maxAllowed, groupArray[i].nodemaxAllowed, groupArray[i].numsubmits, 
++			 i);
++     	}
++		//qsort(groupArray,groupArrayLen,sizeof(SimpleGroupEntry),groupSortCompare);		
++		// negotiate for each group
+ 		for (i=0;i<groupArrayLen;i++) {
+ 			if ( groupArray[i].submitterAds.MyLength() == 0 ) {
+-				dprintf(D_ALWAYS,
+-					"Group %s - skipping, no submitters\n",
+-					groupArray[i].groupName);
++				dprintf(D_ALWAYS,"Group %s - skipping, no submitters\n",groupArray[i].groupName);
+ 				continue;
+ 			}
+-			if ( groupArray[i].usage >= groupArray[i].maxAllowed  &&
+-				 !ConsiderPreemption ) 
+-			{
+-				dprintf(D_ALWAYS,
+-						"Group %s - skipping, at or over quota (usage=%.3f)\n",
+-						groupArray[i].groupName,groupArray[i].usage);
++			if ( groupArray[i].usage >= groupArray[i].maxAllowed  && !ConsiderPreemption ) {
++				dprintf(D_ALWAYS, "Group %s - skipping, at or over quota (usage=%.3f)\n", groupArray[i].groupName,groupArray[i].usage);
+ 				continue;
+ 			}
+-			dprintf(D_ALWAYS,
+-				"Group %s - negotiating\n",groupArray[i].groupName);
+-			negotiateWithGroup( untrimmed_num_startds,untrimmedSlotWeightTotal, minSlotWeight, 
++			if (groupArray[i].child==-1) {
++				dprintf(D_ALWAYS,
++					"Group %s - negotiating\n",groupArray[i].groupName);
++				negotiateWithGroup( untrimmed_num_startds,untrimmedSlotWeightTotal, minSlotWeight, 
+ 					startdAds, claimIds, groupArray[i].submitterAds, 
+ 					groupArray[i].maxAllowed, groupArray[i].usage,groupArray[i].groupName );
+-		}
+-		if (staticquota){
+-		
+-			// if GROUP_AUTOREGROUP is set to true, then for any submitter
+-			// assigned to a group that did match, insert the submitter
+-			// ad back into the main scheddAds list.  this way, we will
+-			// try to match it again below .
+-		bool default_autoregroup = param_boolean("GROUP_AUTOREGROUP",false);
+-		for (i=0; i<groupArrayLen; i++) {
+-			ad = NULL;
+-			MyString autoregroup_param;
+-			autoregroup_param.sprintf("GROUP_AUTOREGROUP_%s",groupArray[i].groupName);
+-			if(param_boolean(autoregroup_param.Value(),default_autoregroup)) {
++			} else {
+ 				dprintf(D_ALWAYS,
+-						"Group %s - autoregroup inserting %d submitters\n",
+-						groupArray[i].groupName,
+-						groupArray[i].submitterAds.MyLength());
++					"Group node %s - negotiating\n",groupArray[i].groupName);
++				negotiateWithGroup( untrimmed_num_startds,untrimmedSlotWeightTotal, minSlotWeight, 
++					startdAds, claimIds, groupArray[i].submitterAds, 
++					groupArray[i].nodemaxAllowed, groupArray[i].usage,groupArray[i].groupName );
+ 
+-				groupArray[i].submitterAds.Open();
+-				while( (ad=groupArray[i].submitterAds.Next()) ) {
+-					scheddAds.Insert(ad);				
+-				}
++			
+ 			}
+-		}
+-		
+-		
+-		
+-		
+-		
+-		} //if notstaticquota
++		} //for (i=0;i<groupArrayLen;i++) {
+ 
+-			// finally, cleanup 
+ 		delete []  groupArray;
+ 		groupArray = NULL;
+-		delete [] numsubmits;
+-		numsubmits = NULL;
+ 
+-			// print out a message stating we are about to negotiate below w/
+-			// all users who did not specify a group
+-		dprintf(D_ALWAYS,"Group *none* - negotiating\n");
+ 
+ 	} // if (groups)
+-	
++	else {
+ 		// negotiate w/ all users who do not belong to a group.
+ 	negotiateWithGroup(untrimmed_num_startds, untrimmedSlotWeightTotal, minSlotWeight, startdAds, claimIds, scheddAds);
++	}
+ 	
+ 	// ----- Done with the negotiation cycle
+ 	dprintf( D_ALWAYS, "---------- Finished Negotiation Cycle ----------\n" );
+@@ -1289,11 +1457,309 @@ negotiationTime ()
+ 	return TRUE;
+ }
+ 
++
++
++float Matchmaker::fairshare( Matchmaker::SimpleGroupEntry *groupArray, int index, float unused)
++{
++	int child=groupArray[index].child;
++
++    	dprintf(D_FULLDEBUG,"fairshare called on  %s auto %s index %d maxallowed %f numsubmits %d group unused %f called with unused %f \n",
++    		groupArray[index].groupName,(groupArray[index].autoregroup)?"true":"false", index, groupArray[index].maxAllowed, 
++    		groupArray[index].numsubmits,groupArray[index].unused,unused);
++
++	if (groupArray[index].autoregroup) { //if we have unused, we can't use them
++		if (child==-1) { //we are leaf and see if we can use the unused
++  			float canonlyuse=(float)groupArray[index].numsubmits-groupArray[index].maxAllowed;
++ 
++  			dprintf(D_FULLDEBUG,"fairshare leaf %s maxallowed %f numsubmits %d unused %f canonlyuse %f\n",
++   				groupArray[index].groupName, groupArray[index].maxAllowed, groupArray[index].numsubmits,unused,canonlyuse);
++  		if (canonlyuse>0) {
++     			if (unused>=canonlyuse){
++  				groupArray[index].maxAllowed=groupArray[index].maxAllowed+canonlyuse;	
++				return unused-canonlyuse;
++  			} else {//we can use more but are only offered unused amount return 0 because we took them all
++  				groupArray[index].maxAllowed=groupArray[index].maxAllowed+unused; 
++  				return 0;
++
++  			}
++  		}//canonlyuse is 0 or less..can't use any
++  		return unused;
++	} else { //not a leaf
++
++  		dprintf(D_FULLDEBUG,"fairshare not a leaf node  %s maxallowed %f numsubmits %d unused %f \n", 
++  			groupArray[index].groupName, groupArray[index].maxAllowed, groupArray[index].numsubmits,unused);
++
++		// we dish out a fairshare to all our children
++		// child will point at rightmost child
++		float remaining=unused; //what we use to calculate share with
++		int gavesome=1; 
++		while (gavesome&&remaining>0){   
++			gavesome=0; //reset gavesome flag each iteration across children
++			int currentchild=child;
++			float childshare=0;
++			float totalgiven=0; //count of what was given away this round
++			float notgiven=0;
++			//we first check to see if we have submitters and give a share to them if they have quota	
++			if ( groupArray[index].autoregroup==true&&groupArray[index].nodequota>0&&groupArray[index].numsubmits>0) {
++				childshare=remaining*groupArray[index].nodequota;
++				//A childshare could be a small percent of a node but that could mean the difference between getting
++				//another slot or not
++				//Eventually we will get to a state where remaining is really small and we are handing out very small
++				//childshare. There is no point iterating giving out 1/100 of a slot, so we handout what is remaining.
++				if (remaining<0.5) {
++					childshare=remaining; 
++					remaining=0;
++				}
++				float canonlyuse=(float)groupArray[index].numsubmits-groupArray[index].nodemaxAllowed;
++ 				if (childshare>0&&canonlyuse>0) {
++    		 			if (childshare>=canonlyuse){
++  						groupArray[index].nodemaxAllowed=groupArray[index].nodemaxAllowed+canonlyuse;
++						//remaining=remaining-canonlyuse;
++						totalgiven=canonlyuse;
++  					} else {//we can use more but are only offered unused amount return 0 because we took them all
++  						groupArray[index].nodemaxAllowed=groupArray[index].nodemaxAllowed+childshare; 
++						//remaining=remaining-childshare;
++						totalgiven=childshare;
++					}
++				gavesome=1;
++  				}
++				if (gavesome) 	
++					dprintf(D_FULLDEBUG,"fairshare gave some to non group user %s maxallowed=%f nodemaxAllowed=%f remaining %f\n",
++						groupArray[index].groupName,groupArray[index].maxAllowed,groupArray[index].nodemaxAllowed,remaining);
++	
++			}
++			
++			//now we iterate across children handing out pie
++			while (currentchild!=-1){ //childshare=rint((double)remaining*(double)groupArray[currentchild].quota)
++				if (groupArray[currentchild].autoregroup==true){
++ 		 			if (remaining<0.5) {
++						childshare=remaining;
++						remaining=0;
++					} else {
++						childshare=remaining*groupArray[currentchild].quota; 
++					}
++					dprintf(D_ALWAYS,"fairshare %s index %d maxallowed %f numsubmits %d childshare %f unused %f\n",
++						groupArray[currentchild].groupName,index,groupArray[currentchild].maxAllowed , groupArray[currentchild].numsubmits,
++						childshare, unused);
++ 		
++                			notgiven=0;
++		 			if (childshare>0) {
++		  				if (groupArray[currentchild].unused==0){
++		  					notgiven=fairshare(groupArray,currentchild,childshare);
++		  					if (notgiven<childshare){ //we gave some or all
++								gavesome=1; 
++								totalgiven=totalgiven+(childshare-notgiven);
++							
++							}
++	
++						} 
++					}
++
++	
++				dprintf(D_ALWAYS,"after fairshare  %s index %d maxallowed %f numsubmits %d childshare %f unused %f remaining %f notgiven %f totalgiven %f\n",
++		 			groupArray[currentchild].groupName,index, groupArray[currentchild].maxAllowed, groupArray[currentchild].
++		 			numsubmits,childshare, unused, remaining, notgiven, totalgiven);
++			}
++				currentchild=groupArray[currentchild].left;
++			}
++	
++			remaining=remaining-totalgiven;
++			if (remaining<0) remaining=0; //precaution against roundoff
++			
++			dprintf(D_FULLDEBUG,"fairshare  group %s index %d maxallowed %f numsubmits %d unused %f remaining %f gavesome %d\n",
++			groupArray[index].groupName,index, groupArray[index].maxAllowed, groupArray[index].numsubmits, unused, remaining, gavesome);
++	
++		}
++		return remaining; 
++		}
++	} else { //no autoregroup so return unused
++
++		return unused;
++
++	}
++}
++
++
++
++void Matchmaker::copygroup(Matchmaker::SimpleGroupEntry * groupentrya, Matchmaker::SimpleGroupEntry *groupentryb)
++{
++	//copy from a to b
++	//need some error checking here
++	strncpy(groupentryb->groupName,groupentrya->groupName,256);
++
++	groupentryb->prio=groupentrya->prio;
++	groupentryb->maxAllowed=groupentrya->maxAllowed;
++	groupentryb->nodemaxAllowed=groupentrya->nodemaxAllowed;
++	groupentryb->quota=groupentrya->quota;
++	groupentryb->usage=groupentrya->usage;
++	groupentryb->parent=groupentrya->parent;
++	groupentryb->left=groupentrya->left;
++	groupentryb->nodequota=groupentrya->nodequota;
++	groupentryb->right=groupentrya->right;
++	groupentryb->autoregroup=groupentrya->autoregroup;
++	groupentryb->numsubmits=groupentrya->numsubmits;
++	groupentryb->child=groupentrya->child;
++	//don't need to do submitter ads
++	//if this is used elsewhere that capability will need to be added
++
++}
++
++void Matchmaker::sort(Matchmaker::SimpleGroupEntry *groupArray, int length)
++{
++	// sort groups into a tree within an array
++	// walk thru current group array
++	// each group must specify a quota at every level
++	int level=0;
++	int position=1;
++	int index=0;
++	int newlength=length-1;
++	SimpleGroupEntry* groupArraytemp;
++	groupArraytemp = new SimpleGroupEntry[ length ];
++	copygroup( &groupArray[0],&groupArraytemp [0]);
++	for (int j=1;j<length;j++){
++		copygroup(& groupArray[j],&groupArray [j-1]);				
++	}
++
++	// level can't be greater than length because there can't be more subgroups than the number of groups in the array
++	while (level<=length&&newlength>0){
++        	int found=0;			
++		for (index=0;!found&&index<newlength;index++){
++			int mylevel=0;
++			char tempname[256];
++			char tempname2[256];
++			//start at bottom top of tree so front of array is filled with top nodes
++			// and tail of array is filled with lower nodes or leaves.	
++			// put the name of current group in tempname
++			strncpy((char *)tempname,groupArray[index].groupName,256);
++		
++			char * group=strrchr((char *)tempname,'.');
++	
++			while (group!=NULL){         // count the seperators which tells us number of subgroups
++			
++				if (group!=NULL) {
++					*group = '\0';	
++					mylevel++;
++				}
++			group=strrchr((char *)tempname,'.');			
++			}
++			// mylevel is count of subgroups in this particular group
++			// if it the same as our current level then we add it to the new array
++			if (mylevel==level){
++				found++;
++				copygroup( &groupArray[index],&groupArraytemp [position]);
++				if (mylevel==0){
++					if (position>0){
++				 		groupArraytemp[position].left=position-1;
++						groupArraytemp[position-1].right=position;	
++					}
++					groupArraytemp[position].parent=0;
++					groupArraytemp[0].child=position;
++				} else {// if this is a subgroup then assign the parent field
++					if (mylevel>0){ //cut off last subgroup leaving the parent group string
++						strncpy((char *)tempname2,groupArray[index].groupName,256);
++						char * last = strrchr((char *)tempname2, '.');
++						if (last !=NULL) *last = '\0';
++						int foundsibling=0;
++						int foundparent=0;
++						for (int len = position-1; len>=0;len--){
++							//if our parent string matches a group name we found our parent
++							if (!foundparent&&strcmp((char *)tempname2,groupArraytemp[len].groupName)==0){
++								groupArraytemp [position].parent=len;
++								groupArraytemp [len].child=position; //child will be left most sibling
++								foundparent=1;
++							}
++							//if our parent string matches the parent string of another element
++							//we found a sibling
++							char *tempname4[256];	
++							strncpy((char *)tempname4,groupArraytemp [len].groupName,256);
++							char * lastdel = strrchr((char *)tempname4, '.');
++							if (lastdel !=NULL) *lastdel = '\0';
++							if (!foundsibling&&lastdel!=NULL&&strcmp((char *)tempname2,(char *)tempname4)==0){
++								groupArraytemp [position].left=len;
++								groupArraytemp [len].right=position;	
++								foundsibling=1;
++							}
++
++						}
++					}
++				} 
++				//remove the just found entry from the array
++				for (int j=index+1;j<newlength;j++)
++	 				copygroup(& groupArray[j],&groupArray [j-1]);					
++				newlength--;		
++				position++;
++			} // if (mylevel==level)
++	
++		} //for
++		if (!found) level++;
++	} //while
++	//copy the array back to original array
++	for (int i=0;i<length;i++) copygroup(&groupArraytemp [i],&groupArray[i]);		
++	
++
++	for (int i=length-1;i>1;i--){
++		if (i-1!=groupArray[i].left) {//if not equal immediateleft is not left node		
++	 		if (groupArray[i].left!=-1){ //there is a left sibling
++			
++				//fix the links for the i-1 node we're moving
++				if (groupArray[i-1].left!=-1) groupArray[groupArray[i-1].left].right=groupArray[i].left;
++				if (groupArray[i-1].right!=-1)groupArray[groupArray[i-1].right].left=groupArray[i].left;
++				
++				//fix our own  links		
++				if (groupArray[groupArray[i].left].left!=-1)groupArray[groupArray[groupArray[i].left].left].right=i-1;
++				groupArray[i].left=i-1;
++				
++				copygroup(& groupArray[i-1],&groupArraytemp [0]);
++				copygroup(& groupArray[groupArray[i].left],&groupArray [i-1]);
++				copygroup( &groupArraytemp[0],&groupArray [groupArray[i].left]);
++				if (groupArray[i].parent!=-1)groupArray[i-1].parent=groupArray[i].parent;
++		
++     			} else if (groupArray[i-1].right!=-1){ 
++				//there isn't a left sibling but the next one is already rightmost if -1
++		
++     		    		//we have to find the rightmost sibling under a new parent
++      				 // if no left node we are a single group with no peers or 
++       				// we walked all peer subgroups and are now at left most node
++           			int rightmost=i-1;
++				while(rightmost>0&&groupArray[rightmost].right!=-1) 
++					rightmost=groupArray[rightmost].right;
++			
++				if (groupArray[i-1].left!=-1) groupArray[groupArray[i-1].left].right=rightmost;
++				if (groupArray[i-1].right!=-1)groupArray[groupArray[i-1].right].left=rightmost;
++				if (groupArray[rightmost].left!=-1)groupArray[groupArray[rightmost].left].right=i-1;
++		
++				copygroup( &groupArray[i-1],&groupArraytemp [0]);
++				copygroup( &groupArray[rightmost],&groupArray [i-1]);
++				copygroup( &groupArraytemp[0],&groupArray [rightmost]);
++		
++			}
++	
++		}
++	
++	}
++
++	for (int i=0;i<length;i++) {
++	dprintf(D_FULLDEBUG,"Sorted : grouparray group %s parent %d child %d  left %d right %d i %d\n",
++		groupArray[i].groupName,  groupArray[i].parent, groupArray[i].child,groupArray[i].left,
++		 groupArray[i].right ,i);
++	}
++     
++
++	delete []  groupArraytemp;
++	groupArraytemp = NULL;
++	dprintf(D_ALWAYS,"Sort : leaving\n");
++}
++
++
++
+ Matchmaker::SimpleGroupEntry::
+ SimpleGroupEntry()
+ {
+-	groupName = NULL;
++	groupName[0] = '\0';
+ 	prio = 0;
++	parent = -1;
++	left = -1;
++	right = -1;
+ 	maxAllowed = (float) INT_MAX;
+ }
+ 
+diff -rNup condor-7.4.1.orig/src/condor_negotiator.V6/matchmaker.h condor-7.4.1/src/condor_negotiator.V6/matchmaker.h
+--- condor-7.4.1.orig/src/condor_negotiator.V6/matchmaker.h	2010-03-25 13:49:30.000000000 -0400
++++ condor-7.4.1/src/condor_negotiator.V6/matchmaker.h	2010-05-03 11:23:40.000000000 -0400
+@@ -196,7 +196,7 @@ class Matchmaker : public Service
+ 		                       double slotWeightTotal,
+ 		                            /* result parameters: */
+ 		                       double &pieLeft);
+-
++	
+ 		void MakeClaimIdHash(ClassAdList &startdPvtAdList, ClaimIdHash &claimIds);
+ 		char const *getClaimId (const char *, const char *, ClaimIdHash &, MyString &);
+ 		void addRemoteUserPrios( ClassAd* ad );
+@@ -380,7 +380,7 @@ class Matchmaker : public Service
+ 			int m_rejPreemptForRank;    //   - startd RANKs new job lower?
+ 			int m_rejForSubmitterLimit;     //  - not enough group quota?
+ 			float m_submitterLimit;
+-			
++		 	
+ 			
+ 		};
+ 		MatchListType* MatchList;
+@@ -396,14 +396,29 @@ class Matchmaker : public Service
+ 		public:
+ 			SimpleGroupEntry();
+ 			~SimpleGroupEntry();
+-			char *groupName;
++			char groupName[256];
+ 			float prio;
+ 			float maxAllowed;
++			float nodequota;
++			float nodemaxAllowed;
++			float quota;
+ 			float usage;
+-			ClassAdList submitterAds;			
++			float unused;
++			bool autoregroup;
++			int parent;
++			int left;
++			int right;
++			int child;
++			int numsubmits;
++			int staticquota;
++			ClassAdList submitterAds;
++			void sort(int length);			
+ 		};
+ 		static int groupSortCompare(const void*, const void*);
+-		
++		float fairshare( Matchmaker::SimpleGroupEntry *groupArray, int index, float unused);
++		void sort(Matchmaker::SimpleGroupEntry *groupArray,int length);
++		void copygroup(Matchmaker::SimpleGroupEntry *groupentrya,Matchmaker::SimpleGroupEntry *groupentryb);
++
+ 		char RejectsTable[40];
+ 		char MatchesTable[40];
+ 		int prevLHF;

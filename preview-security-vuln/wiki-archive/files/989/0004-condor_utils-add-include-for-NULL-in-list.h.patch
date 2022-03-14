@@ -1,0 +1,25 @@
+From 547cf5a04e997eaa6e455301f626ec85aa2df49e Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 24 Aug 2017 15:51:36 +0100
+Subject: [PATCH 4/6] condor_utils: add include for NULL in list.h
+
+This mean that as specific include order is not required.
+---
+ src/condor_utils/list.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/condor_utils/list.h b/src/condor_utils/list.h
+index 2b68c5718a..e84b00e11c 100644
+--- a/src/condor_utils/list.h
++++ b/src/condor_utils/list.h
+@@ -110,6 +110,7 @@
+ 
+ #ifndef LIST_H
+ #define LIST_H
++#include <cstddef>
+ #include "condor_fix_assert.h"
+ 
+ template <class ObjType> class Item;
+-- 
+2.13.5
+

@@ -1,0 +1,39 @@
+From f60353febd9bd138832c4226c92d263eeaf9ec9e Mon Sep 17 00:00:00 2001
+From: Lukas Slebodnik <slebodnik@sors.com>
+Date: Fri, 3 Feb 2012 23:47:03 +0100
+Subject: [PATCH] Fixed backslash generation from html to man pages
+
+---
+ doc/makeman/makeman.C |    2 ++
+ doc/makeman/test.html |    2 ++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/doc/makeman/makeman.C b/doc/makeman/makeman.C
+index b23b0c4..8c6ec60 100644
+--- a/doc/makeman/makeman.C
++++ b/doc/makeman/makeman.C
+@@ -840,6 +840,8 @@ static void add_fixed_characters(string &source, string &dest, bool in_pre_text)
+ 				}
+ 			}
+ 			in_spaces = false;
++		} else if (source[offset] == '\\') {
++			dest += "\\\\";  // replace backslash with double backslash.
+ 		} else if (!in_pre_text && source[offset] == ' ' || source[offset] == '\t') {
+ 			if (!in_spaces) {
+ 				dest += ' '; // tabs become spaces.
+diff --git a/doc/makeman/test.html b/doc/makeman/test.html
+index c8d4b8f..6365d50 100644
+--- a/doc/makeman/test.html
++++ b/doc/makeman/test.html
+@@ -31,6 +31,8 @@ per line.
+ This is some pre-
+ formatted text. How
+ does it look?
++
++Example: \"between escaped quotes\"
+ </pre>
+ Some more text.
+ </body>
+-- 
+1.7.4.1
+
