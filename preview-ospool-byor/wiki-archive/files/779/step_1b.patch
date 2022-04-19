@@ -1,0 +1,60 @@
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index f8785e5..0183b7d 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -4945,23 +4945,38 @@ void FindRunnableJob(PROC_ID & jobid, ClassAd* my_match_ad,
+ 
+ 			MyString jobLimits, recordedLimits;
+ 			if (param_boolean("CLAIM_RECYCLING_CONSIDER_LIMITS", true)) {
+-				ad->LookupString(ATTR_CONCURRENCY_LIMITS, jobLimits);
+-				my_match_ad->LookupString(ATTR_MATCHED_CONCURRENCY_LIMITS,
+-										  recordedLimits);
+-				jobLimits.lower_case();
+-				recordedLimits.lower_case();
+-
+-				if (jobLimits == recordedLimits) {
+-					dprintf(D_FULLDEBUG,
+-							"ConcurrencyLimits match, can reuse claim\n");
+-				} else {
+-					dprintf(D_FULLDEBUG,
+-							"ConcurrencyLimits do not match, cannot "
+-							"reuse claim\n");
+-					PrioRecAutoClusterRejected->
+-						insert(PrioRec[i].auto_cluster_id, 1);
+-					continue;
+-				}
++			  dprintf(D_FULLDEBUG,
++				    "Will recycle ConcurrencyLimits\n"); 
++
++			  bool enforce_limits=true;
++			  if (param_boolean("ALLOW_OPTIONAL_CONCURRENCY_LIMITS",false)) {
++			    // only look for the ENFORCE attribute if told so
++			    // default to always check
++			    my_match_ad->LookupBool(ATTR_ENFORCE_CONCURRENCY_LIMITS,enforce_limits);
++			  }
++
++			  if (enforce_limits) {
++			    ad->LookupString(ATTR_CONCURRENCY_LIMITS, jobLimits);
++			    my_match_ad->LookupString(ATTR_MATCHED_CONCURRENCY_LIMITS,
++						      recordedLimits);
++			    jobLimits.lower_case();
++			    recordedLimits.lower_case();
++			    
++			    if (jobLimits == recordedLimits) {
++			      dprintf(D_FULLDEBUG,
++				      "ConcurrencyLimits match, can reuse claim\n");
++			    } else {
++			      dprintf(D_FULLDEBUG,
++				      "ConcurrencyLimits do not match, cannot "
++				      "reuse claim\n");
++			      PrioRecAutoClusterRejected->
++				insert(PrioRec[i].auto_cluster_id, 1);
++			      continue;
++			    }
++			  } else {
++			    dprintf(D_FULLDEBUG,
++				    "Skipping ConcurrencyLimits check, Negotiator said it was optional\n"); 
++			  }
+ 			}
+ 
+ 			jobid = PrioRec[i].id; // success!
