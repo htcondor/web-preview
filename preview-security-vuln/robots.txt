@@ -1,1 +1,0 @@
-Sitemap: /web-preview/preview-security-vuln/sitemap.xml
