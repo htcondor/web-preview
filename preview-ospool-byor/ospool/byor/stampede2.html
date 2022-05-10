@@ -824,7 +824,7 @@ in the next step.</li>
 an annex is a named set of leased resources.  The following command will
 submit a request to lease an annex named <code>example</code> to the queue named <code>normal</code>
 on Stampede 2.  Project <code>PROJECT_ID</code> will be charged for resources used (by
-default, two machines).  The <strong>text in bold</strong> is emphasized to distinguish
+default, two nodes).  The <strong>text in bold</strong> is emphasized to distinguish
 it from XSEDE’s log-in prompt.</p>
 
 <pre><code>$ htcondor annex create example normal@stampede2 --project PROJECT_ID
@@ -854,9 +854,9 @@ it may take a while.  Once the request is done, it will display:</p>
 
 <pre><code>$ htcondor annex status example
 Annex 'example' is not established.
-You requested 2 machines for this annex, of which 0 are in established
+You requested 2 nodes for this annex, of which 0 are in established
 annexes.
-There are 0 CPUs in the established machines, of which 0 are busy.
+There are 0 CPUs in the established nodes, of which 0 are busy.
 1 jobs must run on this annex, and 0 currently are.
 You made 1 resource request(s) for this annex, of which 1 are pending, 0
 are established, and 0 have retired.
@@ -868,9 +868,9 @@ are established, and 0 have retired.
 Annex 'example' is established.
 Its oldest established request is about 0.29 hours old and will retire in
 0.71 hours.
-You requested 2 machines for this annex, of which 2 are in established
+You requested 2 nodes for this annex, of which 2 are in established
 annexes.
-There are 136 CPUs in the established machines, of which 0 are busy.
+There are 136 CPUs in the established nodes, of which 0 are busy.
 1 jobs must run on this annex, and 0 currently are.
 You made 1 resource request(s) for this annex, of which 0 are pending, 1
 are established, and 0 have retired.
@@ -894,9 +894,9 @@ the annex itself:</p>
 Annex 'example' is established.
 Its oldest established request is about 0.69 hours old and will retire in
 0.31 hours.
-You requested 2 machines for this annex, of which 2 are in established
+You requested 2 nodes for this annex, of which 2 are in established
 annexes.
-There are 136 CPUs in the established machines, of which 1 are busy.
+There are 136 CPUs in the established nodes, of which 1 are busy.
 1 jobs must run on this annex, and 1 currently are.
 You made 1 resource request(s) for this annex, of which 0 are pending,
 1 are established, and 0 have retired.
