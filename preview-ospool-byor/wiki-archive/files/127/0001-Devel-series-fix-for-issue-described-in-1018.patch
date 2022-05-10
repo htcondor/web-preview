@@ -1,0 +1,362 @@
+From 471c6b6a3c2ee6e731b4bb57a97ea864f299668b Mon Sep 17 00:00:00 2001
+From: Dan Bradley <dan@hep.wisc.edu>
+Date: Wed, 2 Dec 2009 13:49:17 -0600
+Subject: [PATCH] Fix for issue described in #1018
+
+---
+ src/condor_includes/condor_error_codes.h  |    1 +
+ src/condor_includes/condor_qmgr.h         |   14 ++++++-
+ src/condor_schedd.V6/qmgmt.cpp            |   68 +++++++++++++++++++++++++++-
+ src/condor_schedd.V6/qmgmt.h              |    3 +
+ src/condor_schedd.V6/qmgmt_constants.h    |    1 +
+ src/condor_schedd.V6/qmgmt_receivers.cpp  |   27 +++++++++++
+ src/condor_schedd.V6/qmgmt_send_stubs.cpp |   28 ++++++++++++
+ src/condor_schedd.V6/qmgr_job_updater.cpp |    9 +++-
+ src/condor_schedd.V6/qmgr_job_updater.h   |    1 +
+ src/condor_schedd.V6/qmgr_lib_support.cpp |   21 ++++++++-
+ 10 files changed, 166 insertions(+), 7 deletions(-)
+
+diff --git a/src/condor_includes/condor_error_codes.h b/src/condor_includes/condor_error_codes.h
+index d15fb0b..cec00ea 100644
+--- a/src/condor_includes/condor_error_codes.h
++++ b/src/condor_includes/condor_error_codes.h
+@@ -43,6 +43,7 @@ const int DAEMON_ERR_INTERNAL = 3001;
+ const int SCHEDD_ERR_JOB_ACTION_FAILED = 4001;
+ const int SCHEDD_ERR_SPOOL_FILES_FAILED = 4002;
+ const int SCHEDD_ERR_UPDATE_GSI_CRED_FAILED = 4003;
++const int SCHEDD_ERR_SET_EFFECTIVE_OWNER_FAILED = 4004;
+ 
+ const int GSI_ERR_AQUIRING_SELF_CREDINTIAL_FAILED = 5001;
+ const int GSI_ERR_REMOTE_SIDE_FAILED = 5002;
+diff --git a/src/condor_includes/condor_qmgr.h b/src/condor_includes/condor_qmgr.h
+index 2dc0805..43b8ef5 100644
+--- a/src/condor_includes/condor_qmgr.h
++++ b/src/condor_includes/condor_qmgr.h
+@@ -54,10 +54,12 @@ int InitializeReadOnlyConnection(const char * );
+ 	       connection establishment
+     @param read_only can be set to true to skip the potentially slow
+ 	       authenticate step for connections which don't modify the queue
++    @param effective_owner if not NULL, will call QmgmtSetEffectiveOwner()
+ 	@return opaque Qmgr_connection structure
+ */		 
+ Qmgr_connection *ConnectQ(const char *qmgr_location, int timeout=0, 
+-				bool read_only=false, CondorError* errstack=NULL );
++				bool read_only=false, CondorError* errstack=NULL,
++				const char *effective_owner=NULL);
+ 
+ /** Close the connection to the schedd job queue, and optionally commit
+ 	the transaction.
+@@ -284,4 +286,14 @@ bool Reschedule();
+ #define SetAttributeExpr(cl, pr, name, val) SetAttribute(cl, pr, name, val);
+ #define SetAttributeExprByConstraint(con, name, val) SetAttributeByConstraint(con, name, val);
+ 
++/* Set the effective owner to use for authorizing subsequent qmgmt
++   opperations. Setting to NULL or an empty string will reset the
++   effective owner to the real authenticated owner.  Changing to
++   owner names other than the authenticated owner is only allowed
++   for queue super users.
++   Returns 0 on success. */
++
++int QmgmtSetEffectiveOwner(char const *owner);
++
++
+ #endif
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 38498db..4161734 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -508,7 +508,6 @@ QmgmtPeer::set(ReliSock *input)
+ 	return true;
+ }
+ 
+-
+ bool
+ QmgmtPeer::set(const struct sockaddr_in *s, const char *o)
+ {
+@@ -536,11 +535,23 @@ QmgmtPeer::set(const struct sockaddr_in *s, const char *o)
+ 	return true;
+ }
+ 
++bool
++QmgmtPeer::setEffectiveOwner(char const *o)
++{
++	delete [] owner;
++	owner = NULL;
++
++	if ( o ) {
++		owner = strnewp(o);
++	}
++	return true;
++}
++
+ void
+ QmgmtPeer::unset()
+ {
+ 	if (owner) {
+-		delete owner;
++		delete [] owner;
+ 		owner = NULL;
+ 	}
+ 	if (fquser) {
+@@ -587,9 +598,23 @@ QmgmtPeer::endpoint() const
+ const char*
+ QmgmtPeer::getOwner() const
+ {
++	// if effective owner has been set, use that
++	if( owner ) {
++		return owner;
++	}
+ 	if ( sock ) {
+ 		return sock->getOwner();
+-	} else {
++	}
++	return NULL;
++}
++
++const char*
++QmgmtPeer::getRealOwner() const
++{
++	if ( sock ) {
++		return sock->getOwner();
++	}
++	else {
+ 		return owner;
+ 	}
+ }
+@@ -1020,6 +1045,43 @@ SuperUserAllowedToSetOwnerTo(const MyString &user) {
+ 	return false;
+ }
+ 
++int
++QmgmtSetEffectiveOwner(char const *o)
++{
++	if( !Q_SOCK ) {
++		errno = ENOENT;
++		return -1;
++	}
++
++	char const *real_owner = Q_SOCK->getRealOwner();
++	if( o && real_owner && strcmp(o,real_owner)==0 ) {
++		// change effective owner --> real owner
++		o = NULL;
++	}
++
++	if( o && !*o ) {
++		// treat empty string equivalently to NULL
++		o = NULL;
++	}
++
++	// always allow request to set effective owner to NULL,
++	// because this means set effective owner --> real owner
++	if( o && !qmgmt_all_users_trusted ) {
++		if( !isQueueSuperUser(real_owner) ||
++			!SuperUserAllowedToSetOwnerTo( o ) )
++		{
++			errno = EACCES;
++			return -1;
++		}
++	}
++
++	if( !Q_SOCK->setEffectiveOwner( o ) ) {
++		errno = EINVAL;
++		return -1;
++	}
++	return 0;
++}
++
+ bool
+ OwnerCheck(int cluster_id,int proc_id)
+ {
+diff --git a/src/condor_schedd.V6/qmgmt.h b/src/condor_schedd.V6/qmgmt.h
+index 7d26aff..a110b6c 100644
+--- a/src/condor_schedd.V6/qmgmt.h
++++ b/src/condor_schedd.V6/qmgmt.h
+@@ -46,11 +46,14 @@ class QmgmtPeer {
+ 		bool set(const struct sockaddr_in *sock, const char *fqOwnerAndDomain);
+ 		void unset();
+ 
++		bool setEffectiveOwner(char const *o);
++
+ 		ReliSock *getReliSock() const { return sock; };
+ 
+ 		const char *endpoint_ip_str() const;
+ 		const struct sockaddr_in *endpoint() const;
+ 		const char* getOwner() const;
++		const char* getRealOwner() const;
+ 		const char* getFullyQualifiedUser() const;
+ 		int isAuthenticated() const;
+ 
+diff --git a/src/condor_schedd.V6/qmgmt_constants.h b/src/condor_schedd.V6/qmgmt_constants.h
+index 9da2a62..d2aa89a 100644
+--- a/src/condor_schedd.V6/qmgmt_constants.h
++++ b/src/condor_schedd.V6/qmgmt_constants.h
+@@ -45,3 +45,4 @@
+ #define CONDOR_GetAllJobsByConstraint 10026
+ #define	CONDOR_SetAttribute2 		10027
+ #define CONDOR_CloseSocket			10028
++#define CONDOR_SetEffectiveOwner	10029			/* A.N.Onymous */
+diff --git a/src/condor_schedd.V6/qmgmt_receivers.cpp b/src/condor_schedd.V6/qmgmt_receivers.cpp
+index 557c0ba..ecfde47 100644
+--- a/src/condor_schedd.V6/qmgmt_receivers.cpp
++++ b/src/condor_schedd.V6/qmgmt_receivers.cpp
+@@ -97,6 +97,33 @@ do_Q_request(ReliSock *syscall_sock,bool &may_fork)
+ 		return 0;
+ 	}
+ 
++	case CONDOR_SetEffectiveOwner:
++	{
++		MyString owner;
++		int terrno;
++
++		assert( syscall_sock->get(owner) );
++		assert( syscall_sock->end_of_message() );
++
++		rval = QmgmtSetEffectiveOwner( owner.Value() );
++		terrno = errno;
++
++		syscall_sock->encode();
++		assert( syscall_sock->code(rval) );
++		if( rval < 0 ) {
++			assert( syscall_sock->code(terrno) );
++		}
++		assert( syscall_sock->end_of_message() );
++
++		char const *fqu = syscall_sock->getFullyQualifiedUser();
++		dprintf(D_SYSCALLS, "\tSetEffectiveOwner\n");
++		dprintf(D_SYSCALLS, "\tauthenticated user = '%s'\n", fqu ? fqu : "");
++		dprintf(D_SYSCALLS, "\trequested owner = '%s'\n", owner.Value());
++		dprintf(D_SYSCALLS, "\trval %d, errno %d\n", rval, terrno);
++
++		return 0;
++	}
++
+ 	case CONDOR_NewCluster:
+ 	  {
+ 		int terrno;
+diff --git a/src/condor_schedd.V6/qmgmt_send_stubs.cpp b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+index 319c31a..64ce5d2 100644
+--- a/src/condor_schedd.V6/qmgmt_send_stubs.cpp
++++ b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+@@ -60,6 +60,34 @@ InitializeReadOnlyConnection( const char *owner )
+ }
+ 
+ int
++QmgmtSetEffectiveOwner(char const *o)
++{
++	int rval = -1;
++
++	CurrentSysCall = CONDOR_SetEffectiveOwner;
++
++	qmgmt_sock->encode();
++	assert( qmgmt_sock->code(CurrentSysCall) );
++	if( !o ) {
++		o = "";
++	}
++	assert( qmgmt_sock->put(o) );
++	assert( qmgmt_sock->end_of_message() );
++
++	qmgmt_sock->decode();
++	assert( qmgmt_sock->code(rval) );
++	if( rval < 0 ) {
++		assert( qmgmt_sock->code(terrno) );
++		assert( qmgmt_sock->end_of_message() );
++		errno = terrno;
++		return rval;
++	}
++	assert( qmgmt_sock->end_of_message() );
++
++	return 0;
++}
++
++int
+ NewCluster()
+ {
+ 	int	rval = -1;
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.cpp b/src/condor_schedd.V6/qmgr_job_updater.cpp
+index 1ad5d21..76f365a 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.cpp
++++ b/src/condor_schedd.V6/qmgr_job_updater.cpp
+@@ -53,6 +53,11 @@ QmgrJobUpdater::QmgrJobUpdater( ClassAd* job, const char* schedd_address )
+ 		EXCEPT("Job ad doesn't contain an %s attribute.", ATTR_PROC_ID);
+ 	}
+ 
++	// It is safest to read this attribute now, before the ad is
++	// potentially modified.  If it is missing, then SetEffectiveOwner
++	// will just be a no-op.
++	job_ad->LookupString(ATTR_OWNER, m_owner);
++
+ 	common_job_queue_attrs = NULL;
+ 	hold_job_queue_attrs = NULL;
+ 	evict_job_queue_attrs = NULL;
+@@ -198,7 +203,7 @@ QmgrJobUpdater::updateAttr( const char *name, const char *expr, bool updateMaste
+ 	if (updateMaster) {
+ 		p = 0;
+ 	}
+-	if( ConnectQ(schedd_addr,SHADOW_QMGMT_TIMEOUT) ) {
++	if( ConnectQ(schedd_addr,SHADOW_QMGMT_TIMEOUT,false,NULL,m_owner.Value()) ) {
+ 		if( SetAttribute(cluster,p,name,expr) < 0 ) {
+ 			err_msg = "SetAttribute() failed";
+ 			result = FALSE;
+@@ -304,7 +309,7 @@ QmgrJobUpdater::updateJob( update_t type )
+ 			 job_queue_attrs->contains_anycase(name)) ) {
+ 
+ 			if( ! is_connected ) {
+-				if( ! ConnectQ(schedd_addr, SHADOW_QMGMT_TIMEOUT) ) {
++				if( ! ConnectQ(schedd_addr, SHADOW_QMGMT_TIMEOUT, false, NULL, m_owner.Value()) ) {
+ 					return false;
+ 				}
+ 				is_connected = true;
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.h b/src/condor_schedd.V6/qmgr_job_updater.h
+index 5026ce9..95769a0 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.h
++++ b/src/condor_schedd.V6/qmgr_job_updater.h
+@@ -123,6 +123,7 @@ private:
+ 
+ 	ClassAd* job_ad;
+ 	char* schedd_addr;
++	MyString m_owner;
+ 
+ 	int cluster;
+ 	int proc;
+diff --git a/src/condor_schedd.V6/qmgr_lib_support.cpp b/src/condor_schedd.V6/qmgr_lib_support.cpp
+index 24c4ed9..89a45fa 100644
+--- a/src/condor_schedd.V6/qmgr_lib_support.cpp
++++ b/src/condor_schedd.V6/qmgr_lib_support.cpp
+@@ -36,7 +36,7 @@ ReliSock *qmgmt_sock = NULL;
+ static Qmgr_connection connection;
+ 
+ Qmgr_connection *
+-ConnectQ(const char *qmgr_location, int timeout, bool read_only, CondorError* errstack )
++ConnectQ(const char *qmgr_location, int timeout, bool read_only, CondorError* errstack, const char *effective_owner )
+ {
+ 	int		rval, ok;
+ 
+@@ -137,6 +137,25 @@ ConnectQ(const char *qmgr_location, int timeout, bool read_only, CondorError* er
+ 	if (username) free(username);
+ 	if (domain) free(domain);
+ 
++	if( effective_owner && *effective_owner ) {
++		if( QmgmtSetEffectiveOwner( effective_owner ) != 0 ) {
++			if( errstack ) {
++				errstack->pushf(
++					"Qmgmt",SCHEDD_ERR_SET_EFFECTIVE_OWNER_FAILED,
++					"SetEffectiveOwner(%s) failed with errno=%d: %s.",
++					effective_owner, errno, strerror(errno) );
++			}
++			else {
++				dprintf( D_ALWAYS,
++						 "SetEffectiveOwner(%s) failed with errno=%d: %s.\n",
++						 effective_owner, errno, strerror(errno) );
++			}
++			delete qmgmt_sock;
++			qmgmt_sock = NULL;
++			return 0;
++		}
++	}
++
+ 	return &connection;
+ }
+ 
+-- 
+1.6.0.4
+
