@@ -1,0 +1,188 @@
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index c028ab7..23965ac 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -844,6 +844,16 @@ extern const char * const ATTR_TRANSFER_QUEUE_NUM_WAITING_TO_DOWNLOAD;
+ extern const char * const ATTR_TRANSFER_QUEUE_UPLOAD_WAIT_TIME;
+ extern const char * const ATTR_TRANSFER_QUEUE_DOWNLOAD_WAIT_TIME;
+ 
++// Introduced for configurable sorting of accounting groups
++extern const char* const ATTR_QUOTA;
++extern const char* const ATTR_REQUESTED;
++extern const char* const ATTR_ALLOCATED;
++extern const char* const ATTR_USAGE;
++extern const char* const ATTR_PRIORITY;
++extern const char* const ATTR_PRIORITY_FACTOR;
++extern const char* const ATTR_SORT_EXPR;
++extern const char* const ATTR_SORT_EXPR_STRING;
++
+ // Enumerate the ones that can't be constant strings..
+ typedef enum
+ {
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index deb61dd..4f2d175 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -943,22 +943,9 @@ void round_for_precision(double& x) {
+ }
+ 
+ 
+-double starvation_ratio(double usage, double allocated) {
+-    return (allocated > 0) ? (usage / allocated) : DBL_MAX;
+-}
+-
+-struct starvation_order {
++struct group_order {
+     bool operator()(const GroupEntry* a, const GroupEntry* b) const {
+-        // "starvation order" is ordering by the ratio usage/allocated, so that
+-        // most-starved groups are allowed to negotiate first, to minimize group
+-        // starvation over time.
+-        double sa = starvation_ratio(a->usage, a->allocated);
+-        double sb = starvation_ratio(b->usage, b->allocated);
+-        if (sa < sb) return true;
+-        if (sa > sb) return false;
+-        // If ratios are the same, sub-order by group priority.
+-        // Most likely to be relevant when comparing groups with zero usage.
+-        return (a->priority < b->priority);
++        return a->sort_key < b->sort_key;
+     }
+ };
+ 
+@@ -1272,9 +1259,31 @@ negotiationTime ()
+                 ninc = param_double("HFS_ROUND_ROBIN_RATE", DBL_MAX, 1.0, DBL_MAX);
+             }
+ 
++            // fill in sorting classad attributes for configurable sorting
++            for (vector<GroupEntry*>::iterator j(hgq_groups.begin());  j != hgq_groups.end();  ++j) {
++                GroupEntry* group = *j;
++                ClassAd* ad = group->sort_ad;
++                ad->Assign(ATTR_QUOTA, group->quota);
++                ad->Assign(ATTR_REQUESTED, group->requested);
++                ad->Assign(ATTR_ALLOCATED, group->allocated);
++                ad->Assign(ATTR_USAGE, accountant.GetWeightedResourcesUsed(group->name));
++                ad->Assign(ATTR_PRIORITY, accountant.GetPriority(group->name));
++                ad->Assign(ATTR_PRIORITY_FACTOR, accountant.GetPriorityFactor(group->name));
++                // Do this after all attributes are filled in
++                float v = 0;
++                if (!ad->LookupFloat(ATTR_SORT_EXPR, v)) {
++                    v = FLT_MAX;
++                    string e;
++                    ad->LookupString(ATTR_SORT_EXPR_STRING, e);
++                    dprintf(D_ALWAYS, "WARNING: sort expression \"%s\" failed to evaluate to floating point for group %s - defaulting to %g\n",
++                            e.c_str(), group->name.c_str(), v);
++                }
++                group->sort_key = v;
++            }
++
+             // present accounting groups for negotiation in "starvation order":
+             vector<GroupEntry*> negotiating_groups(hgq_groups);
+-            std::sort(negotiating_groups.begin(), negotiating_groups.end(), starvation_order());
++            std::sort(negotiating_groups.begin(), negotiating_groups.end(), group_order());
+ 
+             // This loop implements "weighted round-robin" behavior to gracefully handle case of multiple groups competing
+             // for same subset of available slots.  It gives greatest weight to groups with the greatest difference 
+@@ -1290,8 +1299,7 @@ negotiationTime ()
+                 for (vector<GroupEntry*>::iterator j(negotiating_groups.begin());  j != negotiating_groups.end();  ++j) {
+                     GroupEntry* group = *j;
+ 
+-                    dprintf(D_FULLDEBUG, "Group %s - starvation= %g (%g/%g)  prio= %g\n", 
+-                            group->name.c_str(), starvation_ratio(group->usage, group->allocated), group->usage, group->allocated, group->priority);
++                    dprintf(D_FULLDEBUG, "Group %s - sortkey= %g\n", group->name.c_str(), group->sort_key);
+ 
+                     if (group->allocated <= 0) {
+                         dprintf(D_ALWAYS, "Group %s - skipping, zero slots allocated\n", group->name.c_str());
+@@ -1537,6 +1545,20 @@ void Matchmaker::hgq_construct_tree() {
+             grpq.push_back(*j);
+         }
+     }
++
++    string group_sort_expr = param("GROUP_SORT_EXPR");
++    ExprTree* test_sort_expr = NULL;
++    if (ParseClassAdRvalExpr(group_sort_expr.c_str(), test_sort_expr)) {
++        EXCEPT("Failed to parse GROUP_SORT_EXPR = %s\n", group_sort_expr.c_str());
++    }
++    delete test_sort_expr;
++    for (vector<GroupEntry*>::iterator j(hgq_groups.begin());  j != hgq_groups.end();  ++j) {
++        GroupEntry* group = *j;
++        group->sort_ad->Assign(ATTR_NAME, group->name);
++        // group-specific values might be supported in the future:
++        group->sort_ad->AssignExpr(ATTR_SORT_EXPR, group_sort_expr.c_str());
++        group->sort_ad->Assign(ATTR_SORT_EXPR_STRING, group_sort_expr);
++    }
+ }
+ 
+ 
+@@ -1990,7 +2012,8 @@ GroupEntry::GroupEntry():
+     subtree_rr_time(0),
+     parent(NULL),
+     children(),
+-    chmap()
++    chmap(),
++    sort_ad(new ClassAd())
+ {
+ }
+ 
+@@ -2011,6 +2034,8 @@ GroupEntry::~GroupEntry() {
+ 
+         delete submitterAds;
+     }
++
++    if (NULL != sort_ad) delete sort_ad;
+ }
+ 
+ 
+diff --git a/src/condor_negotiator.V6/matchmaker.h b/src/condor_negotiator.V6/matchmaker.h
+index 95a0193..89a8579 100644
+--- a/src/condor_negotiator.V6/matchmaker.h
++++ b/src/condor_negotiator.V6/matchmaker.h
+@@ -85,6 +85,10 @@ struct GroupEntry {
+     GroupEntry* parent;
+     vector<GroupEntry*> children;
+     map<string, size_type, Accountant::ci_less> chmap;
++
++    // attributes for configurable sorting
++    ClassAd* sort_ad;
++    double sort_key;
+ };
+ 
+ 
+diff --git a/src/condor_utils/condor_attributes.cpp b/src/condor_utils/condor_attributes.cpp
+index 4c1b09e..77256f6 100644
+--- a/src/condor_utils/condor_attributes.cpp
++++ b/src/condor_utils/condor_attributes.cpp
+@@ -913,3 +913,12 @@ const char * const ATTR_TRANSFER_QUEUE_NUM_WAITING_TO_UPLOAD = "TransferQueueNum
+ const char * const ATTR_TRANSFER_QUEUE_NUM_WAITING_TO_DOWNLOAD = "TransferQueueNumWaitingToDownload";
+ const char * const ATTR_TRANSFER_QUEUE_UPLOAD_WAIT_TIME = "TransferQueueUploadWaitTime";
+ const char * const ATTR_TRANSFER_QUEUE_DOWNLOAD_WAIT_TIME = "TransferQueueDownloadWaitTime";
++
++const char* const ATTR_QUOTA = "Quota";
++const char* const ATTR_REQUESTED = "Requested";
++const char* const ATTR_ALLOCATED = "Allocated";
++const char* const ATTR_USAGE = "Usage";
++const char* const ATTR_PRIORITY = "Priority";
++const char* const ATTR_PRIORITY_FACTOR = "PriorityFactor";
++const char* const ATTR_SORT_EXPR = "SortExpr";
++const char* const ATTR_SORT_EXPR_STRING = "SortExprString";
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index f3eb419..b4771e9 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -10168,3 +10168,18 @@ url=
+ tags=shadow
+ id=602
+ 
++[GROUP_SORT_EXPR]
++aliases=
++default=ifThenElse(Allocated>0.0,Usage/Allocated,3.40282e+38)
++version=0.0.0
++range=.*
++state=default
++type=string
++is_macro=false
++reconfig=true
++customization=seldom
++friendly_name=Accounting Group Sorting Expression
++usage=
++url=
++tags=negotiator
++id=666
