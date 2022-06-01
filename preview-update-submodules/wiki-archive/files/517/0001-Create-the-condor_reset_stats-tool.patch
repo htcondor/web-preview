@@ -1,0 +1,986 @@
+From 19ba679b5e301e669b04f9936b8869afc8d24c55 Mon Sep 17 00:00:00 2001
+From: "Nathan W. Panike" <nwp@cs.wisc.edu>
+Date: Fri, 6 Jan 2012 10:27:23 -0600
+Subject: [PATCH] Create the condor_reset_stats tool
+To: johnkn@cs.wisc.edu
+
+-   Declare the functions for resetting statistics used in DaemonCore.
+-   Define the register_stats_object() and reset_stats functions for DC.
+-   Register the DC_RESET_STATS command with DaemonCore.
+-   Define the ForceTick method for DC statistics.
+-   Define the value of DC_RESET_STATS.
+-   Write an adapter class so that we talk to DC for resetting (in the master).
+-   Declare ResetStats() methods in Daemons class and daemon class.
+-   Master will iterate over its daemons, resetting statistics.  It isn't clear
+to me yet how to implement it correctly.
+-   Register with daemonCore and reset the statistics.
+-   Define the ForceTick() method for scheduler statistics.
+-   Declare the ForceTick() method in scheduler statistics. This method is
+supposed to clear the recent statistics.
+-   Declare the reset_stats method in the Scheduler class.
+-   Tell cmake to create condor_reset_stats by linking.
+-   Make the tool take the DC_RESET_STATS command.
+-   Declare a reset_stats() method in the Service object.  This is needed so
+that DaemonCore can call a reset_stats function, and there will be one
+available.
+-   Define generic_stats_force_Tick() and ClearRecent().  These are supposed to
+go hand-in-hand.
+-   The 'documentation' file seems to be unused.  Let's delete it.
+-   Declare generic_stats_force_Tick. This function is a way to force a tick
+and advance the buffer.
+-   Get rid of ClearRecent; add an argument to Clear()
+
+===GT=== #2732
+---
+Hi TJ,
+
+Here is my patch.   You can fetch the change directly in git with the following
+commands:
+
+git fetch /p/condor/workspaces/nwp/condor_src.git +refs/heads/V7_7-condor_reset_stats-branch:refs/remotes/nwp/V7_7-condor_reset_stats-branch
+git checkout -b V7_7-condor_reset_stats-branch nwp/V7_7-condor_reset_stats-branch
+
+You can also save this message and apply it with 'git am'.
+
+Nathan Panike
+
+ src/condor_daemon_core.V6/condor_daemon_core.h |    9 ++-
+ src/condor_daemon_core.V6/daemon_core.cpp      |   26 ++++++
+ src/condor_daemon_core.V6/daemon_core_main.cpp |    3 +
+ src/condor_daemon_core.V6/documentation        |    9 --
+ src/condor_daemon_core.V6/self_monitor.cpp     |   18 ++++-
+ src/condor_includes/condor_commands.h          |    3 +-
+ src/condor_master.V6/master.cpp                |   14 +++-
+ src/condor_master.V6/master.h                  |    6 +-
+ src/condor_master.V6/masterDaemon.cpp          |   16 ++++-
+ src/condor_schedd.V6/schedd.cpp                |    7 ++
+ src/condor_schedd.V6/schedd_stats.cpp          |   24 +++++-
+ src/condor_schedd.V6/schedd_stats.h            |    3 +-
+ src/condor_schedd.V6/scheduler.h               |    1 +
+ src/condor_tools/CMakeLists.txt                |    2 +-
+ src/condor_tools/tool.cpp                      |   20 ++++-
+ src/condor_utils/dc_service.h                  |    5 +
+ src/condor_utils/generic_stats.cpp             |  101 ++++++++++++++++--------
+ src/condor_utils/generic_stats.h               |   87 ++++++++++++---------
+ src/defrag/defrag_stats.cpp                    |    6 +-
+ src/defrag/defrag_stats.h                      |    2 +-
+ 20 files changed, 259 insertions(+), 103 deletions(-)
+ delete mode 100644 src/condor_daemon_core.V6/documentation
+
+diff --git a/src/condor_daemon_core.V6/condor_daemon_core.h b/src/condor_daemon_core.V6/condor_daemon_core.h
+index 4cbdd8c..ec4fe6e 100644
+--- a/src/condor_daemon_core.V6/condor_daemon_core.h
++++ b/src/condor_daemon_core.V6/condor_daemon_core.h
+@@ -1517,8 +1517,9 @@ class DaemonCore : public Service
+ 	   //~Stats();
+ 	   void Init();
+        void Reconfig();
+-	   void Clear();
++	   void Clear(bool clear_all);
+ 	   time_t Tick(time_t now=0); // call this when time may have changed to update StatsLastUpdateTime, etc.
++	   void ForceTick();
+ 	   void SetWindowSize(int window);
+ 	   void Publish(ClassAd & ad) const;
+ 	   void Publish(ClassAd & ad, int flags) const;
+@@ -1532,7 +1533,11 @@ class DaemonCore : public Service
+        double AddRuntimeSample(const char * name, int as, double before);
+ 
+ 	} dc_stats;
+-
++	// The pointer here must never be a DaemonCore object
++	// or you get an infinite recursive loop when you call
++	// reset_stats
++	void register_stats_object(Service* s); // For resetting.
++	int reset_stats(int,Stream*);
+   private:      
+ 
+ 		// do and our parents/children want/have a udp comment socket?
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index cbd1d3d..4acabef 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -11470,3 +11470,29 @@ void DaemonCore::send_invalidate_session ( const char* sinful, const char* sessi
+ 
+ 	daemon->sendMsg( msg.get() );
+ }
++
++Service* stats_object;
++
++void DaemonCore::register_stats_object(Service* s)
++{
++	static int attempts = 0;
++	if( attempts++ <= 0 ) {
++		stats_object = s;
++	} else {
++		EXCEPT("Attempt to initialize more than one stats object\n");
++	}
++}
++
++int DaemonCore::reset_stats(int,Stream* stream )
++{
++	if( !stream->end_of_message() ) {
++		dprintf( D_ALWAYS, "reset_stats: failed to read end of message\n");
++		return FALSE;
++	}
++	dc_stats.ForceTick();
++	if(stats_object) {
++		dprintf( D_ALWAYS, "Resetting statistics\n");
++		stats_object->reset_stats();
++	}
++	return TRUE;
++}
+diff --git a/src/condor_daemon_core.V6/daemon_core_main.cpp b/src/condor_daemon_core.V6/daemon_core_main.cpp
+index 0d3a94a..8e932b3 100644
+--- a/src/condor_daemon_core.V6/daemon_core_main.cpp
++++ b/src/condor_daemon_core.V6/daemon_core_main.cpp
+@@ -2341,6 +2341,9 @@ int dc_main( int argc, char** argv )
+ 								  (CommandHandler)time_offset_receive_cedar_stub,
+ 								  "time_offset_cedar_stub", 0, DAEMON );
+ 
++	daemonCore->Register_Command( DC_RESET_STATS, "DC_RESET_STATS",
++		(CommandHandlercpp)&DaemonCore::reset_stats, "DaemonCore::reset_stats",
++		daemonCore, ADMINISTRATOR );
+ 	// Call daemonCore's reconfig(), which reads everything from
+ 	// the config file that daemonCore cares about and initializes
+ 	// private data members, etc.
+diff --git a/src/condor_daemon_core.V6/documentation b/src/condor_daemon_core.V6/documentation
+deleted file mode 100644
+index fef8620..0000000
+--- a/src/condor_daemon_core.V6/documentation
++++ /dev/null
+@@ -1,9 +0,0 @@
+-/** @name Condor Daemon Core API
+-    <hr>
+-    Explain DC here Todd.
+-*/
+-//@{
+-  //@Include: condor_daemon_core.h
+-  //@Include: condor_timer_manager.h
+-  //@Include: condor_ipverify.h
+-//@}
+diff --git a/src/condor_daemon_core.V6/self_monitor.cpp b/src/condor_daemon_core.V6/self_monitor.cpp
+index c5506c7..091c3e9 100644
+--- a/src/condor_daemon_core.V6/self_monitor.cpp
++++ b/src/condor_daemon_core.V6/self_monitor.cpp
+@@ -171,7 +171,7 @@ void DaemonCore::Stats::SetWindowSize(int window)
+ //
+ void DaemonCore::Stats::Init() 
+ { 
+-   Clear();
++   Clear(true);
+    this->RecentWindowMax = dc_stats_window_quantum; 
+    this->PublishFlags    = -1;
+ 
+@@ -210,14 +210,14 @@ void DaemonCore::Stats::Init()
+    DC_STATS_PUB_DEBUG(Pool, PumpCycle,     IF_VERBOSEPUB);
+ }
+ 
+-void DaemonCore::Stats::Clear()
++void DaemonCore::Stats::Clear(bool clear_all)
+ {
+    this->InitTime = time(NULL);
+    this->StatsLifetime = 0;
+    this->StatsLastUpdateTime = 0;
+    this->RecentStatsTickTime = 0;
+    this->RecentStatsLifetime = 0;
+-   Pool.Clear();
++   Pool.Clear(clear_all);
+ }
+ 
+ void DaemonCore::Stats::Publish(ClassAd & ad) const
+@@ -296,6 +296,18 @@ time_t DaemonCore::Stats::Tick(time_t now)
+    return now;
+ }
+ 
++void DaemonCore::Stats::ForceTick()
++{
++	generic_stats_force_Tick(
++		this->RecentWindowMax,   // RecentMaxTime
++		this->InitTime,
++		this->StatsLastUpdateTime,
++		this->RecentStatsTickTime,
++		this->StatsLifetime,
++		this->RecentStatsLifetime);
++	Pool.Advance(1);
++	Pool.Clear(true);
++}
+ 
+ void DaemonCore::Stats::AddToProbe(const char * name, int val)
+ {
+diff --git a/src/condor_includes/condor_commands.h b/src/condor_includes/condor_commands.h
+index 3779da0..4b6150f 100644
+--- a/src/condor_includes/condor_commands.h
++++ b/src/condor_includes/condor_commands.h
+@@ -358,6 +358,7 @@ const int SHARED_PORT_PASS_SOCK = 76;
+ #define DC_TIME_OFFSET      (DC_BASE+17)
+ #define DC_PURGE_LOG        (DC_BASE+18)
+ #define DC_SHARE_SOCK       (DC_BASE+19)
++#define DC_RESET_STATS      (DC_BASE+20)
+ 
+ /*
+ *** Log type supported by DC_FETCH_LOG
+@@ -415,7 +416,7 @@ const int SHARED_PORT_PASS_SOCK = 76;
+ */
+ #define SQUAWK 72000
+ 
+-/*
++/* 
+ *** Commands used by the gridmanager daemon
+ */
+ #define DCGRIDMANAGER_BASE 73000
+diff --git a/src/condor_master.V6/master.cpp b/src/condor_master.V6/master.cpp
+index 2d514fa..141eb84 100644
+--- a/src/condor_master.V6/master.cpp
++++ b/src/condor_master.V6/master.cpp
+@@ -93,6 +93,7 @@ int	handle_subsys_command(int, Stream *);
+ int     handle_shutdown_program( int cmd, Stream* stream );
+ void	time_skip_handler(void * /*data*/, int delta);
+ void	restart_everyone();
++void	reset_stats_everyone();
+ 
+ extern "C" int	DoCleanup(int,int,const char*);
+ 
+@@ -218,6 +219,17 @@ DoCleanup(int,int,const char*)
+ 	}
+ }
+ 
++class StatsService : public Service {
++public:
++	void reset_stats();
++};
++
++StatsService stats_service;
++
++void StatsService::reset_stats()
++{
++	daemons.ResetStats();
++}
+ 
+ void
+ main_init( int argc, char* argv[] )
+@@ -350,7 +362,7 @@ main_init( int argc, char* argv[] )
+ 	*/
+ 
+ 	daemonCore->RegisterTimeSkipCallback(time_skip_handler,0);
+-
++	daemonCore->register_stats_object(&stats_service);
+ 	_EXCEPT_Cleanup = DoCleanup;
+ 
+ #if !defined(WIN32)
+diff --git a/src/condor_master.V6/master.h b/src/condor_master.V6/master.h
+index e6bc796..52ceb99 100644
+--- a/src/condor_master.V6/master.h
++++ b/src/condor_master.V6/master.h
+@@ -80,7 +80,7 @@ public:
+ 	void	KillFamily( void );
+ 	void	Reconfig();
+ 	void	InitParams();
+-
++	
+ 	int		SetupController( void );
+ 	int		RegisterControllee( class daemon * );
+ 
+@@ -91,7 +91,7 @@ public:
+ 		// true if this daemon needs to run right up until just before
+ 		// the master shuts down (e.g. shared port server)
+ 	bool OnlyStopWhenMasterStops() { return m_only_stop_when_master_stops; }
+-
++	void ResetStats();
+ private:
+ 
+ 	int		runs_on_this_host();
+@@ -207,7 +207,7 @@ public:
+ 
+ 	class daemon*	FindDaemon( daemon_t dt );
+ 	class daemon*	FindDaemon( const char * );
+-
++	void ResetStats();
+ private:
+ 	std::map<std::string, class daemon*> daemon_ptr;
+ 	std::map<int, class daemon*> exit_allowed;
+diff --git a/src/condor_master.V6/masterDaemon.cpp b/src/condor_master.V6/masterDaemon.cpp
+index 4179f1c..b4fa469 100644
+--- a/src/condor_master.V6/masterDaemon.cpp
++++ b/src/condor_master.V6/masterDaemon.cpp
+@@ -1340,7 +1340,6 @@ daemon::Reconfig()
+ 	Kill( SIGHUP );
+ }
+ 
+-
+ void
+ daemon::InitParams()
+ {
+@@ -1575,6 +1574,12 @@ daemon::RegisterControllee( class daemon *controllee )
+ 	return 0;
+ }
+ 
++// TEMPTEMP Not sure what to do here
++void
++daemon::ResetStats()
++{
++	
++}
+ 
+ ///////////////////////////////////////////////////////////////////////////
+ //  Daemons Class
+@@ -2514,3 +2519,12 @@ Daemons::CancelRestartTimers( void )
+ 		iter->second->CancelRestartTimers();
+ 	}
+ }
++
++void
++Daemons::ResetStats( void )
++{
++	for(std::map<std::string,class daemon*>::iterator iter = daemon_ptr.begin();
++			iter != daemon_ptr.end(); ++iter) {
++		iter->second->ResetStats();
++	}
++}
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 1b1d1e5..ce39720 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -10594,6 +10594,7 @@ Scheduler::Register()
+ 	daemonCore->Register_Command( DUMP_STATE, "DUMP_STATE",
+ 								  (CommandHandlercpp)&Scheduler::dumpState,
+ 								  "dumpState", this, READ  );
++	daemonCore->register_stats_object(this);
+ 
+ 	daemonCore->Register_CommandWithPayload( GET_MYPROXY_PASSWORD, "GET_MYPROXY_PASSWORD",
+ 								  (CommandHandler)&get_myproxy_password_handler,
+@@ -13555,3 +13556,9 @@ Scheduler::clear_dirty_job_attrs_handler(int /*cmd*/, Stream *stream)
+ 	MarkJobClean( cluster_id, proc_id );
+ 	return TRUE;
+ }
++
++void
++Scheduler::reset_stats()
++{
++	stats.ForceTick();
++}
+diff --git a/src/condor_schedd.V6/schedd_stats.cpp b/src/condor_schedd.V6/schedd_stats.cpp
+index 2b43419..9ce50c2 100644
+--- a/src/condor_schedd.V6/schedd_stats.cpp
++++ b/src/condor_schedd.V6/schedd_stats.cpp
+@@ -85,7 +85,7 @@ void ScheddStatistics::Init()
+    JobsCompletedRuntimes.set_levels(lifes, COUNTOF(lifes));
+    JobsBadputRuntimes.set_levels(lifes, COUNTOF(lifes));
+ 
+-   Clear();
++   Clear(true);
+    // default window size to 1 quantum, we may set it to something else later.
+    this->RecentWindowMax = schedd_stats_window_quantum;
+ 
+@@ -134,14 +134,14 @@ void ScheddStatistics::Init()
+    //SCHEDD_STATS_PUB_DEBUG(Pool, JobsCompletedSizes,  IF_BASICPUB);
+ }
+ 
+-void ScheddStatistics::Clear()
++void ScheddStatistics::Clear(bool clear_all)
+ {
+    this->InitTime = time(NULL);
+    this->StatsLifetime = 0;
+    this->StatsLastUpdateTime = 0;
+    this->RecentStatsTickTime = 0;
+    this->RecentStatsLifetime = 0;
+-   Pool.Clear();
++   Pool.Clear(clear_all);
+ }
+ 
+ // call this when time may have changed to update StatsUpdateTime, etc.
+@@ -170,6 +170,24 @@ time_t ScheddStatistics::Tick(time_t now)
+    return now;
+ }
+ 
++// This enables one to lie about statistics by
++// increasing the sampling rate.  This should not matter, as this
++// code should only be used in testing
++
++void ScheddStatistics::ForceTick()
++{   
++   generic_stats_force_Tick(
++      this->RecentWindowMax,   // RecentMaxTime
++      this->InitTime,
++      this->StatsLastUpdateTime,
++      this->RecentStatsTickTime,
++      this->StatsLifetime,
++      this->RecentStatsLifetime);
++   Pool.Clear(true);
++   Clear(true);
++   Pool.Advance(1);
++}
++
+ void ScheddStatistics::Publish(ClassAd & ad) const
+ {
+    this->Publish(ad, this->PublishFlags);
+diff --git a/src/condor_schedd.V6/schedd_stats.h b/src/condor_schedd.V6/schedd_stats.h
+index 6f4df7e..0a8edc5 100644
+--- a/src/condor_schedd.V6/schedd_stats.h
++++ b/src/condor_schedd.V6/schedd_stats.h
+@@ -92,8 +92,9 @@ typedef struct ScheddStatistics {
+    // methods
+    //
+    void Init();
+-   void Clear();
++   void Clear(bool clear_all);
+    time_t Tick(time_t now=0); // call this when time may have changed to update StatsUpdateTime, etc.
++   void ForceTick();
+    void Reconfig();
+    void SetWindowSize(int window);
+    void Publish(ClassAd & ad) const;
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index 01b5468..1d9cf02 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -500,6 +500,7 @@ class Scheduler : public Service
+ 		// hashtable used to hold matching ClassAds for Globus Universe
+ 		// jobs which desire matchmaking.
+ 	HashTable <PROC_ID, ClassAd *> *resourcesByProcID;
++	void reset_stats(); 
+   
+ private:
+ 	
+diff --git a/src/condor_tools/CMakeLists.txt b/src/condor_tools/CMakeLists.txt
+index fc0cd28..0ef4baf 100644
+--- a/src/condor_tools/CMakeLists.txt
++++ b/src/condor_tools/CMakeLists.txt
+@@ -48,7 +48,7 @@ condor_exe(condor_store_cred "store_cred_main.cpp" ${C_SBIN} "${TOOL_LINK_LIBS}"
+ condor_exe(condor_vacate "tool.cpp" "${C_BIN}" "${TOOL_LINK_LIBS}" OFF)
+ condor_exe(condor_on "tool.cpp" "${C_SBIN}" "${TOOL_LINK_LIBS}" OFF)
+ 
+-clone_install(condor_on "${C_SBIN}" "condor_off;condor_restart;condor_reconfig;condor_set_shutdown" "${C_SBIN}")
++clone_install(condor_on "${C_SBIN}" "condor_reset_stats;condor_off;condor_restart;condor_reconfig;condor_set_shutdown" "${C_SBIN}")
+ if (WANT_FULL_DEPLOYMENT)
+     clone_install(condor_on "${C_SBIN}" "condor_set_shutdown" "${C_SBIN}")
+ endif(WANT_FULL_DEPLOYMENT)
+diff --git a/src/condor_tools/tool.cpp b/src/condor_tools/tool.cpp
+index b788868..a1bf681 100644
+--- a/src/condor_tools/tool.cpp
++++ b/src/condor_tools/tool.cpp
+@@ -110,6 +110,8 @@ usage( const char *str, int iExitCode )
+ 	}
+ 	fprintf( stderr, "\nwhere [general-options] can be zero or more of:\n" );
+ 	fprintf( stderr, "    -help\t\tgives this usage information\n" );
++	fprintf( stderr, "    -debug\t\tCauses debugging information to be sent to stderr,\n"
++                   "          \t\tbased on the value of the configuration variable TOOL_DEBUG\n");
+ 	fprintf( stderr, "    -version\t\tprints the version\n" );
+ 	fprintf( stderr, 
+ 			 "    -pool hostname\tuse the given central manager to find daemons\n" );
+@@ -215,6 +217,13 @@ usage( const char *str, int iExitCode )
+ 				 "is a developer-only command used to talk to daemons.", 
+ 				 str );
+ 		break;
++	case DC_RESET_STATS:
++		fprintf(stderr, " %s\n"
++                                " causes the daemon to tick to reset recent statistics."
++				" No jobs are affected.  Lifetime statistics are not"
++			  	" affected.\n",str);
++		fprintf(stderr, " This command is targeted at developers for testing.\n");	
++		break;
+ 	default:
+ 		fprintf( stderr, "  Valid commands are:\n%s%s",
+ 				 "\toff, on, restart, reconfig, reschedule, ",
+@@ -293,6 +302,8 @@ cmdToStr( int c )
+ 		return "Squawk";
+ 	case SET_SHUTDOWN_PROGRAM:
+ 		return "Set-Shutdown-Program";
++	case DC_RESET_STATS:
++		return "Reset-Recent-Statistics";
+ 	}
+ 	fprintf( stderr, "Unknown Command (%d) in cmdToStr()\n", c );
+ 	exit(1);
+@@ -403,14 +414,16 @@ main( int argc, char *argv[] )
+ 		takes_subsys = 1;
+ 	} else if ( !strncmp_auto( cmd_str, "_set_shutdown" ) ) {
+ 		cmd = SET_SHUTDOWN_PROGRAM;
++	} else if ( !strncmp_auto( cmd_str, "_reset_stats" ) ) {
++		cmd = DC_RESET_STATS;
++		takes_subsys = 1;
+ 	} else {
+ 		fprintf( stderr, "ERROR: unknown command %s\n", MyName );
+ 		usage( "condor" );
+ 	}
+ 	
+ 		// First, deal with options (begin with '-')
+-	tmp = argv;
+-	for( tmp++; *tmp; tmp++ ) {
++	for( tmp = &argv[1]; *tmp; tmp++ ) {
+ 		if( (*tmp)[0] != '-' ) {
+ 				// If it doesn't start with '-', skip it
+ 			continue;
+@@ -1522,7 +1535,8 @@ doCommand( Daemon* d )
+ 			}
+ 			break;
+ 		}
+-
++		case DC_RESET_STATS:
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/src/condor_utils/dc_service.h b/src/condor_utils/dc_service.h
+index 444ede8..72c562e 100644
+--- a/src/condor_utils/dc_service.h
++++ b/src/condor_utils/dc_service.h
+@@ -62,6 +62,11 @@ class Service {
+     */
+ 	virtual ~Service() {}
+ 
++    /** We declare this function here so that all daemons will have a reset_stats
++        function.  If it is not overloaded, the call to reset_stats is basically a
++        noop.
++    */
++	virtual void reset_stats() {}
+     /** Constructor.  Since Service is an abstract class, we'll make
+ 	  its constructor a protected method to prevent outsiders from
+ 	  instantiating Service objects.
+diff --git a/src/condor_utils/generic_stats.cpp b/src/condor_utils/generic_stats.cpp
+index 088bfa0..3ea5bdf 100644
+--- a/src/condor_utils/generic_stats.cpp
++++ b/src/condor_utils/generic_stats.cpp
+@@ -180,6 +180,44 @@ int generic_stats_Tick(
+    return cTicks;
+ }
+ 
++// note that the caller must insure that all 5 time_t values are preserved
++// between calls to this function.  
++//
++void generic_stats_force_Tick(
++   int    RecentMaxTime,
++   time_t InitTime,
++   time_t & LastUpdateTime,
++   time_t & RecentTickTime,
++   time_t & Lifetime,
++   time_t & RecentLifetime)
++{
++   time_t now = time(NULL);
++
++   // when working from freshly initialized stats, the first Tick should not Advance.
++   //
++   if (LastUpdateTime == 0)
++      {
++      LastUpdateTime = now;
++      RecentTickTime = now;
++      RecentLifetime = 0;
++      return; 
++      }
++
++   // whenever 'now' changes, we want to check to see how much time has passed
++   // since the last Advance, and if that time exceeds the quantum, we advance
++   // the recent buffers and update the PrevUpdateTime
++   //
++   if (LastUpdateTime != now) 
++      {
++         RecentTickTime = now;
++
++         time_t recent_time = (int)(RecentLifetime + now - LastUpdateTime);
++         RecentLifetime = (recent_time < RecentMaxTime) ? recent_time : RecentMaxTime;
++         LastUpdateTime = now;
++      }
++   Lifetime = now - InitTime;
++}
++
+ // parse a configuration string in the form "ALL:opt, CAT:opt, ALT:opt"
+ // where opt can be one or more of 
+ //   0-3   verbosity level, 0 is least and 3 is most. default is usually 1
+@@ -340,7 +378,7 @@ void stats_recent_counter_timer::PublishDebug(ClassAd & ad, const char * pattr,
+ // creates a probe that does full statistical sampling (min,max,avg,std)
+ // with an overall value and a recent-window'd value.
+ //
+-void Probe::Clear() 
++void Probe::Clear(bool /* clear_all */) 
+ {
+    Count = 0; // value is use to store the count of samples.
+    Max = std::numeric_limits<double>::min();
+@@ -915,7 +953,7 @@ void StatisticsPool::InsertProbe (
+    FN_STATS_ENTRY_SETRECENTMAX fnsrm,
+    FN_STATS_ENTRY_DELETE  fndel) // Destructor
+ {
+-   pubitem item = { unit, flags, fOwned, probe, pattr, fnpub, fnunp };
++   pubitem item = { unit, flags, fOwned, probe, pattr, fnpub, fnunp, fnadv, fnclr };
+    pub.insert(name, item);
+ 
+    poolitem pi = { unit, fOwned, fnadv, fnclr, fnsrm, fndel };
+@@ -930,9 +968,11 @@ void StatisticsPool::InsertPublish (
+    const char * pattr,      // publish attribute name
+    int          flags,      // flags to control publishing
+    FN_STATS_ENTRY_PUBLISH fnpub, // publish method
+-   FN_STATS_ENTRY_UNPUBLISH fnunp) // unpublish method
++   FN_STATS_ENTRY_UNPUBLISH fnunp, // unpublish method
++   FN_STATS_ENTRY_ADVANCE fnadv, // Advance method
++   FN_STATS_ENTRY_CLEAR   fnclr)  // Clear method
+ {
+-   pubitem item = { unit, flags, fOwned, probe, pattr, fnpub, fnunp };
++   pubitem item = { unit, flags, fOwned, probe, pattr, fnpub, fnunp, fnadv, fnclr };
+    pub.insert(name, item);
+ }
+ 
+@@ -955,39 +995,32 @@ int64_t StatisticsPool::SetSample(const char * probe_name, int64_t sample)
+ 
+ int StatisticsPool::Advance(int cAdvance)
+ {
+-   if (cAdvance <= 0)
+-      return cAdvance;
+-
+-   void* pitem;
+-   poolitem item;
+-   pool.startIterations();
+-   while (pool.iterate(pitem,item))
+-      {
+-      if (pitem && item.Advance) {
+-         stats_entry_base * probe = (stats_entry_base *)pitem;
+-         (probe->*(item.Advance))(cAdvance);
+-         }
+-      }
+-   return cAdvance;
+-}
+-
+-void StatisticsPool::Clear()
+-{
+-   void* pitem;
+-   poolitem item;
+-   pool.startIterations();
+-   while (pool.iterate(pitem,item))
+-      {
+-      if (pitem && item.Clear) {
+-         stats_entry_base * probe = (stats_entry_base *)pitem;
+-         (probe->*(item.Clear))();
+-         }
+-      }
++	if (cAdvance <= 0)
++		return cAdvance;
++
++	void* pitem;
++	poolitem item;
++	pool.startIterations();
++	while (pool.iterate(pitem,item)) {
++		if (pitem && item.Advance) {
++			stats_entry_base * probe = (stats_entry_base *)pitem;
++			(probe->*(item.Advance))(cAdvance);
++		}
++	}
++	return cAdvance;
+ }
+ 
+-void StatisticsPool::ClearRecent()
++void StatisticsPool::Clear(bool clear_all)
+ {
+-   EXCEPT("StatisticsPool::ClearRecent has not been implemented");
++	void* pitem;
++	poolitem item;
++	pool.startIterations();
++	while (pool.iterate(pitem,item)) {
++		if (pitem && item.Clear) {
++			stats_entry_base * probe = (stats_entry_base *)pitem;
++			(probe->*(item.Clear))(clear_all);
++		}
++	}
+ }
+ 
+ void StatisticsPool::SetRecentMax(int window, int quantum)
+diff --git a/src/condor_utils/generic_stats.h b/src/condor_utils/generic_stats.h
+index b5db991..cb4f5d8 100644
+--- a/src/condor_utils/generic_stats.h
++++ b/src/condor_utils/generic_stats.h
+@@ -1,4 +1,4 @@
+-/***************************************************************
++ /***************************************************************
+  *
+  * Copyright (C) 1990-2011, Condor Team, Computer Sciences Department,
+  * University of Wisconsin-Madison, WI.
+@@ -213,7 +213,7 @@ public:
+    int MaxSize() const { return cMax; }
+    bool empty() const { return cItems == 0; }
+ 
+-   bool Clear() {
++   bool Clear(bool /* clear_all */) {
+       bool ret = cItems > 0;
+       ixHead = 0;
+       cItems = 0;
+@@ -230,8 +230,7 @@ public:
+ 
+    T Sum() {
+       T tot(0);
+-      for (int ix = 0; ix > (0 - cItems); --ix)
+-         tot += (*this)[ix];
++      for (int ix = 0; ix > (0 - cItems); --ix) tot += (*this)[ix];
+       return tot;
+    }
+ 
+@@ -436,7 +435,7 @@ typedef void (stats_entry_base::*FN_STATS_ENTRY_PUBLISH)(ClassAd & ad, const cha
+ typedef void (stats_entry_base::*FN_STATS_ENTRY_UNPUBLISH)(ClassAd & ad, const char * pattr) const;
+ typedef void (stats_entry_base::*FN_STATS_ENTRY_ADVANCE)(int cAdvance);
+ typedef void (stats_entry_base::*FN_STATS_ENTRY_SETRECENTMAX)(int cRecent);
+-typedef void (stats_entry_base::*FN_STATS_ENTRY_CLEAR)(void);
++typedef void (stats_entry_base::*FN_STATS_ENTRY_CLEAR)(bool);
+ typedef void (*FN_STATS_ENTRY_DELETE)(void* probe);
+ 
+ class stats_entry_base {
+@@ -503,7 +502,7 @@ public:
+       ad.Delete(attr.Value());
+       };
+ 
+-   void Clear() {
++   void Clear(bool /* clear_all */) {
+       this->value = 0;
+       largest = 0;
+    }
+@@ -516,6 +515,7 @@ public:
+    }
+ 
+    T Add(T val) { return Set(this->value + val); }
++   void AdvanceBy(int /* cSlots */) { Set(0); }
+ 
+    // operator overloads
+    stats_entry_abs<T>& operator=(T val)  { Set(val); return *this; }
+@@ -570,14 +570,12 @@ public:
+ 
+    void PublishDebug(ClassAd & ad, const char * pattr, int flags) const;
+ 
+-   void Clear() {
+-      this->value = 0;
+-      recent = 0;
+-      buf.Clear();
+-   }
+-   void ClearRecent() {
++   void Clear(bool clear_all) {
++      if (clear_all) {
++        this->value = 0;
++      }
+       recent = 0;
+-      buf.Clear();
++      buf.Clear(clear_all);
+    }
+ 
+    T Add(T val) { 
+@@ -622,7 +620,7 @@ public:
+          recent -= accum;
+       } else {
+          recent = 0;
+-         buf.Clear();
++         buf.Clear(false);
+       }
+    }
+ 
+@@ -693,16 +691,13 @@ public:
+       ad.Delete(attr.Value());
+       };
+ 
+-   void Clear() {
+-      this->value = 0;
+-      recent = 0;
+-      tq.clear();
+-   }
+-   void ClearRecent() {
++   void Clear(bool clear_all) {
++      if (clear_all) {
++        this->value = 0;
++      }
+       recent = 0;
+       tq.clear();
+    }
+-
+    T Add(T val, time_t now) { 
+       this->value += val; 
+       if (val != T(0)) {
+@@ -773,7 +768,7 @@ public:
+    void Publish(ClassAd & ad, const char * pattr, int flags) const;
+    void Unpublish(ClassAd & ad, const char * pattr) const;
+ 
+-   void Clear() {
++   void Clear(bool /* clear_all */) {
+       this->value = 0; // value is use to store the count of samples.
+       Max = std::numeric_limits<T>::min();
+       Min = std::numeric_limits<T>::max();
+@@ -849,7 +844,7 @@ public:
+    double SumSq;      // Sum of samples squared
+ 
+ public:
+-   void Clear();
++   void Clear(bool);
+    double Add(double val);
+    Probe & Add(const Probe & val);
+    double Avg() const;
+@@ -890,7 +885,7 @@ public:
+       {
+          if (cLevels) {
+       		data = new int[cLevels+1];
+-		    Clear();
++		    Clear(false);
+          }
+       }
+    ~stats_histogram() { delete [] data; data = 0, cLevels = 0; }
+@@ -902,8 +897,9 @@ public:
+ 
+    bool set_levels(const T* ilevels, int num_levels);
+ 
+-   void Clear() { if (data) for (int ii = 0; ii <= cLevels; ++ii) data[ii] = 0; }
+-
++   void Clear(bool /* clear_all */) {
++     if (data) for (int ii = 0; ii <= cLevels; ++ii) data[ii] = 0;
++   }
+    static const int PubValue = 1;
+    static const int PubDefault = PubValue;
+    void AppendToString(MyString & str) const {
+@@ -937,7 +933,7 @@ public:
+           EXCEPT("Clearing operation on histogram with non-zero value\n");
+       }
+      #endif
+-      Clear();
++      Clear(false);
+       return *this;
+    }
+ 
+@@ -965,7 +961,7 @@ bool stats_histogram<T>::set_levels(const T* ilevels, int num_levels)
+       cLevels = num_levels;
+       levels = ilevels;
+       data = new int[cLevels + 1];
+-      Clear();
++      Clear(false);
+       ret = true;
+    }
+    return ret;
+@@ -1015,7 +1011,7 @@ template<class T>
+ stats_histogram<T>& stats_histogram<T>::operator=(const stats_histogram<T>& sh)
+ {
+    if(sh.cLevels == 0){
+-      Clear();
++      Clear(false);
+    } else if(this != &sh) {
+       if(this->cLevels > 0 && this->cLevels != sh.cLevels){
+          EXCEPT("Tried to assign different sized histograms\n");
+@@ -1127,7 +1123,7 @@ public:
+ 
+    void UpdateRecent() {
+       if (recent_dirty) {
+-         this->recent.Clear();
++         this->recent.Clear(true);
+          for (int ix = 0; ix > (0 - this->buf.cItems); --ix)
+             this->recent.Accumulate(this->buf[ix]);
+          recent_dirty = false;
+@@ -1183,8 +1179,7 @@ public:
+ 
+    double Add(double sec)     { count += 1; runtime += sec; return runtime.value; }
+    time_t Add(time_t time)    { count += 1; runtime += double(time); return (time_t)runtime.value; }
+-   void Clear()              { count.Clear(); runtime.Clear();}
+-   void ClearRecent()        { count.ClearRecent(); runtime.ClearRecent(); }
++   void Clear(bool clear_all)              { count.Clear(clear_all); runtime.Clear(clear_all);}
+    void AdvanceBy(int cSlots) { count.AdvanceBy(cSlots); runtime.AdvanceBy(cSlots); }
+    void SetRecentMax(int cMax)    { count.SetRecentMax(cMax); runtime.SetRecentMax(cMax); }
+    double operator+=(double val)    { return Add(val); }
+@@ -1226,6 +1221,17 @@ int generic_stats_Tick(
+    time_t & Lifetime,        // in,out
+    time_t & RecentLifetime); // in,out
+ 
++//-----------------------------------------------------------------------------------
++// a helper function for forcing an Advance on the recent buffers.
++//
++void generic_stats_force_Tick(
++   int    RecentMaxTime,
++   time_t InitTime,
++   time_t & LastUpdateTime,  // in,out
++   time_t & RecentTickTime,  // in,out
++   time_t & Lifetime,        // in,out
++   time_t & RecentLifetime); // in,out
++
+ // parse a configuration string in the form "ALL:opt, CAT:opt, ALT:opt"
+ // where opt can be one or more of 
+ //   0-3   verbosity level, 0 is least and 3 is most. default is usually 1
+@@ -1340,7 +1346,9 @@ public:
+       const char * pattr,      // unique attr, must not be the same as a probe name.
+       int          flags=0,    // flags to control publishing
+       FN_STATS_ENTRY_PUBLISH fnpub=NULL, // publish method
+-      FN_STATS_ENTRY_UNPUBLISH fnunp=NULL) // unpublish method
++      FN_STATS_ENTRY_UNPUBLISH fnunp=NULL, // unpublish method
++      FN_STATS_ENTRY_ADVANCE fnadv=NULL,
++      FN_STATS_ENTRY_CLEAR fnclr=NULL)
+    {
+       T* probeExist = GetProbe<T>(name);
+       if (probeExist)
+@@ -1352,7 +1360,9 @@ public:
+                     pattr, 
+                     flags,
+                     fnpub ? fnpub : (FN_STATS_ENTRY_PUBLISH)&T::Publish,
+-                    fnunp ? fnunp : (FN_STATS_ENTRY_UNPUBLISH)&T::Unpublish);
++                    fnunp ? fnunp : (FN_STATS_ENTRY_UNPUBLISH)&T::Unpublish,
++                    fnadv ? fnadv : (FN_STATS_ENTRY_ADVANCE)&T::AdvanceBy,
++                    fnclr ? fnclr : (FN_STATS_ENTRY_CLEAR)&T::Clear);
+       return probe;
+    }
+ 
+@@ -1364,8 +1374,7 @@ public:
+    int64_t SetSample(const char * probe_name, int64_t sample);
+    */
+ 
+-   void Clear();
+-   void ClearRecent();
++   void Clear(bool);
+    void SetRecentMax(int window, int quantum);
+    int  Advance(int cAdvance);
+    void Publish(ClassAd & ad, int flags) const;
+@@ -1380,6 +1389,8 @@ private:
+       const char * pattr; // if non-null passed to Publish, if null name is passed.
+       FN_STATS_ENTRY_PUBLISH Publish;
+       FN_STATS_ENTRY_UNPUBLISH Unpublish;
++      FN_STATS_ENTRY_ADVANCE Advance;
++      FN_STATS_ENTRY_CLEAR Clear;
+    };
+    struct poolitem {
+       int units;
+@@ -1417,7 +1428,9 @@ private:
+       const char * pattr,      // publish attribute name
+       int          flags,      // flags to control publishing
+       FN_STATS_ENTRY_PUBLISH fnpub, // publish method
+-      FN_STATS_ENTRY_UNPUBLISH fnunp); // Unpublish method
++      FN_STATS_ENTRY_UNPUBLISH fnunp, // Unpublish method
++      FN_STATS_ENTRY_ADVANCE fnadv, // Advance method
++      FN_STATS_ENTRY_CLEAR   fnclr); // Clear method
+ 
+ };
+ 
+diff --git a/src/defrag/defrag_stats.cpp b/src/defrag/defrag_stats.cpp
+index 9c76335..805b0d5 100644
+--- a/src/defrag/defrag_stats.cpp
++++ b/src/defrag/defrag_stats.cpp
+@@ -47,7 +47,7 @@ void DefragStats::SetWindowSize(int window,int quantum)
+ 
+ void DefragStats::Init() 
+ { 
+-   Clear();
++   Clear(true);
+    // default window size to 1 quantum, we may set it to something else later.
+    this->RecentWindowMax = this->RecentWindowQuantum;
+ 
+@@ -63,14 +63,14 @@ void DefragStats::Init()
+    STATS_POOL_ADD_VAL(Pool, "", AvgDrainingUnclaimed, IF_BASICPUB);
+ }
+ 
+-void DefragStats::Clear()
++void DefragStats::Clear(bool clear_all)
+ {
+    this->InitTime = time(NULL);
+    this->Lifetime = 0;
+    this->LastUpdateTime = 0;
+    this->RecentTickTime = 0;
+    this->RecentLifetime = 0;
+-   Pool.Clear();
++   Pool.Clear(clear_all);
+ }
+ 
+ // call this when time may have changed to update LastUpdateTime, etc.
+diff --git a/src/defrag/defrag_stats.h b/src/defrag/defrag_stats.h
+index e1c34e9..d4bbf50 100644
+--- a/src/defrag/defrag_stats.h
++++ b/src/defrag/defrag_stats.h
+@@ -46,7 +46,7 @@ class DefragStats {
+ 	stats_entry_abs<double> AvgDrainingUnclaimed;
+ 
+ 	void Init();
+-	void Clear();
++	void Clear(bool clear_all);
+ 	time_t Tick(time_t now=0);
+ 	void Reconfig();
+ 	void SetWindowSize(int window,int quantum);
+-- 
+1.7.8.1.388.g5b4e1
+
