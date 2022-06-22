@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.6 Processor State</TITLE>
+<META NAME="description" CONTENT="3.6 Processor State">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html156" HREF="node14.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html154" HREF="node3.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html150" HREF="node12.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html157" HREF="node14.html">4 Summary of Checkpoint </A>
+<B>Up:</B> <A NAME="tex2html155" HREF="node3.html">3 Components of a </A>
+<B> Previous:</B> <A NAME="tex2html151" HREF="node12.html">3.5 Signals</A>
+<BR> <P>
+<H2><A NAME="SECTION00036000000000000000">3.6 Processor State</A></H2>
+<P>
+Saving and restoring the state of a process's CPU is potentially the
+most machine dependent part of the checkpointing code.  Various
+processors have different numbers of integer and floating point
+registers, special purpose registers, floating point hardware,
+instruction queues, and so on.  One might think that it would be
+necessary to build an assembler code module for each CPU to accomplish
+this task, but we have discovered that mechanisms already available
+within the UNIX system call set can be leveraged to do this work with
+(in most cases) no assembler code at all.  This is the reason that a
+checkpoint is always invoked by sending the process a signal.  A
+characteristic of the signal mechanism is that the signal handler
+could do anything at all with the CPU, but when it returns, the
+interrupted user code should continue on without error.  This means
+that the signal handling mechanism provided by the system saves and
+restores all the CPU state we need.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
