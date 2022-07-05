@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Favicons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/favicon-16x16.png">
+    <link rel="manifest" href="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/site.webmanifest">
+    <link rel="mask-icon" href="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/safari-pinned-tab.svg" color="#d31145">
+    <link rel="shortcut icon" href="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="/web-preview/preview-htcondor-ce-releases/assets/images/favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <script src="/web-preview/preview-htcondor-ce-releases/assets/js/sitewide.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-htcondor-ce-releases/assets/js/header.js" type="text/javascript" defer></script>
+    <script src="/web-preview/preview-htcondor-ce-releases/assets/js/bootstrap.js" type="text/javascript"></script>
+
+    
+
+    
+
+        <meta name="robots" content="noindex">
+
+    
+
+    <link href="/web-preview/preview-htcondor-ce-releases/assets/css/style-v1.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+        <link href="/web-preview/preview-htcondor-ce-releases/assets/css/cvstrac.10.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+        <link href="/web-preview/preview-htcondor-ce-releases/assets/css/cvstrac.tj.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+        <link href="/web-preview/preview-htcondor-ce-releases/assets/css/diff2html.css" media="screen, tv, projection" title="Default" rel="stylesheet">
+    
+
+    
+
+</head>
+<body class="d-flex flex-column">
+
+<!-- For non-visual user agents: -->
+<a id="skip-link" href="#main-copy">Skip to main content.</a>
+
+
+<header id="header" class="">
+    <div class="container-xxl">
+        <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
+            <a href="/web-preview/preview-htcondor-ce-releases/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-releases/assets/images/HTCondor_red_blk_classic.png" style="border:0"></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mobile-navbar" aria-controls="mobile-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mobile-navbar">
+                <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="software-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="software-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor/release-highlights/">Release Highlights</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor/release-plan/">Release Schedule</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor-CE
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/overview/">Overview</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/download/">Download</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/documentation/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/release-highlights/">Release Highlights</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        General
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/new.html">News</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/security/">Security</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/manual/">Documentation</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/downloads/">Download</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="help-and-support-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="help-and-support-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Documentation
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor/documentation/">HTCondor</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/documentation/">HTCondor-CE</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Support
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/uw-support/">HTCSS Contract Support</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/mail-lists/#user">Community Mailing List</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/htcondor-support/#external-support-options">External Support Organizations</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="community-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="community-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        Email Lists
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/mail-lists/#user">Users</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/mail-lists/#world">World</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/mail-lists/#developer">Developers</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCondor Week
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1733/">Most Recent</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/past_condor_weeks.html">Workshop Archives</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/featured-users.html" >
+        Featured Users
+    </a>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                        
+
+
+
+
+<li class="nav-item dropdown">
+    
+        <a class="nav-link dropdown-toggle" href="#" id="about-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="about-toggle">
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        HTCSS
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/description.html">What is HTCSS?</a></li>
+        
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-ce-releases/logos/">Logos</a></li>
+        
+    </ul>
+    
+</li>
+            
+                
+
+<li class="dropdown">
+    
+    <a class="dropdown-item dropdown-toggle" href="#" id="-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+        CHTC
+    </a>
+    <ul class="dropdown-menu" aria-labelledby="-toggle">
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></li>
+        
+            <li><a class="dropdown-item" href="https://chtc.cs.wisc.edu/research">Research & Publications &#11023;</a></li>
+        
+    </ul>
+    
+</li>
+            
+        </ul>
+    
+</li>
+                    
+                    <li class="nav-item mt-2">
+                        <div style="height:40px; width: 250px;">
+                            
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div id="desktop-header" class="d-none d-lg-block">
+            <nav class="navbar py-3 navBar navbar-expand-lg navbar-light w-100">
+                <a href="/web-preview/preview-htcondor-ce-releases/index.html"><img height="50" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-releases/assets/images/HTCondor_red_blk_classic.png"></a>
+                <div class="collapse navbar-collapse">
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-2 mt-auto">
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="software-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Software
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="help-and-support-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Help & Support
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="community-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            Community
+        </a>
+    </li>
+
+
+
+
+                        
+                            
+
+
+
+    <li class="nav-item">
+        <a class="nav-link drawer-toggle dropdown-toggle" href="#" id="about-desktop-toggle" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">
+            About
+        </a>
+    </li>
+
+
+
+
+                        
+                    </ul>
+                    <ul class="navbar-nav mb-2 mb-lg-0 ms-auto mt-auto">
+                        <li class="nav-item ms-2">
+                            <div style="height:40px; width: 250px;">
+                                
+
+<script async src="https://cse.google.com/cse.js?cx=1056a9a876b1d1474"></script>
+<div class="gcse-searchbox-only"></div>
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div id="header-drawer" class=" d-none d-lg-block" hidden>
+        <div class="container-xxl">
+            <div id="software-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+
+
+
+                
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/overview/">Overview</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/download/">Download</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/documentation/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/release-highlights/">Release Highlights</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/release-plan/">Release Schedule</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor-CE</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/overview/">Overview</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/download/">Download</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/documentation/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/release-highlights/">Release Highlights</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>General</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/new.html">News</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/security/">Security</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/manual/">Documentation</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/downloads/">Download</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-htcondor-ce-releases/news/2022-06-10-HTCondor-European-Workshop-2022/">HTCondor European Workshop Dates Released</a></h3>
+                            <div>
+                                <span class="text-muted">June 10, 2022</span>
+                            </div>
+                            <hr/>
+                            <a href="/web-preview/preview-htcondor-ce-releases/new.html">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-htcondor-ce-releases/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Software News
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Documentation</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/documentation/">HTCondor</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/documentation/">HTCondor-CE</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Support</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/uw-support/">HTCSS Contract Support</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/mail-lists/#user">Community Mailing List</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-support/#external-support-options">External Support Organizations</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+            </div>
+            <div id="community-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+                
+
+
+
+
+
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>Email Lists</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/mail-lists/#user">Users</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/mail-lists/#world">World</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/mail-lists/#developer">Developers</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCondor Week</th></tr>
+                
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/1733/">Most Recent</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/past_condor_weeks.html">Workshop Archives</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+
+
+                <div class="d-none d-md-block col-lg-4 my-2">
+                    <a href="/web-preview/preview-htcondor-ce-releases/featured-users.html"><b>Featured Users</b></a>
+                    
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-ce-releases/featured-users/2022-06-01-PATh-Facility.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Introducing the PATh Facility: A Unique Distributed High Throughput Computing Resource
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">June  1, 2022</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-ce-releases/featured-users/2022-06-01-Johri.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                The role of HTC in advancing population genetics research
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">June  1, 2022</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-ce-releases/featured-users/2022-06-01-HTCondorWeek-Photos.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                A Long-Awaited Reunion: HTCondor Week 2022 in Photos
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">June  1, 2022</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-ce-releases/featured-users/2022-05-12-EHT.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                High-throughput computing as an enabler of black hole science
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">May 12, 2022</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                </div>
+                <div class="d-none d-xl-block col-xl-4 my-2">
+                    <div class="card h-100">
+                        <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Spectrometer.jpg" class="card-img-top" alt="Card Image">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/web-preview/preview-htcondor-ce-releases/featured-users/2022-04-25-Natzke.html">Learning and adapting with OSG: Investigating the strong nuclear force</a></h5>
+                            <hr/>
+                            <a href="/web-preview/preview-htcondor-ce-releases/featured-users.html">
+                                <div class="row">
+                                    <div class="col-auto d-flex">
+                                        <img class="my-auto" height="30" src="/web-preview/preview-htcondor-ce-releases/assets/images/arrow-up-right-circle.svg" />
+                                    </div>
+                                    <div class="col">
+                                        View All Featured Users
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="about-desktop-drawer" class="drawer row justify-content-center" hidden>
+
+
+
+                
+                
+                
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>HTCSS</th></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/description.html">What is HTCSS?</a></td></tr>
+                
+                    <tr><td><a href="/web-preview/preview-htcondor-ce-releases/logos/">Logos</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+    
+        <div class="col-auto mx-4 my-2 z-99">
+            <table>
+                <tr><th>CHTC</th></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/people">Staff &#11023;</a></td></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/jobs">Jobs &#11023;</a></td></tr>
+                
+                    <tr><td><a href="https://chtc.cs.wisc.edu/research">Research & Publications &#11023;</a></td></tr>
+                
+            </table>
+        </div>
+    
+
+
+                <div class="d-none d-lg-block col-lg-4">
+                    <div class="card h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5><a class="text-decoration-none" href="/web-preview/preview-htcondor-ce-releases/description.html">What is HTCSS?</a></h5>
+                            <hr class="mb-2">
+                            <div>
+                                HTCondor Software Suite (HTCSS) provides an array of services for automating
+                                and managing batch workloads and computing resources.
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
+<main id="main-copy" tabindex="-1">
+    <div class="bg-light mb-4">
+    <hr class="m-0">
+    <div class="container-xxl py-2">
+        <span class="fs-3">Hfc Requirements</span>
+    </div>
+    <hr class="m-0">
+</div>
+<div class="container-xxl pb-4">
+    <div id="content">
+ <strong class="three">
+  High Frequency Computing Requirements
+ </strong>
+ <p>
+  <strong>
+   Version 1.0
+  </strong>
+  : Initial version.
+ </p>
+ <p>
+  <em>
+   IF YOU MAKE ANY CHANGES, ADD A NEW VERSION NUMBER/LINE ABOVE
+  </em>
+ </p>
+ <p>
+  This document is associated w/ ticket
+  <span class="ticket">
+   <a class="defer" href="../../tickets/?ticket=1095" title="Umbrella ticket for HFC work">
+    #1095
+   </a>
+  </span>
+  .
+ </p>
+ <p>
+  This document details the initial requirements of HTCondor's High Frequency Computing (HFC) effort.  The goal of HTCondor HFC is to effectively manage and obtain high-throughput of short (less than one second) jobs, or tasks.
+ </p>
+ <p>
+  Note what is presented here are the requirements for a 1.0 release, the smallest possible useful release; in the interest of a quick, successful initial implementation, we want to minimize feature creep.  Furthermore, note that this document discusses just the requirements for this work, purposefully tries to avoid mentioning any particular implementation.
+ </p>
+ <p>
+  Three fundamental abstractions encompass HTCondor HFC:
+  <em>
+   tasks
+  </em>
+  ,
+  <em>
+   schedulers
+  </em>
+  , and
+  <em>
+   workers
+  </em>
+  .  Requirements for these three appears below, followed by more general requirements.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Task Requirements
+ </h2>
+ <p>
+  The task represents the unit of work, required worker attributes, desired worker attributes, current state, input, and output (if complete).  Users may add custom attribute/value pairs to the task at task submission time, and these will be static for the rest of the task lifetime.  Note that the task, (unlike the Scheduler or Worker), is just a set of data passed around the system.
+ </p>
+ <p>
+  There is no sandbox or file-transfer associated with any task.  The assumption is that the worker selected by the task either has the correct data local to it, or can fetch it before the task runs.  Similarly, output shall be a small XML document which is attached to the task itself.  Any file, database or other output of the task is the responsibility of the task or worker.
+ </p>
+ <p>
+  Tasks will primarily contain payloads between 1k-64k in
+size, for benchmarking 4-16k is normal, but megabytes should be
+possible at far reduced performance.
+ </p>
+ <p>
+  The system defines at least once semantics for running of a task, if there is some reason a task can't be started (or completed) more than once, it is the responsibility of the task to deal with multiple (perhaps concurrent) executions.
+ </p>
+ <p>
+  Required Task Attributes:
+ </p>
+ <p>
+  <table border="1" cellspacing="0">
+   <tbody>
+    <tr>
+     <td>
+      Name
+     </td>
+     <td>
+      Type
+     </td>
+     <td>
+      Set By
+     </td>
+     <td>
+      Notes
+     </td>
+    </tr>
+    <tr>
+     <td>
+      _
+     </td>
+     <td>
+      _
+     </td>
+     <td>
+      _
+     </td>
+     <td>
+      _
+     </td>
+    </tr>
+    <tr>
+     <td>
+      GUID
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      Must be globally unique
+     </td>
+    </tr>
+    <tr>
+     <td>
+      BatchID
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      Allows management of batches of tasks
+     </td>
+    </tr>
+    <tr>
+     <td>
+      State
+     </td>
+     <td>
+      Integer
+     </td>
+     <td>
+      Scheduler
+     </td>
+     <td>
+      Enumeration of current state
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Input
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      Usually XML, of arbitrary size
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Output
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Worker
+     </td>
+     <td>
+      Usually XML, of arbitrary size
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Error
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Worker
+     </td>
+     <td>
+      Optional
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Requirements
+     </td>
+     <td>
+      Expression
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      _
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Rank
+     </td>
+     <td>
+      Expression
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      _
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Service
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      The service that should process the task
+     </td>
+    </tr>
+    <tr>
+     <td>
+      Delivery
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Submitter
+     </td>
+     <td>
+      Description of plugin to deliver to
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <span class="wiki">
+       <a class="missing" href="/web-preview/preview-htcondor-ce-releases/wiki-archive/pages/LastWorker/index.html" title="Last Worker">
+        LastWorker
+       </a>
+      </span>
+     </td>
+     <td>
+      String
+     </td>
+     <td>
+      Worker
+     </td>
+     <td>
+      Last Worker Ran on
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <span class="wiki">
+       <a class="missing" href="/web-preview/preview-htcondor-ce-releases/wiki-archive/pages/SubmitTime/index.html" title="Submit Time">
+        SubmitTime
+       </a>
+      </span>
+     </td>
+     <td>
+      Time
+     </td>
+     <td>
+      Scheduler
+     </td>
+     <td>
+      When submitted
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <span class="wiki">
+       <a class="missing" href="/web-preview/preview-htcondor-ce-releases/wiki-archive/pages/StartTime/index.html" title="Start Time">
+        StartTime
+       </a>
+      </span>
+     </td>
+     <td>
+      Time
+     </td>
+     <td>
+      Worker
+     </td>
+     <td>
+      When Started
+     </td>
+    </tr>
+    <tr>
+     <td>
+      <span class="wiki">
+       <a class="missing" href="/web-preview/preview-htcondor-ce-releases/wiki-archive/pages/EndTime/index.html" title="End Time">
+        EndTime
+       </a>
+      </span>
+     </td>
+     <td>
+      Time
+     </td>
+     <td>
+      Worker
+     </td>
+     <td>
+      When Completed
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </p>
+ <p>
+  Task States:
+ </p>
+ <p>
+  <table border="1" cellspacing="0">
+   <tbody>
+    <tr>
+     <td>
+      Enum
+     </td>
+     <td>
+      Name
+     </td>
+    </tr>
+    <tr>
+     <td>
+      _
+     </td>
+     <td>
+      _
+     </td>
+    </tr>
+    <tr>
+     <td>
+      1
+     </td>
+     <td>
+      Submitted
+     </td>
+    </tr>
+    <tr>
+     <td>
+      2
+     </td>
+     <td>
+      Running
+     </td>
+    </tr>
+    <tr>
+     <td>
+      3
+     </td>
+     <td>
+      Removed
+     </td>
+    </tr>
+    <tr>
+     <td>
+      4
+     </td>
+     <td>
+      <span class="wiki">
+       <a class="missing" href="/web-preview/preview-htcondor-ce-releases/wiki-archive/pages/FinishedRunning/index.html" title="Finished Running">
+        FinishedRunning
+       </a>
+      </span>
+     </td>
+    </tr>
+    <tr>
+     <td>
+      5
+     </td>
+     <td>
+      Delivered
+     </td>
+    </tr>
+   </tbody>
+  </table>
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Scheduler Requirements
+ </h2>
+ <p>
+  Along with Tasks and Workers, the Scheduler is one of the three fundamental abstractions in the system.  It will be a service (or daemon).
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Scheduler Interfaces
+ </h3>
+ <p>
+  There are three major user-accessible interfaces to the Scheduler: a submission interface, a query/management interface, and a results interface.  All three interfaces should be identical, which should allow for arbitrary composition of the various parts.  All interfaces will be stream-based.  This stream-based interface will support flow-control, to tell the sender to stop sending data during overload.  Of course, there will be internally-needed interfaces to the scheduler, but those are beyond the scope of these requirements.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Interface basics
+ </h4>
+ <p>
+  All software interfaces will be defined in terms of an human-readable ASCII wire protocol over raw sockets.  This allows for programming language agnostic implementations, though CLI based reference implementations will be delivered.  (TODO: firewall requirements -- should only the scheduler have inbound connections?)
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Submission Interface
+ </h4>
+ <p>
+  The submission interface allows a client to submit a batch of tasks.  The batch size may be small (or unitary), with reduced performance.  The submission interface shall be synchronous, and when the scheduler sends a positive acknowledgement to the client, it indicates that the scheduler has atomically received every task in the batch, and retains ownership from them on.  If the ack is not received, the client should re-send the entire batch, with the same task GUIDs and batch IDs.
+ </p>
+ <p>
+  All tasks in a batch are considered to have equal priority in the system, and the scheduler will run them in no particular order.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Query/management Interface
+ </h4>
+ <p>
+  There will be a query/management interface to the scheduler which will allow the user or user programs to inquire as to the state of tasks, to remove idle and running tasks, and to edit certain attributes of tasks.
+ </p>
+ <p>
+  The scheduler will advertise the number of idle tasks per requested service, so that the higher level scheduler will be able to adjust the number of workers appropriately.
+ </p>
+ <p>
+  <span class="subsubsection">
+  </span>
+ </p>
+ <h4>
+  Results Interface
+ </h4>
+ <p>
+  There will be a plugin mechanism to the scheduler providing for multiple concurrent results delivery mechanisms.  There may be several predefined mechanisms hardcoded and baked into the scheduler.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Worker Requirements
+ </h2>
+ <p>
+  The worker is one of the three major abstractions in the system.  The role of the worker is to startup, execute any initial code, then sequentially execute tasks the scheduler assigns to it.  Upon task completion, the worker assigns output to finished task, and returns the task to the scheduler.  The worker is mainly a user-written program, so that it can execute tasks without the overhead of spawning a process and repeating any initialization steps.
+ </p>
+ <p>
+  Note that the worker is really in two halves:  the "system" half, which is constant and provided by the system, and the "user" half, which is written by the user, and actually executes the task.
+ </p>
+ <p>
+  The worker can have attributes that help tasks match to certain workers, or allow tasks to prefer certain workers.  These attributes may be updated as a side-effect of running a task.  This can be delivered on a separate control channel from the task itself.
+ </p>
+ <p>
+  Workers may come and go during the course of a larger computation, according to the needs of a higher lever scheduler.
+ </p>
+ <p>
+  There will be a heartbeat (or keep alive) between the worker and the scheduler to detect hung workers, but not hung tasks.
+ </p>
+ <p>
+  For resource allocation purposes, the service will have an ad that
+indicates how many tasks/workers are currently present for a given
+service, so preemption can be done to adjust worker counts using
+quota/etc.
+ </p>
+ <p>
+  The interface to the worker will be specified by a programming-language neutral wire protocol, so that the worker can be implemented in any reasonable programming language.
+ </p>
+ <p>
+  There will be some mechanism to avoid workers which are acting as "black holes".
+ </p>
+ <p>
+  Workers can have "tags" to specify affinity with certain kinds of tasks -- e.g. this worker is for "red" tasks.
+ </p>
+ <p>
+  <span class="section">
+  </span>
+ </p>
+ <h2>
+  Other General Requirements
+ </h2>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Performance and Lifecycle Requirements
+ </h3>
+ <p>
+  The user shall be able to submit, execute, and complete 10 million zero second
+  <em>
+   tasks
+  </em>
+  running concurrently on 1,000
+  <em>
+   workers
+  </em>
+  in 8 hours.  The system shall manage all 10 million tasks concurrently, though perhaps via multiple
+  <em>
+   schedulers
+  </em>
+  .  Submissions will be streamed.  Results, however, will be delivered as finished, and delivery of results will not be batched.
+ </p>
+ <p>
+  This implies a minimal sustained throughput of 350 tasks per second. To handle bursts, the system must be able to handle completion of 1,000 echo tasks per second, and ideally 5,000.  Idle tasks will be matched to pre-staged workers via a unilateral matching process.  These pre-staged workers may start and stop during the course of running the whole computation. This matching process will support Requirements and Rank, where the attributes of the task and the worker may be predefined by the system, or custom extended attributes defined by the user.  Worker attributes will represent (among other things) pre-staged local file sets, which will number in the low tens (less than 20?)
+ </p>
+ <p>
+  Task results will be delivered to the user via a custom plugin, which will be called for each task as soon as the results are ready.  All performance benchmarks will be made with a null plugin.  One potential action a plugin could implement is to submit more tasks, based on the result of a completed task.  Or, it could remove existing tasks, if the completed task obviated certain pre-existing tasks.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Reliability Requirements
+ </h3>
+ <p>
+  In order to get substantially better performance than vanilla HTCondor jobs, we need to relax the reliability constraints that HTCondor normally maintains.
+ </p>
+ <p>
+  Task submission shall be atomic.  That is, after the client submits to the scheduler, and receives a positive acknowledgment, all tasks in the batch are under control of the scheduler.  It will impossible for the scheduler to get a truncated task or a truncated batch of tasks.  If the client fails to receive the ack, it should resend the batch with the same guid.
+ </p>
+ <p>
+  The scheduler shall not be durable.  If the scheduler or the scheduler machine crashes, state information will be lost, and some tasks will need to be rerun.  In the event that a worker or worker machine crashed, the scheduler will detect this, and automatically re-run the task on a different worker which matches the task.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Delivery Requirements
+ </h3>
+ <p>
+  All code will be merged into the mainline HTCondor, and generally available to HTCondor users under HTCondor's normal licensing and distribution terms.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Platform Requirements
+ </h3>
+ <p>
+  The work needs to run on both Window and Linux execute machines and  submit machines, with remote submission possible.  As this will be an ongoing work in progress, we will not guarantee forward or backward compatibility for the various versions we will release.
+ </p>
+ <p>
+  <span class="subsection">
+  </span>
+ </p>
+ <h3>
+  Security Requirements
+ </h3>
+ <p>
+  We assume that all clients, schedulers, and workers all run within one security domain, and that all networks and machines are trusted.  Connections will not be authenticated nor communications encrypted.
+ </p>
+</div>
+
+</div>
+</main>
+<footer id="footer" class="bg-light pt-4 mt-auto">
+    <div class="container-xxl">
+        <div class="row justify-content-center">
+            <div class="col-auto me-5 d-none d-lg-flex">
+                <img class="my-auto" height="120" alt="Condor High Throughput Computing" src="/web-preview/preview-htcondor-ce-releases/assets/images/CondorAlpha.png" />
+            </div>
+            <div class="col-12 col-sm-10 col-lg-7">
+                <div class="row justify-content-between my-2">
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Suite</th></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor/overview/">HTCondor</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-ce/overview/">HTCondor-CE</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Software</th></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/manual/">Documentation</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/downloads/">Download</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/security//">Security</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/license.html">License</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Community</th></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/mail-lists/">Email Lists</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/past_condor_weeks.html">HTCondor Week</a></td></tr>
+                        </table>
+                    </div>
+                    <div class="col-auto my-2">
+                        <table>
+                            <tr><th>Support</th></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/uw-support/">Internal Contract</a></td></tr>
+                            <tr><td><a href="/web-preview/preview-htcondor-ce-releases/htcondor-support#external-support-options">External Organizations</a></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row my-4 justify-content-center">
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://ls.wisc.edu/">
+                    
+
+<div style="height:75px;">
+    <picture>
+        <source type="image/webp" srcset="/web-preview/preview-htcondor-ce-releases/assets/images/UW_Madison_Logo.webp">
+        <img class="h-100" src="/web-preview/preview-htcondor-ce-releases/assets/images/UW_Madison_Logo.png" alt="UW-Madison Logo">
+    </picture>
+</div>
+
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="px-3 d-block m-auto" href="https://www.nsf.org">
+                    
+
+<div style="height:100px;">
+    <picture>
+        <source type="image/webp" srcset="/web-preview/preview-htcondor-ce-releases/assets/images/NSF_Logo.webp">
+        <img class="h-100" src="/web-preview/preview-htcondor-ce-releases/assets/images/NSF_Logo.jpg" alt="NSF Logo">
+    </picture>
+</div>
+
+                </a>
+            </div>
+            <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://morgridge.org/">
+                    <img class="" height="40" src="/web-preview/preview-htcondor-ce-releases/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
+                </a>
+            </div>
+        </div>
+        <hr>
+        <div class="row py-3">
+            <div class="col text-center">
+                For comments or questions about this website, please email
+                <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+            </div>
+        </div>
+        <div class="row justify-content-center pb-4">
+            <div class="col-lg-8 text-center">
+                <span class="text-center">
+                    If you are looking for Phoenix Software International's software development and library management system for z/VSE or z/OS, you can find more information on their <a href="http://www.phoenixsoftware.com">website</a>.
+                </span>
+            </div>
+        </div>
+    </div>
+</footer>
+
+
+
+</body>
+</html>
