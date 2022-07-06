@@ -1,0 +1,107 @@
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 440ef25..80452f4 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -509,6 +509,7 @@ QmgmtPeer::QmgmtPeer()
+ 	myendpoint = NULL;
+ 	sock = NULL;
+ 	transaction = NULL;
++	m_error_msg = NULL;
+ 
+ 	unset();
+ }
+@@ -583,6 +584,8 @@ QmgmtPeer::unset()
+ 		myendpoint = NULL;
+ 	}
+ 	if (sock) sock=NULL;	// note: do NOT delete sock!!!!!
++	free( m_error_msg );
++	m_error_msg = NULL;
+ 	if (transaction) {
+ 		delete transaction;
+ 		transaction = NULL;
+@@ -663,6 +666,25 @@ QmgmtPeer::isAuthenticated() const
+ 	}
+ }
+ 
++void
++QmgmtPeer::setError( const char *err )
++{
++	// Allow the caller to clear the error message.
++	// But ignore a new error message if we already have one.
++	if ( err == NULL ) {
++		free( m_error_msg );
++		m_error_msg = NULL;
++	} else if ( m_error_msg == NULL ) {
++		m_error_msg = strdup( err );
++	}
++}
++
++const char *
++QmgmtPeer::getError() const
++{
++	return m_error_msg;
++}
++
+ 
+ // Read out any parameters from the config file that we need and
+ // initialize our internal data structures.  This is also called
+@@ -2631,11 +2653,19 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ #if !defined(WIN32)
+ 		uid_t user_uid;
+ 		if ( !pcache()->get_user_uid( owner, user_uid ) ) {
+-			errno = EACCES;
+ 			dprintf( D_ALWAYS, "SetAttribute security violation: "
+ 					 "setting owner to %s, which is not a valid user account\n",
+ 					 attr_value );
+-			return -1;
++			if ( Q_SOCK && JobQueue->InTransaction() ) {
++				// We're in a client transaction. Delay the error until
++				// commit, when we can return an error message.
++				string err;
++				formatstr( err, "Owner set to \"%s\", which is not a valid user account.", owner );
++				Q_SOCK->setError( err.c_str() );
++			} else {
++				errno = EACCES;
++				return -1;
++			}
+ 		}
+ #endif
+ 
+@@ -3252,6 +3282,12 @@ BeginTransaction()
+ 
+ int
+ CheckTransaction( SetAttributeFlags_t, CondorError * errorStack ) {
++	const char *xact_err = Q_SOCK->getError();
++	if ( xact_err ) {
++		errorStack->push( "QMGMT", 4, xact_err );
++		return -4;
++	}
++
+ 	if( ! scheduler.shouldCheckSubmitRequirements() ) { return 0; }
+ 
+ 	std::list< std::string > newAdKeys;
+diff --git a/src/condor_schedd.V6/qmgmt.h b/src/condor_schedd.V6/qmgmt.h
+index 573851e..057f88d 100644
+--- a/src/condor_schedd.V6/qmgmt.h
++++ b/src/condor_schedd.V6/qmgmt.h
+@@ -62,6 +62,12 @@ class QmgmtPeer {
+ 		const char* getFullyQualifiedUser() const;
+ 		int isAuthenticated() const;
+ 
++		// This indicates a fatal error to the transaction.
++		// When the client attempts to commit, the given error message
++		// will be sent in the failure reply.
++		// If multiple errors are set, only the first is kept.
++		void setError( const char *err );
++		const char *getError() const;
+ 	protected:
+ 
+ 		char *owner;  
+@@ -69,6 +75,7 @@ class QmgmtPeer {
+ 		char *myendpoint; 
+ 		condor_sockaddr addr;
+ 		ReliSock *sock; 
++		char *m_error_msg;
+ 
+ 		Transaction *transaction;
+ 		int next_proc_num, active_cluster_num;
