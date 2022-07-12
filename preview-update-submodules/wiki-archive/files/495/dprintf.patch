@@ -1,0 +1,12 @@
+diff --git a/src/condor_utils/dprintf_config.cpp b/src/condor_utils/dprintf_config.cpp
+index 70e65c1..1dbd8b3 100644
+--- a/src/condor_utils/dprintf_config.cpp
++++ b/src/condor_utils/dprintf_config.cpp
+@@ -25,6 +25,7 @@
+ **
+ ************************************************************************/
+ 
++#define _FILE_OFFSET_BITS 64
+ #include "condor_common.h"
+ #include "condor_debug.h"
+ #include "condor_string.h" 
