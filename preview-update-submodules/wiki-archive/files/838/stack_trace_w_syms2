@@ -1,0 +1,115 @@
+(I think this is from core.SCHEDD2)
+
+#0  0xf7e4d64a in WriteCoreDump ()
+   from /usr/local/glidecondor/sbin/../lib/libcondor_utils_8_2_0.so
+
+#1  0xf7df5b14 in linux_sig_coredump (signum=11)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_core.V6/daemon_core_main.cpp:730
+
+#2  <signal handler called>
+
+#3  0xf7d01db1 in hashtable_iterator (sock=0xa97d738, ad=..., 
+    excludeTypes=false, exclude_private=false, attr_whitelist=0x0)
+    at /usr/lib/gcc/i386-redhat-linux/4.1.2/../../../../include/c++/4.1.2/tr1/hashtable:318
+
+     explicit
+     hashtable_iterator(hash_node<Value, cache>** b)
+     : hashtable_iterator_base<Value, cache>(*b, b) { }
+
+
+
+#4  end (sock=0xa97d738, ad=..., excludeTypes=false, exclude_private=false, 
+    attr_whitelist=0x0)
+    at /usr/lib/gcc/i386-redhat-linux/4.1.2/../../../../include/c++/4.1.2/tr1/hashtable:1116
+
+      iterator
+      end()
+      { return iterator(m_buckets + m_bucket_count); }
+(gdb) p m_buckets
+Cannot access memory at address 0x8
+
+
+
+
+#5  end (sock=0xa97d738, ad=..., excludeTypes=false, exclude_private=false, 
+    attr_whitelist=0x0)
+    at /slots/01/dir_26408/userdir/bld_external/classads-8.2.0/install/include/classad/classad.h:508
+
+#6  _putClassAd (sock=0xa97d738, ad=..., excludeTypes=false, 
+    exclude_private=false, attr_whitelist=0x0)
+    at /slots/01/dir_26408/userdir/src/condor_utils/classad_oldnew.cpp:302
+
+pass = 0 (?!?)
+numExprs = 0
+haveChainedAd = true
+(gdb) p itor
+$7 = {<Internal::hashtable_iterator_base<std::pair<std::basic_string<char, std::char_traits<char>, std::allocator<char> > const, classad::ExprTree*>, false>> = {m_cur_node = 0xf79489b0, m_cur_bucket = 0x9e35b30}, <No data fields>}
+(gdb) p itor_end
+$8 = <value optimized out>
+(gdb) p attr_whitelist 
+$10 = (StringList *) 0x0
+(gdb) p chainedAd
+$16 = (classad::ClassAd *) 0x9c2ca28
+(gdb) p ad
+$17 = (classad::ClassAd &) @0xa95dd78: <incomplete type>
+
+
+
+
+
+
+
+
+
+
+#7  0xf7d0270b in putClassAd (sock=0xa97d738, ad=..., exclude_private=false, 
+    attr_whitelist=0x0)
+    at /slots/01/dir_26408/userdir/src/condor_utils/classad_oldnew.cpp:222
+---Type <return> to continue, or q <return> to quit---
+#8  0xf7deb96a in DCCollector::finishUpdate (self=0x0, sock=0xa97d738, ad1=
+    0x9e35b30, ad2=0x0)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_client/dc_collector.cpp:370
+
+(gdb) p ad1
+$11 = (compat_classad::ClassAd *) 0x9e35b30
+(gdb) p ad2
+$12 = (compat_classad::ClassAd *) 0x0
+
+
+
+
+
+
+
+
+
+#9  0xf7dee47b in UpdateData::startUpdateCallback (success=true, 
+    sock=0xa97d738, misc_data=0xa9de6d0)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_client/dc_collector.cpp:468
+#10 0xf7dbb74c in SecManStartCommand::doCallback(._157) (this=0xa7778b8, 
+    result=StartCommandSucceeded)
+    at /slots/01/dir_26408/userdir/src/condor_io/condor_secman.cpp:1112
+#11 0xf7dc1b1c in SecManStartCommand::SocketCallback (this=0xa7778b8, 
+    stream=0xa97d738)
+    at /slots/01/dir_26408/userdir/src/condor_io/condor_secman.cpp:2340
+#12 0xf7e29013 in DaemonCore::CallSocketHandler_worker (this=0x9bdd6d8, 
+    i=<value optimized out>, default_to_HandleCommand=true, asock=0x0)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_core.V6/daemon_core.cpp:3874
+#13 0xf7e2947f in DaemonCore::CallSocketHandler_worker_demarshall (
+    arg=0x9f2e770)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_core.V6/daemon_core.cpp:3836
+#14 0xf7c5e5c4 in CondorThreads::pool_add (routine=
+    0xf7e29440 <DaemonCore::CallSocketHandler_worker_demarshall(void*)>, 
+---Type <return> to continue, or q <return> to quit---
+    arg=0x9f2e770, tid=0xf7b7dc20, 
+    descrip=0x9f71f28 "\370\016M\n\020HK\nartCommand::WaitForSocketCallback UPDATE_SUBMITTOR_AD")
+    at /slots/01/dir_26408/userdir/src/condor_utils/condor_threads.cpp:1106
+#15 0xf7e1f402 in DaemonCore::CallSocketHandler (this=0x9bdd6d8, 
+    i=@0xffe4d54c, default_to_HandleCommand=true)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_core.V6/daemon_core.cpp:3824
+#16 0xf7e23341 in DaemonCore::Driver (this=0x9bdd6d8)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_core.V6/daemon_core.cpp:3697
+#17 0xf7df963d in dc_main (argc=1, argv=0xffe4dbd4)
+    at /slots/01/dir_26408/userdir/src/condor_daemon_core.V6/daemon_core_main.cpp:2772
+#18 0x080ff446 in main ()
+

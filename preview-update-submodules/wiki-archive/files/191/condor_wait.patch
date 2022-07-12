@@ -1,0 +1,73 @@
+diff --git a/src/condor_tools/wait.cpp b/src/condor_tools/wait.cpp
+index 46abce4..3a9c25b 100644
+--- a/src/condor_tools/wait.cpp
++++ b/src/condor_tools/wait.cpp
+@@ -162,10 +162,6 @@ int main( int argc, char *argv[] )
+ 	int process=ANY_NUMBER;
+ 	int subproc=ANY_NUMBER;
+ 
+-	int submitted=0;
+-	int aborted=0;
+-	int completed=0;
+-
+ 	if( job_name ) {
+ 		int fields = sscanf(job_name,"%d.%d.%d",&cluster,&process,&subproc);
+ 		if(fields>=1 && fields<=3) {
+@@ -177,15 +173,28 @@ int main( int argc, char *argv[] )
+ 	}
+ 	
+ 	dprintf(D_FULLDEBUG,"Reading log file %s\n",log_file_name);
+-	ReadUserLog log;
++tag :
++	int submitted=0;
++	int aborted=0;
++	int completed=0;
++	ReadUserLog log ;
+ 	HashTable<MyString,MyString> table(127,MyStringHash);
+-
++	
+ 	if(log.initialize(log_file_name)) {
++		FILE *sec_fp = safe_fopen_wrapper(log_file_name, "r", 0644);
++		fseek (sec_fp, 0, SEEK_END);
++		int pos = ftell(sec_fp); 
++		int nPos;
++
+ 		while(1) {
++			
+ 			ULogEventOutcome outcome;
+ 			ULogEvent *event;
+-
++			// did something change in the file since our last visit?
++			fseek(sec_fp, 0, SEEK_END);
++			nPos = ftell(sec_fp);
+ 			outcome = log.readEvent(event);
++			
+ 			if(outcome==ULOG_OK) {
+ 				char key[1024];
+ 				sprintf(key,"%d.%d.%d",event->cluster,event->proc,event->subproc);
+@@ -213,6 +222,13 @@ int main( int argc, char *argv[] )
+ 					EXIT_SUCCESS;
+ 				}
+ 			} else {
++				if (nPos != pos){
++					pos = nPos;
++					fclose(sec_fp);
++					dprintf(D_FULLDEBUG, "INFO: File %s changed but userLog reader could not read another event. We are reinitializing userLog reader. \n", log_file_name);
++					goto tag;
++				}
++			
+ 				dprintf(D_FULLDEBUG,"%d submitted %d completed %d aborted %d remaining\n",submitted,completed,aborted,submitted-completed-aborted);
+ 				if(table.getNumElements()==0) {
+ 					if(submitted>0) {
+@@ -249,9 +265,11 @@ int main( int argc, char *argv[] )
+ 					log.synchronize();
+ 					dprintf(D_FULLDEBUG,"No more events, sleeping for %ld seconds\n", (long)sleeptime);
+ 					sleep(sleeptime);
++					
+ 				}
+ 			}
+ 		}
++		fclose(sec_fp);
+ 	} else {
+ 		fprintf(stderr,"Couldn't open %s: %s\n",log_file_name,strerror(errno));
+ 	}

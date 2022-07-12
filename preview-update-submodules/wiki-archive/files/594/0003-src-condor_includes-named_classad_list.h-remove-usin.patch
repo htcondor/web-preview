@@ -1,0 +1,159 @@
+>From 03ee224ba3db77005fa0b809441d9d71bebe9358 Mon Sep 17 00:00:00 2001
+From: Florian Weimer <fweimer@redhat.com>
+Date: Tue, 10 Jul 2012 13:31:46 +0200
+Subject: [PATCH 3/6] src/condor_includes/named_classad_list.h: remove using
+ namespace std
+
+---
+ src/condor_includes/named_classad_list.h |    3 +--
+ src/condor_submit.V6/submit.cpp          |   26 +++++++++++++-------------
+ src/condor_utils/named_classad_list.cpp  |    8 ++++----
+ 3 files changed, 18 insertions(+), 19 deletions(-)
+
+diff --git a/src/condor_includes/named_classad_list.h b/src/condor_includes/named_classad_list.h
+index e9b12e1..46e94cb 100644
+--- a/src/condor_includes/named_classad_list.h
++++ b/src/condor_includes/named_classad_list.h
+@@ -24,7 +24,6 @@
+ #include "condor_classad.h"
+ #include "named_classad.h"
+ #include <list>
+-using namespace std;
+ 
+ class NamedClassAdList
+ {
+@@ -46,7 +45,7 @@ class NamedClassAdList
+ 	int	Publish( ClassAd *ad );
+ 
+   protected:
+-	list<NamedClassAd*>		m_ads;
++	std::list<NamedClassAd*>		m_ads;
+ 
+ };
+ 
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 6efd4aa..76bbabf 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -242,8 +242,8 @@ const char	*MemoryUsage	= "memory_usage";
+ const char	*RequestCpus	= "request_cpus";
+ const char	*RequestMemory	= "request_memory";
+ const char	*RequestDisk	= "request_disk";
+-const string  RequestPrefix  = "request_";
+-std::set<string> fixedReqRes;
++const std::string  RequestPrefix  = "request_";
++std::set<std::string> fixedReqRes;
+ 
+ const char	*Universe		= "universe";
+ const char	*MachineCount	= "machine_count";
+@@ -2508,21 +2508,21 @@ void SetFileOptions()
+ void SetRequestResources() {
+     HASHITER it = hash_iter_begin(ProcVars, PROCVARSIZE);
+     for (;  !hash_iter_done(it);  hash_iter_next(it)) {
+-        string key = hash_iter_key(it);
++        std::string key = hash_iter_key(it);
+         std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+         // if key is not of form "request_xxx", ignore it:
+         if (key.compare(0, RequestPrefix.length(), RequestPrefix) != 0) continue;
+         // if key is one of the predefined request_cpus, request_memory, etc, also ignore it,
+         // those have their own special handling:
+         if (fixedReqRes.count(key) > 0) continue;
+-        string rname = key.substr(RequestPrefix.length());
++        std::string rname = key.substr(RequestPrefix.length());
+         // resource name should be nonempty
+         if (rname.size() <= 0) continue;
+         // CamelCase it!
+         *(rname.begin()) = toupper(*(rname.begin()));
+         // could get this from 'it', but this prevents unused-line warnings:
+-        string val = condor_param(key.c_str());
+-        string assign;
++        std::string val = condor_param(key.c_str());
++        std::string assign;
+         sprintf(assign, "%s%s = %s", ATTR_REQUEST_PREFIX, rname.c_str(), val.c_str());
+         InsertJobExpr(assign.c_str()); 
+     }
+@@ -5520,14 +5520,14 @@ SetGridParams()
+ 	}
+ 	hash_iter_delete(&it);
+ 
+-	stringstream ss;
++	std::stringstream ss;
+ 	char *tagName;
+ 	tagNames.rewind();
+ 	while ((tagName = tagNames.next())) {
+ 			// XXX: Check that tagName does not contain an equal sign (=)
+-		string tag;
+-		string tagAttr(ATTR_EC2_TAG_PREFIX); tagAttr.append(tagName);
+-		string tagCmd("ec2_tag_"); tagCmd.append(tagName);
++		std::string tag;
++		std::string tagAttr(ATTR_EC2_TAG_PREFIX); tagAttr.append(tagName);
++		std::string tagCmd("ec2_tag_"); tagCmd.append(tagName);
+ 		char *value = NULL;
+ 		if ((value = condor_param(tagCmd.c_str(), tagAttr.c_str()))) {
+ 			buffer.sprintf("%s = \"%s\"", tagAttr.c_str(), value);
+@@ -6812,19 +6812,19 @@ check_requirements( char const *orig, MyString &answer )
+     // identify any custom pslot resource reqs and add them in:
+     HASHITER it = hash_iter_begin(ProcVars, PROCVARSIZE);
+     for (;  !hash_iter_done(it);  hash_iter_next(it)) {
+-        string key = hash_iter_key(it);
++        std::string key = hash_iter_key(it);
+         std::transform(key.begin(), key.end(), key.begin(), ::tolower);
+         // if key is not of form "request_xxx", ignore it:
+         if (key.compare(0, RequestPrefix.length(), RequestPrefix) != 0) continue;
+         // if key is one of the predefined request_cpus, request_memory, etc, also ignore it,
+         // those have their own special handling:
+         if (fixedReqRes.count(key) > 0) continue;
+-        string rname = key.substr(RequestPrefix.length());
++        std::string rname = key.substr(RequestPrefix.length());
+         // resource name should be nonempty
+         if (rname.size() <= 0) continue;
+         // CamelCase it!
+         *(rname.begin()) = toupper(*(rname.begin()));
+-        string clause;
++        std::string clause;
+         sprintf(clause, " && (TARGET.%s%s >= %s%s)", "", rname.c_str(), ATTR_REQUEST_PREFIX, rname.c_str());
+         answer += clause;
+     }
+diff --git a/src/condor_utils/named_classad_list.cpp b/src/condor_utils/named_classad_list.cpp
+index 8099d04..d292d59 100644
+--- a/src/condor_utils/named_classad_list.cpp
++++ b/src/condor_utils/named_classad_list.cpp
+@@ -33,7 +33,7 @@ NamedClassAdList::NamedClassAdList( void )
+ 
+ NamedClassAdList::~NamedClassAdList( void )
+ {
+-	list<NamedClassAd *>::iterator iter;
++	std::list<NamedClassAd *>::iterator iter;
+ 	for( iter = m_ads.begin(); iter != m_ads.end(); iter++ ) {
+ 		delete *iter;
+ 	}
+@@ -43,7 +43,7 @@ NamedClassAdList::~NamedClassAdList( void )
+ NamedClassAd *
+ NamedClassAdList::Find( const char *name )
+ {
+-	list<NamedClassAd *>::iterator iter;
++	std::list<NamedClassAd *>::iterator iter;
+ 	for( iter = m_ads.begin(); iter != m_ads.end(); iter++ ) {
+ 		NamedClassAd	*nad = *iter;
+ 		if ( ! strcmp( nad->GetName( ), name ) ) {
+@@ -125,7 +125,7 @@ NamedClassAdList::Replace( const char *name, ClassAd *newAd,
+ int
+ NamedClassAdList::Delete( const char *name )
+ {
+-	list<NamedClassAd *>::iterator iter;
++	std::list<NamedClassAd *>::iterator iter;
+ 	for( iter = m_ads.begin(); iter != m_ads.end(); iter++ ) {
+ 		NamedClassAd	*ad = *iter;
+ 		if ( ! strcmp( ad->GetName( ), name ) ) {
+@@ -142,7 +142,7 @@ NamedClassAdList::Delete( const char *name )
+ int
+ NamedClassAdList::Publish( ClassAd *merged_ad )
+ {
+-	list<NamedClassAd *>::iterator iter;
++	std::list<NamedClassAd *>::iterator iter;
+ 	for( iter = m_ads.begin(); iter != m_ads.end(); iter++ ) {
+ 		NamedClassAd	*nad = *iter;
+ 		ClassAd			*ad = nad->GetAd( );
+-- 
+1.7.7.6
+
