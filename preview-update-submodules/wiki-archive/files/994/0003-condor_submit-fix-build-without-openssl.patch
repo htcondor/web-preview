@@ -1,0 +1,34 @@
+From ae72857c5eac5b317a4954c1043bb0f8a08d640f Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 13 Apr 2017 13:05:17 +0100
+Subject: [PATCH 3/3] condor_submit: fix build without openssl
+
+zkm_base64_decode is used here so it makes sense to also use zkm_base64_encode
+---
+ src/condor_submit.V6/submit.cpp | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 57d29a517c..4dcda64a0f 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -85,7 +85,6 @@
+ #include "vm_univ_utils.h"
+ #include "condor_md.h"
+ #include "my_popen.h"
+-#include "condor_base64.h"
+ #include "zkm_base64.h"
+ 
+ #include <algorithm>
+@@ -2158,7 +2157,7 @@ int SendJobCredential()
+ 			}
+ 
+ 			// immediately convert to base64
+-			char* ut64 = condor_base64_encode(uber_ticket, bytes_read);
++			char* ut64 = zkm_base64_encode(uber_ticket, bytes_read);
+ 
+ 			// sanity check:  convert it back.
+ 			//unsigned char *zkmbuf = 0;
+-- 
+2.13.5
+

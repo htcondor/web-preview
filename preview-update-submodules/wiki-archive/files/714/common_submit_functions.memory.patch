@@ -1,0 +1,19 @@
+--- blah_common_submit_functions.sh.old	2013-03-29 12:34:19.283844513 -0500
++++ blah_common_submit_functions.sh	2013-03-29 11:22:04.881850402 -0500
+@@ -272,7 +272,7 @@
+   ###############################################################
+   # Parse parameters
+   ###############################################################
+-  while getopts "a:i:o:e:c:s:v:V:dw:q:n:N:z:h:S:r:p:l:x:u:j:T:I:O:R:C:" arg 
++  while getopts "a:i:o:e:c:s:v:V:dw:q:n:N:z:h:S:r:p:l:x:u:j:T:I:O:R:C:m:" arg 
+   do
+       case "$arg" in
+       a) bls_opt_xtra_args="$OPTARG" ;;
+@@ -302,6 +302,7 @@
+       O) bls_opt_outputflstring="$OPTARG" ;;
+       R) bls_opt_outputflstringremap="$OPTARG" ;;
+       C) bls_opt_req_file="$OPTARG";;
++      m) bls_opt_req_mem="$OPTARG";;
+       -) break ;;
+       ?) echo $usage_string
+          exit 1 ;;
