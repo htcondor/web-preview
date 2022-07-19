@@ -1,0 +1,1097 @@
+diff --git a/src/condor_c++_util/condor_attributes.cpp b/src/condor_c++_util/condor_attributes.cpp
+index 69a6a2e..2697df9 100644
+--- a/src/condor_c++_util/condor_attributes.cpp
++++ b/src/condor_c++_util/condor_attributes.cpp
+@@ -351,6 +351,7 @@ const char *ATTR_JOB_VM_NETWORKING_TYPE		= "JobVMNetworkingType";
+ const char *ATTR_JOB_VM_HARDWARE_VT			= "JobVMHardwareVT";
+ const char * ATTR_JOB_VM_VCPUS = "JobVM_VCPUS";
+ const char * ATTR_JOB_VM_MACADDR = "JobVM_MACADDR";
++const char *ATTR_JOB_WANTS_ADS = "JobWantsAds";
+ // End VM universe
+ const char *ATTR_KEYBOARD_IDLE            = "KeyboardIdle";
+ const char *ATTR_KEYSTORE_FILE            = "KeystoreFile";
+diff --git a/src/condor_examples/condor_limits_wrapper.sh b/src/condor_examples/condor_limits_wrapper.sh
+new file mode 100755
+index 0000000..25948b2
+--- /dev/null
++++ b/src/condor_examples/condor_limits_wrapper.sh
+@@ -0,0 +1,43 @@
++#!/bin/sh
++# Copyright 2008 Red Hat, Inc.
++#
++# Licensed under the Apache License, Version 2.0 (the "License");
++# you may not use this file except in compliance with the License.
++# You may obtain a copy of the License at
++#
++#     http://www.apache.org/licenses/LICENSE-2.0
++#
++# Unless required by applicable law or agreed to in writing, software
++# distributed under the License is distributed on an "AS IS" BASIS,
++# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++# See the License for the specific language governing permissions and
++# limitations under the License.
++
++if [[ $_CONDOR_MACHINE_AD != "" ]]; then
++   mem_limit=$((`egrep '^Memory' $_CONDOR_MACHINE_AD | cut -d ' ' -f 3` * 1024))
++#   block_size=$((`stat -f -c %s .` / 1024))
++#   disk_limit=$((`egrep '^Disk' $_CONDOR_MACHINE_AD | cut -d ' ' -f 3` / $block_size))
++   disk_limit=`egrep '^Disk' $_CONDOR_MACHINE_AD | cut -d ' ' -f 3`
++   vm_limit=`egrep '^VirtualMemory' $_CONDOR_MACHINE_AD | cut -d ' ' -f 3`
++
++   ulimit -d $mem_limit
++   if [[ $? != 0 ]] || [[ $mem_limit = "" ]]; then
++      echo "Failed to set Memory Resource Limit" > $_CONDOR_WRAPPER_ERROR_FILE
++      exit 1
++   fi
++   ulimit -f $disk_limit
++   if [[ $? != 0 ]] || [[ $disk_limit = "" ]]; then
++      echo "Failed to set Disk Resource Limit" > $_CONDOR_WRAPPER_ERROR_FILE
++      exit 1
++   fi
++   ulimit -v $vm_limit
++   if [[ $? != 0 ]] || [[ $vm_limit = "" ]]; then
++      echo "Failed to set Virtual Memory Resource Limit" > $_CONDOR_WRAPPER_ERROR_FILE
++      exit 1
++   fi
++fi
++
++exec "$@"
++error=$?
++echo "Failed to exec($error): $@" > $_CONDOR_WRAPPER_ERROR_FILE
++exit 1
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index b31ad02..333a361 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -290,6 +290,7 @@ extern const char * ATTR_JOB_VM_CHECKPOINT;
+ extern const char * ATTR_JOB_VM_NETWORKING;
+ extern const char * ATTR_JOB_VM_NETWORKING_TYPE;
+ extern const char * ATTR_JOB_VM_HARDWARE_VT;
++extern const char * ATTR_JOB_WANTS_ADS;
+ extern const char * ATTR_KEYBOARD_IDLE;
+ extern const char * ATTR_KEYSTORE_FILE;
+ extern const char * ATTR_KEYSTORE_ALIAS;
+diff --git a/src/condor_startd.V6/Starter.cpp b/src/condor_startd.V6/Starter.cpp
+index c5207ed..9574c6c 100644
+--- a/src/condor_startd.V6/Starter.cpp
++++ b/src/condor_startd.V6/Starter.cpp
+@@ -647,6 +647,8 @@ Starter::execJobPipeStarter( void )
+ 		env.SetEnv(lock_env.Value());
+ 	}
+ 
++	writeMachAdToFile();
++
+ 		// Create an argument list for this starter, based on the claim.
+ 	s_claim->makeStarterArgs(args);
+ 
+@@ -729,6 +731,9 @@ Starter::execDCStarter( Stream* s )
+ 		args.AppendArg("-f");
+ 		args.AppendArg(hostname);
+ 	}
++	writeMachAdToFile();
++	args.AppendArg("-mach-input-ad");
++	args.AppendArg(s_claim->getMachFilename());
+ 	execDCStarter( args, NULL, NULL, s );
+ 
+ 	return s_pid;
+@@ -1307,3 +1312,15 @@ Starter::holdJobCallback(DCMsgCallback *cb)
+ 		killSoft();
+ 	}
+ }
++
++void
++Starter::writeMachAdToFile()
++{
++	int mach_fd;
++
++	// Write the machine ad to a temporary file for the starter
++	// to use.
++	mach_fd = s_claim->genMachFilename();
++	s_claim->writeMachAd( mach_fd );
++	close( mach_fd );
++}
+diff --git a/src/condor_startd.V6/Starter.h b/src/condor_startd.V6/Starter.h
+index aaae368..36d7fae 100644
+--- a/src/condor_startd.V6/Starter.h
++++ b/src/condor_startd.V6/Starter.h
+@@ -107,6 +107,7 @@ private:
+ 	int		execDCStarter( Stream* s );
+ 	int		execDCStarter( ArgList const &args, Env const *env, 
+ 						   int std_fds[], Stream* s );
++	void	writeMachAdToFile( void );
+ #if HAVE_BOINC
+ 	int 	execBOINCStarter( void );
+ #endif /* HAVE_BOINC */
+diff --git a/src/condor_startd.V6/claim.cpp b/src/condor_startd.V6/claim.cpp
+index 5816344..73dc05e 100644
+--- a/src/condor_startd.V6/claim.cpp
++++ b/src/condor_startd.V6/claim.cpp
+@@ -65,6 +65,7 @@ Claim::Claim( Resource* res_ip, ClaimType claim_type, int lease_duration )
+ 	setResource( res_ip );
+ 	c_type = claim_type;
+ 	c_cod_keyword = NULL;
++	c_mach_filename = NULL;
+ 	c_has_job_ad = 0;
+ 	c_pending_cmd = -1;
+ 	c_wants_remove = false;
+@@ -122,6 +123,10 @@ Claim::~Claim()
+ 	if( c_cod_keyword ) {
+ 		free( c_cod_keyword );
+ 	}
++	if( c_mach_filename ) {
++		remove( c_mach_filename );
++		free( c_mach_filename );
++	}
+ }	
+ 
+ void
+@@ -1557,6 +1562,10 @@ Claim::makeFetchStarterArgs( ArgList &args )
+ {
+ 	args.AppendArg("condor_starter");
+ 	args.AppendArg("-f");
++	if( c_mach_filename ) {
++		args.AppendArg("-mach-input-ad");
++		args.AppendArg(c_mach_filename);
++	}
+ 	args.AppendArg("-job-input-ad");
+ 	args.AppendArg("-");
+ }
+@@ -1599,6 +1608,11 @@ Claim::makeCODStarterArgs( ArgList &args )
+ 		args.AppendArg(c_cod_keyword);
+ 	}
+ 
++	if( c_mach_filename ) {
++		args.AppendArg("-mach-input-ad");
++		args.AppendArg(c_mach_filename);
++	}
++
+ 	if( c_has_job_ad ) { 
+ 		args.AppendArg("-job-input-ad");
+ 		args.AppendArg("-");
+@@ -1921,6 +1935,49 @@ Claim::writeJobAd( int pipe_end )
+ 	return true;
+ }
+ 
++bool
++Claim::writeMachAd( int fd )
++{
++	MyString mach_str;
++	c_rip->r_classad->sPrint(mach_str);
++
++	const char* ptr = mach_str.Value();
++	int len = mach_str.Length();
++	while (len) {
++		int bytes_written = write(fd, ptr, len);
++		if (bytes_written == -1) {
++			dprintf(D_ALWAYS, "writeMachAd: File write failed\n");
++			return false;
++		}
++		ptr += bytes_written;
++		len -= bytes_written;
++	}
++	return true;
++}
++
++int
++Claim::genMachFilename( void )
++{
++	char basename[] = "/tmp/machad-XXXXXX";
++	int fd;
++
++	if ( c_mach_filename ) {
++		remove( c_mach_filename );
++		free( c_mach_filename );
++		c_mach_filename = NULL;
++	}
++	fd = mkstemp( basename );
++        c_mach_filename = strdup( basename );
++
++	return fd;
++}
++
++const char*
++Claim::getMachFilename( void )
++{
++	return c_mach_filename;
++}
++
+ ///////////////////////////////////////////////////////////////////////////
+ // Client
+ ///////////////////////////////////////////////////////////////////////////
+diff --git a/src/condor_startd.V6/claim.h b/src/condor_startd.V6/claim.h
+index 85a00db..341fc27 100644
+--- a/src/condor_startd.V6/claim.h
++++ b/src/condor_startd.V6/claim.h
+@@ -264,6 +264,13 @@ public:
+ 		*/
+ 	bool writeJobAd( int fd );
+ 
++		/** Write out the machine ClassAd to the filename stored
++			in c_mach_filename.
++ 		*/
++	bool writeMachAd( int fd );
++	int genMachFilename( void );
++	const char* getMachFilename( void );
++
+ 	void receiveJobClassAdUpdate( ClassAd &update_ad );
+ 
+ 		// registered callback for premature closure of connection from
+@@ -313,6 +320,7 @@ private:
+ 	int			c_aliveint;		// Alive interval for this claim
+ 
+ 	char*		c_cod_keyword;	// COD keyword for this claim, if any
++	char*		c_mach_filename;
+ 	int			c_has_job_ad;	// Do we have a job ad for the COD claim?
+ 
+ 	ClaimState	c_state;		// the state of this claim
+diff --git a/src/condor_starter.V6.1/jic_local.cpp b/src/condor_starter.V6.1/jic_local.cpp
+index b28857a..f68ea59 100644
+--- a/src/condor_starter.V6.1/jic_local.cpp
++++ b/src/condor_starter.V6.1/jic_local.cpp
+@@ -112,7 +112,7 @@ JICLocal::init( void )
+ void
+ JICLocal::config( void ) 
+ { 
+-		// nothing to look up just for JICLocal
++	m_enforce_limits = param_boolean("ENFORCE_JOB_LIMITS", false);
+ }
+ 
+ 
+diff --git a/src/condor_starter.V6.1/jic_local_config.cpp b/src/condor_starter.V6.1/jic_local_config.cpp
+index f6058a3..0f62e67 100644
+--- a/src/condor_starter.V6.1/jic_local_config.cpp
++++ b/src/condor_starter.V6.1/jic_local_config.cpp
+@@ -40,6 +40,7 @@ JICLocalConfig::JICLocalConfig( const char* keyword, int cluster,
+ 	job_proc = proc;
+ 	job_subproc = subproc;
+ 	job_ad = new ClassAd();
++	mach_ad = new ClassAd();
+ }
+ 
+ 
+@@ -53,6 +54,7 @@ JICLocalConfig::JICLocalConfig( int cluster, int proc, int subproc )
+ 	job_proc = proc;
+ 	job_subproc = subproc;
+ 	job_ad = new ClassAd();
++	mach_ad = new ClassAd();
+ }
+ 
+ 
+diff --git a/src/condor_starter.V6.1/jic_local_file.cpp b/src/condor_starter.V6.1/jic_local_file.cpp
+index 32bf160..45691e8 100644
+--- a/src/condor_starter.V6.1/jic_local_file.cpp
++++ b/src/condor_starter.V6.1/jic_local_file.cpp
+@@ -27,42 +27,54 @@
+ #include "jic_local_file.h"
+ 
+ 
+-JICLocalFile::JICLocalFile( const char* classad_filename, 
++JICLocalFile::JICLocalFile( const char* classad_filename,
++							const char* machad_filename,
+ 							const char* keyword, 
+ 							int cluster, int proc, int subproc )
+ 	: JICLocalConfig( keyword, cluster, proc, subproc )
+ {
+-	initFilename( classad_filename );
++	initFilenames( classad_filename, machad_filename );
+ }
+ 
+ 
+-JICLocalFile::JICLocalFile( const char* classad_filename, 
++JICLocalFile::JICLocalFile( const char* classad_filename,
++							const char* machad_filename,
+ 							int cluster, int proc, int subproc )
+ 	: JICLocalConfig( cluster, proc, subproc )
+ {
+-	initFilename( classad_filename );
++	initFilenames( classad_filename, machad_filename );
+ }
+ 
+ 
+ JICLocalFile::~JICLocalFile()
+ {
+-	if( filename ) {
+-		free( filename );
++	if( job_filename ) {
++		free( job_filename );
++	}
++	if( mach_filename ) {
++		free( mach_filename );
+ 	}
+ }
+ 
+ 
+ void
+-JICLocalFile::initFilename( const char* path )
++JICLocalFile::initFilenames( const char* jobad_path, const char* machad_path )
+ {
+-	if( ! path ) {
++	if( ! jobad_path ) {
+ 		EXCEPT( "Can't instantiate a JICLocalFile without a filename!" );
+ 	}
+-	if( path[0] == '-' && path[1] == '\0' ) {
++	if( jobad_path[0] == '-' && jobad_path[1] == '\0' ) {
+ 			// special case, treat '-' as STDIN
+-		filename = NULL;
++		job_filename = NULL;
+ 	} else {
+-		filename = strdup( path );
++		job_filename = strdup( jobad_path );
++	}
++
++	if( machad_path ) {
++		mach_filename = strdup( machad_path );
++	}
++	else {
++		mach_filename = NULL;
+ 	}
+ }
+ 
+@@ -71,15 +83,27 @@ bool
+ JICLocalFile::getLocalJobAd( void )
+ { 
+ 	bool found_some = false;
+-	dprintf( D_ALWAYS, "Reading job ClassAd from \"%s\"\n", fileName() );
++	dprintf( D_ALWAYS, "Reading job ClassAd from \"%s\"\n", jobAdFileName() );
+ 
+-	if( ! readClassAdFromFile() ) {
+-		dprintf( D_ALWAYS, "No ClassAd data in \"%s\"\n", fileName() );
++	if( ! readClassAdFromFile( job_filename, job_ad ) ) {
++		dprintf( D_ALWAYS, "No ClassAd data in \"%s\"\n", jobAdFileName() );
+ 	} else { 
+-		dprintf( D_ALWAYS, "Found ClassAd data in \"%s\"\n", fileName() );
++		dprintf( D_ALWAYS, "Found ClassAd data in \"%s\"\n", jobAdFileName() );
+ 		found_some = true;
+ 	}
+ 
++	if( mach_filename ) {
++		dprintf( D_ALWAYS, "Reading machine ClassAd from \"%s\"\n", machAdFileName() );
++		if( ! readClassAdFromFile( mach_filename, mach_ad ) ) {
++			dprintf( D_ALWAYS, "No ClassAd data in \"%s\"\n", machAdFileName() );
++		} else {
++			dprintf( D_ALWAYS, "Found ClassAd data in \"%s\"\n", machAdFileName() );
++			dprintf( D_FULLDEBUG, "Machine Ad for this job:\n" );
++			mach_ad->dPrint(D_FULLDEBUG);
++			dprintf( D_FULLDEBUG, "End of Machine Ad\n" );
++		}
++	}
++
+ 		// if we weren't told on the command-line, see if there's a
+ 		// keyword in the ClassAd we were given...
+ 	if( key ) {
+@@ -102,17 +126,27 @@ JICLocalFile::getLocalJobAd( void )
+ 
+ 
+ char*
+-JICLocalFile::fileName( void )
++JICLocalFile::jobAdFileName( void )
+ {
+-	if( filename ) {
+-		return filename;
++	if( job_filename ) {
++		return job_filename;
+ 	}
+ 	return "STDIN";
+ } 
+ 
+ 
++char*
++JICLocalFile::machAdFileName( void )
++{
++	if( mach_filename ) {
++		return mach_filename;
++	}
++	return "NULL";
++}
++
++
+ bool
+-JICLocalFile::readClassAdFromFile( void ) 
++JICLocalFile::readClassAdFromFile( char* filename, ClassAd* ad ) 
+ {
+ 	bool read_something = false;
+ 	bool needs_close = true;
+@@ -147,7 +181,7 @@ JICLocalFile::readClassAdFromFile( void )
+ 		if( DebugFlags & D_JOB ) {
+ 			dprintf( D_JOB, "FILE: %s\n", line.Value() );
+ 		} 
+-        if( ! job_ad->Insert(line.Value()) ) {
++        if( ! ad->Insert(line.Value()) ) {
+             dprintf( D_ALWAYS, "Failed to insert \"%s\" into ClassAd, "
+                      "ignoring this line\n", line.Value() );
+         }
+diff --git a/src/condor_starter.V6.1/jic_local_file.h b/src/condor_starter.V6.1/jic_local_file.h
+index 9a36992..8ad62a3 100644
+--- a/src/condor_starter.V6.1/jic_local_file.h
++++ b/src/condor_starter.V6.1/jic_local_file.h
+@@ -41,16 +41,17 @@ public:
+ 
+ 		/** Constructor with a keyword on the command-line.
+ 			@param classad_filename Full path to the ClassAd, "-" if STDIN
++			@param machad_filename Fill path to the Machine ClassAd
+ 			@param keyword Config file keyword to find other attributes
+ 			@cluster Cluster ID number (if any)
+ 			@proc Proc ID number (if any)
+ 			@subproc Subproc ID number (if any)
+ 		*/
+-	JICLocalFile( const char* classad_filename, const char* keyword,
+-				  int cluster, int proc, int subproc );
++	JICLocalFile( const char* classad_filename, const char* machad_filename,
++				  const char* keyword, int cluster, int proc, int subproc );
+ 
+ 		/// Constructor without a keyword on the command-line
+-	JICLocalFile( const char* classad_filename,
++	JICLocalFile( const char* classad_filename, const char* machad_filename,
+ 				  int cluster, int proc, int subproc );
+ 
+ 		/// Destructor
+@@ -69,7 +70,8 @@ public:
+ 		*/
+ 	bool getLocalJobAd( void );
+ 
+-	char* fileName( void );
++	char* jobAdFileName( void );
++	char* machAdFileName( void );
+ 
+ protected:
+ 
+@@ -79,20 +81,26 @@ protected:
+ 	virtual bool getUniverse( void );
+ 
+ 		/** Private helper to actually read the file and try to insert
+-			it into our job ClassAd.
++			it into the passed ClassAd.
+ 		*/
+-	bool readClassAdFromFile( void );
++	bool readClassAdFromFile( char* filename, ClassAd* ad );
++
+ 
+-		/** Private helper to initialize our filename data member.
+-			we use this since we have two constructors, both of which
+-			need to do the same thing with this info.
++		/** Private helper to initialize our job_filename mach_filename
++			data members.  We use this since we have two
++			constructors, both of which need to do the same thing
++			with this info.
+ 		*/
+-	void initFilename( const char* path );
++	void initFilenames( const char* jobad_path, const char* machad_path );
+ 
+ 		/** The full path to the file we get our ClassAd from (or "-"
+ 			if we're reading it from STDIN).
+ 		*/
+-	char* filename;
++	char* job_filename;
++
++		/** The full path to the file we get the MachineAd from
++		*/
++	char* mach_filename;
+ };
+ 
+ 
+diff --git a/src/condor_starter.V6.1/jic_local_schedd.cpp b/src/condor_starter.V6.1/jic_local_schedd.cpp
+index f4d108b..8347fec 100644
+--- a/src/condor_starter.V6.1/jic_local_schedd.cpp
++++ b/src/condor_starter.V6.1/jic_local_schedd.cpp
+@@ -36,10 +36,11 @@
+ extern CStarter *Starter;
+ 
+ 
+-JICLocalSchedd::JICLocalSchedd( const char* classad_filename, 
++JICLocalSchedd::JICLocalSchedd( const char* classad_filename,
++								const char* machad_filename,
+ 								const char* schedd_address, 
+ 								int cluster, int proc, int subproc )
+-	: JICLocalFile( classad_filename, cluster, proc, subproc )
++	: JICLocalFile( classad_filename, machad_filename, cluster, proc, subproc )
+ {
+ 		// initialize this to something reasonable.  we'll change it
+ 		// if anything special happens which needs a different value.
+diff --git a/src/condor_starter.V6.1/jic_local_schedd.h b/src/condor_starter.V6.1/jic_local_schedd.h
+index ced2839..2d5202c 100644
+--- a/src/condor_starter.V6.1/jic_local_schedd.h
++++ b/src/condor_starter.V6.1/jic_local_schedd.h
+@@ -39,12 +39,13 @@ public:
+ 
+ 		/** Constructor 
+ 			@param classad_filename Full path to the ClassAd, "-" if STDIN
++			@param machad_filename Full path to the Machine ClassAd
+ 			@param schedd_address Sinful string of the schedd's qmgmt port
+ 			@param cluster Cluster ID number (if any)
+ 			@param proc Proc ID number (if any)
+ 			@param subproc Subproc ID number (if any)
+ 		*/
+-	JICLocalSchedd( const char* classad_filename,
++	JICLocalSchedd( const char* classad_filename, const char* machad_filename,
+ 					const char* schedd_address,
+ 					int cluster, int proc, int subproc );
+ 
+diff --git a/src/condor_starter.V6.1/jic_shadow.cpp b/src/condor_starter.V6.1/jic_shadow.cpp
+index 03a005c..ab2a1b7 100644
+--- a/src/condor_starter.V6.1/jic_shadow.cpp
++++ b/src/condor_starter.V6.1/jic_shadow.cpp
+@@ -44,6 +44,8 @@
+ 
+ extern CStarter *Starter;
+ ReliSock *syscall_sock = NULL;
++extern const char* JOB_AD_FILENAME;
++extern const char* MACHINE_AD_FILENAME;
+ 
+ // Filenames are case insensitive on Win32, but case sensitive on Unix
+ #ifdef WIN32
+@@ -54,7 +56,8 @@ ReliSock *syscall_sock = NULL;
+ #	define file_remove remove
+ #endif
+ 
+-JICShadow::JICShadow( const char* shadow_name ) : JobInfoCommunicator()
++JICShadow::JICShadow( const char* shadow_name, const char* filename )
++		 : JobInfoCommunicator()
+ {
+ 	if( ! shadow_name ) {
+ 		EXCEPT( "Trying to instantiate JICShadow with no shadow name!" );
+@@ -63,6 +66,11 @@ JICShadow::JICShadow( const char* shadow_name ) : JobInfoCommunicator()
+ 
+ 	shadow = NULL;
+ 	shadow_version = NULL;
++	if( filename ) {
++		machad_filename = strdup( filename );
++	} else {
++		machad_filename = NULL;
++	}
+ 	filetrans = NULL;
+ 	m_filetrans_sec_session = NULL;
+ 	m_reconnect_sec_session = NULL;
+@@ -124,6 +132,10 @@ JICShadow::~JICShadow()
+ 	if( fs_domain ) {
+ 		free( fs_domain );
+ 	}
++	if ( machad_filename )
++	{
++		free( machad_filename );
++	}
+ 	free(m_reconnect_sec_session);
+ 	free(m_filetrans_sec_session);
+ }
+@@ -141,6 +153,13 @@ JICShadow::init( void )
+ 		return false;
+ 	}
+ 
++	if ( machad_filename ) {
++		getMachAdFromFile();
++		dprintf( D_FULLDEBUG, "Machine Ad for this job:\n" );
++		mach_ad->dPrint(D_FULLDEBUG);
++		dprintf( D_FULLDEBUG, "End of Machine Ad\n" );
++	}
++
+ 		// stash a copy of the unmodified job ad in case we decide
+ 		// below that we want to write out an execution visa
+ 	ClassAd orig_ad = *job_ad;	
+@@ -241,6 +260,7 @@ JICShadow::config( void )
+ 		}			
+ 		free( tmp );
+ 	}
++	m_enforce_limits = param_boolean("ENFORCE_JOB_LIMITS", false);
+ }
+ 
+ 
+@@ -389,6 +409,13 @@ JICShadow::transferOutput( void )
+ 		while ((filename = m_removed_output_files.next()) != NULL) {
+ 			filetrans->addFileToExeptionList(filename);
+ 		}
++
++			// remove the job and machine classad files from the
++			// ft list
++		if (enforceLimits()) {
++			filetrans->addFileToExeptionList(JOB_AD_FILENAME);
++			filetrans->addFileToExeptionList(MACHINE_AD_FILENAME);
++		}
+ 	
+ 			// true if job exited on its own
+ 		bool final_transfer = (requested_exit == false);	
+@@ -2066,3 +2093,33 @@ JICShadow::initMatchSecuritySession()
+ 		}
+ 	}
+ }
++
++bool
++JICShadow::getMachAdFromFile()
++{
++	FILE* fp;
++	int atEOF, error, empty;
++	char delim[] = "--";
++
++	if( machad_filename ) {
++		fp = safe_fopen_wrapper( machad_filename, "r" );
++		if( ! fp ) {
++			dprintf( D_ALWAYS, "Failed to open \"%s\" for reading: %s "
++					"(errno %d)\n", machad_filename,
++					 strerror(errno), errno );
++			return false;
++		}
++	} else {
++		dprintf(D_FULLDEBUG, "No machine ad file defined\n");
++		return false;
++	}
++
++	if( mach_ad ) {
++		delete mach_ad;
++	}
++	mach_ad = new ClassAd(fp, delim, atEOF, error, empty);
++
++	fclose(fp);
++
++	return true;
++}
+diff --git a/src/condor_starter.V6.1/jic_shadow.h b/src/condor_starter.V6.1/jic_shadow.h
+index c5d12da..00dc881 100644
+--- a/src/condor_starter.V6.1/jic_shadow.h
++++ b/src/condor_starter.V6.1/jic_shadow.h
+@@ -37,7 +37,7 @@ class JICShadow : public JobInfoCommunicator
+ {
+ public:
+ 		/// Constructor
+-	JICShadow( const char* shadow_name );
++	JICShadow( const char* shadow_name, const char* filename );
+ 
+ 		/// Destructor
+ 	~JICShadow();
+@@ -244,6 +244,9 @@ private:
+ 		/// Do the RSC to get the job classad from the shadow
+ 	bool getJobAdFromShadow( void );
+ 
++		/// Get the machine classad from a file
++	bool getMachAdFromFile( void );
++
+ 		/** Initialize information about the shadow's version and
+ 			sinful string from the given ClassAd.  At startup, we just
+ 			pass the job ad, since that should have everything in it.
+@@ -397,6 +400,8 @@ private:
+ 		/// hostname (or whatever the startd gave us) of our shadow 
+ 	char* m_shadow_name;
+ 
++	char* machad_filename;
++
+ 	IOProxy io_proxy;
+ 
+ 	FileTransfer *filetrans;
+diff --git a/src/condor_starter.V6.1/job_info_communicator.cpp b/src/condor_starter.V6.1/job_info_communicator.cpp
+index 93fbb83..93fd818 100644
+--- a/src/condor_starter.V6.1/job_info_communicator.cpp
++++ b/src/condor_starter.V6.1/job_info_communicator.cpp
+@@ -39,6 +39,7 @@ extern CStarter *Starter;
+ JobInfoCommunicator::JobInfoCommunicator()
+ {
+ 	job_ad = NULL;
++	mach_ad = NULL;
+ 	job_universe = CONDOR_UNIVERSE_VANILLA;
+ 	job_cluster = -1;
+ 	job_proc = -1;
+@@ -63,6 +64,7 @@ JobInfoCommunicator::JobInfoCommunicator()
+ #endif
+ 	m_periodic_job_update_tid = -1;
+ 	m_allJobsDone_finished = false;
++	m_enforce_limits = false;
+ }
+ 
+ 
+@@ -71,6 +73,9 @@ JobInfoCommunicator::~JobInfoCommunicator()
+ 	if( job_ad ) {
+ 		delete job_ad;
+ 	}
++	if( mach_ad ) {
++		delete mach_ad;
++	}
+ 	if( u_log ) {
+ 		delete u_log;
+ 	}
+@@ -215,6 +220,13 @@ JobInfoCommunicator::jobClassAd( void )
+ }
+ 
+ 
++ClassAd*
++JobInfoCommunicator::machClassAd( void )
++{
++	return mach_ad;
++}
++
++
+ int
+ JobInfoCommunicator::jobUniverse( void )
+ {
+@@ -892,3 +904,16 @@ JobInfoCommunicator::getExitReasonString( void )
+ 	}
+ 	return "exit";
+ }
++
++
++bool
++JobInfoCommunicator::enforceLimits()
++{
++	bool job_wants_ads = false;
++
++	if (job_ad) {
++		job_ad->LookupBool( ATTR_JOB_WANTS_ADS, job_wants_ads );
++	}
++
++	return (m_enforce_limits || job_wants_ads);
++}
+diff --git a/src/condor_starter.V6.1/job_info_communicator.h b/src/condor_starter.V6.1/job_info_communicator.h
+index 7a86f0c..f058683 100644
+--- a/src/condor_starter.V6.1/job_info_communicator.h
++++ b/src/condor_starter.V6.1/job_info_communicator.h
+@@ -143,6 +143,9 @@ public:
+ 		/// Return a pointer to the ClassAd for our job.
+ 	virtual ClassAd* jobClassAd( void );
+ 
++		/// Return a pointer to the ClassAd for the machine.
++	virtual ClassAd* machClassAd( void );
++
+ 		/// Return the job's universe integer.
+ 	int jobUniverse( void );
+ 
+@@ -347,6 +350,8 @@ public:
+ 		/* Update Job ClassAd with checkpoint info and log it */
+ 	virtual void updateCkptInfo(void) {};
+ 
++		/* Returns true if limits should be enforced on the job */
++	bool enforceLimits();
+ 
+ protected:
+ 
+@@ -461,6 +466,9 @@ protected:
+ 		/// The ClassAd for our job.  We control the memory for this.
+ 	ClassAd* job_ad;
+ 
++		// The Machine ClassAd running the job.
++	ClassAd* mach_ad;
++
+ 		/// The universe of the job.
+ 	int job_universe;
+ 
+@@ -487,6 +495,8 @@ protected:
+ 	StarterHookMgr* m_hook_mgr;
+ #endif /* HAVE_JOB_HOOKS */
+ 
++	bool m_enforce_limits;
++
+ private:
+ 		/// Start a timer for the periodic job updates
+ 	void startUpdateTimer( void );
+diff --git a/src/condor_starter.V6.1/os_proc.cpp b/src/condor_starter.V6.1/os_proc.cpp
+index 968eeca..2cc5b2a 100644
+--- a/src/condor_starter.V6.1/os_proc.cpp
++++ b/src/condor_starter.V6.1/os_proc.cpp
+@@ -42,6 +42,10 @@
+ #endif
+ 
+ extern CStarter *Starter;
++extern const char* JOB_WRAPPER_FAILURE_FILE;
++
++const char* JOB_AD_FILENAME = ".job.ad";
++const char* MACHINE_AD_FILENAME = ".machine.ad";
+ 
+ 
+ /* OsProc class implementation */
+@@ -349,11 +353,44 @@ OsProc::StartJob(FamilyInfo* family_info)
+ 			// it, if they need to.
+ 		dprintf( D_ALWAYS, "Using wrapper %s to exec %s\n", JobName.Value(), 
+ 				 args_string.Value() );
++
++		MyString wrapper_err;
++		wrapper_err.sprintf("%s%c%s", Starter->GetWorkingDir(),
++				 	DIR_DELIM_CHAR,
++					JOB_WRAPPER_FAILURE_FILE);
++		if( ! job_env.SetEnv("_CONDOR_WRAPPER_ERROR_FILE", wrapper_err.Value()) ) {
++			dprintf( D_ALWAYS, "Failed to set _CONDOR_WRAPPER_ERROR_FILE environment variable\n");
++		}
+ 	} else {
+ 		dprintf( D_ALWAYS, "About to exec %s %s\n", JobName.Value(),
+ 				 args_string.Value() );
+ 	}
+ 
++	// If the machine and job ads are desired, write the ClassAds to
++	// the execute directory
++	if ( Starter->jic->enforceLimits() ) {
++		if ( ! WriteAdsToExeDir() ) {
++			dprintf ( D_ALWAYS, "OsProc::StartJob(): Failed to "
++				"write classad files.\n" );
++		}
++		else {
++			MyString path;
++			path.sprintf("%s%c%s", Starter->GetWorkingDir(),
++					 	DIR_DELIM_CHAR,
++						MACHINE_AD_FILENAME);
++			if( ! job_env.SetEnv("_CONDOR_MACHINE_AD", path.Value()) ) {
++				dprintf( D_ALWAYS, "Failed to set _CONDOR_MACHINE_AD environment variable\n");
++			}
++
++			path.sprintf("%s%c%s", Starter->GetWorkingDir(),
++					 	DIR_DELIM_CHAR,
++						JOB_AD_FILENAME);
++			if( ! job_env.SetEnv("_CONDOR_JOB_AD", path.Value()) ) {
++				dprintf( D_ALWAYS, "Failed to set _CONDOR_JOB_AD environment variable\n");
++			}
++		}
++	}
++
+ 		// Grab the full environment back out of the Env object 
+ 	if(DebugFlags & D_FULLDEBUG) {
+ 		MyString env_string;
+@@ -844,3 +881,43 @@ OsProc::makeCpuAffinityMask(int slotId) {
+ 
+ 	return mask;
+ }
++
++bool
++OsProc::WriteAdsToExeDir()
++{
++	ClassAd* ad;
++	const char* dir = Starter->GetWorkingDir();
++	MyString ad_str, filename;
++	FILE* fp;
++	bool ret_val = true;
++
++	// Write the job ad first
++	ad = Starter->jic->jobClassAd();
++	filename.sprintf("%s%c%s", dir, DIR_DELIM_CHAR, JOB_AD_FILENAME);
++	fp = safe_fopen_wrapper(filename.Value(), "w");
++	if (!fp)
++	{
++		dprintf(D_ALWAYS, "Failed to open \"%s\" for to write job ad: "
++					"%s (errno %d)\n", filename.Value(),
++					strerror(errno), errno);
++		ret_val = false;
++	}
++	ad->fPrint(fp);
++	fclose(fp);
++
++	// Write the machine ad
++	ad = Starter->jic->machClassAd();
++	filename.sprintf("%s%c%s", dir, DIR_DELIM_CHAR, MACHINE_AD_FILENAME);
++	fp = safe_fopen_wrapper(filename.Value(), "w");
++	if (!fp)
++	{
++		dprintf(D_ALWAYS, "Failed to open \"%s\" for to write machine "
++					"ad: %s (errno %d)\n", filename.Value(),
++					strerror(errno), errno);
++		ret_val = false;
++	}
++	ad->fPrint(fp);
++	fclose(fp);
++
++	return ret_val;
++}
+diff --git a/src/condor_starter.V6.1/os_proc.h b/src/condor_starter.V6.1/os_proc.h
+index 18a200d..009d880 100644
+--- a/src/condor_starter.V6.1/os_proc.h
++++ b/src/condor_starter.V6.1/os_proc.h
+@@ -101,6 +101,8 @@ public:
+ 
+ 	int *makeCpuAffinityMask(int slotId);
+ 
++	bool WriteAdsToExeDir();
++
+ protected:
+ 
+ 	bool is_suspended;
+diff --git a/src/condor_starter.V6.1/starter_v61_main.cpp b/src/condor_starter.V6.1/starter_v61_main.cpp
+index 702497a..91dbb3f 100644
+--- a/src/condor_starter.V6.1/starter_v61_main.cpp
++++ b/src/condor_starter.V6.1/starter_v61_main.cpp
+@@ -69,6 +69,7 @@ usage()
+ 	dprintf(D_ALWAYS, "usage: condor_starter initiating_host\n");
+ 	dprintf(D_ALWAYS, "   or: condor_starter -job-keyword keyword\n");
+ 	dprintf(D_ALWAYS, "                      -job-input-ad path\n");
++	dprintf(D_ALWAYS, "                      -mach-input-ad path\n");
+ 	dprintf(D_ALWAYS, "                      -job-cluster number\n");
+ 	dprintf(D_ALWAYS, "                      -job-proc    number\n");
+ 	dprintf(D_ALWAYS, "                      -job-subproc number\n");
+@@ -306,6 +307,7 @@ parseArgs( int argc, char* argv [] )
+ {
+ 	JobInfoCommunicator* jic = NULL;
+ 	char* job_input_ad = NULL; 
++	char* mach_input_ad = NULL;
+ 	char* job_output_ad = NULL; 
+ 	char* job_keyword = NULL; 
+ 	int job_cluster = -1;
+@@ -319,6 +321,7 @@ parseArgs( int argc, char* argv [] )
+ 
+ 	bool warn_multi_keyword = false;
+ 	bool warn_multi_input_ad = false;
++	bool warn_multi_mach_ad = false;
+ 	bool warn_multi_output_ad = false;
+ 	bool warn_multi_cluster = false;
+ 	bool warn_multi_proc = false;
+@@ -331,6 +334,7 @@ parseArgs( int argc, char* argv [] )
+ 	int opt_len;
+ 
+ 	char _jobinputad[] = "-job-input-ad";
++	char _machinputad[] = "-mach-input-ad";
+ 	char _joboutputad[] = "-job-output-ad";
+ 	char _jobkeyword[] = "-job-keyword";
+ 	char _jobcluster[] = "-job-cluster";
+@@ -387,6 +391,16 @@ parseArgs( int argc, char* argv [] )
+ 			continue;
+ 		}
+ 
++		if( ! strncmp(opt, _machinputad, opt_len) ) { 
++			if( mach_input_ad ) {
++				warn_multi_mach_ad = true;
++				free( mach_input_ad );
++			}
++			mach_input_ad = strdup( arg );
++			tmp++;	// consume the arg so we don't get confused 
++			continue;
++		}
++
+ 		if( strncmp( "-job-", opt, MIN(opt_len,5)) ) {
+ 			invalid( opt );
+ 		}
+@@ -566,6 +580,11 @@ parseArgs( int argc, char* argv [] )
+ 				 "multiple '%s' options given, using \"%s\"\n",
+ 				 _jobinputad, job_input_ad );
+ 	}
++	if( warn_multi_mach_ad ) {
++		dprintf( D_ALWAYS, "WARNING: "
++				 "multiple '%s' options given, using \"%s\"\n",
++				 _machinputad, mach_input_ad );
++	}
+ 	if( warn_multi_output_ad ) {
+ 		dprintf( D_ALWAYS, "WARNING: "
+ 				 "multiple '%s' options given, using \"%s\"\n",
+@@ -613,7 +632,7 @@ parseArgs( int argc, char* argv [] )
+ 					 "shadow host\n", _jobinputad );
+ 			usage();
+ 		}
+-		jic = new JICShadow( shadow_host );
++		jic = new JICShadow( shadow_host, mach_input_ad );
+ 		free( shadow_host );
+ 		shadow_host = NULL;
+ 		return jic;
+@@ -634,14 +653,14 @@ parseArgs( int argc, char* argv [] )
+ 					 _jobinputad, _schedd_addr ); 
+ 			usage();
+ 		}
+-		jic = new JICLocalSchedd( job_input_ad, schedd_addr,
++		jic = new JICLocalSchedd( job_input_ad, mach_input_ad, schedd_addr,
+ 								  job_cluster, job_proc, job_subproc );
+ 	} else if( job_input_ad ) {
+ 		if( job_keyword ) {
+-			jic = new JICLocalFile( job_input_ad, job_keyword, 
++			jic = new JICLocalFile( job_input_ad, mach_input_ad, job_keyword, 
+ 									job_cluster, job_proc, job_subproc );
+ 		} else {
+-			jic = new JICLocalFile( job_input_ad, job_cluster, job_proc,
++			jic = new JICLocalFile( job_input_ad, mach_input_ad, job_cluster, job_proc,
+ 									job_subproc );
+ 		}
+ 	} else {
+@@ -655,6 +674,9 @@ parseArgs( int argc, char* argv [] )
+ 	if( job_input_ad ) {
+ 		free( job_input_ad );
+ 	}
++	if( mach_input_ad ) {
++		free( mach_input_ad );
++	}
+ 	if( job_output_ad ) {
+         jic->setOutputAdFile( job_output_ad );		
+ 		free( job_output_ad );
+diff --git a/src/condor_starter.V6.1/user_proc.cpp b/src/condor_starter.V6.1/user_proc.cpp
+index 494afe0..f93d2b3 100644
+--- a/src/condor_starter.V6.1/user_proc.cpp
++++ b/src/condor_starter.V6.1/user_proc.cpp
+@@ -30,6 +30,7 @@
+ 
+ extern CStarter *Starter;
+ 
++const char* JOB_WRAPPER_FAILURE_FILE = ".job_wrapper_failure";
+ 
+ /* UserProc class implementation */
+ 
+@@ -104,6 +105,34 @@ UserProc::initKillSigs( void )
+ bool
+ UserProc::JobReaper(int pid, int status)
+ {
++	MyString line;
++	MyString error_txt;
++	MyString filename;
++	const char* dir = Starter->GetWorkingDir();
++	FILE* fp;
++
++	filename.sprintf("%s%c%s", dir, DIR_DELIM_CHAR, JOB_WRAPPER_FAILURE_FILE);
++	if (0 == access(filename.Value(), F_OK)) {
++		// The job wrapper failed, so read the contents of the file
++		// and EXCEPT, just as is done when an executable is unable
++		// to be run.  Ideally, both failure cases would propagate
++		// into the job ad
++		fp = safe_fopen_wrapper(filename.Value(), "r");
++		if (!fp) {
++			dprintf(D_ALWAYS, "Unable to open \"%s\" for reading: "
++					"%s (errno %d)\n", filename.Value(),
++					strerror(errno), errno);
++		} else {
++			while (line.readLine(fp))
++			{
++				error_txt += line;
++			}
++			fclose(fp);
++		}
++		error_txt.trim();
++		EXCEPT("The job wrapper failed to execute the job: %s", error_txt.Value());
++	}
++
+ 	if (JobPid == pid) {
+ 		m_proc_exited = true;
+ 		exit_status = status;
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index b9e58fe..29340b2 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -326,6 +326,8 @@ const char    *ParallelScriptStarter = "parallel_script_starter";
+ 
+ const char    *MaxJobRetirementTime = "max_job_retirement_time";
+ 
++const char    *JobWantsAds = "want_ads";
++
+ //
+ // Job Deferral Parameters
+ //
+@@ -480,6 +482,7 @@ void SetMaxJobRetirementTime();
+ bool mightTransfer( int universe );
+ bool isTrue( const char* attr );
+ void SetConcurrencyLimits();
++void SetJobLimits();
+ void SetVMParams();
+ void SetVMRequirements();
+ bool parse_vm_option(char *value, bool& onoff);
+@@ -6038,6 +6041,7 @@ queue(int num)
+ 		SetJavaVMArgs();
+ 		SetParallelStartupScripts(); //JDB
+ 		SetConcurrencyLimits();
++		SetJobLimits();
+ 		SetVMParams();
+ 
+ 			// SetForcedAttributes should be last so that it trumps values
+@@ -7434,6 +7438,22 @@ void SetVMRequirements()
+ 	InsertJobExpr (buffer);
+ }
+ 
++void
++SetJobLimits()
++{
++	char *limits = condor_param(JobWantsAds, ATTR_JOB_WANTS_ADS);
++	MyString buffer;
++
++	if (limits) {
++		if ('Y' == limits[0] || 'y' == limits[0]) {
++			buffer.sprintf( "%s = TRUE", ATTR_JOB_WANTS_ADS);
++		} else {
++			buffer.sprintf( "%s = FALSE", ATTR_JOB_WANTS_ADS);
++		}
++		free( limits );
++		InsertJobExpr ( buffer );
++	}
++}
+ 
+ void
+ SetConcurrencyLimits()
