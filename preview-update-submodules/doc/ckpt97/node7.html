@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.3 Shared Libraries</TITLE>
+<META NAME="description" CONTENT="3.3 Shared Libraries">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html99" HREF="node8.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html97" HREF="node3.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html91" HREF="node6.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html100" HREF="node8.html">3.3.1 Checkpointing Mapped Segments</A>
+<B>Up:</B> <A NAME="tex2html98" HREF="node3.html">3 Components of a </A>
+<B> Previous:</B> <A NAME="tex2html92" HREF="node6.html">3.2.1 Manipulating the Stack</A>
+<BR> <P>
+<H2><A NAME="SECTION00033000000000000000">3.3 Shared Libraries</A></H2>
+<P>
+Until recently, Condor had required that jobs with checkpointing
+support be linked statically.  However, vendors have begun releasing
+UNIX systems without full support for static linking.  For example,
+only dynamic versions of some or all libraries are provided.
+<P>
+Processes on current UNIX systems may contain mapped segments in their
+address space in addition to traditional text, data, and stack
+segments.  This mapped segment facility is used to support
+dynamically-linked, shared-text libraries.  When a dynamically-linked
+process is created, the necessary libraries are mapped into the
+process's address space.  The first time a specific library call is
+made, a fault occurs and a link is created between the text symbol and
+the function definition in the library.  Processes may also load in
+new libraries at any point during their execution.  There is no
+guarantee that libraries will be mapped into the same addresses for
+multiple executions of the same program.
+<P>
+Condor must checkpoint the dynamic library data of the running
+process, in addition to the stack and data segments.  The system must
+also ensure on restart that each dynamic library is mapped into the
+same area of virtual memory where it lived before the checkpoint, so
+that the dynamic links that have been set up are still valid.  To do
+this, Condor must have support from the operating system to find all
+active segments, read the data in these segments, create new segments
+at arbitrary addresses, and write (restore) data into those new
+segments.
+<P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME="tex2html101" HREF="node8.html#SECTION00033100000000000000">3.3.1 Checkpointing Mapped Segments</A>
+<LI> <A NAME="tex2html102" HREF="node9.html#SECTION00033200000000000000">3.3.2 Restoring Mapped Segments</A>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
