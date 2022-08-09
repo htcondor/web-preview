@@ -1,0 +1,199 @@
+diff --git a/src/classad/classad/exprTree.h b/src/classad/classad/exprTree.h
+index aa0c1d6..b7d9e30 100644
+--- a/src/classad/classad/exprTree.h
++++ b/src/classad/classad/exprTree.h
+@@ -47,6 +47,7 @@ class EvalState {
+ 		const ClassAd *curAd;
+ 
+ 		bool		flattenAndInline;	// NAC
++		bool		debug;
+ 
+ 		// Cache_to_free are the things in the cache that must be
+ 		// freed when this gets deleted. The problem is that we put
+@@ -66,6 +67,7 @@ class EvalState {
+ class ExprTree 
+ {
+   	public:
++		static void *debug_print(const char *message);
+ 			/// The kinds of nodes in expression trees
+ 		enum NodeKind {
+ 	    	/// Literal node (string, integer, real, boolean, undefined, error)
+@@ -136,6 +138,7 @@ class ExprTree
+         virtual bool SameAs(const ExprTree *tree) const = 0;
+ 
+   	protected:
++		void *debug_print_result(Value &value) const;
+ 		ExprTree ();
+ 
+         /** Fill in this ExprTree with the contents of the other ExprTree.
+diff --git a/src/classad/classad/fnCall.h b/src/classad/classad/fnCall.h
+index 52a4574..e72a41c 100644
+--- a/src/classad/classad/fnCall.h
++++ b/src/classad/classad/fnCall.h
+@@ -203,6 +203,7 @@ class FunctionCall : public ExprTree
+ 
+ 	static bool eval( const char* name,const ArgumentList &argList,EvalState &state,Value &result );
+ 
++	static bool debug( const char* name,const ArgumentList &argList,EvalState &state,Value &result );
+  	//static bool doReal(const char*,const ArgumentList&,EvalState&,Value&);
+ };
+ 
+diff --git a/src/classad/exprTree.cpp b/src/classad/exprTree.cpp
+index b359842..025290e 100644
+--- a/src/classad/exprTree.cpp
++++ b/src/classad/exprTree.cpp
+@@ -30,6 +30,69 @@ extern int exprHash( const ExprTree* const&, int );
+ 
+ static const int MAX_CLASSAD_RECURSION = 1000;
+ 
++void *ExprTree::debug_print(const char *message) {
++	FILE *file = fopen("debug.out", "a");
++	if(file) {
++		fprintf(file, "%s\n", message);
++		fclose(file);
++	}
++}
++
++void *ExprTree::debug_print_result(Value &value) const{
++	FILE *file = fopen("debug.out", "a");
++	if(file) {
++		bool boolValue = false;
++		int intValue = 0;
++		double doubleValue = 0;
++		string stringValue = "";
++
++		PrettyPrint	unp;
++		string		buffer;
++		unp.Unparse( buffer, this );
++
++		switch(value.GetType()) {
++			case Value::NULL_VALUE:
++				fprintf(file, "Classad debug: %s --> NULL\n", buffer.c_str());
++				break;
++			case Value::ERROR_VALUE:
++				fprintf(file, "Classad debug: %s --> ERROR\n", buffer.c_str());
++				break;
++			case Value::UNDEFINED_VALUE:
++				fprintf(file, "Classad debug: %s --> UNDEFINED\n", buffer.c_str());
++				break;
++			case Value::BOOLEAN_VALUE:
++				if(value.IsBooleanValue(boolValue))
++					fprintf(file, "Classad debug: %s --> %d\n", buffer.c_str(), boolValue);
++				break;
++			case Value::INTEGER_VALUE:
++				if(value.IsIntegerValue(intValue))
++					fprintf(file, "Classad debug: %s --> %d\n", buffer.c_str(), intValue);
++				break;
++			case Value::REAL_VALUE:
++				if(value.IsRealValue(doubleValue))
++					fprintf(file, "Classad debug: %s --> %f\n", buffer.c_str(), doubleValue);
++				break;
++			case Value::RELATIVE_TIME_VALUE:
++				fprintf(file, "Classad debug: %s --> RELATIVE TIME\n", buffer.c_str());
++				break;
++			case Value::ABSOLUTE_TIME_VALUE:
++				fprintf(file, "Classad debug: %s --> ABSOLUTE TIME\n", buffer.c_str());
++				break;
++			case Value::STRING_VALUE:
++				if(value.IsStringValue(stringValue))
++					fprintf(file, "Classad debug: %s --> %s\n", buffer.c_str(), stringValue.c_str());
++				break;
++			case Value::CLASSAD_VALUE:
++				fprintf(file, "Classad debug: %s --> CLASSAD\n", buffer.c_str());
++				break;
++			case Value::LIST_VALUE:
++				fprintf(file, "Classad debug: %s --> LIST\n", buffer.c_str());
++				break;
++		}
++		fclose(file);
++	}
++}
++
+ ExprTree::
+ ExprTree ()
+ {
+@@ -55,13 +118,29 @@ CopyFrom(const ExprTree &tree)
+ bool ExprTree::
+ Evaluate (EvalState &state, Value &val) const
+ {
+-	return( _Evaluate( state, val ) );
++	bool eval = _Evaluate( state, val );
++
++	if(state.debug && GetKind() != ExprTree::LITERAL_NODE &&
++			GetKind() != ExprTree::OP_NODE)
++	{
++		debug_print_result(val);
++	}
++
++	return eval;
+ }
+ 
+ bool ExprTree::
+ Evaluate( EvalState &state, Value &val, ExprTree *&sig ) const
+ {
+-	return( _Evaluate( state, val, sig ) );
++	bool eval = _Evaluate( state, val, sig );
++
++	if(state.debug && GetKind() != ExprTree::LITERAL_NODE &&
++			GetKind() != ExprTree::OP_NODE)
++	{
++		debug_print_result(val);
++	}
++
++	return eval;
+ }
+ 
+ 
+@@ -146,6 +225,7 @@ EvalState( )
+ 
+ 	depth_remaining = MAX_CLASSAD_RECURSION;
+ 	flattenAndInline = false;	// NAC
++	debug = false;
+ }
+ 
+ EvalState::
+diff --git a/src/classad/fnCall.cpp b/src/classad/fnCall.cpp
+index a87b933..74446a4 100644
+--- a/src/classad/fnCall.cpp
++++ b/src/classad/fnCall.cpp
+@@ -170,6 +170,8 @@ FunctionCall( )
+ 			// externally in the Condor classad compatibility layer.
+ 		functionTable["stringListsIntersect" ] = (void*)stringListsIntersect;
+ 
++        functionTable["debug"      ] = (void*)debug;
++
+ 		initialized = true;
+ 	}
+ }
+@@ -2319,6 +2321,31 @@ interval( const char* /* name */,const ArgumentList &argList,EvalState &state,
+     return true;
+ }
+ 
++bool FunctionCall::
++debug( const char* name,const ArgumentList &argList,EvalState &state,
++	Value &result )
++{
++	Value	arg;
++
++	// takes exactly one argument
++	if( argList.size() != 1 ) {
++		result.SetErrorValue( );
++		return( true );
++	}
++
++	state.debug = true;
++
++	if( !argList[0]->Evaluate( state, arg ) ) {
++		result.SetErrorValue( );
++		return( false );
++	}
++	state.debug = false;
++	result = arg;
++	argList[0]->debug_print_result(result);
++	debug_print("\n");
++	return true;
++}
++
+ #if defined USE_POSIX_REGEX || defined USE_PCRE
+ static bool regexp_helper(const char *pattern, const char *target,
+                           const char *replace,
