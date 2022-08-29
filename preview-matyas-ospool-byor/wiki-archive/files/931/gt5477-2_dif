@@ -1,0 +1,367 @@
+diff --git a/doc/admin-man/configure.tex b/doc/admin-man/configure.tex
+index 7e35464..60129d8 100644
+--- a/doc/admin-man/configure.tex
++++ b/doc/admin-man/configure.tex
+@@ -10973,12 +10973,16 @@ in section~\ref{sec:DAG-configuration}.
+ 
+ \label{param:DAGmanAlwaysRunPost}
+ \item[\Macro{DAGMAN\_ALWAYS\_RUN\_POST}]
+-  A boolean value defining whether \Condor{dagman} will ignore the return value
+-  of a PRE script when deciding to run a POST script.  The default is
+-  \Expr{True}, which says that the POST script will run regardless of the return
+-  value of the PRE script. Changing this to \Expr{False} will restore old
+-  behavior of \Condor{dagman}, which is that the failure of a PRE script causes
+-  the POST script to not be executed.
++  A boolean value defining whether \Condor{dagman} will ignore the
++  return value of a PRE script when deciding whether to run a POST
++  script.  The default is \Expr{False}, which means that the failure
++  of a PRE script causes the POST script to not be executed.
++  Changing this to \Expr{True} will restore the previous
++  behavior of \Condor{dagman}, which is that a POST script is always
++  executed, even if the PRE script fails.
++  (The default for this value had originally been \Expr{False}, was
++  changed to \Expr{True} in version 7.7.2, and then was changed back
++  to \Expr{False} in version 8.5.4.)
+ 
+ \label{param:DAGmanHoldClaimTime}
+ \item[\Macro{DAGMAN\_HOLD\_CLAIM\_TIME}]
+diff --git a/doc/man-pages/condor_dagman.tex b/doc/man-pages/condor_dagman.tex
+index bbba67d..87262b7 100644
+--- a/doc/man-pages/condor_dagman.tex
++++ b/doc/man-pages/condor_dagman.tex
+@@ -43,6 +43,7 @@
+ \oOptArg{-priority}{number}
+ \oOpt{-dont\_use\_default\_node\_log}
+ \oOpt{-DontAlwaysRunPost}
++\oOpt{-AlwaysRunPost}
+ \oOpt{-DoRecovery}
+ \OptArg{-dag}{dag\_file}
+ \oArg{\OptArg{-dag}{dag\_file\_2} \Dots \OptArg{-dag}{dag\_file\_n} }
+@@ -294,16 +295,14 @@ output DAG input file lines as they are parsed
+        %also set configuration variable \Macro{DAGMAN\_USE\_STRICT} to 0.
+     }
+     \OptItem{\Opt{-DontAlwaysRunPost}}{This option causes \Condor{dagman} to
+-       observe the exit status of the PRE script when deciding whether or not
+-       to run the POST script.  
+-       Versions of \Condor{dagman} previous to HTCondor version 7.7.2 
+-       would not run the POST script if the PRE script exited 
+-       with a nonzero status, 
+-       but this default has been changed such that the POST script will run,
+-       regardless of the exit status of the PRE script. 
+-       Using this option restores the previous behavior, 
+-       in which \Condor{dagman} will not run the POST script if the PRE
+-       script fails.}
++       not run the POST script of a node if the PRE script fails.
++       (This was the default behavior prior to HTCondor version 7.7.2,
++       and is again the default behavior from version 8.5.4 onwards.)}
++    \OptItem{\Opt{-AlwaysRunPost}}{This option causes \Condor{dagman} to
++       always run the POST script of a node, even if the PRE script
++       fails.
++       (This was the default behavior for HTCondor version 7.7.2 through
++       version 8.5.3.)}
+     \OptItem{\Opt{-DoRecovery}}{Causes \Condor{dagman} to start in recovery
+       mode.  This means that it reads the relevant job user log(s) and
+       catches up to the given DAG's previous state before submitting
+diff --git a/doc/man-pages/condor_submit_dag.tex b/doc/man-pages/condor_submit_dag.tex
+index 49f9f31..b58a2de 100644
+--- a/doc/man-pages/condor_submit_dag.tex
++++ b/doc/man-pages/condor_submit_dag.tex
+@@ -37,6 +37,7 @@
+ \oOpt{-DumpRescue}
+ \oOpt{-valgrind}
+ \oOpt{-DontAlwaysRunPost}
++\oOpt{-AlwaysRunPost}
+ \oOptArg{-priority}{number}
+ \oOpt{-dont\_use\_default\_node\_log}
+ \oOptArg{-schedd-daemon-ad-file}{FileName}
+@@ -305,14 +306,19 @@ as the value of \MacroNI{DAGMAN\_SUPPRESS\_NOTIFICATION} is enforced.
+   \OptItem{\Opt{-DontAlwaysRunPost}}{This option causes the submit
+      description file generated for the submission of \Condor{dagman} to
+      be modified.  
+-     It causes the \Opt{-DontAlwaysRunPost} option to be in the
+-     arguments to \Condor{dagman} in the submit description file, 
+-     which causes \Condor{dagman} to use the return value from a PRE script 
+-     to determine whether or not a POST script will run.  
+-     By default, \Condor{dagman} runs the
+-     POST script regardless of the return value of the PRE script. 
+-     Versions of \Condor{dagman} prior to 7.7.2 did not ignore the return
+-     value and would not run the POST script if the PRE script failed.
++     It causes \Condor{dagman} to
++     not run the POST script of a node if the PRE script fails.
++     (This was the default behavior prior to HTCondor version 7.7.2,
++     and is again the default behavior from version 8.5.4 onwards.)
++  }
++  \OptItem{\Opt{-AlwaysRunPost}}{This option causes the submit
++     description file generated for the submission of \Condor{dagman} to
++     be modified.  
++     It causes \Condor{dagman} to
++     always run the POST script of a node, even if the PRE script
++     fails.
++     (This was the default behavior for HTCondor version 7.7.2 through
++     version 8.5.3.)
+   }
+   \OptItem{\OptArg{-priority}{number}}{Sets the minimum job priority
+     of node jobs submitted and running under the \Condor{dagman} job
+diff --git a/doc/user-man/dagman.tex b/doc/user-man/dagman.tex
+index a45b00d..f98a451 100644
+--- a/doc/user-man/dagman.tex
++++ b/doc/user-man/dagman.tex
+@@ -274,8 +274,11 @@ called a \Arg{PRE} script.
+ Processing done after a job completes its execution is
+ \index{DAGMan!POST script}
+ called a \Arg{POST} script.
+-It causes a shell script (Unix) or batch file (Windows) to be
+-executed.
++Note that the executable specified does not necessarily
++have to be a shell script (Unix) or batch file (Windows);
++but it should be relatively light weight because it will
++be run directly on the submit machine, not submitted as
++an HTCondor job.
+ 
+ The syntax used for each \Arg{PRE} or \Arg{POST} entry is
+ 
+@@ -290,8 +293,8 @@ the \Arg{PRE} or \Arg{POST} keyword,
+ which specifies the relative timing of when the script is to be run.
+ The \Arg{JobName} identifies the node to which the script is attached.
+ The \Arg{ExecutableName}
+-specifies the shell script/batch file to be executed, 
+-and the executable name may not contain spaces.
++specifies the executable (e.g., shell script or batch file) to be executed, 
++and may not contain spaces.
+ The optional \Arg{arguments} are command line arguments to the script,
+ and spaces delimit the arguments.
+ Both \Arg{ExecutableName} and optional \Arg{arguments} are
+@@ -329,28 +332,36 @@ producing output files.
+ The POST script compresses the output files, writes them out to
+ the tape, and then removes both the staged files and the output files.
+ 
++If the PRE script fails, 
++then the HTCondor job associated with the node is not submitted,
++and (as of version 8.5.4) the POST
++script is not run either (by default).
++However, if the job is submitted, and there is a POST script, the POST
++script is always run once the job finishes.
++(The behavior when the PRE script fails may
++may be changed to run the POST script
++by setting configuration variable \MacroNI{DAGMAN\_ALWAYS\_RUN\_POST} 
++to \Expr{True} or by passing the \Opt{-AlwaysRunPost}
++argument to \Condor{submit\_dag}.)
++
+ Progress towards completion of the DAG is based upon
+ the success of the nodes within the DAG.
+ The success of a node is based upon the success of 
+ the job(s), PRE script, and POST script.
+-A job, PRE script, or POST script with an exit value not equal to 0 fails.  
+-If the PRE script fails, 
+-then the job does not run, but the POST script does run.
+-The exit value of the POST script determines the success of the node. 
+-Table~\ref{NodeS-F-ARP} lists the definition of node success and
+-failure for all variations of scripts and job success and failure.
++A job, PRE script, or POST script with an exit value not equal to 0 is
++considered failed.  
++\Bold{The exit value of whatever component of the node was run last
++determines the success or failure of the node.}
++Table~\ref{NodeS-F} lists the definition of node success and
++failure for all variations of script and job success and failure,
++when \MacroNI{DAGMAN\_ALWAYS\_RUN\_POST} is set to \Expr{False}.
+ In this table, a dash (\Expr{-}) represents the case where a script
+ does not exist for the DAG, \Bold{S} represents success, 
+ and  \Bold{F} represents failure.
+ 
+-The behavior when the PRE script fails may
+-may be changed to \emph{not} run the POST script
+-by setting configuration variable \MacroNI{DAGMAN\_ALWAYS\_RUN\_POST} 
+-to \Expr{False}.
+-With this, the failure of the PRE script
+-means that the job does not run, and the POST script is not run.
+-Table~\ref{NodeS-F} lists the definition of node success and
+-failure only for the cases where the PRE script fails.
++Table~\ref{NodeS-F-ARP} lists the definition of node success and
++failure only for the cases where the PRE script fails,
++when \MacroNI{DAGMAN\_ALWAYS\_RUN\_POST} is set to \Expr{True}.
+ 
+ %An exit value not equal to 0 indicates program failure,
+ %except as indicated by the \Arg{PRE\_SKIP} command:
+@@ -369,23 +380,23 @@ failure only for the cases where the PRE script fails.
+ \begin{table}[hbt]
+ \begin{tabular}{|c|c|c|c|} \hline
+ PRE  & JOB & POST & \Bold{Node}  \\
++\hline
+ -  & S & - & \Bold{S}  \\
+ -  & F & - & \Bold{F}  \\
+ -  & S & S & \Bold{S}  \\
+ -  & S & F & \Bold{F}  \\
+ -  & F & S & \Bold{S}  \\
++-  & F & F & \Bold{F}  \\
+ S  & S & - & \Bold{S}  \\
+ S  & F & - & \Bold{F}  \\
+ S  & S & S & \Bold{S}  \\
++S  & S & F & \Bold{F}  \\
+ S  & F & S & \Bold{S}  \\
+ S  & F & F & \Bold{F}  \\
+-S  & S & F & \Bold{F}  \\
+ F  & not run & - & \Bold{F}  \\
+-F  & not run & S & \Bold{S}  \\
+-F  & not run & F & \Bold{F}  \\
+-\hline
++F  & not run & not run & \Bold{F}  \\
+ \end{tabular}
+-\caption{\label{NodeS-F-ARP}Node \Bold{S}uccess or \Bold{F}ailure definition with \Expr{ DAGMAN\_ALWAYS\_RUN\_POST = True} }
++\caption{\label{NodeS-F}Node success or failure definition with \Expr{DAGMAN\_ALWAYS\_RUN\_POST = False (the default)} }
+ \end{table}
+ \end{center}
+ 
+@@ -393,11 +404,12 @@ F  & not run & F & \Bold{F}  \\
+ \begin{table}[hbt]
+ \begin{tabular}{|c|c|c|c|} \hline
+ PRE  & JOB & POST & \Bold{Node}  \\
+-\hline
+ F  & not run & - & \Bold{F}  \\
+-F  & not run & not run & \Bold{F}  \\
++F  & not run & S & \Bold{S}  \\
++F  & not run & F & \Bold{F}  \\
++\hline
+ \end{tabular}
+-\caption{\label{NodeS-F}Node success or failure definition with \Expr{DAGMAN\_ALWAYS\_RUN\_POST = False} }
++\caption{\label{NodeS-F-ARP}Node \Bold{S}uccess or \Bold{F}ailure definition with \Expr{ DAGMAN\_ALWAYS\_RUN\_POST = True} }
+ \end{table}
+ \end{center}
+ 
+diff --git a/doc/version-history/8-5.history.tex b/doc/version-history/8-5.history.tex
+index 72ba7fd..becf4e7 100644
+--- a/doc/version-history/8-5.history.tex
++++ b/doc/version-history/8-5.history.tex
+@@ -29,7 +29,15 @@ The details of each version are described below.
+ 
+ \begin{itemize}
+ 
+-\item None.
++\item The default value of \MacroNI{DAGMAN\_ALWAYS\_RUN\_POST} has been
++changed from \Expr{True} to \Expr{False}.  This means that, by
++default, if the PRE script of a DAG node fails, the POST script
++of the node will \emph{not} be run.  (This had been the default
++behavior until version 7.7.2.  The 7.7.2-8.5.3 behavior can be
++restored by setting \MacroNI{DAGMAN\_ALWAYS\_RUN\_POST} to 
++\Expr{True}, or by passing the new \Opt{-AlwaysRunPost}
++argument to \Condor{submit\_dag}.)
++\Ticket{5477}
+ 
+ \end{itemize}
+ 
+diff --git a/src/condor_dagman/condor_submit_dag.cpp b/src/condor_dagman/condor_submit_dag.cpp
+index f986555..e04cce7 100644
+--- a/src/condor_dagman/condor_submit_dag.cpp
++++ b/src/condor_dagman/condor_submit_dag.cpp
+@@ -788,9 +788,9 @@ void writeSubmitFile( /* const */ SubmitDagDeepOptions &deepOpts,
+ 					"the DAGMAN_ALLOW_EVENTS config parameter instead\n");
+ 	}
+ 
+-	if(!shallowOpts.bPostRun)
++	if(shallowOpts.bPostRun)
+ 	{
+-		args.AppendArg("-DontAlwaysRunPost");
++		args.AppendArg("-AlwaysRunPost");
+ 	}
+ 
+ 	if(deepOpts.bAllowLogError)
+@@ -1175,6 +1175,10 @@ parseCommandLine(SubmitDagDeepOptions &deepOpts,
+ 			{
+ 				shallowOpts.bPostRun = false;
+ 			}
++			else if ( (strArg.find("-alwaysrun") != -1) ) // AlwaysRunPost
++			{
++				shallowOpts.bPostRun = true;
++			}
+ 			else if ( (strArg.find("-dont_use_default_node_log") != -1) )
+ 			{
+ 				fprintf( stderr, "Error: -dont_use_default_node_log is no longer allowed\n" );
+@@ -1309,6 +1313,7 @@ int printUsage(int iExitCode)
+     printf("        See the condor_submit man page for values.)\n");
+     printf("    -NoEventChecks      (Now ignored -- use DAGMAN_ALLOW_EVENTS)\n"); 
+     printf("    -DontAlwaysRunPost  (Don't run POST script if PRE script fails)\n");
++    printf("    -AlwaysRunPost      (Run POST script if PRE script fails)\n");
+     printf("    -AllowLogError      (Allows the DAG to attempt execution even if the log\n");
+     printf("        reading code finds errors when parsing the submit files)\n"); 
+ 	printf("    -UseDagDir          (Run DAGs in directories specified in DAG file paths)\n");
+diff --git a/src/condor_dagman/dagman_main.cpp b/src/condor_dagman/dagman_main.cpp
+index 950c426..24067e5 100644
+--- a/src/condor_dagman/dagman_main.cpp
++++ b/src/condor_dagman/dagman_main.cpp
+@@ -71,6 +71,7 @@ static void Usage() {
+             "\t\t[-NoEventChecks]\n"
+             "\t\t[-AllowLogError]\n"
+             "\t\t[-DontAlwaysRunPost]\n"
++            "\t\t[-AlwaysRunPost]\n"
+             "\t\t[-WaitForDebug]\n"
+             "\t\t[-UseDagDir]\n"
+             "\t\t[-AutoRescue <0|1>]\n"
+@@ -343,7 +344,7 @@ Dagman::Config()
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_SUBMIT_DEPTH_FIRST setting: %s\n",
+ 				submitDepthFirst ? "True" : "False" );
+ 
+-	_runPost = param_boolean( "DAGMAN_ALWAYS_RUN_POST", true );
++	_runPost = param_boolean( "DAGMAN_ALWAYS_RUN_POST", false );
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_ALWAYS_RUN_POST setting: %s\n",
+ 			_runPost ? "True" : "False" );
+ 
+@@ -740,6 +741,9 @@ void main_init (int argc, char ** const argv) {
+         } else if( !strcasecmp( "-DontAlwaysRunPost",argv[i] ) ) {
+ 			dagman._runPost = false;
+ 
++        } else if( !strcasecmp( "-AlwaysRunPost",argv[i] ) ) {
++			dagman._runPost = true;
++
+         } else if( !strcasecmp( "-WaitForDebug", argv[i] ) ) {
+ 			wait_for_debug = 1;
+ 
+diff --git a/src/condor_dagman/dagman_recursive_submit.h b/src/condor_dagman/dagman_recursive_submit.h
+index c25eaec..62beb29 100644
+--- a/src/condor_dagman/dagman_recursive_submit.h
++++ b/src/condor_dagman/dagman_recursive_submit.h
+@@ -69,7 +69,7 @@ struct SubmitDagShallowOptions
+ 	SubmitDagShallowOptions() 
+ 	{ 
+ 		bSubmit = true;
+-		bPostRun = true;
++		bPostRun = false;
+ 		strRemoteSchedd = "";
+ 		strScheddDaemonAdFile = "";
+ 		strScheddAddressFile = "";
+diff --git a/src/condor_tests/job_dagman_always_run_post-A.run b/src/condor_tests/job_dagman_always_run_post-A.run
+index 7113f12..cc5b5db 100755
+--- a/src/condor_tests/job_dagman_always_run_post-A.run
++++ b/src/condor_tests/job_dagman_always_run_post-A.run
+@@ -24,8 +24,8 @@ use CondorUtils;
+ $testname = "job_dagman_always_run_post-A";
+ $cmd = 'job_dagman_always_run_post-A.dag';
+ $testdesc =  'Condor DAGman test for always running the POST script - scheduler U';
+-$outfile = "$testname.dag.dagman.out";
+-$dagman_args = "-verbose";
++$testname = "job_dagman_always_run_post-A";
++$dagman_args = "-verbose -AlwaysRunPost";
+ 
+ #**************************************************************
+ #
+@@ -38,6 +38,9 @@ $dagman_args = "-verbose";
+ 
+ # TEMP -- to-do: add check of jobstate.log file.
+ 
++$outfile = "$testname.dag.dagman.out";
++runcmd("rm -f $outfile");
++
+ # remove any dag files created by the last run.
+ unlink glob "${testname}.dag*";
+ 
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index 2287535..d31acbb 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -977,7 +977,7 @@ review=?
+ tags=dagman,dagman_main
+ 
+ [DAGMAN_ALWAYS_RUN_POST]
+-default=true
++default=false
+ type=bool
+ reconfig=false
+ customization=seldom
