@@ -1,0 +1,302 @@
+commit 5ade735d34a4e3e1f9f0a2a552d75d0577432b48
+Author: Dan Bradley <dan@hep.wisc.edu>
+Date:   Tue Sep 14 17:52:01 2010 -0500
+
+    Added GSI_SKIP_HOST_CHECK.
+    We now verify that the server we are connecting to has a certificate
+    matching the host name we are connecting to, unless this check is
+    disabled or an exception is made.
+
+diff --git a/src/condor_includes/condor_auth_x509.h b/src/condor_includes/condor_auth_x509.h
+index e137dcc..ffd2b3c 100644
+--- a/src/condor_includes/condor_auth_x509.h
++++ b/src/condor_includes/condor_auth_x509.h
+@@ -118,6 +118,12 @@ class Condor_Auth_X509 : public Condor_Auth_Base {
+ 	@return TRUE if valid FALSE if not */
+     bool gss_is_valid();
+ 
++	/** See if host name in peer's certificate matches what we
++		are connecting to.
++		@return true if valid; false if not
++	 */
++	bool CheckServerName(char const *fqh,char const *ip,ReliSock *sock,CondorError *errstack);
++
+     /** A specialized function that is needed for secure personal
+         condor. When schedd and the user are running under the
+         same userid we would still want the authentication process
+@@ -129,13 +135,14 @@ class Condor_Auth_X509 : public Condor_Auth_Base {
+         looking for a proxy which it does not need. */
+     void  erase_env();
+     
+-    void  print_log(OM_uint32 ,OM_uint32 ,int , char*);
++    void  print_log(OM_uint32 ,OM_uint32 ,int , char const *);
+ 
+     //------------------------------------------
+     // Data (private)
+     //------------------------------------------
+     gss_cred_id_t       credential_handle;
+     gss_ctx_id_t        context_handle ;
++    gss_name_t			m_gss_server_name;
+     int                 token_status;
+     //X509_Credential *   my_credential;
+     OM_uint32	        ret_flags ;
+diff --git a/src/condor_includes/condor_error_codes.h b/src/condor_includes/condor_error_codes.h
+index 6cc8c75..28f1777 100644
+--- a/src/condor_includes/condor_error_codes.h
++++ b/src/condor_includes/condor_error_codes.h
+@@ -52,6 +52,7 @@ const int GSI_ERR_AUTHENTICATION_FAILED = 5004;
+ const int GSI_ERR_COMMUNICATIONS_ERROR = 5005;
+ const int GSI_ERR_UNAUTHORIZED_SERVER = 5006;
+ const int GSI_ERR_NO_VALID_PROXY = 5007;
++const int GSI_ERR_DNS_CHECK_ERROR = 5008;
+ 
+ const int CEDAR_ERR_CONNECT_FAILED = 6001;
+ const int CEDAR_ERR_EOM_FAILED = 6002;
+diff --git a/src/condor_io/condor_auth_x509.cpp b/src/condor_io/condor_auth_x509.cpp
+index 2c8798b..04ee1ca 100644
+--- a/src/condor_io/condor_auth_x509.cpp
++++ b/src/condor_io/condor_auth_x509.cpp
+@@ -39,7 +39,7 @@ extern "C" {
+ 
+ 
+ const char STR_DAEMON_NAME_FORMAT[]="$$(FULL_HOST_NAME)";
+-StringList * getDaemonList(ReliSock * sock);
++StringList * getDaemonList(char const *param_name,char const *fqh);
+ 
+ 
+ #ifdef WIN32
+@@ -54,6 +54,7 @@ Condor_Auth_X509 :: Condor_Auth_X509(ReliSock * sock)
+     : Condor_Auth_Base (sock, CAUTH_GSI),
+       credential_handle(GSS_C_NO_CREDENTIAL),
+       context_handle   (GSS_C_NO_CONTEXT),
++	  m_gss_server_name(NULL),
+       token_status     (0),
+       ret_flags        (0)
+ {
+@@ -75,6 +76,11 @@ Condor_Auth_X509 ::  ~Condor_Auth_X509()
+         OM_uint32 major_status = 0; 
+         gss_release_cred(&major_status, &credential_handle);
+     }
++
++	if( m_gss_server_name != NULL ) {
++		OM_uint32 major_status = 0;
++		gss_release_name( &major_status, &m_gss_server_name );
++	}
+ }
+ 
+ int Condor_Auth_X509 :: authenticate(const char * /* remoteHost */, CondorError* errstack)
+@@ -265,11 +271,11 @@ int Condor_Auth_X509 :: isValid() const
+ void Condor_Auth_X509 :: print_log(OM_uint32 major_status,
+                                    OM_uint32 minor_status,
+                                    int       token_stat, 
+-                                   char *    comment)
++                                   char const *    comment)
+ {
+     char* buffer;
+     globus_gss_assist_display_status_str(&buffer,
+-                                         comment,
++                                         (char *)comment,
+                                          major_status,
+                                          minor_status,
+                                          token_stat);
+@@ -464,17 +470,16 @@ int Condor_Auth_X509::nameGssToLocal(const char * GSSClientname)
+ 	return 1;
+ }
+ 
+-StringList * getDaemonList(ReliSock * sock)
++StringList * getDaemonList(char const *param_name,char const *fqh)
+ {
+     // Now, we substitu all $$FULL_HOST_NAME with actual host name, then
+     // build a string list, then do a search to see if the target is 
+     // in the list
+-    char * daemonNames = param( "GSI_DAEMON_NAME" );
+-    char * fqh         = sin_to_hostname(sock->peer_addr(), NULL);
++    char * daemonNames = param( param_name );
+     char * entry       = NULL;
+ 
+ 	if (!daemonNames) {
+-		daemonNames = strdup("*");
++		return NULL;
+ 	}
+ 
+     StringList * original_names = new StringList(daemonNames, ",");
+@@ -525,7 +530,6 @@ char * Condor_Auth_X509::get_server_info()
+     OM_uint32	major_status = 0;
+     OM_uint32	minor_status = 0;            
+     OM_uint32   lifetime, flags;
+-    gss_name_t  target = NULL;
+     gss_OID     mech, name_type;
+     gss_buffer_desc name_buf;
+     char *      server = NULL;
+@@ -534,7 +538,7 @@ char * Condor_Auth_X509::get_server_info()
+     major_status = gss_inquire_context(&minor_status,
+                                        context_handle,
+                                        NULL,    
+-                                       &target,
++                                       &m_gss_server_name,
+                                        &lifetime,
+                                        &mech, 
+                                        &flags, 
+@@ -544,23 +548,21 @@ char * Condor_Auth_X509::get_server_info()
+         dprintf(D_SECURITY, "Unable to obtain target principal name\n");
+         return NULL;
+     }
+-    else {
+-        major_status = gss_display_name(&minor_status,
+-                                             target,
+-                                             &name_buf,
+-                                             &name_type);
+-		gss_release_name( &minor_status, &target );
+-		if( major_status != GSS_S_COMPLETE) {
+-            dprintf(D_SECURITY, "Unable to convert target principal name\n");
+-            return NULL;
+-        }
+-        else {
+-            server = new char[name_buf.length+1];
+-            memset(server, 0, name_buf.length+1);
+-            memcpy(server, name_buf.value, name_buf.length);
+-			gss_release_buffer( &minor_status, &name_buf );
+-        }
+-    }
++
++	major_status = gss_display_name(&minor_status,
++									m_gss_server_name,
++									&name_buf,
++									&name_type);
++	if( major_status != GSS_S_COMPLETE) {
++		dprintf(D_SECURITY, "Unable to convert target principal name\n");
++		return NULL;
++	}
++
++	server = new char[name_buf.length+1];
++	memset(server, 0, name_buf.length+1);
++	memcpy(server, name_buf.value, name_buf.length);
++	gss_release_buffer( &minor_status, &name_buf );
++
+     return server;
+ }   
+ 
+@@ -749,17 +751,34 @@ int Condor_Auth_X509::authenticate_client_gss(CondorError* errstack)
+ 			}
+ 		}
+ 
+-        StringList * daemonNames = getDaemonList(mySock_);
++		std::string fqh         = sin_to_hostname(mySock_->peer_addr(), NULL);
++        StringList * daemonNames = getDaemonList("GSI_DAEMON_NAME",fqh.c_str());
+ 
+         // Now, let's see if the name is in the list, I am not using
+         // anycase here, so if the host name and what we are looking for
+         // are in different cases, then we will run into problems.
+-        status = daemonNames->contains_withwildcard(server) == TRUE? 1 : 0;
++		if( daemonNames ) {
++			status = daemonNames->contains_withwildcard(server) == TRUE? 1 : 0;
++		}
++		else {
++			status = 1;
++		}
++
++		bool host_check_failed = false;
++		if( !status || !daemonNames ) {
++				// DN not found in GSI_DAEMON_NAME
++
++			host_check_failed = !CheckServerName(fqh.c_str(),mySock_->peer_ip_str(),mySock_,errstack);
++
++			if( host_check_failed ) {
++				status = 0;
++			}
++		}
+ 
+         if (status) {
+             dprintf(D_SECURITY, "valid GSS connection established to %s\n", server);            
+         }
+-        else {
++        else if( !host_check_failed ) {
+ 			errstack->pushf("GSI", GSI_ERR_UNAUTHORIZED_SERVER,
+ 					"Failed to authenticate because the subject '%s' is not currently trusted by you.  "
+ 					"If it should be, add it to GSI_DAEMON_NAME in the condor_config, "
+@@ -782,6 +801,85 @@ int Condor_Auth_X509::authenticate_client_gss(CondorError* errstack)
+     return (status == 0) ? FALSE : TRUE;
+ }
+ 
++bool Condor_Auth_X509::CheckServerName(char const *fqh,char const *ip,ReliSock *sock,CondorError *errstack)
++{
++	if( param_boolean("GSI_SKIP_HOST_CHECK",false) ) {
++		return true;
++	}
++
++	char const *server_dn = getAuthenticatedName();
++	if( !server_dn ) {
++		std::string msg;
++		sprintf(msg,"Failed to find certificate DN for server on GSI connection to %s",ip);
++		errstack->push("GSI", GSI_ERR_DNS_CHECK_ERROR, msg.c_str());
++		return false;
++	}
++
++	StringList * skip_certs = getDaemonList("GSI_SKIP_HOST_CHECK_CERTS",fqh);
++	if( skip_certs ) {
++		if( skip_certs->contains_withwildcard(server_dn) == TRUE ) {
++			dprintf(D_SECURITY|D_FULLDEBUG,"Found server's DN in GSI_SKIP_HOST_CHECK_CERTS.\n");
++			delete skip_certs;
++			return true;
++		}
++		delete skip_certs;
++	}
++
++	ASSERT( errstack );
++	ASSERT( m_gss_server_name );
++	ASSERT( ip );
++	if( !fqh || !fqh[0] ) {
++		std::string msg;
++		sprintf(msg,"Failed to look up host address for GSI connection on %s to server with DN %s",ip,server_dn);
++		errstack->push("GSI", GSI_ERR_DNS_CHECK_ERROR, msg.c_str());
++		return false;
++	}
++
++	std::string connect_name;
++	gss_buffer_desc gss_connect_name_buf;
++	gss_name_t gss_connect_name;
++	OM_uint32 major_status = 0;
++	OM_uint32 minor_status = 0;
++
++	sprintf(connect_name,"%s/%s",fqh,sock->peer_ip_str());
++
++	gss_connect_name_buf.value = strdup(connect_name.c_str());
++	gss_connect_name_buf.length = connect_name.size()+1;
++
++	major_status = gss_import_name(&minor_status,
++								   &gss_connect_name_buf,
++								   GLOBUS_GSS_C_NT_HOST_IP,
++								   &gss_connect_name);
++
++	free( gss_connect_name_buf.value );
++
++	if( major_status != GSS_S_COMPLETE ) {
++		std::string comment;
++		sprintf(comment,"Failed to create gss connection name data structure for %s.\n",connect_name.c_str());
++		print_log( major_status, minor_status, 0, comment.c_str() );
++		return false;
++	}
++
++	int name_equal = 0;
++	major_status = gss_compare_name( &minor_status,
++									 m_gss_server_name,
++									 gss_connect_name,
++									 &name_equal );
++
++	gss_release_name( &major_status, &gss_connect_name );
++
++	if( !name_equal ) {
++		std::string msg;
++		sprintf(msg,"We are trying to connect to a daemon with certificate DN (%s), but the host name in the certificate does not match any DNS name associated with the host to which we are connecting (host name is '%s', IP is '%s', Condor connection address is '%s').  Check that DNS is correctly configured.  If you wish to use a daemon certificate that does not match the daemon's host name, either add the DN to GSI_SKIP_HOST_CHECK_CERTS to make an exception, or disable all host name checks by setting GSI_SKIP_HOST_CHECK=true.\n",
++				server_dn,
++				fqh,
++				ip,
++				sock->peer_description() );
++		errstack->push("GSI", GSI_ERR_DNS_CHECK_ERROR, msg.c_str());
++	}
++	return name_equal != 0;
++}
++
+ int Condor_Auth_X509::authenticate_server_gss(CondorError* errstack)
+ {
+     char *    GSSClientname;

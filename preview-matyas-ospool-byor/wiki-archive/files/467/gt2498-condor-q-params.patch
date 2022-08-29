@@ -1,0 +1,12 @@
+diff --git a/src/condor_q.V6/queue.cpp b/src/condor_q.V6/queue.cpp
+index 349dbd8..496b32c 100644
+--- a/src/condor_q.V6/queue.cpp
++++ b/src/condor_q.V6/queue.cpp
+@@ -1166,7 +1166,6 @@ processCommandLineArguments (int argc, char *argv[])
+ 						 "format and attribute parameters\n" );
+ 				exit( 1 );
+ 			}
+-			verbose = 0;
+ 			if( !custom_attributes ) {
+ 				custom_attributes = true;
+ 				attrs.clearAll();
