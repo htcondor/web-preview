@@ -1,0 +1,137 @@
+05/21/13 15:12:04 Setting maximum accepts per cycle 8.
+05/21/13 15:12:04 ******************************************************
+05/21/13 15:12:04 ** condor_scheduniv_exec.11361.0 (CONDOR_DAGMAN) STARTING UP
+05/21/13 15:12:04 ** /usr/bin/condor_dagman
+05/21/13 15:12:04 ** SubsystemInfo: name=DAGMAN type=DAGMAN(10) class=DAEMON(1)
+05/21/13 15:12:04 ** Configuration: subsystem:DAGMAN local:<NONE> class:DAEMON
+05/21/13 15:12:04 ** $CondorVersion: 7.8.8 Mar 20 2013 BuildID: 110288 $
+05/21/13 15:12:04 ** $CondorPlatform: x86_64_rhap_6.3 $
+05/21/13 15:12:04 ** PID = 28241
+05/21/13 15:12:04 ** Log last touched time unavailable (No such file or directory)
+05/21/13 15:12:04 ******************************************************
+05/21/13 15:12:04 Using config source: /etc/condor/condor_config
+05/21/13 15:12:04 Using local config sources: 
+05/21/13 15:12:04    /etc/condor/condor_config.local
+05/21/13 15:12:04 DaemonCore: command socket at <10.20.4.40:45275>
+05/21/13 15:12:04 DaemonCore: private command socket at <10.20.4.40:45275>
+05/21/13 15:12:04 Setting maximum accepts per cycle 8.
+05/21/13 15:12:04 DAGMAN_USE_STRICT setting: 0
+05/21/13 15:12:04 DAGMAN_VERBOSITY setting: 3
+05/21/13 15:12:04 DAGMAN_DEBUG_CACHE_SIZE setting: 5242880
+05/21/13 15:12:04 DAGMAN_DEBUG_CACHE_ENABLE setting: False
+05/21/13 15:12:04 DAGMAN_SUBMIT_DELAY setting: 0
+05/21/13 15:12:04 DAGMAN_MAX_SUBMIT_ATTEMPTS setting: 6
+05/21/13 15:12:04 DAGMAN_STARTUP_CYCLE_DETECT setting: False
+05/21/13 15:12:04 DAGMAN_MAX_SUBMITS_PER_INTERVAL setting: 50
+05/21/13 15:12:04 DAGMAN_USER_LOG_SCAN_INTERVAL setting: 5
+05/21/13 15:12:04 allow_events (DAGMAN_IGNORE_DUPLICATE_JOB_EXECUTION, DAGMAN_ALLOW_EVENTS) setting: 114
+05/21/13 15:12:04 DAGMAN_RETRY_SUBMIT_FIRST setting: True
+05/21/13 15:12:04 DAGMAN_RETRY_NODE_FIRST setting: False
+05/21/13 15:12:04 DAGMAN_MAX_JOBS_IDLE setting: 2500
+05/21/13 15:12:04 DAGMAN_MAX_JOBS_SUBMITTED setting: 5000
+05/21/13 15:12:04 DAGMAN_MAX_PRE_SCRIPTS setting: 0
+05/21/13 15:12:04 DAGMAN_MAX_POST_SCRIPTS setting: 0
+05/21/13 15:12:04 DAGMAN_ALLOW_LOG_ERROR setting: False
+05/21/13 15:12:04 DAGMAN_MUNGE_NODE_NAMES setting: True
+05/21/13 15:12:04 DAGMAN_PROHIBIT_MULTI_JOBS setting: True
+05/21/13 15:12:04 DAGMAN_SUBMIT_DEPTH_FIRST setting: True
+05/21/13 15:12:04 DAGMAN_ALWAYS_RUN_POST setting: True
+05/21/13 15:12:04 DAGMAN_ABORT_DUPLICATES setting: True
+05/21/13 15:12:04 DAGMAN_ABORT_ON_SCARY_SUBMIT setting: True
+05/21/13 15:12:04 DAGMAN_PENDING_REPORT_INTERVAL setting: 600
+05/21/13 15:12:04 DAGMAN_AUTO_RESCUE setting: True
+05/21/13 15:12:04 DAGMAN_MAX_RESCUE_NUM setting: 100
+05/21/13 15:12:04 DAGMAN_WRITE_PARTIAL_RESCUE setting: True
+05/21/13 15:12:04 DAGMAN_DEFAULT_NODE_LOG setting: null
+05/21/13 15:12:04 DAGMAN_GENERATE_SUBDAG_SUBMITS setting: True
+05/21/13 15:12:04 ALL_DEBUG setting: 
+05/21/13 15:12:04 DAGMAN_DEBUG setting: 
+05/21/13 15:12:04 argv[0] == "condor_scheduniv_exec.11361.0"
+05/21/13 15:12:04 argv[1] == "-Lockfile"
+05/21/13 15:12:04 argv[2] == "/nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.dag.lock"
+05/21/13 15:12:04 argv[3] == "-AutoRescue"
+05/21/13 15:12:04 argv[4] == "1"
+05/21/13 15:12:04 argv[5] == "-DoRescueFrom"
+05/21/13 15:12:04 argv[6] == "0"
+05/21/13 15:12:04 argv[7] == "-Dag"
+05/21/13 15:12:04 argv[8] == "/nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.dag"
+05/21/13 15:12:04 argv[9] == "-MaxPre"
+05/21/13 15:12:04 argv[10] == "1"
+05/21/13 15:12:04 argv[11] == "-MaxPost"
+05/21/13 15:12:04 argv[12] == "1"
+05/21/13 15:12:04 argv[13] == "-CsdVersion"
+05/21/13 15:12:04 argv[14] == "$CondorVersion: 7.8.8 Mar 20 2013 BuildID: 110288 $"
+05/21/13 15:12:04 argv[15] == "-Notification"
+05/21/13 15:12:04 argv[16] == "never"
+05/21/13 15:12:04 argv[17] == "-Dagman"
+05/21/13 15:12:04 argv[18] == "/usr//bin/condor_dagman"
+05/21/13 15:12:04 Default node log file is: </nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.dag.nodes.log>
+05/21/13 15:12:04 DAG Lockfile will be written to /nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.dag.lock
+05/21/13 15:12:04 DAG Input file is /nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.dag
+05/21/13 15:12:04 Ignoring value of DAGMAN_LOG_ON_NFS_IS_ERROR.
+05/21/13 15:12:04 Parsing 1 dagfiles
+05/21/13 15:12:04 Parsing /nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.dag ...
+05/21/13 15:12:04 Dag contains 1 total jobs
+05/21/13 15:12:04 Sleeping for 12 seconds to ensure ProcessId uniqueness
+05/21/13 15:12:16 Bootstrapping...
+05/21/13 15:12:16 Number of pre-completed nodes: 0
+05/21/13 15:12:16 Registering condor_event_timer...
+05/21/13 15:12:17 Sleeping for one second for log file consistency
+05/21/13 15:12:18 MultiLogFiles: truncating log file /nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.log
+05/21/13 15:12:18 Submitting Condor Node monitor job(s)...
+05/21/13 15:12:18 submitting: condor_submit -a dag_node_name' '=' 'monitor -a +DAGManJobId' '=' '11361 -a DAGManJobId' '=' '11361 -a submit_event_notes' '=' 'DAG' 'Node:' 'monitor -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" /nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.sub
+05/21/13 15:12:18 From submit: Submitting job(s).
+05/21/13 15:12:18 From submit: 1 job(s) submitted to cluster 11364.
+05/21/13 15:12:18 	assigned Condor ID (11364.0.0)
+05/21/13 15:12:18 Just submitted 1 job this cycle...
+05/21/13 15:12:18 Currently monitoring 1 Condor log file(s)
+05/21/13 15:12:18 Event: ULOG_SUBMIT for Condor Node monitor (11364.0.0)
+05/21/13 15:12:18 Number of idle job procs: 1
+05/21/13 15:12:18 Of 1 nodes total:
+05/21/13 15:12:18  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+05/21/13 15:12:18   ===     ===      ===     ===     ===        ===      ===
+05/21/13 15:12:18     0       0        1       0       0          0        0
+05/21/13 15:12:18 0 job proc(s) currently held
+05/21/13 15:12:28 Currently monitoring 1 Condor log file(s)
+05/21/13 15:12:28 Event: ULOG_EXECUTE for Condor Node monitor (11364.0.0)
+05/21/13 15:12:28 Number of idle job procs: 0
+05/21/13 15:16:58 Currently monitoring 1 Condor log file(s)
+05/21/13 15:16:58 Event: ULOG_JOB_HELD for Condor Node monitor (11364.0.0)
+05/21/13 15:16:58 Number of idle job procs: 1
+05/21/13 15:16:58 Event: ULOG_JOB_HELD for Condor Node monitor (11364.0.0)
+05/21/13 15:16:58 Number of idle job procs: 1
+05/21/13 15:16:58 Of 1 nodes total:
+05/21/13 15:16:58  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+05/21/13 15:16:58   ===     ===      ===     ===     ===        ===      ===
+05/21/13 15:16:58     0       0        1       0       0          0        0
+05/21/13 15:16:58 2 job proc(s) currently held
+05/21/13 15:21:53 Currently monitoring 1 Condor log file(s)
+05/21/13 15:21:53 Event: ULOG_JOB_RELEASED for Condor Node monitor (11364.0.0)
+05/21/13 15:21:53 Event: ULOG_EXECUTE for Condor Node monitor (11364.0.0)
+05/21/13 15:21:53 Number of idle job procs: 0
+05/21/13 15:21:53 Event: ULOG_JOB_TERMINATED for Condor Node monitor (11364.0.0)
+05/21/13 15:21:53 Node monitor job proc (11364.0.0) completed successfully.
+05/21/13 15:21:53 Node monitor job completed
+05/21/13 15:21:53 Running POST script of Node monitor...
+05/21/13 15:21:53 Number of idle job procs: 0
+05/21/13 15:21:53 Of 1 nodes total:
+05/21/13 15:21:53  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+05/21/13 15:21:53   ===     ===      ===     ===     ===        ===      ===
+05/21/13 15:21:53     0       0        0       1       0          0        0
+05/21/13 15:21:53 1 job proc(s) currently held
+05/21/13 15:21:55 Initializing logfile /nmi/run/pfcouvar/2013/05/pfcouvar_nmi-dev.phy.syr.edu_1369149118_28172/monitor.log, 11364, 0, 0
+05/21/13 15:21:58 Currently monitoring 1 Condor log file(s)
+05/21/13 15:21:58 Event: ULOG_POST_SCRIPT_TERMINATED for Condor Node monitor (11364.0.0)
+05/21/13 15:21:58 POST Script of Node monitor completed successfully.
+05/21/13 15:21:58 Of 1 nodes total:
+05/21/13 15:21:58  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+05/21/13 15:21:58   ===     ===      ===     ===     ===        ===      ===
+05/21/13 15:21:58     1       0        0       0       0          0        0
+05/21/13 15:21:58 1 job proc(s) currently held
+05/21/13 15:21:58 All jobs Completed!
+05/21/13 15:21:58 Note: 0 total job deferrals because of -MaxJobs limit (5000)
+05/21/13 15:21:58 Note: 0 total job deferrals because of -MaxIdle limit (2500)
+05/21/13 15:21:58 Note: 0 total job deferrals because of node category throttles
+05/21/13 15:21:58 Note: 0 total PRE script deferrals because of -MaxPre limit (1)
+05/21/13 15:21:58 Note: 0 total POST script deferrals because of -MaxPost limit (1)
+05/21/13 15:21:58 **** condor_scheduniv_exec.11361.0 (condor_DAGMAN) pid 28241 EXITING WITH STATUS 0
