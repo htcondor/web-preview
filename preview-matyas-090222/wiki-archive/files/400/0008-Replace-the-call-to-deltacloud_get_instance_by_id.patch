@@ -1,0 +1,69 @@
+From d2feab8e57d55b9b5a2e2f8e594e9388b1aa02b8 Mon Sep 17 00:00:00 2001
+From: Chris Lalancette <clalance@redhat.com>
+Date: Fri, 10 Jun 2011 17:17:36 -0400
+Subject: [PATCH 08/13] Replace the call to deltacloud_get_instance_by_id.
+
+With the switch to libdeltacloud 0.8, an additional
+deltacloud_get_instance_by_id() call was added to
+the dcloud_start_worker() method.  Unfortunately, that
+was the wrong thing to do; it is not guaranteed that
+the instance ID can be looked up directly after the
+deltacloud_create_instance() call.  To fix this,
+generate a fake state of PENDING directly after we
+return from the deltacloud_create_instance() call.
+It will then be up to the upper layers (i.e. gridmanager)
+to check in on the state.
+
+Signed-off-by: Chris Lalancette <clalance@redhat.com>
+---
+ src/deltacloud_gahp/dcloudgahp_commands.cpp |   20 ++++++++++++--------
+ 1 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/src/deltacloud_gahp/dcloudgahp_commands.cpp b/src/deltacloud_gahp/dcloudgahp_commands.cpp
+index 1cf304b..8999f50 100644
+--- a/src/deltacloud_gahp/dcloudgahp_commands.cpp
++++ b/src/deltacloud_gahp/dcloudgahp_commands.cpp
+@@ -263,12 +263,12 @@ bool dcloud_start_worker(int argc, char **argv, std::string &output_string)
+     char *hwp_id, *hwp_memory, *hwp_cpu, *hwp_storage, *reqid;
+     char *keyname, *userdata;
+     struct deltacloud_api api;
+-    struct deltacloud_instance inst;
+     bool ret = FALSE;
+     struct deltacloud_create_parameter *params = NULL;
+     int params_size = 0;
+     char *instid = NULL;
+     int i;
++    char *esc_id;
+ 
+     if (!verify_number_args(14, argc)) {
+         output_string = create_failure("0", "Wrong_Argument_Number");
+@@ -341,15 +341,19 @@ bool dcloud_start_worker(int argc, char **argv, std::string &output_string)
+         goto cleanup_library;
+     }
+ 
+-    if (deltacloud_get_instance_by_id(&api, instid, &inst) < 0) {
+-        output_string = create_failure(reqid, "Create_Instance_Failure: %s",
+-                                       deltacloud_get_last_error_string());
+-        goto cleanup_library;
+-    }
++    /* deltacloud_create_instance only returns an ID to us.  Output that ID
++     * plus a hard-coded state of PENDING to the upper layers; it will be
++     * their responsibility to get the instance details as appropriate
++     */
+ 
+-    output_string = create_instance_output(reqid, &inst);
++    output_string += reqid;
++    output_string += " NULL ";
+ 
+-    deltacloud_free_instance(&inst);
++    esc_id = escape_id(instid);
++    output_string += "id=";
++    output_string += esc_id;
++    free(esc_id);
++    output_string += " state=PENDING\n";
+ 
+     ret = TRUE;
+ 
+-- 
+1.7.4.4
+
