@@ -1,0 +1,35 @@
+From e51fd6e4a80e9bf00f0e6ec0d45afd72875e554f Mon Sep 17 00:00:00 2001
+From: Peter MacKinnon <pmackinn@redhat.com>
+Date: Sat, 12 Mar 2011 11:34:16 -0500
+Subject: [PATCH] Fix to prevent SEGV from get_real_username
+
+---
+ src/condor_schedd.V6/qmgmt.cpp |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 811edd5..488e8ec 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -1319,7 +1319,8 @@ OwnerCheck2(ClassAd *ad, const char *test_owner, const char *job_owner)
+ 		// the UID we're running as.
+ 	uid_t 	my_uid = get_my_uid();
+ 	if( my_uid != 0 && my_uid != get_real_condor_uid() ) {
+-		if( strcmp(get_real_username(), test_owner) == MATCH ) {
++		const char* real_username = get_real_username();
++		if(real_username && strcmp(real_username, test_owner) == MATCH ) {
+ 			dprintf(D_FULLDEBUG, "OwnerCheck success: owner (%s) matches "
+ 					"my username\n", test_owner );
+ 			return true;
+@@ -1328,7 +1329,7 @@ OwnerCheck2(ClassAd *ad, const char *test_owner, const char *job_owner)
+ 			dprintf( D_FULLDEBUG, "OwnerCheck: reject owner: %s non-super\n",
+ 					 test_owner );
+ 			dprintf( D_FULLDEBUG, "OwnerCheck: username: %s, test_owner: %s\n",
+-					 get_real_username(), test_owner );
++					 real_username, test_owner );
+ 			return false;
+ 		}
+ 	}
+-- 
+1.7.4
+
