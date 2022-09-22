@@ -1,0 +1,186 @@
+From 3b0a5bfc4e306c5ec874b09a257ef7f8a7d919a0 Mon Sep 17 00:00:00 2001
+From: Chris Lalancette <clalance@redhat.com>
+Date: Tue, 21 Jun 2011 12:44:01 -0400
+Subject: [PATCH 03/13] Require libdeltacloud 0.9 for maximum length support.
+
+Signed-off-by: Chris Lalancette <clalance@redhat.com>
+---
+ build/cmake/CondorConfigure.cmake                  |    2 +-
+ externals/bundles/libdeltacloud/0.8/CMakeLists.txt |   72 --------------------
+ externals/bundles/libdeltacloud/0.9/CMakeLists.txt |   72 ++++++++++++++++++++
+ 3 files changed, 73 insertions(+), 73 deletions(-)
+ delete mode 100644 externals/bundles/libdeltacloud/0.8/CMakeLists.txt
+ create mode 100644 externals/bundles/libdeltacloud/0.9/CMakeLists.txt
+
+diff --git a/build/cmake/CondorConfigure.cmake b/build/cmake/CondorConfigure.cmake
+index b16ac74..b554a7c 100644
+--- a/build/cmake/CondorConfigure.cmake
++++ b/build/cmake/CondorConfigure.cmake
+@@ -493,7 +493,7 @@ if (NOT WINDOWS)
+ 	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/expat/2.0.1)
+ 	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libxml2/2.7.3)
+ 	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libvirt/0.6.2)
+-	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libdeltacloud/0.8)
++	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libdeltacloud/0.9)
+ 	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libcgroup/0.37)
+ 	add_subdirectory(${CONDOR_EXTERNAL_DIR}/bundles/libuuid/2.18)
+ 
+diff --git a/externals/bundles/libdeltacloud/0.8/CMakeLists.txt b/externals/bundles/libdeltacloud/0.8/CMakeLists.txt
+deleted file mode 100644
+index 152b9e0..0000000
+--- a/externals/bundles/libdeltacloud/0.8/CMakeLists.txt
++++ /dev/null
+@@ -1,72 +0,0 @@
+- ###############################################################
+- # 
+- # Copyright 2011 Red Hat, Inc. 
+- # 
+- # Licensed under the Apache License, Version 2.0 (the "License"); you 
+- # may not use this file except in compliance with the License.  You may 
+- # obtain a copy of the License at 
+- # 
+- #    http://www.apache.org/licenses/LICENSE-2.0 
+- # 
+- # Unless required by applicable law or agreed to in writing, software 
+- # distributed under the License is distributed on an "AS IS" BASIS, 
+- # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+- # See the License for the specific language governing permissions and 
+- # limitations under the License. 
+- # 
+- ############################################################### 
+-
+-if ( LINUX )
+-	option(WITH_LIBDELTACLOUD "Compiling with support for Deltacloud" ON)
+-endif( LINUX )
+-
+-if (WITH_LIBDELTACLOUD)
+-
+-	if ( NOT PROPER )
+-
+-		condor_pre_external( LIBDELTACLOUD libdeltacloud-0.8 "lib;include" "lib/libdeltacloud.a")
+-
+-		if ( BUILDING_LIBXML2 )
+-			set (LIBDELTACLOUD_DEPENDS ${CURL_REF} ${LIBXML2_REF})
+-			set (LIBDELTACLOUD_CONFIGURE --with-libxml=${LIBXML2_INSTALL_LOC})
+-		else ()
+-			set (LIBDELTACLOUD_DEPENDS ${CURL_REF})
+-			set (LIBDELTACLOUD_CONFIGURE "")
+-		endif ()
+-		ExternalProject_Add(libdeltacloud
+-				DEPENDS ${LIBDELTACLOUD_DEPENDS}
+-				#-- Download Step ----------
+-				DOWNLOAD_COMMAND wget -N http://parrot.cs.wisc.edu/externals/${LIBDELTACLOUD_VER}.tar.gz ${CMD_TERM}
+-				DOWNLOAD_DIR ${LIBDELTACLOUD_STAGE}/dl
+-				URL http://parrot.cs.wisc.edu/externals/${LIBDELTACLOUD_VER}.tar.gz
+-				#--Configure step ----------
+-				CONFIGURE_COMMAND cd ${LIBDELTACLOUD_VER} && ./configure --prefix=${LIBDELTACLOUD_INSTALL_LOC} --with-libcurl=${CURL_INSTALL_LOC} --disable-shared ${LIBDELTACLOUD_CONFIGURE}
+-				#--Build Step ----------
+-				BUILD_COMMAND cd ${LIBDELTACLOUD_VER} && make
+-				BUILD_IN_SOURCE 1
+-				#--install Step ----------
+-				INSTALL_DIR ${LIBDELTACLOUD_INSTALL_LOC}
+-				INSTALL_COMMAND cd ${LIBDELTACLOUD_VER} && make install )
+-
+-		# Set the target dependencies which the rest of condor depends on.
+-		set(LIBDELTACLOUD_FOUND "${LIBDELTACLOUD_INSTALL_LOC}/lib/libdeltacloud.a")
+-
+-		condor_post_external( libdeltacloud include OFF )
+-
+-	else( NOT PROPER )
+-
+-		find_multiple( "deltacloud" LIBDELTACLOUD_FOUND )
+-
+-	endif( NOT PROPER )
+-
+-	if (LIBDELTACLOUD_FOUND)
+-		message (STATUS "external configured (LIBDELTACLOUD_FOUND=${LIBDELTACLOUD_FOUND})")
+-		set( LIBDELTACLOUD_FOUND ${LIBDELTACLOUD_FOUND} PARENT_SCOPE )
+-		set( HAVE_EXT_LIBDELTACLOUD ON PARENT_SCOPE )
+-	endif(LIBDELTACLOUD_FOUND)
+-
+-else(WITH_LIBDELTACLOUD)
+-
+-	message (STATUS "external skipped (libdeltacloud)")
+-
+-endif(WITH_LIBDELTACLOUD)
+diff --git a/externals/bundles/libdeltacloud/0.9/CMakeLists.txt b/externals/bundles/libdeltacloud/0.9/CMakeLists.txt
+new file mode 100644
+index 0000000..90196fa
+--- /dev/null
++++ b/externals/bundles/libdeltacloud/0.9/CMakeLists.txt
+@@ -0,0 +1,72 @@
++ ###############################################################
++ # 
++ # Copyright 2011 Red Hat, Inc. 
++ # 
++ # Licensed under the Apache License, Version 2.0 (the "License"); you 
++ # may not use this file except in compliance with the License.  You may 
++ # obtain a copy of the License at 
++ # 
++ #    http://www.apache.org/licenses/LICENSE-2.0 
++ # 
++ # Unless required by applicable law or agreed to in writing, software 
++ # distributed under the License is distributed on an "AS IS" BASIS, 
++ # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ # See the License for the specific language governing permissions and 
++ # limitations under the License. 
++ # 
++ ############################################################### 
++
++if ( LINUX )
++	option(WITH_LIBDELTACLOUD "Compiling with support for Deltacloud" ON)
++endif( LINUX )
++
++if (WITH_LIBDELTACLOUD)
++
++	if ( NOT PROPER )
++
++		condor_pre_external( LIBDELTACLOUD libdeltacloud-0.9 "lib;include" "lib/libdeltacloud.a")
++
++		if ( BUILDING_LIBXML2 )
++			set (LIBDELTACLOUD_DEPENDS ${CURL_REF} ${LIBXML2_REF})
++			set (LIBDELTACLOUD_CONFIGURE --with-libxml=${LIBXML2_INSTALL_LOC})
++		else ()
++			set (LIBDELTACLOUD_DEPENDS ${CURL_REF})
++			set (LIBDELTACLOUD_CONFIGURE "")
++		endif ()
++		ExternalProject_Add(libdeltacloud
++				DEPENDS ${LIBDELTACLOUD_DEPENDS}
++				#-- Download Step ----------
++				DOWNLOAD_COMMAND wget -N http://parrot.cs.wisc.edu/externals/${LIBDELTACLOUD_VER}.tar.gz ${CMD_TERM}
++				DOWNLOAD_DIR ${LIBDELTACLOUD_STAGE}/dl
++				URL http://parrot.cs.wisc.edu/externals/${LIBDELTACLOUD_VER}.tar.gz
++				#--Configure step ----------
++				CONFIGURE_COMMAND cd ${LIBDELTACLOUD_VER} && ./configure --prefix=${LIBDELTACLOUD_INSTALL_LOC} --with-libcurl=${CURL_INSTALL_LOC} --disable-shared ${LIBDELTACLOUD_CONFIGURE}
++				#--Build Step ----------
++				BUILD_COMMAND cd ${LIBDELTACLOUD_VER} && make
++				BUILD_IN_SOURCE 1
++				#--install Step ----------
++				INSTALL_DIR ${LIBDELTACLOUD_INSTALL_LOC}
++				INSTALL_COMMAND cd ${LIBDELTACLOUD_VER} && make install )
++
++		# Set the target dependencies which the rest of condor depends on.
++		set(LIBDELTACLOUD_FOUND "${LIBDELTACLOUD_INSTALL_LOC}/lib/libdeltacloud.a")
++
++		condor_post_external( libdeltacloud include OFF )
++
++	else( NOT PROPER )
++
++		find_multiple( "deltacloud" LIBDELTACLOUD_FOUND )
++
++	endif( NOT PROPER )
++
++	if (LIBDELTACLOUD_FOUND)
++		message (STATUS "external configured (LIBDELTACLOUD_FOUND=${LIBDELTACLOUD_FOUND})")
++		set( LIBDELTACLOUD_FOUND ${LIBDELTACLOUD_FOUND} PARENT_SCOPE )
++		set( HAVE_EXT_LIBDELTACLOUD ON PARENT_SCOPE )
++	endif(LIBDELTACLOUD_FOUND)
++
++else(WITH_LIBDELTACLOUD)
++
++	message (STATUS "external skipped (libdeltacloud)")
++
++endif(WITH_LIBDELTACLOUD)
+-- 
+1.7.4.4
+
