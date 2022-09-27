@@ -1,0 +1,142 @@
+diff --git a/doc/version-history/8-4.history.tex b/doc/version-history/8-4.history.tex
+index 7542351..8135729 100644
+--- a/doc/version-history/8-4.history.tex
++++ b/doc/version-history/8-4.history.tex
+@@ -69,6 +69,10 @@ and partitionable slots.
+ 	emit debug messages to stderr with text ``I am: hostname: \ldots''.
+ \Ticket{5276}
+ 
++\item Fixed a bug that prevented node retries from working on DAG
++nodes that are NOOP nodes.  (This bug has existed at least since
++the 8.2 series.)
++\Ticket{5277}
+ 
+ \end{itemize}
+ 
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index 281808f..c1c92ee 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -1546,7 +1546,9 @@ Dag::SubmitReadyJobs(const Dagman &dm)
+ 			_catThrottleDeferredCount++;
+ 		} else {
+ 
+-    		CondorID condorID(0,0,0);
++				// Note:  I'm not sure why we don't just use the default
++				// constructor here.  wenger 2015-09-25
++    		CondorID condorID( 0, 0, 0 );
+ 			submit_result_t submit_result = SubmitNodeJob( dm, job, condorID );
+ 	
+ 				// Note: if instead of switch here so we can use break
+@@ -3902,7 +3904,8 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ 
+ 		// Resetting the Condor ID here fixes PR 799.  wenger 2007-01-24.
+ 	if ( node->GetCluster() != _defaultCondorId._cluster ) {
+-		ASSERT( JobIsNoop( condorID ) == node->GetNoop() );
++			// Remove the "previous" HTCondor ID for this node from
++			// the ID->node hash table.
+ 		int id = GetIndexID( node->GetID() );
+ 		int removeResult = GetEventIDHash( node->GetNoop() )->remove( id );
+ 		ASSERT( removeResult == 0 );
+diff --git a/src/condor_tests/job_dagman_retry-B-nodeE-post.pl b/src/condor_tests/job_dagman_retry-B-nodeE-post.pl
+new file mode 100755
+index 0000000..dd1c447
+--- /dev/null
++++ b/src/condor_tests/job_dagman_retry-B-nodeE-post.pl
+@@ -0,0 +1,10 @@
++#! /usr/bin/env perl
++
++$retry = $ARGV[0];
++if ($retry gt 0) {
++	print "POST script succeeds\n";
++	close(OUT);
++} else {
++	print "POST script fails\n";
++	exit 1;
++}
+diff --git a/src/condor_tests/job_dagman_retry-B-nodeF-pre.pl b/src/condor_tests/job_dagman_retry-B-nodeF-pre.pl
+new file mode 100755
+index 0000000..48fdf98
+--- /dev/null
++++ b/src/condor_tests/job_dagman_retry-B-nodeF-pre.pl
+@@ -0,0 +1,10 @@
++#! /usr/bin/env perl
++
++$retry = $ARGV[0];
++if ($retry gt 0) {
++	print "PRE script succeeds\n";
++	close(OUT);
++} else {
++	print "PRE script fails\n";
++	exit 1;
++}
+diff --git a/src/condor_tests/job_dagman_retry-B.dag b/src/condor_tests/job_dagman_retry-B.dag
+index a5d21f3..da89100 100644
+--- a/src/condor_tests/job_dagman_retry-B.dag
++++ b/src/condor_tests/job_dagman_retry-B.dag
+@@ -27,6 +27,22 @@ Retry NodeC 1
+ Job NodeD job_dagman_retry-B-nodeD.cmd
+ Retry NodeD 1
+ 
++# Test retries with NOOP nodes (see gittrac #5277).
++# Retry 0: post script fails
++# Retry 1: success
++Job NodeE foobar Noop
++Script Post NodeE job_dagman_retry-B-nodeE-post.pl $RETRY
++Retry NodeE 1
++
++# Test retries with NOOP nodes (see gittrac #5277).
++# Retry 0: pre script fails
++# Retry 1: success
++Job NodeF foobar Noop
++Script Pre NodeF job_dagman_retry-B-nodeF-pre.pl $RETRY
++Retry NodeF 1
++
+ Parent NodeA Child NodeB
+ Parent NodeB Child NodeC
+ Parent NodeC Child NodeD
++Parent NodeD Child NodeE
++Parent NodeE Child NodeF
+diff --git a/src/condor_tests/job_dagman_retry-B.run b/src/condor_tests/job_dagman_retry-B.run
+index 0b03d9d..71a4c75 100755
+--- a/src/condor_tests/job_dagman_retry-B.run
++++ b/src/condor_tests/job_dagman_retry-B.run
+@@ -92,6 +92,8 @@ $success = sub
+ 		$retryB2 = 0;
+ 		$retryC1 = 0;
+ 		$retryD1 = 0;
++		$retryE1 = 0;
++		$retryF1 = 0;
+ 		$canopen = open(OUT,"<$name");
+ 		if( ! (defined $canopen)) {
+ 			CondorTest::debug("Can not open logfile<$name>:$!\n",1);
+@@ -128,6 +130,14 @@ $success = sub
+ 				$retryD1 = 1;
+ 				CondorTest::debug("$name: $line\n",1);
+ 			}
++			if( $line =~ /^.*Retrying node NodeE \(retry #1 of 1\).*$/ ) {
++				$retryE1 = 1;
++				CondorTest::debug("$name: $line\n",1);
++			}
++			if( $line =~ /^.*Retrying node NodeF \(retry #1 of 1\).*$/ ) {
++				$retryF1 = 1;
++				CondorTest::debug("$name: $line\n",1);
++			}
+ 			if( $line =~ /^.*EXITING WITH STATUS 0.*$/ ) {
+ 				$passed = 1;
+ 				CondorTest::debug("$name: $line\n",1);
+@@ -162,6 +172,14 @@ $success = sub
+ 			CondorTest::debug("Missing NodeD retry 1\n",1);
+ 			$diditpass = 0;
+ 		}
++		if($retryE1 != 1 ) {
++			CondorTest::debug("Missing NodeE retry 1\n",1);
++			$diditpass = 0;
++		}
++		if($retryF1 != 1 ) {
++			CondorTest::debug("Missing NodeF retry 1\n",1);
++			$diditpass = 0;
++		}
+ 		if($passed != 1 ) {
+ 			CondorTest::debug("DAG failed $name\n",1);
+ 			$diditpass = 0;
