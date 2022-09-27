@@ -1,0 +1,63 @@
+diff --git a/src/condor_examples/condor.boot.debian.patch b/src/condor_examples/condor.boot.debian.patch
+index 7403f7f..047eaab 100644
+--- a/src/condor_examples/condor.boot.debian.patch
++++ b/src/condor_examples/condor.boot.debian.patch
+@@ -24,7 +24,7 @@
+   # Condor users to look for while shutting down.
+   #CONDOR_USERS="condor,root"
+ ***************
+-*** 117,123 ****
++*** 126,132 ****
+   
+   # Read in the sysconfig file
+   if [ "$SYSCONFIG" = "" ] ; then
+@@ -32,7 +32,7 @@
+   fi
+   if [ "$CONDOR_SYSCONFIG" = "" ] ; then
+     CONDOR_SYSCONFIG=$SYSCONFIG/condor
+---- 117,123 ----
++--- 126,132 ----
+   
+   # Read in the sysconfig file
+   if [ "$SYSCONFIG" = "" ] ; then
+diff --git a/src/condor_examples/condor.boot.rpm b/src/condor_examples/condor.boot.rpm
+index 498e7da..2c58661 100755
+--- a/src/condor_examples/condor.boot.rpm
++++ b/src/condor_examples/condor.boot.rpm
+@@ -148,6 +148,10 @@ if [ "$MAX_STOP_WAIT" = "" ] ; then
+   MAX_STOP_WAIT=300
+ fi
+ 
++if [ "$USER" = "" ] ; then
++  USER=`whoami`
++fi
++
+ # A key goal of this script is portability.  As a result,
+ # there are is awkward syntax.  For example: the -e test
+ # for file existance isn't available in Solaris 9 /bin/sh
+@@ -390,6 +394,12 @@ set_condor_run() {
+   if [ "$CONDOR_RUN" = "" ]; then
+     CONDOR_RUN=`get_condor_config_val LOG yes`
+   fi
++  if [ ! -d "$CONDOR_RUN" ] ; then
++    mkdir "$CONDOR_RUN"
++    if [ "$USER" = "root" -a "$CONDOR_USER" != "" ] ; then
++      chown "$CONDOR_USER" "$CONDOR_RUN"
++    fi
++  fi
+   verify_readable_directory "$CONDOR_RUN"
+   return 0
+ }
+@@ -586,12 +596,6 @@ start() {
+       cmd="$CONDOR_MASTER"
+       "$CONDOR_MASTER"
+     else
+-      if [ "$CONDOR_RUN" != "" -a ! -d "$CONDOR_RUN" ] ; then
+-        mkdir "$CONDOR_RUN"
+-        if [ "$USER" = "root" -a "$CONDOR_USER" != "" ] ; then
+-          chown "$CONDOR_USER" "$CONDOR_RUN"
+-        fi
+-      fi
+       cmd="$CONDOR_MASTER -pidfile $PIDFILE"
+       "$CONDOR_MASTER" -pidfile "$PIDFILE"
+     fi
