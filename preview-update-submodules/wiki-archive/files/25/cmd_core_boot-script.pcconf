@@ -1,3 +1,0 @@
-condor = nightlies
-condorconfig = condor_config
-condordaemons = master,schedd,collector,negotiator,startd
