@@ -1,0 +1,28 @@
+From d404cdf227115f52c8c8b452378af3fb405915af Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 13 Apr 2017 12:59:36 +0100
+Subject: [PATCH 05/10] condor_tools: fix build without gsoap
+
+---
+ src/condor_tools/soap_setupStub.cpp | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/src/condor_tools/soap_setupStub.cpp b/src/condor_tools/soap_setupStub.cpp
+index 3c2afd3524..fea14af488 100644
+--- a/src/condor_tools/soap_setupStub.cpp
++++ b/src/condor_tools/soap_setupStub.cpp
+@@ -1,4 +1,11 @@
++#ifdef HAVE_EXT_GSOAP
+ #include "stdsoap2.h"
++#else
++#include <stddef.h>
++struct soap;
++#define SOAP_FMAC1
++#define SOAP_FMAC2
++#endif
+ 
+ SOAP_FMAC1 const char** SOAP_FMAC2 soap_faultcode(struct soap*)
+ { return NULL; }
+-- 
+2.13.5
+
