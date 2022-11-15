@@ -466,9 +466,9 @@
                 <div class="d-none d-lg-block col-lg-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <h3><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-09-27-DoIt-Article-Summary.html">Solving for the future: Investment, new coalition levels up research computing infrastructure at UW–Madison</a></h3>
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-11-09-CHTC-pool-record.html">CHTC Pool Hits Record Number of Core Hours</a></h3>
                             <div>
-                                <span class="text-muted">September 27, 2022</span>
+                                <span class="text-muted">November  9, 2022</span>
                             </div>
                             <hr/>
                             <a href="/web-preview/preview-htcondor-release-dates/new.html">
@@ -979,11 +979,12 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">9.11.2</span> Feature Release</h3>
-        <p>September 14, 2022</p>
+        <h3><span class="text-secondary">10.1.1</span> Feature Release</h3>
+        <p>November 11, 2022</p>
         <div>
             <ul>
-  <li>In 9.11.0, STARTD_NOCLAIM_SHUTDOWN restarted instead. Now, it shuts down.</li>
+  <li>Improvements to job hooks and the ability to save stderr from a job hook</li>
+  <li>Fix bug where Apptainer only systems couldn’t run with Docker style images</li>
 </ul>
 
         </div>
@@ -994,7 +995,7 @@
             HTCondor's latest features.
         </p>
         <p class="">
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/development-release-series-91.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-10-x.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
             <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">Installation Guide</a>
@@ -1004,16 +1005,23 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">9.0.17</span> Long Term Support Release</h3>
-        <p>September 29, 2022</p>
+        <h3><span class="text-secondary">10.0.0</span> Long Term Support Release</h3>
+        <p>November 11, 2022</p>
         <div>
             <ul>
-  <li>Fix file descriptor leak when schedd fails to launch scheduler jobs</li>
-  <li>Fix failure to forward batch grid universe job’s refreshed X.509 proxy</li>
-  <li>Fix DAGMan failure when the DONE keyword appeared in the JOB line</li>
-  <li>Fix HTCondor’s handling of extremely large UIDs on Linux</li>
-  <li>Fix bug where OAUTH tokens lose their scope and audience upon refresh</li>
-  <li>Support for Apptainer in addition to Singularity</li>
+  <li>Users can prevent runaway jobs by specifying an allowed duration</li>
+  <li>Able to extend submit commands and create job submit templates</li>
+  <li>Initial implementation of htcondor <noun> <verb> command line interface</verb></noun></li>
+  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
+  <li>Add Container Universe</li>
+  <li>Support for heterogeneous GPUs</li>
+  <li>Improved File transfer error reporting</li>
+  <li>GSI Authentication method has been removed</li>
+  <li>HTCondor now utilizes ARC-CE’s REST interface</li>
+  <li>Support for ARM and PowerPC for Enterprise Linux 8</li>
+  <li>For IDTOKENS, signing key not required on every execution point</li>
+  <li>Trust on first use ability for SSL connections</li>
+  <li>Improvements against replay attacks</li>
 </ul>
 
         </div>
@@ -1038,10 +1046,10 @@
             channels.
         </p>
         <p>
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/stable-release-series-90.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/lts-versions-10-0.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
-            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/v9_0/getting-htcondor/index.html">Installation Guide</a>
+            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/v10_0/getting-htcondor/index.html">Installation Guide</a>
             <a class="btn btn-primary" href="/web-preview/preview-htcondor-release-dates/htcondor/release-highlights/index.html#long-term-support-channel">Release Notes</a>
         </div>
     </div>
