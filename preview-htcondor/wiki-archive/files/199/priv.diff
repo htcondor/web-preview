@@ -1,0 +1,30 @@
+diff --git a/src/condor_c++_util/uids.cpp b/src/condor_c++_util/uids.cpp
+index 8d280ba..605cfe2 100644
+--- a/src/condor_c++_util/uids.cpp
++++ b/src/condor_c++_util/uids.cpp
+@@ -180,6 +180,25 @@ void uninit_user_ids()
+ 	// this doesn't affect the cache, but
+ 	// makes it behave as though there is 
+ 	// no user to set_user_priv() on.
++
++#if defined WIN32
++		/* On Windows we must revert to priv condor if
++		we NULL out the current user token.  This is 
++		because if we are in priv user, we will eventually
++		try and use the NULL'd out token as if it were a
++		valid one. This will make Condor assert and die.
++		We don't use PRIV_UNKOWN here, just in case we
++		were in priv user, in which case we will need to
++		revert to priv condor before we continue anyway. 
++		We also do not log the current user out, because
++		they are likely to be used again, and are stored
++		in the token cache. */
++		priv_state priv = get_priv ();
++		if ( priv == PRIV_USER || priv == PRIV_USER_FINAL ) {
++			set_root_priv ();
++		}
++#endif
++
+ 	if ( UserLoginName ) {
+ 	   	free(UserLoginName);
+ 	}
