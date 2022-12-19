@@ -1,0 +1,34 @@
+diff -rNup condor-7.6.4.orig/src/condor_dagman/dag.cpp condor-7.6.4/src/condor_dagman/dag.cpp
+--- condor-7.6.4.orig/src/condor_dagman/dag.cpp	2012-04-03 11:51:01.000000000 -0400
++++ condor-7.6.4/src/condor_dagman/dag.cpp	2012-04-03 16:39:00.000000000 -0400
+@@ -302,7 +302,7 @@ bool Dag::Bootstrap (bool recovery)
+ 					_jobstateLog.WriteRecoveryFailure();
+ 					return false;
+ 				}
+-				++_postRunNodeCount;
++			
+ 				_postScriptQ->Run( job->_scriptPost );
+ 			}
+ 		}
+@@ -877,11 +877,21 @@ Dag::ProcessJobProcEnd(Job *job, bool re
+ 
+ 			// if a POST script is specified for the job, run it
+ 		if(job->_scriptPost != NULL) {
++		
+ 			(void)job->MonitorLogFile( _condorLogRdr, _storkLogRdr,
+ 					_nfsLogIsError, _recovery, _defaultNodeLog );
++			// If it's in recovery, then jobs with STATUS_POSTRUN will
++			// run in bootstrap. We could run them now, but that may lead to 
++			// duplicate runs.   		
+ 			if( !recovery ) {
+ 				RunPostScript( job, _postRun, 0 );
++			} else {
++			 // either the postrun termination event will clear these bits
++			 // or the post script will be run in bootstrap
++				job->_Status = Job::STATUS_POSTRUN;
++				_postRunNodeCount++;	
+ 			}
++			
+ 		} else if( job->_Status != Job::STATUS_ERROR ) {
+ 			// no POST script was specified, so update DAG with
+ 			// node's successful completion if the node succeeded.
