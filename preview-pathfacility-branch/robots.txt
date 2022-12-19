@@ -1,1 +1,0 @@
-Sitemap: /web-preview/preview-pathfacility-branch/sitemap.xml
