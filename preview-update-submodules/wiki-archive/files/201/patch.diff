@@ -1,0 +1,96 @@
+diff --git a/src/condor_c++_util/condor_crontab.cpp b/src/condor_c++_util/condor_crontab.cpp
+index 75cc70b..dd53fda 100644
+--- a/src/condor_c++_util/condor_crontab.cpp
++++ b/src/condor_c++_util/condor_crontab.cpp
+@@ -295,26 +295,7 @@ CronTab::validateParameter( int attribute_idx, const char *parameter,
+  **/
+ void
+ CronTab::init() {
+-		//
+-		// There should be only one Regex object shared for all instances
+-		// of our object since the pattern that it needs to match is the same
+-		// So we only need to compile the pattern once
+-		//
+-	if ( ! CronTab::regex.isInitialized() ) {
+-		const char *errptr;
+-		int erroffset;
+-		MyString pattern( CRONTAB_PARAMETER_PATTERN ) ;
+-			//
+-			// It's a big problem if we can't compile the pattern, so
+-			// we'll want to dump out right now
+-			//
+-		if ( ! CronTab::regex.compile( pattern, &errptr, &erroffset )) {
+-			MyString error = "CronTab: Failed to compile Regex - ";
+-			error += pattern;
+-			EXCEPT( (char*)error.Value() );
+-		}
+-	}
+-	
++	initRegexObject();
+ 		//
+ 		// Set the last runtime as empty
+ 		//
+@@ -367,9 +348,35 @@ CronTab::init() {
+ 	}
+ 	
+ 	return;
+-}  
++}
+ 
+ /**
++ * Initializes CronTab::regex
++ **/  
++void
++CronTab::initRegexObject() {
++		//
++		// There should be only one Regex object shared for all instances
++		// of our object since the pattern that it needs to match is the same
++		// So we only need to compile the pattern once
++		//
++	if ( ! CronTab::regex.isInitialized() ) {
++		const char *errptr;
++		int erroffset;
++		MyString pattern( CRONTAB_PARAMETER_PATTERN ) ;
++			//
++			// It's a big problem if we can't compile the pattern, so
++			// we'll want to dump out right now
++			//
++		if ( ! CronTab::regex.compile( pattern, &errptr, &erroffset )) {
++			MyString error = "CronTab: Failed to compile Regex - ";
++			error += pattern;
++			EXCEPT( (char*)error.Value() );
++		}
++	}
++}
++	
++/**
+  * Returns the next execution time for our cron schedule from
+  * the current time. The times are the number of seconds
+  * elapsed since 00:00:00 on January 1, 1970, Coordinated Universal Time (UTC)
+diff --git a/src/condor_c++_util/condor_crontab.h b/src/condor_c++_util/condor_crontab.h
+index 7d51a89..81301af 100644
+--- a/src/condor_c++_util/condor_crontab.h
++++ b/src/condor_c++_util/condor_crontab.h
+@@ -232,6 +232,10 @@ public:
+ 		 **/
+ 	long lastRun() { return (this->lastRunTime); }
+ 		/**
++		 * Initializes CronTab::regex
++		 */
++	static void initRegexObject();
++		/**
+ 		 * Static helper method that can check to see if a 
+ 		 * parameter has the proper syntax.
+ 		 * 
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index b53af19..b82997e 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -3628,6 +3628,7 @@ SetCronTab()
+ 								};
+ 	int ctr;
+ 	char *param = NULL;
++	CronTab::initRegexObject();
+ 	for ( ctr = 0; ctr < CronFields; ctr++ ) {
+ 		param = condor_param( attributes[ctr], CronTab::attributes[ctr] );
+ 		if ( param != NULL ) {
