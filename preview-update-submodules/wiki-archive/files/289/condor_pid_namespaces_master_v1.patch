@@ -1,0 +1,270 @@
+diff --git a/src/condor_daemon_core.V6/condor_daemon_core.h b/src/condor_daemon_core.V6/condor_daemon_core.h
+index 4f9bd32..d949d23 100644
+--- a/src/condor_daemon_core.V6/condor_daemon_core.h
++++ b/src/condor_daemon_core.V6/condor_daemon_core.h
+@@ -273,11 +273,9 @@ class DaemonCore : public Service
+ {
+   friend class TimerManager; 
+   friend class CreateProcessForkit;
+-#ifdef WIN32
+   friend int dc_main( int argc, char** argv );
++#ifdef WIN32
+   friend unsigned pidWatcherThread(void*);
+-#else
+-  friend int main(int, char**);
+ #endif
+     
+   public:
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index 251705e..3339ba5 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -5469,7 +5469,13 @@ void DaemonCore::Send_Signal(classy_counted_ptr<DCSignalMsg> msg, bool nonblocki
+ 	// sanity check on the pid.  we don't want to do something silly like
+ 	// kill pid -1 because the pid has not been initialized yet.
+ 	int signed_pid = (int) pid;
++	// TODO: when using namespaces, it's possible to be PID 1!
++	// How should we handle this?
++#if defined(LINUX)
++	if ( signed_pid > -10 && signed_pid < 1 ) {
++#else
+ 	if ( signed_pid > -10 && signed_pid < 3 ) {
++#endif
+ 		EXCEPT("Send_Signal: sent unsafe pid (%d)",signed_pid);
+ 	}
+ 
+diff --git a/src/condor_daemon_core.V6/daemon_core_main.cpp b/src/condor_daemon_core.V6/daemon_core_main.cpp
+index cce8d4a..38c21fa 100644
+--- a/src/condor_daemon_core.V6/daemon_core_main.cpp
++++ b/src/condor_daemon_core.V6/daemon_core_main.cpp
+@@ -56,6 +56,10 @@
+ #include "google/coredumper.h"
+ #endif
+ 
++#if defined(LINUX)
++#include <sys/mount.h>
++#endif
++
+ // Externs to Globals
+ extern DLL_IMPORT_MAGIC char **environ;
+ 
+@@ -1544,11 +1548,7 @@ gcb_recovery_failed_callback()
+ // have a different, smaller main which checks if "-f" is ommitted from
+ // the command line args of the condor_master, in which case it registers as 
+ // an NT service.
+-#ifdef WIN32
+ int dc_main( int argc, char** argv )
+-#else
+-int main( int argc, char** argv )
+-#endif
+ {
+ 	char**	ptr;
+ 	int		command_port = -1;
+@@ -1862,6 +1862,9 @@ int main( int argc, char** argv )
+ 			printf( "%s\n%s\n", CondorVersion(), CondorPlatform() );
+ 			exit(0);
+ 			break;
++		case 'n':		// Taken care of (if possible) in main wrapper.
++			dcargs++;
++			break;
+ 		default:
+ 			done = true;
+ 			break;	
+@@ -1949,7 +1952,8 @@ int main( int argc, char** argv )
+ 		FreeConsole();
+ #else	// UNIX
+ 		// on unix, background means just fork ourselves
+-		if ( fork() ) {
++		// If we're a master, we already tried a fork in the wrapper.
++		if ( (!get_mySubSystem()->isType(SUBSYSTEM_TYPE_MASTER)) && fork() ) {
+ 			// parent
+ 			exit(0);
+ 		}
+@@ -1986,6 +1990,8 @@ int main( int argc, char** argv )
+ 		// it seems safest to just leave them open but attached to
+ 		// /dev/null.
+ 
++		// Note: we do something similar down below in main_post_clone.
++		// If you are making modifications in this code, review that code too.
+ 		if ( get_mySubSystem()->isType( SUBSYSTEM_TYPE_MASTER ) ) {
+ 			int	fd_null = safe_open_wrapper( NULL_FILE, O_RDWR );
+ 			if ( fd_null < 0 ) {
+@@ -2381,7 +2387,108 @@ int main( int argc, char** argv )
+ 	return FALSE;
+ }	
+ 
+-#ifdef WIN32
++#if defined(LINUX)
++typedef struct arg_info_s {
++	int argc;
++	char** argv;
++	char** argv2;
++} arg_info_t;
++
++char*
++getExecPath_nodprintf( void )
++{
++	int rval;
++	char* full_path;
++	char path_buf[MAXPATHLEN];
++	rval = readlink( "/proc/self/exe", path_buf, MAXPATHLEN );
++	if( rval < 0 ) {
++		return NULL;
++	}
++	if( rval == MAXPATHLEN ) {
++		return NULL;
++	}
++	path_buf[rval] = '\0';
++	full_path = strdup( path_buf );
++	return full_path;
++}
++
++int main_post_clone(void* arg_ptr) {
++	arg_info_t *arg = (arg_info_t*)arg_ptr;
++	if (!arg_ptr)
++		EXCEPT("PROGRAMMER ERROR - null pointer");
++
++	int i=0,j;
++	char **argv = arg->argv2;
++
++	ASSERT( arg->argc>0 );
++	argv[i++] = getExecPath_nodprintf();
++
++	char dash_f[] = "-f";
++
++		// insert "-f" argument so that new master does not fork
++	argv[i++] = dash_f;
++	for(j=1;j<arg->argc;j++) {
++		if( (strncmp(arg->argv[j],"-f",2)==0) ) {
++			i--; // do not need to insert -f, because it is already there
++			break;
++		}
++	}
++		// preserve other arguments except background and another new ns.
++	for(j=1;j<arg->argc;j++) {
++		if( (strncmp(arg->argv[j],"-b",2)!=0 ) &&
++				(strncmp(arg->argv[j],"-n",2)!=0) ){
++			argv[i++] = arg->argv[j];
++		}
++	}
++
++	argv[i++] = NULL;
++
++		// Mimic the detaching stuff as found above.
++	int     fd_null = safe_open_wrapper( NULL_FILE, O_RDWR );
++	if ( fd_null < 0 ) {
++		fprintf( stderr, "Unable to open %s: %s\n", NULL_FILE, strerror(errno) );
++		dprintf( D_ALWAYS, "Unable to open %s: %s\n", NULL_FILE, strerror(errno) );
++	}
++	int     fd;
++	for( fd=0;  fd<=2;  fd++ ) {
++		close( fd );
++		if ( ( fd_null >= 0 ) && ( fd_null != fd ) &&
++				( dup2( fd_null, fd ) < 0 )  ) {
++			dprintf( D_ALWAYS, "Error dup2()ing %s -> %d: %s\n",
++				NULL_FILE, fd, strerror(errno) );
++		}
++	}
++		// Close the /dev/null descriptor _IF_ it's not stdin/out/err
++	if ( fd_null > 2 ) {
++		close( fd_null );
++	}
++		// and detach from the controlling tty
++	detach();
++
++	if (mount("/proc", "/proc", "proc", 0, NULL) < 0) {
++		return errno;
++	}
++
++	execv(argv[0], argv);
++
++	return errno;
++}
++#endif
++
++enum {
++	STACK_GROWS_UP,
++	STACK_GROWS_DOWN
++};
++static int stack_direction(volatile int *ptr=NULL) {
++	volatile int location;
++	if(!ptr) return stack_direction(&location);
++	if (ptr < &location) {
++		return STACK_GROWS_UP;
++	}
++	return STACK_GROWS_DOWN;
++}
++
++
+ int 
+ main( int argc, char** argv)
+ {
+@@ -2391,7 +2498,7 @@ main( int argc, char** argv)
+ 	// Scan our command line arguments for a "-f".  If we don't find a "-f",
+ 	// or a "-v", then we want to register as an NT Service.
+ 	i = 0;
+-	bool done = false;
++	bool done = false, new_ns = 0;
+ 	for( ptr = argv + 1; *ptr && (i < argc - 1); ptr++,i++)
+ 	{
+ 		if( ptr[0][0] != '-' ) {
+@@ -2411,9 +2518,15 @@ main( int argc, char** argv)
+ 		case 'f':		// run in Foreground
+ 			Foreground = 1;
+ 			break;
++		case 'k':		// Kill PID specified in file
++			ptr++;
++			break;
+ 		case 'l':		// specify Log directory
+ 			 ptr++;
+ 			 break;
++		case 'n':		// Clone new PID namespace if possibl.e
++			 new_ns = 1;
++			 break;
+ 		case 'p':		// Use well-known Port for command socket.		
+ 			ptr++;		// Also used to specify a Pid file, but both
+ 			break;		// versions require a 2nd arg, so we're safe. 
+@@ -2437,11 +2550,42 @@ main( int argc, char** argv)
+ 		}
+ 	}
+ 	if ( (Foreground != 1) && get_mySubSystem()->isType(SUBSYSTEM_TYPE_MASTER) ) {
++#ifdef WIN32
+ 		main_init(-1,NULL);	// passing the master main_init a -1 will register as an NT service
+ 		return 1;
++#else
++#if defined(LINUX)
++		if (new_ns) {
++			const int stack_size = 16*1024;
++			char child_stack[stack_size];
++			char * child_stack_ptr = child_stack;
++			child_stack_ptr+= (stack_direction() == STACK_GROWS_DOWN) ? stack_size : 0;
++			int flags = (CLONE_VM|CLONE_VFORK|SIGCHLD);
++			flags |=    (CLONE_NEWPID|CLONE_NEWNS);
++			arg_info_t arg;
++			arg.argc = argc;
++			arg.argv = argv;
++			arg.argv2 = (char **)malloc((argc+2)*sizeof(char *));
++			if (arg.argv2 == NULL)
++				EXCEPT("Unable to malloc memory for clone!");
++			int newpid = clone(main_post_clone, child_stack_ptr, flags, (void *)&arg);
++			if ((newpid == -1) && (errno != EINVAL)) { // Don't have NEWPID support; fork will do.
++				return errno;
++			} else {
++				return 0;
++			}
++		}
++#endif
++		int retval = fork();
++		if (retval < 0) {
++			return errno;
++		} else if (retval > 0) {
++			return 0;
++		}
++		return(dc_main(argc, argv));
++#endif
+ 	} else {
+ 		return(dc_main(argc,argv));
+ 	}
+ }
+-#endif // of ifdef WIN32
+ 
