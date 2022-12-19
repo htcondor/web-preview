@@ -1,0 +1,25 @@
+diff -rNup condor-7.6.0.orig/src/condor_schedd.V6/schedd.cpp condor-7.6.0/src/condor_schedd.V6/schedd.cpp
+--- condor-7.6.0.orig/src/condor_schedd.V6/schedd.cpp	2011-10-29 15:50:29.000000000 -0400
++++ condor-7.6.0/src/condor_schedd.V6/schedd.cpp	2011-11-29 13:12:46.000000000 -0500
+@@ -5575,13 +5575,14 @@ Scheduler::makeReconnectRecords( PROC_ID
+ 
+ 	// NOTE: match_ad could be deallocated when this function returns,
+ 	// so if we need to keep it around, we must make our own copy of it.
+-
+-	if( GetAttributeStringNew(cluster, proc, ATTR_OWNER, &owner) < 0 ) {
+-			// we've got big trouble, just give up.
+-		dprintf( D_ALWAYS, "WARNING: %s no longer in job queue for %d.%d\n", 
+-				 ATTR_OWNER, cluster, proc );
+-		mark_job_stopped( job );
+-		return;
++	if( GetAttributeStringNew(cluster, proc, ATTR_ACCOUNTING_GROUP, &owner) < 0 ) {
++		if( GetAttributeStringNew(cluster, proc, ATTR_OWNER, &owner) < 0 ) {
++				// we've got big trouble, just give up.
++			dprintf( D_ALWAYS, "WARNING: %s no longer in job queue for %d.%d\n", 
++					 ATTR_OWNER, cluster, proc );
++			mark_job_stopped( job );
++			return;
++		}
+ 	}
+ 	if( GetAttributeStringNew(cluster, proc, ATTR_CLAIM_ID, &claim_id) < 0 ) {
+ 			//
