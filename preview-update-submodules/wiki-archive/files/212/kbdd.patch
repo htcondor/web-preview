@@ -1,0 +1,48 @@
+diff --git a/src/condor_kbdd/kbdd.cpp b/src/condor_kbdd/kbdd.cpp
+index 341d4e3..91b9e80 100644
+--- a/src/condor_kbdd/kbdd.cpp
++++ b/src/condor_kbdd/kbdd.cpp
+@@ -23,6 +23,7 @@
+ #include "condor_daemon_core.h"
+ #include "condor_debug.h"
+ #include "condor_uid.h"
++#include <sstream>
+ #else
+ #include "XInterface.h"
+ #endif
+@@ -193,10 +194,31 @@ main_pre_command_sock_init( )
+ int WINAPI WinMain( __in HINSTANCE hInstance, __in_opt HINSTANCE hPrevInstance, __in_opt LPSTR lpCmdLine, __in int nShowCmd )
+ {
+ 	// cons up a "standard" argv for dc_main.
+-	char **parameters = (char**)malloc(sizeof(char*)*2);
+-	parameters[0] = "condor_kbdd";
+-	parameters[1] = NULL;
+-	dc_main(1, parameters);
++	std::stringstream ss(lpCmdLine);
++	std::stringstream sz(lpCmdLine);
++	const char delim = ' ';
++	int counter = 0;
++	std::string word;
++
++	while(std::getline(ss, word, delim))
++	{
++		++counter;
++	}
++
++	char **parameters = (char**)malloc(sizeof(char*)*(counter+2));
++	char* appName = (char*)malloc(sizeof(char)*12);
++	sprintf_s(appName, sizeof(char)*12, "condor_kbdd");
++	parameters[0] = appName;
++	counter = 1;
++	while(std::getline(sz, word, delim))
++	{
++		char* entry = strdup(word.c_str());
++		parameters[counter] = entry;
++		++counter;
++	}
++
++	parameters[counter] = NULL;
++	dc_main(counter, parameters);
+ 
+ 	// dc_main should exit() so we probably never get here.
+ 	return 0;
