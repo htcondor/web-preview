@@ -466,9 +466,9 @@
                 <div class="d-none d-lg-block col-lg-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2022-09-27-DoIt-Article-Summary.html">Summary of "Solving for the future; Investment, new coalition levels up research computing infrastructure at UW–Madison"</a></h3>
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2022-12-14-CHTC-Facilitation.html">CHTC Facilitation Innovations for Research Computing</a></h3>
                             <div>
-                                <span class="text-muted">September 27, 2022</span>
+                                <span class="text-muted">December 14, 2022</span>
                             </div>
                             <hr/>
                             <a href="/web-preview/preview-update-submodules/new.html">
@@ -956,7 +956,7 @@
         <h3>Feature Channel</h3>
       </div>
       <div class="col-auto d-flex ps-sm-0">
-        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/latest/version-history/development-release-series-91.html">Detailed Notes &#11023;</a></b>
+        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-10-x.html">Detailed Notes &#11023;</a></b>
       </div>
     </div>
     <div class="my-2">
@@ -986,6 +986,9 @@
 
 
 
+
+
+
     
       
 
@@ -993,16 +996,21 @@
 
 
 
+
+
+
+
       
         <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-11-2">9.11.2</a></b>
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-1-1">10.1.1</a></b>
           <span class="px-1">-</span>
-          <span>September 14, 2022</span>
+          <span>November 11, 2022</span>
         </div>
       
       <div class="mt-2">
         <ul>
-  <li>In 9.11.0, STARTD_NOCLAIM_SHUTDOWN restarted instead. Now, it shuts down.</li>
+  <li>Improvements to job hooks and the ability to save stderr from a job hook</li>
+  <li>Fix bug where Apptainer only systems couldn’t run with Docker style images</li>
 </ul>
 
       </div>
@@ -1013,445 +1021,21 @@
 
 
 
+
+
+
+
       
         <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-11-1">9.11.1</a></b>
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-1-0">10.1.0</a></b>
           <span class="px-1">-</span>
-          <span>September  6, 2022</span>
+          <span>November 11, 2022</span>
         </div>
       
       <div class="mt-2">
         <ul>
-  <li>File transfer errors are identified as occurring during input or output</li>
+  <li>Release HTCondor 10.0.0 bug fixes into 10.1.0</li>
 </ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-11-0">9.11.0</a></b>
-          <span class="px-1">-</span>
-          <span>August 25, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Modified GPU attributes to support the new ‘require_gpus’ submit command</li>
-  <li>
-    <table>
-      <tbody>
-        <tr>
-          <td>Add (PREEMPT</td>
-          <td>HOLD)_IF_DISK_EXCEEDED configuration templates</td>
-        </tr>
-      </tbody>
-    </table>
-  </li>
-  <li>ADVERTISE authorization levels now also provide READ authorization</li>
-  <li>Periodic release expressions no longer apply to manually held jobs</li>
-  <li>If a #! interpreter doesn’t exist, a proper hold and log message appears</li>
-  <li>Can now set the Singularity target directory with ‘container_target_dir’</li>
-  <li>If SciToken and X.509 available, uses SciToken for arc job authentication</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-10-1">9.10.1</a></b>
-          <span class="px-1">-</span>
-          <span>July 18, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>ActivationSetupDuration is now correct for jobs that checkpoint</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-10-0">9.10.0</a></b>
-          <span class="px-1">-</span>
-          <span>July 15, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>With collector administrator access, can manage all HTCondor pool daemons</li>
-  <li>SciTokens can now be used for authentication with ARC CE servers</li>
-  <li>Preliminary support for ARM and POWER RC on AlmaLinux 8</li>
-  <li>Prevent negative values when using huge files with a file transfer plugin</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-9-1">9.9.1</a></b>
-          <span class="px-1">-</span>
-          <span>June 30, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Fix bug where jobs would not match when using a child collector</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-9-0">9.9.0</a></b>
-          <span class="px-1">-</span>
-          <span>May 31, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>A new authentication method for remote HTCondor administration</li>
-  <li>Several changes to improve the security of connections</li>
-  <li>Fix issue where DAGMan direct submission failed when using Kerberos</li>
-  <li>The submission method is now recorded in the job ClassAd</li>
-  <li>Singularity jobs can now pull from Docker style repositories</li>
-  <li>The OWNER authorization level has been folded into the ADMINISTRATOR level</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-8-1">9.8.1</a></b>
-          <span class="px-1">-</span>
-          <span>April 26, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Fix HTCondor startup failure with certain complex network configurations</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-8-0">9.8.0</a></b>
-          <span class="px-1">-</span>
-          <span>April 21, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Support for Heterogeneous GPUs, some configuration required</li>
-  <li>Allow HTCondor to utilize grid sites requiring multi-factor authentication</li>
-  <li>Technology preview: bring your own resources from HPC clusters</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-7-1">9.7.1</a></b>
-          <span class="px-1">-</span>
-          <span>April 21, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Fix recent bug where jobs may go on hold without a hold reason or code</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-7-0">9.7.0</a></b>
-          <span class="px-1">-</span>
-          <span>March 15, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Support environment variables, other application elements in ARC REST jobs</li>
-  <li>Container universe supports Singularity jobs with hard-coded command</li>
-  <li>DAGMan submits jobs directly (does not shell out to condor_submit)</li>
-  <li>Meaningful error message and sub-code for file transfer failures</li>
-  <li>Add file transfer statistics for file transfer plugins</li>
-  <li>Add named list policy knobs for SYSTEM_PERIODIC_ policies</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-6-0">9.6.0</a></b>
-          <span class="px-1">-</span>
-          <span>March 15, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>This release contains important fixes for security issues.
-Affected users should update as soon as possible.</p>
-
-<p>More details on the security issues are in the Vulnerability Reports:</p>
-<ul>
-  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001</a></li>
-  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002</a></li>
-  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003</a></li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-5-0">9.5.0</a></b>
-          <span class="px-1">-</span>
-          <span>January 13, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Initial implementation of Container Universe
-    <ul>
-      <li>HTCondor will automatically detect container type and where it can run</li>
-    </ul>
-  </li>
-  <li>The blahp is no longer separate, it is now an integral part of HTCondor</li>
-  <li>Docker Universe jobs can now self-checkpoint</li>
-  <li>Added Debian 11 (bullseye) as a supported platform</li>
-  <li>Since CentOS 8 has reached end of life, we build and test on Rocky Linux 8</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-4-0">9.4.0</a></b>
-          <span class="px-1">-</span>
-          <span>December  2, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Enhancements in the release include:</p>
-
-<ul>
-  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
-  <li>The access point administrator can add keywords to the submit language</li>
-  <li>Add submit commands that limit job run time</li>
-  <li>Fix bug where self check-pointing jobs may be erroneously held</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-3-0">9.3.0</a></b>
-          <span class="px-1">-</span>
-          <span>November  3, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>NOTE: Globus GSI has been removed from this release. If you are currently
-using GSI, you must migrate to a different authorization mechanism.</p>
-
-<p>Enhancements in the release include:</p>
-
-<ul>
-  <li>Discontinue support for Globus GSI</li>
-  <li>Discontinue support for grid type ‘‘nordugrid’’, use ‘‘arc’’ instead</li>
-  <li>MacOS version strings now include the major version number (10 or 11)</li>
-  <li>File transfer plugin sample code to aid in developing new plugins</li>
-  <li>Add generic knob to set the slot user for all slots</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-2-0">9.2.0</a></b>
-          <span class="px-1">-</span>
-          <span>September 23, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>This release contains all of the bug fixes from the 9.0.6 LTS release and the 9.1.4, 9.1.5, 9.1.6 limited patch releases.</p>
-
-<p>Enhancements in the release include:</p>
-
-<ul>
-  <li>Add SERVICE node that runs alongside the DAG for the duration of the DAG</li>
-  <li>Fix problem where proxy delegation to older HTCondor versions failed</li>
-  <li>Jobs are now re-run if the execute directory unexpectedly disappears</li>
-  <li>HTCondor counts the number of files transfered at the submit node</li>
-  <li>Fix a bug that caused jobs to fail when using newer Singularity versions</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-3">9.1.3</a></b>
-          <span class="px-1">-</span>
-          <span>August 19, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        
-<p>This release contains all of the bug fixes from the 9.0.5 stable release.</p>
-
-<p>Enhancements in the release include:</p>
-<ul>
-  <li>Globus GSI is no longer needed for X.509 proxy delegation</li>
-  <li>Globus GSI authentication is disabled by default</li>
-  <li>If a user job policy expression evaluates to undefined, it is ignored</li>
-  <li>The job ad now contains a history of job holds and hold reasons</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-2">9.1.2</a></b>
-          <span class="px-1">-</span>
-          <span>July 29, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>This release contains important fixes for security issues.
-Affected users should update as soon as possible. More details on the security
-issues are in the Vulnerability Reports:</p>
-
-<ul>
-  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
-  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">9.1.0</a></b>
-          <span class="px-1">-</span>
-          <span>May 20, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        
-<p>This release contains all of the bug fixes from the 9.0.1 stable release.</p>
-
-<p>Enhancements in the release include:</p>
-<ul>
-  <li>Support for submitting to ARC-CE via the REST interface</li>
-  <li>DAGMan can put failed jobs on hold (user can correct problems and release)</li>
-  <li>Can run gdb and ptrace within Docker containers</li>
-  <li>A small Docker test job is run on the execute node to verify functionality</li>
-  <li>The number of instructions executed is reported in the job Ad on Linux</li>
-</ul>
-
-<p>Try out our <a href="https://htcondor.readthedocs.io/en/v9_1/getting-htcondor/index.html">new helpful installation scripts</a></p>
 
       </div>
     
@@ -1476,12 +1060,603 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+
+
+
       
-        <div class="d-flex flex-row">
-          <b>8.9.13</b>
-          <span class="px-1">-</span>
-          <span>March 30, 2021</span>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-12-0">9.12.0</a></b>
+            <span class="px-1">-</span>
+            <span>October  6, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Provide a mechanism to bootstrap secure authentication within a pool</li>
+  <li>Add the ability to define submit templates</li>
+  <li>Administrators can now extend the help offered by condor_submit</li>
+  <li>Add DAGMan ClassAd attributes to record more information about jobs</li>
+  <li>On Linux, advertise the x86_64 micro-architecture in a slot attribute</li>
+  <li>Added -drain option to condor_off and condor_restart</li>
+  <li>Administrators can now set the shared memory size for Docker jobs</li>
+  <li>Multiple improvements to condor_adstash</li>
+  <li>HAD daemons now use SHA-256 checksums by default</li>
+</ul>
+
         </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-11-2">9.11.2</a></b>
+            <span class="px-1">-</span>
+            <span>September 14, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>In 9.11.0, STARTD_NOCLAIM_SHUTDOWN restarted instead. Now, it shuts down.</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-11-1">9.11.1</a></b>
+            <span class="px-1">-</span>
+            <span>September  6, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>File transfer errors are identified as occurring during input or output</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-11-0">9.11.0</a></b>
+            <span class="px-1">-</span>
+            <span>August 25, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Modified GPU attributes to support the new ‘require_gpus’ submit command</li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>Add (PREEMPT</td>
+          <td>HOLD)_IF_DISK_EXCEEDED configuration templates</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>ADVERTISE authorization levels now also provide READ authorization</li>
+  <li>Periodic release expressions no longer apply to manually held jobs</li>
+  <li>If a #! interpreter doesn’t exist, a proper hold and log message appears</li>
+  <li>Can now set the Singularity target directory with ‘container_target_dir’</li>
+  <li>If SciToken and X.509 available, uses SciToken for arc job authentication</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-10-1">9.10.1</a></b>
+            <span class="px-1">-</span>
+            <span>July 18, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>ActivationSetupDuration is now correct for jobs that checkpoint</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-10-0">9.10.0</a></b>
+            <span class="px-1">-</span>
+            <span>July 15, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>With collector administrator access, can manage all HTCondor pool daemons</li>
+  <li>SciTokens can now be used for authentication with ARC CE servers</li>
+  <li>Preliminary support for ARM and POWER RC on AlmaLinux 8</li>
+  <li>Prevent negative values when using huge files with a file transfer plugin</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-9-1">9.9.1</a></b>
+            <span class="px-1">-</span>
+            <span>June 30, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Fix bug where jobs would not match when using a child collector</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-9-0">9.9.0</a></b>
+            <span class="px-1">-</span>
+            <span>May 31, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>A new authentication method for remote HTCondor administration</li>
+  <li>Several changes to improve the security of connections</li>
+  <li>Fix issue where DAGMan direct submission failed when using Kerberos</li>
+  <li>The submission method is now recorded in the job ClassAd</li>
+  <li>Singularity jobs can now pull from Docker style repositories</li>
+  <li>The OWNER authorization level has been folded into the ADMINISTRATOR level</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-8-1">9.8.1</a></b>
+            <span class="px-1">-</span>
+            <span>April 26, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Fix HTCondor startup failure with certain complex network configurations</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-8-0">9.8.0</a></b>
+            <span class="px-1">-</span>
+            <span>April 21, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Support for Heterogeneous GPUs, some configuration required</li>
+  <li>Allow HTCondor to utilize grid sites requiring multi-factor authentication</li>
+  <li>Technology preview: bring your own resources from HPC clusters</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-7-1">9.7.1</a></b>
+            <span class="px-1">-</span>
+            <span>April 21, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Fix recent bug where jobs may go on hold without a hold reason or code</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-7-0">9.7.0</a></b>
+            <span class="px-1">-</span>
+            <span>March 15, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Support environment variables, other application elements in ARC REST jobs</li>
+  <li>Container universe supports Singularity jobs with hard-coded command</li>
+  <li>DAGMan submits jobs directly (does not shell out to condor_submit)</li>
+  <li>Meaningful error message and sub-code for file transfer failures</li>
+  <li>Add file transfer statistics for file transfer plugins</li>
+  <li>Add named list policy knobs for SYSTEM_PERIODIC_ policies</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-6-0">9.6.0</a></b>
+            <span class="px-1">-</span>
+            <span>March 15, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issues are in the Vulnerability Reports:</p>
+<ul>
+  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001</a></li>
+  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002</a></li>
+  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003</a></li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-5-0">9.5.0</a></b>
+            <span class="px-1">-</span>
+            <span>January 13, 2022</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Initial implementation of Container Universe
+    <ul>
+      <li>HTCondor will automatically detect container type and where it can run</li>
+    </ul>
+  </li>
+  <li>The blahp is no longer separate, it is now an integral part of HTCondor</li>
+  <li>Docker Universe jobs can now self-checkpoint</li>
+  <li>Added Debian 11 (bullseye) as a supported platform</li>
+  <li>Since CentOS 8 has reached end of life, we build and test on Rocky Linux 8</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-4-0">9.4.0</a></b>
+            <span class="px-1">-</span>
+            <span>December  2, 2021</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>Enhancements in the release include:</p>
+
+<ul>
+  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
+  <li>The access point administrator can add keywords to the submit language</li>
+  <li>Add submit commands that limit job run time</li>
+  <li>Fix bug where self check-pointing jobs may be erroneously held</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-3-0">9.3.0</a></b>
+            <span class="px-1">-</span>
+            <span>November  3, 2021</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>NOTE: Globus GSI has been removed from this release. If you are currently
+using GSI, you must migrate to a different authorization mechanism.</p>
+
+<p>Enhancements in the release include:</p>
+
+<ul>
+  <li>Discontinue support for Globus GSI</li>
+  <li>Discontinue support for grid type ‘‘nordugrid’’, use ‘‘arc’’ instead</li>
+  <li>MacOS version strings now include the major version number (10 or 11)</li>
+  <li>File transfer plugin sample code to aid in developing new plugins</li>
+  <li>Add generic knob to set the slot user for all slots</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-2-0">9.2.0</a></b>
+            <span class="px-1">-</span>
+            <span>September 23, 2021</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>This release contains all of the bug fixes from the 9.0.6 LTS release and the 9.1.4, 9.1.5, 9.1.6 limited patch releases.</p>
+
+<p>Enhancements in the release include:</p>
+
+<ul>
+  <li>Add SERVICE node that runs alongside the DAG for the duration of the DAG</li>
+  <li>Fix problem where proxy delegation to older HTCondor versions failed</li>
+  <li>Jobs are now re-run if the execute directory unexpectedly disappears</li>
+  <li>HTCondor counts the number of files transfered at the submit node</li>
+  <li>Fix a bug that caused jobs to fail when using newer Singularity versions</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-3">9.1.3</a></b>
+            <span class="px-1">-</span>
+            <span>August 19, 2021</span>
+          </div>
+          
+        <div class="mt-2">
+          
+<p>This release contains all of the bug fixes from the 9.0.5 stable release.</p>
+
+<p>Enhancements in the release include:</p>
+<ul>
+  <li>Globus GSI is no longer needed for X.509 proxy delegation</li>
+  <li>Globus GSI authentication is disabled by default</li>
+  <li>If a user job policy expression evaluates to undefined, it is ignored</li>
+  <li>The job ad now contains a history of job holds and hold reasons</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-2">9.1.2</a></b>
+            <span class="px-1">-</span>
+            <span>July 29, 2021</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible. More details on the security
+issues are in the Vulnerability Reports:</p>
+
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">9.1.0</a></b>
+            <span class="px-1">-</span>
+            <span>May 20, 2021</span>
+          </div>
+          
+        <div class="mt-2">
+          
+<p>This release contains all of the bug fixes from the 9.0.1 stable release.</p>
+
+<p>Enhancements in the release include:</p>
+<ul>
+  <li>Support for submitting to ARC-CE via the REST interface</li>
+  <li>DAGMan can put failed jobs on hold (user can correct problems and release)</li>
+  <li>Can run gdb and ptrace within Docker containers</li>
+  <li>A small Docker test job is run on the execute node to verify functionality</li>
+  <li>The number of instructions executed is reported in the job Ad on Linux</li>
+</ul>
+
+<p>Try out our <a href="https://htcondor.readthedocs.io/en/v9_1/getting-htcondor/index.html">new helpful installation scripts</a></p>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.13</a></b>
+            <span class="px-1">-</span>
+            <span>March 30, 2021</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1497,11 +1672,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.12</b>
-          <span class="px-1">-</span>
-          <span>March 25, 2021</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.12</a></b>
+            <span class="px-1">-</span>
+            <span>March 25, 2021</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1510,11 +1697,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.11</b>
-          <span class="px-1">-</span>
-          <span>January 27, 2021</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.11</a></b>
+            <span class="px-1">-</span>
+            <span>January 27, 2021</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1525,11 +1724,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.10</b>
-          <span class="px-1">-</span>
-          <span>November 24, 2020</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.10</a></b>
+            <span class="px-1">-</span>
+            <span>November 24, 2020</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1544,11 +1755,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.9</b>
-          <span class="px-1">-</span>
-          <span>October 26, 2020</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.9</a></b>
+            <span class="px-1">-</span>
+            <span>October 26, 2020</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1563,11 +1786,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.8</b>
-          <span class="px-1">-</span>
-          <span>August  6, 2020</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.8</a></b>
+            <span class="px-1">-</span>
+            <span>August  6, 2020</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1580,11 +1815,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.7</b>
-          <span class="px-1">-</span>
-          <span>May 20, 2020</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.7</a></b>
+            <span class="px-1">-</span>
+            <span>May 20, 2020</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1603,11 +1850,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.6</b>
-          <span class="px-1">-</span>
-          <span>April  6, 2020</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.6</a></b>
+            <span class="px-1">-</span>
+            <span>April  6, 2020</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1620,11 +1879,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.5</b>
-          <span class="px-1">-</span>
-          <span>January  2, 2020</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.5</a></b>
+            <span class="px-1">-</span>
+            <span>January  2, 2020</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1640,11 +1911,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.4</b>
-          <span class="px-1">-</span>
-          <span>November 19, 2019</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.4</a></b>
+            <span class="px-1">-</span>
+            <span>November 19, 2019</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1657,11 +1940,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.3</b>
-          <span class="px-1">-</span>
-          <span>September 17, 2019</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.3</a></b>
+            <span class="px-1">-</span>
+            <span>September 17, 2019</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1679,11 +1974,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.2</b>
-          <span class="px-1">-</span>
-          <span>June  4, 2019</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.2</a></b>
+            <span class="px-1">-</span>
+            <span>June  4, 2019</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1697,11 +2004,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.1</b>
-          <span class="px-1">-</span>
-          <span>April 17, 2019</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.1</a></b>
+            <span class="px-1">-</span>
+            <span>April 17, 2019</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1712,11 +2031,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.9.0</b>
-          <span class="px-1">-</span>
-          <span>February 28, 2019</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.9.0</a></b>
+            <span class="px-1">-</span>
+            <span>February 28, 2019</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1727,11 +2058,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.10</b>
-          <span class="px-1">-</span>
-          <span>October 31, 2018</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.10</a></b>
+            <span class="px-1">-</span>
+            <span>October 31, 2018</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1744,11 +2087,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.9</b>
-          <span class="px-1">-</span>
-          <span>August  1, 2018</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.9</a></b>
+            <span class="px-1">-</span>
+            <span>August  1, 2018</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1761,11 +2116,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.8</b>
-          <span class="px-1">-</span>
-          <span>May 10, 2018</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.8</a></b>
+            <span class="px-1">-</span>
+            <span>May 10, 2018</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1776,11 +2143,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.7</b>
-          <span class="px-1">-</span>
-          <span>March 13, 2018</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.7</a></b>
+            <span class="px-1">-</span>
+            <span>March 13, 2018</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1795,11 +2174,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.6</b>
-          <span class="px-1">-</span>
-          <span>January  4, 2018</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.6</a></b>
+            <span class="px-1">-</span>
+            <span>January  4, 2018</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1811,11 +2202,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.5</b>
-          <span class="px-1">-</span>
-          <span>November 14, 2017</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.5</a></b>
+            <span class="px-1">-</span>
+            <span>November 14, 2017</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1824,11 +2227,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.4</b>
-          <span class="px-1">-</span>
-          <span>October 31, 2017</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.4</a></b>
+            <span class="px-1">-</span>
+            <span>October 31, 2017</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1843,11 +2258,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.3</b>
-          <span class="px-1">-</span>
-          <span>September 12, 2017</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.3</a></b>
+            <span class="px-1">-</span>
+            <span>September 12, 2017</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1859,11 +2286,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.2</b>
-          <span class="px-1">-</span>
-          <span>June 22, 2017</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.2</a></b>
+            <span class="px-1">-</span>
+            <span>June 22, 2017</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1879,11 +2318,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.1</b>
-          <span class="px-1">-</span>
-          <span>April 24, 2017</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.1</a></b>
+            <span class="px-1">-</span>
+            <span>April 24, 2017</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1897,11 +2348,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.7.0</b>
-          <span class="px-1">-</span>
-          <span>March  2, 2017</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.7.0</a></b>
+            <span class="px-1">-</span>
+            <span>March  2, 2017</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1913,11 +2376,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.8</b>
-          <span class="px-1">-</span>
-          <span>December 13, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.8</a></b>
+            <span class="px-1">-</span>
+            <span>December 13, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1932,11 +2407,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.7</b>
-          <span class="px-1">-</span>
-          <span>September 29, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.7</a></b>
+            <span class="px-1">-</span>
+            <span>September 29, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1951,11 +2438,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.6</b>
-          <span class="px-1">-</span>
-          <span>August  2, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.6</a></b>
+            <span class="px-1">-</span>
+            <span>August  2, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1972,11 +2471,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.5</b>
-          <span class="px-1">-</span>
-          <span>June  6, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.5</a></b>
+            <span class="px-1">-</span>
+            <span>June  6, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -1989,11 +2500,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.4</b>
-          <span class="px-1">-</span>
-          <span>May  2, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.4</a></b>
+            <span class="px-1">-</span>
+            <span>May  2, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2008,11 +2531,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.3</b>
-          <span class="px-1">-</span>
-          <span>March 24, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.3</a></b>
+            <span class="px-1">-</span>
+            <span>March 24, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2025,11 +2560,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.2</b>
-          <span class="px-1">-</span>
-          <span>February 18, 2016</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.2</a></b>
+            <span class="px-1">-</span>
+            <span>February 18, 2016</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2044,11 +2591,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.1</b>
-          <span class="px-1">-</span>
-          <span>December 21, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.1</a></b>
+            <span class="px-1">-</span>
+            <span>December 21, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2061,11 +2620,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.5.0</b>
-          <span class="px-1">-</span>
-          <span>October 12, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.5.0</a></b>
+            <span class="px-1">-</span>
+            <span>October 12, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2077,11 +2648,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.8</b>
-          <span class="px-1">-</span>
-          <span>August 27, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.8</a></b>
+            <span class="px-1">-</span>
+            <span>August 27, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2092,11 +2675,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.7</b>
-          <span class="px-1">-</span>
-          <span>July 27, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.7</a></b>
+            <span class="px-1">-</span>
+            <span>July 27, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2107,11 +2702,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.6</b>
-          <span class="px-1">-</span>
-          <span>June 23, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.6</a></b>
+            <span class="px-1">-</span>
+            <span>June 23, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2121,11 +2728,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.5</b>
-          <span class="px-1">-</span>
-          <span>April 20, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.5</a></b>
+            <span class="px-1">-</span>
+            <span>April 20, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2136,11 +2755,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.4</b>
-          <span class="px-1">-</span>
-          <span>March  5, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.4</a></b>
+            <span class="px-1">-</span>
+            <span>March  5, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2149,11 +2780,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.3</b>
-          <span class="px-1">-</span>
-          <span>February 19, 2015</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.3</a></b>
+            <span class="px-1">-</span>
+            <span>February 19, 2015</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2164,11 +2807,23 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.2</b>
-          <span class="px-1">-</span>
-          <span>December 23, 2014</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.2</a></b>
+            <span class="px-1">-</span>
+            <span>December 23, 2014</span>
+          </div>
+          
         <div class="mt-2">
           
 <ul>
@@ -2178,835 +2833,1747 @@ issues are in the Vulnerability Reports:</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.1</b>
-          <span class="px-1">-</span>
-          <span>September 11, 2014</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.1</a></b>
+            <span class="px-1">-</span>
+            <span>September 11, 2014</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.3.1. This release contains a variety of changes that reduce memory usage and improve performance. If cgroups are used to limit memory utilization, HTCondor sets both the memory and swap limits. A complete list of bugs fixed and features can be found in the Version History.  HTCondor 8.3.1 binaries and source code are available from our <a href="/downloads.html">Downloads</a> page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.3.0</b>
-          <span class="px-1">-</span>
-          <span>August 12, 2014</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.3.0</a></b>
+            <span class="px-1">-</span>
+            <span>August 12, 2014</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.3.0.  This development release contains all the bug fixes from the stable release version 8.2.2. This first release of the 8.3 series contains performance improvements. In one improvement, the condor_negotiator can request the batching of resource requests from the condor_schedd, improving performance over high latency (wide-area) network links. A complete list of bugs fixed and features can be found in the Version History. HTCondor 8.3.0 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.1.6</b>
-          <span class="px-1">-</span>
-          <span>May 22, 2014</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.1.6</a></b>
+            <span class="px-1">-</span>
+            <span>May 22, 2014</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.1.6. Major new features include: automatic recognition, scheduling, and management of GPUs; submit jobs to run on a BOINC server, using the grid universe; major new features for configuration: file inclusion to incorporate configuration, metaknobs–incorporation of predefined sets of configuration, conditional configuration using if/else syntax. A complete list of bugs fixed and features can be found in the Version History. HTCondor 8.1.6 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.1.5</b>
-          <span class="px-1">-</span>
-          <span>April 15, 2014</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.1.5</a></b>
+            <span class="px-1">-</span>
+            <span>April 15, 2014</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.1.5. Major new features include: a change to the default policy, such that it does not preempt jobs; several new instances of non-blocking I/O to improve performance; fewer server resources are used by the condor_schedd when handling condor_q requests; a bug fix, such that large submit description files do not cause condor_submit to crash; a bug fix, such that large configuration files do not cause the condor_master daemon to crash. A complete list of bugs fixed and features can be found in the Version History. HTCondor 8.1.5 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.1.4</b>
-          <span class="px-1">-</span>
-          <span>February 27, 2014</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.1.4</a></b>
+            <span class="px-1">-</span>
+            <span>February 27, 2014</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.1.4. This development release contains all the bug fixes from the stable release version 8.0.6. Major new features include: added grid universe support for Google Compute Engine; support for defining custom resources that easily manage GPUs; a new tool that does GPU discovery; improved scalability when using the shared port service; Python 3 support; enhanced resilience due to the prompt detection of network failures. A complete list of bugs fixed and features can be found in the Version History. HTCondor 8.1.4 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.1.3</b>
-          <span class="px-1">-</span>
-          <span>December 23, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.1.3</a></b>
+            <span class="px-1">-</span>
+            <span>December 23, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.1.3. This development release contains all the bug fixes from the stable release version 8.0.5. Major new features include: the parsing of configuration has changed such that comments are permitted within multi-line definitions; the condor_sos tool helps administrators manage overloaded daemons by causing commands to be handled with a higher priority; a new Python binding reads event logs. A complete list of bugs fixed and features can be found in the  Version History. HTCondor 8.1.3 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.1.2</b>
-          <span class="px-1">-</span>
-          <span>October 31, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.1.2</a></b>
+            <span class="px-1">-</span>
+            <span>October 31, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor team is pleased to announce the release of HTCondor 8.1.2. This development release contains all the bug fixes from the stable release version 8.0.4. Major new features include: partitionable slots can now be split into dynamic slots at negotiation time using new consumption policies; new condor_chirp commands permit updates to job ClassAd attributes to occur in a delayed fashion, reducing the overhead of making the update; there are many Python binding improvements including a new Negotiator class; condor_ssh_to_job now works for grid universe jobs on amazon EC2 resources; new command line options for condor_config_val and condor_history allow them to query remote machines; increased the scalability of the condor_shared_port daemon, condor_queue, and condor_status by increasing concurrency. A complete list of bugs fixed and features can be found in the  Version History. HTCondor 8.1.2 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>8.1.1</b>
-          <span class="px-1">-</span>
-          <span>September 17, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">8.1.1</a></b>
+            <span class="px-1">-</span>
+            <span>September 17, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor Team is pleased to announce the release of HTCondor version 8.1.1. This development release contains all the bug fixes from the stable release version 8.0.2. Major new features include: the condor_startd daemon now advertises statistics about preemption, parameter substitution in configuration now honors per-daemon overrides. A complete list of bugs fixed and features can be found in the  Version History. HTCondor 8.1.1 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.6</b>
-          <span class="px-1">-</span>
-          <span>May  8, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.6</a></b>
+            <span class="px-1">-</span>
+            <span>May  8, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor team is pleased to announce the release of HTCondor 7.9.6. This is the final release of the 7.9 series. This release contains new tools, VMware player support, Linux out of memory killer hints, python bindings, new configuration parameters, and many bug fixes. A complete list of bugs fixed and features can be found in the Version History. HTCondor 7.9.6 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.5</b>
-          <span class="px-1">-</span>
-          <span>April 17, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.5</a></b>
+            <span class="px-1">-</span>
+            <span>April 17, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor team is pleased to announce the release of HTCondor 7.9.5. This release introduces a new tool - condor_tail - which can be used to see files in the sandbox of a running job. It improves to the transfer queue with a fair share policy and per-user transfer statistics. Per-submitter time limits are now honored by the Negotiator. There are bug fixes for grid universe, dagman, the Windows keyboard daemon and more. A complete list of bugs fixed and features can be found in the Version History. HTCondor 7.9.5 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.4</b>
-          <span class="px-1">-</span>
-          <span>February 20, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.4</a></b>
+            <span class="px-1">-</span>
+            <span>February 20, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor team is pleased to announce the release of HTCondor 7.9.4. This release supports per job PID namespaces for Linux RHEL 6, improvements to the resource usage of the EC2 GAHP, support for capping the size of input and output file transfer, and new analysis modes for condor_q -analyze. A complete list of bugs fixed and features can be found in the Version History. HTCondor 7.9.4 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.3</b>
-          <span class="px-1">-</span>
-          <span>January 16, 2013</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.3</a></b>
+            <span class="px-1">-</span>
+            <span>January 16, 2013</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor team is pleased to announce the release of HTCondor 7.9.3. This release contains all of the bug fixes added to the 7.8.7 stable release. The glexec problems we warned about in the 7.9.2 release notes have been fixed.  Dynamic slots can now be given CPU affinity, there are number of improvements in the way grid universe jobs are handled, and there are some experimental improvements to condor_q -analyze A complete list of bugs fixed and features can be found in the Version History. HTCondor 7.9.3 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.2</b>
-          <span class="px-1">-</span>
-          <span>December 11, 2012</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.2</a></b>
+            <span class="px-1">-</span>
+            <span>December 11, 2012</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The HTCondor team is pleased to announce the release of HTCondor 7.9.2. Now with more HT.  This release contains all of the bug fixes added to the 7.8.6 stable release, and most of those added to the  upcoming 7.8.7 stable release. This release also contains improvements in DAGMan, use of cgroups, and changes to improve the privacy of user data.  This release has known problems with glexec that we expect to have fixed in the next developer release.  Users of glexec should skip this release.  A complete list of bugs and features can be found in the  Version History.  HTCondor 7.9.2 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.1</b>
-          <span class="px-1">-</span>
-          <span>October 22, 2012</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.1</a></b>
+            <span class="px-1">-</span>
+            <span>October 22, 2012</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.9.1.  This is a development release which includes many new features, as well as all bug and security fixes from 7.8.5.  See the Version History for a complete list of changes. Condor 7.9.1 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.9.0</b>
-          <span class="px-1">-</span>
-          <span>August 16, 2012</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.9.0</a></b>
+            <span class="px-1">-</span>
+            <span>August 16, 2012</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the release of Condor 7.9.0.  This is the first release in a new development series.  Condor 7.9.0 contains all the bug fixes from Condor version 7.8.2.  The Version History  lists the changes.  Condor 7.9.0 binaries and source code are available  from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.7.6</b>
-          <span class="px-1">-</span>
-          <span>April 24, 2012</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.7.6</a></b>
+            <span class="px-1">-</span>
+            <span>April 24, 2012</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the newest release in our development series, 7.7.6.  This release represents the release candidate for Condor version 7.8, and it is the last release in the 7.7 development series. Please see the release notes for a complete list.  Condor binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.7.5</b>
-          <span class="px-1">-</span>
-          <span>February 28, 2012</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.7.5</a></b>
+            <span class="px-1">-</span>
+            <span>February 28, 2012</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the newest release in our development series, 7.7.5.  This release represents the feature freeze for Condor version 7.8, and we expect it to be the penultimate release in the 7.7 development series. New features in this release include better statistics for monitoring a Condor pool, better support for absent ads in the collector, fast claiming of partitionable slots, and support for some newer Linux kernel features to better support process isolation. Please see the release notes for a complete list.  Condor binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.7.4</b>
-          <span class="px-1">-</span>
-          <span>December 21, 2011</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.7.4</a></b>
+            <span class="px-1">-</span>
+            <span>December 21, 2011</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the newest release in our development series, 7.7.4.  This introduces support for IPv6 based networks, changes the way accounting group quotas are managed to be more compatible with the way it worked in 7.4.x, fixes a Chirp bug that caused problems for the vanilla universe, and contains initial  support for draining off jobs out of startds.  Please see the release notes for a complete list.  Please note that we are skipping the 7.7.3 release, and that this 7.7.4 release is the next release available after 7.7.2.  has a list of the major changes.  Condor binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.7.2</b>
-          <span class="px-1">-</span>
-          <span>October 12, 2011</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.7.2</a></b>
+            <span class="px-1">-</span>
+            <span>October 12, 2011</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the release of Condor version 7.7.2.  This is the third release in the development series.  This release dynamically links more libraries than before, resulting in a 30 percent decrease in download size on most operating systems.  Please be aware that due to a difference in older condor_master binaries, condor_masters older than 7.7.2, including all 7.6 releases, can not re-exec a 7.7.2 master.  That is, if you try to upgrade a pre-7.7.2 system just by copying over binaries, the condor_master will shutdown, and must be manually restarted.  7.7.2 masters can re-exec themselves without incident.  The Version History  has a list of the major changes.  Condor binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.7.1</b>
-          <span class="px-1">-</span>
-          <span>September 12, 2011</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.7.1</a></b>
+            <span class="px-1">-</span>
+            <span>September 12, 2011</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the release of Condor 7.7.1.  This is the second release in the development series.  This release of Condor now dynamically links the executables to the system security libraries, including openssl.  In the past, these libraries have been statically linked into the binaries.  As a result, system security updates will immediately benefit Condor.  The downside is that binaries built for a given platform may not be as portable to other platforms as in the past.  We have also seen a very rare, intermittent problem with DAGMan where the DAGMan program will ignore a successful job completion, and wait forever.  We hope to resolve this problem in the next development release.  The Version History  has a list of the major changes.  Condor binaries and source code are available  from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.7.0</b>
-          <span class="px-1">-</span>
-          <span>July 29, 2011</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.7.0</a></b>
+            <span class="px-1">-</span>
+            <span>July 29, 2011</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor team is pleased to announce the release of Condor 7.7.0.  This is the first release in a new development series.  In addition to other major new features, the schedd now publishes performance statistics, and PERIODIC_HOLD can now send the hold reason and hold reason code fields.  Condor 7.7.0 contains all the bug fixes from Condor version 7.6.2.  A partial Version History  has a list of some of the changes.  Condor 7.7.0 binaries and source code are available  from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.6</b>
-          <span class="px-1">-</span>
-          <span>March 21, 2011</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.6</a></b>
+            <span class="px-1">-</span>
+            <span>March 21, 2011</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.6. This is a development release of Condor.  This release is contains various new features, improvements, and bug fixes. Among these are several improvements for CREAM grid jobs, efficiency improvements in the schedd when handling large numbers of shadow processes, and added support for hierarchical accounting groups and group quotas. Please note that some platforms were discontinued in this release. For further details of changes and discontinued platforms, please refer the 7.5.6 version history. Condor 7.5.6 binaries and source code are available from our Downloads page.   A large number of bugs have been fixed - more details are in the  Version History. Condor 7.5.6 binaries and source code are available from  our downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.5</b>
-          <span class="px-1">-</span>
-          <span>January 26, 2011</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.5</a></b>
+            <span class="px-1">-</span>
+            <span>January 26, 2011</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.5. This is a development release of Condor.  This release is primarily to improve scalability and performance. Additionally, of note to those people who build Condor from source, we have  modernized our build system to use cmake instead of imake.   A large number of bugs have been fixed - more details are in the  Version History. Condor 7.5.5 binaries and source code are available from  our downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.4</b>
-          <span class="px-1">-</span>
-          <span>October 20, 2010</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.4</a></b>
+            <span class="px-1">-</span>
+            <span>October 20, 2010</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.4. This is a development release of Condor.  New features include concurrency limits for parallel jobs,  transfer of directories, condor_shared_port on Windows, and  improved Amazon EC2 support. It also includes a security fix for users submitting Amazon EC2 jobs (universe=grid and grid_resource=amazon) with the amazon_keypair_file. See the  Version History for a complete list of changes. Condor 7.5.4 binaries and source code are available from  our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.3</b>
-          <span class="px-1">-</span>
-          <span>June 29, 2010</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.3</a></b>
+            <span class="px-1">-</span>
+            <span>June 29, 2010</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.3. This is a development release of Condor. Please note that we dropped our old repackaged tarball rpms, and now only provide the proper rpm and debian packages introduced in version 7.5.1. Therefore you will see fewer downloads offered for 7.5.3 compared to 7.5.2. See the Version History for a complete list of changes.  Condor 7.5.3 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.2</b>
-          <span class="px-1">-</span>
-          <span>April 26, 2010</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.2</a></b>
+            <span class="px-1">-</span>
+            <span>April 26, 2010</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.2. This is a development release of Condor. The main new features are performance enhancements in the scheduler daemon, improved user job log locking support for distributed file systems, and DAGMan allowing lazy generation of DAGMan submit files in nested DAGs. All bug fixes currently scheduled to go into 7.4.3 are included in 7.5.2. See the Version History for a complete list of changes.  Condor 7.5.2 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.1</b>
-          <span class="px-1">-</span>
-          <span>March  2, 2010</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.1</a></b>
+            <span class="px-1">-</span>
+            <span>March  2, 2010</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.1. This is a development release of Condor. The main new feature is the change from old to new ClassAds throughout the code. Proper native packages are now available for most flavors of linux. All bug fixes currently scheduled to go into 7.4.2 are included in 7.5.1. See the Version History for a complete list of changes.  Condor 7.5.1 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.5.0</b>
-          <span class="px-1">-</span>
-          <span>January  7, 2010</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.5.0</a></b>
+            <span class="px-1">-</span>
+            <span>January  7, 2010</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.5.0. This is a development release of Condor.  The main new feature is the ability to have Condor daemons share a single network port for incoming connections.  This feature is available in UNIX only in this release. All bug fixes from 7.4.1 are included in 7.5.0. See the Version History for a complete list of changes.  Condor 7.5.0 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.3.2</b>
-          <span class="px-1">-</span>
-          <span>September 16, 2009</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.3.2</a></b>
+            <span class="px-1">-</span>
+            <span>September 16, 2009</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.3.2. This release improves the behavior of the checkpoint server in mixed 32/64 bit architecture pools, provides a new tool called condor_ssh_to_job to allow interactive debugging of running jobs, some performance enhancements, lazy log file processing for DAGMan jobs, plugins for utilizing a host’s power management capabilities, and many other new features in addition to many bug fixes.	Please see Version History for a complete list of changes.  Condor 7.3.2 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.3.1</b>
-          <span class="px-1">-</span>
-          <span>May 20, 2009</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.3.1</a></b>
+            <span class="px-1">-</span>
+            <span>May 20, 2009</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.3.1. This release dramatically improves the performance of DAGMan for large dags.  This is the first release with preview support for a multi-threaded collector, which is useful for large pool of machines with high-latency links to the collector.  There are my other smaller bug fixes. See the Version History for a complete list of changes. Condor 7.3.1 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.3.0</b>
-          <span class="px-1">-</span>
-          <span>February 24, 2009</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.3.0</a></b>
+            <span class="px-1">-</span>
+            <span>February 24, 2009</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.3.0. This development release contains all bug fixes from the 7.2.1 stable release plus new features, including improved support for private networks, scalability, controlling cpu affinity, DAGMan enhancements, and more.  See the version history for a detailed list of changes. Condor 7.3.0 binaries and source code are available from our downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.1.4</b>
-          <span class="px-1">-</span>
-          <span>November 13, 2008</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.1.4</a></b>
+            <span class="px-1">-</span>
+            <span>November 13, 2008</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.1.4. This release in the development series contains the bug fixes from the v7.0.5 release, including the security related patches.  In addition, several new features have been added such as preliminary support for “green computing”, dynamic startd provisioning, improvements to the “VM Universe”, improved event log rotation, and more. See our Release Notes for more details. As usual, binaries and source code are available from  our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.1.3</b>
-          <span class="px-1">-</span>
-          <span>October  7, 2008</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.1.3</a></b>
+            <span class="px-1">-</span>
+            <span>October  7, 2008</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.1.3. This release in the development series contains the bug fixes from the v7.0.5 release, including the security related patches.  In addition, several new features have been added such as Concurrency Limits (for management of resources such as floating software licenses), IBM Blue Gene support, profile management on Windows, and more. See our Release Notes for more details. As usual, binaries and source code are available from  our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.1.2</b>
-          <span class="px-1">-</span>
-          <span>August 20, 2008</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.1.2</a></b>
+            <span class="px-1">-</span>
+            <span>August 20, 2008</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.1.2. This release in the development series includes bug fixes to the pulled 7.1.1 release. Condor 7.1.1 binaries and source code are available from  our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.1.1</b>
-          <span class="px-1">-</span>
-          <span>July 15, 2008</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.1.1</a></b>
+            <span class="px-1">-</span>
+            <span>July 15, 2008</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.1.1. This release in the development series includes all new features added in the 7.0 stable series.  See the version history section of the 7.1 manual for a complete list of changes.  Condor 7.1.1 binaries and source code are available from  our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>7.1.0</b>
-          <span class="px-1">-</span>
-          <span>April  1, 2008</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">7.1.0</a></b>
+            <span class="px-1">-</span>
+            <span>April  1, 2008</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 7.1.0 (not to be confused with our recent stable series release 7.0.1). This development series release introduces several new features.  The condor_startd can be configured to fetch jobs from other sources using a simple plug-in mechanism.  A new daemon condor_job_router has been added for dynamically transforming suitable Vanilla Universe jobs into Grid Universe jobs.  DAGMan’s handling of rescue DAGs has been improved to better support nested DAGs.  DAGIrl has been added to better support Irl workflows in the beginning of April.  See the Version History for a complete list of changes.  Condor 7.1.0 binaries and source code are available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.9.5</b>
-          <span class="px-1">-</span>
-          <span>November 28, 2007</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.9.5</a></b>
+            <span class="px-1">-</span>
+            <span>November 28, 2007</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team announces the release of Condor 6.9.5. Condor 6.9.5 highlights include numerous scalability and performance improvements, updates between the starter and startd which allow more accurate job eviction policies, enhancements to Condor’s privilege separation, and numerous bug fixes including a critical bug in standard universe introduce in 6.9.4 that could result in data corruption of binary files.  See the Version History and Release Notes for further details and a complete list of changes. Condor 6.9.5 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.9.4</b>
-          <span class="px-1">-</span>
-          <span>August 29, 2007</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.9.4</a></b>
+            <span class="px-1">-</span>
+            <span>August 29, 2007</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team announces the release of Condor 6.9.4. Condor 6.9.4 highlights include a new implementation of Quill that can store more information than ever before into a relational database, a new job type (universe) enabling jobs to utilize VMWare and Xen virtual machines, and some performance improvements.  See the Version History and Release Notes for further details. Condor 6.9.4 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.9.3</b>
-          <span class="px-1">-</span>
-          <span>June 14, 2007</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.9.3</a></b>
+            <span class="px-1">-</span>
+            <span>June 14, 2007</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is relieved to announce the release of Condor 6.9.3. Condor 6.9.3 has significant performance and scalability improvements and many other new features.  See the Version History and Release Notes for further details. Condor 6.9.3 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.9.2</b>
-          <span class="px-1">-</span>
-          <span>April 10, 2007</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.9.2</a></b>
+            <span class="px-1">-</span>
+            <span>April 10, 2007</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.9.2. Condor 6.9.2 contains all bugfixes from the recent 6.8.4 release and adds several new features.  See the Version History and Release Notes for further details. Condor 6.9.2 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.9.1</b>
-          <span class="px-1">-</span>
-          <span>January 10, 2007</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.9.1</a></b>
+            <span class="px-1">-</span>
+            <span>January 10, 2007</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.9.1. Condor 6.9.1 contains all bugfixes from the recent 6.8.3 release and adds several new features, including numerous performance improvements and improved GCB support.  See the Version History and Release Notes for further details. Condor 6.9.1 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.9.0</b>
-          <span class="px-1">-</span>
-          <span>October 26, 2006</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.9.0</a></b>
+            <span class="px-1">-</span>
+            <span>October 26, 2006</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.9.0. Condor 6.9.0 is the first release of a new development series based on the 6.8.x stable code.  The primary new feature in 6.9.0 is initial support for privilege separation using glexec.  See the  Version History and Release Notes for further details. As a development release, 6.9.0 is <b>not</b> recommended for production use.  Condor 6.9.0 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.20</b>
-          <span class="px-1">-</span>
-          <span>June  1, 2006</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.20</a></b>
+            <span class="px-1">-</span>
+            <span>June  1, 2006</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.20.  This release features many bugfixes and new features, including a variety of built-in functions that can be used in ClassAds and a unified mapfile providing more flexible identity management when using strong authentication.  See the  Version History and Release Notes for further details. Condor 6.7.20 is available from our Downloads page.  We believe 6.7.20 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.19</b>
-          <span class="px-1">-</span>
-          <span>May  1, 2006</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.19</a></b>
+            <span class="px-1">-</span>
+            <span>May  1, 2006</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.19.  This release features an important security fix to checkpoint server, submission to PBS and LSF systems, ClassAd functions, and many other improvements.  See the  Version History and Release Notes for further details. Condor 6.7.19 is available from our Downloads page.  We strongly recommend sites running earlier versions of Condor in the 6.7 development series upgrade to 6.7.19 as soon as feasible.  We believe 6.7.19 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.18</b>
-          <span class="px-1">-</span>
-          <span>March  1, 2006</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.18</a></b>
+            <span class="px-1">-</span>
+            <span>March  1, 2006</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.18.  This release features important security fixes and many other improvements.  See the  Version History and Release Notes for further details. Condor 6.7.18 is available from our Downloads page.  We strongly recommend sites running earlier versions of Condor in the 6.7 development series upgrade to 6.7.18 as soon as feasible.  We believe 6.7.18 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.17</b>
-          <span class="px-1">-</span>
-          <span>February  1, 2006</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.17</a></b>
+            <span class="px-1">-</span>
+            <span>February  1, 2006</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.17.  This release features direct support for running backfill computations on unused nodes, parallel job support in DAGMan, improvements to condor_history, and many other improvements.  See the  Version History and Release Notes for further details. Condor 6.7.17 is available from our Downloads page.  We believe 6.7.17 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.16</b>
-          <span class="px-1">-</span>
-          <span>February  1, 2006</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.16</a></b>
+            <span class="px-1">-</span>
+            <span>February  1, 2006</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.16.  This is a bugfix release for 6.7.15.  Together, these two releases include a faster negotiation protocol, a clipped port for PowerPC under YellowDog Linux 3.0, and many other improvements.  See the  Version History and Release Notes for details. Condor 6.7.16 is available from our Downloads page.  We believe 6.7.16 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.14</b>
-          <span class="px-1">-</span>
-          <span>December  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.14</a></b>
+            <span class="px-1">-</span>
+            <span>December  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.14.  Highlights include grid universe support for NorduGrid and Unicore, system job policy expressions, and job start time deferral. Users of prior version of 6.7.x are encouraged to upgrade.  See the  Version History and Release Notes for details. Condor 6.7.14 is available from our Downloads page.  We believe 6.7.14 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.13</b>
-          <span class="px-1">-</span>
-          <span>November  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.13</a></b>
+            <span class="px-1">-</span>
+            <span>November  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.13.  Highlights include Generic Connection Brokering for traversing firewalls and private networks, Quill on Windows, and a new clipped port for Red Hat Enterprise Linux 3 on IA64. Users of prior version of 6.7.x are encouraged to upgrade.  See the  Version History and Release Notes for details. Condor 6.7.13 is available from our Downloads page.  We believe 6.7.13 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.12</b>
-          <span class="px-1">-</span>
-          <span>September  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.12</a></b>
+            <span class="px-1">-</span>
+            <span>September  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.12.  This version is being released to fix several critical bugs in Condor 6.7.11.  6.7.11 was not widely advertised, but was available on our mirror site for a short period.  Any users of 6.7.11, or any other prior version of 6.7.x are urged to upgrade.  See the  Version History and Release Notes for details. Condor 6.7.12 is available from our Downloads page.  We believe 6.7.12 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.11</b>
-          <span class="px-1">-</span>
-          <span>September  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.11</a></b>
+            <span class="px-1">-</span>
+            <span>September  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.11.  This version is primarily for Quill.  Quill maintains a read-only mirror of the job queue in a database, enabling faster and more powerful queries as well as reducing the load on the schedd.  In addition, there were a number of bug fixes.  See the  Version History and Release Notes for details.  Condor 6.7.11 contained several critical bugs and was pulled from the mirror site.  Interested users should try 6.7.12 instead.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.10</b>
-          <span class="px-1">-</span>
-          <span>August  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.10</a></b>
+            <span class="px-1">-</span>
+            <span>August  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.10.  This version is primarily for bug fixes, including a number of serious bugs the Windows port.  Many of the bugs were recently introduced in the 6.7 development series, so users of the 6.6 stable series need not upgrade.  Users of prior versions of 6.7.x are urged to upgrade.  See the  Version History and Release Notes for details. Condor 6.7.10 is available from our Downloads page.  We believe 6.7.10 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.9</b>
-          <span class="px-1">-</span>
-          <span>July  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.9</a></b>
+            <span class="px-1">-</span>
+            <span>July  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.9.  This version is primarily for the new parallel universe, but also includes many bug fixes and improvements to Condor-C.  See the  Version History and Release Notes for details. Condor 6.7.9 is available from our Downloads page.  We believe 6.7.9 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.8</b>
-          <span class="px-1">-</span>
-          <span>June  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.8</a></b>
+            <span class="px-1">-</span>
+            <span>June  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.8.  6.7.8 is primarily for bug fixes, but includes some scalability additions for DAGMan and the Standard Universe.  See the  Version History and Release Notes for details. Condor 6.7.8 is available from our Downloads page.  We believe 6.7.8 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.7</b>
-          <span class="px-1">-</span>
-          <span>May  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.7</a></b>
+            <span class="px-1">-</span>
+            <span>May  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.7.  6.7.7 is primarily for improvements to the grid universe.  It includes support for strong authentication and multiple users for the “condor” gridtype, and full support for the Globus Toolkit 4.0.0 release.  See the  Version History and Release Notes for details. Condor 6.7.7 is available from our Downloads page.  We believe 6.7.7 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases.  6.7.6 users who are using the Globus Toolkit 4.0 are strongly urged to upgrade to 6.7.7.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.6</b>
-          <span class="px-1">-</span>
-          <span>March  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.6</a></b>
+            <span class="px-1">-</span>
+            <span>March  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.6.  It includes support for using the “grid” universe with resources managed by the beta releases of the Globus Toolkit 4.0, the Stork data movement server, and a high-availability daemon to provide backup central managers contributed by Technion - Israel Institute of Technology.  See the  Version History and Release Notes for details. Condor 6.7.6 is available from our Downloads page.  We believe 6.7.6 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases. Users of previous 6.7 versions are urged to upgrade.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.5</b>
-          <span class="px-1">-</span>
-          <span>March  1, 2005</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.5</a></b>
+            <span class="px-1">-</span>
+            <span>March  1, 2005</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>The Condor Team is pleased to announce the release of Condor 6.7.5.  6.7.5 is the fifth release of our development series, and is primarily a new feature release. Condor 6.7.5 includes the SOAP interface to some Condor daemons, a option to DAGMan to abort a DAG when a node fails with a specific error code, enhancements to the MPI universe in scheduling and requirements, and speed-ups in claiming large number of machines. See the  Version History and Release Notes for details. Condor 6.7.5 is available from our Downloads page. We believe 6.7.5 is fairly stable, but it is not recommended for production systems, unless you require checkpointing support for a Linux distribution not supported by our 6.6 releases. Users of previous 6.7 versions are urged to upgrade.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.3</b>
-          <span class="px-1">-</span>
-          <span>December  1, 2004</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.3</a></b>
+            <span class="px-1">-</span>
+            <span>December  1, 2004</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>6.7.3 is the fourth release of our development series. 6.7.3 is primarily a new feature release. 6.7.3 is the first release to fully support  checkpointing on Linux distributions Fedora Core 1, 2, and 3.   6.7.3 also includes preliminary support for a new remote submission feature that will complement flocking and the grid universe. See the  Version History and Release Notes for details. Condor 6.7.3 is available from our  Downloads page. We believe 6.7.3 is fairly stable, but it is not recommended  for production systems, unless you require checkpointing support for a  Linux distribution not supported by our 6.6 releases. Users of previous  6.7 versions are urged to upgrade.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.2</b>
-          <span class="px-1">-</span>
-          <span>October  1, 2004</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.2</a></b>
+            <span class="px-1">-</span>
+            <span>October  1, 2004</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>6.7.2 is the third release of our development series. 6.7.2 is primarily a bug fix release. New features include support for multiple collectors and better support for the Linux 2.6 kernel. 6.7.2, and all future releases (including 6.6 series releases) will no longer support HP-UX 10.20, Digital UNIX 4.0f, and Solaris 7.  See the  Version History and Release Notes for details.  Condor 6.7.2 is available from our Downloads page.  6.7.2 is not recommended for production systems, but is believed to be relatively stable. Users of 6.7.0 and 6.7.1 should upgrade to 6.7.2.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.1</b>
-          <span class="px-1">-</span>
-          <span>August  1, 2004</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.1</a></b>
+            <span class="px-1">-</span>
+            <span>August  1, 2004</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>6.7.1 is the latest version of our current development release series. See the  Version History and Release Notes for details. Condor 6.7.1 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.7.0</b>
-          <span class="px-1">-</span>
-          <span>April  1, 2004</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.7.0</a></b>
+            <span class="px-1">-</span>
+            <span>April  1, 2004</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>6.7.0 is the first release of our development series. It includes  some exciting new features, including support for jobs to tolerate network failures between the submit and execute sites, job mirroring between multiple submit points, high availability between some daemons, DRMAA support, the ability to submit into grids managed by GT3 web services, NorduGrid, and Oracle jobs, support for  MyProxy Online Credential Management, over two gigabyte file transfer support, steaming output from vanilla jobs, and many other features. See the  Version History and Release Notes for details. Condor 6.7.0 is available from our Downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.3.1</b>
-          <span class="px-1">-</span>
-          <span>October  1, 2001</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.3.1</a></b>
+            <span class="px-1">-</span>
+            <span>October  1, 2001</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor Version 6.3.1 has been released, and is available on the  downloads page. 6.3.1 is the second release in the 6.3 <i>development</i> series. The main focus of this release was bug fixes over the 6.3.0 release and support for Redhat 7.1 Linux.  The complete list of changes can be found here</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.3.0</b>
-          <span class="px-1">-</span>
-          <span>March  1, 2001</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.3.0</a></b>
+            <span class="px-1">-</span>
+            <span>March  1, 2001</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor Version 6.3.0 has been released, and is available on the  downloads page. 6.3.0 is the first release in the 6.3 <i>development</i> series. Future 6.3 releases will contain many new features, primarily in the areas of MPI support, Globus support,  firewall support, an improved DAGMan, improved error handling / propagation, and bandwidth regulation.  For more info on our version-number system, please read this. &lt;p&gt; The UNIX builds are now available on the website. The primary focus of 6.3.0 has been in preliminary support for MPI jobs on dedicated clusters of  machines. 6.3.0 is not as well-tested as 6.2.0, and undoubtedly contains a number of bugs. It should not be used by those requiring a tried and tested system; for that we recommend the 6.2 stable series.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.17</b>
-          <span class="px-1">-</span>
-          <span>February  1, 2001</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.17</a></b>
+            <span class="px-1">-</span>
+            <span>February  1, 2001</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor Version 6.1.17 is now released, and is available on the  downloads page. &lt;p&gt; 6.1.17 adds full support for Solaris 8 and some bug fixes. &lt;p&gt; 6.1.17 will likely be the last version of Condor until the 6.2.0 release. New users should choose it over 6.0.3.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.16</b>
-          <span class="px-1">-</span>
-          <span>September  1, 2000</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.16</a></b>
+            <span class="px-1">-</span>
+            <span>September  1, 2000</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor Version 6.1.16 is now released, and is available on the  downloads page.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.15</b>
-          <span class="px-1">-</span>
-          <span>August  1, 2000</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.15</a></b>
+            <span class="px-1">-</span>
+            <span>August  1, 2000</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>As our 6.1 development series winds down, we have released 6.1.15 which provides several enhancements, as well as numerous bug fixes, including the fix that avoids the 2.2.14 Linux kernel bug. &lt;p&gt; For complete details, you can read about what’s new in this version.  &lt;hr&gt; If you install the Unix version of Condor 6.1.15 into a new pool, you will have ADD the following three lines into your condor_config.local file on your central manger: &lt;pre&gt;DAEMON_LIST   = MASTER, COLLECTOR, NEGOTIATOR, STARTD, SCHEDD COLLECTOR     = $(SBIN)/condor_collector NEGOTIATOR    = $(SBIN)/condor_negotiator&lt;/pre&gt; Naturally, if you run fewer things on your central manager, you should take them out of the DAEMON_LIST.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.14</b>
-          <span class="px-1">-</span>
-          <span>June  1, 2000</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.14</a></b>
+            <span class="px-1">-</span>
+            <span>June  1, 2000</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Soon after the 6.1.13 release of Condor we noticed that it had a bug with periodic checkpointing. 6.1.14 fixes this as well adds support for Red Hat 6.2.  For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.13</b>
-          <span class="px-1">-</span>
-          <span>June  1, 2000</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.13</a></b>
+            <span class="px-1">-</span>
+            <span>June  1, 2000</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor version 6.1.13 contains full support for Solaris 2.7.  In addition, it fixes a number of bugs in version 6.1.12.   There are a few remaining known bugs, but they are all very minor.  These known bugs are listed in the version history (see below) and will be fixed in the next release. There are a number of new features in 6.1.13, as well. For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.12</b>
-          <span class="px-1">-</span>
-          <span>February  1, 2000</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.12</a></b>
+            <span class="px-1">-</span>
+            <span>February  1, 2000</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor version 6.1.12 contains bug fixes for all the major bugs in 6.1.11.  There are a few remaining known bugs, but they are all very minor.  These known bugs are listed in the version history (see below) and will be fixed in the next release.  Anyone who downloaded 6.1.11 should upgrade to 6.1.12 as soon as possible. For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.11</b>
-          <span class="px-1">-</span>
-          <span>February  1, 2000</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.11</a></b>
+            <span class="px-1">-</span>
+            <span>February  1, 2000</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor version 6.1.11 contains a large number of bug fixes, and new features.   In particular, there is enhanced support for various remote system calls, a much better infrastructure for Condor-level I/O buffering, and better reporting in the notification email. In addition, limited support for network sockets within “standard universe” jobs is now available. This is also the first version with full support for checkpointing and remote system calls under Irix 6.5. For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.10</b>
-          <span class="px-1">-</span>
-          <span>November  1, 1999</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.10</a></b>
+            <span class="px-1">-</span>
+            <span>November  1, 1999</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor version 6.1.10 contains a fix to a bug in the checkpointing code for “standard” jobs introduced in 6.1.9. In addition, “clipped” support for Sparc Solaris 2.7 is available for the first time in 6.1.10. A few other minor features were added as well, including a -format option to condor_q. For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.9</b>
-          <span class="px-1">-</span>
-          <span>November  1, 1999</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.9</a></b>
+            <span class="px-1">-</span>
+            <span>November  1, 1999</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor 6.1.9 is now available from the main site (Madison, WI, USA). &lt;p&gt; Along with a whole series of bug fixes and new features, 6.1.9 is the first version of Condor to fully support all main Intel Linux distributions, including the 2.2.X kernel, and all 3 versions of the C library now in use (libc5, glibc 2.0 and glibc 2.1).   For more info on Condor support for Linux, please see The Condor Linux README.  &lt;p&gt; For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.8</b>
-          <span class="px-1">-</span>
-          <span>August  1, 1999</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.8</a></b>
+            <span class="px-1">-</span>
+            <span>August  1, 1999</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor 6.1.8 is now available from the main site (Madison, WI, USA), or from the mirror site (Bologna, Italy)&lt;/a&gt;. &lt;p&gt; Of the major improvements in this release, the <code>condor_schedd</code> has been fixed to handle clusters of hundreds/thousands of jobs more efficiently.  For standard jobs you can now also specify file buffering, as well as file remapping. &lt;p&gt; For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.7</b>
-          <span class="px-1">-</span>
-          <span>June  1, 1999</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.7</a></b>
+            <span class="px-1">-</span>
+            <span>June  1, 1999</span>
+          </div>
+          
         <div class="mt-2">
           <p>Condor 6.1.7 is now available for download for Alpha Linux and Intel Linux with glibc. There are no other new features, and no bug fixes from 6.1.6, so we do not even provide binaries for 6.1.7 on any other platforms. On Alpha Linux, we only support <i>vanilla</i> jobs at this time. There is no support for checkpointing and remote system calls yet (though we’ll be working on that and making it available ASAP). For Intel, all of the linking problems with machines using glibc 2.0.X and the various versions of EGCS have been resolved in 6.1.7. Therefore, Red Hat 5.X and Debian 2.0.X should work.  <font color="#ff0000"> Red Hat 6.0 and the latest Debian release are NOT SUPPORTED by Condor yet.  They use the new 2.2.X Linux kernel, and glibc version 2.1.X, which are not supported at this time.  </font> Sometime soon, we’ll support all combinations of kernels, compilers, and versions of libc that are available with Linux. For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.6</b>
-          <span class="px-1">-</span>
-          <span>June  1, 1999</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.6</a></b>
+            <span class="px-1">-</span>
+            <span>June  1, 1999</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor 6.1.6 is now available for download. Version 6.1.6 fixes many serious bugs from 6.1.5. In addition, it provides many new features, including the ability to dynamically reconfigure the number of virtual machines reported by the SMP startd, SMP support for Digital Unix machines and much more. There are still some unresolved problems with Linux running Red Hat 5.2 (LINUX-GLIBC).  This platform is not supported in 6.1.6.  A 6.1.7 release will follow very soon, which will support Red Hat 5.2. Red Hat 6.0 is NOT SUPPORTED by Condor yet.  It uses the new 2.2.X Linux kernel, which is not supported at this time. <font color="#ff0000"> Like all development releases, this release is INCOMPATIBLE with previous versions of Condor.  DO NOT TRY TO USE IT IN A POOL WITH ANY 6.1.5 DAEMONS.  </font> For complete details, you can read about what’s new in this version.</p>
 
         </div>
       
-        <div class="d-flex flex-row">
-          <b>6.1.5</b>
-          <span class="px-1">-</span>
-          <span>April  1, 1999</span>
-        </div>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_1/version-history/development-release-series-91.html#version-9-1-0">6.1.5</a></b>
+            <span class="px-1">-</span>
+            <span>April  1, 1999</span>
+          </div>
+          
         <div class="mt-2">
           
 <p>Condor 6.1.5 is now available for download. Version 6.1.5 fixes many bugs.  Major things that are fixed in this release are: Fortran under Linux, Redhat 5.2 support, condor_preen fixes, and others…   NOTE: condor_userprio, condor_stats, the -pool option to many Condor tools, and Condor PVM are all broken by a change introduced in 6.1.5.  These will all be fixed in 6.1.6. For complete details, you can read about what’s new in this version.</p>
@@ -3026,7 +4593,7 @@ issues are in the Vulnerability Reports:</p>
         <h3>Long Term Support Channel</h3>
       </div>
       <div class="col-auto d-flex ps-sm-0">
-        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/latest/version-history/stable-release-series-90.html">Detailed Notes &#11023;</a></b>
+        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/latest/version-history/lts-versions-10-0.html">Detailed Notes &#11023;</a></b>
       </div>
     </div>
     <div class="my-2">
@@ -3070,6 +4637,9 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+
+
+
     
       
 
@@ -3077,405 +4647,33 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+
+
+
+
       
         <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-16">9.0.16</a></b>
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-0">10.0.0</a></b>
           <span class="px-1">-</span>
-          <span>August 16, 2022</span>
+          <span>November 11, 2022</span>
         </div>
       
       <div class="mt-2">
         <ul>
-  <li>Singularity now mounts /tmp and /var/tmp under the scratch directory</li>
-  <li>Fix bug where Singularity jobs go on hold at the first checkpoint</li>
-  <li>Fix bug where gridmanger deletes the X.509 proxy file instead of the copy</li>
-  <li>Fix file descriptor leak when using SciTokens for authentication</li>
+  <li>Users can prevent runaway jobs by specifying an allowed duration</li>
+  <li>Able to extend submit commands and create job submit templates</li>
+  <li>Initial implementation of htcondor <noun> <verb> command line interface</verb></noun></li>
+  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
+  <li>Add Container Universe</li>
+  <li>Support for heterogeneous GPUs</li>
+  <li>Improved File transfer error reporting</li>
+  <li>GSI Authentication method has been removed</li>
+  <li>HTCondor now utilizes ARC-CE’s REST interface</li>
+  <li>Support for ARM and PowerPC for Enterprise Linux 8</li>
+  <li>For IDTOKENS, signing key not required on every execution point</li>
+  <li>Trust on first use ability for SSL connections</li>
+  <li>Improvements against replay attacks</li>
 </ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-15">9.0.15</a></b>
-          <span class="px-1">-</span>
-          <span>July 21, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Report resources provisioned by the Slurm batch scheduler when available</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-14">9.0.14</a></b>
-          <span class="px-1">-</span>
-          <span>July 13, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>SciToken mapping failures are now recorded in the daemon logs</li>
-  <li>Fix bug that stopped file transfers when output and error are the same</li>
-  <li>Ensure that the Python bindings version matches the installed HTCondor</li>
-  <li>$(OPSYSANDVER) now expand properly in job transforms</li>
-  <li>Fix bug where context managed Python htcondor.SecMan sessions would crash</li>
-  <li>Fix bug where remote CPU times would rarely be set to zero</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-13">9.0.13</a></b>
-          <span class="px-1">-</span>
-          <span>May 27, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Schedd and startd cron jobs can now log output upon non-zero exit</li>
-  <li>condor_config_val now produces correct syntax for multi-line values</li>
-  <li>The condor_run tool now reports submit errors and warnings to the terminal</li>
-  <li>Fix issue where Kerberos authentication would fail within DAGMan</li>
-  <li>Fix HTCondor startup failure with certain complex network configurations</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-12">9.0.12</a></b>
-          <span class="px-1">-</span>
-          <span>April 19, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Fix bug in parallel universe that could cause the schedd to crash</li>
-  <li>Fix rare crash where a daemon tries to use a discarded security session</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-11">9.0.11</a></b>
-          <span class="px-1">-</span>
-          <span>March 15, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>The Job Router can now create an IDTOKEN for use by the job</li>
-  <li>Fix bug where a self-checkpointing job may erroneously be held</li>
-  <li>Fix bug where the Job Router could erroneously substitute a default value</li>
-  <li>Fix bug where a file transfer error may identify the wrong file</li>
-  <li>Fix bug where condor_ssh_to_job may fail to connect</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-10">9.0.10</a></b>
-          <span class="px-1">-</span>
-          <span>March 15, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>This release contains important fixes for security issues.
-Affected users should update as soon as possible.</p>
-
-<p>More details on the security issues are in the Vulnerability Reports:</p>
-<ul>
-  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001</a></li>
-  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002</a></li>
-  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003</a></li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-9">9.0.9</a></b>
-          <span class="px-1">-</span>
-          <span>January 13, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Added Debian 11 (bullseye) as a supported platform</li>
-  <li>Since CentOS 8 has reached end of life, we build and test on Rocky Linux 8</li>
-  <li>The OAUTH credmon is now packaged for Enterprise Linux 8</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-8">9.0.8</a></b>
-          <span class="px-1">-</span>
-          <span>December  2, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Highlights of this release are:</p>
-
-<ul>
-  <li>Fix bug where huge values of ImageSize and others would end up negative</li>
-  <li>Fix bug in how MAX_JOBS_PER_OWNER applied to late materialization jobs</li>
-  <li>Fix bug where the schedd could choose a slot with insufficient disk space</li>
-  <li>Fix crash in ClassAd substr() function when the offset is out of range</li>
-  <li>Fix bug in Kerberos code that can crash on macOS and could leak memory</li>
-  <li>Fix bug where a job is ignored for 20 minutes if the startd claim fails</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-7">9.0.7</a></b>
-          <span class="px-1">-</span>
-          <span>November  2, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Highlights of this release are:</p>
-<ul>
-  <li>Fix bug where condor_gpu_discovery could crash with older CUDA libraries</li>
-  <li>Fix bug where condor_watch_q would fail on machines with older kernels</li>
-  <li>condor_watch_q no longer has a limit on the number of job event log files</li>
-  <li>Fix bug where a startd could crash claiming a slot with p-slot preemption</li>
-  <li>Fix bug where a job start would not be recorded when a shadow reconnects</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-6">9.0.6</a></b>
-          <span class="px-1">-</span>
-          <span>September 23, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        
-<p>Highlights of this release are:</p>
-
-<ul>
-  <li>CUDA_VISIBLE_DEVICES can now contain GPU-<uuid> formatted values</uuid></li>
-  <li>Fixed a bug that caused jobs to fail when using newer Singularity versions</li>
-  <li>Fixed a bug in the Windows MSI installer for the latest Windows 10 version</li>
-  <li>Fixed bugs relating to the transfer of standard out and error logs</li>
-  <li>MacOS 11.x now reports as 10.16.x (which is better than reporting x.0)</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-5">9.0.5</a></b>
-          <span class="px-1">-</span>
-          <span>August 18, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Highlights of this release are:</p>
-<ul>
-  <li>Other authentication methods are tried if mapping fails using SciTokens</li>
-  <li>Fix rare crashes from successful condor_submit, which caused DAGMan issues</li>
-  <li>Fix bug where ExitCode attribute would be suppressed when OnExitHold fired</li>
-  <li>condor_who now suppresses spurious warnings coming from netstat</li>
-  <li>The online  manual now has detailed instructions for installing on MacOS</li>
-  <li>Fix bug where misconfigured MIG devices confused condor_gpu_discovery</li>
-  <li>The transfer _checkpoint_file list may now include input files</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-4">9.0.4</a></b>
-          <span class="px-1">-</span>
-          <span>July 29, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>This release contains important fixes for security issues.
-Affected users should update as soon as possible. More details on the security
-issues are in the Vulnerability Reports:</p>
-
-<ul>
-  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
-  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-2">9.0.2</a></b>
-          <span class="px-1">-</span>
-          <span>July  8, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Highlights of this release are:</p>
-<ul>
-  <li>HTCondor can be set up to use only FIPS 140-2 approved security functions</li>
-  <li>If the Singularity test fails, the job goes idle rather than getting held</li>
-  <li>Can divide GPU memory, when making multiple GPU entries for a single GPU</li>
-  <li>Startd and Schedd cron job maximum line length increased to 64k bytes</li>
-  <li>Added first class submit keywords for SciTokens</li>
-  <li>Fixed MUNGE authentication</li>
-  <li>Fixed Windows installer to work when the install location isn’t C:\Condor</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-1">9.0.1</a></b>
-          <span class="px-1">-</span>
-          <span>May 18, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Highlights of this release are:</p>
-<ul>
-  <li>Fix problem where X.509 proxy refresh kills job when using AES encryption</li>
-  <li>Fix problem when jobs require a different machine after a failure</li>
-  <li>Fix problem where a job matched a machine it can’t use, delaying job start</li>
-  <li>Fix exit code and retry checking when a job exits because of a signal</li>
-  <li>Fix a memory leak in the job router when a job is removed via job policy</li>
-  <li>Fixed the back-end support for the ‘bosco_cluster –add’ command</li>
-  <li>An updated Windows installer that supports IDTOKEN authentication</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v9_0/version-history/stable-release-series-90.html#version-9-0-0">9.0.0</a></b>
-          <span class="px-1">-</span>
-          <span>April 14, 2021</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>After two years of development, this is the first release of the new stable series.
-It includes all the enhancements and bug fixes in the 8.9 series. Many of these
-changes have focused on improving the security of HTCondor and improving the utility
-of the file transfer plugins.</p>
-
-<p>Highlights of this release are:</p>
-<ul>
-  <li>Absent any configuration, a new HTCondor installation denies authorization to all user</li>
-  <li>AES encryption is used for all communication and file transfers by default (Hardware accelerated when available)</li>
-  <li>New IDTOKEN authentication method enables fine-grained authorization control designed to replace GSI authentication</li>
-  <li>Improved support for GPUs, including machines with multiple GPUs</li>
-  <li>New condor_watch_q tool that efficiently provides live job status updates</li>
-  <li>Many improvements to the Python bindings, including new bindings for DAGMan and chirp</li>
-  <li>Improved curl, https, box, Amazon S3, and google drive file transfer plugins supporting uploads and authentication</li>
-  <li>File transfer times are now recorded in the job log</li>
-  <li>Added support for jobs that need to acquire and use OAUTH tokens</li>
-  <li>Many memory footprint and performance improvements in DAGMan</li>
-  <li>Submitter ceilings allow administrators to set limits on the number of running jobs per user across the pool.</li>
-</ul>
-
-<p>Try out our  <a href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/index.html">new helpful installation scripts</a></p>
 
       </div>
     
@@ -3500,6 +4698,306 @@ of the file transfer plugins.</p>
 
 
 
+
+
+
+      
+      <div class="d-flex flex-row">
+        <b>9.0.17</b>
+        <span class="px-1">-</span>
+        <span>September 29, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Fix file descriptor leak when schedd fails to launch scheduler jobs</li>
+  <li>Fix failure to forward batch grid universe job’s refreshed X.509 proxy</li>
+  <li>Fix DAGMan failure when the DONE keyword appeared in the JOB line</li>
+  <li>Fix HTCondor’s handling of extremely large UIDs on Linux</li>
+  <li>Fix bug where OAUTH tokens lose their scope and audience upon refresh</li>
+  <li>Support for Apptainer in addition to Singularity</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.16</b>
+        <span class="px-1">-</span>
+        <span>August 16, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Singularity now mounts /tmp and /var/tmp under the scratch directory</li>
+  <li>Fix bug where Singularity jobs go on hold at the first checkpoint</li>
+  <li>Fix bug where gridmanger deletes the X.509 proxy file instead of the copy</li>
+  <li>Fix file descriptor leak when using SciTokens for authentication</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.15</b>
+        <span class="px-1">-</span>
+        <span>July 21, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Report resources provisioned by the Slurm batch scheduler when available</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.14</b>
+        <span class="px-1">-</span>
+        <span>July 13, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>SciToken mapping failures are now recorded in the daemon logs</li>
+  <li>Fix bug that stopped file transfers when output and error are the same</li>
+  <li>Ensure that the Python bindings version matches the installed HTCondor</li>
+  <li>$(OPSYSANDVER) now expand properly in job transforms</li>
+  <li>Fix bug where context managed Python htcondor.SecMan sessions would crash</li>
+  <li>Fix bug where remote CPU times would rarely be set to zero</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.13</b>
+        <span class="px-1">-</span>
+        <span>May 27, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Schedd and startd cron jobs can now log output upon non-zero exit</li>
+  <li>condor_config_val now produces correct syntax for multi-line values</li>
+  <li>The condor_run tool now reports submit errors and warnings to the terminal</li>
+  <li>Fix issue where Kerberos authentication would fail within DAGMan</li>
+  <li>Fix HTCondor startup failure with certain complex network configurations</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.12</b>
+        <span class="px-1">-</span>
+        <span>April 19, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Fix bug in parallel universe that could cause the schedd to crash</li>
+  <li>Fix rare crash where a daemon tries to use a discarded security session</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.11</b>
+        <span class="px-1">-</span>
+        <span>March 15, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>The Job Router can now create an IDTOKEN for use by the job</li>
+  <li>Fix bug where a self-checkpointing job may erroneously be held</li>
+  <li>Fix bug where the Job Router could erroneously substitute a default value</li>
+  <li>Fix bug where a file transfer error may identify the wrong file</li>
+  <li>Fix bug where condor_ssh_to_job may fail to connect</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.10</b>
+        <span class="px-1">-</span>
+        <span>March 15, 2022</span>
+      </div>
+      <div class="mt-2">
+        <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issues are in the Vulnerability Reports:</p>
+<ul>
+  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0001</a></li>
+  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0002</a></li>
+  <li><a href="https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003">https://htcondor.org/security/vulnerabilities/HTCONDOR-2022-0003</a></li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.9</b>
+        <span class="px-1">-</span>
+        <span>January 13, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Added Debian 11 (bullseye) as a supported platform</li>
+  <li>Since CentOS 8 has reached end of life, we build and test on Rocky Linux 8</li>
+  <li>The OAUTH credmon is now packaged for Enterprise Linux 8</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.8</b>
+        <span class="px-1">-</span>
+        <span>December  2, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>Highlights of this release are:</p>
+
+<ul>
+  <li>Fix bug where huge values of ImageSize and others would end up negative</li>
+  <li>Fix bug in how MAX_JOBS_PER_OWNER applied to late materialization jobs</li>
+  <li>Fix bug where the schedd could choose a slot with insufficient disk space</li>
+  <li>Fix crash in ClassAd substr() function when the offset is out of range</li>
+  <li>Fix bug in Kerberos code that can crash on macOS and could leak memory</li>
+  <li>Fix bug where a job is ignored for 20 minutes if the startd claim fails</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.7</b>
+        <span class="px-1">-</span>
+        <span>November  2, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>Highlights of this release are:</p>
+<ul>
+  <li>Fix bug where condor_gpu_discovery could crash with older CUDA libraries</li>
+  <li>Fix bug where condor_watch_q would fail on machines with older kernels</li>
+  <li>condor_watch_q no longer has a limit on the number of job event log files</li>
+  <li>Fix bug where a startd could crash claiming a slot with p-slot preemption</li>
+  <li>Fix bug where a job start would not be recorded when a shadow reconnects</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.6</b>
+        <span class="px-1">-</span>
+        <span>September 23, 2021</span>
+      </div>
+      <div class="mt-2">
+        
+<p>Highlights of this release are:</p>
+
+<ul>
+  <li>CUDA_VISIBLE_DEVICES can now contain GPU-<uuid> formatted values</uuid></li>
+  <li>Fixed a bug that caused jobs to fail when using newer Singularity versions</li>
+  <li>Fixed a bug in the Windows MSI installer for the latest Windows 10 version</li>
+  <li>Fixed bugs relating to the transfer of standard out and error logs</li>
+  <li>MacOS 11.x now reports as 10.16.x (which is better than reporting x.0)</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.5</b>
+        <span class="px-1">-</span>
+        <span>August 18, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>Highlights of this release are:</p>
+<ul>
+  <li>Other authentication methods are tried if mapping fails using SciTokens</li>
+  <li>Fix rare crashes from successful condor_submit, which caused DAGMan issues</li>
+  <li>Fix bug where ExitCode attribute would be suppressed when OnExitHold fired</li>
+  <li>condor_who now suppresses spurious warnings coming from netstat</li>
+  <li>The online  manual now has detailed instructions for installing on MacOS</li>
+  <li>Fix bug where misconfigured MIG devices confused condor_gpu_discovery</li>
+  <li>The transfer _checkpoint_file list may now include input files</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.4</b>
+        <span class="px-1">-</span>
+        <span>July 29, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>This release contains important fixes for security issues.
+Affected users should update as soon as possible. More details on the security
+issues are in the Vulnerability Reports:</p>
+
+<ul>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0003.html">HTCONDOR-2021-03</a></li>
+  <li><a href="/security/vulnerabilities/HTCONDOR-2021-0004.html">HTCONDOR-2021-04</a></li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.2</b>
+        <span class="px-1">-</span>
+        <span>July  8, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>Highlights of this release are:</p>
+<ul>
+  <li>HTCondor can be set up to use only FIPS 140-2 approved security functions</li>
+  <li>If the Singularity test fails, the job goes idle rather than getting held</li>
+  <li>Can divide GPU memory, when making multiple GPU entries for a single GPU</li>
+  <li>Startd and Schedd cron job maximum line length increased to 64k bytes</li>
+  <li>Added first class submit keywords for SciTokens</li>
+  <li>Fixed MUNGE authentication</li>
+  <li>Fixed Windows installer to work when the install location isn’t C:\Condor</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.1</b>
+        <span class="px-1">-</span>
+        <span>May 18, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>Highlights of this release are:</p>
+<ul>
+  <li>Fix problem where X.509 proxy refresh kills job when using AES encryption</li>
+  <li>Fix problem when jobs require a different machine after a failure</li>
+  <li>Fix problem where a job matched a machine it can’t use, delaying job start</li>
+  <li>Fix exit code and retry checking when a job exits because of a signal</li>
+  <li>Fix a memory leak in the job router when a job is removed via job policy</li>
+  <li>Fixed the back-end support for the ‘bosco_cluster –add’ command</li>
+  <li>An updated Windows installer that supports IDTOKEN authentication</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>9.0.0</b>
+        <span class="px-1">-</span>
+        <span>April 14, 2021</span>
+      </div>
+      <div class="mt-2">
+        <p>After two years of development, this is the first release of the new stable series.
+It includes all the enhancements and bug fixes in the 8.9 series. Many of these
+changes have focused on improving the security of HTCondor and improving the utility
+of the file transfer plugins.</p>
+
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Absent any configuration, a new HTCondor installation denies authorization to all user</li>
+  <li>AES encryption is used for all communication and file transfers by default (Hardware accelerated when available)</li>
+  <li>New IDTOKEN authentication method enables fine-grained authorization control designed to replace GSI authentication</li>
+  <li>Improved support for GPUs, including machines with multiple GPUs</li>
+  <li>New condor_watch_q tool that efficiently provides live job status updates</li>
+  <li>Many improvements to the Python bindings, including new bindings for DAGMan and chirp</li>
+  <li>Improved curl, https, box, Amazon S3, and google drive file transfer plugins supporting uploads and authentication</li>
+  <li>File transfer times are now recorded in the job log</li>
+  <li>Added support for jobs that need to acquire and use OAUTH tokens</li>
+  <li>Many memory footprint and performance improvements in DAGMan</li>
+  <li>Submitter ceilings allow administrators to set limits on the number of running jobs per user across the pool.</li>
+</ul>
+
+<p>Try out our  <a href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/index.html">new helpful installation scripts</a></p>
+
+      </div>
       
       <div class="d-flex flex-row">
         <b>8.8.17</b>
