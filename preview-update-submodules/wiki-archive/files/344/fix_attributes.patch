@@ -1,0 +1,108 @@
+diff --git a/src/condor_daemon_client/dc_schedd.cpp b/src/condor_daemon_client/dc_schedd.cpp
+index d2e14d3..7a056ef 100644
+--- a/src/condor_daemon_client/dc_schedd.cpp
++++ b/src/condor_daemon_client/dc_schedd.cpp
+@@ -933,7 +933,7 @@ DCSchedd::spoolJobFiles(int JobAdsArrayLen, ClassAd* JobAdsArray[], CondorError
+ 		// Now send all the files via the file transfer object
+ 	for (i=0; i<JobAdsArrayLen; i++) {
+ 		FileTransfer ftrans;
+-		if ( !ftrans.SimpleInit(JobAdsArray[i], false, false, &rsock) ) {
++		if ( !ftrans.SimpleInit(JobAdsArray[i], false, false, &rsock, PRIV_UNKNOWN, false, true) ) {
+ 			if( errstack ) {
+ 				int cluster = -1, proc = -1;
+ 				if(JobAdsArray[i]) {
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 3fae82a..e41159a 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -56,6 +56,7 @@
+ #include "spool_version.h"
+ #include "condor_holdcodes.h"
+ #include "nullfile.h"
++#include "condor_url.h"
+ 
+ #if defined(WANT_CONTRIB) && defined(WITH_MANAGEMENT)
+ #if defined(HAVE_DLOPEN) || defined(WIN32)
+@@ -3889,7 +3890,9 @@ rewriteSpooledJobAd(ClassAd *job_ad, int cluster, int proc, bool modify_ad)
+ 		const char *base = NULL;
+ 		while ( (old_path_buf=old_paths.next()) ) {
+ 			base = condor_basename(old_path_buf);
+-			if ( strcmp(base,old_path_buf)!=0 ) {
++			if ((AttrsToModify[attrIndex] == ATTR_TRANSFER_INPUT_FILES) && IsUrl(old_path_buf)) {
++				base = old_path_buf;
++			} else if ( strcmp(base,old_path_buf)!=0 ) {
+ 				changed = true;
+ 			}
+ 			new_paths.append(base);
+diff --git a/src/condor_schedd.V6/schedd_td.cpp b/src/condor_schedd.V6/schedd_td.cpp
+index 9d80ea3..7745b6f 100644
+--- a/src/condor_schedd.V6/schedd_td.cpp
++++ b/src/condor_schedd.V6/schedd_td.cpp
+@@ -30,6 +30,7 @@
+ #include "basename.h"
+ #include "nullfile.h"
+ #include "spooled_job_files.h"
++#include "condor_url.h"
+ 
+ /* In this service function, the client tells the schedd a bunch of jobs
+ 	it would like to perform a transfer for into/out of a sandbox. The
+@@ -868,7 +869,9 @@ Scheduler::treq_upload_update_callback(TransferRequest *treq,
+ 			MyString new_path_buf;
+ 			while ( (old_path_buf=old_paths.next()) ) {
+ 				base = condor_basename(old_path_buf);
+-				if ( strcmp(base,old_path_buf)!=0 ) {
++				if ((AttrsToModify[index] == ATTR_TRANSFER_INPUT_FILES) && IsUrl(old_path_buf)) {
++					base = old_path_buf;
++				} else if ( strcmp(base,old_path_buf)!=0 ) {
+ 					new_path_buf.sprintf(
+ 						"%s%c%s",SpoolSpace,DIR_DELIM_CHAR,base);
+ 					base = new_path_buf.Value();
+diff --git a/src/condor_utils/file_transfer.cpp b/src/condor_utils/file_transfer.cpp
+index 2905d21..96037b5 100644
+--- a/src/condor_utils/file_transfer.cpp
++++ b/src/condor_utils/file_transfer.cpp
+@@ -237,7 +237,7 @@ FileTransfer::~FileTransfer()
+ int
+ FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server, 
+ 						 ReliSock *sock_to_use, priv_state priv,
+-						 bool use_file_catalog) 
++						 bool use_file_catalog, bool is_spool) 
+ {
+ 	char buf[ATTRLIST_MAX_EXPRESSION];
+ 	char *dynamic_buf = NULL;
+@@ -319,6 +319,21 @@ FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 				InputFiles->append(buf);			
+ 		}
+ 	}
++
++	// If we are spooling, we want to ignore URLs
++	// We want the file transfer plugin to be invoked at the starter, not the schedd.
++	// See https://condor-wiki.cs.wisc.edu/index.cgi/tktview?tn=2162
++	if (IsClient() && simple_init && is_spool) {
++		InputFiles->rewind();
++		const char *x;
++		while ((x = InputFiles->next())) {
++			if (!IsUrl(x)) {
++				InputFiles->deleteCurrent();
++			}
++		}
++		dprintf(D_FULLDEBUG, "Input files: %s\n", InputFiles->print_to_string());
++	}
++	
+ 	if ( Ad->LookupString(ATTR_ULOG_FILE, buf) == 1 ) {
+ 		UserLogFile = strdup(condor_basename(buf));
+ 		// For 7.5.6 and earlier, we want to transfer the user log as
+diff --git a/src/condor_utils/file_transfer.h b/src/condor_utils/file_transfer.h
+index 8f1736e..08f8e1e 100644
+--- a/src/condor_utils/file_transfer.h
++++ b/src/condor_utils/file_transfer.h
+@@ -106,7 +106,8 @@ class FileTransfer {
+ 	int SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server, 
+ 						 ReliSock *sock_to_use = NULL, 
+ 						 priv_state priv = PRIV_UNKNOWN,
+-						 bool use_file_catalog = true);
++						 bool use_file_catalog = true,
++						 bool is_spool = false);
+ 
+ 	/** @param Ad contains filename remaps for downloaded files.
+ 		       If NULL, turns off remaps.
