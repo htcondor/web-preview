@@ -1,0 +1,453 @@
+diff --git a/src/condor_c++_util/classad_helpers.cpp b/src/condor_c++_util/classad_helpers.cpp
+index 7696928..ec0c064 100644
+--- a/src/condor_c++_util/classad_helpers.cpp
++++ b/src/condor_c++_util/classad_helpers.cpp
+@@ -278,7 +278,7 @@ ClassAd *CreateJobAd( const char *owner, int universe, const char *cmd )
+ 
+ 	job_ad->Assign( ATTR_JOB_NOTIFICATION, NOTIFY_NEVER );
+ 
+-	job_ad->Assign( ATTR_KILL_SIG, "SIGTERM" );
++	
+ 
+ 	job_ad->Assign( ATTR_IMAGE_SIZE, 0 );
+ 
+diff --git a/src/condor_c++_util/condor_attributes.cpp b/src/condor_c++_util/condor_attributes.cpp
+index 8a8b311..f492a78 100644
+--- a/src/condor_c++_util/condor_attributes.cpp
++++ b/src/condor_c++_util/condor_attributes.cpp
+@@ -369,6 +369,7 @@ const char * const ATTR_KEYSTORE_PASSPHRASE_FILE = "KeystorePassphraseFile";
+ const char * const ATTR_KFLOPS                   = "KFlops";
+ const char * const ATTR_KILL                     = "Kill";
+ const char * const ATTR_KILL_SIG				 = "KillSig";
++const char * const ATTR_KILL_SIG_TIMEOUT		 = "KillSigTimeout";
+ const char * const ATTR_LAST_AVAIL_INTERVAL		 = "LastAvailInterval";
+ const char * const ATTR_LAST_BENCHMARK			 = "LastBenchmark";
+ const char * const ATTR_LAST_CKPT_SERVER		 = "LastCkptServer";
+diff --git a/src/condor_c++_util/proc_family_direct.h b/src/condor_c++_util/proc_family_direct.h
+index 9d45c87..4ae8acc 100644
+--- a/src/condor_c++_util/proc_family_direct.h
++++ b/src/condor_c++_util/proc_family_direct.h
+@@ -65,7 +65,7 @@ public:
+ 	bool continue_family(pid_t);
+ 
+ 	bool kill_family(pid_t);
+-
++	
+ 	bool unregister_family(pid_t);
+ 
+ 	// this class currently doesn't support GLEXEC_JOB
+diff --git a/src/condor_c++_util/proc_family_interface.h b/src/condor_c++_util/proc_family_interface.h
+index fc41d00..61f3fab 100644
+--- a/src/condor_c++_util/proc_family_interface.h
++++ b/src/condor_c++_util/proc_family_interface.h
+@@ -63,7 +63,7 @@ public:
+ 	virtual bool continue_family(pid_t) = 0;
+ 
+ 	virtual bool kill_family(pid_t) = 0;
+-
++	
+ 	virtual bool unregister_family(pid_t) = 0;
+ 
+ 	virtual bool use_glexec_for_family(pid_t, const char* proxy) = 0;
+diff --git a/src/condor_c++_util/proc_family_proxy.h b/src/condor_c++_util/proc_family_proxy.h
+index 5b21e7b..62bc6a2 100644
+--- a/src/condor_c++_util/proc_family_proxy.h
++++ b/src/condor_c++_util/proc_family_proxy.h
+@@ -79,7 +79,7 @@ public:
+ 	// subfamilies of that family)
+ 	//
+ 	bool kill_family(pid_t);
+-
++	
+ 	// tell the procd we don't care about this family any
+ 	// more
+ 	//
+diff --git a/src/condor_daemon_core.V6/condor_daemon_core.h b/src/condor_daemon_core.V6/condor_daemon_core.h
+index 9e91243..48aa0b3 100644
+--- a/src/condor_daemon_core.V6/condor_daemon_core.h
++++ b/src/condor_daemon_core.V6/condor_daemon_core.h
+@@ -1056,7 +1056,8 @@ class DaemonCore : public Service
+     int Suspend_Family(pid_t);
+     int Continue_Family(pid_t);
+     int Kill_Family(pid_t);
+-
++    int Signal_Process(pid_t,int);
++    
+ 	/** Used to explicitly initialize our ProcFamilyInterface object.
+ 	    Calling this is not required - if not called, the object
+ 	    will be initialized on-demand: the first time Create_Process
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index b6de9c0..b883edd 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -8221,6 +8221,14 @@ DaemonCore::Kill_Family(pid_t pid)
+ 	return m_proc_family->kill_family(pid);
+ }
+ 
++int
++DaemonCore::Signal_Process(pid_t pid, int sig)
++{
++	ASSERT(m_proc_family != NULL);
++	dprintf(D_ALWAYS, "sending signal %d to process with pid %u\n",sig,pid);
++	return m_proc_family->signal_process(pid,sig);
++}
++
+ void
+ DaemonCore::Proc_Family_Init()
+ {
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index f26657d..96e0a12 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -307,6 +307,7 @@ extern const char * const  ATTR_KEYSTORE_PASSPHRASE_FILE;
+ extern const char * const  ATTR_KFLOPS;
+ extern const char * const  ATTR_KILL;
+ extern const char * const  ATTR_KILL_SIG;
++extern const char * const  ATTR_KILL_SIG_TIMEOUT;
+ extern const char * const  ATTR_LAST_AVAIL_INTERVAL;
+ extern const char * const  ATTR_LAST_BENCHMARK;
+ extern const char * const  ATTR_LAST_CKPT_SERVER;
+diff --git a/src/condor_procd/proc_family_client.h b/src/condor_procd/proc_family_client.h
+index 54c16fc..4acbdd1 100644
+--- a/src/condor_procd/proc_family_client.h
++++ b/src/condor_procd/proc_family_client.h
+@@ -91,7 +91,7 @@ public:
+ 	// subfamilies of that family)
+ 	//
+ 	bool kill_family(pid_t, bool&);
+-
++	
+ 	// tell the procd we don't care about this family any
+ 	// more
+ 	//
+@@ -111,6 +111,9 @@ public:
+ 
+ private:
+ 
++	// common code to send a signal to a process
++	bool signal_process(pid_t, int, proc_family_command_t, bool&);
++	
+ 	// common code for killing, suspending, and
+ 	// continuing a family
+ 	//
+diff --git a/src/condor_procd/proc_family_monitor.h b/src/condor_procd/proc_family_monitor.h
+index 44dd261..99e5ae7 100644
+--- a/src/condor_procd/proc_family_monitor.h
++++ b/src/condor_procd/proc_family_monitor.h
+@@ -95,7 +95,7 @@ public:
+ 	// root pid and all subfamilies
+ 	//
+ 	proc_family_error_t signal_family(pid_t, int);
+-
++	
+ 	// get resource usage information about a family (and all
+ 	// subfamilies)
+ 	//
+diff --git a/src/condor_procd/proc_family_server.cpp b/src/condor_procd/proc_family_server.cpp
+index 7006984..131b0bf 100644
+--- a/src/condor_procd/proc_family_server.cpp
++++ b/src/condor_procd/proc_family_server.cpp
+@@ -421,7 +421,7 @@ ProcFamilyServer::wait_loop()
+ 				dprintf(D_ALWAYS, "PROC_FAMILY_KILL_FAMILY\n");
+ 				kill_family();
+ 				break;
+-
++				
+ 			case PROC_FAMILY_GET_USAGE:
+ 				dprintf(D_ALWAYS, "PROC_FAMILY_GET_USAGE\n");
+ 				get_usage();
+diff --git a/src/condor_startd.V6/Starter.cpp b/src/condor_startd.V6/Starter.cpp
+index e57bdaa..9b1a116 100644
+--- a/src/condor_startd.V6/Starter.cpp
++++ b/src/condor_startd.V6/Starter.cpp
+@@ -35,6 +35,7 @@
+ #include "basename.h"
+ #include "dc_starter.h"
+ #include "classadHistory.h"
++#include "classad_helpers.h"
+ 
+ #if defined(LINUX)
+ #include "glexec_starter.h"
+@@ -1209,11 +1210,14 @@ Starter::killHard( void )
+ 	if( ! active() ) {
+ 		return true;
+ 	}
++	
+ 	if( ! kill(DC_SIGHARDKILL) ) {
+ 		killpg( SIGKILL );
+ 		return false;
+ 	}
+-	startKillTimer();
++	dprintf(D_FULLDEBUG, "in starter:killHard starting kill timer\n");
++	startKillTimer();	
++
+ 	return true;
+ }
+ 
+@@ -1267,7 +1271,7 @@ Starter::startKillTimer( void )
+ 			// Timer already started.
+ 		return TRUE;
+ 	}
+-
++ 
+ 	int tmp_killing_timeout = killing_timeout;
+ 	if( s_claim && (s_claim->universe() == CONDOR_UNIVERSE_VM) ) {
+ 		// For vm universe, we need longer killing_timeout
+diff --git a/src/condor_startd.V6/Starter.h b/src/condor_startd.V6/Starter.h
+index ca808a3..c8af0ee 100644
+--- a/src/condor_startd.V6/Starter.h
++++ b/src/condor_startd.V6/Starter.h
+@@ -29,6 +29,7 @@
+ 
+ #include "../condor_procapi/procapi.h"
+ #include "../condor_procd/proc_family_io.h"
++
+ class Claim;
+ 
+ class Starter : public Service
+@@ -72,7 +73,7 @@ public:
+ 		// Send SIGKILL to starter + process group (called by our kill
+ 		// timer if we've been hardkilling too long).
+ 	bool	sigkillStarter( void );
+-
++	
+ 	void	publish( ClassAd* ad, amask_t mask, StringList* list );
+ 
+ 	bool	satisfies( ClassAd* job_ad, ClassAd* mach_ad );
+@@ -127,9 +128,8 @@ private:
+ 
+ 	void	initRunData( void );
+ 
+-	int		startKillTimer( void );	    // Timer for how long we're willing 
++	int	startKillTimer( void );		// Timer for how long we're willing
+ 	void	cancelKillTimer( void );	// to "hardkill" before we SIGKILL
+-
+ 		// choose EXECUTE directory for starter
+ 	void    finalizeExecuteDir( void );
+ 
+diff --git a/src/condor_starter.V6.1/vanilla_proc.cpp b/src/condor_starter.V6.1/vanilla_proc.cpp
+index 781c3fe..af25ffb 100644
+--- a/src/condor_starter.V6.1/vanilla_proc.cpp
++++ b/src/condor_starter.V6.1/vanilla_proc.cpp
+@@ -31,6 +31,7 @@
+ #include "dynuser.h"
+ #include "condor_config.h"
+ #include "domain_tools.h"
++#include "classad_helpers.h"
+ 
+ #ifdef WIN32
+ #include "executable_scripts.WINDOWS.h"
+@@ -39,6 +40,11 @@ extern dynuser* myDynuser;
+ 
+ extern CStarter *Starter;
+ 
++VanillaProc::VanillaProc(ClassAd* jobAd) : OsProc(jobAd)
++{
++	m_escalation_tid = -1;
++}
++
+ int
+ VanillaProc::StartJob()
+ {
+@@ -247,6 +253,8 @@ VanillaProc::JobReaper(int pid, int status)
+ {
+ 	dprintf(D_FULLDEBUG,"in VanillaProc::JobReaper()\n");
+ 
++	cancelEscalationTimer();
++
+ 	if (pid == JobPid) {
+ 			// Make sure that nothing was left behind.
+ 		daemonCore->Kill_Family(JobPid);
+@@ -346,6 +354,36 @@ VanillaProc::ShutdownFast()
+ 	// step is to hard kill it.
+ 	requested_exit = true;
+ 
++#if !defined(WIN32)
++	int kill_sig = -1;
++
++	// Determine if a custom kill signal is provided in the job
++	kill_sig = findRmKillSig( JobAd );
++	if ( kill_sig == -1 )
++	{
++		kill_sig = findSoftKillSig( JobAd );
++	}
++
++	// If a custom kill signal was given, send that signal to the
++	// job
++	if ( kill_sig != -1 ) {
++		if ( daemonCore->Signal_Process( JobPid, kill_sig ) == FALSE ) {
++                        dprintf(D_ALWAYS,
++                                "Error: Failed to send signal %d to job with "
++                                " pid %u\n", kill_sig, JobPid);
++		}
++		else {
++			startEscalationTimer();
++			return false;
++		}
++	}
++#endif
++	return finishShutdownFast();
++}
++
++bool
++VanillaProc::finishShutdownFast()
++{
+ 	// this used to be the only place where we would clean up the process
+ 	// family. this, however, wouldn't properly clean up local universe jobs
+ 	// so a call to Kill_Family has been added to JobReaper(). i'm not sure
+@@ -356,3 +394,62 @@ VanillaProc::ShutdownFast()
+ 
+ 	return false;	// shutdown is pending, so return false
+ }
++
++#if !defined(WIN32)
++bool
++VanillaProc::startEscalationTimer()
++{
++	int job_kill_time = 0;
++	int killing_timeout = param_integer( "KILLING_TIMEOUT", 30 );
++	int escalation_delay;
++
++	if ( m_escalation_tid >= 0 ) {
++		return true;
++	}
++
++	if ( !JobAd->LookupInteger(ATTR_KILL_SIG_TIMEOUT, job_kill_time) ) {
++		job_kill_time = 0;
++	}
++
++	escalation_delay = std::max(std::min(killing_timeout-1, job_kill_time), 0);
++
++	dprintf(D_FULLDEBUG, "Using escalation delay %d for Escalation Timer\n", escalation_delay);
++	m_escalation_tid = daemonCore->Register_Timer(escalation_delay,
++						escalation_delay,
++						(TimerHandlercpp)&VanillaProc::EscalateSignal,
++						"EscalateSignal", this);
++
++	if ( m_escalation_tid < 0 ) {
++		dprintf(D_ALWAYS, "Error: Unable to register signal esclation timer.  timeout attmepted: %d\n", escalation_delay);
++	}
++	return true;
++}
++
++void
++VanillaProc::cancelEscalationTimer()
++{
++	int rval;
++	if ( m_escalation_tid != -1 ) {
++		rval = daemonCore->Cancel_Timer( m_escalation_tid );
++		if ( rval < 0 ) {
++			dprintf(D_ALWAYS, "Failed to cancel signal escalation "
++					"timer (%d): daemonCore error\n", m_escalation_tid);
++		}
++		else {
++			dprintf(D_FULLDEBUG, "Cancel signal escalation timer (%d)\n", m_escalation_tid);
++		}
++		m_escalation_tid = -1;
++	}
++}
++
++bool
++VanillaProc::EscalateSignal()
++{
++	cancelEscalationTimer();
++
++	dprintf(D_FULLDEBUG, "Esclation Timer fired.  Killing job\n");
++	finishShutdownFast();
++
++	return true;
++}
++#endif
+diff --git a/src/condor_starter.V6.1/vanilla_proc.h b/src/condor_starter.V6.1/vanilla_proc.h
+index dab6d8e..1a2c69d 100644
+--- a/src/condor_starter.V6.1/vanilla_proc.h
++++ b/src/condor_starter.V6.1/vanilla_proc.h
+@@ -32,7 +32,7 @@ class SafeSock;
+ class VanillaProc : public OsProc
+ {
+ public:
+-	VanillaProc(ClassAd* jobAd) : OsProc(jobAd) { }
++	VanillaProc(ClassAd* jobAd);
+ 
+ 		/** call OsProc::StartJob(), make a new ProcFamily with new
+ 			process as head. */
+@@ -66,9 +66,19 @@ public:
+ 		*/
+ 	virtual bool PublishUpdateAd( ClassAd* ad );
+ 
++	bool finishShutdownFast();
++#if !defined(WIN32)
++	bool startEscalationTimer();
++	void cancelEscalationTimer();
++	bool EscalateSignal();
++#endif
++
+ private:
+ 		/// Final usage stats for this proc and all its children.
+ 	ProcFamilyUsage m_final_usage;
++#if !defined(WIN32)
++	int m_escalation_tid;
++#endif
+ };
+ 
+ #endif
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index b53af19..a107567 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -386,6 +386,7 @@ const char * REMOTE_PREFIX="Remote_";
+ const char	*KillSig			= "kill_sig";
+ const char	*RmKillSig			= "remove_kill_sig";
+ const char	*HoldKillSig		= "hold_kill_sig";
++const char	*KillSigTimeout		= "kill_sig_timeout";
+ #endif
+ 
+ void    SetSimpleJobExprs();
+@@ -5506,6 +5507,7 @@ void
+ SetKillSig()
+ {
+ 	char* sig_name;
++	char* timeout;
+ 	MyString buffer;
+ 
+ 	sig_name = findKillSigName( KillSig, ATTR_KILL_SIG );
+@@ -5514,14 +5516,21 @@ SetKillSig()
+ 		case CONDOR_UNIVERSE_STANDARD:
+ 			sig_name = strdup( "SIGTSTP" );
+ 			break;
++		case CONDOR_UNIVERSE_VANILLA:
++			// Don't define sig_name for Vanilla Universe
++			sig_name = NULL;
++			break;
+ 		default:
+ 			sig_name = strdup( "SIGTERM" );
+ 			break;
+ 		}
+ 	}
+-	buffer.sprintf( "%s=\"%s\"", ATTR_KILL_SIG, sig_name );
+-	InsertJobExpr( buffer );
+-	free( sig_name );
++
++	if ( sig_name ) {
++		buffer.sprintf( "%s=\"%s\"", ATTR_KILL_SIG, sig_name );
++		InsertJobExpr( buffer );
++		free( sig_name );
++	}
+ 
+ 	sig_name = findKillSigName( RmKillSig, ATTR_REMOVE_KILL_SIG );
+ 	if( sig_name ) {
+@@ -5538,6 +5547,14 @@ SetKillSig()
+ 		free( sig_name );
+ 		sig_name = NULL;
+ 	}
++
++	timeout = condor_param( KillSigTimeout, ATTR_KILL_SIG_TIMEOUT );
++	if( timeout ) {
++		buffer.sprintf( "%s=%d", ATTR_KILL_SIG_TIMEOUT, atoi(timeout) );
++		InsertJobExpr( buffer );
++		free( timeout );
++		sig_name = NULL;
++	}
+ }
+ #endif  // of ifndef WIN32
+ 
