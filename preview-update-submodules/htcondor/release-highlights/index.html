@@ -1002,6 +1002,35 @@
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-2-0">10.2.0</a></b>
+          <span class="px-1">-</span>
+          <span>January  5, 2023</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Preliminary support for Enterprise Linux 9</li>
+  <li>Preliminary support for cgroups v2</li>
+  <li>Can now set minimum floor for number of CPUs that a submitter gets</li>
+  <li>Improved validity testing of Singularity/Apptainer runtinme</li>
+  <li>Improvements to jobs hooks, including new PREPARE_JOB_BEFORE_TRANSFER hook</li>
+  <li>OpenCL jobs now work inside Singularity, if OpenCL drivers are on the host</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-1-1">10.1.1</a></b>
           <span class="px-1">-</span>
           <span>November 11, 2022</span>
@@ -4640,6 +4669,36 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-1">10.0.1</a></b>
+          <span class="px-1">-</span>
+          <span>January  5, 2023</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Add Ubuntu 22.04 (Jammy Jellyfish) support</li>
+  <li>Add file transfer plugin that supports stash:// and osdf:// URLs</li>
+  <li>Fix bug where cgroup memory limits were not enforced on Debian and Ubuntu</li>
+  <li>Fix bug where forcibly removing DAG jobs could crash the condor_schedd</li>
+  <li>Fix bug where Docker repository images cannot be run under Singularity</li>
+  <li>Fix issue where blahp scripts were missing on Debian and Ubuntu platforms</li>
+  <li>Fix bug where curl file transfer plugins would fail on Enterprise Linux 8</li>
+</ul>
+
+      </div>
     
       
 
