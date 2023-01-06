@@ -1,0 +1,1504 @@
+diff --git a/src/ccb/ccb_client.cpp b/src/ccb/ccb_client.cpp
+index 28a8c1b..1e5e580 100644
+--- a/src/ccb/ccb_client.cpp
++++ b/src/ccb/ccb_client.cpp
+@@ -658,7 +658,7 @@ CCBClient::RegisterReverseConnectCallback()
+ }
+ 
+ int
+-CCBClient::DeadlineExpired()
++CCBClient::DeadlineExpired(void *)
+ {
+ 	dprintf(D_ALWAYS,
+ 			"CCBClient: deadline expired for reverse connection to %s.\n ",
+diff --git a/src/ccb/ccb_client.h b/src/ccb/ccb_client.h
+index 58f3a2b..c216f3c 100644
+--- a/src/ccb/ccb_client.h
++++ b/src/ccb/ccb_client.h
+@@ -68,7 +68,7 @@ class CCBClient: public Service, public ClassyCountedPtr {
+ 	void UnregisterReverseConnectCallback();
+ 	static int ReverseConnectCommandHandler(Service *,int cmd,Stream *stream);
+ 	MyString myName();
+-	int DeadlineExpired();
++	int DeadlineExpired(void *);
+ 
+ 
+ };
+diff --git a/src/ccb/ccb_listener.cpp b/src/ccb/ccb_listener.cpp
+index 6726ef5..df8aeaa 100644
+--- a/src/ccb/ccb_listener.cpp
++++ b/src/ccb/ccb_listener.cpp
+@@ -169,7 +169,7 @@ CCBListener::CCBConnectCallback(bool success,Sock *sock,CondorError * /*errstack
+ }
+ 
+ int
+-CCBListener::ReconnectTime()
++CCBListener::ReconnectTime(void *)
+ {
+ 	m_reconnect_timer = -1;
+ 
+@@ -224,7 +224,7 @@ CCBListener::Disconnected()
+ }
+ 
+ int
+-CCBListener::HandleCCBMsg(Stream * /*sock*/)
++CCBListener::HandleCCBMsg(Stream * /*sock*/, void *)
+ {
+ 	ReadMsgFromCCB();
+ 	return KEEP_STREAM;
+@@ -359,7 +359,7 @@ CCBListener::DoReversedCCBConnect( char const *address, char const *connect_id,
+ 		sock->peer_description(),
+ 		(SocketHandlercpp)&CCBListener::ReverseConnected,
+ 		"CCBListener::ReverseConnected",
+-		this);
++		this, ALLOW, msg_ad);
+ 
+ 	if( rc < 0 ) {
+ 		ReportReverseConnectResult(msg_ad,false,"failed to register socket for non-blocking reversed connection");
+@@ -369,17 +369,14 @@ CCBListener::DoReversedCCBConnect( char const *address, char const *connect_id,
+ 		return false;
+ 	}
+ 
+-	rc = daemonCore->Register_DataPtr(msg_ad);
+-	ASSERT( rc );
+-
+ 	return true;
+ }
+ 
+ int
+-CCBListener::ReverseConnected(Stream *stream)
++CCBListener::ReverseConnected(Stream *stream, void *dataPtr)
+ {
+ 	Sock *sock = (Sock *)stream;
+-	ClassAd *msg_ad = (ClassAd *)daemonCore->GetDataPtr();
++	ClassAd *msg_ad = (ClassAd *)dataPtr;
+ 	ASSERT( msg_ad );
+ 
+ 	if( sock ) {
+diff --git a/src/ccb/ccb_listener.h b/src/ccb/ccb_listener.h
+index 724f04d..99267d9 100644
+--- a/src/ccb/ccb_listener.h
++++ b/src/ccb/ccb_listener.h
+@@ -61,15 +61,15 @@ class CCBListener: public Service, public ClassyCountedPtr {
+ 	bool SendMsgToCCB(ClassAd &msg,bool blocking);
+ 	bool WriteMsgToCCB(ClassAd &msg);
+ 	static void CCBConnectCallback(bool success,Sock *sock,CondorError *errstack,void *misc_data);
+-	int ReconnectTime();
++	int ReconnectTime(void *);
+ 	void Connected();
+ 	void Disconnected();
+-	int HandleCCBMsg(Stream *sock);
++	int HandleCCBMsg(Stream *sock, void *);
+ 	bool ReadMsgFromCCB();
+ 	bool HandleCCBRegistrationReply( ClassAd &msg );
+ 	bool HandleCCBRequest( ClassAd &msg );
+ 	bool DoReversedCCBConnect( char const *address, char const *connect_id, char const *request_id,char const *peer_description);
+-	int ReverseConnected(Stream *stream);
++	int ReverseConnected(Stream *stream, void *dataPtr);
+ 	void ReportReverseConnectResult(ClassAd *connect_msg,bool success,char const *error_msg=NULL);
+ };
+ 
+diff --git a/src/ccb/ccb_server.cpp b/src/ccb/ccb_server.cpp
+index 59a5e2a..a6e4002 100644
+--- a/src/ccb/ccb_server.cpp
++++ b/src/ccb/ccb_server.cpp
+@@ -387,9 +387,9 @@ CCBServer::HandleRequest(int cmd,Stream *stream)
+ }
+ 
+ int
+-CCBServer::HandleRequestResultsMsg( Stream * /*stream*/ )
++CCBServer::HandleRequestResultsMsg( Stream * /*stream*/, void *dataPtr )
+ {
+-	CCBTarget *target = (CCBTarget *)daemonCore->GetDataPtr();
++	CCBTarget *target = (CCBTarget *)dataPtr;
+ 	HandleRequestResultsMsg( target );
+ 	return KEEP_STREAM;
+ }
+@@ -779,17 +779,16 @@ CCBServer::AddRequest( CCBServerRequest *request, CCBTarget *target )
+ 		request->getSock()->peer_description(),
+ 		(SocketHandlercpp)&CCBServer::HandleRequestDisconnect,
+ 		"CCBServer::HandleRequestDisconnect",
+-		this );
++		this,
++		ALLOW, (void *)request );
+ 
+ 	ASSERT( rc >= 0 );
+-	rc = daemonCore->Register_DataPtr(request);
+-	ASSERT( rc );
+ }
+ 
+ int
+-CCBServer::HandleRequestDisconnect( Stream * /*stream*/ )
++CCBServer::HandleRequestDisconnect( Stream * /*stream*/ , void *dataPtr)
+ {
+-	CCBServerRequest *request = (CCBServerRequest *)daemonCore->GetDataPtr();
++	CCBServerRequest *request = (CCBServerRequest *)dataPtr;
+ 	RemoveRequest( request );
+ 	return KEEP_STREAM;
+ }
+@@ -859,14 +858,11 @@ CCBTarget::incPendingRequestResults(CCBServer *ccb_server)
+ 		int rc = daemonCore->Register_Socket (
+ 			m_sock,
+ 			m_sock->peer_description(),
+-			(SocketHandlercpp)(int (CCBServer::*)(Stream*))&CCBServer::HandleRequestResultsMsg,
++			(SocketHandlercpp)(int (CCBServer::*)(Stream*, void *))&CCBServer::HandleRequestResultsMsg,
+ 			"CCBServer::HandleRequestResultsMsg",
+-			ccb_server );
++			ccb_server, ALLOW, (void *)this );
+ 
+ 		ASSERT( rc >= 0 );
+-		rc = daemonCore->Register_DataPtr(this);
+-		ASSERT( rc );
+-
+ 		m_socket_is_registered = true;
+ 	}
+ }
+diff --git a/src/ccb/ccb_server.h b/src/ccb/ccb_server.h
+index c1d9507..ecd4542 100644
+--- a/src/ccb/ccb_server.h
++++ b/src/ccb/ccb_server.h
+@@ -79,15 +79,15 @@ class CCBServer: Service {
+ 
+ 	void RequestFinished( CCBServerRequest *request, bool success, char const *error_msg );
+ 
+-	int HandleRequestDisconnect( Stream *stream );
++	int HandleRequestDisconnect( Stream *stream, void *dataPtr );
+ 
+ 	void PollSockets();
+ 	void SetSmallBuffers(Sock *sock);
+ 
+ 	int HandleRegistration(int cmd,Stream *stream);
+ 	int HandleRequest(int cmd,Stream *stream);
+-	void HandleRequestResultsMsg( CCBTarget *target );
+-	int HandleRequestResultsMsg( Stream *stream );
++	void HandleRequestResultsMsg( CCBTarget *target);
++	int HandleRequestResultsMsg( Stream *stream, void *dataPtr );
+ 
+ 	void RegisterHandlers();
+ 
+diff --git a/src/condor_c++_util/dc_service.h b/src/condor_c++_util/dc_service.h
+index f25e23c..1ba2a51 100644
+--- a/src/condor_c++_util/dc_service.h
++++ b/src/condor_c++_util/dc_service.h
+@@ -78,10 +78,10 @@ class Service {
+ /** Function, which given a pointer to Service object,
+     returns an int (C Version).
+ */
+-typedef int     (*Event)(Service*);
++typedef int     (*Event)(Service*, void *);
+ 
+ /// Service Method that returns an int (C++ Version).
+-typedef int     (Service::*Eventcpp)();
++typedef int     (Service::*Eventcpp)(void *);
+ //@}
+ 
+ // to make the timer handler stuff similar to the rest of Daemon Core...
+diff --git a/src/condor_daemon_client/dc_message.cpp b/src/condor_daemon_client/dc_message.cpp
+index 06d9787..8b22af7 100644
+--- a/src/condor_daemon_client/dc_message.cpp
++++ b/src/condor_daemon_client/dc_message.cpp
+@@ -474,7 +474,7 @@ void DCMessenger::startReceiveMsg( classy_counted_ptr<DCMsg> msg, Sock *sock )
+ }
+ 
+ int
+-DCMessenger::receiveMsgCallback(Stream *sock)
++DCMessenger::receiveMsgCallback(Stream *sock, void *)
+ {
+ 	classy_counted_ptr<DCMsg> msg = m_callback_msg;
+ 	ASSERT(msg.get());
+@@ -578,14 +578,13 @@ DCMessenger::startCommandAfterDelay( unsigned int delay, classy_counted_ptr<DCMs
+ 		delay,
+ 		(Eventcpp)&DCMessenger::startCommandAfterDelay_alarm,
+ 		"DCMessenger::startCommandAfterDelay",
+-		this );
++		this, qc );
+ 	ASSERT(qc->timer_handle != -1);
+-	daemonCoreSockAdapter.Register_DataPtr( qc );
+ }
+ 
+-int DCMessenger::startCommandAfterDelay_alarm()
++int DCMessenger::startCommandAfterDelay_alarm(void *dataPtr)
+ {
+-	QueuedCommand *qc = (QueuedCommand *)daemonCoreSockAdapter.GetDataPtr();
++	QueuedCommand *qc = (QueuedCommand *)dataPtr;
+ 	ASSERT(qc);
+ 
+ 	startCommand(qc->msg);
+diff --git a/src/condor_daemon_client/dc_message.h b/src/condor_daemon_client/dc_message.h
+index 5867ba5..e08c7c0 100644
+--- a/src/condor_daemon_client/dc_message.h
++++ b/src/condor_daemon_client/dc_message.h
+@@ -323,10 +323,10 @@ private:
+ 	static void connectCallback(bool success, Sock *sock, CondorError *errstack, void *misc_data);
+ 
+ 		// This is called by DaemonCore when the sock has data.
+-	int receiveMsgCallback(Stream *sock);
++	int receiveMsgCallback(Stream *sock, void *);
+ 
+ 		// This is called by DaemonCore when the delay time has expired.
+-	int startCommandAfterDelay_alarm();
++	int startCommandAfterDelay_alarm(void *);
+ 
+ 		// Delete a sock unless it happens to be m_sock.
+ 	void doneWithSock(Stream *sock);
+diff --git a/src/condor_daemon_core.V6/condor_daemon_core.h b/src/condor_daemon_core.V6/condor_daemon_core.h
+index b8fd452..8c75c3e 100644
+--- a/src/condor_daemon_core.V6/condor_daemon_core.h
++++ b/src/condor_daemon_core.V6/condor_daemon_core.h
+@@ -106,16 +106,16 @@ typedef int     (*SignalHandler)(Service*,int);
+ typedef int     (Service::*SignalHandlercpp)(int);
+ 
+ ///
+-typedef int     (*SocketHandler)(Service*,Stream*);
++typedef int     (*SocketHandler)(Service*,Stream*, void *);
+ 
+ ///
+-typedef int     (Service::*SocketHandlercpp)(Stream*);
++typedef int     (Service::*SocketHandlercpp)(Stream*, void *);
+ 
+ ///
+-typedef int     (*PipeHandler)(Service*,int);
++typedef int     (*PipeHandler)(Service*,int, void *);
+ 
+ ///
+-typedef int     (Service::*PipeHandlercpp)(int);
++typedef int     (Service::*PipeHandlercpp)(int, void *);
+ 
+ ///
+ typedef int     (*ReaperHandler)(Service*,int pid,int exit_status);
+@@ -591,6 +591,7 @@ class DaemonCore : public Service
+     int Was_Not_Responding(pid_t pid);
+ 	//@}
+         
++
+ 	/** @name Socket events.
+ 	 */
+ 	//@{
+@@ -608,7 +609,8 @@ class DaemonCore : public Service
+                          SocketHandler     handler,
+                          const char *      handler_descrip,
+                          Service *         s                = NULL,
+-                         DCpermission      perm             = ALLOW);
++                         DCpermission      perm             = ALLOW,
++						void   *     dataPtr = NULL);
+ 
+     /** Not_Yet_Documented
+         @param iosock           Not_Yet_Documented
+@@ -624,7 +626,8 @@ class DaemonCore : public Service
+                          SocketHandlercpp     handlercpp,
+                          const char *         handler_descrip,
+                          Service*             s,
+-                         DCpermission         perm = ALLOW);
++                         DCpermission         perm = ALLOW,
++						void   *     dataPtr = NULL);
+ 
+     /** Not_Yet_Documented
+         @param iosock           Not_Yet_Documented
+@@ -824,7 +827,8 @@ class DaemonCore : public Service
+     int Register_Timer (unsigned     deltawhen,
+                         Event        event,
+                         const char * event_descrip, 
+-                        Service*     s = NULL);
++                        Service*     s = NULL,
++						void   *     dataPtr = NULL);
+ 
+ 	/** Not_Yet_Documented
+         @param deltawhen       Not_Yet_Documented
+@@ -837,7 +841,8 @@ class DaemonCore : public Service
+                         Event        event,
+ 						Release      release,
+                         const char * event_descrip, 
+-                        Service*     s = NULL);
++                        Service*     s = NULL,
++						void   *     dataPtr = NULL);
+     
+     /** Not_Yet_Documented
+         @param deltawhen       Not_Yet_Documented
+@@ -851,7 +856,8 @@ class DaemonCore : public Service
+                         unsigned     period,
+                         Event        event,
+                         const char * event_descrip,
+-                        Service*     s = NULL);
++                        Service*     s = NULL,
++						void   *     dataPtr = NULL);
+ 
+     /** Not_Yet_Documented
+         @param deltawhen       Not_Yet_Documented
+@@ -863,7 +869,8 @@ class DaemonCore : public Service
+     int Register_Timer (unsigned     deltawhen,
+                         Eventcpp     event,
+                         const char * event_descrip,
+-                        Service*     s);
++                        Service*     s,
++						void   *     dataPtr = NULL);
+ 
+     /** Not_Yet_Documented
+         @param deltawhen       Not_Yet_Documented
+@@ -877,7 +884,8 @@ class DaemonCore : public Service
+                         unsigned     period,
+                         Eventcpp     event,
+                         const char * event_descrip,
+-                        Service *    s);
++                        Service *    s,
++						void   *     dataPtr = NULL);
+ 
+     /** 
+         @param timeslice       Timeslice object specifying interval parameters
+@@ -889,7 +897,8 @@ class DaemonCore : public Service
+     int Register_Timer (Timeslice    timeslice,
+                         Eventcpp     event,
+                         const char * event_descrip,
+-                        Service*     s);
++                        Service*     s,
++						void   *     dataPtr = NULL);
+ 
+     /** Not_Yet_Documented
+         @param id The timer's ID
+@@ -1066,35 +1075,7 @@ class DaemonCore : public Service
+         These functions deal with
+         associating a pointer to data with a registered callback.
+     */
+-    //@{
+-    /** Set the data pointer when you're <b>inside</b> the handler
+-        function.  It will not work outside.
+-
+-        @param data The desired pointer to set...
+-        @return Not_Yet_Documented
+-    */
+-    int SetDataPtr( void *data );
+-
+-    /** "Register" a data pointer.  You want to do this immediately
+-        after you register a Command/Socket/Timer/etc.  When you enter 
+-        the handler for this registered function, the pointer you 
+-        specify will be magically available to (G|S)etDataPtr().
+-
+-        @param data The desired pointer to set...
+-        @return Not_Yet_Documented
+-    */
+-    int Register_DataPtr( void *data );
+-
+-    /** Get the data pointer when you're <b>inside</b> the handler
+-        function.  It will not work outside.  You must have done a 
+-        Register_DataPtr after the function was registered for this
+-        to work.
+ 
+-        @return The desired pointer to set...
+-    */
+-    void *GetDataPtr();
+-    //@}
+-    
+ 	/** @name Key management.
+ 	 */
+ 	//@{
+@@ -1373,8 +1354,8 @@ class DaemonCore : public Service
+     int HandleSigCommand(int command, Stream* stream);
+     int HandleReq(int socki, Stream* accepted_sock=NULL);
+ 	int HandleReq(Stream *insock, Stream* accepted_sock=NULL);
+-	int HandleReqSocketTimerHandler();
+-	int HandleReqSocketHandler(Stream *stream);
++	int HandleReqSocketTimerHandler(void *);
++	int HandleReqSocketHandler(Stream *stream, void *);
+     int HandleSig(int command, int sig);
+ 
+ 	bool RegisterSocketForHandleReq(Stream *stream);
+@@ -1411,7 +1392,8 @@ class DaemonCore : public Service
+                         const char *handler_descrip,
+                         Service* s, 
+                         DCpermission perm,
+-                        int is_cpp);
++                        int is_cpp,
++						void   *     dataPtr = NULL);
+ 
+ 		// This function is called in order to have
+ 		// TooManyRegisteredSockets() take into account an extra socket
+@@ -1697,7 +1679,7 @@ class DaemonCore : public Service
+ 
+     // methods to detect and kill hung processes
+     int HandleChildAliveCommand(int command, Stream* stream);
+-    int HungChildTimeout();
++    int HungChildTimeout(void *);
+     int SendAliveToParent();
+     unsigned int max_hang_time;
+     int send_child_alive_timer;
+diff --git a/src/condor_daemon_core.V6/condor_timer_manager.h b/src/condor_daemon_core.V6/condor_timer_manager.h
+index 244da58..119a4c4 100644
+--- a/src/condor_daemon_core.V6/condor_timer_manager.h
++++ b/src/condor_daemon_core.V6/condor_timer_manager.h
+@@ -49,10 +49,10 @@ const   int     STAR = -1;
+ /** Function, which given a pointer to Service object,
+     returns an int (C Version).
+ */
+-typedef int     (*Event)(Service*);
++typedef int     (*Event)(Service*, void *);
+ 
+ /// Service Method that returns an int (C++ Version).
+-typedef int     (Service::*Eventcpp)();
++typedef int     (Service::*Eventcpp)(void *);
+ 
+ /** Function, which given a pointer to a void* releases its 
+ 	memory (C Version).
+@@ -125,7 +125,8 @@ class TimerManager
+                  Event        event,
+                  const char * event_descrip,
+                  unsigned     period          =  0,
+-                 int          id              = -1);
++                 int          id              = -1,
++				 void         *dataPtr = NULL);
+ 
+     /** Not_Yet_Documented.
+         @param deltawhen      Not_Yet_Documented.
+@@ -142,7 +143,8 @@ class TimerManager
+                  Release      release,
+                  const char * event_descrip, 
+                  unsigned     period          =  0,
+-                 int          id              = -1);
++                 int          id              = -1,
++				 void       * dataPtr = NULL);
+ 
+ 	/** Not_Yet_Documented.
+         @param deltawhen      Not_Yet_Documented.
+@@ -156,7 +158,8 @@ class TimerManager
+                  Event        event,
+                  const char * event_descrip, 
+                  unsigned     period          =  0,
+-                 int          id              = -1);
++                 int          id              = -1,
++				 void       * dataPtr = NULL);
+ 
+     /** Not_Yet_Documented.
+         @param s              Not_Yet_Documented.
+@@ -170,7 +173,8 @@ class TimerManager
+                   Eventcpp     event,
+                   const char * event_descrip,
+                   unsigned     period          =  0,
+-                  int          id              = -1);
++                  int          id              = -1,
++				 void       * dataPtr = NULL);
+ 
+     /** Create a timer using a timeslice object to control interval.
+         @param s              Service object of which function is a member.
+@@ -183,7 +187,8 @@ class TimerManager
+                   Timeslice    timeslice,
+                   Eventcpp     event,
+                   const char * event_descrip,
+-                  int          id              = -1);
++                  int          id              = -1,
++				 void       * dataPtr = NULL);
+ 
+     /** Not_Yet_Documented.
+         @param id The ID of the timer
+@@ -226,7 +231,8 @@ class TimerManager
+                   unsigned   period          =  0,
+ 				  Timeslice  *timeslice      = NULL,
+                   int        id              = -1, 
+-                  int        is_cpp          =  0);
++                  int        is_cpp          =  0,
++				 void       * dataPtr = NULL);
+ 
+     Timer*  timer_list;
+     int     timer_ids;
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index 98320df..67da220 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -224,9 +224,6 @@ int ZZZ_always_increase() {
+ 
+ static int _condor_exit_with_exec = 0;
+ 
+-THREAD_LOCAL_STORAGE void **curr_dataptr;
+-THREAD_LOCAL_STORAGE void **curr_regdataptr;
+-
+ #ifdef HAVE_EXT_GSOAP
+ extern int soap_serve(struct soap*);
+ #endif
+@@ -263,8 +260,6 @@ DaemonCore::DaemonCore(int PidSize, int ComSize,int SigSize,
+ 		&DaemonCore::Cancel_Socket,
+ 		&DaemonCore::CallSocketHandler,
+ 		&DaemonCore::CallCommandHandler,
+-		&DaemonCore::Register_DataPtr,
+-		&DaemonCore::GetDataPtr,
+ 		(DaemonCoreSockAdapterClass::Register_Timer_fnptr)&DaemonCore::Register_Timer,
+ 		&DaemonCore::Cancel_Timer,
+ 		&DaemonCore::TooManyRegisteredSockets,
+@@ -373,9 +368,6 @@ DaemonCore::DaemonCore(int PidSize, int ComSize,int SigSize,
+ 	memset(reapTable,'\0',maxReap*sizeof(ReapEnt));
+ 	defaultReaper=-1;
+ 
+-	curr_dataptr = NULL;
+-	curr_regdataptr = NULL;
+-
+ 	send_child_alive_timer = -1;
+ 	m_want_send_child_alive = true;
+ 
+@@ -751,19 +743,19 @@ bool DaemonCore::TooManyRegisteredSockets(int fd,MyString *msg,int num_fds)
+ 
+ int	DaemonCore::Register_Socket(Stream* iosock, const char* iosock_descrip,
+ 				SocketHandler handler, const char* handler_descrip,
+-				Service* s, DCpermission perm)
++				Service* s, DCpermission perm, void *dataPtr)
+ {
+ 	return( Register_Socket(iosock, iosock_descrip, handler,
+ 							(SocketHandlercpp)NULL, handler_descrip, s,
+-							perm, FALSE) );
++							perm, FALSE, dataPtr) );
+ }
+ 
+ int	DaemonCore::Register_Socket(Stream* iosock, const char* iosock_descrip,
+ 				SocketHandlercpp handlercpp, const char* handler_descrip,
+-				Service* s, DCpermission perm)
++				Service* s, DCpermission perm, void *dataPtr)
+ {
+ 	return( Register_Socket(iosock, iosock_descrip, NULL, handlercpp,
+-							handler_descrip, s, perm, TRUE) );
++							handler_descrip, s, perm, TRUE, dataPtr) );
+ }
+ 
+ int	DaemonCore::Register_Pipe(int pipe_end, const char* pipe_descrip,
+@@ -814,38 +806,38 @@ int	DaemonCore::Reset_Reaper(int rid, const char* reap_descrip,
+ }
+ 
+ int	DaemonCore::Register_Timer(unsigned deltawhen, Event event,
+-				const char *event_descrip, Service* s)
++				const char *event_descrip, Service* s, void *dataPtr)
+ {
+-	return( t.NewTimer(s, deltawhen, event, event_descrip, 0, -1) );
++	return( t.NewTimer(s, deltawhen, event, event_descrip, 0, -1, dataPtr) );
+ }
+ 
+ int	DaemonCore::Register_Timer(unsigned deltawhen, Event event,
+-							   Release release, const char *event_descrip, Service* s)
++							   Release release, const char *event_descrip, Service* s, void *dataPtr)
+ {
+-	return( t.NewTimer(s, deltawhen, event, release, event_descrip, 0, -1) );
++	return( t.NewTimer(s, deltawhen, event, release, event_descrip, 0, -1, dataPtr) );
+ }
+ 
+ int	DaemonCore::Register_Timer(unsigned deltawhen, unsigned period,
+-				Event event, const char *event_descrip, Service* s)
++				Event event, const char *event_descrip, Service* s, void *dataPtr)
+ {
+-	return( t.NewTimer(s, deltawhen, event, event_descrip, period, -1) );
++	return( t.NewTimer(s, deltawhen, event, event_descrip, period, -1, dataPtr) );
+ }
+ 
+ int	DaemonCore::Register_Timer(unsigned deltawhen, Eventcpp eventcpp,
+-				const char *event_descrip, Service* s)
++				const char *event_descrip, Service* s, void *dataPtr)
+ {
+-	return( t.NewTimer(s, deltawhen, eventcpp, event_descrip, 0, -1) );
++	return( t.NewTimer(s, deltawhen, eventcpp, event_descrip, 0, -1, dataPtr) );
+ }
+ 
+ int	DaemonCore::Register_Timer(unsigned deltawhen, unsigned period,
+-				Eventcpp event, const char *event_descrip, Service* s )
++				Eventcpp event, const char *event_descrip, Service* s, void *dataPtr )
+ {
+-	return( t.NewTimer(s, deltawhen, event, event_descrip, period, -1) );
++	return( t.NewTimer(s, deltawhen, event, event_descrip, period, -1, dataPtr) );
+ }
+ 
+-int DaemonCore::Register_Timer (Timeslice timeslice,Eventcpp event,const char * event_descrip,Service* s)
++int DaemonCore::Register_Timer (Timeslice timeslice,Eventcpp event,const char * event_descrip,Service* s, void *dataPtr)
+ {
+-	return t.NewTimer(s, timeslice, event, event_descrip, -1 );
++	return t.NewTimer(s, timeslice, event, event_descrip, -1, dataPtr );
+ }
+ 
+ int	DaemonCore::Cancel_Timer( int id )
+@@ -927,9 +919,6 @@ int DaemonCore::Register_Command(int command, const char* command_descrip,
+ 	// Increment the counter of total number of entries
+ 	nCommand++;
+ 
+-	// Update curr_regdataptr for SetDataPtr()
+-	curr_regdataptr = &(comTable[i].data_ptr);
+-
+ 	// Conditionally dump what our table looks like
+ 	DumpCommandTable(D_FULLDEBUG | D_DAEMONCORE);
+ 
+@@ -1235,9 +1224,6 @@ int DaemonCore::Register_Signal(int sig, const char* sig_descrip,
+ 	// Increment the counter of total number of entries
+ 	nSig++;
+ 
+-	// Update curr_regdataptr for SetDataPtr()
+-	curr_regdataptr = &(sigTable[i].data_ptr);
+-
+ 	// Conditionally dump what our table looks like
+ 	DumpSigTable(D_FULLDEBUG | D_DAEMONCORE);
+ 
+@@ -1284,12 +1270,6 @@ int DaemonCore::Cancel_Signal( int sig )
+ 	// Decrement the counter of total number of entries
+ 	nSig--;
+ 
+-	// Clear any data_ptr which go to this entry we just removed
+-	if ( curr_regdataptr == &(sigTable[found].data_ptr) )
+-		curr_regdataptr = NULL;
+-	if ( curr_dataptr == &(sigTable[found].data_ptr) )
+-		curr_dataptr = NULL;
+-
+ 	// Log a message and conditionally dump what our table now looks like
+ 	dprintf(D_DAEMONCORE,
+ 					"Cancel_Signal: cancelled signal %d <%s>\n",
+@@ -1305,7 +1285,7 @@ int DaemonCore::Cancel_Signal( int sig )
+ int DaemonCore::Register_Socket(Stream *iosock, const char* iosock_descrip,
+ 				SocketHandler handler, SocketHandlercpp handlercpp,
+ 				const char *handler_descrip, Service* s, DCpermission perm,
+-				int is_cpp)
++				int is_cpp, void *dataPtr)
+ {
+     int     i;
+     int     j;
+@@ -1431,7 +1411,7 @@ int DaemonCore::Register_Socket(Stream *iosock, const char* iosock_descrip,
+ 	(*sockTable)[i].is_cpp = is_cpp;
+ 	(*sockTable)[i].perm = perm;
+ 	(*sockTable)[i].service = s;
+-	(*sockTable)[i].data_ptr = NULL;
++	(*sockTable)[i].data_ptr = dataPtr;
+ 	free_descrip((*sockTable)[i].iosock_descrip);
+ 	if ( iosock_descrip )
+ 		(*sockTable)[i].iosock_descrip = strdup(iosock_descrip);
+@@ -1453,9 +1433,6 @@ int DaemonCore::Register_Socket(Stream *iosock, const char* iosock_descrip,
+ 	if ( initial_command_sock == -1 && handler == 0 && handlercpp == 0 )
+ 		initial_command_sock = i;
+ 
+-	// Update curr_regdataptr for SetDataPtr()
+-	curr_regdataptr = &((*sockTable)[i].data_ptr);
+-
+ 	// Conditionally dump what our table looks like
+ 	DumpSocketTable(D_FULLDEBUG | D_DAEMONCORE);
+ 
+@@ -1529,12 +1506,6 @@ int DaemonCore::Cancel_Socket( Stream* insock)
+ 		return FALSE;
+ 	}
+ 
+-	// Clear any data_ptr which go to this entry we just removed
+-	if ( curr_regdataptr == &( (*sockTable)[i].data_ptr) )
+-		curr_regdataptr = NULL;
+-	if ( curr_dataptr == &( (*sockTable)[i].data_ptr) )
+-		curr_dataptr = NULL;
+-
+ 	if ((*sockTable)[i].servicing_tid == 0 ||
+ 		(*sockTable)[i].servicing_tid == CondorThreads::get_handle()->get_tid())
+ 	{
+@@ -1817,9 +1788,6 @@ int DaemonCore::Register_Pipe(int pipe_end, const char* pipe_descrip,
+ 	// Increment the counter of total number of entries
+ 	nPipe++;
+ 
+-	// Update curr_regdataptr for SetDataPtr()
+-	curr_regdataptr = &((*pipeTable)[i].data_ptr);
+-
+ #ifndef WIN32
+ 	// On Unix, pipe fds are given to select.  So
+ 	// if we are a worker thread, wake up select in the main thread
+@@ -1876,12 +1844,6 @@ int DaemonCore::Cancel_Pipe( int pipe_end )
+ 
+ 	// Remove entry at index i by moving the last one in the table here.
+ 
+-	// Clear any data_ptr which go to this entry we just removed
+-	if ( curr_regdataptr == &( (*pipeTable)[i].data_ptr) )
+-		curr_regdataptr = NULL;
+-	if ( curr_dataptr == &( (*pipeTable)[i].data_ptr) )
+-		curr_dataptr = NULL;
+-
+ 	// Log a message
+ 	dprintf(D_DAEMONCORE,
+ 			"Cancel_Pipe: cancelled pipe end %d <%s> (entry=%d)\n",
+@@ -2235,9 +2197,6 @@ int DaemonCore::Register_Reaper(int rid, const char* reap_descrip,
+ 	else
+ 		reapTable[i].handler_descrip = EMPTY_DESCRIP;
+ 
+-	// Update curr_regdataptr for SetDataPtr()
+-	curr_regdataptr = &(reapTable[i].data_ptr);
+-
+ 	// Conditionally dump what our table looks like
+ 	DumpReapTable(D_FULLDEBUG | D_DAEMONCORE);
+ 
+@@ -2787,8 +2746,6 @@ void DaemonCore::Driver()
+ 					if ( sigTable[i].is_pending && !sigTable[i].is_blocked ) {
+ 						// call handler, but first clear pending flag
+ 						sigTable[i].is_pending = 0;
+-						// Update curr_dataptr for GetDataPtr()
+-						curr_dataptr = &(sigTable[i].data_ptr);
+ 						// log a message
+ 						dprintf(D_DAEMONCORE,
+ 										"Calling Handler <%s> for Signal %d <%s>\n",
+@@ -2799,8 +2756,6 @@ void DaemonCore::Driver()
+ 							(sigTable[i].service->*(sigTable[i].handlercpp))(sigTable[i].num);
+ 						else
+ 							(*sigTable[i].handler)(sigTable[i].service,sigTable[i].num);
+-						// Clear curr_dataptr
+-						curr_dataptr = NULL;
+ 						// Make sure we didn't leak our priv state
+ 						CheckPrivState();
+ 					}
+@@ -3135,16 +3090,14 @@ void DaemonCore::Driver()
+ 									pipe_end,
+ 									(*pipeTable)[i].pipe_descrip);
+ 
+-						// Update curr_dataptr for GetDataPtr()
+-						curr_dataptr = &( (*pipeTable)[i].data_ptr);
+ 						recheck_status = true;
+ 						if ( (*pipeTable)[i].handler )
+ 							// a C handler
+-							result = (*( (*pipeTable)[i].handler))( (*pipeTable)[i].service, pipe_end);
++							result = (*( (*pipeTable)[i].handler))( (*pipeTable)[i].service, pipe_end, (*pipeTable)[i].data_ptr);
+ 						else
+ 						if ( (*pipeTable)[i].handlercpp )
+ 							// a C++ handler
+-							result = ((*pipeTable)[i].service->*( (*pipeTable)[i].handlercpp))(pipe_end);
++							result = ((*pipeTable)[i].service->*( (*pipeTable)[i].handlercpp))(pipe_end, (*pipeTable)[i].data_ptr);
+ 						else
+ 						{
+ 							// no handler registered
+@@ -3158,9 +3111,6 @@ void DaemonCore::Driver()
+ 						// Make sure we didn't leak our priv state
+ 						CheckPrivState();
+ 
+-						// Clear curr_dataptr
+-						curr_dataptr = NULL;
+-
+ #ifdef WIN32
+ 						// Ask a pid watcher thread to watch over this pipe
+ 						// handle.  Note that if Cancel_Pipe() was called by the
+@@ -3356,17 +3306,14 @@ DaemonCore::CallSocketHandler_worker( int i, bool default_to_HandleCommand, Stre
+ 			dprintf(D_COMMAND, "Calling Handler <%s> (%d)\n", handlerName,i);
+ 		}
+ 
+-		// Update curr_dataptr for GetDataPtr()
+-	curr_dataptr = &( (*sockTable)[i].data_ptr);
+-
+ 	if ( (*sockTable)[i].handler ) {
+ 			// a C handler
+-		result = (*( (*sockTable)[i].handler))( (*sockTable)[i].service, (*sockTable)[i].iosock);
++		result = (*( (*sockTable)[i].handler))( (*sockTable)[i].service, (*sockTable)[i].iosock, (*sockTable)[i].data_ptr);
+ 		dprintf(D_COMMAND, "Return from Handler <%s>\n", handlerName);
+ 		free(handlerName);
+ 	} else if ( (*sockTable)[i].handlercpp ) {
+ 			// a C++ handler
+-		result = ((*sockTable)[i].service->*( (*sockTable)[i].handlercpp))((*sockTable)[i].iosock);
++		result = ((*sockTable)[i].service->*( (*sockTable)[i].handlercpp))((*sockTable)[i].iosock, (*sockTable)[i].data_ptr);
+ 		dprintf(D_COMMAND, "Return from Handler <%s>\n", handlerName);
+ 		free(handlerName);
+ 	}
+@@ -3386,9 +3333,6 @@ DaemonCore::CallSocketHandler_worker( int i, bool default_to_HandleCommand, Stre
+ 		// Make sure we didn't leak our priv state
+ 	CheckPrivState();
+ 
+-		// Clear curr_dataptr
+-	curr_dataptr = NULL;
+-
+ 		// Check result from socket handler, and if
+ 		// not KEEP_STREAM, then
+ 		// delete the socket and the socket handler.
+@@ -3446,9 +3390,6 @@ DaemonCore::CallCommandHandler(int req,Stream *stream,bool delete_stream)
+ 	bool reqFound = CommandNumToTableIndex(req,&index);
+ 
+ 	if ( reqFound ) {
+-		// call the handler function; first curr_dataptr for GetDataPtr()
+-		curr_dataptr = &(comTable[index].data_ptr);
+-
+ 		if ( comTable[index].is_cpp ) {
+ 			// the handler is c++ and belongs to a 'Service' class
+ 			if ( comTable[index].handlercpp )
+@@ -3459,8 +3400,6 @@ DaemonCore::CallCommandHandler(int req,Stream *stream,bool delete_stream)
+ 				result = (*(comTable[index].handler))(comTable[index].service,req,stream);
+ 		}
+ 
+-		// clear curr_dataptr
+-		curr_dataptr = NULL;
+ 	}
+ 
+ 	if ( delete_stream && result != KEEP_STREAM ) {
+@@ -3555,7 +3494,7 @@ int DaemonCore::ServiceCommandSocket()
+ }
+ 
+ 
+-int DaemonCore::HandleReqSocketTimerHandler()
++int DaemonCore::HandleReqSocketTimerHandler(void *dataPtr)
+ {
+ 	Stream *stream = NULL;
+ 
+@@ -3565,7 +3504,7 @@ int DaemonCore::HandleReqSocketTimerHandler()
+ 	*/
+ 
+ 		// get the socket stream we've been waiting for.
+-	stream = (Stream*) GetDataPtr();
++	stream = (Stream*) dataPtr;
+ 	ASSERT(stream);
+ 	ASSERT( stream->type() == Stream::reli_sock );
+ 
+@@ -3581,7 +3520,7 @@ int DaemonCore::HandleReqSocketTimerHandler()
+ }
+ 
+ 
+-int DaemonCore::HandleReqSocketHandler(Stream *stream)
++int DaemonCore::HandleReqSocketHandler(Stream *stream, void *dataPtr)
+ {
+ 	int* timeout_tid = NULL;
+ 
+@@ -3591,7 +3530,7 @@ int DaemonCore::HandleReqSocketHandler(Stream *stream)
+ 		for a timeout, and handle the request.
+ 	*/
+ 
+-	timeout_tid = (int *) GetDataPtr();
++	timeout_tid = (int *) dataPtr;
+ 	ASSERT(timeout_tid);
+ 
+ 	Cancel_Timer(*timeout_tid);
+@@ -3631,35 +3570,28 @@ DaemonCore::RegisterSocketForHandleReq(Stream *stream)
+ 		200,		
+ 		(Eventcpp) &DaemonCore::HandleReqSocketTimerHandler,
+ 		"DaemonCore::HandleReqSocketTimerHandler",
+-		this);
+-		// stash the socket with the timer 
+-	daemonCore->Register_DataPtr((void*)stream);
+-		// now register the socket itself.  note we needed to set the
+-		// timer first because we want to register the timer id with 
+-		// the socket handler, and Register_DataPtr only effects the
+-		// most recent event handler registered.
++		this, (void *)stream);
++
++		// now register the socket itself.
++	int* stashed_tid = new int;
++	*stashed_tid = tid;
+ 	int tmp_result = daemonCore->Register_Socket(stream,
+ 		"Incoming command",
+ 		(SocketHandlercpp) &DaemonCore::HandleReqSocketHandler,
+ 		"DaemonCore::HandleReqSocketHandler",
+-		this);
+-	if ( tmp_result >= 0 )  {	
+-			// on socket register success
+-		int* stashed_tid = new int;
+-		*stashed_tid = tid;
+-			// register the timer id with the sock, so we can cancel it.
+-		daemonCore->Register_DataPtr((void*)stashed_tid);
+-			// return -- we'll come back when there is something to read
+-			// use KEEP_STREAM so the socket we just registered isn't closed.
+-		return true;
+-	} else {
++		this, ALLOW, stashed_tid);
++
++	if ( tmp_result < 0 )  {	
+ 			// on socket register failure
+ 			// just cancel the timeout and fall-thru (i.e. service
+ 			// the request synchronously with a 1 second timeout
+ 			// reading the command int).
+ 		daemonCore->Cancel_Timer(tid);
++		return false;
+ 	}
+-	return false;
++		// return -- we'll come back when there is something to read
++		// use KEEP_STREAM so the socket we just registered isn't closed.
++		return true;
+ }
+ 
+ void
+@@ -5539,45 +5471,6 @@ int DaemonCore::Continue_Process(pid_t pid)
+ #endif
+ }
+ 
+-int DaemonCore::SetDataPtr(void *dptr)
+-{
+-	// note: curr_dataptr is updated by daemon core
+-	// whenever a register_* or a hanlder invocation takes place
+-
+-	if ( curr_dataptr == NULL ) {
+-		return FALSE;
+-	}
+-
+-	*curr_dataptr = dptr;
+-
+-	return TRUE;
+-}
+-
+-int DaemonCore::Register_DataPtr(void *dptr)
+-{
+-	// note: curr_dataptr is updated by daemon core
+-	// whenever a register_* or a hanlder invocation takes place
+-
+-	if ( curr_regdataptr == NULL ) {
+-		return FALSE;
+-	}
+-
+-	*curr_regdataptr = dptr;
+-
+-	return TRUE;
+-}
+-
+-void *DaemonCore::GetDataPtr()
+-{
+-	// note: curr_dataptr is updated by daemon core
+-	// whenever a register_* or a hanlder invocation takes place
+-
+-	if ( curr_dataptr == NULL )
+-		return NULL;
+-
+-	return ( *curr_dataptr );
+-}
+-
+ #if defined(WIN32)
+ // WinNT Helper function: given a C runtime library file descriptor,
+ // set whether or not the underlying WIN32 handle should be
+@@ -8804,9 +8697,6 @@ DaemonCore::CallReaper(int reaper_id, char const *whatexited, pid_t pid, int exi
+ 		return;
+ 	}
+ 
+-		// Set curr_dataptr for Get/SetDataPtr()
+-	curr_dataptr = &(reaper->data_ptr);
+-
+ 		// Log a message
+ 	char *hdescrip = reaper->handler_descrip;
+ 	if ( !hdescrip ) {
+@@ -8831,9 +8721,6 @@ DaemonCore::CallReaper(int reaper_id, char const *whatexited, pid_t pid, int exi
+ 
+ 		// Make sure we didn't leak our priv state
+ 	CheckPrivState();
+-
+-	// Clear curr_dataptr
+-	curr_dataptr = NULL;
+ }
+ 
+ // This function gets calls with the pid of a process which just exited.
+@@ -9022,10 +8909,9 @@ int DaemonCore::HandleChildAliveCommand(int, Stream* stream)
+ 		pidentry->hung_tid =
+ 			Register_Timer(timeout_secs,
+ 							(Eventcpp) &DaemonCore::HungChildTimeout,
+-							"DaemonCore::HungChildTimeout", this);
++							"DaemonCore::HungChildTimeout", this, &pidentry->pid);
+ 		ASSERT( pidentry->hung_tid != -1 );
+ 
+-		Register_DataPtr( &pidentry->pid);
+ 	}
+ 
+ 	pidentry->was_not_responding = FALSE;
+@@ -9037,14 +8923,14 @@ int DaemonCore::HandleChildAliveCommand(int, Stream* stream)
+ 
+ }
+ 
+-int DaemonCore::HungChildTimeout()
++int DaemonCore::HungChildTimeout(void *dataPtr)
+ {
+ 	pid_t hung_child_pid;
+ 	pid_t *hung_child_pid_ptr;
+ 	PidEntry *pidentry;
+ 
+ 	/* get the pid out of the allocated memory it was placed into */
+-	hung_child_pid_ptr = (pid_t*)GetDataPtr();
++	hung_child_pid_ptr = (pid_t*)dataPtr;
+ 	hung_child_pid = *hung_child_pid_ptr;
+ 
+ 	if ((pidTable->lookup(hung_child_pid, pidentry) < 0)) {
+diff --git a/src/condor_daemon_core.V6/timer_manager.cpp b/src/condor_daemon_core.V6/timer_manager.cpp
+index a19aa7c..24d5677 100644
+--- a/src/condor_daemon_core.V6/timer_manager.cpp
++++ b/src/condor_daemon_core.V6/timer_manager.cpp
+@@ -38,9 +38,6 @@ static	TimerManager*	_t = NULL;
+ 	*/	
+ const int MAX_FIRES_PER_TIMEOUT = 3;
+ 
+-extern THREAD_LOCAL_STORAGE void **curr_dataptr;
+-extern THREAD_LOCAL_STORAGE void **curr_regdataptr;
+-
+ 
+ TimerManager::TimerManager()
+ {
+@@ -61,37 +58,37 @@ TimerManager::~TimerManager()
+ }
+ 
+ int TimerManager::NewTimer(Service* s, unsigned deltawhen, Event event, const char* event_descrip,
+-						   unsigned period, int id)
++						   unsigned period, int id, void *dataPtr)
+ {
+-	return( NewTimer(s,deltawhen,event,(Eventcpp)NULL,(Release)NULL,(Releasecpp)NULL,event_descrip,period,NULL,id,0) );
++	return( NewTimer(s,deltawhen,event,(Eventcpp)NULL,(Release)NULL,(Releasecpp)NULL,event_descrip,period,NULL,id,0, dataPtr) );
+ }
+ 
+ int TimerManager::NewTimer(Service* s, unsigned deltawhen, Event event, 
+ 						   Release release, const char* event_descrip,
+-						   unsigned period, int id)
++						   unsigned period, int id, void *dataPtr)
+ {
+-	return( NewTimer(s,deltawhen,event,(Eventcpp)NULL,release,(Releasecpp)NULL,event_descrip,period,NULL,id,0) );
++	return( NewTimer(s,deltawhen,event,(Eventcpp)NULL,release,(Releasecpp)NULL,event_descrip,period,NULL,id,0, dataPtr) );
+ }
+ 
+ int TimerManager::NewTimer(unsigned deltawhen, Event event, const char* event_descrip,
+-						   unsigned period, int id)
++						   unsigned period, int id, void *dataPtr)
+ {
+-	return( NewTimer((Service *)NULL,deltawhen,event,(Eventcpp)NULL,(Release)NULL,(Releasecpp)NULL,event_descrip,period,NULL,id,0) );
++	return( NewTimer((Service *)NULL,deltawhen,event,(Eventcpp)NULL,(Release)NULL,(Releasecpp)NULL,event_descrip,period,NULL,id,0, dataPtr) );
+ }
+ 
+ int TimerManager::NewTimer(Service* s, unsigned deltawhen, Eventcpp event, const char* event_descrip,
+-						   unsigned period, int id)
++						   unsigned period, int id, void *dataPtr)
+ {
+ 	if ( !s ) {
+ 		dprintf( D_DAEMONCORE,"DaemonCore NewTimer() called with c++ pointer & NULL Service*\n");
+ 		return -1;
+ 	}
+-	return( NewTimer(s,deltawhen,(Event)NULL,event,(Release)NULL,(Releasecpp)NULL,event_descrip,period,NULL,id,1) );
++	return( NewTimer(s,deltawhen,(Event)NULL,event,(Release)NULL,(Releasecpp)NULL,event_descrip,period,NULL,id,1, dataPtr) );
+ }
+ 
+-int TimerManager::NewTimer (Service* s,Timeslice timeslice,Eventcpp event,const char * event_descrip,int id)
++int TimerManager::NewTimer (Service* s,Timeslice timeslice,Eventcpp event,const char * event_descrip,int id, void *dataPtr)
+ {
+-	return NewTimer(s,0,(Event)NULL,event,(Release)NULL,(Releasecpp)NULL,event_descrip,0,&timeslice,id,1);
++	return NewTimer(s,0,(Event)NULL,event,(Release)NULL,(Releasecpp)NULL,event_descrip,0,&timeslice,id,1, dataPtr);
+ }
+ 
+ 
+@@ -99,7 +96,7 @@ int TimerManager::NewTimer (Service* s,Timeslice timeslice,Eventcpp event,const
+ // event instead of periodical
+ int TimerManager::NewTimer(Service* s, unsigned deltawhen, Event event, Eventcpp eventcpp,
+ 		Release release, Releasecpp releasecpp, const char *event_descrip, unsigned period, 
+-		Timeslice *timeslice,int id, int is_cpp)
++		Timeslice *timeslice,int id, int is_cpp, void *dataPtr)
+ {
+ 	Timer*		new_timer;
+ 	Timer*		timer_ptr;
+@@ -133,7 +130,7 @@ int TimerManager::NewTimer(Service* s, unsigned deltawhen, Event event, Eventcpp
+ 	} else {
+ 		new_timer->when = deltawhen + time(NULL);
+ 	}
+-	new_timer->data_ptr = NULL;
++	new_timer->data_ptr = dataPtr;
+ 	if ( event_descrip ) 
+ 		new_timer->event_descrip = strdup(event_descrip);
+ 	else
+@@ -190,9 +187,6 @@ int TimerManager::NewTimer(Service* s, unsigned deltawhen, Event event, Eventcpp
+ 
+ 	DumpTimerList(D_DAEMONCORE | D_FULLDEBUG);
+ 
+-	// Update curr_regdataptr for SetDataPtr()
+-	curr_regdataptr = &(new_timer->data_ptr);
+-
+ 	dprintf(D_DAEMONCORE,"leaving DaemonCore NewTimer, id=%d\n",new_timer->id);
+ 
+ 	return	new_timer->id;
+@@ -209,7 +203,6 @@ int TimerManager::ResetTimer(int id, unsigned when, unsigned period)
+ 	int				is_cpp;
+ 	char*			event_descrip;
+ 	void*			data_ptr;
+-	int				reset_dataptr = FALSE;
+ 
+ 	dprintf( D_DAEMONCORE, "In reset_timer(), id=%d, time=%d, period=%d\n",id,when,period);
+ 	if (timer_list == NULL) {
+@@ -240,21 +233,11 @@ int TimerManager::ResetTimer(int id, unsigned when, unsigned period)
+ 	is_cpp = timer_ptr->is_cpp;
+ 	event_descrip = timer_ptr->event_descrip;
+ 	data_ptr = timer_ptr->data_ptr;
+-	if ( curr_dataptr == &(timer_ptr->data_ptr) )
+-		reset_dataptr = TRUE;
+ 
+ 	// note that this call to NewTimer() will first call CancelTimer on the tid, 
+ 	// then create a new timer with the same tid.
+ 	if ( NewTimer(s, when, handler, handlercpp, release, releasecpp, 
+-			event_descrip, period, NULL, id, is_cpp) != -1 ) {
+-		// and dont forget to renew the users data_ptr
+-		daemonCore->Register_DataPtr(data_ptr);
+-		// and if a handler was resetting _its own_ tid entry, reset curr_dataptr to new value
+-		if ( reset_dataptr == TRUE )
+-			curr_dataptr = curr_regdataptr;
+-		// now clear curr_regdataptr; the above NewTimer should appear "transparent"
+-		// as far as the user code/API is concerned
+-		curr_regdataptr = NULL;
++			event_descrip, period, NULL, id, is_cpp, data_ptr) != -1 ) {
+ 		// set flag letting Timeout() know if a timer handler reset itself.  note
+ 		// this is probably redundant since our call to NewTimer above called
+ 		// CancelTimer, and CancelTimer already set the did_reset flag.  But
+@@ -332,13 +315,6 @@ int TimerManager::CancelTimer(int id, bool release_data_ptr /* = true */ )
+ 		}
+ 	}
+ 
+-	// set curr_dataptr to NULL if a handler is removing itself. 
+-	if ( curr_dataptr == &(timer_ptr->data_ptr) )
+-		curr_dataptr = NULL;
+-	if ( curr_regdataptr == &(timer_ptr->data_ptr) )
+-		curr_regdataptr = NULL;
+-
+-
+ 	delete timer_ptr;
+ 	
+ 	// set flag letting Timeout() know if a timer handler reset itself
+@@ -474,9 +450,6 @@ TimerManager::Timeout()
+ 		Timeslice timeslice = timer_list->timeslice;
+ 		bool has_timeslice = timer_list->has_timeslice;
+ 
+-		// Update curr_dataptr for GetDataPtr()
+-		curr_dataptr = &(timer_list->data_ptr);
+-
+ 		// Initialize our flag so we know if ResetTimer was called.
+ 		did_reset = current_id;
+ 
+@@ -496,9 +469,9 @@ TimerManager::Timeout()
+ 		// by service*.  If we were told the handler is a c function, we call
+ 		// it and pass the service* as a parameter.
+ 		if ( timer_list->is_cpp ) {
+-			(s->*handlercpp)();			// typedef int (*Eventcpp)(int)
++			(s->*handlercpp)(timer_list->data_ptr);			// typedef int (*Eventcpp)(int)
+ 		} else {
+-			(*handler)(s);				// typedef int (*Event)(Service*,int)
++			(*handler)(s,timer_list->data_ptr);				// typedef int (*Event)(Service*,int)
+ 		}
+ 
+ 		if( has_timeslice ) {
+@@ -519,9 +492,6 @@ TimerManager::Timeout()
+ 		// Make sure we didn't leak our priv state
+ 		daemonCore->CheckPrivState();
+ 
+-		// Clear curr_dataptr
+-		curr_dataptr = NULL;
+-
+ 		/* Watch out for cancel_timer() called in the users handler with only 
+ 		 * one item in list which makes timer_list go to NULL */
+ 		if (timer_list != NULL  && did_reset == current_id) {
+@@ -533,12 +503,7 @@ TimerManager::Timeout()
+ 				// will first call CancelTimer on the expired timer, then renew it.
+ 				if ( NewTimer(s, period, handler, handlercpp, release, releasecpp,
+ 						event_descrip, period, has_timeslice ? &timeslice : NULL, 
+-						current_id, is_cpp) != -1 ) {
+-					// and dont forget to renew the users data_ptr
+-					daemonCore->Register_DataPtr(data_ptr);
+-					// now clear curr_dataptr; the above NewTimer should appear "transparent"
+-					// as far as the user code/API is concerned
+-					curr_dataptr = NULL;
++						current_id, is_cpp, data_ptr) != -1 ) {
+ 				}
+ 			} else {
+ 				// timer is not perodic; it is just a one-time event.  we just called
+diff --git a/src/condor_examples/condor_config.generic b/src/condor_examples/condor_config.generic
+index 3a3fad4..862ef07 100644
+--- a/src/condor_examples/condor_config.generic
++++ b/src/condor_examples/condor_config.generic
+@@ -2372,4 +2372,4 @@ LeaseManager.CLASSAD_LOG	= $(SPOOL)/LeaseManagerState
+ # Arguments to ssh-keygen
+ # %f --> key file to generate
+ # %% --> %
+-#SSH_TO_JOB_SSH_KEYGEN_ARGS = "-N '' -C '' -q -f %f -t rsa"
++#SSH_TO_JOB_SSH_KEYGEN_ARGS = "-N '' -C '' -q -f %f"
+diff --git a/src/condor_includes/daemon_core_sock_adapter.h b/src/condor_includes/daemon_core_sock_adapter.h
+index 7b3979e..2cbd533 100644
+--- a/src/condor_includes/daemon_core_sock_adapter.h
++++ b/src/condor_includes/daemon_core_sock_adapter.h
+@@ -33,13 +33,11 @@
+ 
+ class DaemonCoreSockAdapterClass {
+  public:
+-	typedef int (DaemonCore::*Register_Socket_fnptr)(Stream*,const char*,SocketHandlercpp,const char*,Service*,DCpermission);
++	typedef int (DaemonCore::*Register_Socket_fnptr)(Stream*,const char*,SocketHandlercpp,const char*,Service*,DCpermission, void *);
+ 	typedef int (DaemonCore::*Cancel_Socket_fnptr)( Stream *sock );
+ 	typedef void (DaemonCore::*CallSocketHandler_fnptr)( Stream *sock, bool default_to_HandleCommand );
+ 	typedef int (DaemonCore::*CallCommandHandler_fnptr)( int cmd, Stream *stream, bool delete_stream);
+-    typedef int (DaemonCore::*Register_DataPtr_fnptr)( void *data );
+-    typedef void *(DaemonCore::*GetDataPtr_fnptr)();
+-	typedef int (DaemonCore::*Register_Timer_fnptr)(unsigned deltawhen,Eventcpp event,const char * event_descrip,Service* s);
++	typedef int (DaemonCore::*Register_Timer_fnptr)(unsigned deltawhen,Eventcpp event,const char * event_descrip,Service* s, void *);
+ 	typedef int (DaemonCore::*Cancel_Timer_fnptr)(int id);
+ 	typedef bool (DaemonCore::*TooManyRegisteredSockets_fnptr)(int fd,MyString *msg,int num_fds);
+ 	typedef void (DaemonCore::*incrementPendingSockets_fnptr)();
+@@ -63,8 +61,6 @@ class DaemonCoreSockAdapterClass {
+ 		Cancel_Socket_fnptr Cancel_Socket_fptr,
+ 		CallSocketHandler_fnptr CallSocketHandler_fptr,
+ 		CallCommandHandler_fnptr CallCommandHandler_fptr,
+-		Register_DataPtr_fnptr Register_DataPtr_fptr,
+-		GetDataPtr_fnptr GetDataPtrFun_fptr,
+ 		Register_Timer_fnptr Register_Timer_fptr,
+ 		Cancel_Timer_fnptr Cancel_Timer_fptr,
+ 		TooManyRegisteredSockets_fnptr TooManyRegisteredSockets_fptr,
+@@ -78,8 +74,6 @@ class DaemonCoreSockAdapterClass {
+ 		m_Cancel_Socket_fnptr = Cancel_Socket_fptr;
+ 		m_CallSocketHandler_fnptr = CallSocketHandler_fptr;
+ 		m_CallCommandHandler_fnptr = CallCommandHandler_fptr;
+-		m_Register_DataPtr_fnptr = Register_DataPtr_fptr;
+-		m_GetDataPtr_fnptr = GetDataPtrFun_fptr;
+ 		m_Register_Timer_fnptr = Register_Timer_fptr;
+ 		m_Cancel_Timer_fnptr = Cancel_Timer_fptr;
+ 		m_TooManyRegisteredSockets_fnptr = TooManyRegisteredSockets_fptr;
+@@ -97,8 +91,6 @@ class DaemonCoreSockAdapterClass {
+ 	Cancel_Socket_fnptr m_Cancel_Socket_fnptr;
+ 	CallSocketHandler_fnptr m_CallSocketHandler_fnptr;
+ 	CallCommandHandler_fnptr m_CallCommandHandler_fnptr;
+-	Register_DataPtr_fnptr m_Register_DataPtr_fnptr;
+-	GetDataPtr_fnptr m_GetDataPtr_fnptr;
+ 	Register_Timer_fnptr m_Register_Timer_fnptr;
+ 	Cancel_Timer_fnptr m_Cancel_Timer_fnptr;
+ 	TooManyRegisteredSockets_fnptr m_TooManyRegisteredSockets_fnptr;
+@@ -112,10 +104,11 @@ class DaemonCoreSockAdapterClass {
+                          SocketHandlercpp     handlercpp,
+                          const char *         handler_descrip,
+                          Service*             s,
+-                         DCpermission         perm = ALLOW)
++                         DCpermission         perm = ALLOW,
++						 void *               dataPtr = NULL)
+ 	{
+ 		ASSERT(m_daemonCore);
+-		return (m_daemonCore->*m_Register_Socket_fnptr)(iosock,iosock_descrip,handlercpp,handler_descrip,s,perm);
++		return (m_daemonCore->*m_Register_Socket_fnptr)(iosock,iosock_descrip,handlercpp,handler_descrip,s,perm, dataPtr);
+ 	}
+ 
+ 	int Cancel_Socket( Stream *stream )
+@@ -136,27 +129,19 @@ class DaemonCoreSockAdapterClass {
+ 		return (m_daemonCore->*m_CallCommandHandler_fnptr)(cmd,stream,delete_stream);
+ 	}
+ 
+-    int Register_DataPtr( void *data )
+-	{
+-		ASSERT(m_daemonCore);
+-		return (m_daemonCore->*m_Register_DataPtr_fnptr)(data);
+-	}
+-    void *GetDataPtr()
+-	{
+-		ASSERT(m_daemonCore);
+-		return (m_daemonCore->*m_GetDataPtr_fnptr)();
+-	}
+     int Register_Timer (unsigned     deltawhen,
+                         Eventcpp        event,
+                         const char * event_descrip, 
+-                        Service*     s = NULL)
++                        Service*     s = NULL,
++						void         *dataPtr = NULL)
+ 	{
+ 		ASSERT(m_daemonCore);
+ 		return (m_daemonCore->*m_Register_Timer_fnptr)(
+ 			deltawhen,
+ 			event,
+ 			event_descrip,
+-			s);
++			s,
++			dataPtr);
+ 	}
+     int Cancel_Timer (int id)
+ 	{
+diff --git a/src/condor_io/condor_secman.cpp b/src/condor_io/condor_secman.cpp
+index a2f44bd..479ac9d 100644
+--- a/src/condor_io/condor_secman.cpp
++++ b/src/condor_io/condor_secman.cpp
+@@ -964,7 +964,7 @@ class SecManStartCommand: Service, public ClassyCountedPtr {
+ 
+ 		// This is where we get called back when a
+ 		// non-blocking socket operation finishes.
+-	int SocketCallback( Stream *stream );
++	int SocketCallback( Stream *stream, void * );
+ };
+ 
+ StartCommandResult
+@@ -2265,7 +2265,7 @@ SecManStartCommand::WaitForSocketCallback()
+ }
+ 
+ int
+-SecManStartCommand::SocketCallback( Stream *stream )
++SecManStartCommand::SocketCallback( Stream *stream, void *)
+ {
+ 	daemonCoreSockAdapter.Cancel_Socket( stream );
+ 
+diff --git a/src/condor_schedd.V6/grid_universe.cpp b/src/condor_schedd.V6/grid_universe.cpp
+index 09cef2a..ec6f448 100644
+--- a/src/condor_schedd.V6/grid_universe.cpp
++++ b/src/condor_schedd.V6/grid_universe.cpp
+@@ -137,8 +137,7 @@ GridUniverseLogic::JobAdded(const char* owner, const char* domain,
+ 	if ( node->add_timer_id == -1 ) {  // == -1 means no timer set
+ 		node->add_timer_id = daemonCore->Register_Timer(job_added_delay,
+ 			(TimerHandler) &GridUniverseLogic::SendAddSignal,
+-			"GridUniverseLogic::SendAddSignal");
+-		daemonCore->Register_DataPtr(node);
++			"GridUniverseLogic::SendAddSignal", NULL, (void *)node);
+ 	}
+ 	
+ 
+@@ -163,20 +162,19 @@ GridUniverseLogic::JobRemoved(const char* owner, const char* domain,
+ 	if ( node->add_timer_id == -1 ) {  // == -1 means no timer set
+ 		node->remove_timer_id = daemonCore->Register_Timer(job_removed_delay,
+ 			(TimerHandler) &GridUniverseLogic::SendRemoveSignal,
+-			"GridUniverseLogic::SendRemoveSignal");
+-		daemonCore->Register_DataPtr(node);
++			"GridUniverseLogic::SendRemoveSignal", NULL, (void *)node);
+ 	}
+ 
+ 	return;
+ }
+ 
+ int
+-GridUniverseLogic::SendAddSignal(Service *)
++GridUniverseLogic::SendAddSignal(Service *, void *dataPtr)
+ {
+ 	// This method is called via a DC Timer set in JobAdded method
+ 
+ 	// First get our gridmanager node
+-	gman_node_t * node = (gman_node_t *)daemonCore->GetDataPtr();
++	gman_node_t * node = (gman_node_t *)dataPtr;
+ 	ASSERT(node);
+ 
+ 	// Record in the node that there is no outstanding timer set anymore
+@@ -191,12 +189,12 @@ GridUniverseLogic::SendAddSignal(Service *)
+ }
+ 
+ int
+-GridUniverseLogic::SendRemoveSignal(Service *)
++GridUniverseLogic::SendRemoveSignal(Service *, void *dataPtr)
+ {
+ 	// This method is called via a DC Timer set in JobRemoved method
+ 
+ 	// First get our gridmanager node
+-	gman_node_t * node = (gman_node_t *)daemonCore->GetDataPtr();
++	gman_node_t * node = (gman_node_t *)dataPtr;
+ 	ASSERT(node);
+ 
+ 	// Record in the node that there is no outstanding timer set anymore
+@@ -614,8 +612,7 @@ GridUniverseLogic::StartOrFindGManager(const char* owner, const char* domain,
+ 	if ( gman_node->add_timer_id == -1 ) {  // == -1 means no timer set
+ 		gman_node->add_timer_id = daemonCore->Register_Timer(job_added_delay,
+ 			(TimerHandler) &GridUniverseLogic::SendAddSignal,
+-			"GridUniverseLogic::SendAddSignal");
+-		daemonCore->Register_DataPtr(gman_node);
++			"GridUniverseLogic::SendAddSignal", NULL, (void *)gman_node);
+ 	}
+ 
+ 	// All done
+diff --git a/src/condor_schedd.V6/grid_universe.h b/src/condor_schedd.V6/grid_universe.h
+index dca47bb..972ee71 100644
+--- a/src/condor_schedd.V6/grid_universe.h
++++ b/src/condor_schedd.V6/grid_universe.h
+@@ -69,8 +69,8 @@ class GridUniverseLogic : public Service
+ 				int cluster, int proc);
+ 
+ 		// SendAddSignal and SendRemoveSignal are DC Timer Event handlers
+-		static int SendAddSignal(Service *);
+-		static int SendRemoveSignal(Service *);
++		static int SendAddSignal(Service *, void *);
++		static int SendRemoveSignal(Service *, void *);
+ 
+ 		// given a pointer to a gman_node_t, return path to a scratch
+ 		// directory -- note: caller must call delete [] on returned pointer
+diff --git a/src/condor_schedd.V6/soap_scheddStub.cpp b/src/condor_schedd.V6/soap_scheddStub.cpp
+index 7998609..8046242 100644
+--- a/src/condor_schedd.V6/soap_scheddStub.cpp
++++ b/src/condor_schedd.V6/soap_scheddStub.cpp
+@@ -177,7 +177,7 @@ extendTransaction(const struct condor__Transaction *transaction)
+ }
+ 
+ static int
+-transtimeout()
++transtimeout(void *dataPtr)
+ {
+ 	struct condor__abortTransactionResponse result;
+ 
+@@ -186,7 +186,7 @@ transtimeout()
+ 	condor__Transaction transaction;
+ 
+ 		// transaction info is stored in the daemonCore dataptr
+-	void *info = daemonCore->GetDataPtr();
++	void *info = dataPtr;
+ 	ASSERT(info);
+ 	memcpy(&transaction,info,sizeof(condor__Transaction));
+ 	free(info);
+@@ -481,15 +481,14 @@ condor__beginTransaction(struct soap *soap,
+ 		goto return_from_stub;
+ 	}
+ 
++	intPtr = (void*) malloc(sizeof(struct condor__Transaction));	
++	memcpy(intPtr,transaction,sizeof(condor__Transaction));
+ 
+ 	trans_timer_id =
+ 		daemonCore->Register_Timer(duration,
+ 								   (TimerHandler)&transtimeout,
+ 								   (TimerRelease)&release_data,
+-								   "condor_transtimeout");
+-	intPtr = (void*) malloc(sizeof(struct condor__Transaction));	
+-	memcpy(intPtr,transaction,sizeof(condor__Transaction));
+-	daemonCore->Register_DataPtr(intPtr);	// register the transaction id info
++								   "condor_transtimeout", NULL, intPtr);
+ 
+ return_from_stub:
+ 	stub_suffix("beginTransaction", soap, entry, result.response.status);
+diff --git a/src/condor_schedd.V6/tdman.cpp b/src/condor_schedd.V6/tdman.cpp
+index 97e1e64..c082e9a 100644
+--- a/src/condor_schedd.V6/tdman.cpp
++++ b/src/condor_schedd.V6/tdman.cpp
+@@ -1042,10 +1042,6 @@ TDMan::transferd_registration(int cmd, Stream *sock)
+ 	sock_id += td_id;
+ 	sock_id += ">";
+ 
+-	daemonCore->Register_Socket(sock, sock_id.Value(),
+-		(SocketHandlercpp)&TDMan::transferd_update,
+-		"TDMan::transferd_update", this, ALLOW);
+-	
+ 	// stash an identifier with the registered socket so I can find this
+ 	// transferd later when this socket gets an update. I can't just shove
+ 	// the transferd pointer here since it might have been removed by other
+@@ -1055,9 +1051,10 @@ TDMan::transferd_registration(int cmd, Stream *sock)
+ 	tdup = new TDUpdateContinuation(td_sinful, fquser, td_id, sock_id.Value());
+ 	ASSERT(tdup);
+ 
+-	// set up the continuation for TDMan::transferd_update()
+-	daemonCore->Register_DataPtr(tdup);
+-
++	daemonCore->Register_Socket(sock, sock_id.Value(),
++		(SocketHandlercpp)&TDMan::transferd_update,
++		"TDMan::transferd_update", this, ALLOW, (void *) tdup);
++	
+ 	///////////////////////////////////////////////////////////////
+ 	// If any registration callback exists, then call it so the user of
+ 	// the factory object knows that the registration happened.
+@@ -1106,7 +1103,7 @@ TDMan::transferd_registration(int cmd, Stream *sock)
+ // transfer was correctly sent. NOTE: Maybe add when the transferd thinks there
+ // are problems, like files not found and stuff like that.
+ int 
+-TDMan::transferd_update(Stream *sock)
++TDMan::transferd_update(Stream *sock, void *dataPtr)
+ {
+ 	ReliSock *rsock = (ReliSock*)sock;
+ 	TDUpdateContinuation *tdup = NULL;
+@@ -1122,7 +1119,7 @@ TDMan::transferd_update(Stream *sock)
+ 	
+ 	// We don't delete this pointer until we know this socket is closed...
+ 	// This allows us to recycle it across many updates from the same td.
+-	tdup = (TDUpdateContinuation*)daemonCore->GetDataPtr();
++	tdup = (TDUpdateContinuation*)dataPtr;
+ 	ASSERT(tdup != NULL);
+ 
+ 	dprintf(D_ALWAYS, "Transferd update from: addr(%s) fquser(%s) id(%s)\n", 
+@@ -1141,7 +1138,6 @@ TDMan::transferd_update(Stream *sock)
+ 			tdup->fquser.Value(), tdup->id.Value(), tdup->sinful.Value());
+ 
+ 		delete tdup;
+-		daemonCore->SetDataPtr(NULL);
+ 		return CLOSE_STREAM;
+ 	}
+ 	rsock->eom();
+diff --git a/src/condor_schedd.V6/tdman.h b/src/condor_schedd.V6/tdman.h
+index d0e4694..cb57bc7 100644
+--- a/src/condor_schedd.V6/tdman.h
++++ b/src/condor_schedd.V6/tdman.h
+@@ -242,7 +242,7 @@ class TDMan : public Service
+ 		int transferd_registration(int cmd, Stream *sock);
+ 
+ 		// handle updates from a transferd
+-		int transferd_update(Stream *sock);
++		int transferd_update(Stream *sock, void *);
+ 
+ 		// same thing like in Scheduler object.
+ 		void refuse(Stream *s);
+diff --git a/src/condor_schedd.V6/transfer_queue.cpp b/src/condor_schedd.V6/transfer_queue.cpp
+index fcebb4c..3f4d34d 100644
+--- a/src/condor_schedd.V6/transfer_queue.cpp
++++ b/src/condor_schedd.V6/transfer_queue.cpp
+@@ -188,7 +188,7 @@ TransferQueueManager::AddRequest( TransferQueueRequest *client ) {
+ 	int rc = daemonCore->Register_Socket(client->m_sock,
+ 		"<file transfer request>",
+ 		(SocketHandlercpp)&TransferQueueManager::HandleDisconnect,
+-		"HandleDisconnect()", this, ALLOW);
++		"HandleDisconnect()", this, ALLOW, (void *)client);
+ 
+ 	if( rc < 0 ) {
+ 		dprintf(D_ALWAYS,
+@@ -197,8 +197,6 @@ TransferQueueManager::AddRequest( TransferQueueRequest *client ) {
+ 		return false;
+ 	}
+ 
+-	ASSERT( daemonCore->Register_DataPtr( client ) );
+-
+ 	m_xfer_queue.Append( client );
+ 
+ 	TransferQueueChanged();
