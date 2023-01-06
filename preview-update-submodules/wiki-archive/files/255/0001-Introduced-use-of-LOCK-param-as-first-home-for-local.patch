@@ -1,0 +1,44 @@
+From 07b2f5800bc34ca1b84d63b37b5b750346dcfe11 Mon Sep 17 00:00:00 2001
+From: Matthew Farrellee <matt@redhat.com>
+Date: Fri, 17 Dec 2010 14:54:51 -0500
+Subject: [PATCH] Introduced use of LOCK param as first home for local lock files, #1310
+
+---
+ src/condor_c++_util/file_lock.cpp |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/src/condor_c++_util/file_lock.cpp b/src/condor_c++_util/file_lock.cpp
+index 612e3bd..497516e 100644
+--- a/src/condor_c++_util/file_lock.cpp
++++ b/src/condor_c++_util/file_lock.cpp
+@@ -667,17 +667,17 @@ FileLock::updateLockTimestamp(void)
+ char * 
+ FileLock::GetTempPath() 
+ {
+-
+-	char *path = temp_dir_path();
+-	char *suffix = "condorLocks";
+-	
+-	if (path == NULL)
+-		return NULL;
+-	
+-	char *full_path = dirscat(path, suffix);
++	const char *suffix = "";
++	char *result = NULL;
++	char *path = param("LOCK");
++	if (!path) {
++		path = temp_dir_path();
++		suffix = "condorLocks";
++	}
++	result = dirscat(path, suffix);
+ 	free(path);
+-	
+-	return full_path;
++
++	return result;
+ }
+ 
+ char *
+-- 
+1.7.2.3
+
