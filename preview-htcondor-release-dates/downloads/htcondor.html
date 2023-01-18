@@ -834,12 +834,16 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.1.1</span> Feature Release</h3>
-        <p>November 11, 2022</p>
+        <h3><span class="text-secondary">10.2.0</span> Feature Release</h3>
+        <p>January  5, 2023</p>
         <div>
             <ul>
-  <li>Improvements to job hooks and the ability to save stderr from a job hook</li>
-  <li>Fix bug where Apptainer only systems couldn’t run with Docker style images</li>
+  <li>Preliminary support for Enterprise Linux 9</li>
+  <li>Preliminary support for cgroups v2</li>
+  <li>Can now set minimum floor for number of CPUs that a submitter gets</li>
+  <li>Improved validity testing of Singularity/Apptainer runtinme</li>
+  <li>Improvements to jobs hooks, including new PREPARE_JOB_BEFORE_TRANSFER hook</li>
+  <li>OpenCL jobs now work inside Singularity, if OpenCL drivers are on the host</li>
 </ul>
 
         </div>
@@ -860,23 +864,17 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.0.0</span> Long Term Support Release</h3>
-        <p>November 11, 2022</p>
+        <h3><span class="text-secondary">10.0.1</span> Long Term Support Release</h3>
+        <p>January  5, 2023</p>
         <div>
             <ul>
-  <li>Users can prevent runaway jobs by specifying an allowed duration</li>
-  <li>Able to extend submit commands and create job submit templates</li>
-  <li>Initial implementation of htcondor <noun> <verb> command line interface</verb></noun></li>
-  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
-  <li>Add Container Universe</li>
-  <li>Support for heterogeneous GPUs</li>
-  <li>Improved File transfer error reporting</li>
-  <li>GSI Authentication method has been removed</li>
-  <li>HTCondor now utilizes ARC-CE’s REST interface</li>
-  <li>Support for ARM and PowerPC for Enterprise Linux 8</li>
-  <li>For IDTOKENS, signing key not required on every execution point</li>
-  <li>Trust on first use ability for SSL connections</li>
-  <li>Improvements against replay attacks</li>
+  <li>Add Ubuntu 22.04 (Jammy Jellyfish) support</li>
+  <li>Add file transfer plugin that supports stash:// and osdf:// URLs</li>
+  <li>Fix bug where cgroup memory limits were not enforced on Debian and Ubuntu</li>
+  <li>Fix bug where forcibly removing DAG jobs could crash the condor_schedd</li>
+  <li>Fix bug where Docker repository images cannot be run under Singularity</li>
+  <li>Fix issue where blahp scripts were missing on Debian and Ubuntu platforms</li>
+  <li>Fix bug where curl file transfer plugins would fail on Enterprise Linux 8</li>
 </ul>
 
         </div>
