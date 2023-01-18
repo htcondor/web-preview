@@ -1,0 +1,253 @@
+diff --git a/src/condor_starter.V6.1/StarterHookMgr.cpp b/src/condor_starter.V6.1/StarterHookMgr.cpp
+index 826fd4d..d76e392 100644
+--- a/src/condor_starter.V6.1/StarterHookMgr.cpp
++++ b/src/condor_starter.V6.1/StarterHookMgr.cpp
+@@ -41,6 +41,8 @@ StarterHookMgr::StarterHookMgr()
+ 	m_hook_update_job_info = NULL;
+ 	m_hook_job_exit = NULL;
+ 
++	m_hook_job_exit_timeout = 0;
++
+ 	dprintf( D_FULLDEBUG, "Instantiating a StarterHookMgr\n" );
+ }
+ 
+@@ -110,6 +112,8 @@ StarterHookMgr::reconfig()
+     if (!getHookPath(HOOK_UPDATE_JOB_INFO, m_hook_update_job_info)) return false;
+     if (!getHookPath(HOOK_JOB_EXIT, m_hook_job_exit)) return false;
+ 
++	m_hook_job_exit_timeout = getHookTimeout(HOOK_JOB_EXIT, 30);
++
+ 	return true;
+ }
+ 
+@@ -124,6 +128,15 @@ bool StarterHookMgr::getHookPath(HookType hook_type, char*& hpath)
+ }
+ 
+ 
++int StarterHookMgr::getHookTimeout(HookType hook_type, int def_value)
++{
++	if (!m_hook_keyword) return 0;
++	MyString _param;
++	_param.sprintf("%s_HOOK_%s_TIMEOUT", m_hook_keyword, getHookTypeString(hook_type));
++	return param_integer(_param.Value(), def_value);
++}
++
++
+ int
+ StarterHookMgr::tryHookPrepareJob()
+ {
+diff --git a/src/condor_starter.V6.1/StarterHookMgr.h b/src/condor_starter.V6.1/StarterHookMgr.h
+index 8b249ef..9105b9a 100644
+--- a/src/condor_starter.V6.1/StarterHookMgr.h
++++ b/src/condor_starter.V6.1/StarterHookMgr.h
+@@ -77,6 +77,7 @@ public:
+ 		 */
+ 	int tryHookJobExit(ClassAd* job_info, const char* exit_reason);
+ 
++	int getExitHookTimeout() { return m_hook_job_exit_timeout; };
+ 
+ private:
+ 
+@@ -90,6 +91,8 @@ private:
+ 		/// The path to HOOK_JOB_EXIT, if defined.
+ 	char* m_hook_job_exit;
+ 
++	int m_hook_job_exit_timeout;
++
+ 		/**
+ 		   If the job we're running defines a hook keyword, find the
+ 		   validate path to the given hook.
+@@ -101,6 +104,8 @@ private:
+ 
+ 		/// Clears out all the hook paths we've validated and saved.
+ 	void clearHookPaths( void );
++
++	int getHookTimeout(HookType hook_type, int def_value = 0);
+ };
+ 
+ 
+diff --git a/src/condor_starter.V6.1/baseStarter.cpp b/src/condor_starter.V6.1/baseStarter.cpp
+index 8f4430b..2d62ba0 100644
+--- a/src/condor_starter.V6.1/baseStarter.cpp
++++ b/src/condor_starter.V6.1/baseStarter.cpp
+@@ -318,12 +318,20 @@ CStarter::Config()
+ int
+ CStarter::RemoteShutdownGraceful( int )
+ {
++	bool graceful_in_progress = false;
++
+ 		// tell our JobInfoCommunicator about this so it can take any
+ 		// necessary actions
+ 	if ( jic ) {
++		graceful_in_progress = jic->isGracefulShutdown();
+ 		jic->gotShutdownGraceful();
+ 	}
+-	return ( this->ShutdownGraceful( ) );
++	if ( graceful_in_progress == false ) {
++		return ( this->ShutdownGraceful( ) );
++	}
++	else {
++		return ( false );
++	}
+ }
+ 
+ /**
+@@ -382,13 +390,21 @@ CStarter::ShutdownGraceful( void )
+ int
+ CStarter::RemoteShutdownFast(int)
+ {
++	bool fast_in_progress = false;
++
+ 		// tell our JobInfoCommunicator about this so it can take any
+ 		// necessary actions (for example, disabiling file transfer if
+ 		// we're talking to a shadow)
+ 	if( jic ) {
++		fast_in_progress = jic->isFastShutdown();
+ 		jic->gotShutdownFast();
+ 	}
+-	return ( this->ShutdownFast( ) );
++	if( fast_in_progress == false ) {
++		return ( this->ShutdownFast( ) );
++	}
++	else {
++		return ( false );
++	}
+ }
+ 
+ /**
+@@ -430,8 +446,7 @@ CStarter::ShutdownFast( void )
+ 	if (!jobRunning) {
+ 		dprintf(D_FULLDEBUG, 
+ 				"Got ShutdownFast when no jobs running.\n");
+-		this->allJobsDone();
+-		return ( true );
++		return ( this->allJobsDone() );
+ 	}	
+ 	return ( false );
+ }
+diff --git a/src/condor_starter.V6.1/job_info_communicator.cpp b/src/condor_starter.V6.1/job_info_communicator.cpp
+index c51f836..043842a 100644
+--- a/src/condor_starter.V6.1/job_info_communicator.cpp
++++ b/src/condor_starter.V6.1/job_info_communicator.cpp
+@@ -54,6 +54,8 @@ JobInfoCommunicator::JobInfoCommunicator()
+ 	job_output_ad_file = NULL;
+ 	job_output_ad_is_stdout = false;
+ 	requested_exit = false;
++	fast_exit = false;
++	graceful_exit = false;
+ 	had_remove = false;
+ 	had_hold = false;
+ 	change_iwd = false;
+@@ -61,6 +63,7 @@ JobInfoCommunicator::JobInfoCommunicator()
+ 	m_dedicated_execute_account = NULL;
+ #if HAVE_JOB_HOOKS
+     m_hook_mgr = NULL;
++	m_exit_hook_timer_id = -1;
+ #endif
+ 	m_periodic_job_update_tid = -1;
+ 	m_allJobsDone_finished = false;
+@@ -104,6 +107,10 @@ JobInfoCommunicator::~JobInfoCommunicator()
+     if (m_hook_mgr) {
+         delete m_hook_mgr;
+     }
++	if (m_exit_hook_timer_id != -1) {
++		daemonCore->Cancel_Timer(m_exit_hook_timer_id);
++		m_exit_hook_timer_id = -1;
++	}
+ #endif
+ 	cancelUpdateTimer();
+ }
+@@ -300,6 +307,11 @@ JobInfoCommunicator::allJobsDone( void )
+ 		case 1:    // Spawned the hook.
+ 				// We need to bail now, and let the handler call
+ 				// finishAllJobsDone() when the hook returns.
++			// Create a timer to exit is the hook takes too long
++			m_exit_hook_timer_id = daemonCore->Register_Timer(m_hook_mgr->getExitHookTimeout(),
++							(TimerHandlercpp)&JobInfoCommunicator::finishAllJobsDone,
++							"finishAllJobsDone",
++							this);
+ 			return false;
+ 			break;
+ 		}
+@@ -317,6 +329,11 @@ JobInfoCommunicator::allJobsDone( void )
+ void
+ JobInfoCommunicator::finishAllJobsDone( void )
+ {
++	if (m_exit_hook_timer_id != -1) {
++		daemonCore->Cancel_Timer(m_exit_hook_timer_id);
++		m_exit_hook_timer_id = -1;
++	}
++
+ 		// Record the fact the hook finished.
+ 	m_allJobsDone_finished = true;
+ 		// Tell the starter to try job cleanup again so it can move on.
+@@ -330,6 +347,7 @@ JobInfoCommunicator::gotShutdownFast( void )
+ {
+ 		// Set our flag so we know we were asked to vacate.
+ 	requested_exit = true;
++	fast_exit = true;
+ }
+ 
+ 
+@@ -338,6 +356,7 @@ JobInfoCommunicator::gotShutdownGraceful( void )
+ {
+ 		// Set our flag so we know we were asked to vacate.
+ 	requested_exit = true;
++	graceful_exit = true;
+ }
+ 
+ 
+diff --git a/src/condor_starter.V6.1/job_info_communicator.h b/src/condor_starter.V6.1/job_info_communicator.h
+index bdb0003..276b628 100644
+--- a/src/condor_starter.V6.1/job_info_communicator.h
++++ b/src/condor_starter.V6.1/job_info_communicator.h
+@@ -241,6 +241,10 @@ public:
+ 
+ 	bool hadRemove( void ) { return had_remove; };
+ 	bool hadHold( void ) { return had_hold; };
++	bool isExiting( void ) { return requested_exit; };
++	bool isGracefulShutdown( void ) { return graceful_exit; };
++	bool isFastShutdown( void ) { return fast_exit; };
++
+ 
+ 		/** Someone is attempting to reconnect to this job.
+ 		 */
+@@ -481,6 +485,8 @@ protected:
+ 
+ 		/// if true, we were asked to shutdown
+ 	bool requested_exit;
++	bool graceful_exit;
++	bool fast_exit;
+ 	bool had_remove;
+ 	bool had_hold;
+ 
+@@ -518,6 +524,8 @@ private:
+ 		     "remove", or "evict" (PREEMPT, condor_vacate, condor_off).
+ 		*/
+ 	const char* getExitReasonString( void );
++
++	int m_exit_hook_timer_id;
+ };
+ 
+ 
+diff --git a/src/condor_starter.V6.1/os_proc.cpp b/src/condor_starter.V6.1/os_proc.cpp
+index d1db491..a4bb0ab 100644
+--- a/src/condor_starter.V6.1/os_proc.cpp
++++ b/src/condor_starter.V6.1/os_proc.cpp
+@@ -572,14 +572,8 @@ OsProc::StartJob(FamilyInfo* family_info)
+ 			}
+ 		}
+ 
+-		if( !ThisProcRunsAlongsideMainProc() ) {
+-			EXCEPT("Create_Process(%s,%s, ...) failed: %s",
+-				JobName.Value(), args_string.Value(), (create_process_error ? create_process_error : ""));
+-		}
+-		else {
+-			dprintf(D_ALWAYS,"Create_Process(%s,%s, ...) failed: %s",
+-				JobName.Value(), args_string.Value(), (create_process_error ? create_process_error : ""));
+-		}
++		dprintf(D_ALWAYS,"Create_Process(%s,%s, ...) failed: %s\n",
++			JobName.Value(), args_string.Value(), (create_process_error ? create_process_error : ""));
+ 		return 0;
+ 	}
+ 
