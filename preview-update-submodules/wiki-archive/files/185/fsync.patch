@@ -1,0 +1,275 @@
+From cdf2ad50233d8d2953ddefbd915e1edfb6056595 Mon Sep 17 00:00:00 2001
+From: Todd Tannenbaum <tannenba@cs.wisc.edu>
+Date: Mon, 1 Mar 2010 16:45:05 -0600
+Subject: [PATCH 1/2] Have many relavent fsync calls go through a condor_fsync library
+ call, which for now is a no-op.
+
+---
+ src/condor_c++_util/Imakefile                  |    1 +
+ src/condor_c++_util/classad_log.cpp            |    5 +++--
+ src/condor_c++_util/libcondorapi_stubs.cpp     |    8 ++++++++
+ src/condor_c++_util/log_transaction.cpp        |    3 ++-
+ src/condor_c++_util/write_user_log.cpp         |    9 ++++++++-
+ src/condor_io/cedar_no_ckpt.cpp                |    5 +++--
+ src/condor_syscall_lib/cedar_no_ckpt_stubs.cpp |    7 +++++++
+ 7 files changed, 32 insertions(+), 6 deletions(-)
+
+diff --git a/src/condor_c++_util/Imakefile b/src/condor_c++_util/Imakefile
+index 987df4c..0989930 100644
+--- a/src/condor_c++_util/Imakefile
++++ b/src/condor_c++_util/Imakefile
+@@ -246,6 +246,7 @@ OBJ = state_machine_driver.o event_handler.o name_tab.o selector.o \
+ 	killfamily.o $(TT_OBJS) file_xml.o  vm_univ_utils.o condor_url.o \
+ 	$(PLUGIN_OBJ) \
+ 	forkwork.o filename_tools_cpp.o condor_getcwd.o \
++	condor_fsync.o \
+ 	set_user_priv_from_ad.o hook_utils.o classad_visa.o \
+ 	$(HIBERNATION_OBJS) \
+ 	ConcurrencyLimitUtils.o \
+diff --git a/src/condor_c++_util/classad_log.cpp b/src/condor_c++_util/classad_log.cpp
+index 5d42488..1596c6d 100644
+--- a/src/condor_c++_util/classad_log.cpp
++++ b/src/condor_c++_util/classad_log.cpp
+@@ -27,6 +27,7 @@
+ #include "condor_debug.h"
+ #include "util_lib_proto.h"
+ #include "classad_merge.h"
++#include "condor_fsync.h"
+ 
+ #if HAVE_DLOPEN
+ #include "ClassAdLogPlugin.h"
+@@ -202,7 +203,7 @@ ClassAdLog::AppendLog(LogRecord *log)
+ 					EXCEPT("flush to %s failed, errno = %d", logFilename(), errno);
+ 				}
+ 					//MD: syncing the data as done before
+-				if (fsync(fileno(log_fp)) < 0) {
++				if (condor_fsync(fileno(log_fp),logFilename()) < 0) {
+ 					EXCEPT("fsync of %s failed, errno = %d", logFilename(), errno);
+ 				}
+ 			}
+@@ -641,7 +642,7 @@ ClassAdLog::LogState(FILE *fp)
+ 	if (fflush(fp) !=0){
+ 	  EXCEPT("fflush of %s failed, errno = %d", logFilename(), errno);
+ 	}
+-	if (fsync(fileno(fp)) < 0) {
++	if (condor_fsync(fileno(fp),logFilename()) < 0) {
+ 		EXCEPT("fsync of %s failed, errno = %d", logFilename(), errno);
+ 	} 
+ }
+diff --git a/src/condor_c++_util/libcondorapi_stubs.cpp b/src/condor_c++_util/libcondorapi_stubs.cpp
+index 83c076e..ca2c554 100644
+--- a/src/condor_c++_util/libcondorapi_stubs.cpp
++++ b/src/condor_c++_util/libcondorapi_stubs.cpp
+@@ -54,7 +54,14 @@ static int not_impl(void)
+ 	return -1;
+ }
+ 
++
++int condor_fsync(int, const char*)
++{
++	return 0;
++}
++
+ BEGIN_C_DECLS
++
+ void
+ config( int, bool )
+ {
+@@ -88,6 +95,7 @@ int param_boolean_int(const char *, int default_value)
+ }
+ 
+ END_C_DECLS
++
+ int param_integer(const char *, int default_value, int, int, ClassAd *, 
+ 	ClassAd *, bool)
+ {
+diff --git a/src/condor_c++_util/log_transaction.cpp b/src/condor_c++_util/log_transaction.cpp
+index 9261593..c696166 100644
+--- a/src/condor_c++_util/log_transaction.cpp
++++ b/src/condor_c++_util/log_transaction.cpp
+@@ -23,6 +23,7 @@
+ #include "condor_debug.h"
+ #include "condor_config.h"
+ #include "condor_mkstemp.h"
++#include "condor_fsync.h"
+ 
+ #define TRANSACTION_HASH_LEN 10000
+ 
+@@ -336,7 +337,7 @@ fsync_with_status(stream_with_status_t* s)
+        fileno.  Whether or not this is the right thing to do, it's at
+        least backwards-compatible. */
+ 
+-	if (fsync(fd) < 0) {
++	if (condor_fsync(fd) < 0) {
+ 	  s->why = WHY_FSYNC;
+ 	  s->err = errno;
+ 	  return -1;
+diff --git a/src/condor_c++_util/write_user_log.cpp b/src/condor_c++_util/write_user_log.cpp
+index 2781745..dbb0d5e 100644
+--- a/src/condor_c++_util/write_user_log.cpp
++++ b/src/condor_c++_util/write_user_log.cpp
+@@ -47,6 +47,7 @@
+ #include "stat_wrapper.h"
+ #include "file_lock.h"
+ #include "user_log_header.h"
++#include "condor_fsync.h"
+ 
+ // Set to non-zero to enable fine-grained rotation debugging / timing
+ #define ROTATION_TRACE	0
+@@ -1079,7 +1080,13 @@ WriteUserLog::doWriteEvent( ULogEvent *event,
+ 	if ( (   is_global_event  && m_global_fsync_enable ) ||
+ 		 ( (!is_global_event) && m_enable_fsync ) ) {
+ 		before = time(NULL);
+-		if ( fsync( fileno( fp ) ) != 0 ) {
++		char *fname;
++		if ( is_global_event ) {
++			fname = m_global_path;
++		} else {
++			fname = m_path;
++		}
++		if ( condor_fsync( fileno( fp ), fname ) != 0 ) {
+ 		  dprintf( D_ALWAYS,
+ 				   "fsync() failed in WriteUserLog::writeEvent"
+ 				   " - errno %d (%s)\n",
+diff --git a/src/condor_io/cedar_no_ckpt.cpp b/src/condor_io/cedar_no_ckpt.cpp
+index f725089..c4491f4 100644
+--- a/src/condor_io/cedar_no_ckpt.cpp
++++ b/src/condor_io/cedar_no_ckpt.cpp
+@@ -41,6 +41,7 @@
+ #include "condor_sinful.h"
+ #include "condor_netdb.h"
+ #include "internet.h"
++#include "condor_fsync.h"
+ 
+ #ifdef WIN32
+ #include <mswsock.h>	// For TransmitFile()
+@@ -207,7 +208,7 @@ ReliSock::get_file( filesize_t *size, int fd, bool flush_buffers )
+ 	}
+ 
+ 	if (flush_buffers && fd != GET_FILE_NULL_FD ) {
+-		fsync(fd);
++		condor_fsync(fd);
+ 	}
+ 
+ 	if( fd == GET_FILE_NULL_FD ) {
+@@ -557,7 +558,7 @@ ReliSock::get_x509_delegation( filesize_t *size, const char *destination,
+ 		if ( fd < 0 ) {
+ 			rc = fd;
+ 		} else {
+-			rc = fsync( fd );
++			rc = condor_fsync( fd, destination );
+ 			::close( fd );
+ 		}
+ 		if ( rc < 0 ) {
+diff --git a/src/condor_syscall_lib/cedar_no_ckpt_stubs.cpp b/src/condor_syscall_lib/cedar_no_ckpt_stubs.cpp
+index ca1f802..7ceec59 100644
+--- a/src/condor_syscall_lib/cedar_no_ckpt_stubs.cpp
++++ b/src/condor_syscall_lib/cedar_no_ckpt_stubs.cpp
+@@ -28,6 +28,7 @@
+ #include "condor_debug.h"
+ #include "condor_io.h"
+ #include "authentication.h"
++#include "condor_fsync.h"
+ 
+ 
+ int
+@@ -159,3 +160,9 @@ Sock::get_sinful_public()
+ {
+ 	return get_sinful();
+ }
++
++int
++condor_fsync(int, const char*)
++{
++	return 0;
++}
+-- 
+1.6.5.1.1367.gcd48
+
+
+From 8a203a9677769d463bd9035ca9c3d0b5e69c331d Mon Sep 17 00:00:00 2001
+From: Todd Tannenbaum <tannenba@cs.wisc.edu>
+Date: Mon, 1 Mar 2010 17:03:07 -0600
+Subject: [PATCH 2/2] Initial condor_fsync function, currently a no-op
+
+---
+ src/condor_c++_util/condor_fsync.cpp |   29 +++++++++++++++++++++++++++++
+ src/condor_c++_util/condor_fsync.h   |   30 ++++++++++++++++++++++++++++++
+ 2 files changed, 59 insertions(+), 0 deletions(-)
+ create mode 100644 src/condor_c++_util/condor_fsync.cpp
+ create mode 100644 src/condor_c++_util/condor_fsync.h
+
+diff --git a/src/condor_c++_util/condor_fsync.cpp b/src/condor_c++_util/condor_fsync.cpp
+new file mode 100644
+index 0000000..c5f94b8
+--- /dev/null
++++ b/src/condor_c++_util/condor_fsync.cpp
+@@ -0,0 +1,29 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2009, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#include "condor_common.h"
++#include "condor_fsync.h"
++
++
++int condor_fsync( int , const char* )
++{
++	return 0;
++}
++
++
+diff --git a/src/condor_c++_util/condor_fsync.h b/src/condor_c++_util/condor_fsync.h
+new file mode 100644
+index 0000000..41336a2
+--- /dev/null
++++ b/src/condor_c++_util/condor_fsync.h
+@@ -0,0 +1,30 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2007, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++
++#if !defined( _CONDOR_FSYNC_H )
++#define _CONDOR_FSYNC_H
++
++
++
++int condor_fsync( int fd, const char* path = NULL );
++
++
++
++#endif 
+-- 
+1.6.5.1.1367.gcd48
+
