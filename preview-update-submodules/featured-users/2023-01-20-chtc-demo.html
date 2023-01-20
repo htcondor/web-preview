@@ -739,115 +739,89 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl py-4">
-    <link href="/web-preview/preview-update-submodules/assets/css/vulnerabilities.css" rel="stylesheet">
-
-<h1>
-    HTCONDOR-2020-0003
-</h1>
-<hr>
-<table width='100%' summary='whole page'>
-<tr>
-    <td width='25%'><p class='h'>Summary:</p></td>
-    <td class='sv'><p class='v'>&nbsp;</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-        A user with read-only authorization to access the job queue is able to perform write operations under their identity, including submitting new jobs.  If CLAIMTOBE is part of the READ authentication methods, then the user is able to impersonate any other user when modifying the job queue.   This includes submitting and running jobs as any other user.  <b>By default, CLAIMTOBE is included in the list of methods for READ access.</b>
-        <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-18823">CVE-2019-18823</a>
-    </p></td>
-</tr>
-<tr><td colspan='2'>
-<br><table class='sumtable' width='100%' summary='short values'>
-<tr>
-<th width='20%'>Component</th>
-<th width='20%'>Vulnerable Versions</th>
-<th width='20%'>Platform</th>
-<th width='20%'>Availability</th>
-<th width='20%'>Fix Available</th>
-</tr>
-<tr>
-<td class='sv'>condor_schedd</td>
-<td class='sv'>All before 8.8.8 (stable) and 8.9.6 (devel)</td>
-<td class='sv'>all</td>
-<td class='sv'>not known to be publicly exploited</td>
-<td class='sv'>8.8.8, 8.9.6</td>
-</tr>
-<tr>
-<th width='20%'>Status</th>
-<th width='20%'>Access Required</th>
-<th width='20%'>Host Type Required</th>
-<th width='20%'>Effort Required</th>
-<th width='20%'>Impact/Consequences</th>
-</tr>
-<tr>
-<td class='sv'>Verified</td>
-<td class='sv'>can authenticate to SchedD using any method in the READ list</td>
-<td class='sv'>submit host</td>
-<td class='sv'>medium</td>
-<td class='sv'>high</td>
-</tr>
-<tr>
-<th width='20%'>Fixed Date</th>
-<th width='20%'>Credit</th>
-</tr>
-<tr>
-<td class='sv'>2020-03-01</td>
-<td class='sv'>Zach Miller</td>
-</tr>
-</table>
-</td></tr>
-<tr>
-    <td width='25%'><p class='h'>Access Required:</p></td>
-	<td class='sv'><p class='v'>
-	</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-        This vulnerability allows a user to submit a job as long as they can authenticate using one of the methods in the SEC_READ_AUTHENTICATION_LIST of the SchedD and are authorized by the ALLOW_READ setting.  Note that they must still authenticate.  However, the user can perform write operations even if the ALLOW_WRITE authorization setting would normally disallow them. Also, if the list of SEC_WRITE_AUTHENTICATION_METHODS is more restrictive in types of methods used, the user can circumvent the stronger security by using a perhaps weaker method from the READ list.  <b>If the READ list also contains CLAIMTOBE, the attacker can now submit a job as any user.  In a default installation, CLAIMTOBE is part of the list of methods allowed for READ operations.</b>
-    </p></td>
-</tr>
-<tr>
-    <td width='25%'><p class='h'>Effort Required:</p></td>
-    <td class='sv'><p class='v'>medium</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-        A thorough understanding of the HTCondor code and the ability to write custom tools is required to exploit this vulnerability.
-    </p></td>
-</tr>
-<tr>
-    <td width='25%'><p class='h'>Impact/Consequences:</p></td>
-    <td class='sv'><p class='v'>high</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-	The configuration that is most vulnerable includes the CLAIMTOBE option as part of the SEC_READ_AUTHENTICATION_METHODS.  This is the default.  If you have set your own value for SEC_READ_AUTHENTICATION_METHODS, and it does not include CLAIMTOBE, then you are not vulnerable.
-</p></td>
-</tr>
-<tr>
-    <td width='25%'><p class='h'>Workaround:</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-	Ideally, update your installation and you will not need to change any configuration.
-<p>
-        Alternatively, you can change your configuration to not use CLAIMTOBE in your authentication methods.  Explicitly exclude CLAIMTOBE by setting SEC_READ_AUTHENTICATION_METHODS if you haven't already.  The full list of methods by default should be (on Linux) "FS,TOKEN,KERBEROS,GSI,SSL" or (on Windows) "NTSSPI,TOKEN,SSL".  In the 8.8.X series you should exclude "TOKEN".  You may wish to also exclude other methods you know you are not using.
-    </p></td>
-</tr>
-
-<tr>
-    <td width='25%'><p class='h'>Full Details:</p></td>
-    <td class='sv'>
-	Embargoed until future notice.
-    </td>
-</tr>
-
-</table>
+    
 
 
 
+    <div class="bg-light">
+    <hr class="my-0">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-auto">
+                <div class="d-flex my-2">
+                    <span class="fs-4 my-auto">Software News</span>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/new.html">View all</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news-archive.html">View Archives</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <hr class="my-0">
 </div>
+
+<div class="container-xxl py-4">
+    <div id="news-container" class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+            <h1>CHTC Leads High Throughput Computing Demonstrations</h1>
+            <span class="fs-3 text-muted">January 20, 2023</span>
+            
+            <div class="mt-4 fs-5"><p><strong><em>UW-Madison Assistant Professor <a href="https://lsc.wisc.edu/facstaff/chen-kaiping/">Kaiping Chen</a> is taking her <a href="https://lsc.wisc.edu">life sciences</a> course (LSC660) to the next level by incorporating high throughput computing (HTC) into her class.</em></strong></p>
+
+<p>Data Science for understanding science communication involves learning to use statistical methods (e.g., chi-square, analysis of variance, correlation and regression analysis, nonparametric tests) and computational methods (e.g., automated text analysis, computer vision) – all of which sometimes requires complex, time-consuming computing that surpasses the capacity of the everyday computer.</p>
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/chenimage.png" height="200" width="200" class="figure-img img-fluid rounded" alt="Devin Bayly" />
+  <figcaption class="figure-caption">Kaiping Chen, Assistant<br /> Professor of Life Science <br />Communication.
+
+To meet this computing challenge, Chen enlisted the help of [CHTC](https://chtc.cs.wisc.edu) Lead Research Computing Facilitator Christina Koch in November 2022 for a demonstration for her class. Chen wanted students to:
+- Acquire knowledge about the basic approaches for large scale computing
+- Understand the different scenarios regarding why they may need to use high throughput computing in research.
+- Be able to distinguish between independent and sequential tasks.
+- Be able to submit script jobs onto the campus computer cluster of CHTC
+- Obtain a basic understanding of the parallel computing implementation in R.
+
+Koch achieved these goals by presenting the uses of HTC for large scale computing and leading a hands-on demonstration with Chen to teach students how to submit and run R programming scripts to perform topic modeling on social media data using HTC. 
+
+This learning, Chen noted, served as a tool to aid students to convert theoretical, class-based knowledge into more practical abilities, including learning how to approach computational tasks that could be useful in future work. Two examples of such complex computational tasks include structure topic models (STMs) and regression models. STM uses unsupervised machine learning to identify keywords and major themes across large corpus that could be interpreted into human-readable formats for data analysis. It is also useful in comparing social media influencer versus non-influencer perspectives on science issues through STM.
+
+The majority of the students in the class, while new to CHTC resources, found the class to be a good introduction to HTC. Ph.D student Ashley Cate from [LSC](https://lsc.wisc.edu) was a prime example.
+“I am still an extreme novice when it comes to understanding all the options CHTC has to offer. However, one thing that Christina Koch made very clear is that you’re not alone in your endeavor of utilizing HTC to meet your research needs, and I feel very confident that the professionals would be able to work me through how CHTC could help me.” Master’s student of Life Sciences Communication Jocelyn Cao reported that “I do think I will be utilizing CHTC in my future work because I am interested in doing work with social media.”
+
+
+Other campus groups have also reached out to Koch to learn about CHTC services for their research. Lindley's research group; a group of undergraduate students, M.S., Ph.D and postdocs candidates involved in nuclear reactor physics, advanced reactor design and integrated energy systems wanted to understand how to harness the power of HPC/HTC in their research. 
+
+[Ben Lindley](https://directory.engr.wisc.edu/ep/Faculty/Lindley_Benjamin/), UW Madison Engineering Physics assistant professor has utilized CHTC in his previous work to build software. With the assistance of post-doc Una Baker, Lindley sought the help of CHTC... “One of the beauties of the high throughput computing resources is that we can analyze dozens or hundreds of cases in parallel,” Lindley said. These cases represent scenarios where certain design features of nuclear reactors are modified and observed for change. “Without HTC, the scope of research could be very limited. Computers could crash and tasks could take too long to complete.”
+
+<figure class="figure float-end" style="margin-right: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/lindleyimage.png" height="200" width="200" class="figure-img img-fluid rounded" alt="Devin Bayly" />
+  <figcaption class="figure-caption">Ben Lindley, Assistant Professor<br />of Engineering Physics<br /></figcaption>
+</figure>
+  
+ 
+
+In-person demonstrations with classrooms and research groups are always available at CHTC to  UW-Madison researchers looking to expand computing beyond local resources. Koch noted that “we are always happy to meet with course instructors who are interested in including large scale computing in their courses, to share different ways we can support our goals.” 
+
+Contact CHTC [here](https://chtc.cs.wisc.edu/uw-research-computing/get-help.html).
+</figcaption></figure>
+</div>
+        </div>
+    </div>
+</div>
+
+
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
     <div class="container-xxl">
