@@ -1,0 +1,297 @@
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index 004117a..4781189 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -248,6 +248,7 @@
+ #define ATTR_HAS_ENCRYPT_EXECUTE_DIRECTORY "HasEncryptExecuteDirectory"
+ #define ATTR_HAS_FILE_TRANSFER  "HasFileTransfer"
+ #define ATTR_HAS_FILE_TRANSFER_PLUGIN_METHODS  "HasFileTransferPluginMethods"
++#define ATTR_HAS_JOB_TRANSFER_PLUGINS  "HasJobTransferPlugins"
+ #define ATTR_HAS_PER_FILE_ENCRYPTION  "HasPerFileEncryption"
+ #define ATTR_HAS_IO_PROXY  "HasIOProxy"
+ #define ATTR_HAS_JAVA  "HasJava"
+@@ -779,6 +780,7 @@
+ #define ATTR_TRANSFER_ERROR  "TransferErr"
+ #define ATTR_TRANSFER_INPUT_FILES  "TransferInput"
+ #define ATTR_TRANSFER_INPUT_REMAPS  "TransferInputRemaps"
++#define ATTR_TRANSFER_PLUGINS  "TransferPlugins"
+ #define ATTR_TRANSFER_INPUT_SIZE_MB  "TransferInputSizeMB"
+ #define ATTR_PUBLIC_INPUT_FILES  "PublicInputFiles"
+ #define ATTR_MAX_TRANSFER_INPUT_MB "MaxTransferInputMB"
+diff --git a/src/condor_starter.V6.1/starter_v61_main.cpp b/src/condor_starter.V6.1/starter_v61_main.cpp
+index d91f80b..f92b007 100644
+--- a/src/condor_starter.V6.1/starter_v61_main.cpp
++++ b/src/condor_starter.V6.1/starter_v61_main.cpp
+@@ -86,6 +86,7 @@ printClassAd( void )
+ 	printf( "%s = \"%s\"\n", ATTR_VERSION, CondorVersion() );
+ 	printf( "%s = True\n", ATTR_IS_DAEMON_CORE );
+ 	printf( "%s = True\n", ATTR_HAS_FILE_TRANSFER );
++	printf( "%s = True\n", ATTR_HAS_JOB_TRANSFER_PLUGINS );	 // job supplied transfer plugins
+ 	printf( "%s = True\n", ATTR_HAS_PER_FILE_ENCRYPTION );
+ 	printf( "%s = True\n", ATTR_HAS_RECONNECT );
+ 	printf( "%s = True\n", ATTR_HAS_MPI );
+diff --git a/src/condor_utils/file_transfer.cpp b/src/condor_utils/file_transfer.cpp
+index 0e3e137..3d3d92d 100644
+--- a/src/condor_utils/file_transfer.cpp
++++ b/src/condor_utils/file_transfer.cpp
+@@ -235,12 +235,13 @@ FileTransfer::~FileTransfer()
+ }
+ 
+ int
+-FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server, 
++FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 						 ReliSock *sock_to_use, priv_state priv,
+ 						 bool use_file_catalog, bool is_spool) 
+ {
+ 	char buf[ATTRLIST_MAX_EXPRESSION];
+ 	char *dynamic_buf = NULL;
++	const bool allow_inline_plugins = true; // enable job TransferPlugins attribute
+ 
+ 	jobAd = *Ad;	// save job ad
+ 
+@@ -253,7 +254,7 @@ FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 
+ 	dprintf(D_FULLDEBUG,"entering FileTransfer::SimpleInit\n");
+ 
+-	/* in the case of SimpleINit being called inside of Init, this will
++	/* in the case of SimpleInit being called inside of Init, this will
+ 		simply assign the same value to itself. */
+ 	m_use_file_catalog = use_file_catalog;
+ 
+@@ -602,6 +603,9 @@ FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 	I_support_filetransfer_plugins = false;
+ 	plugin_table = NULL;
+ 	InitializePlugins(e);
++	if (allow_inline_plugins) {
++		InitializeJobPlugins(*Ad, e, *InputFiles);
++	}
+ 
+ 	int spool_completion_time = 0;
+ 	Ad->LookupInteger(ATTR_STAGE_IN_FINISH,spool_completion_time);
+@@ -686,8 +690,11 @@ FileTransfer::AddInputFilenameRemaps(ClassAd *Ad) {
+ 
+ 
+ int
+-FileTransfer::Init( ClassAd *Ad, bool want_check_perms, priv_state priv,
+-	bool use_file_catalog) 
++FileTransfer::Init(
++	ClassAd *Ad,
++	bool want_check_perms /* false */,
++	priv_state priv /* PRIV_UNKNOWN */,
++	bool use_file_catalog /* = true */)
+ {
+ 	char buf[ATTRLIST_MAX_EXPRESSION];
+ 	char *dynamic_buf = NULL;
+@@ -778,7 +785,7 @@ FileTransfer::Init( ClassAd *Ad, bool want_check_perms, priv_state priv,
+ 
+ 		// Init all the file lists, etc.
+ 	if ( !SimpleInit(Ad, want_check_perms, IsServer(),
+-			NULL, priv, m_use_file_catalog ) ) 
++			NULL, priv, m_use_file_catalog ) )
+ 	{
+ 		return 0;
+ 	}
+@@ -4528,6 +4535,7 @@ int FileTransfer::InvokeMultipleFileTransferPlugin( CondorError &e,
+ 	// Determine if we want to run the plugin with root priv (if available).
+ 	// If so, drop_privs should be false.  the default is to drop privs.
+ 	bool drop_privs = !param_boolean( "RUN_FILETRANSFER_PLUGINS_WITH_ROOT", false );
++	if (plugins_from_job.find(plugin_path) != plugins_from_job.end()) { drop_privs = true; }
+ 
+ 	// Lookup the initial working directory
+ 	std::string iwd;
+@@ -4718,6 +4726,47 @@ MyString FileTransfer::GetSupportedMethods() {
+ 	return method_list;
+ }
+ 
++int FileTransfer::InitializeJobPlugins(const ClassAd &job, CondorError &e, StringList &infiles)
++{
++	if ( ! I_support_filetransfer_plugins || ! plugin_table) {
++		return 0;
++	}
++
++	std::string job_plugins;
++	if ( ! job.LookupString(ATTR_TRANSFER_PLUGINS, job_plugins)) {
++		return 0;
++	}
++
++	StringTokenIterator plugins(job_plugins, 100, ";");
++	for (const char * plug = plugins.first(); plug != NULL; plug = plugins.next()) {
++		const char * colon = strchr(plug, ':');
++		if (colon) {
++			MyString methods; methods.set(plug, colon - plug);
++
++			// add the plugin to the front of the input files list
++			MyString plugin_path(colon + 1);
++			plugin_path.trim();
++			if (! infiles.file_contains(plugin_path.c_str())) {
++				infiles.insert(plugin_path.c_str());
++			}
++			// use the file basename as the plugin name, so that when we invoke it
++			// we will invoke the copy in the input sandbox
++			MyString plugin(condor_basename(plugin_path.c_str()));
++
++			InsertPluginMappings(methods, plugin);
++			plugins_multifile_support[plugin] = true;
++			plugins_from_job[plugin.c_str()] = true;
++			multifile_plugins_enabled = true;
++			// add the plugin to the transfer list
++		} else {
++			dprintf(D_ALWAYS, "FILETRANSFER: no ':' in " ATTR_TRANSFER_PLUGINS " definition '%s'\n", plug);
++			e.pushf("FILETRANSFER", 1, "no ':' in " ATTR_TRANSFER_PLUGINS" definition '%s'", plug);
++		}
++	}
++
++	return 0;
++}
++
+ 
+ int FileTransfer::InitializePlugins(CondorError &e) {
+ 
+diff --git a/src/condor_utils/file_transfer.h b/src/condor_utils/file_transfer.h
+index 879f558..a93b8f5 100644
+--- a/src/condor_utils/file_transfer.h
++++ b/src/condor_utils/file_transfer.h
+@@ -111,11 +111,11 @@ class FileTransfer: public Service {
+ 		a check is perfomed to see if the ATTR_OWNER attribute defined in the
+ 		ClassAd has the neccesary read/write permission.
+ 		@return 1 on success, 0 on failure */
+-	int Init( ClassAd *Ad, bool check_file_perms = false, 
++	int Init( ClassAd *Ad, bool check_file_perms = false,
+ 			  priv_state priv = PRIV_UNKNOWN,
+ 			  bool use_file_catalog = true);
+ 
+-	int SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server, 
++	int SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 						 ReliSock *sock_to_use = NULL, 
+ 						 priv_state priv = PRIV_UNKNOWN,
+ 						 bool use_file_catalog = true,
+@@ -287,6 +287,7 @@ class FileTransfer: public Service {
+ 	void InsertPluginMappings(MyString methods, MyString p);
+ 	void SetPluginMappings( CondorError &e, const char* path );
+ 	int InitializePlugins(CondorError &e);
++	int InitializeJobPlugins(const ClassAd &job, CondorError &e, StringList &infiles);
+ 	MyString DetermineFileTransferPlugin( CondorError &error, const char* source, const char* dest );
+ 	int InvokeFileTransferPlugin(CondorError &e, const char* URL, const char* dest, ClassAd* plugin_stats, const char* proxy_filename = NULL);
+ 	int InvokeMultipleFileTransferPlugin(CondorError &e, std::string plugin_path, std::string transfer_files_string, const char* proxy_filename);
+@@ -407,6 +408,7 @@ class FileTransfer: public Service {
+ 	FileTransferInfo Info;
+ 	PluginHashTable* plugin_table;
+ 	std::map<MyString, bool> plugins_multifile_support;
++	std::map<std::string, bool> plugins_from_job;
+ 	bool I_support_filetransfer_plugins;
+ 	bool multifile_plugins_enabled;
+ #ifdef WIN32
+diff --git a/src/condor_utils/submit_utils.cpp b/src/condor_utils/submit_utils.cpp
+index 98e4036..501b759 100644
+--- a/src/condor_utils/submit_utils.cpp
++++ b/src/condor_utils/submit_utils.cpp
+@@ -47,6 +47,7 @@
+ #include "condor_version.h"
+ #include "NegotiationUtils.h"
+ #include "param_info.h" // for BinaryLookup
++#include "classad_helpers.h"
+ #include "submit_utils.h"
+ 
+ #include "list.h"
+@@ -4800,6 +4801,8 @@ int SubmitHash::SetSimpleJobExprs()
+ 				ATTR_JOB_AD_INFORMATION_ATTRS, NULL, true, false},
+ 		/*submit_param*/ {SUBMIT_KEY_JobMaterializeMaxIdle, SUBMIT_KEY_JobMaterializeMaxIdleAlt,
+ 				ATTR_JOB_MATERIALIZE_MAX_IDLE, NULL, false, true},
++		/*submit_param*/ {SUBMIT_KEY_TransferPlugins, ATTR_TRANSFER_PLUGINS,
++				ATTR_TRANSFER_PLUGINS, NULL, true, false},
+ 		{NULL,NULL,NULL,NULL,false, false}
+ 	};
+ 
+@@ -5152,7 +5155,7 @@ int SubmitHash::SetRequirements()
+ 	}
+ 	if( mightTransfer(JobUniverse) ) { 
+ 		checks_fsdomain = machine_refs.count(ATTR_FILE_SYSTEM_DOMAIN);
+-		checks_file_transfer = machine_refs.count(ATTR_HAS_FILE_TRANSFER);
++		checks_file_transfer = machine_refs.count(ATTR_HAS_FILE_TRANSFER) + machine_refs.count(ATTR_HAS_JOB_TRANSFER_PLUGINS);
+ 		checks_file_transfer_plugin_methods = machine_refs.count(ATTR_HAS_FILE_TRANSFER_PLUGIN_METHODS);
+ 		checks_per_file_encryption = machine_refs.count(ATTR_HAS_PER_FILE_ENCRYPTION);
+ 	}
+@@ -5330,11 +5333,12 @@ int SubmitHash::SetRequirements()
+ 			*/
+ 		const char * domain_check = "(TARGET." ATTR_FILE_SYSTEM_DOMAIN " == MY." ATTR_FILE_SYSTEM_DOMAIN ")";
+ 		const char * xfer_check = "TARGET." ATTR_HAS_FILE_TRANSFER;
++		const char * crypt_check = "";
+ 		if (!checks_per_file_encryption &&
+ 				(job->Lookup(ATTR_ENCRYPT_INPUT_FILES) || job->Lookup(ATTR_ENCRYPT_OUTPUT_FILES) ||
+ 				job->Lookup(ATTR_DONT_ENCRYPT_INPUT_FILES) || job->Lookup(ATTR_DONT_ENCRYPT_OUTPUT_FILES))
+ 			) {
+-			xfer_check = "TARGET." ATTR_HAS_FILE_TRANSFER " && TARGET." ATTR_HAS_PER_FILE_ENCRYPTION;
++			crypt_check = " && TARGET." ATTR_HAS_PER_FILE_ENCRYPTION;
+ 		}
+ 
+ 		ShouldTransferFiles_t should_transfer = STF_IF_NEEDED;
+@@ -5361,25 +5365,52 @@ int SubmitHash::SetRequirements()
+ 				close_op = "))";
+ 			}
+ 
++
++			// if the job is supplying transfer plugins, then we need to use a different xfer_check
++			// expression, and we want to ignore plugin types that are supplied by the job when
++			// fixing up the transfer plugin methods expression.
++			std::string xferplugs;
++			if (job->LookupString(ATTR_TRANSFER_PLUGINS, xferplugs) && ! xferplugs.empty()) {
++				xfer_check = "TARGET." ATTR_HAS_JOB_TRANSFER_PLUGINS;
++			}
++
+ 			answer += join_op;
+ 			answer += xfer_check;
++			answer += crypt_check;
++
++
++			if ( ! checks_file_transfer_plugin_methods) {
++				classad::References methods;    // methods referened by TransferInputFiles that are not in TransferPlugins
++				classad::References jobmethods; // plugin methods (like HTTP) that are supplied by the job's TransferPlugins
++
++				// xferplugs is of the form "TAR:mytarplugin; HTTP,HTTPS:myhttplugin"
++				StringTokenIterator plugs(xferplugs.c_str(), 100, ";");
++				for (const char * plug = plugs.first(); plug != NULL; plug = plugs.next()) {
++					const char * colon = strchr(plug, ':');
++					if (colon) {
++						std::string methods(plug, colon - plug);
++						add_attrs_from_string_tokens(jobmethods, methods);
++					}
++				}
+ 
+-			if (( ! checks_file_transfer_plugin_methods)) {
+-				classad::References methods;
+ 				// check input
+ 				auto_free_ptr file_list(submit_param(SUBMIT_KEY_TransferInputFiles, SUBMIT_KEY_TransferInputFilesAlt));
+ 				if (file_list) {
+ 					StringList files(file_list.ptr(), ",");
+ 					for (const char * file = files.first(); file; file = files.next()) {
+-						if (IsUrl(file)){ methods.insert(getURLType(file)); }
++						if (IsUrl(file)){
++							MyString tag = getURLType(file);
++							if ( ! jobmethods.count(tag.c_str())) { methods.insert(tag.c_str()); }
++						}
+ 					}
+ 				}
+ 
+ 				// check output (only a single file this time)
+ 				file_list.set(submit_param(SUBMIT_KEY_OutputDestination, ATTR_OUTPUT_DESTINATION));
+ 				if (file_list) {
+-					if (IsUrl(file_list)){
+-						methods.insert(getURLType(file_list));
++					if (IsUrl(file_list)) {
++						MyString tag = getURLType(file_list);
++						if (! jobmethods.count(tag.c_str())) { methods.insert(tag.c_str()); }
+ 					}
+ 				}
+ 
+diff --git a/src/condor_utils/submit_utils.h b/src/condor_utils/submit_utils.h
+index f8aa4a8..eed7f7c 100644
+--- a/src/condor_utils/submit_utils.h
++++ b/src/condor_utils/submit_utils.h
+@@ -141,6 +141,7 @@
+ #define SUBMIT_KEY_TransferInput "transfer_input"
+ #define SUBMIT_KEY_TransferOutput "transfer_output"
+ #define SUBMIT_KEY_TransferError "transfer_error"
++#define SUBMIT_KEY_TransferPlugins "transfer_plugins"
+ #define SUBMIT_KEY_MaxTransferInputMB "max_transfer_input_mb"
+ #define SUBMIT_KEY_MaxTransferOutputMB "max_transfer_output_mb"
+ 
