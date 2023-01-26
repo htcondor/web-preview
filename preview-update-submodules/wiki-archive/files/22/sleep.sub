@@ -1,0 +1,6 @@
+universe = vanilla
+executable = sleep.bat
+arguments = 1
+log = sleep.log.txt
+
+queue
