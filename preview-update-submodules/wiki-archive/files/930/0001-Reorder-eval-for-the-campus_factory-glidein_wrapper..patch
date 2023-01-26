@@ -1,0 +1,36 @@
+From 4ca01e9b84388f5695dfd16741e47961c6ff51bd Mon Sep 17 00:00:00 2001
+From: Derek Weitzel <djw8605@gmail.com>
+Date: Wed, 23 Mar 2016 11:28:15 -0500
+Subject: [PATCH] Reorder eval for the campus_factory glidein_wrapper.sh
+
+The Blahp resets HOME directory for jobs.  This is undone in
+glidein_wrapper.sh, but only after it evals a variable with ~/.
+Reorder the eval so that it comes after the reset of HOME.
+---
+ .../campus_factory/share/glidein_jobs/glidein_wrapper.sh             | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/src/condor_contrib/campus_factory/share/glidein_jobs/glidein_wrapper.sh b/src/condor_contrib/campus_factory/share/glidein_jobs/glidein_wrapper.sh
+index d242146..d1a48b4 100755
+--- a/src/condor_contrib/campus_factory/share/glidein_jobs/glidein_wrapper.sh
++++ b/src/condor_contrib/campus_factory/share/glidein_jobs/glidein_wrapper.sh
+@@ -1,12 +1,15 @@
+ #!/bin/sh 
+ 
+ starting_dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+-eval campus_factory_dir=$_campusfactory_CAMPUSFACTORY_LOCATION
+ 
+ # BLAHP does weird things with home directory
+ unset HOME
+ export HOME
+ 
++# Eval the campus factory dir after the HOME directory is reset
++# since it will likely have '~/'
++eval campus_factory_dir=$_campusfactory_CAMPUSFACTORY_LOCATION
++
+ # Make the temporary directory
+ if [ ! -d $_campusfactory_wntmp ]
+ then
+-- 
+2.6.2
+
