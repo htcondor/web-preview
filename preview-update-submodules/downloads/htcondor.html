@@ -834,16 +834,14 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.2.0</span> Feature Release</h3>
-        <p>January  5, 2023</p>
+        <h3><span class="text-secondary">10.2.1</span> Feature Release</h3>
+        <p>January 24, 2023</p>
         <div>
             <ul>
-  <li>Preliminary support for Enterprise Linux 9</li>
-  <li>Preliminary support for cgroups v2</li>
-  <li>Can now set minimum floor for number of CPUs that a submitter gets</li>
-  <li>Improved validity testing of Singularity/Apptainer runtinme</li>
-  <li>Improvements to jobs hooks, including new PREPARE_JOB_BEFORE_TRANSFER hook</li>
-  <li>OpenCL jobs now work inside Singularity, if OpenCL drivers are on the host</li>
+  <li>Improved condor_schedd scalability when a user runs more than 1,000 jobs</li>
+  <li>Fix issue where condor_ssh_to_job fails if the user is not in /etc/passwd</li>
+  <li>The Python Schedd.query() now returns the ServerTime attribute</li>
+  <li>Fixed issue that prevented HTCondor installation on Ubuntu 18.04</li>
 </ul>
 
         </div>
