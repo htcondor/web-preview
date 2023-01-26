@@ -1,0 +1,592 @@
+diff --git a/doc/version-history/8-2.history.tex b/doc/version-history/8-2.history.tex
+index 05ea6fa..3d851c3 100644
+--- a/doc/version-history/8-2.history.tex
++++ b/doc/version-history/8-2.history.tex
+@@ -52,6 +52,11 @@ than specified by \Macro{MAX\_JOBS\_RUNNING} and later kill the excess
+ running jobs.
+ \Ticket{4554}
+ 
++\item Added missing parameters to the default parameter table and
++documentation; also removed obsolete parameters from the default
++parameter table.
++\Ticket{4826}
++
+ \end{itemize}
+ 
+ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+diff --git a/src/condor_dagman/condor_submit_dag.cpp b/src/condor_dagman/condor_submit_dag.cpp
+index 603d695..e60f2b5 100644
+--- a/src/condor_dagman/condor_submit_dag.cpp
++++ b/src/condor_dagman/condor_submit_dag.cpp
+@@ -795,7 +795,7 @@ void writeSubmitFile(/* const */ SubmitDagDeepOptions &deepOpts,
+ 	const char *defaultRemoveExpr = "( ExitSignal =?= 11 || "
+ 				"(ExitCode =!= UNDEFINED && ExitCode >=0 && ExitCode <= 2))";
+ 	MyString removeExpr(defaultRemoveExpr);
+-	char *tmpRemoveExpr = param("DAGMAN_ON_EXIT_REMOVE");
++	char *tmpRemoveExpr = param( "DAGMAN_ON_EXIT_REMOVE" );
+ 	if ( tmpRemoveExpr ) {
+ 		removeExpr = tmpRemoveExpr;
+ 		free(tmpRemoveExpr);
+diff --git a/src/condor_dagman/dagman_main.cpp b/src/condor_dagman/dagman_main.cpp
+index 6d5fff8..04138ab 100644
+--- a/src/condor_dagman/dagman_main.cpp
++++ b/src/condor_dagman/dagman_main.cpp
+@@ -229,12 +229,13 @@ Dagman::Config()
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_USER_LOG_SCAN_INTERVAL setting: %d\n",
+ 				m_user_log_scan_interval );
+ 
+-	_defaultPriority = param_integer("DAGMAN_DEFAULT_PRIORITY", 0, INT_MIN,
+-		INT_MAX, false);
++	_defaultPriority = param_integer( "DAGMAN_DEFAULT_PRIORITY",
++				_defaultPriority, INT_MIN, INT_MAX, false );
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_DEFAULT_PRIORITY setting: %d\n",
+ 				_defaultPriority );
+ 
+-	_submitDagDeepOpts.always_use_node_log = param_boolean( "DAGMAN_ALWAYS_USE_NODE_LOG", true);
++	_submitDagDeepOpts.always_use_node_log = param_boolean(
++				"DAGMAN_ALWAYS_USE_NODE_LOG", true);
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_ALWAYS_USE_NODE_LOG setting: %s\n",
+ 				_submitDagDeepOpts.always_use_node_log ? "True" : "False" );
+ 
+@@ -280,7 +281,7 @@ Dagman::Config()
+ 		// all of the previous stuff.
+ 	allow_events = param_integer("DAGMAN_ALLOW_EVENTS", allow_events);
+ 	debug_printf( DEBUG_NORMAL, "allow_events ("
+-				"DAGMAN_IGNORE_DUPLICATE_JOB_EXECUTION, DAGMAN_ALLOW_EVENTS"
++				"DAGMAN_ALLOW_EVENTS"
+ 				") setting: %d\n", allow_events );
+ 
+ 		// ...end of event checking setup.
+@@ -416,10 +417,13 @@ Dagman::Config()
+ 
+ 	_maxJobHolds = param_integer( "DAGMAN_MAX_JOB_HOLDS", _maxJobHolds,
+ 				0, 1000000 );
+-	debug_printf( DEBUG_NORMAL, "DAGMAN_MAX_JOB_HOLDS setting: %d\n", _maxJobHolds );
++	debug_printf( DEBUG_NORMAL, "DAGMAN_MAX_JOB_HOLDS setting: %d\n",
++				_maxJobHolds );
+ 
+-	_claim_hold_time = param_integer( "DAGMAN_HOLD_CLAIM_TIME", _claim_hold_time, 0, 3600);
+-	debug_printf( DEBUG_NORMAL, "DAGMAN_HOLD_CLAIM_TIME setting: %d\n", _claim_hold_time );
++	_claim_hold_time = param_integer( "DAGMAN_HOLD_CLAIM_TIME",
++				_claim_hold_time, 0, 3600);
++	debug_printf( DEBUG_NORMAL, "DAGMAN_HOLD_CLAIM_TIME setting: %d\n",
++				_claim_hold_time );
+ 
+ 	char *debugSetting = param( "ALL_DEBUG" );
+ 	debug_printf( DEBUG_NORMAL, "ALL_DEBUG setting: %s\n",
+diff --git a/src/condor_dagman/dagman_recursive_submit.h b/src/condor_dagman/dagman_recursive_submit.h
+index badfb84..de7e7a4 100644
+--- a/src/condor_dagman/dagman_recursive_submit.h
++++ b/src/condor_dagman/dagman_recursive_submit.h
+@@ -77,7 +77,7 @@ struct SubmitDagShallowOptions
+ 		iMaxPre = 0;
+ 		iMaxPost = 0;
+ 		bNoEventChecks = false;
+-		appendFile = param("DAGMAN_INSERT_SUB_FILE");
++		appendFile = param( "DAGMAN_INSERT_SUB_FILE" );
+ 		strConfigFile = "";
+ 		dumpRescueDag = false;
+ 		runValgrind = false;
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index 0c61a90..de2df2a 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -766,7 +766,7 @@ tags=eventd,scheduled_event
+ [DAGMAN_LOG_ON_NFS_IS_ERROR]
+ default=true
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Log On Nfs Is Error
+ review=?
+@@ -775,7 +775,7 @@ tags=dagman,dagman_multi_dag
+ [DAGMAN_RESET_RETRIES_UPON_RESCUE]
+ default=true
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Reset Retries Upon Rescue
+ review=?
+@@ -783,35 +783,26 @@ tags=dagman,dag
+ 
+ [DAGMAN_INSERT_SUB_FILE]
+ default=
+-type=string
+-reconfig=true
++type=path
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Insert Sub File
+ review=?
+ tags=dagman,condor_submit_dag
+ 
+-[DAGMAN_OLD_RESCUE]
+-default=false
+-type=bool
+-reconfig=true
+-customization=seldom
+-friendly_name=Dagman Old Rescue
+-review=?
+-tags=dagman,condor_submit_dag
+-
+ [DAGMAN_AUTO_RESCUE]
+ default=true
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Auto Rescue
+ review=?
+ tags=dagman,condor_submit_dag
+ 
+ [DAGMAN_ON_EXIT_REMOVE]
+-default=
++default=(ExitSignal =?= 11 || (ExitCode =!= UNDEFINED && ExitCode >=0 && ExitCode <= 2))
+ type=string
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman On Exit Remove
+ review=?
+@@ -819,17 +810,17 @@ tags=dagman,condor_submit_dag
+ 
+ [DAGMAN_CONFIG_FILE]
+ default=
+-type=string
+-reconfig=true
++type=path
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Config File
+ review=?
+-tags=dagman,dagman_main
++tags=dagman,dagman_main,condor_submit_dag
+ 
+ [DAGMAN_DEBUG_CACHE_ENABLE]
+ default=false
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Debug Cache Enable
+ review=?
+@@ -838,27 +829,18 @@ tags=dagman,dagman_main
+ [DAGMAN_STARTUP_CYCLE_DETECT]
+ default=false
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Startup Cycle Detect
+ review=?
+ tags=dagman,dagman_main
+ 
+-[DAGMAN_IGNORE_DUPLICATE_JOB_EXECUTION]
+-default=false
+-type=bool
+-reconfig=true
+-customization=seldom
+-friendly_name=Dagman Ignore Duplicate Job Execution
+-review=?
+-tags=dagman,dagman_main
+-
+ [DAGMAN_ALLOW_EVENTS]
+ # XXX 114 is really CheckEvents::ALLOW_TERM_ABORT | CheckEvents::ALLOW_EXEC_BEFORE_SUBMIT | CheckEvents::ALLOW_DOUBLE_TERMINATE | CheckEvents::ALLOW_DUPLICATE_EVENTS
+ default=114
+ type=int
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=expert
+ friendly_name=Dagman Allow Events
+ review=?
+ tags=dagman,dagman_main
+@@ -866,7 +848,7 @@ tags=dagman,dagman_main
+ [DAGMAN_RETRY_SUBMIT_FIRST]
+ default=true
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Retry Submit First
+ review=?
+@@ -875,7 +857,7 @@ tags=dagman,dagman_main
+ [DAGMAN_RETRY_NODE_FIRST]
+ default=false
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Retry Node First
+ review=?
+@@ -884,25 +866,16 @@ tags=dagman,dagman_main
+ [DAGMAN_MUNGE_NODE_NAMES]
+ default=true
+ type=bool
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=expert
+ friendly_name=Dagman Munge Node Names
+ review=?
+ tags=dagman,dagman_main
+ 
+-[DAGMAN_DELETE_OLD_LOGS]
+-default=true
+-type=bool
+-reconfig=true
+-customization=seldom
+-friendly_name=Dagman Delete Old Logs
+-review=?
+-tags=dagman,dagman_main
+-
+ [DAGMAN_PROHIBIT_MULTI_JOBS]
+ default=false
+ type=bool
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Prohibit Multi Jobs
+ review=?
+@@ -911,44 +884,44 @@ tags=dagman,dagman_main
+ [DAGMAN_SUBMIT_DEPTH_FIRST]
+ default=false
+ type=bool
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=normal
+ friendly_name=Dagman Submit Depth First
+ review=?
+ tags=dagman,dagman_main
+ 
+ [DAGMAN_CONDOR_SUBMIT_EXE]
+-default=
+-type=string
+-reconfig=true
+-customization=seldom
++default=$(BIN)/condor_submit
++type=path
++reconfig=false
++customization=expert
+ friendly_name=Dagman Condor Submit Exe
+ review=?
+ tags=dagman,dagman_main
+ 
+ [DAGMAN_CONDOR_RM_EXE]
+-default=
+-type=string
+-reconfig=true
+-customization=seldom
++default=$(BIN)/condor_rm
++type=path
++reconfig=false
++customization=expert
+ friendly_name=Dagman Condor Rm Exe
+ review=?
+ tags=dagman,dagman_main
+ 
+ [DAGMAN_STORK_SUBMIT_EXE]
+-default=
++default=stork_submit
+ type=string
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=expert
+ friendly_name=Dagman Stork Submit Exe
+ review=?
+ tags=dagman,dagman_main
+ 
+ [DAGMAN_STORK_RM_EXE]
+-default=
++default=stork_rm
+ type=string
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=expert
+ friendly_name=Dagman Stork Rm Exe
+ review=?
+ tags=dagman,dagman_main
+@@ -956,8 +929,8 @@ tags=dagman,dagman_main
+ [DAGMAN_ABORT_DUPLICATES]
+ default=true
+ type=bool
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=expert
+ friendly_name=Dagman Abort Duplicates
+ review=?
+ tags=dagman,dagman_main
+@@ -965,8 +938,8 @@ tags=dagman,dagman_main
+ [DAGMAN_ABORT_ON_SCARY_SUBMIT]
+ default=true
+ type=bool
+-reconfig=true
+-customization=seldom
++reconfig=false
++customization=expert
+ friendly_name=Dagman Abort On Scary Submit
+ review=?
+ tags=dagman,dagman_main
+@@ -974,12 +947,255 @@ tags=dagman,dagman_main
+ [DAGMAN_PENDING_REPORT_INTERVAL]
+ default=600
+ type=int
+-reconfig=true
++reconfig=false
+ customization=seldom
+ friendly_name=Dagman Pending Report Interval
+ review=?
+ tags=dagman,dagman_main
+ 
++[DAGMAN_ALLOW_LOG_ERROR]
++default=false
++type=bool
++reconfig=false
++customization=seldom
++friendly_name=Dagman Allow Log Error
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_ALWAYS_RUN_POST]
++default=true
++type=bool
++reconfig=false
++customization=seldom
++friendly_name=Dagman Always Run Post
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_ALWAYS_USE_NODE_LOG]
++default=true
++type=bool
++reconfig=false
++customization=seldom
++friendly_name=Dagman Always Use Node Log
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_COPY_TO_SPOOL]
++default=false
++type=bool
++reconfig=false
++customization=expert
++friendly_name=Dagman Copy To Spool
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_DEBUG]
++default=
++type=string
++reconfig=false
++customization=normal
++friendly_name=Dagman Debug
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_DEBUG_CACHE_SIZE]
++default=5*1024*1024
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Debug Cache Size
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_DEFAULT_NODE_LOG]
++default=@(DAG_DIR)/@(DAG_FILE).nodes.log
++type=path
++reconfig=false
++customization=expert
++friendly_name=Dagman Default Node Log
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_DEFAULT_PRIORITY]
++default=0
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Default Priority
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_GENERATE_SUBDAG_SUBMITS]
++default=true
++type=bool
++reconfig=false
++customization=seldom
++friendly_name=Dagman Generate SubDAG Submits
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_HOLD_CLAIM_TIME]
++default=20
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Claim Hold Time
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_JOB_HOLDS]
++default=100
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Max Job Holds
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_JOBS_IDLE]
++default=0
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Max Jobs Idle
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_JOBS_SUBMITTED]
++default=0
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Max Jobs Submitted
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_POST_SCRIPTS]
++default=0
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Max Post Scripts
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_PRE_SCRIPTS]
++default=0
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Max Pre Scripts
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_RESCUE_NUM]
++default=100
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Max Rescue Num
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_SUBMIT_ATTEMPTS]
++default=6
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Max Submit Attempts
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_MAX_SUBMITS_PER_INTERVAL]
++default=5
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Max Submits Per Interval
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_PEGASUS_REPORT_METRICS]
++default=$(LIBEXEC)/condor_dagman_metrics_reporter
++type=path
++reconfig=false
++customization=expert
++friendly_name=Dagman Pegasus Report Metrics
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_PEGASUS_REPORT_TIMEOUT]
++default=100
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Pegasus Report Timeout
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_SUBMIT_DELAY]
++default=0
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman Submit Delay
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_SUPPRESS_NOTIFICATION]
++default=true
++type=bool
++reconfig=false
++customization=normal
++friendly_name=Dagman Suppress Notification
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_USE_OLD_DAG_READER]
++default=false
++type=bool
++reconfig=false
++customization=expert
++friendly_name=Dagman Use Old Dag Reader
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_USER_LOG_SCAN_INTERVAL]
++default=5
++type=int
++reconfig=false
++customization=seldom
++friendly_name=Dagman User Log Scan Interval
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_USE_STRICT]
++default=1
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Use Strict
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_VERBOSITY]
++default=3
++type=int
++reconfig=false
++customization=normal
++friendly_name=Dagman Verbosity
++review=?
++tags=dagman,dagman_main
++
++[DAGMAN_WRITE_PARTIAL_RESCUE]
++default=true
++type=bool
++reconfig=false
++customization=expert
++friendly_name=Dagman Write Partial Rescue
++review=?
++tags=dagman,dagman_main
++
+ [CKPT_SERVER_DIR]
+ default=
+ type=string

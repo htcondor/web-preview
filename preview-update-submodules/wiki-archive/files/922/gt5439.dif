@@ -1,0 +1,820 @@
+diff --git a/doc/version-history/8-5.history.tex b/doc/version-history/8-5.history.tex
+index d3a7755..a27f638 100644
+--- a/doc/version-history/8-5.history.tex
++++ b/doc/version-history/8-5.history.tex
+@@ -29,7 +29,14 @@ The details of each version are described below.
+ 
+ \begin{itemize}
+ 
+-\item None.
++\item The \File{dagman.out} file produced by \Condor{dagman} now has event
++timestamps added to the lines that report \Condor{dagman} reading
++a log event.  For example:
++\begin{verbatim}
++  01/13/16 11:29:03 Event: ULOG_SUBMIT for HTCondor Node NodeA (674.0.0) {01/13/16 11:28:59}
++\end{verbatim}
++The timestamp in curly brackets at the end is the actual timestamp
++of the event.
+ 
+ \end{itemize}
+ 
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index 057bb5e..b946f44 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -580,7 +580,7 @@ bool Dag::ProcessOneEvent (ULogEventOutcome outcome,
+ 
+ 			case ULOG_JOB_ABORTED:
+ #if !defined(DISABLE_NODE_TIME_METRICS)
+-				job->TermAbortMetrics( event->proc, event->eventTime,
++				job->TermAbortMetrics( event->proc, event->GetEventTime(),
+ 							_metrics );
+ #endif
+ 					// Make sure we don't count finished jobs as idle.
+@@ -590,7 +590,7 @@ bool Dag::ProcessOneEvent (ULogEventOutcome outcome,
+               
+ 			case ULOG_JOB_TERMINATED:
+ #if !defined(DISABLE_NODE_TIME_METRICS)
+-				job->TermAbortMetrics( event->proc, event->eventTime,
++				job->TermAbortMetrics( event->proc, event->GetEventTime(),
+ 							_metrics );
+ #endif
+ 					// Make sure we don't count finished jobs as idle.
+@@ -625,7 +625,7 @@ bool Dag::ProcessOneEvent (ULogEventOutcome outcome,
+ 
+ 			case ULOG_EXECUTE:
+ #if !defined(DISABLE_NODE_TIME_METRICS)
+-				job->ExecMetrics( event->proc, event->eventTime,
++				job->ExecMetrics( event->proc, event->GetEventTime(),
+ 							_metrics );
+ #endif
+ 				ProcessNotIdleEvent( job, event->proc );
+@@ -2379,16 +2379,22 @@ PrintEvent( debug_level_t level, const ULogEvent* event, Job* node,
+ 
+ 	const char *recovStr = recovery ? " [recovery mode]" : "";
+ 
++	MyString timestr;
++	time_to_str( &event->GetEventTime(), timestr );
++		// String from time_to_str has trailing blank (needed for other
++		// places in the code).
++	timestr.trim();
++
+ 	if( node ) {
+-	    debug_printf( level, "Event: %s for %s Node %s (%d.%d.%d)%s\n",
++	    debug_printf( level, "Event: %s for %s Node %s (%d.%d.%d) {%s}%s\n",
+ 					  event->eventName(), node->JobTypeString(),
+ 					  node->GetJobName(), event->cluster, event->proc,
+-					  event->subproc, recovStr );
++					  event->subproc, timestr.Value(), recovStr );
+ 	} else {
+-        debug_printf( level, "Event: %s for unknown Node (%d.%d.%d): "
++        debug_printf( level, "Event: %s for unknown Node (%d.%d.%d) {%s}: "
+ 					  "ignoring...%s\n", event->eventName(),
+ 					  event->cluster, event->proc,
+-					  event->subproc, recovStr );
++					  event->subproc, timestr.Value(), recovStr );
+ 	}
+ }
+ 
+diff --git a/src/condor_dagman/debug.cpp b/src/condor_dagman/debug.cpp
+index 119d865..0e8905f 100644
+--- a/src/condor_dagman/debug.cpp
++++ b/src/condor_dagman/debug.cpp
+@@ -171,41 +171,23 @@ void
+ debug_cache_insert(int flags, const char *fmt, va_list args)
+ {
+ 	time_t clock_now;
+-	struct tm *tm = NULL;
+ 
+ 	MyString tstamp, fds, line, pid, cid;
+ 	pid_t my_pid;
+ 
+ #ifdef D_CATEGORY_MASK
+ 	int HdrFlags = (DebugHeaderOptions|flags) & ~D_CATEGORY_RESERVED_MASK;
+-	bool UseTimestamps = (DebugHeaderOptions & D_TIMESTAMP) != 0;
+ #else
+ 	int HdrFlags = DebugFlags|flags;
+-	int UseTimestamps = DebugUseTimestamps;
+ #endif
+ 	// XXX TODO
+ 	// handle flags...
+ 	// For now, always assume D_ALWAYS since the caller assumes it as well.
+ 
+-	// HACK
+-	// Note: This nasty bit of code is copied in spirit from dprintf.c
+-	// It needs abstracting out a little bit from there into its own
+-	// function, but this is a quick hack for LIGO. I'll come back to it
+-	// and do it better later when I have time.
+-	clock_now = time(NULL);
+-	if (!UseTimestamps) {
+-		tm = localtime(&clock_now);
+-	}
++	clock_now = time( NULL );
++	time_to_str( clock_now, tstamp );
+ 
+ 	if ((HdrFlags & D_NOHEADER) == 0) {
+-		if (UseTimestamps) {
+-			tstamp.formatstr("(%d) ", (int)clock_now);
+-		} else {
+-			tstamp.formatstr("%d/%d %02d:%02d:%02d ",
+-				tm->tm_mon + 1, tm->tm_mday, tm->tm_hour,
+-				tm->tm_min, tm->tm_sec );
+-		}
+-
+ 		if (HdrFlags & D_FDS) {
+ 				// Because of Z's dprintf changes, we no longer have
+ 				// access to the dprintf FP.  For now we're just going
+@@ -293,3 +275,41 @@ bool check_warning_strictness( strict_level_t strictness, bool quit_if_error )
+ 
+ 	return false;
+ }
++
++/*--------------------------------------------------------------------------*/
++
++void
++time_to_str( time_t timestamp, MyString &tstr )
++{
++	struct tm *tm = NULL;
++
++#ifdef D_CATEGORY_MASK
++	bool UseTimestamps = (DebugHeaderOptions & D_TIMESTAMP) != 0;
++#else
++	int UseTimestamps = DebugUseTimestamps;
++#endif
++
++	// HACK
++	// Note: This nasty bit of code is copied in spirit from dprintf.c
++	// It needs abstracting out a little bit from there into its own
++	// function, but this is a quick hack for LIGO. I'll come back to it
++	// and do it better later when I have time.
++	if ( !UseTimestamps ) {
++		tm = localtime( &timestamp );
++	}
++
++	if ( UseTimestamps ) {
++		tstr.formatstr( "(%d) ", (int)timestamp );
++	} else {
++		time_to_str( tm, tstr );
++	}
++}
++
++/*--------------------------------------------------------------------------*/
++void
++time_to_str( const struct tm *tm, MyString &tstr )
++{
++	tstr.formatstr( "%02d/%02d/%02d %02d:%02d:%02d ",
++		tm->tm_mon + 1, tm->tm_mday, tm->tm_year - 100,
++		tm->tm_hour, tm->tm_min, tm->tm_sec );
++}
+diff --git a/src/condor_dagman/debug.h b/src/condor_dagman/debug.h
+index 9283c00..290b54d 100644
+--- a/src/condor_dagman/debug.h
++++ b/src/condor_dagman/debug.h
+@@ -23,7 +23,7 @@
+ 
+ #include "condor_header_features.h"
+ 
+-BEGIN_C_DECLS   /* from condor_header_features.h */
++class MyString;
+ 
+ /** @name debug.h
+     
+@@ -172,7 +172,19 @@ typedef enum strict_level strict_level_t;
+ bool check_warning_strictness( strict_level_t strictness,
+ 			bool quit_if_error = true );
+ 
+-END_C_DECLS /* from condor_header_features.h */
++/** Convert a timestamp into a string, formatted in the same way
++    as HTCondor dprintf strings.
++	@param timestamp:  The timestamp to convert.
++	@param tstr:  A MyString to hold the resulting string.
++*/
++void time_to_str( time_t timestamp, MyString &tstr );
++
++/** Convert a timestamp into a string, formatted in the same way
++    as HTCondor dprintf strings.
++	@param tm:  The tm to convert.
++	@param tstr:  A MyString to hold the resulting string.
++*/
++void time_to_str( const struct tm *tm, MyString &tstr );
+ 
+ #endif /* ifndef DAGMAN_DEBUG_H */
+ 
+diff --git a/src/condor_dagman/job.cpp b/src/condor_dagman/job.cpp
+index 7c75953..a9588a4 100644
+--- a/src/condor_dagman/job.cpp
++++ b/src/condor_dagman/job.cpp
+@@ -801,8 +801,7 @@ Job::GetJobstateSequenceNum()
+ void
+ Job::SetLastEventTime( const ULogEvent *event )
+ {
+-	struct tm eventTm = event->eventTime;
+-	_lastEventTime = mktime( &eventTm );
++	_lastEventTime = event->GetEventclock();
+ }
+ 
+ //---------------------------------------------------------------------------
+diff --git a/src/condor_dagman/jobstate_log.cpp b/src/condor_dagman/jobstate_log.cpp
+index 5dea0c9..39b4c99 100644
+--- a/src/condor_dagman/jobstate_log.cpp
++++ b/src/condor_dagman/jobstate_log.cpp
+@@ -324,8 +324,7 @@ JobstateLog::WriteEvent( const ULogEvent *event, Job *node )
+ 	if ( eventName != NULL ) {
+ 		MyString condorID;
+ 		CondorID2Str( event->cluster, event->proc, condorID );
+-		struct tm eventTm = event->eventTime;
+-		time_t eventTime = mktime( &eventTm );
++		time_t eventTime = event->GetEventclock();
+ 		Write( &eventTime, node, eventName, condorID.Value() );
+ 	}
+ }
+diff --git a/src/condor_tests/CMakeLists.txt b/src/condor_tests/CMakeLists.txt
+index da6cf0f..63c857f 100644
+--- a/src/condor_tests/CMakeLists.txt
++++ b/src/condor_tests/CMakeLists.txt
+@@ -656,6 +656,7 @@ if (BUILD_TESTING)
+ 	condor_pl_test(job_dagman_script_defer "Test DAG pre/post script deferral feature" "dagman;quick;full;quicknolink")
+ 	condor_pl_test(job_dagman_submit_glob-A "Test DAG with node jobs using new submit globbing feature" "dagman;quick;full;quicknolink")
+ 	condor_pl_test(job_dagman_submit_glob-B "Test DAG with node jobs using feature, in combination with DAGMAN_PROHIBIT_MULTI_JOBS" "dagman;quick;full;quicknolink")
++	condor_pl_test(job_dagman_event_timestamp "Test event timestamps in dagman.out file" "dagman;quick;full;quicknolink")
+ 	#condor_pl_test(perf_jobs_sue_10_10_30_van "Generated jobs performance test" "performance;long")
+ 	#condor_pl_test(perf_xfer_deb_10_10_30_van "Generated transfer performance test" "performance;long")
+ 	condor_pl_test(job_filexfer_sandbox-empty_van "Are job sandboxes with bad permissions cleaned up?" "framework;quick;full;quicknolink")
+diff --git a/src/condor_tests/Test_Requirements b/src/condor_tests/Test_Requirements
+index 7d831cb..dff34e8 100644
+--- a/src/condor_tests/Test_Requirements
++++ b/src/condor_tests/Test_Requirements
+@@ -203,6 +203,7 @@ job_dagman_rm: personal
+ job_dagman_script_defer: personal
+ job_dagman_submit_glob-A: personal
+ job_dagman_submit_glob-B: personal
++job_dagman_event_timestamp: personal
+ job_filexfer_base-input1_van: personal
+ job_filexfer_base_van: personal
+ job_filexfer_basic_van: personal
+diff --git a/src/condor_tests/job_dagman_event_timestamp-node.cmd b/src/condor_tests/job_dagman_event_timestamp-node.cmd
+new file mode 100644
+index 0000000..5231740
+--- /dev/null
++++ b/src/condor_tests/job_dagman_event_timestamp-node.cmd
+@@ -0,0 +1,9 @@
++executable           	= ./x_echostring.pl
++arguments		= 1 2 3
++universe             	= vanilla
++log			= job_dagman_event_timestamp-node.log
++notification         	= NEVER
++getenv               	= true
++output			= job_dagman_event_timestamp-node.out
++error			= job_dagman_event_timestamp-node.err
++queue
+diff --git a/src/condor_tests/job_dagman_event_timestamp.dag b/src/condor_tests/job_dagman_event_timestamp.dag
+new file mode 100644
+index 0000000..e192b19
+--- /dev/null
++++ b/src/condor_tests/job_dagman_event_timestamp.dag
+@@ -0,0 +1,3 @@
++job NodeA job_dagman_event_timestamp-node.cmd
++job NodeB foobar noop
++parent NodeA child NodeB
+diff --git a/src/condor_tests/job_dagman_event_timestamp.run b/src/condor_tests/job_dagman_event_timestamp.run
+new file mode 100755
+index 0000000..12329b1
+--- /dev/null
++++ b/src/condor_tests/job_dagman_event_timestamp.run
+@@ -0,0 +1,126 @@
++#! /usr/bin/env perl
++##**************************************************************
++##
++## Copyright (C) 1990-2007, Condor Team, Computer Sciences Department,
++## University of Wisconsin-Madison, WI.
++## 
++## Licensed under the Apache License, Version 2.0 (the "License"); you
++## may not use this file except in compliance with the License.  You may
++## obtain a copy of the License at
++## 
++##    http://www.apache.org/licenses/LICENSE-2.0
++## 
++## Unless required by applicable law or agreed to in writing, software
++## distributed under the License is distributed on an "AS IS" BASIS,
++## WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++## See the License for the specific language governing permissions and
++## limitations under the License.
++##
++##**************************************************************
++
++use CondorTest;
++use CondorUtils;
++
++$cmd = 'job_dagman_event_timestamp.dag';
++$testdesc =  'Condor submit dag - test dagman.out event timestamps - scheduler U';
++$testname = "job_dagman_event_timestamp";
++$dagman_args = "-verbose";
++
++$outfile = "job_dagman_event_timestamp.dag.dagman.out";
++
++@expected_lines = (
++	'\d\d/\d\d/\d\d \d\d:\d\d:\d\d\ Event: ULOG_SUBMIT for HTCondor Node NodeA \(\d+\.\d+\.\d+\) \{\d\d/\d\d/\d\d \d\d:\d\d:\d\d\}',
++	'\d\d/\d\d/\d\d \d\d:\d\d:\d\d\ Event: ULOG_EXECUTE for HTCondor Node NodeA \(\d+\.\d+\.\d+\) \{\d\d/\d\d/\d\d \d\d:\d\d:\d\d\}',
++	'\d\d/\d\d/\d\d \d\d:\d\d:\d\d\ Event: ULOG_JOB_TERMINATED for HTCondor Node NodeA \(\d+\.\d+\.\d+\) \{\d\d/\d\d/\d\d \d\d:\d\d:\d\d\}',
++	'\d\d/\d\d/\d\d \d\d:\d\d:\d\d\ Event: ULOG_SUBMIT for HTCondor Node NodeB \(\d+\.\d+\.\d+\) \{\d\d/\d\d/\d\d \d\d:\d\d:\d\d\}',
++	'\d\d/\d\d/\d\d \d\d:\d\d:\d\d\ Event: ULOG_JOB_TERMINATED for HTCondor Node NodeB \(\d+\.\d+\.\d+\) \{\d\d/\d\d/\d\d \d\d:\d\d:\d\d\}',
++);
++
++my $killedchosen = 0;
++
++# truly const variables in perl
++sub IDLE{1};
++sub HELD{5};
++sub RUNNING{2};
++
++# Get rid of any existing output files.
++if (-e $outfile) {
++	runcmd("rm -f $outfile");
++}
++
++$abnormal = sub 
++{
++	die "Want to see only submit, execute and unsuccessful completion\n";
++};
++
++$failure = sub 
++{
++	die "Error: DAG is not expected to fail!\n";
++};
++
++$aborted = sub 
++{
++	die "Abort event NOT expected\n";
++};
++
++$held = sub 
++{
++	die "Held event NOT expected\n";
++};
++
++$executed = sub
++{
++	my %info = @_;
++
++	CondorTest::debug("Good. We need the dag to run<$info{cluster}>\n",1);
++};
++
++$submitted = sub
++{
++	CondorTest::debug("submitted: This test will see submit, executing and unsuccessful completion\n",1);
++};
++
++$success = sub
++{
++	CondorTest::debug("executed successfully\n",1);
++	CondorTest::debug("Verifying output\n",1);
++	$diditpass = 1;
++	CondorTest::debug("Checking $outfile\n",1);
++
++	$canopen = open(OUT, "<$outfile");
++	if (! (defined $canopen)) {
++		CondorTest::debug("Cannot open output file <$outfile>:$!\n",1);
++		$diditpass = 0;
++	} else {
++		$contents = do { local $/; <OUT>; };
++		foreach $eline (@expected_lines) {
++			if ( $contents =~/$eline/ ) {
++				CondorTest::debug("Found $eline in $outfile\n",1);
++			} else {
++				CondorTest::debug("ERROR: $eline not found in $outfile\n",1);
++				$diditpass = 0;
++			}
++		}
++		close(OUT);
++	}
++
++	if ($diditpass == 0) {
++		die "All expected files and correct output failed\n";
++	}
++};
++
++CondorTest::RegisterExitedSuccess( $testname, $success);
++CondorTest::RegisterExitedFailure( $testname, $failure );
++CondorTest::RegisterExecute($testname, $executed);
++CondorTest::RegisterExitedAbnormal( $testname, $abnormal );
++CondorTest::RegisterAbort( $testname, $aborted );
++CondorTest::RegisterHold( $testname, $held );
++CondorTest::RegisterSubmit( $testname, $submitted );
++
++if( CondorTest::RunDagTest($testname, $cmd, 0, $dagman_args) ) {
++	CondorTest::debug("$testname: SUCCESS\n",1);
++	exit(0);
++} else {
++	die "$testname: CondorTest::RunTest() failed\n";
++}
++
+diff --git a/src/condor_tests/job_dagman_really_large_dag.run b/src/condor_tests/job_dagman_really_large_dag.run
+index 292802b..542b53a 100755
+--- a/src/condor_tests/job_dagman_really_large_dag.run
++++ b/src/condor_tests/job_dagman_really_large_dag.run
+@@ -116,7 +116,7 @@ $success = sub
+ 			chomp();
+ 			$line = $_;
+ 
+-			if( $line =~ /Event: ULOG_SUBMIT for Condor Node job_dagman_really_large_dag-nodeA/ ) {
++			if( $line =~ /Event: ULOG_SUBMIT for HTCondor Node job_dagman_really_large_dag-nodeA/ ) {
+ 				CondorTest::debug("$name: $line\n",1);
+ 				if( $dag_state == 0 ) {
+ 					# Pre-recovery -- okay.
+@@ -129,7 +129,7 @@ $success = sub
+ 								"wrong sequence\n");
+ 				}
+ 
+-			} elsif( $line =~ /Event: ULOG_JOB_TERMINATED for Condor Node job_dagman_really_large_dag-nodeC / ) {
++			} elsif( $line =~ /Event: ULOG_JOB_TERMINATED for HTCondor Node job_dagman_really_large_dag-nodeC / ) {
+ 				CondorTest::debug("$name: $line\n",1);
+ 				if( $dag_state == 2 ) {
+ 					$dag_state = 3;
+diff --git a/src/condor_userlog/userlog.cpp b/src/condor_userlog/userlog.cpp
+index 36217c2..6eba0f9 100644
+--- a/src/condor_userlog/userlog.cpp
++++ b/src/condor_userlog/userlog.cpp
+@@ -478,8 +478,8 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 					break;
+ 				}
+ 				time_t start_time, end_time, ckpt_time=0;
+-				start_time = mktime(&execEvent->eventTime);
+-				end_time = mktime(&event->eventTime);
++				start_time = execEvent->GetEventclock();
++				end_time = event->GetEventclock();
+ 				int cpu_usage = 0;
+ 				if (evictEvent->checkpointed) {
+ 					ckpt_time = end_time;
+@@ -488,7 +488,7 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 				} else {
+ 					CheckpointedEvent *ckptEvent;
+ 					if (CkptRecs.lookup(key, ckptEvent) >= 0) {
+-						ckpt_time = mktime(&ckptEvent->eventTime);
++						ckpt_time = ckptEvent->GetEventclock();
+ 						cpu_usage =
+ 							ckptEvent->run_remote_rusage.ru_utime.tv_sec +
+ 							ckptEvent->run_remote_rusage.ru_stime.tv_sec;
+@@ -531,8 +531,8 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 					break;
+ 				}
+ 				time_t start_time, end_time;
+-				start_time = mktime(&execEvent->eventTime);
+-				end_time = mktime(&event->eventTime);
++				start_time = execEvent->GetEventclock();
++				end_time = event->GetEventclock();
+ 				if (!evict_only) {
+ 					new_record(event->cluster, event->proc, (int)start_time,
+ 							   (int)end_time,
+@@ -575,12 +575,12 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 					break;
+ 				}
+ 				time_t start_time, end_time, ckpt_time=0;
+-				start_time = mktime(&execEvent->eventTime);
+-				end_time = mktime(&event->eventTime);
++				start_time = execEvent->GetEventclock();
++				end_time = event->GetEventclock();
+ 				int cpu_usage = 0;
+ 				CheckpointedEvent *ckptEvent;
+ 				if (CkptRecs.lookup(key, ckptEvent) >= 0) {
+-					ckpt_time = mktime(&ckptEvent->eventTime);
++					ckpt_time = ckptEvent->GetEventclock();
+ 					cpu_usage = ckptEvent->run_remote_rusage.ru_utime.tv_sec +
+ 						ckptEvent->run_remote_rusage.ru_stime.tv_sec;
+ 				}
+diff --git a/src/condor_utils/condor_event.cpp b/src/condor_utils/condor_event.cpp
+index 69085c3..c82a298 100644
+--- a/src/condor_utils/condor_event.cpp
++++ b/src/condor_utils/condor_event.cpp
+@@ -289,7 +289,6 @@ ULogEvent::readHeader (FILE *file)
+ 					 &(eventTime.tm_mon), &(eventTime.tm_mday),
+ 					 &(eventTime.tm_hour), &(eventTime.tm_min),
+ 					 &(eventTime.tm_sec));
+-
+ 	// check if all fields were successfully read
+ 	if (retval != 8)
+ 	{
+@@ -298,6 +297,9 @@ ULogEvent::readHeader (FILE *file)
+ 
+ 	// recall that tm_mon+1 was written to log; decrement to compensate
+ 	eventTime.tm_mon--;
++		// Need to set eventclock here, otherwise eventclock and
++		// eventTime will not match!!  (See gittrac #5468.)
++	eventclock = mktime( &eventTime );
+ 
+ 	return 1;
+ }
+@@ -313,16 +315,17 @@ bool ULogEvent::formatHeader( std::string &out )
+ 					  "%03d (%03d.%03d.%03d) %02d/%02d %02d:%02d:%02d.%06d ",
+ 					  eventNumber,
+ 					  cluster, proc, subproc,
+-					  eventTime.tm_mon+1, eventTime.tm_mday,
+-					  eventTime.tm_hour, eventTime.tm_min, eventTime.tm_sec, (int)eventTimeval.tv_usec);
++					  GetEventTime().tm_mon+1, GetEventTime().tm_mday,
++					  GetEventTime().tm_hour, GetEventTime().tm_min,
++					  GetEventTime().tm_sec, (int)eventTimeval.tv_usec);
+ #else
+ 	retval = formatstr_cat(out,
+ 					  "%03d (%03d.%03d.%03d) %02d/%02d %02d:%02d:%02d ",
+ 					  eventNumber,
+ 					  cluster, proc, subproc,
+-					  eventTime.tm_mon+1, eventTime.tm_mday,
+-					  eventTime.tm_hour, eventTime.tm_min, eventTime.tm_sec);
+-
++					  GetEventTime().tm_mon+1, GetEventTime().tm_mday,
++					  GetEventTime().tm_hour, GetEventTime().tm_min,
++					  GetEventTime().tm_sec);
+ #endif
+ 
+ 	// check if all fields were sucessfully written
+@@ -438,8 +441,7 @@ ULogEvent::toClassAd(void)
+ 		return NULL;
+ 	}
+ 
+-	const struct tm tmdup = eventTime;
+-	char* eventTimeStr = time_to_iso8601(tmdup, ISO8601_ExtendedFormat,
++	char* eventTimeStr = time_to_iso8601(eventTime, ISO8601_ExtendedFormat,
+ 										 ISO8601_DateAndTime, FALSE);
+ 	if( eventTimeStr ) {
+ 		if ( !myad->InsertAttr("EventTime", eventTimeStr) ) {
+@@ -489,6 +491,9 @@ ULogEvent::initFromClassAd(ClassAd* ad)
+ 	if( ad->LookupString("EventTime", &timestr) ) {
+ 		bool f = FALSE;
+ 		iso8601_to_time(timestr, &eventTime, &f);
++			// Need to set eventclock here, otherwise eventclock and
++			// eventTime will not match!!  (See gittrac #5468.)
++		eventclock = mktime( &eventTime );
+ 		free(timestr);
+ 	}
+ 	ad->LookupInteger("Cluster", cluster);
+@@ -1446,7 +1451,7 @@ RemoteErrorEvent::formatBody( std::string &out )
+ 				 execute_host);
+ 
+ 		if (critical_error) {
+-			tmpCl1.Assign("endts", (int)eventclock);
++			tmpCl1.Assign("endts", (int)GetEventclock());
+ 			tmpCl1.Assign("endtype", ULOG_REMOTE_ERROR);
+ 			tmpCl1.Assign("endmessage", messagestr);
+ 
+@@ -1471,7 +1476,7 @@ RemoteErrorEvent::formatBody( std::string &out )
+ 			insertCommonIdentifiers(tmpCl1);
+ 
+ 			tmpCl1.Assign("eventtype", ULOG_REMOTE_ERROR);
+-			tmpCl1.Assign("eventtime", (int)eventclock);
++			tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 			tmpCl1.Assign("description", messagestr);
+ 
+ 			if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+@@ -1739,7 +1744,7 @@ ExecuteEvent::formatBody( std::string &out )
+ 
+ 		dprintf(D_FULLDEBUG, "Executehost name = %s\n", remoteName ? remoteName : "" );
+ 
+-		tmpCl1.Assign("endts", (int)eventclock);
++		tmpCl1.Assign("endts", (int)GetEventclock());
+ 
+ 		tmp.formatstr("endtype = -1");
+ 		tmpCl1.Insert(tmp.Value());
+@@ -1766,7 +1771,7 @@ ExecuteEvent::formatBody( std::string &out )
+ 		// this inserts scheddname, cluster, proc, etc
+ 		insertCommonIdentifiers(tmpCl3);
+ 
+-		tmpCl3.Assign("startts", (int)eventclock);
++		tmpCl3.Assign("startts", (int)GetEventclock());
+ 
+ 		if (FILEObj->file_newEvent("Runs", &tmpCl3) == QUILL_FAILURE) {
+ 			dprintf(D_ALWAYS, "Logging Event 1--- Error\n");
+@@ -1861,7 +1866,7 @@ ExecutableErrorEvent::formatBody( std::string &out )
+ 		ClassAd tmpCl1, tmpCl2;
+ 		MyString tmp = "";
+ 
+-		tmpCl1.Assign("endts", (int)eventclock);
++		tmpCl1.Assign("endts", (int)GetEventclock());
+ 		tmpCl1.Assign("endtype", ULOG_EXECUTABLE_ERROR);
+ 		tmpCl1.Assign("endmessage", messagestr);
+ 
+@@ -1982,7 +1987,7 @@ CheckpointedEvent::formatBody( std::string &out )
+ 		insertCommonIdentifiers(tmpCl1);
+ 
+ 		tmpCl1.Assign("eventtype", ULOG_CHECKPOINTED);
+-		tmpCl1.Assign("eventtime", (int)eventclock);
++		tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 
+ 		tmpCl1.Assign("description", messagestr);
+ 
+@@ -2377,7 +2382,7 @@ JobEvictedEvent::formatBody( std::string &out )
+ 			}
+ 		}
+ 
+-		tmpCl1.Assign("endts", (int)eventclock);
++		tmpCl1.Assign("endts", (int)GetEventclock());
+ 		tmpCl1.Assign("endtype", ULOG_JOB_EVICTED);
+ 
+ 		tmp.formatstr( "endmessage = \"%s%s\"", messagestr, terminatestr);
+@@ -2581,7 +2586,7 @@ JobAbortedEvent::formatBody( std::string &out )
+ 		insertCommonIdentifiers(tmpCl1);
+ 
+ 		tmpCl1.Assign("eventtype", ULOG_JOB_ABORTED);
+-		tmpCl1.Assign("eventtime", (int)eventclock);
++		tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 		tmpCl1.Assign("description", messagestr);
+ 
+ 		if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+@@ -2785,7 +2790,7 @@ TerminatedEvent::formatBody( std::string &out, const char *header )
+ 		// this inserts scheddname, cluster, proc, etc
+ 		insertCommonIdentifiers(tmpCl2);
+ 
+-		tmpCl2.Assign("endts", (int)eventclock);
++		tmpCl2.Assign("endts", (int)GetEventclock());
+ 
+ 		if (FILEObj->file_updateEvent("Runs", &tmpCl1, &tmpCl2) == QUILL_FAILURE) {
+ 			dprintf(D_ALWAYS, "Logging Event 3--- Error\n");
+@@ -2935,7 +2940,7 @@ JobTerminatedEvent::formatBody( std::string &out )
+ 		ClassAd tmpCl1, tmpCl2;
+ 		MyString tmp = "";
+ 
+-		tmpCl1.Assign("endts", (int)eventclock);
++		tmpCl1.Assign("endts", (int)GetEventclock());
+ 		tmpCl1.Assign("endtype", ULOG_JOB_TERMINATED);
+ 
+ 		// this inserts scheddname, cluster, proc, etc
+@@ -3285,7 +3290,7 @@ ShadowExceptionEvent::formatBody( std::string &out )
+ 			messagestr[strlen(messagestr)-1] = '\0';
+ 
+ 		if (began_execution) {
+-			tmpCl1.Assign("endts", (int)eventclock);
++			tmpCl1.Assign("endts", (int)GetEventclock());
+ 			tmpCl1.Assign("endtype", ULOG_SHADOW_EXCEPTION);
+ 			tmpCl1.Assign("endmessage", messagestr);
+ 			tmpCl1.Assign("runbytessent", sent_bytes);
+@@ -3307,7 +3312,7 @@ ShadowExceptionEvent::formatBody( std::string &out )
+ 			insertCommonIdentifiers(tmpCl1);
+ 
+ 			tmpCl1.Assign("eventtype", ULOG_SHADOW_EXCEPTION);
+-			tmpCl1.Assign("eventtime", (int)eventclock);
++			tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 			tmpCl1.Assign("description", messagestr);
+ 
+ 			if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+@@ -3405,7 +3410,7 @@ JobSuspendedEvent::formatBody( std::string &out )
+ 		insertCommonIdentifiers(tmpCl1);
+ 
+ 		tmpCl1.Assign("eventtype", ULOG_JOB_SUSPENDED);
+-		tmpCl1.Assign("eventtime", (int)eventclock);
++		tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 		tmpCl1.Assign("description", messagestr);
+ 
+ 		if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+@@ -3479,7 +3484,7 @@ JobUnsuspendedEvent::formatBody( std::string &out )
+ 		insertCommonIdentifiers(tmpCl1);
+ 
+ 		tmpCl1.Assign("eventtype", ULOG_JOB_UNSUSPENDED);
+-		tmpCl1.Assign("eventtime", (int)eventclock);
++		tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 		tmpCl1.Assign("description", messagestr);
+ 
+  	    if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+@@ -3632,7 +3637,7 @@ JobHeldEvent::formatBody( std::string &out )
+ 		insertCommonIdentifiers(tmpCl1);
+ 
+ 		tmpCl1.Assign("eventtype", ULOG_JOB_HELD);
+-		tmpCl1.Assign("eventtime", (int)eventclock);
++		tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 		tmpCl1.Assign("description", messagestr);
+ 
+ 		if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+@@ -3791,7 +3796,7 @@ JobReleasedEvent::formatBody( std::string &out )
+ 		insertCommonIdentifiers(tmpCl1);
+ 
+ 		tmpCl1.Assign("eventtype", ULOG_JOB_RELEASED);
+-		tmpCl1.Assign("eventtime", (int)eventclock);
++		tmpCl1.Assign("eventtime", (int)GetEventclock());
+ 		tmpCl1.Assign("description", messagestr);
+ 
+ 		if (FILEObj->file_newEvent("Events", &tmpCl1) == QUILL_FAILURE) {
+diff --git a/src/condor_utils/condor_event.h b/src/condor_utils/condor_event.h
+index 36b5b38..842a91c 100644
+--- a/src/condor_utils/condor_event.h
++++ b/src/condor_utils/condor_event.h
+@@ -203,18 +203,18 @@ class ULogEvent {
+     /// The event last read, or to be written.
+     ULogEventNumber    eventNumber;
+ 
+-    /// The time this event occurred
+-    struct tm          eventTime;
++	/** Get the time at which this event occurred, in the form
++	    of a struct tm.
++		@return The time at which this event occurred.
++	*/
++	const struct tm& GetEventTime() const { return eventTime; }
+ 
+-/*
+-define ULOG_MICROSECONDS on linux to get microsecond resolution in the
+-user log.  This is write only, and probably breaks compatability with
+-log readers.
+-*/
++	/** Get the time at which this event occurred, in the form
++	    of a time_t.
++		@return The time at which this event occurred.
++	*/
++	time_t GetEventclock() const { return eventclock; }
+ 
+-#ifdef ULOG_MICROSECONDS
+-	struct timeval     eventTimeval;
+-#endif
+     /// The cluster field of the Condor ID for this event
+     int                cluster;
+     /// The proc    field of the Condor ID for this event
+@@ -226,8 +226,6 @@ log readers.
+     char *scheddname;
+     //char globaljobid[100];
+ 
+-	time_t eventclock;
+-
+   protected:
+ 
+     /** Read the resource usage from the log file.
+@@ -287,6 +285,23 @@ log readers.
+ 	/// the global job id for the job associated with this event
+ 	void insertCommonIdentifiers(ClassAd &adToFill);
+ 	const char *m_gjid;
++
++  private:
++    /// The time this event occurred (eventclock is Unix timestamp;
++	/// eventTime is local time); these MUST correspond to the same
++	/// time!!
++	/// We should get rid of one of these (see gittrac #5468).
++	time_t				eventclock;
++    struct tm			eventTime;
++
++/*
++define ULOG_MICROSECONDS on linux to get microsecond resolution in the
++user log.  This is write only, and probably breaks compatability with
++log readers.
++*/
++#ifdef ULOG_MICROSECONDS
++	struct timeval     eventTimeval;
++#endif
+ };
+ 
+ //----------------------------------------------------------------------------
+diff --git a/src/condor_utils/read_multiple_logs.cpp b/src/condor_utils/read_multiple_logs.cpp
+index 6387aa8..0026af4 100644
+--- a/src/condor_utils/read_multiple_logs.cpp
++++ b/src/condor_utils/read_multiple_logs.cpp
+@@ -133,8 +133,8 @@ ReadMultipleUserLogs::readEvent (ULogEvent * & event)
+ 
+ 		if ( outcome != ULOG_NO_EVENT ) {
+ 			if ( oldestEventMon == NULL ||
+-						(oldestEventMon->lastLogEvent->eventTime >
+-						monitor->lastLogEvent->eventTime) ) {
++						(oldestEventMon->lastLogEvent->GetEventclock() >
++						monitor->lastLogEvent->GetEventclock()) ) {
+ 				oldestEventMon = monitor;
+ 			}
+ 		}
+diff --git a/src/condor_utils/test_log_reader.cpp b/src/condor_utils/test_log_reader.cpp
+index 4ce055b..b59f616 100644
+--- a/src/condor_utils/test_log_reader.cpp
++++ b/src/condor_utils/test_log_reader.cpp
+@@ -73,7 +73,7 @@ ReadEvents( Options &opts, int &numEvents );
+ void
+ ReportError( const ReadUserLog &reader );
+ 
+-const char *timestr( struct tm &tm );
++const char *timestr( const struct tm &tm );
+ 
+ // Simple term signal handler
+ static bool	global_done = false;
+@@ -514,7 +514,7 @@ ReadEvents(Options &opts, int &totalEvents)
+ 			if ( opts.verbosity >= VERB_ALL ) {
+ 				printf( "Got an event from %d.%d.%d @ %s",
+ 						event->cluster, event->proc, event->subproc,
+-						timestr(event->eventTime) );
++						timestr(event->GetEventTime()) );
+ 			}
+ 
+ 			if (opts.missedCheck ) {
+@@ -739,7 +739,7 @@ ReportError( const ReadUserLog &reader )
+ 			 error_str, error, line_num );
+ }
+ 
+-const char *timestr( struct tm &t )
++const char *timestr( const struct tm &t )
+ {
+ 	static char	tbuf[64];
+ 	strncpy( tbuf, asctime( &t ), sizeof(tbuf) );
+diff --git a/src/condor_utils/userlog_to_classads.cpp b/src/condor_utils/userlog_to_classads.cpp
+index 191c4d1..525534f 100644
+--- a/src/condor_utils/userlog_to_classads.cpp
++++ b/src/condor_utils/userlog_to_classads.cpp
+@@ -29,9 +29,9 @@
+ #include "userlog_to_classads.h"
+ 
+ typedef long condor_time_t;
+-static condor_time_t getEventTime(ULogEvent *event)
++static condor_time_t getEventTime(const ULogEvent *event)
+ {
+-  return condor_time_t(mktime(&(event->eventTime)));
++  return condor_time_t( event->GetEventclock() );
+ }
+ 
+ static double tmval2double(struct timeval &t)
