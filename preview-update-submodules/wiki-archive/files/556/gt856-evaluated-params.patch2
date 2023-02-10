@@ -1,0 +1,126 @@
+diff --git a/doc/man-pages/condor_config_val.tex b/doc/man-pages/condor_config_val.tex
+index d39b48e..f7309bf 100644
+--- a/doc/man-pages/condor_config_val.tex
++++ b/doc/man-pages/condor_config_val.tex
+@@ -33,7 +33,7 @@
+ 
+ \SynProg{\Condor{config\_val}} \oOpt{options} \Opt{-config}
+ 
+-\SynProg{\Condor{config\_val}} \oOpt{options} \Opt{-dump} \oOpt{-expand}
++\SynProg{\Condor{config\_val}} \oOpt{options} \Opt{-dump} \oOpt{-expand} \oOpt{-evaluate}
+ \oOpt{-verbose}
+ 
+ \index{Condor commands!condor\_config\_val}
+@@ -116,6 +116,9 @@ in a future revision of Condor.
+ If the \Opt{-expand} option is given in addition to the \Opt{-dump} option,
+ then variable values in the configuration files are expanded before
+ being printed out.
++If the \Opt{-evaluate} option is provided when querying the configuration of
++a given daemon, the value of the requested parameter will be evaluated with 
++respect to the classad of that daemon.
+ 
+ \begin{Options}
+   \OptItem{\OptArg{-name}{machine\_name}}{ Query the specified
+diff --git a/doc/version-history/7-9.history.tex b/doc/version-history/7-9.history.tex
+index e707959..1d5fc29 100644
+--- a/doc/version-history/7-9.history.tex
++++ b/doc/version-history/7-9.history.tex
+@@ -41,6 +41,10 @@ added to \Condor{q} in 7.7.6.
+ and improved its ability to detect parse failures closer to the point of corruption.
+ \Ticket{2934}
+ 
++\item Added an \Opt{-evaluate} option to \Condor{config\_val}, which causes the configured value queried from
++a given daemon to be evaluated with respect to that daemon's ClassAd.
++\Ticket{856}
++
+ \end{itemize}
+ 
+ \noindent Configuration Variable and ClassAd Attribute Additions and Changes:
+diff --git a/src/condor_tools/config_val.cpp b/src/condor_tools/config_val.cpp
+index 4d96b6f..f902eb2 100644
+--- a/src/condor_tools/config_val.cpp
++++ b/src/condor_tools/config_val.cpp
+@@ -52,6 +52,8 @@
+ #include "simplelist.h"
+ #include "subsystem_info.h"
+ 
++#include <sstream>
++
+ char	*MyName;
+ 
+ StringList params;
+@@ -118,7 +120,8 @@ usage()
+ 	fprintf( stderr, "   -local-name name\t(Specify a local name for use with the config system)\n" );
+ 	fprintf( stderr, "   -verbose\t\t(print information about where variables are defined)\n" );
+ 	fprintf( stderr, "   -dump\t\t(print locally defined variables)\n" );
+-	fprintf( stderr, "   -expand\t\t(with -dump, expand macros from config files\n" );
++	fprintf( stderr, "   -expand\t\t(with -dump, expand macros from config files)\n" );
++	fprintf( stderr, "   -evaluate\t\t(when querying <daemon>, evaluate param with respect to classad from <daemon>)\n" );
+ 	fprintf( stderr, "   -config\t\t(print the locations of found config files)\n" );
+ 	my_exit( 1 );
+ }
+@@ -128,6 +131,18 @@ char* GetRemoteParam( Daemon*, char* );
+ void  SetRemoteParam( Daemon*, char*, ModeType );
+ static void PrintConfigSources(void);
+ 
++
++char* EvaluatedValue(char const* value, ClassAd const* ad) {
++    classad::Value res;
++    ClassAd empty;
++    bool rc = (ad) ? ad->EvaluateExpr(value, res) : empty.EvaluateExpr(value, res);
++    if (!rc) return NULL;
++    std::stringstream ss;
++    ss << res;
++    return strdup(ss.str().c_str());
++}
++
++
+ int
+ main( int argc, char* argv[] )
+ {
+@@ -139,6 +154,7 @@ main( int argc, char* argv[] )
+ 	bool    verbose = false;
+ 	bool    dump_all_variables = false;
+ 	bool    expand_dumped_variables = false;
++	bool    evaluate_daemon_vars = false;
+ 	bool    print_config_sources = false;
+ 	bool	write_config = false;
+ 	bool	debug = false;
+@@ -232,6 +248,8 @@ main( int argc, char* argv[] )
+ 			dump_all_variables = true;
+ 		} else if( match_prefix( argv[i], "-expand" ) ) {
+ 			expand_dumped_variables = true;
++		} else if( match_prefix( argv[i], "-evaluate" ) ) {
++			evaluate_daemon_vars = true;
+ 		} else if( match_prefix( argv[i], "-writeconfig" ) ) {
+ 			write_config = true;
+ 		} else if( match_prefix( argv[i], "-debug" ) ) {
+@@ -437,6 +455,12 @@ main( int argc, char* argv[] )
+ 		}
+ 	}
+ 
++    if (target && evaluate_daemon_vars && !target->daemonAd()) {
++        // NULL is one possible return value from this method, for example startd
++        fprintf(stderr, "Warning: Classad for %s daemon '%s' is null, will evaluate expressions against empty classad\n", 
++                daemonString(target->type()), target->name());
++    }
++
+ 	while( (tmp = params.next()) ) {
+ 		if( mt == CONDOR_SET || mt == CONDOR_RUNTIME_SET ||
+ 			mt == CONDOR_UNSET || mt == CONDOR_RUNTIME_UNSET ) {
+@@ -444,6 +468,15 @@ main( int argc, char* argv[] )
+ 		} else {
+ 			if( target ) {
+ 				value = GetRemoteParam( target, tmp );
++                if (value && evaluate_daemon_vars) {
++                    char* ev = EvaluatedValue(value, target->daemonAd());
++                    if (ev != NULL) {
++                        free(value);
++                        value = ev;
++                    } else {
++                        fprintf(stderr, "Warning: Failed to evaluate '%s', returning it as config value\n", value);
++                    }
++                }
+ 			} else {
+ 				value = param( tmp );
+ 			}

@@ -1,0 +1,15 @@
+diff --git a/doc/man-pages/condor_config_val.tex b/doc/man-pages/condor_config_val.tex
+index f7309bf..7aee9e2 100644
+--- a/doc/man-pages/condor_config_val.tex
++++ b/doc/man-pages/condor_config_val.tex
+@@ -119,6 +119,10 @@ being printed out.
+ If the \Opt{-evaluate} option is provided when querying the configuration of
+ a given daemon, the value of the requested parameter will be evaluated with 
+ respect to the classad of that daemon.
++% The daemon portion of the following is addressed in ticket #412
++If the \Opt{-address} option or a daemon target is given in addition to the 
++\Opt{-dump} option, the target will be ignored and the local configuration
++will be dumped.
+ 
+ \begin{Options}
+   \OptItem{\OptArg{-name}{machine\_name}}{ Query the specified
