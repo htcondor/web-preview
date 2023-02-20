@@ -466,9 +466,9 @@
                 <div class="d-none d-lg-block col-lg-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <h3><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-12-19-Lightning-Talks.html">OSG User School 2022 Researchers Present Inspirational Lightning Talks</a></h3>
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2023-01-27-Throughput-Computing-2023.html">Save the dates for Throughput Computing 2023 - a joint HTCondor/OSG event</a></h3>
                             <div>
-                                <span class="text-muted">December 19, 2022</span>
+                                <span class="text-muted">January 27, 2023</span>
                             </div>
                             <hr/>
                             <a href="/web-preview/preview-htcondor-release-dates/new.html">
@@ -577,6 +577,28 @@
                     <div class="my-2">
                         
 
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2023-01-20-materials-science.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Empowering Computational Materials Science Research using HTC
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">January 20, 2023</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
 <a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-12-19-ML-Demo.html">
 
 
@@ -631,28 +653,6 @@
             </h6>
             <div>
                 <span class="text-muted text-decoration-none">July 12, 2022</span>
-            </div>
-        </div>
-    </div>
-
-
-</a>
-
-                    </div>
-                    
-                    <div class="my-2">
-                        
-
-<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-07-06-Fulvio.html">
-
-
-    <div class="card border-0 ">
-        <div class="p-2 d-flex flex-column">
-            <h6 class="text-decoration-none mb-1">
-                Using high throughput computing to investigate the role of neural oscillations in visual working memory
-            </h6>
-            <div>
-                <span class="text-muted text-decoration-none">July  6, 2022</span>
             </div>
         </div>
     </div>
@@ -795,10 +795,15 @@
 
 <p>Even more capacity is available. The recent <a href="https://chtc.cs.wisc.edu/DoIt-Article-Summary.html">$4.3 million investment from the Wisconsin Alumni Research Foundation (WARF) in UW-Madison’s research computing hardware</a> is a significant contributor to this abundance of resources, Gitter noted.</p>
 
-<p>There are two main ways to know what GPUs are available and the number of GPUs users may request per job:
-The first is through the CHTC website - which offers up-to-date information. To access this information, go to the <a href="https://chtc.cs.wisc.edu">CHTC website</a> and enter ‘gpu’ in the search bar. The first result will be the <a href="https://chtc.cs.wisc.edu/uw-research-computing/gpu-jobs.html">‘Jobs that Use GPU Overview’</a> which is the main guide on using GPUs in CHTC. At the very top of this guide is a table that contains information about the kinds of GPUs, the number of servers, and the number of GPUs per server, which limits how many GPUs can be requested per job. Also listed is the GPU memory, which shows the amount of GPU memory and the attribute you would use in the ‘required_gpu’ statement when submitting a job.</p>
-
-<p>A second way is to use the ‘condor_status’ command. To use this command, make sure to set a constraint of ‘Gpus &gt; 0’ to prevent printing out information on every single server we have in the system: condor_status -constraint ‘Gpus &gt; 0’. This gives the names of servers in the pool and their availability status - idle or busy. Users may also add an auto format flag attribute ‘-af’ to print out any desired attribute of the machine. For instance, to access the attributes like those listed in the table of the CHTC guide, users must include the GPUs prefix followed by an underscore and then the name of the column to access.</p>
+<p>There are two main ways to know what GPUs are available and the number of GPUs users may request per job:</p>
+<ul>
+  <li>
+    <p>The first is through the CHTC website - which offers up-to-date information. To access this information, go to the <a href="https://chtc.cs.wisc.edu">CHTC website</a> and enter ‘gpu’ in the search bar. The first result will be the <a href="https://chtc.cs.wisc.edu/uw-research-computing/gpu-jobs.html">‘Jobs that Use GPU Overview’</a> which is the main guide on using GPUs in CHTC. At the very top of this guide is a table that contains information about the kinds of GPUs, the number of servers, and the number of GPUs per server, which limits how many GPUs can be requested per job. Also listed is the GPU memory, which shows the amount of GPU memory and the attribute you would use in the ‘required_gpu’ statement when submitting a job.</p>
+  </li>
+  <li>
+    <p>A second way is to use the ‘condor_status’ command. To use this command, make sure to set a constraint of ‘Gpus &gt; 0’ to prevent printing out information on every single server we have in the system: condor_status -constraint ‘Gpus &gt; 0’. This gives the names of servers in the pool and their availability status - idle or busy. Users may also add an auto format flag attribute ‘-af’ to print out any desired attribute of the machine. For instance, to access the attributes like those listed in the table of the CHTC guide, users must include the GPUs prefix followed by an underscore and then the name of the column to access.</p>
+  </li>
+</ul>
 
 <p>The GPU Lab, due to its expansive potential, can be used in many scenarios. Koch explained this using real-world examples. Researchers might want to seek the CHTC GPU Lab when:
 Running into the time limit of an existing GPU while trying to develop and run a machine learning algorithm.
@@ -836,18 +841,22 @@ This process, she displayed, involves writing up a submit file and utilizing com
   <figcaption class="figure-caption">How a job submit file should look.<br /></figcaption>
 </figure>
 
-<p>Gitter also demonstrated how to run jobs using the example GitHub repository with the following steps:
-Connecting a personal user account to a submit server in CHTC 
-Utilizing the ‘ls’ command to inspect the home directory
-Cloning the pre existing template repository with runnable GPU examples
-Including a “‘condor_submit<em>insert-file-name</em>.sub’” command line to define the job the user wants to run
-Applying the ‘condor_q’command to monitor the job that has been submitted</p>
+<p>Gitter also demonstrated how to run jobs using the example GitHub repository with the following steps:</p>
+<ul>
+  <li>Connecting a personal user account to a submit server in CHTC</li>
+  <li>Utilizing the ‘ls’ command to inspect the home directory</li>
+  <li>Cloning the pre existing template repository with runnable GPU examples</li>
+  <li>Including a “‘condor_submit<em>insert-file-name</em>.sub’” command line to define the job the user wants to run</li>
+  <li>Applying the ‘condor_q’command to monitor the job that has been submitted</li>
+</ul>
 
-<p>Users are able to choose GPU related submit file options. Gitter demonstrated ways to access the different options that are needed in the HTCondor submit file in order to access the GPUs in CHTC GPU Lab and beyond. These include:
-‘Request_gpus’ to enable GPU use
-‘+WantGPULab’ to indicate whether or not to use CHTC’s shared use GPUs
-+GPUJobLength’ to indicate which job type the user would like to submit
-‘Require_gpus’ to request specific GPU attributes or CUDA functionality</p>
+<p>Users are able to choose GPU related submit file options. Gitter demonstrated ways to access the different options that are needed in the HTCondor submit file in order to access the GPUs in CHTC GPU Lab and beyond. These include:</p>
+<ul>
+  <li>‘Request_gpus’ to enable GPU use</li>
+  <li>‘+WantGPULab’ to indicate whether or not to use CHTC’s shared use GPUs</li>
+  <li>+GPUJobLength’ to indicate which job type the user would like to submit</li>
+  <li>‘Require_gpus’ to request specific GPU attributes or CUDA functionality</li>
+</ul>
 
 <p>He outlined some other commands for running PyTorch jobs and for exploring available GPUs. All commands from the demo can be accessed <a href="https://docs.google.com/presentation/d/1pdE3oT539iOjxuIRvGeUjQ_GcaiD00r4iCOdp65PPME/edit#slide=id.p">here</a>.</p>
 
