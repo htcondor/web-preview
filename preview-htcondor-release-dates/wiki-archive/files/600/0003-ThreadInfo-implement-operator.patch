@@ -1,0 +1,25 @@
+>From 557091f3f8df50219615c3037afd1b136d514262 Mon Sep 17 00:00:00 2001
+From: Florian Weimer <fweimer@redhat.com>
+Date: Mon, 9 Jul 2012 17:25:17 +0200
+Subject: [PATCH 3/3] ThreadInfo: implement operator==()
+
+This is a clang compatibility fix.
+---
+ src/condor_utils/threads_implementation.h |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/condor_utils/threads_implementation.h b/src/condor_utils/threads_implementation.h
+index bee5eae..a0664a1 100644
+--- a/src/condor_utils/threads_implementation.h
++++ b/src/condor_utils/threads_implementation.h
+@@ -48,6 +48,7 @@ public:
+ 	ThreadInfo() { pt_ = pthread_self(); }
+ 	ThreadInfo(pthread_t pt) { pt_ = pt; }	
+ 	pthread_t get_pthread() const { return pt_; }
++	bool operator==(const ThreadInfo &o) const { return pt_ == o.pt_; }
+ private:
+ 	pthread_t pt_;
+ };
+-- 
+1.7.7.6
+
