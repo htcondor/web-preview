@@ -933,130 +933,19 @@
 
         
         <div class="d-flex flex-row">
-            <b>5.1.6</b>
+            <b>6.0.0</b>
             <span class="px-1">-</span>
-            <span>October  5, 2022</span>
+            <span>February 20, 2023</span>
         </div>
         <div>
             
 <p>Highlights of this release are:</p>
 <ul>
-  <li>HTCondor-CE now uses the C++ Collector plugin for payload job traceability</li>
-  <li>Fix HTCondor-CE mapfiles to be compliant with PCRE2 and HTCondor 9.10.0+</li>
-  <li>Add support for multiple APEL accounting scaling factors</li>
-  <li>Suppress spurious log message about a missing negotiator</li>
-  <li>Fix crash in HTCondor-CE View</li>
+  <li>Align HTCondor-CE security configuration with HTCondor defaults</li>
+  <li>Add example configuration on how to ban users</li>
+  <li>Add condor_ce_transform_ads command</li>
+  <li>Improve essential directory checking and creation at startup</li>
 </ul>
-
-        </div>
-        
-        <div class="d-flex flex-row">
-            <b>5.1.5</b>
-            <span class="px-1">-</span>
-            <span>June  6, 2022</span>
-        </div>
-        <div>
-            
-<p>Highlights of this release are:</p>
-<ul>
-  <li>Rename AuthToken attributes in the routed job to better support accounting</li>
-  <li>Prevent GSI environment from pointing the job to the wrong certificates</li>
-  <li>Fix issue where HTCondor-CE would need port 9618 open to start up</li>
-</ul>
-
-        </div>
-        
-        <div class="d-flex flex-row">
-            <b>5.1.4</b>
-            <span class="px-1">-</span>
-            <span>April 12, 2022</span>
-        </div>
-        <div>
-            
-<p>Highlights of this release are:</p>
-<ul>
-  <li>Fix whole node job glidein CPUs and GPUs expressions that caused held jobs</li>
-  <li>Fix bug where default CERequirements were being ignored</li>
-  <li>Pass whole node request from GlideinWMS to the batch system</li>
-  <li>Since CentOS 8 has reached end of life, we build and test on Rocky Linux 8</li>
-</ul>
-
-        </div>
-        
-        <div class="d-flex flex-row">
-            <b>5.1.3</b>
-            <span class="px-1">-</span>
-            <span>January 20, 2022</span>
-        </div>
-        <div>
-            
-<p>Highlights of this release are:</p>
-<ul>
-  <li>The HTCondor-CE central collector requires SSL credentials from client CEs</li>
-  <li>Fix BDII crash if an HTCondor Access Point is not available</li>
-  <li>Fix formatting of APEL records that contain huge values</li>
-  <li>HTCondor-CE client mapfiles are not installed on the central collector</li>
-</ul>
-
-        </div>
-        
-        <div class="d-flex flex-row">
-            <b>5.1.2</b>
-            <span class="px-1">-</span>
-            <span>September 23, 2021</span>
-        </div>
-        <div>
-            
-<p>Highlights of this release are:</p>
-<ul>
-  <li>Fixed the default memory and CPU requests when using job router transforms</li>
-  <li>Apply default MaxJobs and MaxJobsIdle when using job router transforms</li>
-  <li>Improved SciTokens support in submission tools</li>
-  <li>Fixed –debug flag in condor_ce_run</li>
-  <li>Update configuration verification script to handle job router transforms</li>
-  <li>Corrected ownership of the HTCondor PER_JOBS_HISTORY_DIR</li>
-  <li>Fix bug passing maximum wall time requests to the local batch system</li>
-</ul>
-
-        </div>
-        
-        <div class="d-flex flex-row">
-            <b>5.1.1</b>
-            <span class="px-1">-</span>
-            <span>May 27, 2021</span>
-        </div>
-        <div>
-            <p>Highlights of this release are:</p>
-
-<ul>
-  <li>Improved restart time of HTCondor-CE View</li>
-  <li>Fixed bug that caused HTCondor-CE to ignore incoming BatchRuntime requests</li>
-  <li>Fixed RPM dependency issue when installing for non-HTCondor batch systems</li>
-</ul>
-
-<p>Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5\">update instructions</a> to update to this version.</p>
-
-        </div>
-        
-        <div class="d-flex flex-row">
-            <b>5.1.0</b>
-            <span class="px-1">-</span>
-            <span>April 14, 2021</span>
-        </div>
-        <div>
-            
-<p>Highlights of this release are:</p>
-<ul>
-  <li>Add support for ClassAd transforms to the JobRouter</li>
-  <li>Add mapped user and X.509 attribute to local HTCondor pool AccountingGroup mappings to Job Routers configured to use the ClassAd transform syntax;</li>
-  <li>Accept BatchRuntime attributes from incoming jobs to set their maximum walltime</li>
-  <li>Update the HTCondor-CE registry to Python 3</li>
-  <li>Enable SSL authentication by default for READ/WRITE authorization levels</li>
-  <li>APEL reporting scripts now use history files in the local HTCondor PER_JOB_HISTORY_DIR to collect job data</li>
-  <li>Use the GlobalJobID attribute as the APEL record lrmsID</li>
-</ul>
-
-<p>Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5\">update instructions</a> to update to this version.</p>
 
         </div>
         
@@ -1082,6 +971,134 @@
 
 
 
+            
+            <div class="d-flex flex-row">
+                <b>5.1.6</b>
+                <span class="px-1">-</span>
+                <span>October  5, 2022</span>
+            </div>
+            <div>
+                
+<p>Highlights of this release are:</p>
+<ul>
+  <li>HTCondor-CE now uses the C++ Collector plugin for payload job traceability</li>
+  <li>Fix HTCondor-CE mapfiles to be compliant with PCRE2 and HTCondor 9.10.0+</li>
+  <li>Add support for multiple APEL accounting scaling factors</li>
+  <li>Suppress spurious log message about a missing negotiator</li>
+  <li>Fix crash in HTCondor-CE View</li>
+</ul>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>5.1.5</b>
+                <span class="px-1">-</span>
+                <span>June  6, 2022</span>
+            </div>
+            <div>
+                
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Rename AuthToken attributes in the routed job to better support accounting</li>
+  <li>Prevent GSI environment from pointing the job to the wrong certificates</li>
+  <li>Fix issue where HTCondor-CE would need port 9618 open to start up</li>
+</ul>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>5.1.4</b>
+                <span class="px-1">-</span>
+                <span>April 12, 2022</span>
+            </div>
+            <div>
+                
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Fix whole node job glidein CPUs and GPUs expressions that caused held jobs</li>
+  <li>Fix bug where default CERequirements were being ignored</li>
+  <li>Pass whole node request from GlideinWMS to the batch system</li>
+  <li>Since CentOS 8 has reached end of life, we build and test on Rocky Linux 8</li>
+</ul>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>5.1.3</b>
+                <span class="px-1">-</span>
+                <span>January 20, 2022</span>
+            </div>
+            <div>
+                
+<p>Highlights of this release are:</p>
+<ul>
+  <li>The HTCondor-CE central collector requires SSL credentials from client CEs</li>
+  <li>Fix BDII crash if an HTCondor Access Point is not available</li>
+  <li>Fix formatting of APEL records that contain huge values</li>
+  <li>HTCondor-CE client mapfiles are not installed on the central collector</li>
+</ul>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>5.1.2</b>
+                <span class="px-1">-</span>
+                <span>September 23, 2021</span>
+            </div>
+            <div>
+                
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Fixed the default memory and CPU requests when using job router transforms</li>
+  <li>Apply default MaxJobs and MaxJobsIdle when using job router transforms</li>
+  <li>Improved SciTokens support in submission tools</li>
+  <li>Fixed –debug flag in condor_ce_run</li>
+  <li>Update configuration verification script to handle job router transforms</li>
+  <li>Corrected ownership of the HTCondor PER_JOBS_HISTORY_DIR</li>
+  <li>Fix bug passing maximum wall time requests to the local batch system</li>
+</ul>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>5.1.1</b>
+                <span class="px-1">-</span>
+                <span>May 27, 2021</span>
+            </div>
+            <div>
+                <p>Highlights of this release are:</p>
+
+<ul>
+  <li>Improved restart time of HTCondor-CE View</li>
+  <li>Fixed bug that caused HTCondor-CE to ignore incoming BatchRuntime requests</li>
+  <li>Fixed RPM dependency issue when installing for non-HTCondor batch systems</li>
+</ul>
+
+<p>Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5\">update instructions</a> to update to this version.</p>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>5.1.0</b>
+                <span class="px-1">-</span>
+                <span>April 14, 2021</span>
+            </div>
+            <div>
+                
+<p>Highlights of this release are:</p>
+<ul>
+  <li>Add support for ClassAd transforms to the JobRouter</li>
+  <li>Add mapped user and X.509 attribute to local HTCondor pool AccountingGroup mappings to Job Routers configured to use the ClassAd transform syntax;</li>
+  <li>Accept BatchRuntime attributes from incoming jobs to set their maximum walltime</li>
+  <li>Update the HTCondor-CE registry to Python 3</li>
+  <li>Enable SSL authentication by default for READ/WRITE authorization levels</li>
+  <li>APEL reporting scripts now use history files in the local HTCondor PER_JOB_HISTORY_DIR to collect job data</li>
+  <li>Use the GlobalJobID attribute as the APEL record lrmsID</li>
+</ul>
+
+<p>Please refer to the <a href="https://htcondor.github.io/htcondor-ce/v5/releases/#updating-to-htcondor-ce-5\">update instructions</a> to update to this version.</p>
+
+            </div>
             
             <div class="d-flex flex-row">
                 <b>4.4.1</b>
@@ -1113,6 +1130,17 @@
             <div>
                 
 <p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.1.0.  HTCondor-CE is a grid gateway that forwards resource provisioning requests to your local cluster. HTCondor-CE was originally developed by the Open Science Grid (OSG). The Center for High-Throughput Computing (CHTC) now distributes and supports HTCondor-CE for use outside of the OSG.  Highlights of this release are: Added the ability to configure the environment of routed jobs; Simplified APEL configuration; Fixed the ability to specify certificate locations for SSL authentication; Refined the APEL record filter to ignore jobs that have not yet started; Fixed an issue where “condor_ce_q” required authentication; Re-enabled the ability for local users to submit jobs to the CE queue; Fixed an issue where some jobs were capped at 72 mins instead of 72 hrs; Improved BDII provider error handling.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.1.0 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
+
+            </div>
+            
+            <div class="d-flex flex-row">
+                <b>4.0.1</b>
+                <span class="px-1">-</span>
+                <span>November  7, 2019</span>
+            </div>
+            <div>
+                
+<p>The HTCondor team is pleased to announce the release of HTCondor-CE 4.0.1.  HTCondor-CE is a gateway for grid jobs to be run on your local resources. HTCondor-CE was originally developed by the Open Science Grid (OSG). The Center for High-Throughput Computing (CHTC) now distributes and supports HTCondor-CE for use outside of the OSG.  SciTokens are supported if using a recent version of HTCondor compiled with SciTokens.  A complete list of new features and fixed bugs can be found in the <a href="https://htcondor-ce.readthedocs.io/en/latest/releases/#htcondor-ce-4-version-history"> version history</a>. HTCondor-CE 4.0.1 binaries are available from our <a href="http://htcondor.org/yum/">YUM Repository</a>.</p>
 
             </div>
             
