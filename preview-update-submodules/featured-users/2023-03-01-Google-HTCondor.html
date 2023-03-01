@@ -739,97 +739,81 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl py-4">
     
 
 
-<div class="row">
-    <div class="col-12 col-md-3 mb-3">
-        <ul class="nav nav-pills flex-row flex-md-column">
-            
-            
-                <li class="nav-item">
-                    <a
-                            class="nav-link "
-                            href="/web-preview/preview-update-submodules/downloads/htcondor.html"
-                    >
-                        HTCondor
-                    </a>
-                </li>
-            
-            
-                <li class="nav-item">
-                    <a
-                            class="nav-link "
-                            href="/web-preview/preview-update-submodules/downloads/htcondor-ce.html"
-                    >
-                        HTCondor-CE
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-    <div class="col-12 col-md-9">
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
 
-        <!-- This only fires if on the index* page -->
-        <h1>Downloads</h1>
-<p>
-    HTCondor has expanded its offerings! Select the software you wish to download from the
-    offerings to the side or below.
-</p>
-<div class="row my-2">
-    <div class="col-12 col-md-6 my-2">
-        <a class="btn w-100 btn-primary" href="/web-preview/preview-update-submodules/downloads/htcondor.html">
-            <h1 class="text-white">HTCondor</h1>
-        </a>
+    <div class="bg-light">
+    <hr class="my-0">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-auto">
+                <div class="d-flex my-2">
+                    <span class="fs-4 my-auto">Featured User</span>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="col-12 col-md-6 my-2">
-        <a class="btn w-100 btn-primary" href="/web-preview/preview-update-submodules/downloads/htcondor-ce.html">
-            <h1 class="text-white">HTCondor-CE</h1>
-        </a>
-    </div>
+    <hr class="my-0">
 </div>
+
+<div class="container-xxl py-4">
+    <div id="news-container" class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+            <h1>Google Quantum Computing Utilizing HTCondor</h1>
+            <div class="row justify-content-between">
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">Hannah Cheren</span>
+                </div>
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">March  1, 2023</span>
+                </div>
+            </div>
+
+            
+            <div class="mt-4 fs-5"><p><strong><em>Google’s launch of a Quantum Virtual Machine emulates the experience and results of programming one of Google’s quantum computers, managed by an HTCondor system running in Google Cloud.</em></strong></p>
+
+<figure>
+  <img class="w-100" src="https://raw.githubusercontent.com/CHTC/Articles/main/images/google-qvm.jpg" alt="Quantum AI Logo. Image from Quantum AI Product Manager Catherine Vollgraff Heidweiller’s research blog post." />
+  <figcaption class="figure-caption">Quantum AI Logo. Image from Quantum AI Product Manager Catherine Vollgraff Heidweiller’s research blog post.<br /></figcaption>
+</figure>
+
+<p>The CEO of Google and Alphabet, Sudar Pichai, tweeted out some thrilling news:</p>
+
+<p>“Excited to launch a Quantum Virtual Machine (QVM) which emulates the experience and results of programming one of our quantum computers. It will make it easier for researchers to prototype new algorithms and help students learn how to program a quantum computer.” – <a href="https://twitter.com/sundarpichai/status/1549448858282774528">Tweet</a>.</p>
+
+<p>Today’s “classical” computing systems, from laptops to large supercomputers, are built using circuit behavior defined by classical physics. Quantum computer circuity, still in the early phases of development, harnesses the laws of quantum mechanics to solve computing problems in new ways. Quantum computers offer exponential speedups – over 100 million times faster for specific issues – to produce groundbreaking results. However, quantum computing will require scientists and engineers to revisit many classical algorithms and develop new ones tailored to exploit the benefits of quantum processors. Therefore, the QVM is a helpful tool for quantum algorithms research.</p>
+
+<p>“The QVM is, in essence, a realistic simulation of a grid on our quantum hardware using classical computers,” Tom Downes, a consultant for High-Performance Computing (HPC) at Google Cloud, explains. Simulating a grid of qubits, the basic unit of quantum information, on a quantum processor requires many trajectory simulations of quantum noise. Downes explains, “quantum computers are noisy, so it is important to test and adjust your quantum circuits in realistic conditions so they can perform well and output the data you are looking for in your research problem. To virtualize a processor, the QVM uses the noise data and topology of Google’s real hardware.” This grid size determines whether a researcher can use their laptop or require a setup utilizing many classical computers to power the simulation. Essentially, research on the QVM is “proof of concept” research.</p>
+
+<p>To enable researchers to test their algorithms on a larger grid of qubits, Google utilized the <a href="https://htcondor.org">HTCondor Software Suite</a> (HTCSS) to organize the capacity of many classical computers to run multiple simulations of a quantum circuit simultaneously. The HTCondor Software Suite enables researchers to easily harness the collective computing power of many classical computers and submit and manage large numbers of computing jobs. Today, HTCSS is used at universities, government labs, and commercial organizations worldwide, including within Google’s own Google Cloud Platform, to power QVM.  Downes details, “this ability to test on a 32-qubit grid can extrapolate its performance to a non-simulatable grid more feasible.”</p>
+
+<p>The new <a href="https://quantumai.google/qsim/tutorials/multinode">Google Quantum AI tutorial</a> shows users how to use the Cloud HPC Toolkit, which makes it easy for new users to deploy HTCondor pools in Google Cloud. Downes describes that the tutorial “provides the basic elements of an HTCondor pool: a central manager, an access point, and a pool of execute points that scale in size to work through the job queue.”</p>
+
+<p>The tutorial by Google describes how to:</p>
+<ul>
+  <li>Use terraform to deploy an HTCondor cluster in the Google Cloud</li>
+  <li>Run a multi-node quantum computing simulation using HTCondor</li>
+  <li>Query cluster information and monitor running jobs in HTCondor</li>
+  <li>Use terraform to destroy the cluster</li>
+</ul>
+
+<p>Please visit <a href="https://blog.google/technology/research/our-new-quantum-virtual-machine-will-accelerate-research-and-help-people-learn-quantum-computing/">this website</a> for more information about the Quantum Virtual Machine and <a href="https://quantumai.google/qsim/tutorials/multinode">how researchers can use HTCondor for multinode quantum simulations</a>.</p>
+</div>
+        </div>
     </div>
 </div>
 
-</div>
+
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
     <div class="container-xxl">
