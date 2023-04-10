@@ -1,0 +1,195 @@
+diff --git a/src/condor_c++_util/condor_event.cpp b/src/condor_c++_util/condor_event.cpp
+index 3008a68..5865d74 100644
+--- a/src/condor_c++_util/condor_event.cpp
++++ b/src/condor_c++_util/condor_event.cpp
+@@ -526,7 +526,7 @@ SubmitEvent::~SubmitEvent(void)
+ int
+ SubmitEvent::writeEvent (FILE *file)
+ {
+-	int retval = fprintf (file, "Job submitted from host: %s\n", submitHost);
++	int retval = fprintf (file, "Job submitted to host: %s\n", submitHost);
+ 	if (retval < 0)
+ 	{
+ 		return 0;
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index dd723b9..51b5d68 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -2396,22 +2396,10 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 		int proc_id;
+ 		ClassAd *procad;
+ 		ClassAd *clusterad;
+-		bool write_submit_events = false;
+ 			// keep usr_log in outer scope so we don't open/close the 
+ 			// event log over and over.
+ 		WriteUserLog usr_log;
+-		usr_log.setCreatorName( Name );
+-
+-		char *eventlog = param("EVENT_LOG");
+-		if ( eventlog ) {
+-			write_submit_events = true;
+-				// don't write to the user log here, since
+-				// hopefully condor_submit already did.
+-			usr_log.setEnableUserLog(false);
+-			usr_log.initialize(0,0,0,NULL);
+-			free(eventlog);
+-		}
+-
++	
+ 		std::list<std::string>::iterator it;
+ 		for( it = new_ad_keys.begin(); it != new_ad_keys.end(); it++ ) {
+ 			char const *key = it->c_str();
+@@ -2436,13 +2424,33 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 				ConvertOldJobAdAttrs(procad, false);
+ 
+ 					// write submit event to global event log
+-				if ( write_submit_events ) {
+-					SubmitEvent jobSubmit;
+-					jobSubmit.initFromClassAd(procad);
+-					usr_log.setGlobalCluster(cluster_id);
+-					usr_log.setGlobalProc(proc_id);
+-					usr_log.writeEvent(&jobSubmit,procad);
++
++				std::string owner, ntdomain, simple_name, gjid;
++				bool use_xml = false;	
++				SubmitEvent jobSubmit;
++				jobSubmit.initFromClassAd(procad);
++				usr_log.Configure(true);
++				procad->LookupString(ATTR_ULOG_FILE, simple_name);
++				if (simple_name.size() > 0)	 {
++					
++					strcpy (jobSubmit.submitHost, daemonCore->privateNetworkIpAddr());
++					procad->LookupString(ATTR_OWNER, owner);
++					procad->LookupString(ATTR_NT_DOMAIN, ntdomain);
++					procad->LookupString(ATTR_GLOBAL_JOB_ID, gjid);
++					procad->LookupBool(ATTR_ULOG_USE_XML, use_xml);
++					usr_log.setEnableUserLog(true);	
++					usr_log.setUseXML(use_xml);				
++					usr_log.initialize(owner.c_str(), ntdomain.c_str(), simple_name.c_str(),
++						0, 0, 0, gjid.c_str());
++					
++				} else {
++					usr_log.setEnableUserLog(false);
++-					usr_log.initialize(0,0,0,NULL);
+ 				}
++				usr_log.setGlobalCluster(cluster_id);
++				usr_log.setGlobalProc(proc_id);
++				usr_log.writeEvent(&jobSubmit,procad);
++				
+ 			}	
+ 		}	// end of loop thru clusters
+ 	}	// end of if a new cluster(s) submitted
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 020cdb2..d8eee44 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -450,7 +450,6 @@ int 	whitespace( const char *str);
+ void 	delete_commas( char *ptr );
+ void 	compress( MyString &path );
+ char const*full_path(const char *name, bool use_iwd=true);
+-void 	log_submit();
+ void 	get_time_conv( int &hours, int &minutes );
+ int	  SaveClassAd ();
+ void	InsertJobExpr (const char *expr, bool clustercheck = true);
+@@ -1040,12 +1039,6 @@ main( int argc, char *argv[] )
+ 		fprintf(stdout, "\n");
+ 	}
+ 
+-	if (!DumpClassAdToFile) {
+-		if (UserLogSpecified) {
+-			log_submit();
+-		}
+-	}
+-
+ 	if (Quiet) {
+ 		int this_cluster = -1, job_count=0;
+ 		for (i=0; i <= CurrentSubmitInfo; i++) {
+@@ -6496,88 +6489,6 @@ extern "C" {
+ int SetSyscalls( int foo ) { return foo; }
+ }
+ 
+-void
+-log_submit()
+-{
+-	 char	 *simple_name;
+-
+-		// don't write to the EVENT_LOG in condor_submit; that is done by 
+-		// the condor_schedd (since submit likely does not have permission).
+-	 WriteUserLog usr_log(true);
+-	 SubmitEvent jobSubmit;
+-
+-	 usr_log.setUseXML(UseXMLInLog);
+-
+-	if( Quiet ) {
+-		fprintf(stdout, "Logging submit event(s)");
+-	}
+-
+-	if ( DumpClassAdToFile ) {
+-		// we just put some arbitrary string here: it doesn't actually mean 
+-		// anything since we will never communicate the resulting ad to 
+-		// to anyone (we make the name obviously unresolvable so we know
+-		// this was a generated file).
+-		strcpy (jobSubmit.submitHost, "localhost-used-to-dump");
+-	} else {
+-		strcpy (jobSubmit.submitHost, MySchedd->addr());
+-	}
+-
+-	if( LogNotesVal ) {
+-		jobSubmit.submitEventLogNotes = LogNotesVal;
+-		LogNotesVal = NULL;
+-	}
+-
+-	if( UserNotesVal ) {
+-		jobSubmit.submitEventUserNotes = UserNotesVal;
+-		UserNotesVal = NULL;
+-	}
+-
+-	for (int i=0; i <= CurrentSubmitInfo; i++) {
+-
+-		if ((simple_name = SubmitInfo[i].logfile) != NULL) {
+-			if( jobSubmit.submitEventLogNotes ) {
+-				delete[] jobSubmit.submitEventLogNotes;
+-			}
+-			jobSubmit.submitEventLogNotes = strnewp( SubmitInfo[i].lognotes );
+-
+-			if( jobSubmit.submitEventUserNotes ) {
+-				delete[] jobSubmit.submitEventUserNotes;
+-			}
+-			jobSubmit.submitEventUserNotes = strnewp( SubmitInfo[i].usernotes );
+-			
+-			// we don't know the gjid here, so pass in NULL as the last 
+-			// parameter - epaulson 2/09/2007
+-			if ( ! usr_log.initialize(owner, ntdomain, simple_name,
+-									  0, 0, 0, NULL) ) {
+-				fprintf(stderr, "\nERROR: Failed to log submit event.\n");
+-			} else {
+-				// Output the information
+-				for (int j=SubmitInfo[i].firstjob; j<=SubmitInfo[i].lastjob;
+-							j++) {
+-					if ( ! usr_log.initialize(SubmitInfo[i].cluster,
+-								j, 0, NULL) ) {
+-						fprintf(stderr, "\nERROR: Failed to log submit event.\n");
+-					} else {
+-							// for efficiency, only fsync on the final event
+-							// being written to this log
+-						bool enable_fsync = j == SubmitInfo[i].lastjob;
+-						usr_log.setEnableFsync( enable_fsync );
+-
+-						if( ! usr_log.writeEvent(&jobSubmit,job) ) {
+-							fprintf(stderr, "\nERROR: Failed to log submit event.\n");
+-						}
+-						if( Quiet ) {
+-							fprintf(stdout, ".");
+-						}
+-					}
+-				}
+-			}
+-		}
+-	}
+-	if( Quiet ) {
+-		fprintf( stdout, "\n" );
+-	}
+-}
+ 
+ 
+ int
