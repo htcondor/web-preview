@@ -979,11 +979,12 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.3.1</span> Feature Release</h3>
-        <p>March  7, 2023</p>
+        <h3><span class="text-secondary">10.4.0</span> Feature Release</h3>
+        <p>April  7, 2023</p>
         <div>
             <ul>
-  <li>Execution points now advertise if an sshd is available for ssh to job</li>
+  <li>DAGMan no longer carries the entire environment into the DAGMan job</li>
+  <li>Allows EGI CheckIn tokens to be used the with SciTokens authentication</li>
 </ul>
 
         </div>
@@ -1004,17 +1005,14 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.0.2</span> Long Term Support Release</h3>
-        <p>March  2, 2023</p>
+        <h3><span class="text-secondary">10.0.3</span> Long Term Support Release</h3>
+        <p>April  7, 2023</p>
         <div>
             <ul>
-  <li>HTCondor can optionally create intermediate directories for output files</li>
-  <li>Improved condor_schedd scalability when a user runs more than 1,000 jobs</li>
-  <li>Fix issue where condor_ssh_to_job fails if the user is not in /etc/passwd</li>
-  <li>The Python Schedd.query() now returns the ServerTime attribute for Fifemon</li>
-  <li>VM Universe jobs pass through the host CPU model to support newer kernels</li>
-  <li>HTCondor Python wheel is now available for Python 3.11</li>
-  <li>Fix issue that prevented HTCondor installation on Ubuntu 18.04</li>
+  <li>GPU metrics continues to be reported after the startd is reconfigured</li>
+  <li>Fixed issue where GPU metrics could be wildly over-reported</li>
+  <li>Fixed issue that kept jobs from running when installed on Debian or Ubuntu</li>
+  <li>Fixed DAGMan problem when retrying a proc failure in a multi-proc node</li>
 </ul>
 
         </div>
