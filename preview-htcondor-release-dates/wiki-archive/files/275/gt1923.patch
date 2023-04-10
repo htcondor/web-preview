@@ -1,0 +1,427 @@
+diff --git a/src/condor_includes/condor_accountant.h b/src/condor_includes/condor_accountant.h
+index 57fead7..1e12086 100644
+--- a/src/condor_includes/condor_accountant.h
++++ b/src/condor_includes/condor_accountant.h
+@@ -97,6 +97,7 @@ public:
+   // This maps submitter names to their assigned accounting group.
+   // When called with a defined group name, it maps that group name to itself.
+   GroupEntry* GetAssignedGroup(const MyString& CustomerName);
++  GroupEntry* GetAssignedGroup(const MyString& CustomerName, bool& IsGroup);
+ 
+   bool UsingWeightedSlots();
+ 
+diff --git a/src/condor_negotiator.V6/Accountant.cpp b/src/condor_negotiator.V6/Accountant.cpp
+index 4cbc47c..05107ab 100644
+--- a/src/condor_negotiator.V6/Accountant.cpp
++++ b/src/condor_negotiator.V6/Accountant.cpp
+@@ -310,22 +310,29 @@ void parse_group_name(const string& gname, vector<string>& gpath) {
+     }
+ }
+ 
+-
+ GroupEntry* Accountant::GetAssignedGroup(const MyString& CustomerName) {
++    bool unused;
++    return GetAssignedGroup(CustomerName, unused);
++}
++
++GroupEntry* Accountant::GetAssignedGroup(const MyString& CustomerName, bool& IsGroup) {
+     MyString t(CustomerName);
+     t.lower_case();
+     string subname = t.Value();
+ 
++    // Is this an acct group, syntactically speaking?
++    string::size_type pos = subname.find_last_of('@');
++    IsGroup = (pos == string::npos);
++
+     // cache results from previous invocations
+     map<string, GroupEntry*>::iterator fs(hgq_submitter_group_map.find(subname));
+     if (fs != hgq_submitter_group_map.end()) return fs->second;
+ 
+     ASSERT(NULL != hgq_root_group);
+ 
+-    // is there a username separator?
+-    string::size_type pos = subname.find_last_of('@');
+-    if (pos==string::npos) {
+-        dprintf(D_ALWAYS, "group quotas: WARNING: defaulting submitter with badly-formed name \"%s\"\n", subname.c_str());
++    if (IsGroup) {
++        // This is either a defunct group or a malformed submitter name: map it to root group
++        dprintf(D_ALWAYS, "group quota: WARNING: defaulting submitter \"%s\" to root group\n", subname.c_str());
+         hgq_submitter_group_map[subname] = hgq_root_group;
+         return hgq_root_group;
+     }
+@@ -970,137 +977,156 @@ void Accountant::CheckMatches(ClassAdListDoesNotDeleteAds& ResourceList)
+ // Report the list of Matches for a customer
+ //------------------------------------------------------------------
+ 
+-AttrList* Accountant::ReportState(const MyString& CustomerName, int * NumResources, float *NumResourcesRW) {
++AttrList* Accountant::ReportState(const MyString& CustomerName, int* NumResources, float* NumResourcesRW) {
++    dprintf(D_ACCOUNTANT,"Reporting State for customer %s\n",CustomerName.Value());
+ 
+-  dprintf(D_ACCOUNTANT,"Reporting State for customer %s\n",CustomerName.Value());
++    HashKey HK;
++    ClassAd* ResourceAd;
++    MyString ResourceName;
++    int StartTime;
+ 
+-  HashKey HK;
+-  char key[200];
+-  ClassAd* ResourceAd;
+-  MyString ResourceName;
+-  int StartTime;
++    AttrList* ad = new AttrList();
+ 
+-  AttrList* ad=new AttrList();
+-  char tmp[512];
++    if (NumResources) {
++        *NumResources = 0;
++    }
++    if (NumResourcesRW) {
++        *NumResourcesRW = 0;
++    }
+ 
+-  if( NumResources ) {
+-	  *NumResources = 0;
+-  }
+-  if( NumResourcesRW ) {
+-	  *NumResourcesRW = 0;
+-  }
++    bool isGroup=false;
++    string cgrp = GetAssignedGroup(CustomerName.Value(), isGroup)->name;
++    // This is a defunct group:
++    if (isGroup && (cgrp != CustomerName.Value())) return ad;
+ 
+-  int ResourceNum=1;
+-  AcctLog->table.startIterations();
+-  while (AcctLog->table.iterate(HK,ResourceAd)) {
+-    HK.sprint(key);
+-    if (strncmp(ResourceRecord.Value(),key,ResourceRecord.Length())) continue;
++    int ResourceNum=1;
++    AcctLog->table.startIterations();
++    while (AcctLog->table.iterate(HK,ResourceAd)) {
++        MyString key;
++        HK.sprint(key);
+ 
+-    if (ResourceAd->LookupString(RemoteUserAttr,tmp)==0) continue;
+-    if (CustomerName!=MyString(tmp)) continue;
++        if (strncmp(ResourceRecord.Value(), key.Value(), ResourceRecord.Length())) continue;
+ 
+-    ResourceName=key+ResourceRecord.Length();
+-    sprintf(tmp,"Name%d = \"%s\"",ResourceNum,ResourceName.Value());
+-    ad->Insert(tmp);
+-
+-    if (ResourceAd->LookupInteger(StartTimeAttr,StartTime)==0) StartTime=0;
+-    sprintf(tmp,"StartTime%d = %d",ResourceNum,StartTime);
+-    ad->Insert(tmp);
+-
+-    ResourceNum++;
+-	if( NumResourcesRW ) {
+-		float SlotWeight = 1.0;
+-		ResourceAd->LookupFloat(SlotWeightAttr,SlotWeight);
+-		*NumResourcesRW += SlotWeight;
+-	}
+-  }
++        MyString rname;
++        if (ResourceAd->LookupString(RemoteUserAttr, rname)==0) continue;
+ 
+-  if ( NumResources ) {
+-	  *NumResources = ResourceNum - 1;
+-  }
++        if (isGroup) {
++            string rgrp = GetAssignedGroup(rname)->name;
++            if (cgrp != rgrp) continue;
++        } else {
++            // customername is a traditional submitter: group.username@host
++            if (CustomerName != rname) continue;
++     
++            MyString tmp;
++            ResourceName=key+ResourceRecord.Length();
++            tmp.sprintf("Name%d = \"%s\"", ResourceNum, ResourceName.Value());
++            ad->Insert(tmp.Value());
++
++            if (ResourceAd->LookupInteger(StartTimeAttr,StartTime)==0) StartTime=0;
++            tmp.sprintf("StartTime%d = %d", ResourceNum, StartTime);
++            ad->Insert(tmp.Value());
++        }
+ 
+-  return ad;
++        ResourceNum++;
++        if (NumResourcesRW) {
++            float SlotWeight = 1.0;
++            ResourceAd->LookupFloat(SlotWeightAttr,SlotWeight);
++            *NumResourcesRW += SlotWeight;
++        }
++    }
++
++    if (NumResources) {
++        *NumResources = ResourceNum - 1;
++    }
++
++    return ad;
+ }
+ 
++
+ //------------------------------------------------------------------
+ // Report the whole list of priorities
+ //------------------------------------------------------------------
+ 
+ AttrList* Accountant::ReportState() {
++    dprintf(D_ACCOUNTANT,"Reporting State\n");
++
++    HashKey HK;
++    ClassAd* CustomerAd;
++    float PriorityFactor;
++    float AccumulatedUsage;
++    float WeightedAccumulatedUsage;
++    int BeginUsageTime;
++    int LastUsageTime;
++    int ResourcesUsed;
++    float WeightedResourcesUsed;
++
++    AttrList* ad=new AttrList();
++    MyString tmp;
++    tmp.sprintf("LastUpdate = %d", LastUpdateTime);
++    ad->Insert(tmp.Value());
++
++    int OwnerNum=1;
++    AcctLog->table.startIterations();
++    while (AcctLog->table.iterate(HK,CustomerAd)) {
++        MyString key;
++        HK.sprint(key);
++        if (strncmp(CustomerRecord.Value(),key.Value(),CustomerRecord.Length())) continue;
++
++            // The following Insert() calls are passed 'false' to prevent
++            // AttrList from checking for duplicates. This is to enhance
++            // performance, but is admittedly dangerous if we're not certain
++            // that the items we're inserting are unique. Use caution.
++
++        MyString CustomerName=key.Value()+CustomerRecord.Length();
++        tmp.sprintf("Name%d = \"%s\"",OwnerNum,CustomerName.Value());
++        ad->Insert(tmp.Value(), false);
++
++        tmp.sprintf("Priority%d = %f",OwnerNum,GetPriority(CustomerName));
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupInteger(ResourcesUsedAttr,ResourcesUsed)==0) ResourcesUsed=0;
++        tmp.sprintf("ResourcesUsed%d = %d",OwnerNum,ResourcesUsed);
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupFloat(WeightedResourcesUsedAttr,WeightedResourcesUsed)==0) WeightedResourcesUsed=0;
++        tmp.sprintf("WeightedResourcesUsed%d = %f",OwnerNum,WeightedResourcesUsed);
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupFloat(AccumulatedUsageAttr,AccumulatedUsage)==0) AccumulatedUsage=0;
++        tmp.sprintf("AccumulatedUsage%d = %f",OwnerNum,AccumulatedUsage);
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupFloat(WeightedAccumulatedUsageAttr,WeightedAccumulatedUsage)==0) WeightedAccumulatedUsage=0;
++        tmp.sprintf("WeightedAccumulatedUsage%d = %f",OwnerNum,WeightedAccumulatedUsage);
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupInteger(BeginUsageTimeAttr,BeginUsageTime)==0) BeginUsageTime=0;
++        tmp.sprintf("BeginUsageTime%d = %d",OwnerNum,BeginUsageTime);
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupInteger(LastUsageTimeAttr,LastUsageTime)==0) LastUsageTime=0;
++        tmp.sprintf("LastUsageTime%d = %d",OwnerNum,LastUsageTime);
++        ad->Insert(tmp.Value(), false);
++
++        if (CustomerAd->LookupFloat(PriorityFactorAttr,PriorityFactor)==0) PriorityFactor=0;
++        tmp.sprintf("PriorityFactor%d = %f",OwnerNum,PriorityFactor);
++        ad->Insert(tmp.Value(), false);
++
++        bool isGroup=false;
++        string cgrp = GetAssignedGroup(CustomerName, isGroup)->name;
++        tmp.sprintf("AccountingGroup%d = \"%s\"",OwnerNum,cgrp.c_str());
++        ad->Insert(tmp.Value(), false);
++        tmp.sprintf("IsAccountingGroup%d = %s",OwnerNum,(isGroup)?"TRUE":"FALSE");
++        ad->Insert(tmp.Value(), false);
++
++        OwnerNum++;
++    }
+ 
+-  dprintf(D_ACCOUNTANT,"Reporting State\n");
+-
+-  HashKey HK;
+-  char key[200];
+-  ClassAd* CustomerAd;
+-  MyString CustomerName;
+-  float PriorityFactor;
+-  float AccumulatedUsage;
+-  float WeightedAccumulatedUsage;
+-  int BeginUsageTime;
+-  int LastUsageTime;
+-  int ResourcesUsed;
+-  float WeightedResourcesUsed;
+-
+-  AttrList* ad=new AttrList();
+-  char tmp[512];
+-  sprintf(tmp, "LastUpdate = %d", LastUpdateTime);
+-  ad->Insert(tmp);
+-
+-  int OwnerNum=1;
+-  AcctLog->table.startIterations();
+-  while (AcctLog->table.iterate(HK,CustomerAd)) {
+-    HK.sprint(key);
+-    if (strncmp(CustomerRecord.Value(),key,CustomerRecord.Length())) continue;
+-
+-	// The following Insert() calls are passed 'false' to prevent
+-	// AttrList from checking for duplicates. This is to enhance
+-	// performance, but is admittedly dangerous if we're not certain
+-	// that the items we're inserting are unique. Use caution.
+-
+-    CustomerName=key+CustomerRecord.Length();
+-    sprintf(tmp,"Name%d = \"%s\"",OwnerNum,CustomerName.Value());
+-    ad->Insert(tmp);
+-
+-    sprintf(tmp,"Priority%d = %f",OwnerNum,GetPriority(CustomerName));
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupInteger(ResourcesUsedAttr,ResourcesUsed)==0) ResourcesUsed=0;
+-    sprintf(tmp,"ResourcesUsed%d = %d",OwnerNum,ResourcesUsed);
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupFloat(WeightedResourcesUsedAttr,WeightedResourcesUsed)==0) WeightedResourcesUsed=0;
+-    sprintf(tmp,"WeightedResourcesUsed%d = %f",OwnerNum,WeightedResourcesUsed);
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupFloat(AccumulatedUsageAttr,AccumulatedUsage)==0) AccumulatedUsage=0;
+-    sprintf(tmp,"AccumulatedUsage%d = %f",OwnerNum,AccumulatedUsage);
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupFloat(WeightedAccumulatedUsageAttr,WeightedAccumulatedUsage)==0) WeightedAccumulatedUsage=0;
+-    sprintf(tmp,"WeightedAccumulatedUsage%d = %f",OwnerNum,WeightedAccumulatedUsage);
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupInteger(BeginUsageTimeAttr,BeginUsageTime)==0) BeginUsageTime=0;
+-    sprintf(tmp,"BeginUsageTime%d = %d",OwnerNum,BeginUsageTime);
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupInteger(LastUsageTimeAttr,LastUsageTime)==0) LastUsageTime=0;
+-    sprintf(tmp,"LastUsageTime%d = %d",OwnerNum,LastUsageTime);
+-    ad->Insert(tmp);
+-
+-    if (CustomerAd->LookupFloat(PriorityFactorAttr,PriorityFactor)==0) PriorityFactor=0;
+-    sprintf(tmp,"PriorityFactor%d = %f",OwnerNum,PriorityFactor);
+-    ad->Insert(tmp);
+-
+-    OwnerNum++;
+-  }
+-
+-  ReportLimits(ad);
++    ReportLimits(ad);
+ 
+-  sprintf(tmp,"NumSubmittors = %d", OwnerNum-1);
+-  ad->Insert(tmp);
+-  return ad;
++    tmp.sprintf("NumSubmittors = %d", OwnerNum-1);
++    ad->Insert(tmp.Value(), false);
++    return ad;
+ }
+ 
+ //------------------------------------------------------------------
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index 64cf965..e249152 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -757,8 +757,8 @@ GET_PRIORITY_commandHandler (int, Stream *strm)
+ 	}
+ 
+ 	// get the priority
+-	AttrList* ad=accountant.ReportState();
+ 	dprintf (D_ALWAYS,"Getting state information from the accountant\n");
++	AttrList* ad=accountant.ReportState();
+ 	
+ 	if (!ad->putAttrList(*strm) ||
+ 	    !strm->end_of_message())
+diff --git a/src/condor_tools/user_prio.cpp b/src/condor_tools/user_prio.cpp
+index 598eb12..fb35f2b 100644
+--- a/src/condor_tools/user_prio.cpp
++++ b/src/condor_tools/user_prio.cpp
+@@ -45,6 +45,8 @@ struct LineRec {
+   float Factor;
+   int BeginUsage;
+   int LastUsage;
++  MyString AcctGroup;
++  bool IsAcctGroup;
+ };
+ 
+ //-----------------------------------------------------------------
+@@ -537,11 +539,15 @@ static void CollectInfo(int numElem, AttrList* ad, LineRec* LR)
+ {
+   char  attrName[32], attrPrio[32], attrResUsed[32], attrWtResUsed[32], attrFactor[32], attrBeginUsage[32], attrAccUsage[42];
+   char  attrLastUsage[32];
++  MyString attrAcctGroup;
++  MyString attrIsAcctGroup;
+   char  name[128];
+   float priority, Factor, AccUsage = -1;
+   int   resUsed = 0, BeginUsage = 0;
+   int   LastUsage = 0;
+   float wtResUsed;
++  MyString AcctGroup;
++  bool IsAcctGroup;
+ 
+   for( int i=1; i<=numElem; i++) {
+     LR[i-1].Priority=0;
+@@ -554,6 +560,8 @@ static void CollectInfo(int numElem, AttrList* ad, LineRec* LR)
+     sprintf( attrBeginUsage , "BeginUsageTime%d", i );
+     sprintf( attrLastUsage , "LastUsageTime%d", i );
+     sprintf( attrAccUsage , "WeightedAccumulatedUsage%d", i );
++    attrAcctGroup.sprintf("AccountingGroup%d", i);
++    attrIsAcctGroup.sprintf("IsAccountingGroup%d", i);
+ 
+     if( !ad->LookupString	( attrName, name ) 		|| 
+ 		!ad->LookupFloat	( attrPrio, priority ) )
+@@ -570,6 +578,13 @@ static void CollectInfo(int numElem, AttrList* ad, LineRec* LR)
+ 		wtResUsed = resUsed;
+ 	}
+ 
++    if (!ad->LookupString(attrAcctGroup.Value(), AcctGroup)) {
++        AcctGroup = "<none>";
++    }
++    if (!ad->LookupBool(attrIsAcctGroup.Value(), IsAcctGroup)) {
++        IsAcctGroup = false;
++    }
++
+ 	if (LastUsage==0) LastUsage=-1;
+ 
+     LR[i-1].Name=name;
+@@ -580,7 +595,8 @@ static void CollectInfo(int numElem, AttrList* ad, LineRec* LR)
+     LR[i-1].BeginUsage=BeginUsage;
+     LR[i-1].LastUsage=LastUsage;
+     LR[i-1].AccUsage=AccUsage;
+-
++    LR[i-1].AcctGroup=AcctGroup;
++    LR[i-1].IsAcctGroup=IsAcctGroup;
+   }
+  
+   // ad->fPrint(stdout);
+@@ -631,17 +647,25 @@ static void PrintInfo(AttrList* ad, LineRec* LR, int NumElem)
+ 
+   int UserCount=0;
+   for (int i=0; i<NumElem; i++) {
++    // We want to avoid counting totals twice for acct group records
++    bool is_group = LR[i].IsAcctGroup;
++
+ 	if (LR[i].LastUsage<MinLastUsageTime) continue;
+-    UserCount++;
++
++    if (!is_group) UserCount++;
++
+     strcpy(LastUsageStr,format_date_year(LR[i].LastUsage));
+     if (LR[i].Name.Length()>30) LR[i].Name=LR[i].Name.Substr(0,29);
+     if (DetailFlag==2)
+       printf(Fmt1,LR[i].Name.Value(),LR[i].AccUsage/3600.0,format_date_year(LR[i].BeginUsage),LastUsageStr);
+     else 
+       printf(Fmt1,LR[i].Name.Value(),LR[i].Priority,(LR[i].Priority/LR[i].Factor),LR[i].Factor,LR[i].wtRes,LR[i].AccUsage/3600.0,format_date_year(LR[i].BeginUsage),LastUsageStr);
+-    Totals.wtRes+=LR[i].wtRes;
+-    Totals.AccUsage+=LR[i].AccUsage;
+-    if (LR[i].BeginUsage<Totals.BeginUsage || Totals.BeginUsage==0) Totals.BeginUsage=LR[i].BeginUsage;
++
++    if (!is_group) {
++      Totals.wtRes+=LR[i].wtRes;
++      Totals.AccUsage+=LR[i].AccUsage;
++      if (LR[i].BeginUsage<Totals.BeginUsage || Totals.BeginUsage==0) Totals.BeginUsage=LR[i].BeginUsage;
++    }
+   }
+ 
+   strcpy(LastUsageStr,format_date_year(MinLastUsageTime));
