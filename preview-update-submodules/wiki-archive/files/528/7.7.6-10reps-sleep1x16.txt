@@ -1,0 +1,544 @@
+./delayed_submit 
+Tue Feb  7 08:54:39 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 1.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+
+16 jobs; 0 completed, 0 removed, 16 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 08:54:41 CST 2012
+Tue Feb  7 08:54:46 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 2.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+
+32 jobs; 0 completed, 0 removed, 32 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 08:54:47 CST 2012
+Tue Feb  7 08:54:52 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 3.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+
+48 jobs; 0 completed, 0 removed, 48 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 08:54:54 CST 2012
+Tue Feb  7 08:54:59 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 4.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   4.0   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.1   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.2   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.3   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.4   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.5   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.6   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.7   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.8   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.9   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.10  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.11  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.12  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.13  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.14  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.15  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+
+64 jobs; 0 completed, 0 removed, 64 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 08:55:01 CST 2012
+Tue Feb  7 08:55:06 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 5.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.0   tstclair        2/7  08:54   0+00:00:02 R  0   0.0  sleep 1           
+   1.1   tstclair        2/7  08:54   0+00:00:01 R  0   0.0  sleep 1           
+   1.2   tstclair        2/7  08:54   0+00:00:01 R  0   0.0  sleep 1           
+   1.3   tstclair        2/7  08:54   0+00:00:00 R  0   0.0  sleep 1           
+   1.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   4.0   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.1   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.2   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.3   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.4   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.5   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.6   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.7   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.8   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.9   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.10  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.11  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.12  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.13  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.14  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.15  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.0   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.1   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.2   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.3   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.4   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.5   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.6   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.7   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.8   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.9   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.10  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.11  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.12  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.13  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.14  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.15  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+
+80 jobs; 0 completed, 0 removed, 76 idle, 4 running, 0 held, 0 suspended
+Tue Feb  7 08:55:08 CST 2012
+Tue Feb  7 08:55:13 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 6.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   1.4   tstclair        2/7  08:54   0+00:00:07 R  0   4.4  sleep 1           
+   1.5   tstclair        2/7  08:54   0+00:00:06 R  0   4.4  sleep 1           
+   1.6   tstclair        2/7  08:54   0+00:00:05 R  0   0.0  sleep 1           
+   1.7   tstclair        2/7  08:54   0+00:00:03 R  0   0.0  sleep 1           
+   1.8   tstclair        2/7  08:54   0+00:00:03 R  0   0.0  sleep 1           
+   1.9   tstclair        2/7  08:54   0+00:00:02 R  0   0.0  sleep 1           
+   1.10  tstclair        2/7  08:54   0+00:00:01 R  0   0.0  sleep 1           
+   1.11  tstclair        2/7  08:54   0+00:00:01 R  0   0.0  sleep 1           
+   1.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   1.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   2.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.0   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.1   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.2   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.3   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.4   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.5   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.6   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.7   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.8   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.9   tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.10  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.11  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.12  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.13  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.14  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   3.15  tstclair        2/7  08:54   0+00:00:00 I  0   0.0  sleep 1           
+   4.0   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.1   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.2   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.3   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.4   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.5   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.6   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.7   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.8   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.9   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.10  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.11  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.12  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.13  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.14  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   4.15  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.0   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.1   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.2   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.3   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.4   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.5   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.6   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.7   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.8   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.9   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.10  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.11  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.12  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.13  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.14  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   5.15  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.0   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.1   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.2   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.3   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.4   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.5   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.6   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.7   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.8   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.9   tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.10  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.11  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.12  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.13  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.14  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+   6.15  tstclair        2/7  08:55   0+00:00:00 I  0   0.0  sleep 1           
+
+92 jobs; 0 completed, 0 removed, 84 idle, 8 running, 0 held, 0 suspended
+Tue Feb  7 08:55:16 CST 2012
+Tue Feb  7 08:55:21 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 7.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+
+0 jobs; 0 completed, 0 removed, 0 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 08:59:43 CST 2012
+Tue Feb  7 08:59:48 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 8.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   8.0   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.1   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.2   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.3   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.4   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.5   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.6   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.7   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.8   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.9   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.10  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.11  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.12  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.13  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.14  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.15  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+
+16 jobs; 0 completed, 0 removed, 16 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 08:59:53 CST 2012
+Tue Feb  7 08:59:58 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 9.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   8.0   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.1   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.2   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.3   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.4   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.5   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.6   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.7   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.8   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.9   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.10  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.11  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.12  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.13  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.14  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.15  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.0   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.1   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.2   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.3   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.4   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.5   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.6   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.7   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.8   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.9   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.10  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.11  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.12  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.13  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.14  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.15  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+
+32 jobs; 0 completed, 0 removed, 32 idle, 0 running, 0 held, 0 suspended
+Tue Feb  7 09:00:02 CST 2012
+Tue Feb  7 09:00:07 CST 2012
+Submitting job(s)................
+16 job(s) submitted to cluster 10.
+
+
+-- Submitter: tstclair.redhat : <192.168.1.104:60852> : tstclair.redhat
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+   8.0   tstclair        2/7  08:59   0+00:00:06 R  0   0.0  sleep 1           
+   8.1   tstclair        2/7  08:59   0+00:00:03 R  0   0.0  sleep 1           
+   8.2   tstclair        2/7  08:59   0+00:00:02 R  0   0.0  sleep 1           
+   8.3   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.4   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.5   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.6   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.7   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.8   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.9   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.10  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.11  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.12  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.13  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.14  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   8.15  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.0   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.1   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.2   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.3   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.4   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.5   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.6   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.7   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.8   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.9   tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.10  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.11  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.12  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.13  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.14  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+   9.15  tstclair        2/7  08:59   0+00:00:00 I  0   0.0  sleep 1           
+  10.0   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.1   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.2   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.3   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.4   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.5   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.6   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.7   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.8   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.9   tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.10  tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.11  tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.12  tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.13  tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.14  tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+  10.15  tstclair        2/7  09:00   0+00:00:00 I  0   0.0  sleep 1           
+
+48 jobs; 0 completed, 0 removed, 45 idle, 3 running, 0 held, 0 suspended
+Tue Feb  7 09:00:29 CST 2012
+
+-------------------------------------------------------
+Results.
+
+strace -c -e fsync -p 24210
+Process 24210 attached - interrupt to quit
+^CProcess 24210 detached
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.045991         135       341           fsync
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.045991                   341           total
+
+
+
