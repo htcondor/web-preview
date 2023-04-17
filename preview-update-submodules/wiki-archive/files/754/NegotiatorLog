@@ -1,0 +1,1877 @@
+06/12/13 10:54:07 Using IDs: 4 processors, 4 CPUs, 0 HTs
+06/12/13 10:54:07 Enumerating interfaces: lo 127.0.0.1 up
+06/12/13 10:54:07 Enumerating interfaces: eth0 128.105.14.141 up
+06/12/13 10:54:07 Enumerating interfaces: vmnet1 192.168.1.1 up
+06/12/13 10:54:07 Enumerating interfaces: vmnet8 192.168.8.1 up
+06/12/13 10:54:07 Initializing Directory: curr_dir = /scratch/gthain/personal-condor/config
+06/12/13 10:54:07 Can't open directory "/scratch/gthain/personal-condor/config" as PRIV_UNKNOWN, errno: 2 (No such file or directory)
+06/12/13 10:54:07 Cannot open /scratch/gthain/personal-condor/config: No such file or directory
+06/12/13 10:54:07 ******************************************************
+06/12/13 10:54:07 ** condor_negotiator (CONDOR_NEGOTIATOR) STARTING UP
+06/12/13 10:54:07 ** /scratch/gthain/CONDOR_SRC/release_dir/sbin/condor_negotiator
+06/12/13 10:54:07 ** SubsystemInfo: name=NEGOTIATOR type=NEGOTIATOR(4) class=DAEMON(1)
+06/12/13 10:54:07 ** Configuration: subsystem:NEGOTIATOR local:<NONE> class:DAEMON
+06/12/13 10:54:07 ** $CondorVersion: 8.1.0 Jun 10 2013 BuildID: UW_development PRE-RELEASE-UWCS $
+06/12/13 10:54:07 ** $CondorPlatform: X86_64-RedHat_6.4 $
+06/12/13 10:54:07 ** PID = 9473
+06/12/13 10:54:07 ** Log last touched time unavailable (No such file or directory)
+06/12/13 10:54:07 ******************************************************
+06/12/13 10:54:07 Using config source: /scratch/gthain/personal-condor/condor_config
+06/12/13 10:54:07 Using local config sources: 
+06/12/13 10:54:07    /scratch/gthain/personal-condor/condor_config.local
+06/12/13 10:54:07 Not using shared port because USE_SHARED_PORT=false
+06/12/13 10:54:07 DaemonCore: command socket at <128.105.14.141:58043>
+06/12/13 10:54:07 DaemonCore: private command socket at <128.105.14.141:58043>
+06/12/13 10:54:07 Setting maximum accepts per cycle 8.
+06/12/13 10:54:07 Will use UDP to update collector chevre.cs.wisc.edu <128.105.14.141:4210>
+06/12/13 10:54:07 Not using shared port because USE_SHARED_PORT=false
+06/12/13 10:54:07 WARNING: Encountered corrupt log record 1475 (byte offset 102896)
+06/12/13 10:54:07 Lines following corrupt log record 1475 (up to 3):
+06/12/13 10:54:07 Detected unterminated log entry in ClassAd Log /scratch/gthain/personal-condor/spool/Accountantnew.log. Forcing rotation.
+06/12/13 10:54:07 About to rotate ClassAd log /scratch/gthain/personal-condor/spool/Accountantnew.log
+06/12/13 10:54:07 NEGOTIATOR_SOCKET_CACHE_SIZE = 16
+06/12/13 10:54:07 PREEMPTION_REQUIREMENTS = false
+06/12/13 10:54:07 ACCOUNTANT_HOST = None (local)
+06/12/13 10:54:07 NEGOTIATOR_INTERVAL = 60 sec
+06/12/13 10:54:07 NEGOTIATOR_TIMEOUT = 30 sec
+06/12/13 10:54:07 MAX_TIME_PER_SUBMITTER = 31536000 sec
+06/12/13 10:54:07 MAX_TIME_PER_PIESPIN = 31536000 sec
+06/12/13 10:54:07 PREEMPTION_RANK = (RemoteUserPrio * 1000000) - TARGET.ImageSize
+06/12/13 10:54:07 NEGOTIATOR_PRE_JOB_RANK = RemoteOwner =?= UNDEFINED
+06/12/13 10:54:07 NEGOTIATOR_POST_JOB_RANK = 0
+06/12/13 10:54:07 Calling Timer handler 1 (dc_touch_log_file)
+06/12/13 10:54:07 Return from Timer handler 1 (dc_touch_log_file)
+06/12/13 10:54:07 Calling Timer handler 2 (dc_touch_lock_files)
+06/12/13 10:54:07 Return from Timer handler 2 (dc_touch_lock_files)
+06/12/13 10:54:07 Calling Timer handler 3 (check_session_cache)
+06/12/13 10:54:07 Return from Timer handler 3 (check_session_cache)
+06/12/13 10:54:07 Calling Timer handler 4 (handle_cookie_refresh)
+06/12/13 10:54:07 Return from Timer handler 4 (handle_cookie_refresh)
+06/12/13 10:54:07 Calling Timer handler 5 (self_monitor)
+06/12/13 10:54:07 Getting monitoring info for pid 9473
+06/12/13 10:54:07 Return from Timer handler 5 (self_monitor)
+06/12/13 10:54:07 Calling Timer handler 7 (DaemonCore::SendAliveToParent)
+06/12/13 10:54:07 DaemonCore: in SendAliveToParent()
+06/12/13 10:54:07 Completed DC_CHILDALIVE to daemon at <128.105.14.141:42365>
+06/12/13 10:54:07 DaemonCore: Leaving SendAliveToParent() - success
+06/12/13 10:54:07 Return from Timer handler 7 (DaemonCore::SendAliveToParent)
+06/12/13 10:54:07 Calling Timer handler 8 (Time to negotiate)
+06/12/13 10:54:07 ---------- Started Negotiation Cycle ----------
+06/12/13 10:54:07 Phase 1:  Obtaining ads from collector ...
+06/12/13 10:54:07 Not considering preemption, therefore constraining idle machines with ifThenElse(State == "Claimed","Name State Activity StartdIpAddr AccountingGroup Owner RemoteUser Requirements","") 
+06/12/13 10:54:07   Getting Scheduler, Submitter and Machine ads ...
+06/12/13 10:54:07 Trying to query collector <128.105.14.141:4210>
+06/12/13 10:54:07   Sorting 103 ads ...
+06/12/13 10:54:07   Getting startd private ads ...
+06/12/13 10:54:07 Trying to query collector <128.105.14.141:4210>
+06/12/13 10:54:07 Got ads: 103 public and 100 private
+06/12/13 10:54:07 Public ads include 2 submitter, 100 startd
+06/12/13 10:54:07 Phase 2:  Performing accounting ...
+06/12/13 10:54:07 Entering compute_significant_attrs()
+06/12/13 10:54:07 Leaving compute_significant_attrs() - result=JobUniverse,LastCheckpointPlatform,NumCkpts
+06/12/13 10:54:08 group quotas: assigning 2 submitters to accounting groups
+06/12/13 10:54:08 group quotas: assigning group quotas from 100 available weighted slots
+06/12/13 10:54:08 group quotas: subtree <none> receiving quota= 100
+06/12/13 10:54:08 group quotas: group <none>, allocated 80 for static children, 20 for dynamic children
+06/12/13 10:54:08 group quotas: subtree group_atlas_analysis receiving quota= 80
+06/12/13 10:54:08 group quotas: group group_atlas_analysis, allocated 80 for static children, 0 for dynamic children
+06/12/13 10:54:08 group quotas: subtree group_atlas_analysis.long receiving quota= 40
+06/12/13 10:54:08 group quotas: group group_atlas_analysis.long, allocated 0 for static children, 40 for dynamic children
+06/12/13 10:54:08 group quotas: group group_atlas_analysis.long assigned quota= 40
+06/12/13 10:54:08 group quotas: subtree group_atlas_analysis.short receiving quota= 40
+06/12/13 10:54:08 group quotas: group group_atlas_analysis.short, allocated 0 for static children, 40 for dynamic children
+06/12/13 10:54:08 group quotas: group group_atlas_analysis.short assigned quota= 40
+06/12/13 10:54:08 group quotas: group group_atlas_analysis assigned quota= 0
+06/12/13 10:54:08 group quotas: group <none> assigned quota= 20
+06/12/13 10:54:08 group quotas: group= <none>  cquota= 0  static= 0  accept= 1  quota= 20  req= 0  usage= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis  cquota= 80  static= 1  accept= 0  quota= 0  req= 0  usage= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis.long  cquota= 40  static= 1  accept= 1  quota= 40  req= 180  usage= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis.short  cquota= 40  static= 1  accept= 1  quota= 40  req= 120  usage= 0
+06/12/13 10:54:08 group quotas: allocation round 1
+06/12/13 10:54:08 group quotas: fairshare (1): group= <none>  quota= 20  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (2): group= <none>  quota= 20  allocated= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (1): group= group_atlas_analysis  quota= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (2): group= group_atlas_analysis  quota= 0  allocated= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (1): group= group_atlas_analysis.long  quota= 40  requested= 180
+06/12/13 10:54:08 group quotas: fairshare (2): group= group_atlas_analysis.long  quota= 40  allocated= 40  requested= 140
+06/12/13 10:54:08 group quotas: fairshare (1): group= group_atlas_analysis.short  quota= 40  requested= 120
+06/12/13 10:54:08 group quotas: fairshare (2): group= group_atlas_analysis.short  quota= 40  allocated= 40  requested= 80
+06/12/13 10:54:08 group quotas: allocate-surplus (1): group= group_atlas_analysis  surplus= 0  subtree-requested= 220
+06/12/13 10:54:08 group quotas: fairshare (3): group= group_atlas_analysis  surplus= 0  subtree_requested= 220
+06/12/13 10:54:08 group quotas: allocate-surplus (1): group= <none>  surplus= 20  subtree-requested= 0
+06/12/13 10:54:08 group quotas: fairshare (3): group= <none>  surplus= 20  subtree_requested= 0
+06/12/13 10:54:08 group quotas: group= <none>  quota= 20  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis  quota= 0  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis.long  quota= 40  requested= 180  allocated= 40  unallocated= 140
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis.short  quota= 40  requested= 120  allocated= 40  unallocated= 80
+06/12/13 10:54:08 group quotas: groups= 4  requesting= 2  served= 2  unserved= 0  slots= 100  requested= 300  allocated= 80  surplus= 20
+06/12/13 10:54:08 group quotas: entering RR iteration n= 40
+06/12/13 10:54:08 Group group_atlas_analysis.long - sortkey= 0
+06/12/13 10:54:08 Group group_atlas_analysis.long - BEGIN NEGOTIATION
+06/12/13 10:54:08    maxAllowed= 40   groupQuota= 40   groupusage=  0
+06/12/13 10:54:08 Phase 3:  Sorting submitter ads by priority ...
+06/12/13 10:54:08 Phase 4.1:  Negotiating with schedds ...
+06/12/13 10:54:08     numSlots = 100
+06/12/13 10:54:08     slotWeightTotal = 40.000000
+06/12/13 10:54:08     pieLeft = 40.000
+06/12/13 10:54:08     NormalFactor = 1.000000
+06/12/13 10:54:08     MaxPrioValue = 0.626699
+06/12/13 10:54:08     NumSubmitterAds = 1
+06/12/13 10:54:08   Negotiating with group_atlas_analysis.long.longUser@chevre.cs.wisc.edu at <128.105.14.141:47518>
+06/12/13 10:54:08 0 seconds so far
+06/12/13 10:54:08    maxAllowed= 40   groupQuota= 40   groupusage=  0
+06/12/13 10:54:08   Calculating submitter limit with the following parameters
+06/12/13 10:54:08     SubmitterPrio       = 0.626699
+06/12/13 10:54:08     SubmitterPrioFactor = 1.000000
+06/12/13 10:54:08     submitterShare      = 1.000000
+06/12/13 10:54:08     submitterAbsShare   = 1.000000
+06/12/13 10:54:08     submitterLimit    = 40.000000
+06/12/13 10:54:08     submitterUsage    = 0.000000
+06/12/13 10:54:08 Socket to group_atlas_analysis.long.longUser@chevre.cs.wisc.edu (<128.105.14.141:47518>) not in cache, creating one
+06/12/13 10:54:08 SocketCache:  Found unused slot 0
+06/12/13 10:54:08     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:08     Getting reply from schedd ...
+06/12/13 10:54:08     Got NO_MORE_JOBS;  done negotiating
+06/12/13 10:54:08   Submitter group_atlas_analysis.long.longUser@chevre.cs.wisc.edu got all it wants; removing it.
+06/12/13 10:54:08  resources used by group_atlas_analysis.long.longUser@chevre.cs.wisc.edu are 0.000000
+06/12/13 10:54:08  resources used scheddUsed= 0.000000
+06/12/13 10:54:08  negotiateWithGroup resources used scheddAds length 0 
+06/12/13 10:54:08 Group group_atlas_analysis.short - sortkey= 0
+06/12/13 10:54:08 Group group_atlas_analysis.short - BEGIN NEGOTIATION
+06/12/13 10:54:08    maxAllowed= 40   groupQuota= 40   groupusage=  0
+06/12/13 10:54:08 Phase 3:  Sorting submitter ads by priority ...
+06/12/13 10:54:08 Phase 4.1:  Negotiating with schedds ...
+06/12/13 10:54:08     numSlots = 100
+06/12/13 10:54:08     slotWeightTotal = 40.000000
+06/12/13 10:54:08     pieLeft = 40.000
+06/12/13 10:54:08     NormalFactor = 1.000000
+06/12/13 10:54:08     MaxPrioValue = 0.521618
+06/12/13 10:54:08     NumSubmitterAds = 1
+06/12/13 10:54:08   Negotiating with group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu at <128.105.14.141:47518>
+06/12/13 10:54:08 0 seconds so far
+06/12/13 10:54:08    maxAllowed= 40   groupQuota= 40   groupusage=  0
+06/12/13 10:54:08   Calculating submitter limit with the following parameters
+06/12/13 10:54:08     SubmitterPrio       = 0.521618
+06/12/13 10:54:08     SubmitterPrioFactor = 1.000000
+06/12/13 10:54:08     submitterShare      = 1.000000
+06/12/13 10:54:08     submitterAbsShare   = 1.000000
+06/12/13 10:54:08     submitterLimit    = 40.000000
+06/12/13 10:54:08     submitterUsage    = 0.000000
+06/12/13 10:54:08 Socket to group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu (<128.105.14.141:47518>) already in cache, reusing
+06/12/13 10:54:08     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:08     Getting reply from schedd ...
+06/12/13 10:54:08     Got NO_MORE_JOBS;  done negotiating
+06/12/13 10:54:08   Submitter group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu got all it wants; removing it.
+06/12/13 10:54:08  resources used by group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu are 0.000000
+06/12/13 10:54:08  resources used scheddUsed= 0.000000
+06/12/13 10:54:08  negotiateWithGroup resources used scheddAds length 0 
+06/12/13 10:54:08 Group group_atlas_analysis - sortkey= 3.3e+38
+06/12/13 10:54:08 Group group_atlas_analysis - skipping, zero slots allocated
+06/12/13 10:54:08 Group <none> - sortkey= 3.4e+38
+06/12/13 10:54:08 Group <none> - skipping, zero slots allocated
+06/12/13 10:54:08 group quotas: Group <none>  allocated= 0  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis  allocated= 0  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis.long  allocated= 40  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis.long - resetting requested to 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis.short  allocated= 40  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis.short - resetting requested to 0
+06/12/13 10:54:08 Round 1 totals: allocated= 80  usage= 0
+06/12/13 10:54:08 group quotas: allocation round 2
+06/12/13 10:54:08 group quotas: fairshare (1): group= <none>  quota= 20  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (2): group= <none>  quota= 20  allocated= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (1): group= group_atlas_analysis  quota= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (2): group= group_atlas_analysis  quota= 0  allocated= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (1): group= group_atlas_analysis.long  quota= 40  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (2): group= group_atlas_analysis.long  quota= 40  allocated= 0  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (1): group= group_atlas_analysis.short  quota= 40  requested= 0
+06/12/13 10:54:08 group quotas: fairshare (2): group= group_atlas_analysis.short  quota= 40  allocated= 0  requested= 0
+06/12/13 10:54:08 group quotas: allocate-surplus (1): group= group_atlas_analysis  surplus= 80  subtree-requested= 0
+06/12/13 10:54:08 group quotas: fairshare (3): group= group_atlas_analysis  surplus= 80  subtree_requested= 0
+06/12/13 10:54:08 group quotas: allocate-surplus (1): group= <none>  surplus= 100  subtree-requested= 0
+06/12/13 10:54:08 group quotas: fairshare (3): group= <none>  surplus= 100  subtree_requested= 0
+06/12/13 10:54:08 group quotas: group= <none>  quota= 20  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis  quota= 0  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis.long  quota= 40  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:08 group quotas: group= group_atlas_analysis.short  quota= 40  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:08 group quotas: groups= 4  requesting= 0  served= 0  unserved= 0  slots= 100  requested= 0  allocated= 0  surplus= 100
+06/12/13 10:54:08 group quotas: entering RR iteration n= 0
+06/12/13 10:54:08 Group group_atlas_analysis.long - sortkey= 0
+06/12/13 10:54:08 Group group_atlas_analysis.long - skipping, zero slots allocated
+06/12/13 10:54:08 Group group_atlas_analysis.short - sortkey= 0
+06/12/13 10:54:08 Group group_atlas_analysis.short - skipping, zero slots allocated
+06/12/13 10:54:08 Group group_atlas_analysis - sortkey= 3.3e+38
+06/12/13 10:54:08 Group group_atlas_analysis - skipping, zero slots allocated
+06/12/13 10:54:08 Group <none> - sortkey= 3.4e+38
+06/12/13 10:54:08 Group <none> - skipping, zero slots allocated
+06/12/13 10:54:08 group quotas: Group <none>  allocated= 0  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis  allocated= 0  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis.long  allocated= 0  usage= 0
+06/12/13 10:54:08 group quotas: Group group_atlas_analysis.short  allocated= 0  usage= 0
+06/12/13 10:54:08 Round 2 totals: allocated= 0  usage= 0
+06/12/13 10:54:08 ---------- Finished Negotiation Cycle ----------
+06/12/13 10:54:08 Return from Timer handler 8 (Time to negotiate)
+06/12/13 10:54:08 Calling Timer handler 9 (Update Collector)
+06/12/13 10:54:08 enter Matchmaker::updateCollector
+06/12/13 10:54:08 Trying to update collector <128.105.14.141:4210>
+06/12/13 10:54:08 Attempting to send update via UDP to collector chevre.cs.wisc.edu <128.105.14.141:4210>
+06/12/13 10:54:08 exit Matchmaker::UpdateCollector
+06/12/13 10:54:08 Return from Timer handler 9 (Update Collector)
+06/12/13 10:54:21 Calling Handler <DaemonCommandProtocol::WaitForSocketData> (2)
+06/12/13 10:54:21 Return from Handler <DaemonCommandProtocol::WaitForSocketData> 0.0008s
+06/12/13 10:54:21 IPVERIFY: checking chevre.cs.wisc.edu against 128.105.14.141
+06/12/13 10:54:21 IPVERIFY: matched 128.105.14.141 to 128.105.14.141
+06/12/13 10:54:21 IPVERIFY: ip found is 1
+06/12/13 10:54:21 Received UDP command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:43848>, access level DAEMON
+06/12/13 10:54:21 Calling HandleReq <RESCHEDULE_commandHandler> (0) for command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:43848>
+06/12/13 10:54:21 Return from HandleReq <RESCHEDULE_commandHandler> (handler: 0.000s, sec: 0.002s, payload: 0.000s)
+06/12/13 10:54:21 Calling Timer handler 8 (Time to negotiate)
+06/12/13 10:54:21 New cycle requested but just finished one -- delaying 7 secs
+06/12/13 10:54:21 Return from Timer handler 8 (Time to negotiate)
+06/12/13 10:54:22 Calling Timer handler 0 (check_parent)
+06/12/13 10:54:22 Return from Timer handler 0 (check_parent)
+06/12/13 10:54:28 Calling Timer handler 8 (Time to negotiate)
+06/12/13 10:54:28 ---------- Started Negotiation Cycle ----------
+06/12/13 10:54:28 Phase 1:  Obtaining ads from collector ...
+06/12/13 10:54:28 Not considering preemption, therefore constraining idle machines with ifThenElse(State == "Claimed","Name State Activity StartdIpAddr AccountingGroup Owner RemoteUser Requirements","") 
+06/12/13 10:54:28   Getting Scheduler, Submitter and Machine ads ...
+06/12/13 10:54:28 Trying to query collector <128.105.14.141:4210>
+06/12/13 10:54:29   Sorting 103 ads ...
+06/12/13 10:54:29 Ignoring submitter group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu with no requested jobs
+06/12/13 10:54:29   Getting startd private ads ...
+06/12/13 10:54:29 Trying to query collector <128.105.14.141:4210>
+06/12/13 10:54:29 Got ads: 103 public and 100 private
+06/12/13 10:54:29 Public ads include 1 submitter, 100 startd
+06/12/13 10:54:29 Phase 2:  Performing accounting ...
+06/12/13 10:54:29 Entering compute_significant_attrs()
+06/12/13 10:54:29 Leaving compute_significant_attrs() - result=JobUniverse,LastCheckpointPlatform,NumCkpts
+06/12/13 10:54:29 group quotas: assigning 1 submitters to accounting groups
+06/12/13 10:54:29 group quotas: assigning group quotas from 100 available weighted slots
+06/12/13 10:54:29 group quotas: subtree <none> receiving quota= 100
+06/12/13 10:54:29 group quotas: group <none>, allocated 80 for static children, 20 for dynamic children
+06/12/13 10:54:29 group quotas: subtree group_atlas_analysis receiving quota= 80
+06/12/13 10:54:29 group quotas: group group_atlas_analysis, allocated 80 for static children, 0 for dynamic children
+06/12/13 10:54:29 group quotas: subtree group_atlas_analysis.long receiving quota= 40
+06/12/13 10:54:29 group quotas: group group_atlas_analysis.long, allocated 0 for static children, 40 for dynamic children
+06/12/13 10:54:29 group quotas: group group_atlas_analysis.long assigned quota= 40
+06/12/13 10:54:29 group quotas: subtree group_atlas_analysis.short receiving quota= 40
+06/12/13 10:54:29 group quotas: group group_atlas_analysis.short, allocated 0 for static children, 40 for dynamic children
+06/12/13 10:54:29 group quotas: group group_atlas_analysis.short assigned quota= 40
+06/12/13 10:54:29 group quotas: group group_atlas_analysis assigned quota= 0
+06/12/13 10:54:29 group quotas: group <none> assigned quota= 20
+06/12/13 10:54:29 group quotas: group= <none>  cquota= 0  static= 0  accept= 1  quota= 20  req= 0  usage= 0
+06/12/13 10:54:29 group quotas: group= group_atlas_analysis  cquota= 80  static= 1  accept= 0  quota= 0  req= 0  usage= 0
+06/12/13 10:54:29 group quotas: group= group_atlas_analysis.long  cquota= 40  static= 1  accept= 1  quota= 40  req= 100  usage= 0
+06/12/13 10:54:29 group quotas: group= group_atlas_analysis.short  cquota= 40  static= 1  accept= 1  quota= 40  req= 0  usage= 0
+06/12/13 10:54:29 group quotas: allocation round 1
+06/12/13 10:54:29 group quotas: fairshare (1): group= <none>  quota= 20  requested= 0
+06/12/13 10:54:29 group quotas: fairshare (2): group= <none>  quota= 20  allocated= 0  requested= 0
+06/12/13 10:54:29 group quotas: fairshare (1): group= group_atlas_analysis  quota= 0  requested= 0
+06/12/13 10:54:29 group quotas: fairshare (2): group= group_atlas_analysis  quota= 0  allocated= 0  requested= 0
+06/12/13 10:54:29 group quotas: fairshare (1): group= group_atlas_analysis.long  quota= 40  requested= 100
+06/12/13 10:54:29 group quotas: fairshare (2): group= group_atlas_analysis.long  quota= 40  allocated= 40  requested= 60
+06/12/13 10:54:29 group quotas: fairshare (1): group= group_atlas_analysis.short  quota= 40  requested= 0
+06/12/13 10:54:29 group quotas: fairshare (2): group= group_atlas_analysis.short  quota= 40  allocated= 0  requested= 0
+06/12/13 10:54:29 group quotas: allocate-surplus (1): group= group_atlas_analysis  surplus= 40  subtree-requested= 60
+06/12/13 10:54:29 group quotas: allocate-surplus (2b): quota-based allocation, group= group_atlas_analysis  requested= 60  surplus= 40
+06/12/13 10:54:29 group quotas: allocate-surplus-loop: by_quota= 1  iteration= 1  requested= 60  surplus= 40
+06/12/13 10:54:29 group quotas: allocate-surplus (1): group= group_atlas_analysis.long  surplus= 40  subtree-requested= 60
+06/12/13 10:54:29 group quotas: allocate-surplus (2b): quota-based allocation, group= group_atlas_analysis.long  requested= 60  surplus= 40
+06/12/13 10:54:29 group quotas: allocate-surplus-loop: by_quota= 1  iteration= 1  requested= 60  surplus= 40
+06/12/13 10:54:29 group quotas: allocate-surplus (4): group group_atlas_analysis.long allocated surplus= 40  allocated= 80  requested= 20
+06/12/13 10:54:29 group quotas: allocate-surplus (4): group group_atlas_analysis allocated surplus= 0  allocated= 0  requested= 0
+06/12/13 10:54:29 group quotas: fairshare (3): group= group_atlas_analysis  surplus= 0  subtree_requested= 20
+06/12/13 10:54:29 group quotas: allocate-surplus (1): group= <none>  surplus= 20  subtree-requested= 0
+06/12/13 10:54:29 group quotas: fairshare (3): group= <none>  surplus= 20  subtree_requested= 0
+06/12/13 10:54:29 group quotas: group= <none>  quota= 20  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:29 group quotas: group= group_atlas_analysis  quota= 0  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:29 group quotas: group= group_atlas_analysis.long  quota= 40  requested= 100  allocated= 80  unallocated= 20
+06/12/13 10:54:29 group quotas: group= group_atlas_analysis.short  quota= 40  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:29 group quotas: groups= 4  requesting= 1  served= 1  unserved= 0  slots= 100  requested= 100  allocated= 80  surplus= 20
+06/12/13 10:54:29 group quotas: entering RR iteration n= 80
+06/12/13 10:54:29 Group group_atlas_analysis.long - sortkey= 0
+06/12/13 10:54:29 Group group_atlas_analysis.long - BEGIN NEGOTIATION
+06/12/13 10:54:29    maxAllowed= 80   groupQuota= 80   groupusage=  0
+06/12/13 10:54:29 Phase 3:  Sorting submitter ads by priority ...
+06/12/13 10:54:29 Phase 4.1:  Negotiating with schedds ...
+06/12/13 10:54:29     numSlots = 100
+06/12/13 10:54:29     slotWeightTotal = 80.000000
+06/12/13 10:54:29     pieLeft = 80.000
+06/12/13 10:54:29     NormalFactor = 1.000000
+06/12/13 10:54:29     MaxPrioValue = 0.626925
+06/12/13 10:54:29     NumSubmitterAds = 1
+06/12/13 10:54:29   Negotiating with group_atlas_analysis.long.longUser@chevre.cs.wisc.edu at <128.105.14.141:47518>
+06/12/13 10:54:29 0 seconds so far
+06/12/13 10:54:29    maxAllowed= 80   groupQuota= 80   groupusage=  0
+06/12/13 10:54:29   Calculating submitter limit with the following parameters
+06/12/13 10:54:29     SubmitterPrio       = 0.626925
+06/12/13 10:54:29     SubmitterPrioFactor = 1.000000
+06/12/13 10:54:29     submitterShare      = 1.000000
+06/12/13 10:54:29     submitterAbsShare   = 1.000000
+06/12/13 10:54:29     submitterLimit    = 80.000000
+06/12/13 10:54:29     submitterUsage    = 0.000000
+06/12/13 10:54:29 Socket to group_atlas_analysis.long.longUser@chevre.cs.wisc.edu (<128.105.14.141:47518>) already in cache, reusing
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00000:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 0.000000 pieLeft 80.000000
+06/12/13 10:54:29 Start of sorting MatchList (len=100)
+06/12/13 10:54:29 Finished sorting MatchList
+06/12/13 10:54:29       Connecting to startd slot10@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29 File descriptor limits: max 1024, safe 820
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.0 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot10@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot10@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00001:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 1.000000 pieLeft 79.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 98, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot20@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.1 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot20@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot20@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00002:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 2.000000 pieLeft 78.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 97, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot11@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.2 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot11@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot11@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00003:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 3.000000 pieLeft 77.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 96, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot30@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.3 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot30@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot30@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00004:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 4.000000 pieLeft 76.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 95, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot21@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.4 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot21@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot21@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00005:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 5.000000 pieLeft 75.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 94, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot12@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.5 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot12@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot12@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00006:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 6.000000 pieLeft 74.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 93, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot31@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.6 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot31@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot31@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00007:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 7.000000 pieLeft 73.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 92, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot22@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.7 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot22@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot22@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:29     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:29     Request 00448.00008:
+06/12/13 10:54:29 matchmakingAlgorithm: limit 80.000000 used 8.000000 pieLeft 72.000000
+06/12/13 10:54:29 Attempting to use cached MatchList: Succeeded. (MatchList length: 91, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:29       Connecting to startd slot13@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:29       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:29       Matched 448.8 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot13@chevre.cs.wisc.edu
+06/12/13 10:54:29       Notifying the accountant
+06/12/13 10:54:29       Successfully matched with slot13@chevre.cs.wisc.edu
+06/12/13 10:54:29     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:29     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00009:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 9.000000 pieLeft 71.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 90, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot40@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.9 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot40@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot40@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00010:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 10.000000 pieLeft 70.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 89, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot23@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.10 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot23@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot23@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00011:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 11.000000 pieLeft 69.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 88, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot14@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.11 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot14@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot14@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00012:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 12.000000 pieLeft 68.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 87, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot50@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.12 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot50@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot50@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00013:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 13.000000 pieLeft 67.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 86, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot41@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.13 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot41@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot41@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00014:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 14.000000 pieLeft 66.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 85, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot32@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.14 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot32@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot32@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00015:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 15.000000 pieLeft 65.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 84, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot15@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.15 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot15@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot15@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00016:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 16.000000 pieLeft 64.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 83, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot60@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.16 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot60@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot60@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00017:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 17.000000 pieLeft 63.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 82, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot51@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.17 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot51@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot51@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00018:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 18.000000 pieLeft 62.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 81, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot42@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.18 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot42@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot42@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00019:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 19.000000 pieLeft 61.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 80, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot33@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.19 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot33@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot33@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:30     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:30     Request 00448.00020:
+06/12/13 10:54:30 matchmakingAlgorithm: limit 80.000000 used 20.000000 pieLeft 60.000000
+06/12/13 10:54:30 Attempting to use cached MatchList: Succeeded. (MatchList length: 79, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:30       Connecting to startd slot24@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:30       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:30       Matched 448.20 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot24@chevre.cs.wisc.edu
+06/12/13 10:54:30       Notifying the accountant
+06/12/13 10:54:30       Successfully matched with slot24@chevre.cs.wisc.edu
+06/12/13 10:54:30     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:30     Getting reply from schedd ...
+06/12/13 10:54:31     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:31     Request 00448.00021:
+06/12/13 10:54:31 matchmakingAlgorithm: limit 80.000000 used 21.000000 pieLeft 59.000000
+06/12/13 10:54:31 Attempting to use cached MatchList: Succeeded. (MatchList length: 78, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:31       Connecting to startd slot70@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:31       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:31       Matched 448.21 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot70@chevre.cs.wisc.edu
+06/12/13 10:54:31       Notifying the accountant
+06/12/13 10:54:31       Successfully matched with slot70@chevre.cs.wisc.edu
+06/12/13 10:54:31     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:31     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00022:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 22.000000 pieLeft 58.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 77, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot61@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.22 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot61@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot61@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00023:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 23.000000 pieLeft 57.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 76, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot52@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.23 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot52@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot52@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00024:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 24.000000 pieLeft 56.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 75, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot43@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.24 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot43@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot43@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00025:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 25.000000 pieLeft 55.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 74, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot34@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.25 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot34@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot34@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00026:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 26.000000 pieLeft 54.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 73, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot25@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.26 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot25@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot25@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00027:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 27.000000 pieLeft 53.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 72, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot16@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.27 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot16@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot16@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00028:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 28.000000 pieLeft 52.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 71, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot71@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.28 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot71@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot71@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00029:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 29.000000 pieLeft 51.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 70, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot62@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.29 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot62@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot62@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00030:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 30.000000 pieLeft 50.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 69, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot53@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.30 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot53@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot53@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00031:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 31.000000 pieLeft 49.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 68, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot44@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.31 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot44@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot44@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00032:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 32.000000 pieLeft 48.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 67, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot35@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.32 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot35@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot35@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00033:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 33.000000 pieLeft 47.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 66, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot26@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.33 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot26@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot26@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00034:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 34.000000 pieLeft 46.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 65, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot17@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.34 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot17@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot17@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00035:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 35.000000 pieLeft 45.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 64, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot80@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.35 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot80@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot80@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:32     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:32     Request 00448.00036:
+06/12/13 10:54:32 matchmakingAlgorithm: limit 80.000000 used 36.000000 pieLeft 44.000000
+06/12/13 10:54:32 Attempting to use cached MatchList: Succeeded. (MatchList length: 63, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:32       Connecting to startd slot63@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:32       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:32       Matched 448.36 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot63@chevre.cs.wisc.edu
+06/12/13 10:54:32       Notifying the accountant
+06/12/13 10:54:32       Successfully matched with slot63@chevre.cs.wisc.edu
+06/12/13 10:54:32     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:32     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00037:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 37.000000 pieLeft 43.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 62, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot54@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.37 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot54@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot54@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00038:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 38.000000 pieLeft 42.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 61, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot45@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.38 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot45@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot45@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00039:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 39.000000 pieLeft 41.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 60, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot36@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.39 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot36@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot36@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00040:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 40.000000 pieLeft 40.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 59, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot27@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.40 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot27@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot27@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00041:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 41.000000 pieLeft 39.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 58, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot90@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.41 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot90@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot90@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00042:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 42.000000 pieLeft 38.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 57, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot18@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.42 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot18@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot18@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00043:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 43.000000 pieLeft 37.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 56, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot81@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.43 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot81@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot81@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00044:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 44.000000 pieLeft 36.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 55, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot72@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.44 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot72@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot72@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00045:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 45.000000 pieLeft 35.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 54, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot55@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.45 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot55@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot55@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00046:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 46.000000 pieLeft 34.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 53, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot46@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.46 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot46@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot46@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00047:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 47.000000 pieLeft 33.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 52, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot37@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.47 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot37@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot37@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00048:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 48.000000 pieLeft 32.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 51, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot28@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.48 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot28@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot28@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00049:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 49.000000 pieLeft 31.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 50, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot91@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.49 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot91@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot91@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00050:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 50.000000 pieLeft 30.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 49, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot19@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.50 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot19@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot19@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00051:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 51.000000 pieLeft 29.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 48, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot82@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.51 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot82@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot82@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00052:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 52.000000 pieLeft 28.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 47, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot73@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.52 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot73@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot73@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00053:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 53.000000 pieLeft 27.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 46, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot64@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.53 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot64@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot64@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00054:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 54.000000 pieLeft 26.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 45, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot47@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.54 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot47@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot47@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00055:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 55.000000 pieLeft 25.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 44, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot38@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.55 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot38@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot38@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00056:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 56.000000 pieLeft 24.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 43, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot29@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.56 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot29@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot29@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00057:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 57.000000 pieLeft 23.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 42, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot92@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.57 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot92@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot92@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00058:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 58.000000 pieLeft 22.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 41, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot83@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.58 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot83@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot83@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00059:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 59.000000 pieLeft 21.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 40, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot74@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.59 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot74@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot74@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00060:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 60.000000 pieLeft 20.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 39, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot65@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.60 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot65@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot65@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00061:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 61.000000 pieLeft 19.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 38, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot56@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.61 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot56@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot56@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00062:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 62.000000 pieLeft 18.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 37, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot39@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.62 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot39@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot39@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00063:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 63.000000 pieLeft 17.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 36, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot93@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.63 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot93@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot93@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00064:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 64.000000 pieLeft 16.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 35, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot84@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.64 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot84@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot84@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00065:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 65.000000 pieLeft 15.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 34, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot75@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.65 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot75@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot75@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00066:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 66.000000 pieLeft 14.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 33, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot66@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.66 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot66@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot66@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00067:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 67.000000 pieLeft 13.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 32, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot57@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.67 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot57@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot57@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00068:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 68.000000 pieLeft 12.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 31, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot48@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.68 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot48@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot48@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00069:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 69.000000 pieLeft 11.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 30, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot94@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.69 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot94@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot94@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00070:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 70.000000 pieLeft 10.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 29, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot85@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.70 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot85@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot85@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00071:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 71.000000 pieLeft 9.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 28, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot76@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.71 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot76@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot76@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00072:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 72.000000 pieLeft 8.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 27, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot67@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.72 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot67@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot67@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00073:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 73.000000 pieLeft 7.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 26, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot58@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.73 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot58@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot58@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00074:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 74.000000 pieLeft 6.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 25, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot49@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.74 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot49@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot49@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00075:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 75.000000 pieLeft 5.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 24, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot95@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.75 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot95@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot95@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00076:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 76.000000 pieLeft 4.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 23, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot86@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.76 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot86@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot86@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00077:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 77.000000 pieLeft 3.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 22, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot77@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.77 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot77@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot77@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00078:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 78.000000 pieLeft 2.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 21, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot68@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.78 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot68@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot68@chevre.cs.wisc.edu
+06/12/13 10:54:33     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:33     Getting reply from schedd ...
+06/12/13 10:54:33     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:33     Request 00448.00079:
+06/12/13 10:54:33 matchmakingAlgorithm: limit 80.000000 used 79.000000 pieLeft 1.000000
+06/12/13 10:54:33 Attempting to use cached MatchList: Succeeded. (MatchList length: 20, Autocluster: 1, Schedd Name: group_atlas_analysis.long.longUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:33       Connecting to startd slot59@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:33       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:33       Matched 448.79 group_atlas_analysis.long.longUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot59@chevre.cs.wisc.edu
+06/12/13 10:54:33       Notifying the accountant
+06/12/13 10:54:33       Successfully matched with slot59@chevre.cs.wisc.edu
+06/12/13 10:54:33     Reached submitter resource limit: 80.000000 ... stopping
+06/12/13 10:54:33   This submitter hit its submitterLimit.
+06/12/13 10:54:33  resources used scheddUsed= 80.000000
+06/12/13 10:54:33 Group group_atlas_analysis.long is using its quota 80 - halting negotiation
+06/12/13 10:54:33  negotiateWithGroup resources used scheddAds length 1 
+06/12/13 10:54:33 Group group_atlas_analysis.short - sortkey= 0
+06/12/13 10:54:33 Group group_atlas_analysis.short - skipping, zero slots allocated
+06/12/13 10:54:33 Group group_atlas_analysis - sortkey= 3.3e+38
+06/12/13 10:54:33 Group group_atlas_analysis - skipping, zero slots allocated
+06/12/13 10:54:33 Group <none> - sortkey= 3.4e+38
+06/12/13 10:54:33 Group <none> - skipping, zero slots allocated
+06/12/13 10:54:33 group quotas: Group <none>  allocated= 0  usage= 0
+06/12/13 10:54:33 group quotas: Group group_atlas_analysis  allocated= 0  usage= 0
+06/12/13 10:54:33 group quotas: Group group_atlas_analysis.long  allocated= 80  usage= 80
+06/12/13 10:54:33 group quotas: Group group_atlas_analysis.short  allocated= 0  usage= 0
+06/12/13 10:54:33 Round 1 totals: allocated= 80  usage= 80
+06/12/13 10:54:33 ---------- Finished Negotiation Cycle ----------
+06/12/13 10:54:33 Return from Timer handler 8 (Time to negotiate)
+06/12/13 10:54:33 Received UDP command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:56645>, access level DAEMON
+06/12/13 10:54:33 Calling HandleReq <RESCHEDULE_commandHandler> (0) for command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:56645>
+06/12/13 10:54:33 Return from HandleReq <RESCHEDULE_commandHandler> (handler: 0.000s, sec: 0.000s, payload: 0.000s)
+06/12/13 10:54:33 Calling Handler <SecManStartCommand::WaitForSocketCallback MATCH_INFO> (2)
+06/12/13 10:54:33 Return from Handler <SecManStartCommand::WaitForSocketCallback MATCH_INFO> 0.0040s
+06/12/13 10:54:33 Calling Timer handler 8 (Time to negotiate)
+06/12/13 10:54:33 New cycle requested but just finished one -- delaying 20 secs
+06/12/13 10:54:33 Return from Timer handler 8 (Time to negotiate)
+06/12/13 10:54:34 Calling Handler <SecManStartCommand::WaitForSocketCallback MATCH_INFO> (2)
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot20@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#292#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot11@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#293#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot30@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#294#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot21@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#295#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot12@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#296#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot31@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#297#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot22@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#298#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot13@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#299#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot40@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#300#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot23@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#271#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot14@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#272#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot50@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#275#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot41@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#273#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot32@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#274#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot15@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#276#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot60@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#277#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot51@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#281#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot42@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#280#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot33@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#278#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot24@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#279#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot70@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#282#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot61@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#283#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot52@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#284#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot43@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#288#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot34@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#287#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot25@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#285#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot16@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#286#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot71@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#289#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot62@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#290#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot53@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#201#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot44@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#202#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot35@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#206#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot26@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#205#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot17@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#203#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot80@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#204#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot63@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#207#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot54@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#208#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot45@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#209#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot36@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#210#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot27@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#215#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot90@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#214#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot18@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#213#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot81@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#211#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot72@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#212#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot55@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#216#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot46@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#217#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot37@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#218#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot28@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#219#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot91@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#234#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot19@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#233#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot82@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#232#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot73@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#220#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot64@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#231#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot47@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#235#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot38@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#236#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot29@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#237#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot92@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#238#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot83@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#242#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot74@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#241#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot65@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#239#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot56@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#240#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot39@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#243#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot93@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#244#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot84@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#245#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot75@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#249#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot66@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#248#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot57@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#246#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot48@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#247#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot94@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#250#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot85@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#251#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot76@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#252#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot67@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#255#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot58@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#254#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot49@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#253#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot95@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#256#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot86@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#257#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot77@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#258#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot68@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#259#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot59@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#260#..." )
+06/12/13 10:54:34       Sending MATCH_INFO/claim id to slot10@chevre.cs.wisc.edu
+06/12/13 10:54:34       (Claim ID is "<128.105.14.141:39985>#1371052152#291#..." )
+06/12/13 10:54:34 Return from Handler <SecManStartCommand::WaitForSocketCallback MATCH_INFO> 0.0133s
+06/12/13 10:54:40 Received UDP command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:36335>, access level DAEMON
+06/12/13 10:54:40 Calling HandleReq <RESCHEDULE_commandHandler> (0) for command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:36335>
+06/12/13 10:54:40 Return from HandleReq <RESCHEDULE_commandHandler> (handler: 0.000s, sec: 0.000s, payload: 0.000s)
+06/12/13 10:54:47 Received UDP command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:45013>, access level DAEMON
+06/12/13 10:54:47 Calling HandleReq <RESCHEDULE_commandHandler> (0) for command 421 (Reschedule) from unauthenticated@unmapped <128.105.14.141:45013>
+06/12/13 10:54:47 Return from HandleReq <RESCHEDULE_commandHandler> (handler: 0.000s, sec: 0.000s, payload: 0.000s)
+06/12/13 10:54:53 Calling Timer handler 8 (Time to negotiate)
+06/12/13 10:54:53 ---------- Started Negotiation Cycle ----------
+06/12/13 10:54:53 Phase 1:  Obtaining ads from collector ...
+06/12/13 10:54:53 Not considering preemption, therefore constraining idle machines with ifThenElse(State == "Claimed","Name State Activity StartdIpAddr AccountingGroup Owner RemoteUser Requirements","") 
+06/12/13 10:54:53   Getting Scheduler, Submitter and Machine ads ...
+06/12/13 10:54:53 Trying to query collector <128.105.14.141:4210>
+06/12/13 10:54:53   Sorting 103 ads ...
+06/12/13 10:54:53   Getting startd private ads ...
+06/12/13 10:54:53 Trying to query collector <128.105.14.141:4210>
+06/12/13 10:54:53 Got ads: 103 public and 100 private
+06/12/13 10:54:53 Public ads include 2 submitter, 100 startd
+06/12/13 10:54:53 Can't get SlotWeight for 'slot10@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot20@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot11@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot30@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot21@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot12@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot31@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot22@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot13@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot40@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot23@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot14@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot50@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot41@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot32@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot15@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot60@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot51@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot33@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot42@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot24@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot70@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot61@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot52@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot43@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot34@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot25@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot16@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot71@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot62@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot53@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot44@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot35@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot17@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot26@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot80@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot54@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot63@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot45@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot36@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot27@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot18@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot90@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot81@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot72@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot55@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot46@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot37@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot28@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot19@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot91@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot82@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot73@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot64@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot47@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot38@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot29@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot92@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot83@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot74@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot65@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot56@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot39@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot48@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot93@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot84@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot75@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot66@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot57@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot94@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot85@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot76@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot67@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot58@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot49@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot95@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot86@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot77@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot68@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Can't get SlotWeight for 'slot59@chevre.cs.wisc.edu'; using 1.0
+06/12/13 10:54:53 Phase 2:  Performing accounting ...
+06/12/13 10:54:53 Entering compute_significant_attrs()
+06/12/13 10:54:53 Leaving compute_significant_attrs() - result=JobUniverse,LastCheckpointPlatform,NumCkpts
+06/12/13 10:54:53 Trimmed out 80 startd ads due to NEGOTIATOR_CONSIDER_PREEMPTION=False
+06/12/13 10:54:53 group quotas: assigning 2 submitters to accounting groups
+06/12/13 10:54:53 group quotas: assigning group quotas from 100 available weighted slots
+06/12/13 10:54:53 group quotas: subtree <none> receiving quota= 100
+06/12/13 10:54:53 group quotas: group <none>, allocated 80 for static children, 20 for dynamic children
+06/12/13 10:54:53 group quotas: subtree group_atlas_analysis receiving quota= 80
+06/12/13 10:54:53 group quotas: group group_atlas_analysis, allocated 80 for static children, 0 for dynamic children
+06/12/13 10:54:53 group quotas: subtree group_atlas_analysis.long receiving quota= 40
+06/12/13 10:54:53 group quotas: group group_atlas_analysis.long, allocated 0 for static children, 40 for dynamic children
+06/12/13 10:54:53 group quotas: group group_atlas_analysis.long assigned quota= 40
+06/12/13 10:54:53 group quotas: subtree group_atlas_analysis.short receiving quota= 40
+06/12/13 10:54:53 group quotas: group group_atlas_analysis.short, allocated 0 for static children, 40 for dynamic children
+06/12/13 10:54:53 group quotas: group group_atlas_analysis.short assigned quota= 40
+06/12/13 10:54:53 group quotas: group group_atlas_analysis assigned quota= 0
+06/12/13 10:54:53 group quotas: group <none> assigned quota= 20
+06/12/13 10:54:53 group quotas: group= <none>  cquota= 0  static= 0  accept= 1  quota= 20  req= 0  usage= 0
+06/12/13 10:54:53 group quotas: group= group_atlas_analysis  cquota= 80  static= 1  accept= 0  quota= 0  req= 0  usage= 0
+06/12/13 10:54:53 group quotas: group= group_atlas_analysis.long  cquota= 40  static= 1  accept= 1  quota= 40  req= 180  usage= 80
+06/12/13 10:54:53 group quotas: group= group_atlas_analysis.short  cquota= 40  static= 1  accept= 1  quota= 40  req= 100  usage= 0
+06/12/13 10:54:53 group quotas: allocation round 1
+06/12/13 10:54:53 group quotas: fairshare (1): group= <none>  quota= 20  requested= 0
+06/12/13 10:54:53 group quotas: fairshare (2): group= <none>  quota= 20  allocated= 0  requested= 0
+06/12/13 10:54:53 group quotas: fairshare (1): group= group_atlas_analysis  quota= 0  requested= 0
+06/12/13 10:54:53 group quotas: fairshare (2): group= group_atlas_analysis  quota= 0  allocated= 0  requested= 0
+06/12/13 10:54:53 group quotas: fairshare (1): group= group_atlas_analysis.long  quota= 40  requested= 180
+06/12/13 10:54:53 group quotas: fairshare (2): group= group_atlas_analysis.long  quota= 40  allocated= 40  requested= 140
+06/12/13 10:54:53 group quotas: fairshare (1): group= group_atlas_analysis.short  quota= 40  requested= 100
+06/12/13 10:54:53 group quotas: fairshare (2): group= group_atlas_analysis.short  quota= 40  allocated= 40  requested= 60
+06/12/13 10:54:53 group quotas: allocate-surplus (1): group= group_atlas_analysis  surplus= 0  subtree-requested= 200
+06/12/13 10:54:53 group quotas: fairshare (3): group= group_atlas_analysis  surplus= 0  subtree_requested= 200
+06/12/13 10:54:53 group quotas: allocate-surplus (1): group= <none>  surplus= 20  subtree-requested= 0
+06/12/13 10:54:53 group quotas: fairshare (3): group= <none>  surplus= 20  subtree_requested= 0
+06/12/13 10:54:53 group quotas: group= <none>  quota= 20  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:53 group quotas: group= group_atlas_analysis  quota= 0  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:53 group quotas: group= group_atlas_analysis.long  quota= 40  requested= 180  allocated= 40  unallocated= 140
+06/12/13 10:54:53 group quotas: group= group_atlas_analysis.short  quota= 40  requested= 100  allocated= 40  unallocated= 60
+06/12/13 10:54:53 group quotas: groups= 4  requesting= 2  served= 2  unserved= 0  slots= 100  requested= 280  allocated= 80  surplus= 20
+06/12/13 10:54:53 group quotas: entering RR iteration n= 40
+06/12/13 10:54:53 Group group_atlas_analysis.short - sortkey= 0
+06/12/13 10:54:53 Group group_atlas_analysis.short - BEGIN NEGOTIATION
+06/12/13 10:54:53    maxAllowed= 40   groupQuota= 40   groupusage=  0
+06/12/13 10:54:53 Phase 3:  Sorting submitter ads by priority ...
+06/12/13 10:54:53 Phase 4.1:  Negotiating with schedds ...
+06/12/13 10:54:53     numSlots = 100
+06/12/13 10:54:53     slotWeightTotal = 40.000000
+06/12/13 10:54:53     pieLeft = 40.000
+06/12/13 10:54:53     NormalFactor = 1.000000
+06/12/13 10:54:53     MaxPrioValue = 0.521498
+06/12/13 10:54:53     NumSubmitterAds = 1
+06/12/13 10:54:53   Negotiating with group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu at <128.105.14.141:47518>
+06/12/13 10:54:53 0 seconds so far
+06/12/13 10:54:53    maxAllowed= 40   groupQuota= 40   groupusage=  0
+06/12/13 10:54:53   Calculating submitter limit with the following parameters
+06/12/13 10:54:53     SubmitterPrio       = 0.521498
+06/12/13 10:54:53     SubmitterPrioFactor = 1.000000
+06/12/13 10:54:53     submitterShare      = 1.000000
+06/12/13 10:54:53     submitterAbsShare   = 1.000000
+06/12/13 10:54:53     submitterLimit    = 40.000000
+06/12/13 10:54:53     submitterUsage    = 0.000000
+06/12/13 10:54:53 Socket to group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu (<128.105.14.141:47518>) already in cache, reusing
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00000:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 0.000000 pieLeft 40.000000
+06/12/13 10:54:53 Start of sorting MatchList (len=20)
+06/12/13 10:54:53 Finished sorting MatchList
+06/12/13 10:54:53       Connecting to startd slot87@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot87@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#221#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.0 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot87@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot87@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00001:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 1.000000 pieLeft 39.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 18, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot78@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot78@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#222#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.1 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot78@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot78@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00002:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 2.000000 pieLeft 38.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 17, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot69@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot69@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#223#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.2 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot69@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot69@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00003:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 3.000000 pieLeft 37.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 16, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot96@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot96@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#224#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.3 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot96@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot96@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00004:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 4.000000 pieLeft 36.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 15, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot79@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot79@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#225#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.4 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot79@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot79@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00005:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 5.000000 pieLeft 35.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 14, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot97@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot97@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#226#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.5 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot97@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot97@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00006:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 6.000000 pieLeft 34.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 13, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot88@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot88@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#227#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.6 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot88@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot88@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00007:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 7.000000 pieLeft 33.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 12, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot98@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot98@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#229#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.7 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot98@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot98@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00008:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 8.000000 pieLeft 32.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 11, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot89@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot89@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#228#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.8 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot89@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot89@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00009:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 9.000000 pieLeft 31.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 10, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot99@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot99@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#230#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.9 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot99@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot99@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00010:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 10.000000 pieLeft 30.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 9, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot100@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot100@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#261#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.10 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot100@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot100@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00011:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 11.000000 pieLeft 29.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 8, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot1@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot1@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#262#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.11 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot1@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot1@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00012:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 12.000000 pieLeft 28.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 7, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot2@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot2@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#263#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.12 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot2@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot2@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00013:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 13.000000 pieLeft 27.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 6, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot3@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot3@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#264#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.13 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot3@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot3@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:53     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:53     Request 00449.00014:
+06/12/13 10:54:53 matchmakingAlgorithm: limit 40.000000 used 14.000000 pieLeft 26.000000
+06/12/13 10:54:53 Attempting to use cached MatchList: Succeeded. (MatchList length: 5, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:53       Connecting to startd slot4@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:53       Sending MATCH_INFO/claim id to slot4@chevre.cs.wisc.edu
+06/12/13 10:54:53       (Claim ID is "<128.105.14.141:39985>#1371052152#265#..." )
+06/12/13 10:54:53       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:53       Matched 449.14 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot4@chevre.cs.wisc.edu
+06/12/13 10:54:53       Notifying the accountant
+06/12/13 10:54:53       Successfully matched with slot4@chevre.cs.wisc.edu
+06/12/13 10:54:53     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:53     Getting reply from schedd ...
+06/12/13 10:54:54     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:54     Request 00449.00015:
+06/12/13 10:54:54 matchmakingAlgorithm: limit 40.000000 used 15.000000 pieLeft 25.000000
+06/12/13 10:54:54 Attempting to use cached MatchList: Succeeded. (MatchList length: 4, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:54       Connecting to startd slot5@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:54       Sending MATCH_INFO/claim id to slot5@chevre.cs.wisc.edu
+06/12/13 10:54:54       (Claim ID is "<128.105.14.141:39985>#1371052152#266#..." )
+06/12/13 10:54:54       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:54       Matched 449.15 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot5@chevre.cs.wisc.edu
+06/12/13 10:54:54       Notifying the accountant
+06/12/13 10:54:54       Successfully matched with slot5@chevre.cs.wisc.edu
+06/12/13 10:54:54     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:54     Getting reply from schedd ...
+06/12/13 10:54:54     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:54     Request 00449.00016:
+06/12/13 10:54:54 matchmakingAlgorithm: limit 40.000000 used 16.000000 pieLeft 24.000000
+06/12/13 10:54:54 Attempting to use cached MatchList: Succeeded. (MatchList length: 3, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:54       Connecting to startd slot6@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:54       Sending MATCH_INFO/claim id to slot6@chevre.cs.wisc.edu
+06/12/13 10:54:54       (Claim ID is "<128.105.14.141:39985>#1371052152#267#..." )
+06/12/13 10:54:54       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:54       Matched 449.16 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot6@chevre.cs.wisc.edu
+06/12/13 10:54:54       Notifying the accountant
+06/12/13 10:54:54       Successfully matched with slot6@chevre.cs.wisc.edu
+06/12/13 10:54:54     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:54     Getting reply from schedd ...
+06/12/13 10:54:54     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:54     Request 00449.00017:
+06/12/13 10:54:54 matchmakingAlgorithm: limit 40.000000 used 17.000000 pieLeft 23.000000
+06/12/13 10:54:54 Attempting to use cached MatchList: Succeeded. (MatchList length: 2, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:54       Connecting to startd slot7@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:54       Sending MATCH_INFO/claim id to slot7@chevre.cs.wisc.edu
+06/12/13 10:54:54       (Claim ID is "<128.105.14.141:39985>#1371052152#268#..." )
+06/12/13 10:54:54       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:54       Matched 449.17 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot7@chevre.cs.wisc.edu
+06/12/13 10:54:54       Notifying the accountant
+06/12/13 10:54:54       Successfully matched with slot7@chevre.cs.wisc.edu
+06/12/13 10:54:54     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:54     Getting reply from schedd ...
+06/12/13 10:54:55     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:55     Request 00449.00018:
+06/12/13 10:54:55 matchmakingAlgorithm: limit 40.000000 used 18.000000 pieLeft 22.000000
+06/12/13 10:54:55 Attempting to use cached MatchList: Succeeded. (MatchList length: 1, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:55       Connecting to startd slot8@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:55       Sending MATCH_INFO/claim id to slot8@chevre.cs.wisc.edu
+06/12/13 10:54:55       (Claim ID is "<128.105.14.141:39985>#1371052152#269#..." )
+06/12/13 10:54:55       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:55       Matched 449.18 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot8@chevre.cs.wisc.edu
+06/12/13 10:54:55       Notifying the accountant
+06/12/13 10:54:55       Successfully matched with slot8@chevre.cs.wisc.edu
+06/12/13 10:54:55     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:55     Getting reply from schedd ...
+06/12/13 10:54:55     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:55     Request 00449.00019:
+06/12/13 10:54:55 matchmakingAlgorithm: limit 40.000000 used 19.000000 pieLeft 21.000000
+06/12/13 10:54:55 Attempting to use cached MatchList: Succeeded. (MatchList length: 0, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:55       Connecting to startd slot9@chevre.cs.wisc.edu at <128.105.14.141:39985>
+06/12/13 10:54:55       Sending MATCH_INFO/claim id to slot9@chevre.cs.wisc.edu
+06/12/13 10:54:55       (Claim ID is "<128.105.14.141:39985>#1371052152#270#..." )
+06/12/13 10:54:55       Sending PERMISSION, claim id, startdAd to schedd
+06/12/13 10:54:55       Matched 449.19 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518> preempting none <128.105.14.141:39985> slot9@chevre.cs.wisc.edu
+06/12/13 10:54:55       Notifying the accountant
+06/12/13 10:54:55       Successfully matched with slot9@chevre.cs.wisc.edu
+06/12/13 10:54:55     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:55     Getting reply from schedd ...
+06/12/13 10:54:55     Got JOB_INFO command; getting classad/eom
+06/12/13 10:54:55     Request 00449.00020:
+06/12/13 10:54:55 matchmakingAlgorithm: limit 40.000000 used 20.000000 pieLeft 20.000000
+06/12/13 10:54:55 Attempting to use cached MatchList: Failed (MatchList length: 0, Autocluster: 1, Schedd Name: group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu, Schedd Address: <128.105.14.141:47518>)
+06/12/13 10:54:55       Rejected 449.20 group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu <128.105.14.141:47518>: no match found
+06/12/13 10:54:55     Sending SEND_JOB_INFO/eom
+06/12/13 10:54:55     Getting reply from schedd ...
+06/12/13 10:54:55     Got NO_MORE_JOBS;  done negotiating
+06/12/13 10:54:55   Submitter group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu got all it wants; removing it.
+06/12/13 10:54:55  resources used by group_atlas_analysis.short.shortUser@chevre.cs.wisc.edu are 20.000000
+06/12/13 10:54:55  resources used scheddUsed= 20.000000
+06/12/13 10:54:55  negotiateWithGroup resources used scheddAds length 0 
+06/12/13 10:54:55 Group group_atlas_analysis.long - sortkey= 2
+06/12/13 10:54:55 Group group_atlas_analysis.long - skipping, at or over quota (usage=80)
+06/12/13 10:54:55 Group group_atlas_analysis - sortkey= 3.3e+38
+06/12/13 10:54:55 Group group_atlas_analysis - skipping, zero slots allocated
+06/12/13 10:54:55 Group <none> - sortkey= 3.4e+38
+06/12/13 10:54:55 Group <none> - skipping, zero slots allocated
+06/12/13 10:54:55 group quotas: Group <none>  allocated= 0  usage= 0
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis  allocated= 0  usage= 0
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis.long  allocated= 40  usage= 80
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis.short  allocated= 40  usage= 20
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis.short - resetting requested to 20
+06/12/13 10:54:55 Round 1 totals: allocated= 80  usage= 60
+06/12/13 10:54:55 group quotas: allocation round 2
+06/12/13 10:54:55 group quotas: fairshare (1): group= <none>  quota= 20  requested= 0
+06/12/13 10:54:55 group quotas: fairshare (2): group= <none>  quota= 20  allocated= 0  requested= 0
+06/12/13 10:54:55 group quotas: fairshare (1): group= group_atlas_analysis  quota= 0  requested= 0
+06/12/13 10:54:55 group quotas: fairshare (2): group= group_atlas_analysis  quota= 0  allocated= 0  requested= 0
+06/12/13 10:54:55 group quotas: fairshare (1): group= group_atlas_analysis.long  quota= 40  requested= 180
+06/12/13 10:54:55 group quotas: fairshare (2): group= group_atlas_analysis.long  quota= 40  allocated= 40  requested= 140
+06/12/13 10:54:55 group quotas: fairshare (1): group= group_atlas_analysis.short  quota= 40  requested= 20
+06/12/13 10:54:55 group quotas: fairshare (2): group= group_atlas_analysis.short  quota= 40  allocated= 20  requested= 0
+06/12/13 10:54:55 group quotas: allocate-surplus (1): group= group_atlas_analysis  surplus= 20  subtree-requested= 140
+06/12/13 10:54:55 group quotas: allocate-surplus (2b): quota-based allocation, group= group_atlas_analysis  requested= 140  surplus= 20
+06/12/13 10:54:55 group quotas: allocate-surplus-loop: by_quota= 1  iteration= 1  requested= 140  surplus= 20
+06/12/13 10:54:55 group quotas: allocate-surplus (1): group= group_atlas_analysis.long  surplus= 20  subtree-requested= 140
+06/12/13 10:54:55 group quotas: allocate-surplus (2b): quota-based allocation, group= group_atlas_analysis.long  requested= 140  surplus= 20
+06/12/13 10:54:55 group quotas: allocate-surplus-loop: by_quota= 1  iteration= 1  requested= 140  surplus= 20
+06/12/13 10:54:55 group quotas: allocate-surplus (4): group group_atlas_analysis.long allocated surplus= 20  allocated= 60  requested= 120
+06/12/13 10:54:55 group quotas: allocate-surplus (4): group group_atlas_analysis allocated surplus= 0  allocated= 0  requested= 0
+06/12/13 10:54:55 group quotas: fairshare (3): group= group_atlas_analysis  surplus= 0  subtree_requested= 120
+06/12/13 10:54:55 group quotas: allocate-surplus (1): group= <none>  surplus= 20  subtree-requested= 0
+06/12/13 10:54:55 group quotas: fairshare (3): group= <none>  surplus= 20  subtree_requested= 0
+06/12/13 10:54:55 group quotas: group= <none>  quota= 20  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:55 group quotas: group= group_atlas_analysis  quota= 0  requested= 0  allocated= 0  unallocated= 0
+06/12/13 10:54:55 group quotas: group= group_atlas_analysis.long  quota= 40  requested= 180  allocated= 60  unallocated= 120
+06/12/13 10:54:55 group quotas: group= group_atlas_analysis.short  quota= 40  requested= 20  allocated= 20  unallocated= 0
+06/12/13 10:54:55 group quotas: groups= 4  requesting= 2  served= 2  unserved= 0  slots= 100  requested= 200  allocated= 80  surplus= 20
+06/12/13 10:54:55 group quotas: entering RR iteration n= 0
+06/12/13 10:54:55 Group group_atlas_analysis.short - sortkey= 0.5
+06/12/13 10:54:55 Group group_atlas_analysis.short - skipping, at or over quota (usage=20)
+06/12/13 10:54:55 Group group_atlas_analysis.long - sortkey= 2
+06/12/13 10:54:55 Group group_atlas_analysis.long - skipping, at or over quota (usage=80)
+06/12/13 10:54:55 Group group_atlas_analysis - sortkey= 3.3e+38
+06/12/13 10:54:55 Group group_atlas_analysis - skipping, zero slots allocated
+06/12/13 10:54:55 Group <none> - sortkey= 3.4e+38
+06/12/13 10:54:55 Group <none> - skipping, zero slots allocated
+06/12/13 10:54:55 group quotas: Group <none>  allocated= 0  usage= 0
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis  allocated= 0  usage= 0
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis.long  allocated= 60  usage= 80
+06/12/13 10:54:55 group quotas: Group group_atlas_analysis.short  allocated= 20  usage= 20
+06/12/13 10:54:55 Round 2 totals: allocated= 80  usage= 80
+06/12/13 10:54:55 ---------- Finished Negotiation Cycle ----------
+06/12/13 10:54:55 Return from Timer handler 8 (Time to negotiate)
+06/12/13 10:55:07 Calling Timer handler 10 (dc_touch_log_file)
+06/12/13 10:55:07 Return from Timer handler 10 (dc_touch_log_file)
+06/12/13 10:55:19 Got SIGTERM. Performing graceful shutdown.
+06/12/13 10:55:19 Started timer to call main_shutdown_fast in 1800 seconds
+06/12/13 10:55:19 Trying to update collector <128.105.14.141:4210>
+06/12/13 10:55:19 Attempting to send update via UDP to collector chevre.cs.wisc.edu <128.105.14.141:4210>
+06/12/13 10:55:19 **** condor_negotiator (condor_NEGOTIATOR) pid 9473 EXITING WITH STATUS 0

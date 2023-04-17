@@ -1,0 +1,47 @@
+diff --git a/src/condor_starter.V6.1/vanilla_proc.cpp b/src/condor_starter.V6.1/vanilla_proc.cpp
+index 4970d25..2e5538f 100644
+--- a/src/condor_starter.V6.1/vanilla_proc.cpp
++++ b/src/condor_starter.V6.1/vanilla_proc.cpp
+@@ -287,7 +287,9 @@ VanillaProc::StartJob()
+                std::string execute_dir = ss2.str();
+                ss << requested_chroot << DIR_DELIM_CHAR << ss2.str();
+                std::string full_dir_str = ss.str();
+-               if (IsDirectory(execute_dir.c_str())) {
++               if (is_trivial_rootdir(requested_chroot)) {
++                   dprintf(D_FULLDEBUG, "Requested a trivial chroot %s; this is a no-op.\n", requested_chroot.c_str());
++               } else if (IsDirectory(execute_dir.c_str())) {
+                        {
+                            TemporaryPrivSentry sentry(PRIV_ROOT);
+                            if( mkdir(full_dir_str.c_str(), S_IRWXU) < 0 ) {
+diff --git a/src/condor_utils/filesystem_remap.cpp b/src/condor_utils/filesystem_remap.cpp
+index 422f3d2..dc60da5 100644
+--- a/src/condor_utils/filesystem_remap.cpp
++++ b/src/condor_utils/filesystem_remap.cpp
+@@ -250,3 +250,13 @@ root_dir_list()
+ 	return execute_dir_list;
+ }
+ 
++bool
++is_trivial_rootdir(std::string &root_dir)
++{
++	for (std::string::const_iterator it=root_dir.begin(); it!=root_dir.end(); it++) {
++		if (*it != '/')
++			return false;
++	}
++	return true;
++}
++
+diff --git a/src/condor_utils/filesystem_remap.h b/src/condor_utils/filesystem_remap.h
+index 0085928..63d50f9 100644
+--- a/src/condor_utils/filesystem_remap.h
++++ b/src/condor_utils/filesystem_remap.h
+@@ -101,4 +101,9 @@ private:
+  */
+ pair_strings_vector root_dir_list();
+ 
++/**
++ * Given a chroot directory, make sure it isn't equivalent to "/"
++ */
++bool is_trivial_rootdir(std::string &root_dir);
++
+ #endif
