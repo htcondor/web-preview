@@ -1,0 +1,38 @@
+From ff49748cb43a587f29aa17a3e9aabd396c70ee01 Mon Sep 17 00:00:00 2001
+From: Lukas Slebodnik <slebodnik@sors.com>
+Date: Thu, 22 Mar 2012 17:02:58 +0100
+Subject: [PATCH 2/3] User-specified attributes should not be overridden by default attributes.
+
+---
+ .../mgmt/qmf/plugins/SchedulerObject.cpp           |    8 +++++---
+ 1 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/condor_contrib/mgmt/qmf/plugins/SchedulerObject.cpp b/src/condor_contrib/mgmt/qmf/plugins/SchedulerObject.cpp
+index e0c603e..49906d6 100644
+--- a/src/condor_contrib/mgmt/qmf/plugins/SchedulerObject.cpp
++++ b/src/condor_contrib/mgmt/qmf/plugins/SchedulerObject.cpp
+@@ -168,6 +168,11 @@ SchedulerObject::Submit(Variant::Map &jobAdMap, std::string &id, std::string &te
+ 	ClassAd ad;
+ 	int universe;
+ 
++    // ShouldTransferFiles - unset by default, must be set
++    // shadow will try to setup local transfer sandbox otherwise
++    // without good priv
++    ad.Assign(ATTR_SHOULD_TRANSFER_FILES, "NO");
++
+ 	if (!PopulateAdFromVariantMap(jobAdMap, ad, text)) {
+ 		AbortTransaction();
+ 		return STATUS_USER + 3;
+@@ -180,9 +185,6 @@ SchedulerObject::Submit(Variant::Map &jobAdMap, std::string &id, std::string &te
+ 		return STATUS_USER + 4;
+ 	}
+ 
+-    // ShouldTransferFiles - unset by default, must be set
+-    ad.Assign(ATTR_SHOULD_TRANSFER_FILES, "NO");
+-
+ 		// EARLY SET: These attribute are set early so the incoming ad
+ 		// has a change to override them.
+ 	::SetAttribute(cluster, proc, ATTR_JOB_STATUS, "1"); // 1 = idle
+-- 
+1.7.4.1
+
