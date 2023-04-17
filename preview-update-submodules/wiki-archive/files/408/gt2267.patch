@@ -1,0 +1,14 @@
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index e35d064..ab76e42 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -2119,6 +2119,9 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 			slotWeightTotal,
+ 				/* result parameters: */
+ 			pieLeft);
++		
++		if ( 0 == pieleft && false == ConsiderPreemption)
++			break;
+ 
+ 		pieLeftOrig = pieLeft;
+ 		scheddAdsCountOrig = scheddAds.MyLength();
