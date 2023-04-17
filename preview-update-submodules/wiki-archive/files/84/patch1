@@ -1,0 +1,77 @@
+diff --git a/src/condor_startd.V6/Resource.cpp b/src/condor_startd.V6/Resource.cpp
+index 8628692..f8a0d9d 100644
+--- a/src/condor_startd.V6/Resource.cpp
++++ b/src/condor_startd.V6/Resource.cpp
+@@ -1274,7 +1274,7 @@ Resource::wants_suspend( void )
+ int
+ Resource::wants_pckpt( void )
+ {
+-	int want_pckpt; 
++	int want_pckpt;
+ 
+ 	if( (r_cur->universe() != CONDOR_UNIVERSE_STANDARD) &&
+ 			(r_cur->universe() != CONDOR_UNIVERSE_VM)) {
+@@ -1283,7 +1283,7 @@ Resource::wants_pckpt( void )
+ 
+ 	if( r_classad->EvalBool( "PERIODIC_CHECKPOINT",
+ 				r_cur->ad(),
+-				want_pckpt ) == 0) { 
++				want_pckpt ) == 0) {
+ 		// Default to no, if not defined.
+ 		want_pckpt = 0;
+ 	}
+@@ -1653,7 +1653,17 @@ Resource::publish( ClassAd* cap, amask_t mask )
+ 			// Include everything from STARTD_EXPRS.
+ 			// And then include everything from SLOTx_STARTD_EXPRS
+ 		daemonCore->publish(cap);
+-		config_fill_ad( cap, r_id_str );
++
++		// config_fill_ad can not take strings with "." in it's prefix
++		// e.g. slot1.1, instead needs to be slot1
++		MyString szTmp(r_id_str);
++		int iPeriodPos = szTmp.find(".");
++
++		if ( iPeriodPos >=0 ) {
++			szTmp.setChar ( iPeriodPos,  '\0' );
++		}
++		
++		config_fill_ad( cap, szTmp.Value() );
+ 
+ 			// Also, include a slot ID attribute, since it's handy for
+ 			// defining expressions, and other things.
+@@ -1670,7 +1680,7 @@ Resource::publish( ClassAd* cap, amask_t mask )
+ 			cap->AssignExpr(ATTR_SLOT_DYNAMIC, "TRUE");
+ 			break;
+ 		}
+-	}		
++	}
+ 
+ 	if( IS_PUBLIC(mask) && IS_UPDATE(mask) ) {
+ 			// If we're claimed or preempting, handle anything listed
+@@ -1727,7 +1737,7 @@ Resource::publish( ClassAd* cap, amask_t mask )
+ 
+ #if HAVE_JOB_HOOKS
+ 	if (IS_PUBLIC(mask)) {
+-		cap->Assign( ATTR_LAST_FETCH_WORK_SPAWNED, 
++		cap->Assign( ATTR_LAST_FETCH_WORK_SPAWNED,
+ 					 (int)m_last_fetch_work_spawned );
+ 		cap->Assign( ATTR_LAST_FETCH_WORK_COMPLETED,
+ 					 (int)m_last_fetch_work_completed );
+@@ -1764,7 +1774,7 @@ void
+ Resource::publish_private( ClassAd *ad )
+ {
+ 		// Needed by the collector to correctly respond to queries
+-		// for private ads.  As of 7.2.0, the 
++		// for private ads.  As of 7.2.0, the
+ 	ad->SetMyTypeName( STARTD_ADTYPE );
+ 
+ 		// For backward compatibility with pre 7.2.0 collectors, send
+@@ -1799,7 +1809,7 @@ Resource::publish_private( ClassAd *ad )
+ 		ad->Assign( ATTR_CAPABILITY, r_pre->id() );
+ 	} else if( r_cur ) {
+ 		ad->Assign( ATTR_CAPABILITY, r_cur->id() );
+-	}		
++	}
+ }
+ 
+ void
