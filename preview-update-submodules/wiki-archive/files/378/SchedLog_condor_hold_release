@@ -1,0 +1,922 @@
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.9 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 29900, 0x0x2aaaad03b914 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 29900 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.002s.
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#206#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:30862>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:30862>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#206#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.119 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.119)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30160 for job 158.52 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.52
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30160, job (158.52)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30160, 0x0x2aaaac11dbc4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.52 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30160, 0x0x2aaaac11dbc4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30160 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD001@grid0.lab.bos.redhat.com <10.16.43.33:61685>#1308231759#240#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:61685>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:61685>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD001@grid0.lab.bos.redhat.com <10.16.43.33:61685>#1308231759#240#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) DaemonCore: No more children processes to reap.
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.9 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.9)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30624 for job 158.124 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.124
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30624, job (158.124)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30624, 0x0x2aaaaca7e2b4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.124 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30624, 0x0x2aaaaca7e2b4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30624 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#258#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:22286>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:22286>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#258#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.52 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.52)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30715 for job 158.131 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.131
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30715, job (158.131)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30715, 0x0x2aaaad06f8c4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.131 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30715, 0x0x2aaaad06f8c4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30715 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#265#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:48762>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:48762>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#265#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.124 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.124)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30378 for job 158.87 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.87
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30378, job (158.87)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30378, 0x0x2aaaaca8a284, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.87 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30378, 0x0x2aaaaca8a284 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30378 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#253#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:48762>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:48762>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#253#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.131 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.131)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30623 for job 158.117 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.117
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30623, job (158.117)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30623, 0x0x2aaaac7229d4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.117 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30623, 0x0x2aaaac7229d4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30623 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#262#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:19727>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:19727>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#262#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.87 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.87)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30707 for job 158.137 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.137
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30707, job (158.137)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30707, 0x0x2aaaacae43a4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.137 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30707, 0x0x2aaaacae43a4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30707 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#243#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:30862>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:30862>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#243#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.117 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.117)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30782 for job 158.146 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.146
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30782, job (158.146)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30782, 0x0x2aaaad29ac84, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.146 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30782, 0x0x2aaaad29ac84 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30782 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#264#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:22286>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:22286>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#264#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.137 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.137)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30318 for job 158.81 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.81
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30318, job (158.81)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30318, 0x0x2aaaacb0d924, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.81 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30318, 0x0x2aaaacb0d924 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30318 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD004@grid0.lab.bos.redhat.com <10.16.43.33:63255>#1308231759#238#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:63255>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:63255>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD004@grid0.lab.bos.redhat.com <10.16.43.33:63255>#1308231759#238#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.146 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.146)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30387 for job 158.91 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.91
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30387, job (158.91)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30387, 0x0x2aaaac5f47d4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.91 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30387, 0x0x2aaaac5f47d4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30387 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#249#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:22286>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:22286>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#249#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.81 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.81)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30526 for job 158.108 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.108
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30526, job (158.108)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30526, 0x0x2aaaac15e494, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.108 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30526, 0x0x2aaaac15e494 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30526 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD005@grid0.lab.bos.redhat.com <10.16.43.33:31171>#1308231759#259#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:31171>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:31171>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD005@grid0.lab.bos.redhat.com <10.16.43.33:31171>#1308231759#259#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.91 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.91)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30710 for job 158.132 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.132
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30710, job (158.132)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30710, 0x0x2aaaad06e7b4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.132 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30710, 0x0x2aaaad06e7b4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30710 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Checking consistency running and runnable jobs
+06/16/11 16:07:05 (pid:4902) Tables are consistent
+06/16/11 16:07:05 (pid:4902) Rebuilt prioritized runnable job list in 0.001s.  (Expedited rebuild because no match was found)
+06/16/11 16:07:05 (pid:4902) Job 158.161: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.162: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.163: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.164: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.165: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.166: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.167: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.168: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.169: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.170: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) Job 158.171: is runnable
+06/16/11 16:07:05 (pid:4902) record for job 158.-1 skipped until PrioRec rebuild
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD001@grid0.lab.bos.redhat.com <10.16.43.33:61685>#1308231759#261#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:61685>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:61685>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD001@grid0.lab.bos.redhat.com <10.16.43.33:61685>#1308231759#261#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.108 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.108)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Received TCP command 1112 (QMGMT_WRITE_CMD) from condor@grid0.lab.bos.redhat.com <10.16.43.33:44159>, access level WRITE
+06/16/11 16:07:05 (pid:4902) QMGR Connection closed
+06/16/11 16:07:05 (pid:4902) Shadow pid 29944 for job 158.16 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.16
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 29944, job (158.16)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 29944, 0x0x2aaaad14d1b4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.16 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 29944, 0x0x2aaaad14d1b4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 29944 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#235#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:48762>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:48762>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#235#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.132 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.132)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30012 for job 158.31 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.31
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30012, job (158.31)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30012, 0x0x2aaaaf4c5634, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.31 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30012, 0x0x2aaaaf4c5634 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30012 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD007@grid0.lab.bos.redhat.com <10.16.43.33:24281>#1308231759#234#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:24281>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:24281>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD007@grid0.lab.bos.redhat.com <10.16.43.33:24281>#1308231759#234#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) DaemonCore: No more children processes to reap.
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.16 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.16)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30468 for job 158.102 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.102
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30468, job (158.102)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30468, 0x0x2aaaad0bd3e4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.102 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30468, 0x0x2aaaad0bd3e4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30468 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#252#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:22286>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:22286>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#252#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.31 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.31)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30471 for job 158.104 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.104
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30471, job (158.104)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30471, 0x0x2aaaaf141f24, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.104 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30471, 0x0x2aaaaf141f24 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30471 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#234#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:30862>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:30862>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#234#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.102 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.102)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 29950 for job 158.23 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.23
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 29950, job (158.23)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 29950, 0x0x2aaaac1b9824, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.23 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 29950, 0x0x2aaaac1b9824 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 29950 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#213#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:30862>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:30862>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#213#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.104 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.104)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30536 for job 158.113 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.113
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30536, job (158.113)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30536, 0x0x2aaaacb931a4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.113 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30536, 0x0x2aaaacb931a4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30536 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#255#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:22286>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:22286>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD008@grid0.lab.bos.redhat.com <10.16.43.33:22286>#1308231759#255#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.23 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.23)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Received TCP command 1112 (QMGMT_WRITE_CMD) from condor@grid0.lab.bos.redhat.com <10.16.43.33:28271>, access level WRITE
+06/16/11 16:07:05 (pid:4902) QMGR Connection closed
+06/16/11 16:07:05 (pid:4902) Shadow pid 30777 for job 158.141 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.141
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30777, job (158.141)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30777, 0x0x2aaaac5fd944, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.141 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30777, 0x0x2aaaac5fd944 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30777 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD005@grid0.lab.bos.redhat.com <10.16.43.33:31171>#1308231759#268#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:31171>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:31171>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD005@grid0.lab.bos.redhat.com <10.16.43.33:31171>#1308231759#268#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.113 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.113)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Received TCP command 1112 (QMGMT_WRITE_CMD) from condor@grid0.lab.bos.redhat.com <10.16.43.33:60763>, access level WRITE
+06/16/11 16:07:05 (pid:4902) QMGR Connection closed
+06/16/11 16:07:05 (pid:4902) Received TCP command 1112 (QMGMT_WRITE_CMD) from condor@grid0.lab.bos.redhat.com <10.16.43.33:23396>, access level WRITE
+06/16/11 16:07:05 (pid:4902) QMGR Connection closed
+06/16/11 16:07:05 (pid:4902) Shadow pid 30868 for job 158.154 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.154
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30868, job (158.154)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30868, 0x0x2aaaac1cae54, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.154 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30868, 0x0x2aaaac1cae54 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30868 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD001@grid0.lab.bos.redhat.com <10.16.43.33:61685>#1308231759#267#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:61685>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:61685>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD001@grid0.lab.bos.redhat.com <10.16.43.33:61685>#1308231759#267#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) DaemonCore: No more children processes to reap.
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.141 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.141)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 29942 for job 158.13 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.13
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 29942, job (158.13)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 29942, 0x0x2aaaacb35cb4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.13 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 29942, 0x0x2aaaacb35cb4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 29942 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD003@grid0.lab.bos.redhat.com <10.16.43.33:17744>#1308231759#235#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:17744>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:17744>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD003@grid0.lab.bos.redhat.com <10.16.43.33:17744>#1308231759#235#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) DaemonCore: No more children processes to reap.
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.154 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.154)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30315 for job 158.74 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.74
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30315, job (158.74)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30315, 0x0x2aaaac6a6934, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.74 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30315, 0x0x2aaaac6a6934 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30315 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#250#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:48762>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:48762>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#250#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.13 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.13)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30532 for job 158.109 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.109
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30532, job (158.109)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30532, 0x0x2aaaad076224, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.109 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30532, 0x0x2aaaad076224 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30532 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#259#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:48762>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:48762>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#259#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.74 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.74)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30792 for job 158.139 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.139
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30792, job (158.139)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30792, 0x0x2aaaad2ac654, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.139 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30792, 0x0x2aaaad2ac654 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30792 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#268#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:19727>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:19727>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#268#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.109 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.109)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Received TCP command 1112 (QMGMT_WRITE_CMD) from condor@grid0.lab.bos.redhat.com <10.16.43.33:30872>, access level WRITE
+06/16/11 16:07:05 (pid:4902) QMGR Connection closed
+06/16/11 16:07:05 (pid:4902) Shadow pid 30158 for job 158.48 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.48
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30158, job (158.48)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30158, 0x0x2aaaad138a14, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.48 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30158, 0x0x2aaaad138a14 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30158 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#244#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:19727>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:19727>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#244#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.139 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.139)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30237 for job 158.63 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.63
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30237, job (158.63)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30237, 0x0x2aaaac22c1b4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.63 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30237, 0x0x2aaaac22c1b4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30237 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#247#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:48762>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:48762>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@grid0.lab.bos.redhat.com <10.16.43.33:48762>#1308231759#247#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) DaemonCore: No more children processes to reap.
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.48 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.48)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30312 for job 158.71 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.71
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30312, job (158.71)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30312, 0x0x2aaaad15c424, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.71 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30312, 0x0x2aaaad15c424 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30312 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#250#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:19727>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:19727>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD002@grid0.lab.bos.redhat.com <10.16.43.33:19727>#1308231759#250#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.63 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.63)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 30616 for job 158.126 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.126
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 30616, job (158.126)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 30616, 0x0x2aaaac32dbf4, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.126 is finished
+06/16/11 16:07:05 (pid:4902) Exited check_zombie( 30616, 0x0x2aaaac32dbf4 )
+06/16/11 16:07:05 (pid:4902) Exited delete_shadow_rec( 30616 )
+06/16/11 16:07:05 (pid:4902) Job 158.-1: not runnable
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) Reusing prioritized runnable job list to save time.
+06/16/11 16:07:05 (pid:4902) match (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#240#... for tstclair) out of jobs; relinquishing
+06/16/11 16:07:05 (pid:4902) Called send_vacate( <10.16.43.33:30862>, 443 ) via UDP
+06/16/11 16:07:05 (pid:4902) Completed RELEASE_CLAIM to startd at <10.16.43.33:30862>
+06/16/11 16:07:05 (pid:4902) Match record (slot1@STARTD009@grid0.lab.bos.redhat.com <10.16.43.33:30862>#1308231759#240#... for tstclair, 158.-1) deleted
+06/16/11 16:07:05 (pid:4902) Inside SelfDrainingQueue::timerHandler() for job_is_finished_queue
+06/16/11 16:07:05 (pid:4902) Job cleanup for 158.71 will not block, calling jobIsFinished() directly
+06/16/11 16:07:05 (pid:4902) jobIsFinished() completed, calling DestroyProc(158.71)
+06/16/11 16:07:05 (pid:4902) Saving classad to history file
+06/16/11 16:07:05 (pid:4902) SelfDrainingQueue job_is_finished_queue still has 1 element(s), resetting timer
+06/16/11 16:07:05 (pid:4902) Reset timer for SelfDrainingQueue job_is_finished_queue, period: 0 (id: 27166)
+06/16/11 16:07:05 (pid:4902) Shadow pid 29874 for job 158.0 exited with status 102
+06/16/11 16:07:05 (pid:4902) Cleared dirty attributes for job 158.0
+06/16/11 16:07:05 (pid:4902) Deleting shadow rec for PID 29874, job (158.0)
+06/16/11 16:07:05 (pid:4902) Entered check_zombie( 29874, 0x0x2aaaad259f74, st=3 )
+06/16/11 16:07:05 (pid:4902) Added data to SelfDrainingQueue job_is_finished_queue, now has 2 element(s)
+06/16/11 16:07:05 (pid:4902) Timer for SelfDrainingQueue job_is_finished_queue is already registered (id: 27166)
+06/16/11 16:07:05 (pid:4902) Job 158.0 is finished
+06/16/11 16:07:05 (pid:4902) MaxLog = 1000000, length = 1000016
+06/16/11 16:07:05 (pid:4902) Saving log file to "/var/log/condor/SchedLog.old"
