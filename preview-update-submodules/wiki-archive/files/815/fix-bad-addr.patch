@@ -1,0 +1,12 @@
+diff --git a/src/condor_tools/config_val.cpp b/src/condor_tools/config_val.cpp
+index 6420285..fd55102 100644
+--- a/src/condor_tools/config_val.cpp
++++ b/src/condor_tools/config_val.cpp
+@@ -500,6 +500,7 @@ main( int argc, const char* argv[] )
+ 						"   where 111.222.333.444 is the ip address and 555 is the port\n"
+ 						"   you wish to connect to (the punctuation is important).\n", 
+ 						MyName, addr);
++				my_exit( 1 );
+ 			}
+ 		} else if (is_arg_prefix(arg, "pool", 1)) {
+ 			pool = use_next_arg("pool", argv, i);
