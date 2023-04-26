@@ -1,0 +1,52 @@
+diff --git a/src/condor_startd.V6/ResAttributes.cpp b/src/condor_startd.V6/ResAttributes.cpp
+index ed3cb48..682abd9 100644
+--- a/src/condor_startd.V6/ResAttributes.cpp
++++ b/src/condor_startd.V6/ResAttributes.cpp
+@@ -365,7 +365,12 @@ MachAttributes::compute( amask_t how_much )
+ 
+ 
+        if( IS_TIMEOUT(how_much) && IS_SHARED(how_much) ) {
++               // sysapi_load_avg returns -1 on failure.
++               // We willignore this and reset it to 0.
+                m_load = sysapi_load_avg();
++               if (m_load < 0) {
++                       m_load = 0;
++               }
+ 
+                sysapi_idle_time( &m_idle, &m_console_idle );
+ 
+diff --git a/src/condor_sysapi/load_avg.cpp b/src/condor_sysapi/load_avg.cpp
+index 5d3762d..e944cd9 100644
+--- a/src/condor_sysapi/load_avg.cpp
++++ b/src/condor_sysapi/load_avg.cpp
+@@ -115,25 +115,13 @@ sysapi_load_avg_raw(void)
+        // Kernel Version 2.0.0:
+        // 0.03 0.03 0.09 2/42 15582
+ 
+-    proc=safe_fopen_wrapper_follow("/proc/loadavg","r",0644);
+-    if(!proc)
+-       return -1;
+-
+-       switch(major) {
+-               case 1:
+-               case 2:
+-               fscanf(proc, "%f %f %f", &short_avg, &medium_avg, &long_avg);
+-                       break;
+-
+-               default:
+-                       dprintf(D_ALWAYS, "/proc format unknown for kernel version %d.%d.%d",
+-                               major, minor, patch);
+-               fclose(proc);
+-                       return -1;
+-                       break;
++       proc=safe_fopen_wrapper_follow("/proc/loadavg","r",0644);
++       if(!proc) {
++               return -1;
+        }
+ 
+-    fclose(proc);
++       fscanf(proc, "%f %f %f", &short_avg, &medium_avg, &long_avg);
++       fclose(proc);
+ 
+        if( (DebugFlags & D_LOAD) && (DebugFlags & D_FULLDEBUG) ) {
+                dprintf( D_LOAD, "Load avg: %.2f %.2f %.2f\n", short_avg, 
