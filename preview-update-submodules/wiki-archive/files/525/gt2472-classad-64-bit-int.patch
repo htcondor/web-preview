@@ -1,0 +1,3135 @@
+diff --git a/src/classad/CMakeLists.txt b/src/classad/CMakeLists.txt
+index 95096ff..d37273b 100644
+--- a/src/classad/CMakeLists.txt
++++ b/src/classad/CMakeLists.txt
+@@ -65,7 +65,7 @@ if (NOT WINDOWS)
+ 
+   if (LINUX OR DARWIN)  
+   	add_library( classad SHARED ${ClassadSrcs} )   # for distribution at this point may swap to depend at a future date.
+-	set_target_properties( classad PROPERTIES VERSION ${PACKAGE_VERSION} SOVERSION 2 )
++	set_target_properties( classad PROPERTIES VERSION ${PACKAGE_VERSION} SOVERSION 3 )
+ 	condor_set_link_libs( classad "${PCRE_FOUND};${DL_FOUND}" )
+ 	install( TARGETS classad DESTINATION ${C_LIB_PUBLIC} )
+   endif()
+diff --git a/src/classad/cclassad.cpp b/src/classad/cclassad.cpp
+index 78503a0..a727f20 100644
+--- a/src/classad/cclassad.cpp
++++ b/src/classad/cclassad.cpp
+@@ -17,6 +17,7 @@
+  *
+  ***************************************************************/
+ 
++#include <limits>
+ 
+ #include "classad/common.h"
+ #include "classad/cclassad.h"
+@@ -143,7 +144,13 @@ int cclassad_insert_string( struct cclassad *c, const char *attr, const char *va
+ int cclassad_insert_int( struct cclassad *c, const char *attr, int value )
+ {
+ 	string strattr(attr);
+-	return c->ad->InsertAttr(strattr,value);
++	return c->ad->InsertAttr(strattr,(IntType)value);
++}
++
++int cclassad_insert_long_long( struct cclassad *c, const char *attr, long long value )
++{
++	string strattr(attr);
++	return c->ad->InsertAttr(strattr,(IntType)value);
+ }
+ 
+ int cclassad_insert_double( struct cclassad *c, const char *attr, double value )
+@@ -155,7 +162,7 @@ int cclassad_insert_double( struct cclassad *c, const char *attr, double value )
+ int cclassad_insert_bool( struct cclassad *c, const char *attr, int value )
+ {
+ 	string strattr(attr);
+-	return c->ad->InsertAttr(strattr,value);
++	return c->ad->InsertAttr(strattr,(IntType)value);
+ }
+ 
+ 
+@@ -198,15 +205,30 @@ int cclassad_evaluate_to_string( struct cclassad *c, const char *expr, char **re
+ 
+ int cclassad_evaluate_to_int( struct cclassad *c, const char *expr, int *result )
+ {
++    typedef int target_t;
+ 	string exprstring(expr);
+ 	Value value;
++    IntType vi;
+ 
+-	if(c->ad->EvaluateExpr(exprstring,value)) {
+-		if(value.IsIntegerValue(*result)) {
+-			return 1;
+-		}
+-	}
+-	return 0;
++    if (!(c->ad->EvaluateExpr(exprstring,value) && value.IsIntegerValue(vi))) return 0;
++    if (vi < std::numeric_limits<target_t>::min()) return 0;
++    if (vi > std::numeric_limits<target_t>::max()) return 0;
++    *result = target_t(vi);
++	return 1;
++}
++
++int cclassad_evaluate_to_long_long( struct cclassad *c, const char *expr, long long* result )
++{
++    typedef long long target_t;
++	string exprstring(expr);
++	Value value;
++    IntType vi;
++
++    if (!(c->ad->EvaluateExpr(exprstring,value) && value.IsIntegerValue(vi))) return 0;
++    if (vi < std::numeric_limits<target_t>::min()) return 0;
++    if (vi > std::numeric_limits<target_t>::max()) return 0;
++    *result = target_t(vi);
++	return 1;
+ }
+ 
+ int cclassad_evaluate_to_double( struct cclassad *c, const char *expr, double *result )
+diff --git a/src/classad/classad.cpp b/src/classad/classad.cpp
+index 8dc983a..aae1acf 100644
+--- a/src/classad/classad.cpp
++++ b/src/classad/classad.cpp
+@@ -17,6 +17,8 @@
+  *
+  ***************************************************************/
+ 
++#include <limits>
++
+ #include "classad/common.h"
+ #include "classad/classad.h"
+ #include "classad/classadItor.h"
+@@ -238,7 +240,7 @@ GetComponents( vector< pair< string, ExprTree* > > &attrs ) const
+ 
+ // --- begin integer attribute insertion ----
+ bool ClassAd::
+-InsertAttr( const string &name, int value, Value::NumberFactor f )
++InsertAttr( const string &name, IntType value, Value::NumberFactor f )
+ {
+ 	Value val;
+ 	val.SetIntegerValue( value );
+@@ -247,7 +249,7 @@ InsertAttr( const string &name, int value, Value::NumberFactor f )
+ 
+ 
+ bool ClassAd::
+-DeepInsertAttr( ExprTree *scopeExpr, const string &name, int value, 
++DeepInsertAttr( ExprTree *scopeExpr, const string &name, IntType value, 
+ 	Value::NumberFactor f )
+ {
+ 	ClassAd *ad = _GetDeepScope( scopeExpr );
+@@ -852,10 +854,27 @@ EvaluateExpr( const ExprTree *tree , Value &val , ExprTree *&sig ) const
+ }
+ 
+ bool ClassAd::
+-EvaluateAttrInt( const string &attr, int &i )  const
+-{
+-	Value val;
+-	return( EvaluateAttr( attr, val ) && val.IsIntegerValue( i ) );
++EvaluateAttrInt(const string& attr, int& i)  const {
++    typedef int target_t;
++    Value val;
++    IntType vi=0;
++    if (!(EvaluateAttr(attr, val) && val.IsIntegerValue(vi))) return false;
++    if (vi < std::numeric_limits<target_t>::min()) return false;
++    if (vi > std::numeric_limits<target_t>::max()) return false;
++    i = target_t(vi);
++    return true;
++}
++
++bool ClassAd::
++EvaluateAttrInt(const string& attr, long long& i) const {
++    typedef long long target_t;
++    Value val;
++    IntType vi=0;
++    if (!(EvaluateAttr(attr, val) && val.IsIntegerValue(vi))) return false;
++    if (vi < std::numeric_limits<target_t>::min()) return false;
++    if (vi > std::numeric_limits<target_t>::max()) return false;
++    i = target_t(vi);
++    return true;
+ }
+ 
+ bool ClassAd::
+@@ -866,10 +885,27 @@ EvaluateAttrReal( const string &attr, double &r )  const
+ }
+ 
+ bool ClassAd::
+-EvaluateAttrNumber( const string &attr, int &i )  const
+-{
++EvaluateAttrNumber(const string &attr, int& i) const {
++    typedef int target_t;
++    Value val;
++    IntType vi=0;
++    if (!(EvaluateAttr(attr, val) && val.IsNumber(vi))) return false;
++    if (vi < std::numeric_limits<target_t>::min()) return false;
++    if (vi > std::numeric_limits<target_t>::max()) return false;
++    i = target_t(vi);
++    return true;
++}
++
++bool ClassAd::
++EvaluateAttrNumber(const string& attr, long long& i) const {
++    typedef long long target_t;
+ 	Value val;
+-	return( EvaluateAttr( attr, val ) && val.IsNumber( i ) );
++    IntType vi=0;
++    if (!(EvaluateAttr(attr, val) && val.IsNumber(vi))) return false;
++    if (vi < std::numeric_limits<target_t>::min()) return false;
++    if (vi > std::numeric_limits<target_t>::max()) return false;
++    i = target_t(vi);
++    return true;
+ }
+ 
+ bool ClassAd::
+diff --git a/src/classad/classad/cclassad.h b/src/classad/classad/cclassad.h
+index da50a35..a187bb9 100644
+--- a/src/classad/classad/cclassad.h
++++ b/src/classad/classad/cclassad.h
+@@ -76,6 +76,7 @@ int cclassad_insert_expr( struct cclassad *c, const char *attr, const char *valu
+ int cclassad_insert_string( struct cclassad *c, const char *attr, const char *value );
+ int cclassad_insert_double( struct cclassad *c, const char *attr, double value );
+ int cclassad_insert_int( struct cclassad *c, const char *attr, int value ); 
++int cclassad_insert_long_long( struct cclassad *c, const char *attr, long long value ); 
+ int cclassad_insert_bool( struct cclassad *c, const char *attr, int value );
+ 
+ /*
+@@ -98,6 +99,7 @@ int cclassad_evaluate_to_expr( struct cclassad *c, const char *expr, char **resu
+ int cclassad_evaluate_to_string( struct cclassad *c, const char *expr, char **result );
+ int cclassad_evaluate_to_double( struct cclassad *c, const char *expr, double *result );
+ int cclassad_evaluate_to_int( struct cclassad *c, const char *expr, int *result );
++int cclassad_evaluate_to_long_long( struct cclassad *c, const char *expr, long long* result );
+ int cclassad_evaluate_to_bool( struct cclassad *c, const char *expr, int *result );
+ 
+ #ifdef __cplusplus
+diff --git a/src/classad/classad/classad.h b/src/classad/classad/classad.h
+index 7734066..e5b5d02 100644
+--- a/src/classad/classad/classad.h
++++ b/src/classad/classad/classad.h
+@@ -67,6 +67,9 @@ class ClassAd : public ExprTree
+      */
+ 
+   	public:
++        // (re)defining here is useful for referencing external to the classad libs:
++        typedef ::classad::IntType IntType;
++
+ 		/**@name Constructors/Destructor */
+ 		//@{
+ 		/// Default constructor 
+@@ -113,7 +116,7 @@ class ClassAd : public ExprTree
+ 			@param f The multiplicative factor to be attached to value.
+ 			@see Value::NumberFactor
+ e		*/
+-		bool InsertAttr( const std::string &attrName,int value, 
++		bool InsertAttr( const std::string &attrName, IntType value, 
+ 				Value::NumberFactor f=Value::NO_FACTOR );
+ 
+ 		/** Inserts an attribute into a nested classad.  The scope expression 
+@@ -128,7 +131,7 @@ e		*/
+ 			@see Value::NumberFactor
+ 		*/
+ 		bool DeepInsertAttr( ExprTree *scopeExpr, const std::string &attrName,
+-				int value, Value::NumberFactor f=Value::NO_FACTOR );
++				IntType value, Value::NumberFactor f=Value::NO_FACTOR );
+ 
+ 		/** Inserts an attribute into the ClassAd.  The real value is
+ 				converted into a Literal expression, and then inserted into
+@@ -351,7 +354,8 @@ e		*/
+ 			@param intValue The value of the attribute.
+ 			@return true if attrName evaluated to an integer, false otherwise.
+ 		*/
+-		bool EvaluateAttrInt( const std::string &attr, int& intValue ) const;
++		bool EvaluateAttrInt(const std::string& attr, int& intValue) const;
++		bool EvaluateAttrInt(const std::string& attr, long long& intValue) const;
+ 
+ 		/** Evaluates an attribute to a real.
+ 			@param attr The name of the attribute.
+@@ -367,6 +371,7 @@ e		*/
+ 			@return true if attrName evaluated to an number, false otherwise.
+ 		*/
+ 		bool EvaluateAttrNumber( const std::string &attr, int& intValue ) const;
++		bool EvaluateAttrNumber( const std::string &attr, long long& intValue ) const;
+ 
+ 		/** Evaluates an attribute to a real.  If the attribute evaluated to an 
+ 				integer, it is promoted to a real.
+diff --git a/src/classad/classad/common.h b/src/classad/classad/common.h
+index b604f0a..eac992a 100644
+--- a/src/classad/classad/common.h
++++ b/src/classad/classad/common.h
+@@ -108,6 +108,14 @@
+ 
+ namespace classad {
+ 
++// Defines the type used by the classad libs internally to store/represent integers.
++// 'long long' is guaranteed by definition to have >= 64 bits, and is
++// a language-defined type as of C99:
++// to do: should we abstract the rest of the value implementation types?
++// to do: explore possible benefits of using precision-specific types, e.g. int64_t
++typedef long long IntType;
++
++
+ extern const char * const ATTR_AD;
+ extern const char * const ATTR_CONTEXT;
+ extern const char * const ATTR_DEEP_MODS;
+diff --git a/src/classad/classad/lexer.h b/src/classad/classad/lexer.h
+index 460024f..2da12da 100644
+--- a/src/classad/classad/lexer.h
++++ b/src/classad/classad/lexer.h
+@@ -105,7 +105,7 @@ class Lexer
+ 					tt = t;
+ 				}
+ 
+-				void SetIntValue( int i, Value::NumberFactor f) {
++				void SetIntValue( IntType i, Value::NumberFactor f) {
+ 					intValue = i;
+ 					factor = f;
+ 				}
+@@ -135,7 +135,7 @@ class Lexer
+ 					return tt;
+ 				}
+ 
+-				void GetIntValue( int& i, Value::NumberFactor& f) {
++				void GetIntValue( IntType& i, Value::NumberFactor& f) {
+ 					i = intValue;
+ 					f = factor;
+ 				}
+@@ -175,7 +175,7 @@ class Lexer
+ 			private:
+ 				TokenType 			tt;
+ 				Value::NumberFactor factor;
+-				int 				intValue;
++                IntType 		intValue;
+ 				double 				realValue;
+ 				bool 				boolValue;
+ 				std::string			strValue;
+diff --git a/src/classad/classad/util.h b/src/classad/classad/util.h
+index c8dc6f6..3a58950 100644
+--- a/src/classad/classad/util.h
++++ b/src/classad/classad/util.h
+@@ -21,6 +21,8 @@
+ #ifndef __CLASSAD_UTIL_H__
+ #define __CLASSAD_UTIL_H__
+ 
++#include <sstream>
++
+ #include "classad/common.h"
+ 
+ namespace classad {
+@@ -66,6 +68,32 @@ bool is_leap_year(int year);
+ int classad_isinf(double x);
+ int classad_isnan(double x);
+ 
++template <typename T>
++bool classad_lexcast(const std::string& s, T& v, bool detect_integer_base=false) {
++    std::stringstream ss(s);
++
++    if (detect_integer_base) {
++        // Don't enable this with non-integer types for param 'v'
++        // I cannot believe I have to do this
++        std::string::const_iterator j = s.begin();
++        if ((j != s.end()) && ((*j=='+') || (*j=='-'))) ++j;
++        if ((j != s.end()) && (*j=='0')) {
++            ++j;
++            if (j != s.end()) {
++                if ((*j=='x') || (*j=='X')) {
++                    ss >> std::hex;
++                } else {
++                    ss >> std::oct;
++                }
++            }
++        }
++    }
++
++    ss >> v;
++
++    return ss.eof() && !ss.fail();
++}
++
+ } // classad
+ 
+ #endif//__CLASSAD_UTIL_H__
+diff --git a/src/classad/classad/value.h b/src/classad/classad/value.h
+index f0ff0bd..314df5a 100644
+--- a/src/classad/classad/value.h
++++ b/src/classad/classad/value.h
+@@ -96,7 +96,7 @@ class Value
+ 		/** Sets an integer value; previous value discarded.
+ 			@param i The integer value.
+ 		*/
+-		void SetIntegerValue(int i);
++		void SetIntegerValue(IntType i);
+ 
+ 		/** Sets the undefined value; previous value discarded.
+ 		*/
+@@ -170,7 +170,7 @@ class Value
+ 			@param i The integer value if the value is integer.
+ 			@return true iff the value is an integer.
+ 		*/
+-		inline bool IsIntegerValue(int &i) const; 	
++		inline bool IsIntegerValue(IntType &i) const;
+ 		/** Checks if the value is integral.
+ 			@return true iff the value is an integer.
+ 		*/
+@@ -207,7 +207,7 @@ class Value
+             @param size This is filled in with the size of the string
+ 			@return true iff the value is string.
+ 		*/
+-        inline bool IsStringValue( int &size ) const;
++        inline bool IsStringValue( IntType &size ) const;
+ 		/** Checks if the value is a string.
+ 			@return true iff the value is string.
+ 		*/
+@@ -267,7 +267,7 @@ class Value
+ 			@param i The integer value of the value if the value is a number.
+ 			@return true iff the value is a number
+ 		*/
+-		bool IsNumber (int &i) const;
++		bool IsNumber (IntType &i) const;
+ 		/** Checks if the value is numerical. If the value is an integer, it 
+ 				is promoted to a real.
+ 			@param r The real value of the value if the value is a number.
+@@ -310,7 +310,7 @@ class Value
+ 
+ 		union {
+ 			bool			booleanValue;
+-			int				integerValue;
++			IntType			integerValue;
+ 			double 			realValue;
+ 			ExprList        *listValue;
+ 			ClassAd			*classadValue;
+@@ -340,7 +340,7 @@ IsBooleanValue() const
+ }
+ 
+ inline bool Value::
+-IsIntegerValue (int &i) const
++IsIntegerValue (IntType &i) const
+ {
+     i = integerValue;
+     return (valueType == INTEGER_VALUE);
+@@ -438,7 +438,7 @@ IsStringValue( std::string &s ) const
+ }
+ 
+ inline bool Value::
+-IsStringValue( int &size ) const
++IsStringValue( IntType &size ) const
+ {
+     if (valueType == STRING_VALUE) {
+         size = strValue.size();
+diff --git a/src/classad/classad_unit_tester.cpp b/src/classad/classad_unit_tester.cpp
+index 4577062..35b57e8 100644
+--- a/src/classad/classad_unit_tester.cpp
++++ b/src/classad/classad_unit_tester.cpp
+@@ -412,7 +412,7 @@ static void test_classad(const Parameters &, Results &results)
+     TEST("F looks correct", (i == 3));
+ 
+     /* ----- Test basic insert and delete ----- */
+-    success = basic->InsertAttr("new", 4);
++    success = basic->InsertAttr("new", (ClassAd::IntType)4);
+     TEST("InsertAttr claims to have worked", (success == true));
+     have_attribute = basic->EvaluateAttrInt("new", i);
+     TEST("Have new attribute", (have_attribute == true));
+@@ -514,7 +514,7 @@ static void test_classad(const Parameters &, Results &results)
+     TEST("chain attribute a is 3", (i == 3));
+ 
+     // Now we modify classad2 (parent) to contain "a".
+-    success = classad2.InsertAttr("a",7);
++    success = classad2.InsertAttr("a",(ClassAd::IntType)7);
+     TEST("insert a into parent",(success == true));
+     have_attribute = classad1.EvaluateAttrInt("a", i);
+     TEST("chain has attribute a from self (overriding parent)", (have_attribute == true));
+@@ -529,12 +529,12 @@ static void test_classad(const Parameters &, Results &results)
+     TEST("copy of chain has attribute b",(have_attribute == true));
+     TEST("copy of chain has attribute b==4",(i==4));
+ 
+-    success = classad3.InsertAttr("c", 6);
++    success = classad3.InsertAttr("c", (ClassAd::IntType)6);
+     TEST("insert into copy of chain succeeded",(success==true));
+     classad3.CopyFromChain(classad1);
+     have_attribute = classad3.EvaluateAttrInt("c",i);
+     TEST("copy of chain is clean",(have_attribute==false));
+-    classad3.InsertAttr("c", 6);
++    classad3.InsertAttr("c", (ClassAd::IntType)6);
+     success = classad3.UpdateFromChain(classad1);
+     TEST("update from chain succeeded",(success == true));
+     have_attribute = classad3.EvaluateAttrInt("c",i);
+@@ -714,7 +714,7 @@ static void test_value(const Parameters &, Results &results)
+     TEST("GetType gives REAL_VALUE", (v.GetType() == Value::REAL_VALUE));
+     TEST("Real is a number", v.IsNumber());
+ 
+-    int i = 0;
++    ClassAd::IntType i = 0;
+     v.SetIntegerValue(1);
+     is_expected_type = v.IsIntegerValue(i);
+     TEST("Value is integer", is_expected_type);
+diff --git a/src/classad/collection.cpp b/src/classad/collection.cpp
+index de3b36e..70f8d66 100644
+--- a/src/classad/collection.cpp
++++ b/src/classad/collection.cpp
+@@ -114,7 +114,7 @@ _CreateSubView( const ViewName &viewName, const ViewName &parentViewName,
+ 	if( !( rec = parser.ParseClassAd( buffer ) ) ) {
+ 		return( NULL );
+ 	}
+-	rec->InsertAttr( "OpType", ClassAdCollOp_CreateSubView );
++	rec->InsertAttr( "OpType", (IntType)ClassAdCollOp_CreateSubView );
+ 	return( rec );
+ }
+ 
+@@ -150,7 +150,7 @@ _CreatePartition( const ViewName &viewName, const ViewName &parentViewName,
+ 	if( !( rec = parser.ParseClassAd( buffer ) ) ) {
+ 		return( NULL );
+ 	}
+-	rec->InsertAttr( "OpType", ClassAdCollOp_CreatePartition );
++	rec->InsertAttr( "OpType", (IntType)ClassAdCollOp_CreatePartition );
+ 	rec->InsertAttr( "Representative", rep );
+ 	return( rec );
+ }
+@@ -165,7 +165,7 @@ _DeleteView( const ViewName &viewName )
+         CondorErrMsg = "";
+         return( (ClassAd*) NULL );
+     }
+-    if( !rec->InsertAttr( "OpType", ClassAdCollOp_DeleteView )   ||
++    if( !rec->InsertAttr( "OpType", (IntType)ClassAdCollOp_DeleteView )   ||
+             !rec->InsertAttr( "ViewName", viewName ) ) {
+         CondorErrMsg += "; failed to make delete view record";
+         delete rec;
+@@ -203,7 +203,7 @@ _SetViewInfo( const ViewName &viewName, const string &constraint,
+     if( !( rec = parser.ParseClassAd( buffer ) ) ) {
+         return( (ClassAd*) NULL );
+     }
+-	rec->InsertAttr( "OpType", ClassAdCollOp_SetViewInfo );
++	rec->InsertAttr( "OpType", (IntType)ClassAdCollOp_SetViewInfo );
+ 	return( rec );
+ }
+ 
+@@ -219,7 +219,7 @@ _AddClassAd( const string &xactionName, const string &key,ClassAd *ad )
+     }
+     if( ( !xactionName.empty( ) && 
+ 				!rec->InsertAttr( ATTR_XACTION_NAME, xactionName ) )||
+-            !rec->InsertAttr( "OpType", ClassAdCollOp_AddClassAd )  ||
++            !rec->InsertAttr( "OpType", (IntType)ClassAdCollOp_AddClassAd )  ||
+             !rec->InsertAttr( "Key", key ) 							||
+             !rec->Insert( "Ad", ad ) ) {
+         CondorErrMsg += "; failed to make add classad " + key + " record";
+@@ -240,7 +240,7 @@ _UpdateClassAd( const string &xactionName, const string &key, ClassAd *ad )
+     }
+     if( ( !xactionName.empty( ) && 
+ 			!rec->InsertAttr( ATTR_XACTION_NAME, xactionName ) )	||
+-            !rec->InsertAttr( "OpType",ClassAdCollOp_UpdateClassAd )||
++            !rec->InsertAttr( "OpType",(IntType)ClassAdCollOp_UpdateClassAd )||
+             !rec->InsertAttr( "Key", key )                 			||
+             !rec->Insert( "Ad", ad ) ) {
+         CondorErrMsg += "; failed to make update classad " + key + " record";
+@@ -261,7 +261,7 @@ _ModifyClassAd( const string &xactionName, const string &key, ClassAd *ad )
+     }
+     if( ( !xactionName.empty( ) && 
+ 			!rec->InsertAttr( ATTR_XACTION_NAME, xactionName ) )	||
+-            !rec->InsertAttr( "OpType",ClassAdCollOp_ModifyClassAd )||
++            !rec->InsertAttr( "OpType",(IntType)ClassAdCollOp_ModifyClassAd )||
+             !rec->InsertAttr( "Key", key )                 			||
+             !rec->Insert( "Ad", ad ) ) {
+         CondorErrMsg += "; failed to make modify classad " + key + " record";
+@@ -283,7 +283,7 @@ _RemoveClassAd( const string &xactionName, const string &key )
+     }
+     if( ( !xactionName.empty( ) && 
+ 			!rec->InsertAttr( ATTR_XACTION_NAME, xactionName ) ) 	||
+-            !rec->InsertAttr( "OpType",ClassAdCollOp_RemoveClassAd )||
++            !rec->InsertAttr( "OpType",(IntType)ClassAdCollOp_RemoveClassAd )||
+             !rec->InsertAttr( "Key", key ) ) {
+         CondorErrMsg += "; failed to make delete classad " + key + " record";
+         delete rec;
+diff --git a/src/classad/collectionBase.cpp b/src/classad/collectionBase.cpp
+index 49fe4eb..cf51e54 100644
+--- a/src/classad/collectionBase.cpp
++++ b/src/classad/collectionBase.cpp
+@@ -1586,7 +1586,7 @@ LogState( FILE *fp )
+ 			}
+ 			ClassAdParser local_parser;
+ 			ClassAd *cla=local_parser.ParseClassAd(cla_s,true);
+-			if (!cla->InsertAttr("OpType", ClassAdCollOp_AddClassAd )) {
++			if (!cla->InsertAttr("OpType", (IntType)ClassAdCollOp_AddClassAd )) {
+ 				CondorErrMsg += "; failed to log state";
+ 				return( false );
+ 			}
+@@ -1602,7 +1602,7 @@ LogState( FILE *fp )
+ 		ClassAd	                logRec;
+ 		ClassAd                 *ad;
+ 		
+-		if ( !logRec.InsertAttr( "OpType", ClassAdCollOp_AddClassAd ) ) {
++		if ( !logRec.InsertAttr( "OpType", (IntType)ClassAdCollOp_AddClassAd ) ) {
+ 			CondorErrMsg += "; failed to log state";
+ 			return( false );
+ 		}
+@@ -1653,8 +1653,7 @@ LogViews( FILE *fp, View *view, bool subView )
+ 		ClassAd	*ad = view->GetViewInfo( );
+ 
+ 		// insert operation type and view info
+-		if (!ad || !ad->InsertAttr( "OpType", subView ?
+-				ClassAdCollOp_CreateSubView:ClassAdCollOp_CreatePartition)) {
++		if (!ad || !ad->InsertAttr( "OpType", (IntType)(subView ? ClassAdCollOp_CreateSubView:ClassAdCollOp_CreatePartition))) {
+ 			if (ad) delete ad;
+ 			CondorErrMsg += "; failed to log views";
+ 			return( false );
+@@ -1793,7 +1792,7 @@ WriteCheckPoint(){
+ 		   itr++; 
+ 	  };
+ 	  
+-	  cla.InsertAttr( ATTR_OP_TYPE, ClassAdCollOp_CheckPoint );
++	  cla.InsertAttr( ATTR_OP_TYPE, (IntType)ClassAdCollOp_CheckPoint );
+ 	  cla.InsertAttr( "Time",arr_s);   
+ 	  
+ 	  if (!WriteLogEntry(log_fp,&cla,true)){
+diff --git a/src/classad/exprTree.cpp b/src/classad/exprTree.cpp
+index 40079cf..cbe43ce 100644
+--- a/src/classad/exprTree.cpp
++++ b/src/classad/exprTree.cpp
+@@ -45,7 +45,7 @@ void ExprTree::debug_print(const char *message) const {
+ 
+ void ExprTree::debug_format_value(Value &value) const {
+ 		bool boolValue = false;
+-		int intValue = 0;
++        IntType intValue = 0;
+ 		double doubleValue = 0;
+ 		string stringValue = "";
+ 
+@@ -73,8 +73,8 @@ void ExprTree::debug_format_value(Value &value) const {
+ 				break;
+ 			case Value::INTEGER_VALUE:
+ 				if(value.IsIntegerValue(intValue)) {
+-					char buf[12];
+-					sprintf(buf, "%d", intValue);
++					char buf[50];
++					sprintf(buf, "%lld", intValue);
+ 					result += buf;
+ 					result += "\n";
+ 				}
+diff --git a/src/classad/fnCall.cpp b/src/classad/fnCall.cpp
+index 3593321..943bbfd 100644
+--- a/src/classad/fnCall.cpp
++++ b/src/classad/fnCall.cpp
+@@ -17,6 +17,7 @@
+  *
+  ***************************************************************/
+ 
++#include <limits>
+ 
+ #ifdef HAVE_CONFIG_H
+ #include "config.h"
+@@ -800,7 +801,7 @@ size(const char *, const ArgumentList &argList,
+ 	Value             arg;
+ 	const ExprList    *listToSize;
+     ClassAd           *classadToSize;
+-	int			      length;
++	IntType           length;
+ 
+ 	// we accept only one argument
+ 	if (argList.size() != 1) {
+@@ -893,6 +894,8 @@ sumAvg(const char *name, const ArgumentList &argList,
+ 				Operation::Operate(Operation::ADDITION_OP, result, 
+ 								   listElementValue, result);
+ 			}
++            IntType t=0;
++            result.IsIntegerValue(t);
+ 		}
+ 	}
+ 
+@@ -1664,8 +1667,6 @@ subString( const char*, const ArgumentList &argList, EvalState &state,
+ 	Value &result )
+ {
+ 	Value 	arg0, arg1, arg2;
+-	string	buf;
+-	int		offset, len=0, alen;
+ 
+ 		// two or three arguments
+ 	if( argList.size() < 2 || argList.size() > 3 ) {
+@@ -1688,7 +1689,10 @@ subString( const char*, const ArgumentList &argList, EvalState &state,
+ 		return( true );
+ 	}
+ 
+-		// arg0 must be string, arg1 must be int, arg2 (if given) must be int
++	// arg0 must be string, arg1 must be int, arg2 (if given) must be int
++	string	buf;
++    IntType offset = 0;
++    IntType len = 0;
+ 	if( !arg0.IsStringValue( buf ) || !arg1.IsIntegerValue( offset )||
+ 		(argList.size( ) > 2 && !arg2.IsIntegerValue( len ) ) ) {
+ 		result.SetErrorValue( );
+@@ -1697,7 +1701,7 @@ subString( const char*, const ArgumentList &argList, EvalState &state,
+ 
+ 		// perl-like substr; negative offsets and lengths count from the end
+ 		// of the string
+-	alen = buf.size( );
++    IntType alen = buf.size( );
+ 	if( offset < 0 ) { 
+ 		offset = alen + offset; 
+ 	} else if( offset >= alen ) {
+@@ -1714,21 +1718,28 @@ subString( const char*, const ArgumentList &argList, EvalState &state,
+ 
+ 	// to make sure that if length is specified as 0 explicitly
+ 	// then, len is set to 0
+-	if(argList.size( ) == 3) {
+-	  int templen;
+-	  arg2.IsIntegerValue( templen );
+-	  if(templen == 0)
+-	    len = 0;
++	if (argList.size( ) == 3) {
++        IntType templen;
++        arg2.IsIntegerValue( templen );
++        if (templen == 0) len = 0;
+ 	}
+ 
+-		// allocate storage for the string
+-	string str;
++    // this test goes haywire (and isn't necessary) if size_type has same precision as IntType:
++    if (sizeof(std::string::size_type) < sizeof(IntType)) {
++        const IntType mx = IntType(std::numeric_limits<std::string::size_type>::max());
++        if ((offset > mx) || (len > mx)) {
++            result.SetErrorValue();
++            return false;
++        }
++    }
+ 
+-	str.assign( buf, offset, len );
+-	result.SetStringValue( str );
+-	return( true );
++    string str;
++    str.assign(buf, offset, len);
++    result.SetStringValue(str);
++    return true;
+ }
+ 
++
+ bool FunctionCall::
+ compareString( const char*name, const ArgumentList &argList, EvalState &state, 
+ 	Value &result )
+@@ -1790,7 +1801,7 @@ convInt( const char*, const ArgumentList &argList, EvalState &state,
+ 		// takes exactly one argument
+ 	if( argList.size() != 1 ) {
+ 		result.SetErrorValue( );
+-		return( true );
++		return( false );
+ 	}
+ 	if( !argList[0]->Evaluate( state, arg ) ) {
+ 		result.SetErrorValue( );
+@@ -1904,7 +1915,7 @@ convBool( const char*, const ArgumentList &argList, EvalState &state,
+ 
+ 		case Value::INTEGER_VALUE:
+ 			{
+-				int ival;
++                IntType ival;
+ 				arg.IsIntegerValue( ival );
+ 				result.SetBooleanValue( ival != 0 );
+ 				return( true );
+@@ -1974,7 +1985,7 @@ convTime(const char* name,const ArgumentList &argList,EvalState &state,
+ 			result.SetErrorValue( );
+ 			return( false );
+ 		}
+-		int ivalue2 = 0;
++        IntType ivalue2 = 0;
+ 		double rvalue2 = 0;
+ 		time_t rsecs = 0;
+ 		if(relative) {// 2nd argument is N/A for reltime
+@@ -2014,7 +2025,7 @@ convTime(const char* name,const ArgumentList &argList,EvalState &state,
+ 
+ 		case Value::INTEGER_VALUE:
+ 			{
+-				int ivalue;
++                IntType ivalue;
+ 				arg.IsIntegerValue( ivalue );
+ 				if( relative ) {
+ 					result.SetRelativeTimeValue( (time_t) ivalue );
+@@ -2134,12 +2145,12 @@ doMath( const char* name,const ArgumentList &argList,EvalState &state,
+             double rvalue;
+             realValue.IsRealValue(rvalue);
+             if (strcasecmp("floor", name) == 0) {
+-                result.SetIntegerValue((int) floor(rvalue));
++                result.SetIntegerValue((IntType) floor(rvalue));
+             } else if (   strcasecmp("ceil", name)    == 0 
+                        || strcasecmp("ceiling", name) == 0) {
+-                result.SetIntegerValue((int) ceil(rvalue));
++                result.SetIntegerValue((IntType) ceil(rvalue));
+             } else if( strcasecmp("round", name) == 0) {
+-                result.SetIntegerValue((int) rint(rvalue));
++                result.SetIntegerValue((IntType) rint(rvalue));
+             } else {
+                 result.SetErrorValue( );
+             }
+@@ -2153,9 +2164,9 @@ random( const char*,const ArgumentList &argList,EvalState &state,
+ 	Value &result )
+ {
+ 	Value	arg;
+-    int     int_max;
++    IntType     int_max;
+     double  double_max;
+-    int     random_int;
++    IntType     random_int;
+     double  random_double;
+ 
+     // takes exactly one argument
+@@ -2207,7 +2218,7 @@ ifThenElse( const char* /* name */,const ArgumentList &argList,EvalState &state,
+ 		}
+ 		break;
+ 	case Value::INTEGER_VALUE: {
+-		int intval;
++		IntType intval;
+ 		if( !arg1.IsIntegerValue(intval) ) {
+ 			result.SetErrorValue();
+ 			return( false );
+@@ -2308,7 +2319,7 @@ interval( const char* /* name */,const ArgumentList &argList,EvalState &state,
+ 	Value &result )
+ {
+ 	Value	arg,intarg;
+-	int tot_secs;
++    IntType tot_secs;
+ 
+ 		// takes exactly one argument
+ 	if( argList.size() != 1 ) {
+@@ -2816,7 +2827,7 @@ static bool
+ doSplitTime(const Value &time, ClassAd * &splitClassAd)
+ {
+     bool             did_conversion;
+-    int              integer;
++    IntType   integer;
+     double           real;
+     abstime_t        asecs;
+     double           rsecs;
+@@ -2856,14 +2867,14 @@ absTimeToClassAd(const abstime_t &asecs, ClassAd * &splitClassAd)
+     getGMTime( &clock, &tms );
+ 
+     splitClassAd->InsertAttr("Type", "AbsoluteTime");
+-    splitClassAd->InsertAttr("Year", tms.tm_year + 1900);
+-    splitClassAd->InsertAttr("Month", tms.tm_mon + 1);
+-    splitClassAd->InsertAttr("Day", tms.tm_mday);
+-    splitClassAd->InsertAttr("Hours", tms.tm_hour);
+-    splitClassAd->InsertAttr("Minutes", tms.tm_min);
+-    splitClassAd->InsertAttr("Seconds", tms.tm_sec);
++    splitClassAd->InsertAttr("Year", (IntType)tms.tm_year + 1900);
++    splitClassAd->InsertAttr("Month", (IntType)tms.tm_mon + 1);
++    splitClassAd->InsertAttr("Day", (IntType)tms.tm_mday);
++    splitClassAd->InsertAttr("Hours", (IntType)tms.tm_hour);
++    splitClassAd->InsertAttr("Minutes", (IntType)tms.tm_min);
++    splitClassAd->InsertAttr("Seconds", (IntType)tms.tm_sec);
+     // Note that we convert the timezone from seconds to minutes.
+-    splitClassAd->InsertAttr("Offset", asecs.offset);
++    splitClassAd->InsertAttr("Offset", (IntType)asecs.offset);
+     
+     return;
+ }
+@@ -2903,10 +2914,10 @@ relTimeToClassAd(double rsecs, ClassAd * &splitClassAd)
+     
+     splitClassAd = new ClassAd;
+     splitClassAd->InsertAttr("Type", "RelativeTime");
+-    splitClassAd->InsertAttr("Days", days);
+-    splitClassAd->InsertAttr("Hours", hrs);
+-    splitClassAd->InsertAttr("Minutes", mins);
+-    splitClassAd->InsertAttr("Seconds", secs);
++    splitClassAd->InsertAttr("Days", (IntType)days);
++    splitClassAd->InsertAttr("Hours", (IntType)hrs);
++    splitClassAd->InsertAttr("Minutes", (IntType)mins);
++    splitClassAd->InsertAttr("Seconds", (IntType)secs);
+     
+     return;
+ }
+diff --git a/src/classad/lexer.cpp b/src/classad/lexer.cpp
+index 9c7c6fa..6176c8a 100644
+--- a/src/classad/lexer.cpp
++++ b/src/classad/lexer.cpp
+@@ -19,6 +19,7 @@
+ 
+ 
+ // Includes 
++#include <limits>
+ #include "classad/common.h"
+ #include "classad/lexer.h"
+ #include "classad/util.h"
+@@ -121,7 +122,7 @@ mark (void)
+ void  Lexer::
+ cut (void)
+ {
+-	lexBuffer[lexBufferCount] = '\0';
++    lexBuffer[lexBufferCount] = '\0';
+ 	accumulating = false;
+ 	return;
+ }
+@@ -274,7 +275,7 @@ tokenizeNumber (void)
+ 	enum { NONE, INTEGER, REAL };
+ 	int		numberType = NONE;
+ 	Value::NumberFactor f;
+-	int		integer=0;
++	IntType	integer=0;
+ 	double	real=0;
+ 	int 	och;
+ 
+@@ -392,21 +393,19 @@ tokenizeNumber (void)
+ 	}
+ 
+ 	if( numberType == INTEGER ) {
+-		cut( );
+-		long l;
+-		if ( _useOldClassAdSemantics ) {
+-			// Old ClassAds don't support octal or hexidecimal
+-			// representations for integers.
+-			l = strtol( lexBuffer.c_str(), NULL, 10 );
+-		} else {
+-			l = strtol( lexBuffer.c_str(), NULL, 0 );
+-		}
+-		if ( l > INT_MAX ) {
+-			l = INT_MAX;
+-		} else if ( l < INT_MIN ) {
+-			l = INT_MIN;
+-		}
+-		integer = (int) l;
++        cut();
++        // lexBuffer may have char(0) in it, which causes havoc:
++        string buf(lexBuffer.c_str());
++        // Old ClassAds don't support octal or hexidecimal
++        // representations for integers.
++        if (!classad_lexcast(buf, integer, !_useOldClassAdSemantics)) {
++            // in this context, the only reason for a lexcast failure should be
++            // a value that exceeds precision of IntType.
++            // I'm assuming two additional things here: (a) any lexeme is non-empty,
++            // or it wouldn't exist, and (b) that IntType is signed, so I can correctly
++            // assess whether we had underflow or overflow
++            integer = (lexBuffer[0] == '-') ? std::numeric_limits<IntType>::min() : std::numeric_limits<IntType>::max();
++        }
+ 	} else if( numberType == REAL ) {
+ 		cut( );
+ 		real = strtod( lexBuffer.c_str(), NULL );
+diff --git a/src/classad/literals.cpp b/src/classad/literals.cpp
+index 6d16d8f..413a2f1 100644
+--- a/src/classad/literals.cpp
++++ b/src/classad/literals.cpp
+@@ -453,7 +453,7 @@ MakeLiteral( const Value& val, Value::NumberFactor f )
+ void Literal::
+ GetValue( Value &val ) const 
+ {
+-	int		i;
++    IntType i;
+ 	double	r;
+ 
+ 	val.CopyFrom( value );
+@@ -505,7 +505,7 @@ operator==(Literal &literal1, Literal &literal2)
+ bool Literal::
+ _Evaluate (EvalState &, Value &val) const
+ {
+-	int		i;
++    IntType i;
+ 	double	r;
+ 
+ 	val.CopyFrom( value );
+diff --git a/src/classad/matchClassad.cpp b/src/classad/matchClassad.cpp
+index d39e813..563c517 100644
+--- a/src/classad/matchClassad.cpp
++++ b/src/classad/matchClassad.cpp
+@@ -346,7 +346,7 @@ EvalMatchExpr(ExprTree *match_expr)
+ 		if( val.IsBooleanValue( result ) ) {
+ 			return result;
+ 		}
+-		int int_result = 0;
++        IntType int_result = 0;
+ 		if( val.IsIntegerValue( int_result ) ) {
+ 			return int_result != 0;
+ 		}
+diff --git a/src/classad/operators.cpp b/src/classad/operators.cpp
+index 78351ec..14700d7 100644
+--- a/src/classad/operators.cpp
++++ b/src/classad/operators.cpp
+@@ -17,6 +17,7 @@
+  *
+  ***************************************************************/
+ 
++#include <limits>
+ #include "classad/common.h"
+ #include "classad/operators.h"
+ #include "classad/sink.h"
+@@ -290,7 +291,7 @@ _doOperation (OpKind op, Value &val1, Value &val2, Value &val3,
+ 
+ 			return( SIG_CHLD1 | SIG_CHLD2 );
+ 		} else if (vt1 == Value::LIST_VALUE && vt2 == Value::INTEGER_VALUE) {
+-			int            index;
++            IntType index;
+ 			const ExprList *elist = NULL;
+ 
+ 			val1.IsListValue( elist );		
+@@ -877,7 +878,7 @@ doComparison (OpKind op, Value &v1, Value &v2, Value &result)
+ int Operation::
+ doArithmetic (OpKind op, Value &v1, Value &v2, Value &result)
+ {
+-	int		i1, i2;
++    IntType i1, i2;
+ 	double	t1;
+ 	double 	r1;
+     bool    b1;
+@@ -1053,8 +1054,8 @@ doLogical (OpKind op, Value &v1, Value &v2, Value &result)
+ int Operation::
+ doBitwise (OpKind op, Value &v1, Value &v2, Value &result)
+ {
+-	int	i1, i2;
+-	int signMask = ~INT_MAX;	// now at the position of the sign bit
++    IntType i1, i2;
++	int signMask = ~(std::numeric_limits<IntType>::max());	// now at the position of the sign bit
+ 	int val;
+ 
+ 	// bitwise operations are defined only on integers
+@@ -1255,7 +1256,7 @@ asecs2.secs = 0;
+ 
+ 	if( op == MULTIPLICATION_OP || op == DIVISION_OP ) {
+ 		if( vt1==Value::RELATIVE_TIME_VALUE && vt2==Value::INTEGER_VALUE ) {
+-			int     num;
++            IntType num;
+             double  msecs;
+ 			v1.IsRelativeTimeValue( rsecs1 );
+ 			v2.IsIntegerValue( num );
+@@ -1284,7 +1285,7 @@ asecs2.secs = 0;
+ 
+ 		if( vt1==Value::INTEGER_VALUE && vt2==Value::RELATIVE_TIME_VALUE && 
+ 				op==MULTIPLICATION_OP ) {
+-			int num;
++            IntType num;
+ 			v1.IsIntegerValue( num );
+ 			v2.IsRelativeTimeValue( rsecs1 );
+ 			result.SetRelativeTimeValue( num * rsecs1 );
+@@ -1444,7 +1445,7 @@ compareBools( OpKind op, Value &v1, Value &v2, Value &result )
+ void Operation::
+ compareIntegers (OpKind op, Value &v1, Value &v2, Value &result)
+ {
+-	int 	i1, i2; 
++    IntType i1, i2; 
+ 	bool	compResult;
+ 
+ 	v1.IsIntegerValue (i1); 
+@@ -1501,7 +1502,7 @@ compareReals (OpKind op, Value &v1, Value &v2, Value &result)
+ Value::ValueType Operation::
+ coerceToNumber (Value &v1, Value &v2)
+ {
+-	int	 	i;
++    IntType i;
+ 	double 	r;
+     bool    b;
+ 
+diff --git a/src/classad/sink.cpp b/src/classad/sink.cpp
+index 33e23c2..a6a6701 100644
+--- a/src/classad/sink.cpp
++++ b/src/classad/sink.cpp
+@@ -165,9 +165,9 @@ Unparse( string &buffer, const Value &val )
+ 			return;
+ 		}
+ 		case Value::INTEGER_VALUE: {
+-			int	i;
++			IntType i;
+ 			val.IsIntegerValue( i );
+-			sprintf( tempBuf, "%d", i );
++			sprintf( tempBuf, "%lld", i );
+ 			buffer += tempBuf;
+ 			return;
+ 		}
+diff --git a/src/classad/source.cpp b/src/classad/source.cpp
+index 71ccf62..6223d7c 100644
+--- a/src/classad/source.cpp
++++ b/src/classad/source.cpp
+@@ -1026,7 +1026,7 @@ parsePrimaryExpression(ExprTree *&tree)
+ 		case Lexer::LEX_INTEGER_VALUE:
+ 			{
+ 				Value 	val;
+-				int 	i;
++                IntType i;
+ 				Value::NumberFactor f;
+ 
+ 				tv.GetIntValue( i, f );
+diff --git a/src/classad/transaction.cpp b/src/classad/transaction.cpp
+index a28be4c..05b205d 100644
+--- a/src/classad/transaction.cpp
++++ b/src/classad/transaction.cpp
+@@ -185,7 +185,7 @@ Log( FILE *fp, ClassAdUnParser *unp )
+ 
+         // write out a "OpenTransaction" record
+     if(!rec.InsertAttr(ATTR_OP_TYPE,
+-			ClassAdCollectionInterface::ClassAdCollOp_OpenTransaction)||
++			(IntType)ClassAdCollectionInterface::ClassAdCollOp_OpenTransaction)||
+             !rec.InsertAttr( "XactionName", xactionName ) 				||
+ 			( local && !rec.InsertAttr( "LocalTransaction", true ) ) ) {
+ 		CondorErrMsg += "; FATAL ERROR: failed to log transaction";
+@@ -216,7 +216,7 @@ Log( FILE *fp, ClassAdUnParser *unp )
+     
+         // write out a "CommitTransaction" record and flush the sink
+     if(!rec.InsertAttr(ATTR_OP_TYPE,
+-			ClassAdCollectionInterface::ClassAdCollOp_CommitTransaction)){
++			(IntType)ClassAdCollectionInterface::ClassAdCollOp_CommitTransaction)){
+ 		CondorErrMsg += "; FATAL ERROR: failed to log transaction";
+         return( false );
+     }
+@@ -271,10 +271,10 @@ LogCommit( FILE *fp, ClassAdUnParser *unp )
+ 	string	buf;
+ 
+     if(!rec.InsertAttr(ATTR_OP_TYPE,
+-			ClassAdCollectionInterface::ClassAdCollOp_CommitTransaction)
++			(IntType)ClassAdCollectionInterface::ClassAdCollOp_CommitTransaction)
+ 			|| !rec.InsertAttr( "XactionName", xactionName ) 	
+ 			|| !rec.InsertAttr( "ServerAddr", addr )	
+-			|| !rec.InsertAttr( "ServerPort", port )	) {
++			|| !rec.InsertAttr( "ServerPort", (IntType)port )	) {
+ 		CondorErrMsg += "FATAL ERROR: failed to log transaction";
+ 		return( false );
+ 	}
+@@ -302,7 +302,7 @@ LogAckCommit( FILE *fp, ClassAdUnParser *unp )
+ 	string	buf;
+ 
+     if(!rec.InsertAttr(ATTR_OP_TYPE,
+-			ClassAdCollectionInterface::ClassAdCollOp_AckCommitTransaction )||
++			(IntType)ClassAdCollectionInterface::ClassAdCollOp_AckCommitTransaction )||
+             !rec.InsertAttr( "XactionName", xactionName) ) {
+ 		CondorErrMsg += "FATAL ERROR: failed to log transaction";
+ 		return( false );
+@@ -331,7 +331,7 @@ LogAbort( FILE *fp, ClassAdUnParser *unp )
+ 	string	buf;
+ 
+     if(!rec.InsertAttr(ATTR_OP_TYPE,
+-			ClassAdCollectionInterface::ClassAdCollOp_AbortTransaction)
++			(IntType)ClassAdCollectionInterface::ClassAdCollOp_AbortTransaction)
+ 			|| !rec.InsertAttr( "XactionName", xactionName.c_str( ) ) ) {
+ 		CondorErrMsg += "FATAL ERROR: failed to log transaction";
+ 		return( false );
+diff --git a/src/classad/value.cpp b/src/classad/value.cpp
+index f870fa2..2cafcad 100644
+--- a/src/classad/value.cpp
++++ b/src/classad/value.cpp
+@@ -102,7 +102,7 @@ Clear()
+ 
+ 
+ bool Value::
+-IsNumber (int &i) const
++IsNumber (IntType &i) const
+ {
+ 	switch (valueType) {
+ 		case INTEGER_VALUE:
+@@ -110,7 +110,7 @@ IsNumber (int &i) const
+ 			return true;
+ 
+ 		case REAL_VALUE:
+-			i = (int) realValue;	// truncation	
++			i = (IntType) realValue;	// truncation	
+ 			return true;
+ 
+ 		default:
+@@ -223,7 +223,7 @@ SetBooleanValue( bool b )
+ }
+ 
+ void Value::
+-SetIntegerValue (int i)
++SetIntegerValue (IntType i)
+ {
+     valueType=INTEGER_VALUE;
+     integerValue = i;
+@@ -389,7 +389,7 @@ bool convertValueToRealValue(const Value value, Value &realValue)
+ 	const char	        *start;
+ 	const char          *end;
+ 	char                *end_tmp;
+-	int		            ivalue;
++    IntType      ivalue;
+ 	time_t	            rtvalue;
+ 	abstime_t           atvalue;
+ 	bool	            bvalue;
+@@ -484,15 +484,14 @@ bool convertValueToRealValue(const Value value, Value &realValue)
+ 
+ bool convertValueToIntegerValue(const Value value, Value &integerValue)
+ {
+-    bool                could_convert;
++    bool                could_convert = false;
+ 	string	            buf;
+-    char                *end;
+-	int		            ivalue;
++	IntType             ivalue = 0;
++	bool	            bvalue = false;
++	double	            rvalue = 0;
+ 	time_t	            rtvalue;
+ 	abstime_t           atvalue;
+-	bool	            bvalue;
+-	double	            rvalue;
+-	Value::NumberFactor nf;
++	Value::NumberFactor nf = Value::NO_FACTOR;
+ 
+ 	switch(value.GetType()) {
+ 		case Value::UNDEFINED_VALUE:
+@@ -508,30 +507,33 @@ bool convertValueToIntegerValue(const Value value, Value &integerValue)
+             break;
+ 
+ 		case Value::STRING_VALUE:
+-			value.IsStringValue( buf );
+-			ivalue = (int) strtod( buf.c_str( ), (char**) &end);
+-			if( end == buf && ivalue == 0 ) {
+-				// strtol() returned an error
+-				integerValue.SetErrorValue( );
++                //could_convert = true;
++			value.IsStringValue(buf);
++            if (buf.empty()) {
++				integerValue.SetErrorValue();
+                 could_convert = false;
+-			} else {
+-                could_convert = true;
+-                switch( toupper( *end ) ) {
++                break;
++            }
++            nf = Value::NO_FACTOR;
++            switch (toupper(*(buf.end()-1))) {
+                 case 'B':  nf = Value::B_FACTOR; break;
+                 case 'K':  nf = Value::K_FACTOR; break;
+                 case 'M':  nf = Value::M_FACTOR; break;
+                 case 'G':  nf = Value::G_FACTOR; break;
+                 case 'T':  nf = Value::T_FACTOR; break;
+-                case '\0': nf = Value::NO_FACTOR; break;
+-                default:  
+-                    nf = Value::NO_FACTOR; // avoid uninitialized warning
+-                    integerValue.SetErrorValue( );
+-                    could_convert = false;
+-                    break;
+-                }
+-                if (could_convert) {
+-                    integerValue.SetIntegerValue((int) (ivalue*Value::ScaleFactor[nf]));
+-                }
++                default: break;
++            }
++                //if (!could_convert) break;
++            if (nf != Value::NO_FACTOR) buf.erase(buf.end()-1);
++            if (classad_lexcast(buf, ivalue)) {
++                could_convert = true;
++                integerValue.SetIntegerValue((IntType)(ivalue*Value::ScaleFactor[nf]));
++            } else if (classad_lexcast(buf, rvalue)) {
++                could_convert = true;
++                integerValue.SetIntegerValue((IntType)(rvalue*Value::ScaleFactor[nf]));
++			} else {
++				integerValue.SetErrorValue();
++                could_convert = false;
+             }
+             break;
+ 
+@@ -548,7 +550,7 @@ bool convertValueToIntegerValue(const Value value, Value &integerValue)
+ 
+ 		case Value::REAL_VALUE:
+             value.IsRealValue(rvalue);
+-            integerValue.SetIntegerValue((int) rvalue);
++            integerValue.SetIntegerValue((IntType)rvalue);
+             could_convert = true;
+             break;
+ 
+@@ -560,7 +562,7 @@ bool convertValueToIntegerValue(const Value value, Value &integerValue)
+ 
+ 		case Value::RELATIVE_TIME_VALUE:
+ 			value.IsRelativeTimeValue(rtvalue);
+-			integerValue.SetIntegerValue((int) rtvalue);
++			integerValue.SetIntegerValue((IntType)rtvalue);
+ 			could_convert = true;
+             break;
+ 
+diff --git a/src/classad/view.cpp b/src/classad/view.cpp
+index 493d3b8..a928328 100644
+--- a/src/classad/view.cpp
++++ b/src/classad/view.cpp
+@@ -269,7 +269,7 @@ GetViewInfo( )
+ 		return( NULL );
+ 	}
+ 		// insert number of members
+-	newAd->InsertAttr( "NumMembers", (int) viewMembers.size( ) );
++	newAd->InsertAttr( "NumMembers", (IntType)viewMembers.size( ) );
+ 
+ 	
+ 		// insert names of subordinate views
+@@ -756,7 +756,7 @@ DeletePartitionedView( ClassAdCollection *coll, const ViewName &vName )
+ 					return( false );
+ 				}
+ 				if( !ad->InsertAttr( ATTR_REQUIREMENTS, true )	||
+-						!ad->InsertAttr( ATTR_RANK, 0 )				||
++						!ad->InsertAttr( ATTR_RANK, (IntType)0 )				||
+ 						!ad->Insert(ATTR_PARTITION_EXPRS,
+ 							ExprList::MakeExprList( vec ) )	||
+ 						!view->SetViewInfo( coll, ad ) ) {
+diff --git a/src/classad/xmlSink.cpp b/src/classad/xmlSink.cpp
+index 5718a95..cf91095 100644
+--- a/src/classad/xmlSink.cpp
++++ b/src/classad/xmlSink.cpp
+@@ -149,9 +149,9 @@ Unparse(
+ 			break;
+ 		}
+ 		case Value::INTEGER_VALUE: {
+-			int	i;
++			IntType i;
+ 			val.IsIntegerValue(i);
+-			sprintf(tempBuf, "%d", i);
++			sprintf(tempBuf, "%lld", i);
+ 			add_tag(buffer, XMLLexer::tagID_Integer, XMLLexer::tagType_Start);
+ 			buffer += tempBuf;
+ 			add_tag(buffer, XMLLexer::tagID_Integer, XMLLexer::tagType_End);
+diff --git a/src/classad_analysis/interval.cpp b/src/classad_analysis/interval.cpp
+index fdbca50..29b1dd0 100644
+--- a/src/classad_analysis/interval.cpp
++++ b/src/classad_analysis/interval.cpp
+@@ -478,7 +478,7 @@ EqualValue( classad::Value &v1, classad::Value &v2 )
+ bool
+ IncrementValue( classad::Value &val )
+ {
+-	int i;
++    classad::IntType i;
+ 	double d, c;
+ 	time_t t;
+ 	classad::abstime_t a;
+@@ -513,7 +513,7 @@ IncrementValue( classad::Value &val )
+ bool
+ DecrementValue( classad::Value &val )
+ {
+-	int i;
++    classad::IntType i;
+ 	double d, c;
+ 	time_t t;
+ 	classad::abstime_t a;
+diff --git a/src/condor_daemon_client/dc_lease_manager.cpp b/src/condor_daemon_client/dc_lease_manager.cpp
+index 2a6a6ae..7af5a74 100644
+--- a/src/condor_daemon_client/dc_lease_manager.cpp
++++ b/src/condor_daemon_client/dc_lease_manager.cpp
+@@ -115,8 +115,8 @@ DCLeaseManager::getLeases( const char *requestor_name,
+ 
+ 	classad::ClassAd	ad;
+ 	ad.InsertAttr( "Name", requestor_name );
+-	ad.InsertAttr( "RequestCount", number_requested );
+-	ad.InsertAttr( "LeaseDuration", duration );
++	ad.InsertAttr( "RequestCount", (ClassAd::IntType)number_requested );
++	ad.InsertAttr( "LeaseDuration", (ClassAd::IntType)duration );
+ 	if ( requirements ) {
+ 		classad::ClassAdParser	parser;
+ 		classad::ExprTree	*expr = parser.ParseExpression( requirements );
+diff --git a/src/condor_daemon_client/dc_lease_manager_lease.cpp b/src/condor_daemon_client/dc_lease_manager_lease.cpp
+index e108d90..e012de8 100644
+--- a/src/condor_daemon_client/dc_lease_manager_lease.cpp
++++ b/src/condor_daemon_client/dc_lease_manager_lease.cpp
+@@ -181,7 +181,7 @@ DCLeaseManagerLease::copyUpdates( const DCLeaseManagerLease &lease )
+ 	// Otherwise, if there is an old ad, update it
+ 	else if ( this->m_lease_ad ) {
+ 		this->m_lease_ad->InsertAttr( "LeaseDuration",
+-									  this->m_lease_duration );
++									  (ClassAd::IntType)this->m_lease_duration );
+ 		this->m_lease_ad->InsertAttr( "ReleaseWhenDone",
+ 									  this->m_release_lease_when_done );
+ 	}
+diff --git a/src/condor_includes/condor_config.h b/src/condor_includes/condor_config.h
+index 80f17d0..25b167a 100644
+--- a/src/condor_includes/condor_config.h
++++ b/src/condor_includes/condor_config.h
+@@ -22,6 +22,7 @@
+ 
+ #if defined(__cplusplus)
+ 
++#include <limits>
+ #include "condor_classad.h"
+ #include "MyString.h"
+ #include "string_list.h"
+@@ -102,8 +103,20 @@ class ParamValue {
+ 	ExtArray<ParamValue>* param_all(void);
+     bool param_defined(const char* name);
+ 	char* param_or_except( const char *name );
+-    int param_integer( const char *name, int default_value = 0,
+-					   int min_value = INT_MIN, int max_value = INT_MAX, bool use_param_table = true );
++
++    int param_integer(const char *name, int default_value = 0,
++					  int min_value = std::numeric_limits<int>::min(), int max_value = std::numeric_limits<int>::max(), 
++                      bool use_param_table = true);
++    long param_long(const char* name, long default_value = 0,
++                    long min_value = std::numeric_limits<long>::min(), long max_value = std::numeric_limits<long>::max(), 
++                    bool use_param_table = true);
++    long long param_long_long(const char* name, long long default_value = 0,
++                              long long min_value = std::numeric_limits<long long>::min(), long long max_value = std::numeric_limits<long long>::max(), 
++                              bool use_param_table = true);
++    off_t param_off_t(const char *name, off_t default_value = 0,
++                      off_t min_value = std::numeric_limits<off_t>::min(), off_t max_value = std::numeric_limits<off_t>::max(), 
++                      bool use_param_table = true);
++
+ 	// Alternate param_integer():
+ 	bool param_integer( const char *name, int &value,
+ 						bool use_default, int default_value,
+diff --git a/src/condor_includes/condor_system.h b/src/condor_includes/condor_system.h
+index ba72ee9..358acf3 100644
+--- a/src/condor_includes/condor_system.h
++++ b/src/condor_includes/condor_system.h
+@@ -170,6 +170,7 @@
+ #include <math.h>
+ #include <utime.h>
+ 
++
+ /* select() on all our platforms takes an fd_set pointer, so we can
+    just define this here for everyone.  We don't really need it
+    anymore, but we might hit a platform that has a different select,
+diff --git a/src/condor_job_router/JobRouter.cpp b/src/condor_job_router/JobRouter.cpp
+index 95ebfb6..fcf29fe 100644
+--- a/src/condor_job_router/JobRouter.cpp
++++ b/src/condor_job_router/JobRouter.cpp
+@@ -522,13 +522,13 @@ JobRouter::SetJobHeld(classad::ClassAd& ad, const char* hold_reason, int hold_co
+ 	{
+ 		if (REMOVED == status)
+ 		{
+-			ad.InsertAttr(ATTR_JOB_STATUS_ON_RELEASE, REMOVED);
++			ad.InsertAttr(ATTR_JOB_STATUS_ON_RELEASE, (ClassAd::IntType)REMOVED);
+ 		}
+-		ad.InsertAttr(ATTR_JOB_STATUS, HELD);
+-		ad.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (int)time(NULL));
++		ad.InsertAttr(ATTR_JOB_STATUS, (ClassAd::IntType)HELD);
++		ad.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (ClassAd::IntType)time(NULL));
+ 		ad.InsertAttr(ATTR_HOLD_REASON, hold_reason);
+-		ad.InsertAttr(ATTR_HOLD_REASON_CODE, hold_code);
+-		ad.InsertAttr(ATTR_HOLD_REASON_SUBCODE, sub_code);
++		ad.InsertAttr(ATTR_HOLD_REASON_CODE, (ClassAd::IntType)hold_code);
++		ad.InsertAttr(ATTR_HOLD_REASON_SUBCODE, (ClassAd::IntType)sub_code);
+ 		if (true == ad.EvaluateAttrString(ATTR_RELEASE_REASON, release_reason))
+ 		{
+ 			ad.InsertAttr(ATTR_LAST_RELEASE_REASON, release_reason.c_str());
+@@ -536,7 +536,7 @@ JobRouter::SetJobHeld(classad::ClassAd& ad, const char* hold_reason, int hold_co
+ 		ad.InsertAttr(ATTR_RELEASE_REASON, "Undefined");
+ 		ad.EvaluateAttrInt(ATTR_NUM_SYSTEM_HOLDS, num_holds);
+ 		num_holds++;
+-		ad.InsertAttr(ATTR_NUM_SYSTEM_HOLDS, num_holds);
++		ad.InsertAttr(ATTR_NUM_SYSTEM_HOLDS, (ClassAd::IntType)num_holds);
+ 
+ 		WriteHoldEventToUserLog(ad);
+ 
+@@ -574,8 +574,8 @@ JobRouter::SetJobRemoved(classad::ClassAd& ad, const char* remove_reason)
+ 	}
+ 	if (REMOVED != status)
+ 	{
+-		ad.InsertAttr(ATTR_JOB_STATUS, REMOVED);
+-		ad.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (int)time(NULL));
++		ad.InsertAttr(ATTR_JOB_STATUS, (ClassAd::IntType)REMOVED);
++		ad.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (ClassAd::IntType)time(NULL));
+ 		ad.InsertAttr(ATTR_REMOVE_REASON, remove_reason);
+ 		if(false == push_dirty_attributes(ad,NULL,NULL))
+ 		{
+@@ -1755,7 +1755,7 @@ JobRouter::RerouteJob(RoutedJob *job) {
+ 
+ void
+ JobRouter::SetJobIdle(RoutedJob *job) {
+-	job->src_ad.InsertAttr(ATTR_JOB_STATUS,IDLE);
++	job->src_ad.InsertAttr(ATTR_JOB_STATUS,(ClassAd::IntType)IDLE);
+ 	if(false == PushUpdatedAttributes(job->src_ad)) {
+ 		dprintf(D_ALWAYS,"JobRouter failure (%s): failed to set src job status back to idle\n",job->JobDesc().c_str());
+ 	}
+diff --git a/src/condor_job_router/VanillaToGrid.cpp b/src/condor_job_router/VanillaToGrid.cpp
+index 0fc514f..be11f76 100644
+--- a/src/condor_job_router/VanillaToGrid.cpp
++++ b/src/condor_job_router/VanillaToGrid.cpp
+@@ -83,23 +83,23 @@ bool VanillaToGrid::vanillaToGrid(classad::ClassAd * ad, int target_universe, co
+ 
+ 
+ 	// Stuff to reset
+-	ad->InsertAttr(ATTR_JOB_STATUS, 1); // Idle
++	ad->InsertAttr(ATTR_JOB_STATUS, (ClassAd::IntType)1); // Idle
+ 	ad->InsertAttr(ATTR_JOB_REMOTE_USER_CPU, 0.0);
+ 	ad->InsertAttr(ATTR_JOB_REMOTE_SYS_CPU, 0.0);
+-	ad->InsertAttr(ATTR_JOB_EXIT_STATUS, 0);
+-	ad->InsertAttr(ATTR_COMPLETION_DATE, 0);
++	ad->InsertAttr(ATTR_JOB_EXIT_STATUS, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_COMPLETION_DATE, (ClassAd::IntType)0);
+ 	ad->InsertAttr(ATTR_JOB_LOCAL_SYS_CPU, 0.0);
+ 	ad->InsertAttr(ATTR_JOB_LOCAL_USER_CPU, 0.0);
+-	ad->InsertAttr(ATTR_NUM_CKPTS, 0);
+-	ad->InsertAttr(ATTR_NUM_RESTARTS, 0);
+-	ad->InsertAttr(ATTR_NUM_SYSTEM_HOLDS, 0);
+-	ad->InsertAttr(ATTR_JOB_COMMITTED_TIME, 0);
+-	ad->InsertAttr(ATTR_COMMITTED_SLOT_TIME, 0);
+-	ad->InsertAttr(ATTR_CUMULATIVE_SLOT_TIME, 0);
+-	ad->InsertAttr(ATTR_TOTAL_SUSPENSIONS, 0);
+-	ad->InsertAttr(ATTR_LAST_SUSPENSION_TIME, 0);
+-	ad->InsertAttr(ATTR_CUMULATIVE_SUSPENSION_TIME, 0);
+-	ad->InsertAttr(ATTR_COMMITTED_SUSPENSION_TIME, 0);
++	ad->InsertAttr(ATTR_NUM_CKPTS, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_NUM_RESTARTS, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_NUM_SYSTEM_HOLDS, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_JOB_COMMITTED_TIME, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_COMMITTED_SLOT_TIME, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_CUMULATIVE_SLOT_TIME, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_TOTAL_SUSPENSIONS, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_LAST_SUSPENSION_TIME, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_CUMULATIVE_SUSPENSION_TIME, (ClassAd::IntType)0);
++	ad->InsertAttr(ATTR_COMMITTED_SUSPENSION_TIME, (ClassAd::IntType)0);
+ 	ad->InsertAttr(ATTR_ON_EXIT_BY_SIGNAL, false);
+ 
+ 
+@@ -117,7 +117,7 @@ bool VanillaToGrid::vanillaToGrid(classad::ClassAd * ad, int target_universe, co
+ 		EXCEPT("Unable to copy old universe");
+ 	}
+ 
+-	ad->InsertAttr(ATTR_JOB_UNIVERSE, target_universe);
++	ad->InsertAttr(ATTR_JOB_UNIVERSE, (ClassAd::IntType)target_universe);
+ 	ad->Insert(remoteattr.Value(), olduniv);
+ 		// olduniv is now controlled by ClassAd
+ 
+@@ -219,8 +219,8 @@ static bool set_job_status_simple(classad::ClassAd const &orig,classad::ClassAd
+ 			return false;
+ 		}
+ 	}
+-	update.InsertAttr(ATTR_JOB_STATUS, new_status);
+-	update.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (int)time(0));
++	update.InsertAttr(ATTR_JOB_STATUS, (ClassAd::IntType)new_status);
++	update.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (ClassAd::IntType)time(0));
+ 	if( hold_copied_from_target ) {
+ 		update.InsertAttr( ATTR_HOLD_COPIED_FROM_TARGET_JOB, false );
+ 	}
+@@ -245,14 +245,14 @@ static void set_job_status_held(classad::ClassAd const &orig,classad::ClassAd &u
+ 			return;
+ 		}
+ 	}
+-	update.InsertAttr(ATTR_JOB_STATUS, HELD);
+-	update.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (int)time(0));
++	update.InsertAttr(ATTR_JOB_STATUS, (ClassAd::IntType)HELD);
++	update.InsertAttr(ATTR_ENTERED_CURRENT_STATUS, (ClassAd::IntType)time(0));
+ 	if( ! hold_reason) {
+ 		hold_reason = "Unknown reason";
+ 	}
+ 	update.InsertAttr(ATTR_HOLD_REASON, hold_reason);
+-	update.InsertAttr(ATTR_HOLD_REASON_CODE, hold_code);
+-	update.InsertAttr(ATTR_HOLD_REASON_SUBCODE, hold_subcode);
++	update.InsertAttr(ATTR_HOLD_REASON_CODE, (ClassAd::IntType)hold_code);
++	update.InsertAttr(ATTR_HOLD_REASON_SUBCODE, (ClassAd::IntType)hold_subcode);
+ 	update.InsertAttr(ATTR_HOLD_COPIED_FROM_TARGET_JOB, true);
+ 
+ 	classad::ExprTree * origexpr = update.Lookup(ATTR_RELEASE_REASON);
+@@ -267,7 +267,7 @@ static void set_job_status_held(classad::ClassAd const &orig,classad::ClassAd &u
+ 		numholds = 0;
+ 	}
+ 	numholds++;
+-	update.InsertAttr(ATTR_NUM_SYSTEM_HOLDS, numholds);
++	update.InsertAttr(ATTR_NUM_SYSTEM_HOLDS, (ClassAd::IntType)numholds);
+ }
+ 
+ bool update_job_status( classad::ClassAd const & orig, classad::ClassAd & newgrid, classad::ClassAd & update, char* custom_attrs)
+@@ -354,7 +354,7 @@ bool update_job_status( classad::ClassAd const & orig, classad::ClassAd & newgri
+ 			// Do not pass back "removed" status to the orig job.
+ 			break;
+ 		default:
+-			update.InsertAttr(ATTR_JOB_STATUS, newgridstatus);
++			update.InsertAttr(ATTR_JOB_STATUS, (ClassAd::IntType)newgridstatus);
+ 			break;
+ 		}
+ 	}
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index b6ebc0c..55dbc83 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -2331,7 +2331,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 				scheduler.WriteAttrChangeToUserLog(key, raw_attribute.Value(), attr_value, old_val);
+ 			}
+ 
+-			int ivalue;
++			classad::IntType ivalue;
+ 			double fvalue;
+ 
+ 			if ( attr_type == LX_INTEGER ) {
+diff --git a/src/condor_unit_tests/FTEST_config.cpp b/src/condor_unit_tests/FTEST_config.cpp
+new file mode 100644
+index 0000000..001d6dd
+--- /dev/null
++++ b/src/condor_unit_tests/FTEST_config.cpp
+@@ -0,0 +1,116 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2011, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++#include <limits>
++#include "condor_common.h"
++#include "condor_debug.h"
++#include "condor_config.h"
++
++#include "function_test_driver.h"
++#include "emit.h"
++#include "unit_test_utils.h"
++
++
++bool test_param_integer() {
++    emit_test("Test param_integer()");
++    clear_config();
++    typedef int target_t;
++    const target_t expect = std::numeric_limits<target_t>::max();
++    const char* pname = "TEST1";
++    char pval[64];
++    sprintf(pval, "%lld", (long long)(expect));
++    config_insert(pname, pval);
++    target_t actual = param_integer(pname, 0);
++	emit_output_expected_header();
++	emit_retval("%lld", (long long)(expect));
++	emit_output_actual_header();
++	emit_retval("%lld", (long long)(actual));
++    if (actual != expect) { FAIL; }
++    PASS;
++}
++
++bool test_param_long() {
++    emit_test("Test param_long()");
++    clear_config();
++    typedef long target_t;
++    const target_t expect = std::numeric_limits<target_t>::max();
++    const char* pname = "TEST1";
++    char pval[64];
++    sprintf(pval, "%lld", (long long)(expect));
++    config_insert(pname, pval);
++    target_t actual = param_long(pname, 0);
++	emit_output_expected_header();
++	emit_retval("%lld", (long long)(expect));
++	emit_output_actual_header();
++	emit_retval("%lld", (long long)(actual));
++    if (actual != expect) { FAIL; }
++    PASS;
++}
++
++bool test_param_long_long() {
++    emit_test("Test param_long_long()");
++    clear_config();
++    typedef long long target_t;
++    const target_t expect = std::numeric_limits<target_t>::max();
++    const char* pname = "TEST1";
++    char pval[64];
++    sprintf(pval, "%lld", (long long)(expect));
++    config_insert(pname, pval);
++    target_t actual = param_long_long(pname, 0);
++	emit_output_expected_header();
++	emit_retval("%lld", (long long)(expect));
++	emit_output_actual_header();
++	emit_retval("%lld", (long long)(actual));
++    if (actual != expect) { FAIL; }
++    PASS;
++}
++
++
++bool test_param_off_t() {
++    emit_test("Test param_off_t()");
++    clear_config();
++    typedef off_t target_t;
++    const target_t expect = std::numeric_limits<target_t>::max();
++    const char* pname = "TEST1";
++    char pval[64];
++    sprintf(pval, "%lld", (long long)(expect));
++    config_insert(pname, pval);
++    target_t actual = param_off_t(pname, 0);
++	emit_output_expected_header();
++	emit_retval("%lld", (long long)(expect));
++	emit_output_actual_header();
++	emit_retval("%lld", (long long)(actual));
++    if (actual != expect) { FAIL; }
++    PASS;
++}
++
++
++bool FTEST_config(void) {
++	emit_function("FTEST_config");
++	emit_comment("Functions from condor_config.h");
++	
++		// driver to run the tests and all required setup
++	FunctionDriver driver;
++
++    driver.register_function(test_param_integer);
++    driver.register_function(test_param_long);
++    driver.register_function(test_param_long_long);
++    driver.register_function(test_param_off_t);
++
++    return driver.do_all_functions();
++}
+diff --git a/src/condor_unit_tests/OTEST_Old_Classads.cpp b/src/condor_unit_tests/OTEST_Old_Classads.cpp
+index ee8ef91..a6789b4 100644
+--- a/src/condor_unit_tests/OTEST_Old_Classads.cpp
++++ b/src/condor_unit_tests/OTEST_Old_Classads.cpp
+@@ -291,7 +291,26 @@ static bool test_to_lower(void);
+ static bool test_size_positive(void);
+ static bool test_size_zero(void);
+ static bool test_size_undefined(void);
+-
++static bool test_lookup_int_precision_check(void);
++static bool test_lookup_long_precision_check(void);
++static bool test_lookup_long_long_precision_check(void);
++static bool test_eval_int_precision_int(void);
++static bool test_eval_int_precision_long(void);
++static bool test_eval_int_precision_long_long(void);
++static bool test_string_list_sum_long_long();
++static bool test_string_list_max_long_long();
++static bool test_floor_positive_float_long_long();
++static bool test_ceiling_positive_float_long_long();
++static bool test_int_negative_long_long();
++static bool test_eval_int_add_long_long();
++static bool test_eval_int_sub_long_long();
++static bool test_eval_int_mul_long_long();
++static bool test_eval_int_div_long_long();
++static bool test_eval_int_eq_long_long();
++static bool test_eval_int_ne_long_long();
++static bool test_eval_int_lt_long_long();
++static bool test_eval_int_gt_long_long();
++static bool test_eval_int_ifthenelse_long_long();
+ 
+ bool OTEST_Old_Classads(void) {
+ 	emit_object("Old_Classads");
+@@ -559,6 +578,26 @@ bool OTEST_Old_Classads(void) {
+ 	driver.register_function(test_size_positive);
+ 	driver.register_function(test_size_zero);
+ 	driver.register_function(test_size_undefined);
++    driver.register_function(test_lookup_int_precision_check);
++    driver.register_function(test_lookup_long_precision_check);
++    driver.register_function(test_lookup_long_long_precision_check);
++    driver.register_function(test_eval_int_precision_int);
++    driver.register_function(test_eval_int_precision_long);
++    driver.register_function(test_eval_int_precision_long_long);
++    driver.register_function(test_string_list_sum_long_long);
++    driver.register_function(test_string_list_max_long_long);
++    driver.register_function(test_floor_positive_float_long_long);
++    driver.register_function(test_ceiling_positive_float_long_long);
++    driver.register_function(test_int_negative_long_long);
++    driver.register_function(test_eval_int_add_long_long);
++    driver.register_function(test_eval_int_sub_long_long);
++    driver.register_function(test_eval_int_mul_long_long);
++    driver.register_function(test_eval_int_div_long_long);
++    driver.register_function(test_eval_int_eq_long_long);
++    driver.register_function(test_eval_int_ne_long_long);
++    driver.register_function(test_eval_int_lt_long_long);
++    driver.register_function(test_eval_int_gt_long_long);
++    driver.register_function(test_eval_int_ifthenelse_long_long);
+ 
+ 	return driver.do_all_functions();
+ }
+@@ -802,6 +841,81 @@ static bool test_lookup_integer_last() {
+ 	PASS;
+ }
+ 
++static bool test_lookup_int_precision_check() {
++	emit_test("Test LookupInteger() precision check with type int.");
++	const char* classad_string = "\tA = 200000000000000000\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	int val = 0;
++    int retexp = (sizeof(val) < 8) ? 0 : 1;
++    int expect = (retexp) ? 200000000000000000 : 0;
++    int retval = classad.LookupInteger(attribute_name, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    if (retexp) emit_param("INT", "%d", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    if (retexp) emit_param("INT", "%d", val);
++	if (retval != retexp) { FAIL; }
++    if (retexp && (val != expect)) { FAIL; }
++	PASS;
++}
++
++static bool test_lookup_long_precision_check() {
++	emit_test("Test LookupInteger() precision check with type long.");
++	const char* classad_string = "\tA = 200000000000000000\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long val = 0;
++    int retexp = (sizeof(val) < 8) ? 0 : 1;
++    long expect = (retexp) ? 200000000000000000 : 0;
++    int retval = classad.LookupInteger(attribute_name, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    if (retexp) emit_param("INT", "%ld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    if (retexp) emit_param("INT", "%ld", val);
++	if (retval != retexp) { FAIL; }
++    if (retexp && (val != expect)) { FAIL; }
++	PASS;
++}
++
++static bool test_lookup_long_long_precision_check() {
++	emit_test("Test LookupInteger() precision check with type long long.");
++	const char* classad_string = "\tA = 200000000000000000\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = (sizeof(val) < 8) ? 0 : 1;
++    long long expect = (retexp) ? 200000000000000000 : 0;
++    int retval = classad.LookupInteger(attribute_name, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    if (retexp) emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    if (retexp) emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (retexp && (val != expect)) { FAIL; }
++	PASS;
++}
++
+ static bool test_eval_bool_true() {
+ 	emit_test("Test EvalBool() on an attribute in a classad that evaluates to"
+ 		" true.");
+@@ -2918,6 +3032,31 @@ static bool test_int_int_positive() {
+ 	PASS;
+ }
+ 
++static bool test_int_negative_long_long() {
++	emit_test("Test that EvalInteger() returns 1 and sets the correct actual "
++		"of an attribute with a unary negative integer actual, with long long precision.");
++    const char* classad_string = "\tB=-int(4000000000000)";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	long long actual = -1, expect =-4000000000000 ;
++	int retVal = classad.EvalInteger("B", NULL, actual);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute Name", "B");
++	emit_param("Target", "NULL");
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("1");
++	emit_param("INT Value", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retVal);
++	emit_param("INT Value", "%lld", actual);
++	if(retVal == 0 || actual != expect) {
++		FAIL;
++	}
++	PASS;
++}
++
+ static bool test_int_error() {
+ 	emit_test("Test EvalBool() on an attribute in a classad that uses "
+ 		"isError() of another attribute that uses int() incorrectly.");
+@@ -2941,6 +3080,83 @@ static bool test_int_error() {
+ 	PASS;
+ }
+ 
++
++static bool test_eval_int_precision_int() {
++	emit_test("Test EvalInteger() precision with type int.");
++	const char* classad_string = "\tA = 3000000000 * 3000000000\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	int val = 0;
++    int retexp = (sizeof(val) < 8) ? 0 : 1;
++    int expect = (retexp) ? 9000000000000000000 : 0;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    if (retexp) emit_param("INT", "%d", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    if (retexp) emit_param("INT", "%d", val);
++	if (retval != retexp) { FAIL; }
++    if (retexp && (val != expect)) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_precision_long() {
++	emit_test("Test EvalInteger() precision with type long.");
++	const char* classad_string = "\tA = 3000000000 * 3000000000\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long val = 0;
++    int retexp = (sizeof(val) < 8) ? 0 : 1;
++    long expect = (retexp) ? 9000000000000000000 : 0;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    if (retexp) emit_param("INT", "%ld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    if (retexp) emit_param("INT", "%ld", val);
++	if (retval != retexp) { FAIL; }
++    if (retexp && (val != expect)) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_precision_long_long() {
++	emit_test("Test EvalInteger() precision with type long long.");
++	const char* classad_string = "\tA = 3000000000 * 3000000000\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = (sizeof(val) < 8) ? 0 : 1;
++    long long expect = (retexp) ? 9000000000000000000 : 0;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    if (retexp) emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    if (retexp) emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (retexp && (val != expect)) { FAIL; }
++	PASS;
++}
++
++
+ static bool test_real_invalid() {
+ 	emit_test("Test that EvalFloat() returns 0 for an attribute that uses "
+ 		"real() with an invalid float actual.");
+@@ -3700,6 +3916,57 @@ static bool test_string_list_sum_default() {
+ 	PASS;
+ }
+ 
++static bool test_string_list_sum_long_long() {
++	emit_test("Test that EvalInteger() returns 1 and sets the correct actual "
++		"for an attribute using stringlistsum() on a StringList with long long values.");
++	const char* classad_string = "\tA1=stringlistsum(\"200000000000,1\")";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	long long actual = -1, expect = 200000000001;
++	int retVal = classad.EvalInteger("A1", NULL, actual);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", "A1");
++	emit_param("Target", "NULL");
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("1");
++	emit_param("INT Value", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retVal);
++	emit_param("INT Value", "%lld", actual);
++	if ((retVal != 1) || (actual != expect)) {
++		FAIL;
++	}
++	PASS;
++}
++
++static bool test_string_list_max_long_long() {
++	emit_test("Test that EvalInteger() returns 1 and sets the correct actual "
++		"for an attribute using stringlistmax() on a StringList with long long values.");
++	const char* classad_string = "\tA1=stringlistmax(\"200000000000,1\")";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	long long actual = -1, expect = 200000000000;
++	int retVal = classad.EvalInteger("A1", NULL, actual);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", "A1");
++	emit_param("Target", "NULL");
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("1");
++	emit_param("INT Value", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retVal);
++	emit_param("INT Value", "%lld", actual);
++	if ((retVal != 1) || (actual != expect)) {
++		FAIL;
++	}
++	PASS;
++}
++
++
+ static bool test_string_list_sum_empty() {
+ 	emit_test("Test that EvalFloat() returns 1 and sets the correct actual "
+ 		"for an attribute using stringlistsum() on an empty StringList.");
+@@ -5040,6 +5307,57 @@ static bool test_random_integer() {
+ 	PASS;
+ }
+ 
++
++static bool test_floor_positive_float_long_long() {
++	emit_test("Test that EvalInteger() returns 1 and sets the correct actual "
++		"for an attribute using floor() on a positive float with 64 bit precision");
++	const char* classad_string = "\tA1=floor(100000000000.1)";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	long long actual = -1, expect = 100000000000;
++	int retVal = classad.EvalInteger("A1", NULL, actual);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", "A1");
++	emit_param("Target", "NULL");
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("1");
++	emit_param("INT Value", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retVal);
++	emit_param("INT Value", "%lld", actual);
++	if(retVal != 1 || actual != expect) {
++		FAIL;
++	}
++	PASS;
++}
++
++static bool test_ceiling_positive_float_long_long() {
++	emit_test("Test that EvalInteger() returns 1 and sets the correct actual "
++		"for an attribute using ceiling() on a positive float with 64 bit precision");
++	const char* classad_string = "\tA1=ceiling(100000000000.1)";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	long long actual = -1, expect = 100000000001;
++	int retVal = classad.EvalInteger("A1", NULL, actual);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", "A1");
++	emit_param("Target", "NULL");
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("1");
++	emit_param("INT Value", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retVal);
++	emit_param("INT Value", "%lld", actual);
++	if(retVal != 1 || actual != expect) {
++		FAIL;
++	}
++	PASS;
++}
++
+ static bool test_random() {
+ 	emit_test("Test that EvalFloat() returns 1 and sets the correct actual "
+ 		"for an attribute using random() without an argument.");
+@@ -7612,3 +7930,229 @@ static bool test_size_undefined() {
+ 	PASS;
+ }
+ 
++static bool test_eval_int_add_long_long() {
++	emit_test("Test EvalInteger() precision with add and precision long long.");
++	const char* classad_string = "\tA = 3000000000000 + 2\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 3000000000002;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_sub_long_long() {
++	emit_test("Test EvalInteger() precision with sub and precision long long.");
++	const char* classad_string = "\tA = 3000000000002 - 2\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 3000000000000;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_mul_long_long() {
++	emit_test("Test EvalInteger() precision with mul and precision long long.");
++	const char* classad_string = "\tA = 3000000000000 * 2\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 6000000000000;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_div_long_long() {
++	emit_test("Test EvalInteger() precision with div and precision long long.");
++	const char* classad_string = "\tA = 3000000000000 / 2\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 1500000000000;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++
++static bool test_eval_int_eq_long_long() {
++	emit_test("Test EvalInteger() precision with eq and precision long long.");
++	const char* classad_string = "\tA = int(3000000000000 == 3000000000001)\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 0;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_ne_long_long() {
++	emit_test("Test EvalInteger() precision with ne and precision long long.");
++	const char* classad_string = "\tA = int(3000000000000 != 3000000000001)\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 1;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_gt_long_long() {
++	emit_test("Test EvalInteger() precision with gt and precision long long.");
++	const char* classad_string = "\tA = int(3000000000000 > 3000000000001)\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 0;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++static bool test_eval_int_lt_long_long() {
++	emit_test("Test EvalInteger() precision with lt and precision long long.");
++	const char* classad_string = "\tA = int(3000000000000 < 3000000000001)\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 1;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
++
++
++static bool test_eval_int_ifthenelse_long_long() {
++	emit_test("Test EvalInteger() precision with lt and precision long long.");
++	const char* classad_string = "\tA = ifthenelse(3000000000000 < 3000000000001, 4000000000000, 2000000000000)\n";
++	compat_classad::ClassAd classad;
++	classad.initFromString(classad_string, NULL);
++	const char* attribute_name = "A";
++	long long val = 0;
++    int retexp = 1;
++    long long expect = 4000000000000;
++    int retval = classad.EvalInteger(attribute_name, NULL, val);
++	emit_input_header();
++	emit_param("ClassAd", classad_string);
++	emit_param("Attribute", attribute_name);
++	emit_param("INT", "");
++	emit_output_expected_header();
++	emit_retval("%d", retexp);
++    emit_param("INT", "%lld", expect);
++	emit_output_actual_header();
++	emit_retval("%d", retval);
++    emit_param("INT", "%lld", val);
++	if (retval != retexp) { FAIL; }
++    if (val != expect) { FAIL; }
++	PASS;
++}
+diff --git a/src/condor_unit_tests/OTEST_UserPolicy.cpp b/src/condor_unit_tests/OTEST_UserPolicy.cpp
+index dccc8fc..cb7a318 100644
+--- a/src/condor_unit_tests/OTEST_UserPolicy.cpp
++++ b/src/condor_unit_tests/OTEST_UserPolicy.cpp
+@@ -2960,7 +2960,7 @@ static bool test_remove_macro_analyze_policy() {
+ 	emit_param("ClassAd", "%s", classad_string.c_str());
+ 	emit_output_expected_header();
+ 	emit_retval("%d", REMOVE_FROM_QUEUE);
+-	param_insert("SYSTEM_PERIODIC_REMOVE", "true");
++	config_insert("SYSTEM_PERIODIC_REMOVE", "true");
+ 	//param_info_insert("SYSTEM_PERIODIC_REMOVE", NULL, "true", NULL, ".*", 
+ 	//				  0, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+ 	UserPolicy policy;
+@@ -3071,7 +3071,7 @@ static bool test_release_macro_analyze_policy() {
+ 	emit_param("ClassAd", "%s", classad_string.c_str());
+ 	emit_output_expected_header();
+ 	emit_retval("%d", RELEASE_FROM_HOLD);
+-	param_insert("SYSTEM_PERIODIC_RELEASE", "true");
++	config_insert("SYSTEM_PERIODIC_RELEASE", "true");
+ 	//param_info_insert("SYSTEM_PERIODIC_RELEASE", NULL, "true", NULL, ".*", 
+ 	//				  0, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+ 	UserPolicy policy;
+@@ -3182,7 +3182,7 @@ static bool test_hold_macro_analyze_policy() {
+ 	emit_param("ClassAd", "%s", classad_string.c_str());
+ 	emit_output_expected_header();
+ 	emit_retval("%d", HOLD_IN_QUEUE);
+-	param_insert("SYSTEM_PERIODIC_HOLD", "true");
++	config_insert("SYSTEM_PERIODIC_HOLD", "true");
+ 	//param_info_insert("SYSTEM_PERIODIC_HOLD", NULL, "true", NULL, ".*", 
+ 	//				  0, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
+ 	UserPolicy policy;
+diff --git a/src/condor_unit_tests/unit_tests.cpp b/src/condor_unit_tests/unit_tests.cpp
+index e5c46c0..a741808 100644
+--- a/src/condor_unit_tests/unit_tests.cpp
++++ b/src/condor_unit_tests/unit_tests.cpp
+@@ -52,6 +52,7 @@ bool FTEST_dirname(void);
+ bool FTEST_fullpath(void);
+ bool FTEST_flatten_and_inline(void);
+ bool FTEST_stl_string_utils(void);
++bool FTEST_config();
+ bool OTEST_HashTable(void);
+ bool OTEST_MyString(void);
+ bool OTEST_StringList(void);
+@@ -87,6 +88,7 @@ const static struct {
+ 	map(FTEST_fullpath),
+ 	map(FTEST_flatten_and_inline),
+ 	map(FTEST_stl_string_utils),
++    map(FTEST_config),
+ 	{"start of objects", NULL},	//placeholder to separate functions and objects
+ 	map(OTEST_HashTable),
+ 	map(OTEST_MyString),
+diff --git a/src/condor_utils/X509credential.unix.cpp b/src/condor_utils/X509credential.unix.cpp
+index dd5553c..74fb9c7 100644
+--- a/src/condor_utils/X509credential.unix.cpp
++++ b/src/condor_utils/X509credential.unix.cpp
+@@ -77,7 +77,7 @@ X509Credential::GetMetadata() {
+ 						 myproxy_user.Value());
+ 
+ 	class_ad->InsertAttr (CREDATTR_EXPIRATION_TIME,
+-						 expiration_time);
++                          (classad::ClassAd::IntType)expiration_time);
+ 	return class_ad;
+ }
+ 
+diff --git a/src/condor_utils/compat_classad.cpp b/src/condor_utils/compat_classad.cpp
+index ac2bbb5..0ae1f00 100644
+--- a/src/condor_utils/compat_classad.cpp
++++ b/src/condor_utils/compat_classad.cpp
+@@ -16,6 +16,8 @@
+  * limitations under the License.
+  *
+  ***************************************************************/
++#include <limits>
++
+ #include "condor_common.h"
+ #include "compat_classad.h"
+ 
+@@ -29,6 +31,16 @@
+ 
+ using namespace std;
+ 
++// The compat-classad layer's version of stringlistsum() and friends munges
++// int and float types together and resolves afterward.  As part of the move
++// to support 64-bit integer precision, I'm going to use long double here, because
++// double only supports 51 bits of integer precision.  MSVC apparently maps long double
++// to just 'double' under the hood, so I guess Windows builds will support 51 bits
++// of integer precision instead of 64.  One more reason Bill Gates is damned.
++// Improving on this will require redesigning the current stringlistxxx() handling 
++// system, not sure it's worth it, but it is an option.
++typedef long double FloatType;
++
+ // gcc 4.3.4 doesn't seem to define FLT_MIN on OpenSolaris 2009.06
+ #if !defined(FLT_MIN) && defined(__FLT_MIN__)
+   #define FLT_MIN  __FLT_MIN__
+@@ -119,7 +131,7 @@ void EvalResult::fPrintResult(FILE *fi)
+     {
+ 	case LX_INTEGER :
+ 
+-	     fprintf(fi, "%d", this->i);
++	     fprintf(fi, "%lld", this->i);
+ 	     break;
+ 
+ 	case LX_FLOAT :
+@@ -177,7 +189,7 @@ void EvalResult::toString(bool force)
+ 			break;
+ 		case LX_INTEGER: {
+ 			MyString buf;
+-			buf.sprintf("%d",i);
++			buf.sprintf("%lld",i);
+ 			s = strnewp(buf.Value());
+ 			type = LX_STRING;
+ 			break;
+@@ -328,25 +340,21 @@ bool stringListSize_func( const char * /*name*/,
+ 	return true;
+ }
+ 
+-static
+-double sum_func( double item, double accumulator )
++FloatType sum_func(FloatType item, FloatType accumulator)
+ {
+ 	return item + accumulator;
+ }
+ 
+-static
+-double min_func( double item, double accumulator )
++FloatType min_func(FloatType item, FloatType accumulator)
+ {
+ 	return item < accumulator ? item : accumulator;
+ }
+ 
+-static
+-double max_func( double item, double accumulator )
++FloatType max_func(FloatType item, FloatType accumulator)
+ {
+ 	return item > accumulator ? item : accumulator;
+ }
+ 
+-static
+ bool stringListSummarize_func( const char *name,
+ 							   const classad::ArgumentList &arg_list,
+ 							   classad::EvalState &state, classad::Value &result )
+@@ -355,8 +363,8 @@ bool stringListSummarize_func( const char *name,
+ 	std::string list_str;
+ 	std::string delim_str = ", ";
+ 	bool is_avg = false;
+-	double (* func)( double, double ) = NULL;
+-	double accumulator;
++	FloatType (*func)(FloatType, FloatType) = NULL;
++	FloatType accumulator;
+ 	bool is_real = false;
+ 	bool empty_allowed = false;
+ 
+@@ -392,10 +400,10 @@ bool stringListSummarize_func( const char *name,
+ 		is_avg = true;
+ 	} else if ( strcasecmp( name, "stringlistmin" ) == 0 ) {
+ 		func = min_func;
+-		accumulator = FLT_MAX;
++		accumulator = std::numeric_limits<FloatType>::max();
+ 	} else if ( strcasecmp( name, "stringlistmax" ) == 0 ) {
+ 		func = max_func;
+-		accumulator = FLT_MIN;
++		accumulator = std::numeric_limits<FloatType>::min();
+ 	} else {
+ 		result.SetErrorValue();
+ 		return false;
+@@ -412,15 +420,15 @@ bool stringListSummarize_func( const char *name,
+ 	}
+ 
+ 	sl.rewind();
+-	const char *entry;
+-	while ( (entry = sl.next()) ) {
+-		double temp;
+-		int r = sscanf(entry, "%lf", &temp);
++	while (const char* entry = sl.next()) {
++		FloatType temp;
++        int n;
++		int r = sscanf(entry, "%Lf%n", &temp, &n);
+ 		if (r != 1) {
+ 			result.SetErrorValue();
+ 			return true;
+ 		}
+-		if (strspn(entry, "+-0123456789") != strlen(entry)) {
++		if (strspn(entry, "+-0123456789") != (unsigned)n) {
+ 			is_real = true;
+ 		}
+ 		accumulator = func( temp, accumulator );
+@@ -431,9 +439,9 @@ bool stringListSummarize_func( const char *name,
+ 	}
+ 
+ 	if ( is_real ) {
+-		result.SetRealValue( accumulator );
++		result.SetRealValue(accumulator);
+ 	} else {
+-		result.SetIntegerValue( (int)accumulator );
++		result.SetIntegerValue((classad::IntType)accumulator);
+ 	}
+ 
+ 	return true;
+@@ -975,25 +983,50 @@ LookupString( const char *name, std::string &value ) const
+ } 
+ 
+ int ClassAd::
+-LookupInteger( const char *name, int &value ) const 
+-{
+-	bool    boolVal;
+-	int     haveInteger;
+-	string  sName(name);
+-	int		tmp_val;
++LookupInteger(const char *name, int& value) const {
++    typedef int target_t;
++    long long v = 0;
++    if (!LookupInteger(name, v)) return 0;
++    if (v < std::numeric_limits<target_t>::min()) return 0;
++    if (v > std::numeric_limits<target_t>::max()) return 0;
++    value = target_t(v);
++    return 1;
++}
+ 
+-	if( EvaluateAttrInt(sName, tmp_val ) ) {
+-		value = tmp_val;
+-		haveInteger = TRUE;
+-	} else if( EvaluateAttrBool(sName, boolVal ) ) {
+-		value = boolVal ? 1 : 0;
+-		haveInteger = TRUE;
+-	} else {
+-		haveInteger = FALSE;
++int ClassAd::
++LookupInteger(const char *name, long& value) const {
++    typedef long target_t;
++    long long v = 0;
++    if (!LookupInteger(name, v)) return 0;
++    if (v < std::numeric_limits<target_t>::min()) return 0;
++    if (v > std::numeric_limits<target_t>::max()) return 0;
++    value = target_t(v);
++    return 1;
++}
++
++int ClassAd::
++LookupInteger(const char *name, long long& value) const {
++    typedef long long target_t;
++	int rc = 0;
++    IntType	v = 0;
++	bool bv = false;
++
++	if (EvaluateAttrInt(name, v)) {
++		rc = 1;
++	} else if (EvaluateAttrBool(name, bv)) {
++		v = bv ? 1 : 0;
++		rc = 1;
+ 	}
+-	return haveInteger;
++
++    if (v < std::numeric_limits<target_t>::min()) rc = 0;
++    if (v > std::numeric_limits<target_t>::max()) rc = 0;
++
++    if (rc) value = target_t(v);
++
++	return rc;
+ }
+ 
++
+ int ClassAd::
+ LookupFloat( const char *name, float &value ) const
+ {
+@@ -1167,34 +1200,52 @@ EvalString(const char *name, classad::ClassAd *target, std::string & value)
+ }
+ 
+ int ClassAd::
+-EvalInteger (const char *name, classad::ClassAd *target, int &value)
+-{
++EvalInteger (const char *name, classad::ClassAd *target, int& value) {
++    typedef int target_t;
++    long long v = 0;
++    if (!EvalInteger(name, target, v)) return 0;
++    if (v < std::numeric_limits<target_t>::min()) return 0;
++    if (v > std::numeric_limits<target_t>::max()) return 0;
++    value = target_t(v);
++    return 1;
++}
++
++int ClassAd::
++EvalInteger (const char *name, classad::ClassAd *target, long& value) {
++    typedef long target_t;
++    long long v = 0;
++    if (!EvalInteger(name, target, v)) return 0;
++    if (v < std::numeric_limits<target_t>::min()) return 0;
++    if (v > std::numeric_limits<target_t>::max()) return 0;
++    value = target_t(v);
++    return 1;
++}
++
++int ClassAd::
++EvalInteger (const char *name, classad::ClassAd *target, long long& value) {
++    typedef long long target_t;
++    IntType v = 0;
+ 	int rc = 0;
+-	int tmp_val;
+ 
+-	if( target == this || target == NULL ) {
++	if (target == this || target == NULL) {
+ 		getTheMyRef( this );
+-		if( EvaluateAttrInt( name, tmp_val ) ) { 
+-			value = tmp_val;
+-			rc = 1;
+-		}
++		if (EvaluateAttrInt(name, v)) rc = 1;
+ 		releaseTheMyRef( this );
+-		return rc;
+-	}
++	} else {
++    	getTheMatchAd( this, target );
++    	if (this->Lookup(name)) {
++    		if (this->EvaluateAttrInt(name, v)) rc = 1;
++    	} else if (target->Lookup(name)) {
++    		if (target->EvaluateAttrInt(name, v)) rc = 1;
++    	}
++        releaseTheMatchAd();
++    }
++
++    if (v < std::numeric_limits<target_t>::min()) rc = 0;
++    if (v > std::numeric_limits<target_t>::max()) rc = 0;
++
++    if (rc) value = target_t(v);
+ 
+-	getTheMatchAd( this, target );
+-	if( this->Lookup( name ) ) {
+-		if( this->EvaluateAttrInt( name, tmp_val ) ) {
+-			value = tmp_val;
+-			rc = 1;
+-		}
+-	} else if( target->Lookup( name ) ) {
+-		if( target->EvaluateAttrInt( name, tmp_val ) ) {
+-			value = tmp_val;
+-			rc = 1;
+-		}
+-	}
+-	releaseTheMatchAd();
+ 	return rc;
+ }
+ 
+@@ -1204,7 +1255,7 @@ EvalFloat (const char *name, classad::ClassAd *target, float &value)
+ 	int rc = 0;
+ 	classad::Value val;
+ 	double doubleVal;
+-	int intVal;
++    IntType intVal;
+ 	bool boolVal;
+ 
+ 	if( target == this || target == NULL ) {
+@@ -1272,7 +1323,7 @@ EvalBool  (const char *name, classad::ClassAd *target, int &value)
+ 	int rc = 0;
+ 	classad::Value val;
+ 	double doubleVal;
+-	int intVal;
++    IntType intVal;
+ 	bool boolVal;
+ 
+ 	if( target == this || target == NULL ) {
+diff --git a/src/condor_utils/compat_classad.h b/src/condor_utils/compat_classad.h
+index 1a17d79..1a1f101 100644
+--- a/src/condor_utils/compat_classad.h
++++ b/src/condor_utils/compat_classad.h
+@@ -92,11 +92,14 @@ typedef enum
+   NOT_KEYWORD
+ } LexemeType;
+ 
++
+ // This class is lifted directly from old ClassAds for EvalExprTree()
+ class EvalResult
+ {
+     public :
+ 
++    typedef classad::ClassAd::IntType IntType;
++
+     EvalResult();
+   	~EvalResult();
+ 
+@@ -116,7 +119,7 @@ class EvalResult
+ 
+    	union
+     	{
+-   	    int i;
++   	    IntType i;
+    	    float f;
+    	    char* s;
+         };
+@@ -131,6 +134,8 @@ class EvalResult
+ class ClassAd : public classad::ClassAd
+ {
+  public:
++    typedef classad::ClassAd::IntType IntType;
++
+ 	ClassAd();
+ 
+ 	ClassAd( const ClassAd &ad );
+@@ -186,16 +191,22 @@ class ClassAd : public classad::ClassAd
+ 	int Assign(char const *name,char const *value);
+ 
+ 	int Assign(char const *name,int value)
+-	{ return InsertAttr( name, value) ? TRUE : FALSE; }
++	{ return InsertAttr( name, (IntType)value) ? TRUE : FALSE; }
+ 
+ 	int Assign(char const *name,unsigned int value)
+-	{ return InsertAttr( name, (int)value) ? TRUE : FALSE; }
++	{ return InsertAttr( name, (IntType)value) ? TRUE : FALSE; }
+ 
+ 	int Assign(char const *name,long value)
+-	{ return InsertAttr( name, (int)value) ? TRUE : FALSE; }
++	{ return InsertAttr( name, (IntType)value) ? TRUE : FALSE; }
+ 
+ 	int Assign(char const *name,unsigned long value)
+-	{ return InsertAttr( name, (int)value) ? TRUE : FALSE; }
++	{ return InsertAttr( name, (IntType)value) ? TRUE : FALSE; }
++
++	int Assign(char const *name,long long value)
++	{ return InsertAttr( name, (IntType)value) ? TRUE : FALSE; }
++
++	int Assign(char const *name,unsigned long long value)
++	{ return InsertAttr( name, (IntType)value) ? TRUE : FALSE; }
+ 
+ 	int Assign(char const *name,float value)
+ 	{ return InsertAttr( name, (double)value) ? TRUE : FALSE; }
+@@ -257,6 +268,8 @@ class ClassAd : public classad::ClassAd
+ 		 */
+ 
+ 	int LookupInteger(const char *name, int &value) const;
++	int LookupInteger(const char *name, long &value) const;
++	int LookupInteger(const char *name, long long &value) const;
+ 		/** Lookup (don't evaluate) an attribute that is a float.
+ 		 *  @param name The attribute
+ 		 *  @param value The integer
+@@ -324,6 +337,8 @@ class ClassAd : public classad::ClassAd
+ 		 *  but is not an integer
+ 		 */
+ 	int EvalInteger (const char *name, classad::ClassAd *target, int &value);
++	int EvalInteger (const char *name, classad::ClassAd *target, long &value);
++	int EvalInteger (const char *name, classad::ClassAd *target, long long &value);
+ 
+ 		/** Lookup and evaluate an attribute in the ClassAd that is a float
+ 		 *  @param name The name of the attribute
+diff --git a/src/condor_utils/condor_config.cpp b/src/condor_utils/condor_config.cpp
+index c859597..3eee5fd 100644
+--- a/src/condor_utils/condor_config.cpp
++++ b/src/condor_utils/condor_config.cpp
+@@ -53,6 +53,7 @@
+ 
+ */
+ 
++#include <limits>
+ #include "condor_common.h"
+ #include "condor_debug.h"
+ #include "condor_syscall_mode.h"
+@@ -1607,30 +1608,18 @@ param_with_default_abort(const char *name, int abort)
+ 	return val;
+ }
+ 
+-/*
+-** Return the integer value associated with the named paramter.
+-** This version returns true if a the parameter was found, or false
+-** otherwise.
+-** If the value is not defined or not a valid integer, then
+-** return the default_value argument .  The min_value and max_value
+-** arguments are optional and default to MININT and MAXINT.
+-** These range checks are disabled if check_ranges is false.
+-*/
+ 
+ bool
+-param_integer( const char *name, int &value,
+-			   bool use_default, int default_value,
+-			   bool check_ranges, int min_value, int max_value,
+-			   ClassAd *me, ClassAd *target,
+-			   bool use_param_table )
++param_integer_internal(const char* name, ClassAd::IntType& value,
++                       bool use_default, ClassAd::IntType default_value,
++                       bool check_ranges, ClassAd::IntType min_value, ClassAd::IntType max_value,
++                       ClassAd* me, ClassAd* target,
++                       bool use_param_table)
+ {
+-	if(use_param_table) {
++	if (use_param_table) {
+ 		int tbl_default_valid;
+-		int tbl_default_value = 
+-			param_default_integer( name, &tbl_default_valid );
+-		bool tbl_check_ranges = 
+-			(param_range_integer(name, &min_value, &max_value)==-1) 
+-				? false : true;
++        ClassAd::IntType tbl_default_value = param_default_integer( name, &tbl_default_valid );
++		bool tbl_check_ranges = (param_range_integer(name, &min_value, &max_value)==-1) ? false : true;
+ 
+ 		// if found in the default table, then we overwrite the arguments
+ 		// to this function with the defaults from the table. This effectively
+@@ -1643,80 +1632,48 @@ param_integer( const char *name, int &value,
+ 			check_ranges = true;
+ 		}
+ 	}
+-	
+-	int result;
+-	long long_result;
+-	char *string;
+-	char *endptr = NULL;
+ 
+-	ASSERT( name );
+-	string = param( name );
+-	if( ! string ) {
+-		dprintf( D_CONFIG, "%s is undefined, using default value of %d\n",
+-				 name, default_value );
+-		if ( use_default ) {
+-			value = default_value;
+-		}
++	ASSERT(name);
++	char* string = param(name);
++	if (!string) {
++		dprintf(D_CONFIG, "%s is undefined, using default value of %lld\n", name, default_value);
++		if (use_default) value = default_value;
+ 		return false;
+ 	}
+ 
+-	long_result = strtol(string,&endptr,10);
+-	result = long_result;
++    ClassAd rhs;
++    if (me) rhs = *me;
+ 
+-	ASSERT(endptr);
+-	if( endptr != string ) {
+-		while( isspace(*endptr) ) {
+-			endptr++;
+-		}
+-	}
+-	bool valid = (endptr != string && *endptr == '\0');
++    if (!rhs.AssignExpr(name, string)) {
++        EXCEPT("Invalid expression for %s (%s) "
++               "in condor configuration.  Please set it to "
++               "an integer expression in the range %lld to %lld "
++               "(default %lld).",
++               name, string, min_value, max_value, default_value);
++    }
+ 
+-	if( !valid ) {
+-		// For efficiency, we first tried to read the value as a
+-		// simple literal.  Since that didn't work, now try parsing it
+-		// as an expression.
+-		ClassAd rhs;
+-		if( me ) {
+-			rhs = *me;
+-		}
+-		if( !rhs.AssignExpr( name, string ) ) {
+-			EXCEPT("Invalid expression for %s (%s) "
+-				   "in condor configuration.  Please set it to "
+-				   "an integer expression in the range %d to %d "
+-				   "(default %d).",
+-				   name,string,min_value,max_value,default_value);
+-		}
++    ClassAd::IntType result;
++	if (!rhs.EvalInteger(name, target, result)) {
++        EXCEPT("Failed to evaluate as integer for %s (%s) "
++               "in condor configuration.  Please set it to "
++               "an integer expression in the range %lld to %lld "
++               "(default %lld).",
++               name, string, min_value, max_value, default_value);
++    }
+ 
+-		if( !rhs.EvalInteger(name,target,result) ) {
+-			EXCEPT("Invalid result (not an integer) for %s (%s) "
+-				   "in condor configuration.  Please set it to "
+-				   "an integer expression in the range %d to %d "
+-				   "(default %d).",
+-				   name,string,min_value,max_value,default_value);
+-		}
+-		long_result = result;
++	if (check_ranges && (result < min_value)) {
++		EXCEPT("%s in the condor configuration is too low (%s)."
++               "  Please set it to an integer in the range %lld to %lld"
++               " (default %lld).",
++               name, string, min_value, max_value, default_value);
++	} else if (check_ranges && (result > max_value)) {
++		EXCEPT("%s in the condor configuration is too high (%s)."
++               "  Please set it to an integer in the range %lld to %lld"
++               " (default %lld).",
++               name, string, min_value, max_value, default_value);
+ 	}
+ 
+-	if( (long)result != long_result ) {
+-		EXCEPT( "%s in the condor configuration is out of bounds for"
+-				" an integer (%s)."
+-				"  Please set it to an integer in the range %d to %d"
+-				" (default %d).",
+-				name, string, min_value, max_value, default_value );
+-	}
+-	else if ( check_ranges  &&  ( result < min_value )  ) {
+-		EXCEPT( "%s in the condor configuration is too low (%s)."
+-				"  Please set it to an integer in the range %d to %d"
+-				" (default %d).",
+-				name, string, min_value, max_value, default_value );
+-	}
+-	else if ( check_ranges  && ( result > max_value )  ) {
+-		EXCEPT( "%s in the condor configuration is too high (%s)."
+-				"  Please set it to an integer in the range %d to %d"
+-				" (default %d).",
+-				name, string, min_value, max_value, default_value );
+-	}
+-	free( string );
++	free(string);
+ 
+ 	value = result;
+ 	return true;
+@@ -1725,28 +1682,132 @@ param_integer( const char *name, int &value,
+ 
+ /*
+ ** Return the integer value associated with the named paramter.
++** This version returns true if a the parameter was found, or false
++** otherwise.
+ ** If the value is not defined or not a valid integer, then
+-** return the default_value argument.  The min_value and max_value
++** return the default_value argument .  The min_value and max_value
+ ** arguments are optional and default to MININT and MAXINT.
++** These range checks are disabled if check_ranges is false.
+ */
++bool
++param_integer(const char* name, int& value,
++              bool use_default, int default_value,
++              bool check_ranges, int min_value, int max_value,
++              ClassAd* me, ClassAd* target,
++              bool use_param_table)
++{
++    typedef int target_t;
++    ClassAd::IntType v;
++    if (!param_integer_internal(name, v, use_default, default_value,
++                                check_ranges, min_value, max_value,
++                                me, target,
++                                use_param_table)) {
++        return false;
++    }
++
++    if ((v < std::numeric_limits<target_t>::min()) || 
++        (v > std::numeric_limits<target_t>::max())) {
++        EXCEPT("Configured value for %s (%lld) out of range for %d-byte integer", 
++               name, v, int(sizeof(target_t)));
++    }
+ 
++    value = target_t(v);
++    return true;
++}
++
++/*
++** Return the integer value associated with the named paramter.
++** If the value is not defined or not a valid integer, then
++** return the default_value argument.  The min_value and max_value
++** arguments are optional and default to MININT and MAXINT.
++*/
+ int
+-param_integer( const char *name, int default_value,
+-			   int min_value, int max_value, bool use_param_table )
++param_integer(const char *name, int default_value,
++              int min_value, int max_value, bool use_param_table)
+ {
+-	int result;
++    typedef int target_t;
++    ClassAd::IntType v;
+ 
+-	param_integer( name, result, true, default_value,
+-				   true, min_value, max_value, NULL, NULL, use_param_table );
+-	return result;
++	param_integer_internal(name, v, true, default_value,
++                           true, min_value, max_value, NULL, NULL, use_param_table);
++
++    if ((v < std::numeric_limits<target_t>::min()) || 
++        (v > std::numeric_limits<target_t>::max())) {
++        EXCEPT("Configured value for %s (%lld) out of range for %d-byte integer", 
++               name, v, int(sizeof(target_t)));
++    }
++
++	return target_t(v);
+ }
+ 
++
+ int param_integer_c( const char *name, int default_value,
+ 					   int min_value, int max_value, bool use_param_table )
+ {
+ 	return param_integer( name, default_value, min_value, max_value, use_param_table );
+ }
+ 
++
++long
++param_long(const char *name, long default_value,
++           long min_value, long max_value, bool use_param_table)
++{
++    typedef long target_t;
++    ClassAd::IntType v;
++
++	param_integer_internal(name, v, true, default_value,
++                           true, min_value, max_value, NULL, NULL, use_param_table);
++
++    if ((v < std::numeric_limits<target_t>::min()) || 
++        (v > std::numeric_limits<target_t>::max())) {
++        EXCEPT("Configured value for %s (%lld) out of range for %d-byte integer", 
++               name, v, int(sizeof(target_t)));
++    }
++
++	return target_t(v);
++}
++
++
++long long
++param_long_long(const char *name, long long default_value,
++                long long min_value, long long max_value, bool use_param_table)
++{
++    typedef long long target_t;
++    ClassAd::IntType v;
++
++	param_integer_internal(name, v, true, default_value,
++                           true, min_value, max_value, NULL, NULL, use_param_table);
++
++    if ((v < std::numeric_limits<target_t>::min()) || 
++        (v > std::numeric_limits<target_t>::max())) {
++        EXCEPT("Configured value for %s (%lld) out of range for %d-byte integer", 
++               name, v, int(sizeof(target_t)));
++    }
++
++	return target_t(v);
++}
++
++
++off_t
++param_off_t(const char *name, off_t default_value,
++            off_t min_value, off_t max_value, bool use_param_table)
++{
++    typedef off_t target_t;
++    ClassAd::IntType v;
++
++	param_integer_internal(name, v, true, default_value,
++                           true, min_value, max_value, NULL, NULL, use_param_table);
++
++    if ((v < std::numeric_limits<target_t>::min()) || 
++        (v > std::numeric_limits<target_t>::max())) {
++        EXCEPT("Configured value for %s (%lld) out of range for %d-byte integer", 
++               name, v, int(sizeof(target_t)));
++    }
++
++	return target_t(v);
++}
++
++
+ // require that the attribute I'm looking for is defined in the config file.
+ char* param_or_except(const char *attr)
+ {
+diff --git a/src/condor_utils/condor_xml_classads.cpp b/src/condor_utils/condor_xml_classads.cpp
+index 56ac6fc..f73896f 100644
+--- a/src/condor_utils/condor_xml_classads.cpp
++++ b/src/condor_utils/condor_xml_classads.cpp
+@@ -661,7 +661,7 @@ ClassAdXMLUnparser::Unparse(const char *name, ExprTree *expression, MyString &bu
+ 			
+ 	MyString  number_string;
+ 	char      *expr_string;
+-	int       int_number;
++    ClassAd::IntType int_number;
+ 	double    double_number;
+ 	std::string string_value;
+ 	MyString  fixed_string;
+@@ -673,7 +673,7 @@ ClassAdXMLUnparser::Unparse(const char *name, ExprTree *expression, MyString &bu
+ 		((classad::Literal *)expression)->GetValue(v);
+ 		print_expr = false;
+ 		if ( v.IsIntegerValue( int_number ) ) {
+-			number_string.sprintf("%d", int_number);
++			number_string.sprintf("%lld", int_number);
+ 			add_tag(buffer, tag_Integer, true);
+ 			buffer += number_string;
+ 			add_tag(buffer, tag_Integer, false);
+diff --git a/src/condor_utils/credential.unix.cpp b/src/condor_utils/credential.unix.cpp
+index 71da483..0b8de27 100644
+--- a/src/condor_utils/credential.unix.cpp
++++ b/src/condor_utils/credential.unix.cpp
+@@ -64,9 +64,9 @@ Credential::GetMetadata() {
+ 	classad::ClassAd * class_ad = new classad::ClassAd();
+ 	ASSERT (!name.IsEmpty());
+ 	class_ad->InsertAttr (CREDATTR_NAME, name.Value());
+-	class_ad->InsertAttr (CREDATTR_TYPE, type);
++	class_ad->InsertAttr (CREDATTR_TYPE, (classad::ClassAd::IntType)type);
+ 	class_ad->InsertAttr (CREDATTR_OWNER, owner.Value());
+-	class_ad->InsertAttr (CREDATTR_DATA_SIZE, m_data_size);
++	class_ad->InsertAttr (CREDATTR_DATA_SIZE, (classad::ClassAd::IntType)m_data_size);
+ 
+ 	return class_ad;
+ }
+diff --git a/src/condor_utils/param_info.cpp b/src/condor_utils/param_info.cpp
+index f520e51..68d54f8 100644
+--- a/src/condor_utils/param_info.cpp
++++ b/src/condor_utils/param_info.cpp
+@@ -85,10 +85,10 @@ param_default_string(const char* param)
+ 	return ret;
+ }
+ 
+-int
++param_info_t::int_t
+ param_default_integer(const char* param, int* valid) {
+ 	const param_info_t* p;
+-	int ret = 0;
++    param_info_t::int_t ret = 0;
+ 
+ 	param_info_init();
+ 
+@@ -133,7 +133,7 @@ param_default_double(const char* param, int* valid) {
+ }
+ 
+ int
+-param_range_integer(const char* param, int* min, int* max) {
++param_range_integer(const char* param, param_info_t::int_t* min, param_info_t::int_t* max) {
+ 
+ 	const param_info_t* p;
+ 
+diff --git a/src/condor_utils/param_info.h b/src/condor_utils/param_info.h
+index e211d25..f180149 100644
+--- a/src/condor_utils/param_info.h
++++ b/src/condor_utils/param_info.h
+@@ -22,6 +22,7 @@
+ #define __PARAM_INFO_H__
+ 
+ #include "condor_common.h"
++#include "condor_classad.h"
+ 
+ typedef enum param_info_t_type_e {
+ 	PARAM_TYPE_STRING = 0,
+@@ -34,6 +35,7 @@ typedef enum param_info_t_type_e {
+ // will be followed by an int or double when default_valid is true,
+ // ranged params will have min and max values following that if range_valid is true.
+ typedef struct param_info_t_s {
++    typedef ClassAd::IntType int_t;
+ 
+ 	char const *  name;
+     //char const *  aliases;
+@@ -69,15 +71,15 @@ struct param_info_str_ranged_t_s {
+ };
+ 
+ struct param_info_int_t_s {
+-   param_info_t hdr;
+-   int int_val;
++    param_info_t hdr;
++    param_info_t::int_t int_val;
+ };
+ 
+ struct param_info_int_ranged_t_s {
+-   param_info_t hdr;
+-   int int_val;
+-   int int_min;
+-   int int_max;
++    param_info_t hdr;
++    param_info_t::int_t int_val;
++    param_info_t::int_t int_min;
++    param_info_t::int_t int_max;
+ };
+ 
+ struct param_info_dbl_t_s {
+@@ -104,7 +106,7 @@ BEGIN_C_DECLS
+ 
+ 	void param_info_init(void);
+ 
+-	int param_default_integer(const char* param, int* valid);
++	ClassAd::IntType param_default_integer(const char* param, int* valid);
+ 	int param_default_boolean(const char* param, int* valid);
+ 	double param_default_double(const char* param, int* valid);
+ 	//returns pointer to internal object (or null), do not free
+@@ -113,7 +115,7 @@ BEGIN_C_DECLS
+ 	// Returns -1 if param is not of the specified type.
+ 	// Otherwise, returns 0 and sets min and max to the minimum and maximum
+ 	// possible values.
+-	int param_range_integer(const char* param, int* min, int* max);
++	int param_range_integer(const char* param, ClassAd::IntType* min, ClassAd::IntType* max);
+ 	int param_range_double(const char* param, double* min, double* max);
+ 	
+ 	// Iterate the list of parameter information.
+diff --git a/src/condor_utils/param_info_hash.cpp b/src/condor_utils/param_info_hash.cpp
+index 34b2bcb..4681e65 100644
+--- a/src/condor_utils/param_info_hash.cpp
++++ b/src/condor_utils/param_info_hash.cpp
+@@ -96,7 +96,7 @@ param_info_hash_dump_value(const param_info_t* param_value, void* /*unused*/ ) {
+ 			printf("%f", reinterpret_cast<const param_info_PARAM_TYPE_DOUBLE*>(param_value)->dbl_val);
+ 			break;
+ 		case PARAM_TYPE_INT:
+-			printf("%d", reinterpret_cast<const param_info_PARAM_TYPE_INT*>(param_value)->int_val);
++			printf("%lld", reinterpret_cast<const param_info_PARAM_TYPE_INT*>(param_value)->int_val);
+ 			break;
+ 		case PARAM_TYPE_BOOL:
+ 			printf("%s", reinterpret_cast<const param_info_PARAM_TYPE_BOOL*>(param_value)->int_val == 0 ? "false" : "true");
+diff --git a/src/condor_utils/soap_helpers.cpp b/src/condor_utils/soap_helpers.cpp
+index 7875705..7c6cb3b 100644
+--- a/src/condor_utils/soap_helpers.cpp
++++ b/src/condor_utils/soap_helpers.cpp
+@@ -33,7 +33,7 @@ convert_ad_to_adStruct(struct soap *s,
+   int attr_index = 0;
+   int num_attrs = 0;
+   bool skip_attr = false;
+-  int tmpint;
++  ClassAd::IntType tmpint;
+   float tmpfloat;
+   bool tmpbool;
+   char *tmpstr;
