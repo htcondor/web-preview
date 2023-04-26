@@ -1,0 +1,33 @@
+From 0efdc681f3e4f53ec89db23507fac13f3418fe86 Mon Sep 17 00:00:00 2001
+From: Ben Cotton <ben.cotton@cyclecomputing.com>
+Date: Thu, 11 Feb 2016 17:23:31 -0500
+Subject: [PATCH] Add missing machine ad attributes related to file transfer
+
+---
+ doc/misc/machad.tex | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/doc/misc/machad.tex b/doc/misc/machad.tex
+index ca1b597..b26f028 100644
+--- a/doc/misc/machad.tex
++++ b/doc/misc/machad.tex
+@@ -231,6 +231,16 @@ the SSSE 3 instructions, and \Expr{Undefined} otherwise.
+ if the machine being advertised supports
+ the avx instructions, and \Expr{Undefined} otherwise.
+ %
++\index{ClassAd machine attribute!HasFileTransfer}
++\item[\AdAttr{HasFileTransfer}:] A boolean value that when \Expr{True}
++identifies that the machine can use the file transfer mechanism.
++%
++\index{ClassAd machine attribute|HasFileTransferMethods}
++\item[\AdAttr{HasFileTransferMethods}:] A string of comma-separated file
++transfer protocols that the machine can support. The value can be modified
++with \Macro{FILETRANSFER_PLUGINS} as defined at
++~\ref{param:FiletransferPlugins}.
++%
+ \index{ClassAd machine attribute!HasVM}
+ \item[\AdAttr{HasVM}:] If the configuration triggers the detection of
+ virtual machine software, a boolean value reporting the success thereof;
+-- 
+2.6.4
+
