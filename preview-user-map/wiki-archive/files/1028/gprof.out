@@ -1,0 +1,1521 @@
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total           
+ time   seconds   seconds    calls   s/call   s/call  name    
+ 56.39    719.09   719.09 663215021     0.00     0.00  std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::erase(int const&)
+ 19.88    972.55   253.46  1206284     0.00     0.00  std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*)
+ 10.30   1103.84   131.29     4777     0.03     0.03  Dag::NumHeldJobProcs()
+  5.32   1171.68    67.85 663818241     0.00     0.00  HashTable<int, Job*>::lookup(int const&, Job*&) const
+  3.72   1219.15    47.46 663215021     0.00     0.00  Dag::FindNodeByNodeID(int) const
+  1.66   1240.30    21.15   237848     0.00     0.00  SimpleList<Job*>::DeleteCurrent()
+  1.00   1253.01    12.71 1329080770     0.00     0.00  Job::GetStatus() const
+  0.97   1265.32    12.31   237848     0.00     0.00  PrioritySimpleList<Job*>::DeleteCurrent()
+  0.36   1269.96     4.64   301610     0.00     0.00  Dag::TerminateJob(Job*, bool, bool)
+  0.10   1271.26     1.31 663215021     0.00     0.00  Job::Remove(Job::queue_t, int)
+  0.03   1271.59     0.33   301610     0.00     0.00  Job::~Job()
+  0.02   1271.87     0.28                             Job::SanityCheck() const
+  0.02   1272.15     0.28   237848     0.00     0.00  fake_condor_submit(CondorID&, Job*, char const*, char const*, char const*)
+  0.02   1272.41     0.26     2388     0.00     0.00  PrioritySimpleList<Job*>::PrioritySimpleList()
+  0.02   1272.65     0.24        1     0.24     0.24  Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&)
+  0.02   1272.85     0.20     2387     0.00     0.01  Dag::SubmitReadyJobs(Dagman const&)
+  0.01   1273.01     0.16   237848     0.00     0.00  Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&)
+  0.01   1273.15     0.14   301610     0.00     0.00  List<Job::NodeVar>::~List()
+  0.01   1273.28     0.14                             HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::iterate(ReadMultipleUserLogs::LogFileMonitor*&)
+  0.01   1273.41     0.13   603220     0.00     0.00  Dag::LogEventNodeLookup(ULogEvent const*, bool&)
+  0.01   1273.52     0.11   605608     0.00     0.00  Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&)
+  0.01   1273.63     0.11     2388     0.00     0.38  Dag::ProcessLogEvents(bool)
+  0.01   1273.74     0.11   301610     0.00     0.00  Job::Job(char const*, char const*, char const*)
+  0.01   1273.84     0.10 1339090475     0.00     0.00  debug_printf(debug_level, char const*, ...)
+  0.01   1273.92     0.09                             HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::startIterations()
+  0.01   1273.99     0.07  2927188     0.00     0.00  HashTable<MyString, Job*>::lookup(MyString const&, Job*&) const
+  0.01   1274.06     0.07   301610     0.00     0.00  Dag::ProcessSubmitEvent(Job*, bool, bool&)
+  0.01   1274.13     0.07   603220     0.00     0.00  Job::SetStatus(Job::status_t)
+  0.01   1274.20     0.07                             Dag::ProcessFailedSubmit(Job*, int)
+  0.01   1274.27     0.07   237848     0.00     0.00  Queue<Job*>::enqueue(Job* const&)
+  0.00   1274.33     0.06   904830     0.00     0.00  Job::GetJobstateJobTag()
+  0.00   1274.38     0.05   904830     0.00     0.00  Job::GetJobstateSequenceNum()
+  0.00   1274.43     0.05   301610     0.00     0.00  Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool)
+  0.00   1274.48     0.05        3     0.02     0.02  HashTable<int, Job*>::~HashTable()
+  0.00   1274.53     0.05        1     0.05   190.76  Dag::~Dag()
+  0.00   1274.58     0.05   777306     0.00     0.00  Job::SetCondorID(CondorID const&)
+  0.00   1274.62     0.04  2625578     0.00     0.00  Dag::FindNodeByName(char const*) const
+  0.00   1274.66     0.04   603220     0.00     0.00  time_to_str(long, MyString&)
+  0.00   1274.70     0.04   603220     0.00     0.00  Dag::PrintEvent(debug_level, ULogEvent const*, Job*, bool)
+  0.00   1274.74     0.04   603220     0.00     0.00  Dag::EventSanityCheck(ULogEvent const*, Job const*, bool*)
+  0.00   1274.78     0.04   301610     0.00     0.00  Dag::ProcessJobProcEnd(Job*, bool, bool)
+  0.00   1274.82     0.04       32     0.00     0.00  HashTable<int, Job*>::resize_hash_table(int)
+  0.00   1274.86     0.04                             JobstateLog::WriteSubmitFailure(Job*)
+  0.00   1274.89     0.03   603220     0.00     0.00  HashTable<int, Job*>::insert(int const&, Job* const&, bool)
+  0.00   1274.91     0.03   301610     0.00     0.00  List<Job::NodeVar>::~List()
+  0.00   1274.93     0.02   603220     0.00     0.00  time_to_str(tm const*, MyString&)
+  0.00   1274.95     0.02   603220     0.00     0.00  JobstateLog::CondorID2Str(int, int, MyString&)
+  0.00   1274.97     0.02   603220     0.00     0.00  Dag::UpdateJobCounts(Job*, int)
+  0.00   1274.99     0.02   301610     0.00     0.00  std::vector<unsigned char, std::allocator<unsigned char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned char*, std::vector<unsigned char, std::allocator<unsigned char> > >, unsigned long, unsigned char const&)
+  0.00   1275.01     0.02   237848     0.00     0.00  Dag::ProcessSuccessfulSubmit(Job*, CondorID const&)
+  0.00   1275.03     0.02        1     0.02     0.02  DagmanMetrics::~DagmanMetrics()
+  0.00   1275.05     0.02        1     0.02     0.02  HashTable<MyString, Job*>::~HashTable()
+  0.00   1275.07     0.02                             Dag::RemoveDependency(Job*, Job*)
+  0.00   1275.09     0.02                             Job::GetPreSkip() const
+  0.00   1275.10     0.01   904834     0.00     0.00  JobstateLog::Write(long const*, MyString const&)
+  0.00   1275.11     0.01   904830     0.00     0.00  JobstateLog::Write(long const*, Job*, char const*, char const*)
+  0.00   1275.12     0.01   603220     0.00     0.00  JobstateLog::WriteEvent(ULogEvent const*, Job*)
+  0.00   1275.13     0.01   603220     0.00     0.00  Job::SetLastEventTime(ULogEvent const*)
+  0.00   1275.14     0.01   301610     0.00     0.00  Dag::ProcessNotIdleEvent(Job*, int)
+  0.00   1275.15     0.01   301610     0.00     0.00  Dag::SanityCheckSubmitEvent(CondorID, Job const*)
+  0.00   1275.16     0.01        1     0.01     0.43  Dag::Bootstrap(bool)
+  0.00   1275.17     0.01                             condor_submit(Dagman const&, char const*, CondorID&, char const*, MyString&, List<Job::NodeVar>*, int, int, char const*, char const*, bool, MyString const&)
+  0.00   1275.18     0.01                             condor_event_timer()
+  0.00   1275.19     0.01                             Dag::RestartNode(Job*, bool)
+  0.00   1275.20     0.01                             Dag::RemoveBatchJob(Job*)
+  0.00   1275.21     0.01                             Dag::ProcessAbortEvent(ULogEvent const*, Job*, bool)
+  0.00   1275.22     0.01                             Dag::WriteNodeToRescue(_IO_FILE*, Job*, bool, bool)
+  0.00   1275.22     0.01 663215021     0.00     0.00  Job::CanAddChild(Job*, MyString&)
+  0.00   1275.23     0.01   603220     0.00     0.00  Job::SetProcIsIdle(int, bool)
+  0.00   1275.23     0.01   301610     0.00     0.00  Job::TerminateSuccess()
+  0.00   1275.24     0.01                             Job::ExecMetrics(int, tm const&, DagmanMetrics*)
+  0.00   1275.24     0.01                             Job::TermAbortMetrics(int, tm const&, DagmanMetrics*)
+  0.00   1275.24     0.00 1989645063     0.00     0.00  Job::Add(Job::queue_t, int)
+  0.00   1275.24     0.00 1326430042     0.00     0.00  std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::find(int const&)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Dag::AddDependency(Job*, Job*)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::CanAddParent(Job*, MyString&)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::AddChild(Job*)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::AddChild(Job*, MyString&)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::HasChild(Job*)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::AddParent(Job*)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::AddParent(Job*, MyString&)
+  0.00   1275.24     0.00 663215021     0.00     0.00  Job::HasParent(Job*)
+  0.00   1275.24     0.00  2625578     0.00     0.00  munge_job_name(char const*)
+  0.00   1275.24     0.00  1930563     0.00     0.00  Dag::LookupSplice(MyString, Dag*&)
+  0.00   1275.24     0.00  1930563     0.00     0.00  List<Job>::Append(Job*)
+  0.00   1275.24     0.00  1390030     0.00     0.00  Dag::FindAllNodesByName(char const*, char const*, char const*, int) const
+  0.00   1275.24     0.00   603220     0.00     0.00  isReservedWord(char const*)
+  0.00   1275.24     0.00   603220     0.00     0.00  Job::GetProcIsIdle(int)
+  0.00   1275.24     0.00   603220     0.00     0.00  Job::NumChildren() const
+  0.00   1275.24     0.00   539458     0.00     0.00  Dag::GetEventIDHash(bool)
+  0.00   1275.24     0.00   539458     0.00     0.00  Dag::PrintReadyQ(debug_level) const
+  0.00   1275.24     0.00   388463     0.00     0.00  JobstateLog::ParseLine(MyString&, long&, MyString&, int&)
+  0.00   1275.24     0.00   301611     0.00     0.00  util_check_lock_file(char const*)
+  0.00   1275.24     0.00   301610     0.00     0.00  IsValidNodeName(Dag*, char const*, MyString&)
+  0.00   1275.24     0.00   301610     0.00     0.00  containsIllegalChars(char const*)
+  0.00   1275.24     0.00   301610     0.00     0.00  IsValidSubmitFileName(char const*, MyString&)
+  0.00   1275.24     0.00   301610     0.00     0.00  AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&)
+  0.00   1275.24     0.00   301610     0.00     0.00  parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*)
+  0.00   1275.24     0.00   301610     0.00     0.00  parse_vars(Dag*, char const*, int)
+  0.00   1275.24     0.00   301610     0.00     0.00  next_possibly_quoted_token()
+  0.00   1275.24     0.00   301610     0.00     0.00  JobstateLog::WriteJobSuccessOrFailure(Job*)
+  0.00   1275.24     0.00   301610     0.00     0.00  DagmanMetrics::NodeFinished(bool, bool)
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::CheckForDagAbort(Job*, char const*)
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::DecrementProcCount(Job*)
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::ProcessIsIdleEvent(Job*, int)
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::Add(Job&)
+  0.00   1275.24     0.00   301610     0.00     0.00  Job::ResolveVarsInterpolations()
+  0.00   1275.24     0.00   301610     0.00     0.00  Job::Cleanup()
+  0.00   1275.24     0.00   301610     0.00     0.00  HashTable<MyString, Job*>::insert(MyString const&, Job* const&, bool)
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::NodeExists(char const*) const
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::GetEventIDHash(bool) const
+  0.00   1275.24     0.00   301610     0.00     0.00  Dag::FindNodeByEventID(CondorID) const
+  0.00   1275.24     0.00   301610     0.00     0.00  Job::NumParents() const
+  0.00   1275.24     0.00   237848     0.00     0.00  PrioritySimpleList<Job*>::Append(Job* const&, int)
+  0.00   1275.24     0.00   237848     0.00     0.00  PrioritySimpleList<Job*>::InsertAt(int, Job* const&, int)
+  0.00   1275.24     0.00   237848     0.00     0.00  Dag::StartNode(Job*, bool)
+  0.00   1275.24     0.00   138923     0.00     0.00  List<Job>::~List()
+  0.00   1275.24     0.00   138922     0.00     0.00  List<Job>::List()
+  0.00   1275.24     0.00    11943     0.00     0.00  Dag::NumNodesDone(bool) const
+  0.00   1275.24     0.00     9556     0.00     0.00  Dag::NumNodes(bool) const
+  0.00   1275.24     0.00     9545     0.00     0.00  Dag::FinishedRunning(bool) const
+  0.00   1275.24     0.00     4774     0.00     0.00  ScriptQ::RunWaitingScripts(bool)
+  0.00   1275.24     0.00     4773     0.00     0.00  Dag::DoneSuccess(bool) const
+  0.00   1275.24     0.00     2670     0.00     0.00  ExtArray<Job*>::set(int, Job*)
+  0.00   1275.24     0.00     2468     0.00     0.00  DagmanStats::Publish(compat_classad::ClassAd&) const
+  0.00   1275.24     0.00     2391     0.00     0.00  Dagman::PublishStats()
+  0.00   1275.24     0.00     2391     0.00     0.00  Dag::PrintDeferrals(debug_level, bool) const
+  0.00   1275.24     0.00     2390     0.00     0.03  print_status(bool)
+  0.00   1275.24     0.00     2390     0.00     0.00  JobstateLog::Flush()
+  0.00   1275.24     0.00     2388     0.00     0.00  Dag::DumpNodeStatus(bool, bool)
+  0.00   1275.24     0.00     2387     0.00     0.00  Dag::RunWaitingScripts()
+  0.00   1275.24     0.00     2387     0.00     0.00  Dag::GetCondorLogStatus()
+  0.00   1275.24     0.00     2386     0.00     0.00  Dag::DoneFailed(bool) const
+  0.00   1275.24     0.00      770     0.00     0.00  DagmanClassad::SetDagAttribute(char const*, int)
+  0.00   1275.24     0.00      100     0.00     0.00  RescueDagName(char const*, bool, int)
+  0.00   1275.24     0.00       81     0.00     0.00  DagmanClassad::OpenConnection()
+  0.00   1275.24     0.00       81     0.00     0.00  DagmanClassad::CloseConnection(_Qmgr_connection*)
+  0.00   1275.24     0.00       77     0.00     0.00  DagmanClassad::SetDagAttribute(char const*, compat_classad::ClassAd const&)
+  0.00   1275.24     0.00       77     0.00     0.00  DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&)
+  0.00   1275.24     0.00       72     0.00     0.00  std::pair<std::_Rb_tree_iterator<MyString>, bool> std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_insert_unique<MyString const&>(MyString const&)
+  0.00   1275.24     0.00       16     0.00     0.00  SimpleList<Job*>::resize(int)
+  0.00   1275.24     0.00       16     0.00     0.00  PrioritySimpleList<Job*>::resize(int)
+  0.00   1275.24     0.00       16     0.00     0.00  HashTable<MyString, Job*>::resize_hash_table(int)
+  0.00   1275.24     0.00        8     0.00     0.00  ExtArray<Job*>::resize(int)
+  0.00   1275.24     0.00        5     0.00     0.00  parse_pin_in_out(Dag*, char const*, int, bool)
+  0.00   1275.24     0.00        5     0.00     0.00  DagmanClassad::GetDagAttribute(char const*, MyString&, bool)
+  0.00   1275.24     0.00        4     0.00     0.00  HashTable<MyString, Dag*>::iterate(MyString&, Dag*&)
+  0.00   1275.24     0.00        3     0.00     0.00  CondorVersion
+  0.00   1275.24     0.00        3     0.00     0.00  HashTable<int, Job*>::HashTable(unsigned long (*)(int const&))
+  0.00   1275.24     0.00        2     0.00     0.00  DagmanMetrics::GetTime()
+  0.00   1275.24     0.00        2     0.00     0.00  Dag::LiftSplices(SpliceLayer)
+  0.00   1275.24     0.00        2     0.00     0.00  Dag::DeletePinList(std::vector<std::vector<Job*, std::allocator<Job*> >*, std::allocator<std::vector<Job*, std::allocator<Job*> >*> >&)
+  0.00   1275.24     0.00        2     0.00     0.00  Dag::PropagateDirectoryToAllNodes()
+  0.00   1275.24     0.00        2     0.00     0.00  ScriptQ::ScriptQ(Dag*)
+  0.00   1275.24     0.00        2     0.00     0.00  ScriptQ::~ScriptQ()
+  0.00   1275.24     0.00        2     0.00     0.00  ScriptQ::~ScriptQ()
+  0.00   1275.24     0.00        2     0.00     0.00  ExtArray<Job*>::ExtArray(int)
+  0.00   1275.24     0.00        2     0.00     0.00  HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::iterate(ThrottleByCategory::ThrottleInfo*&)
+  0.00   1275.24     0.00        2     0.00     0.00  HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::needs_resizing()
+  0.00   1275.24     0.00        2     0.00     0.00  HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::clear()
+  0.00   1275.24     0.00        1     0.00   190.78  ExitSuccess()
+  0.00   1275.24     0.00        1     0.00     0.00  HaltFileName(MyString const&)
+  0.00   1275.24     0.00        1     0.00     0.00  tolerant_unlink(char const*)
+  0.00   1275.24     0.00        1     0.00     0.00  set_fake_condorID(int)
+  0.00   1275.24     0.00        1     0.00     0.00  parseSetDoNameMunge(bool)
+  0.00   1275.24     0.00        1     0.00     0.00  FindLastRescueDagNum(char const*, bool, int)
+  0.00   1275.24     0.00        1     0.00     0.00  util_create_lock_file(char const*, bool)
+  0.00   1275.24     0.00        1     0.00     0.00  debug_cache_stop_caching()
+  0.00   1275.24     0.00        1     0.00     0.00  debug_cache_start_caching()
+  0.00   1275.24     0.00        1     0.00     6.69  parse(Dag*, char const*, bool, bool)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanStats::Init()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanStats::DagmanStats()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanStats::~DagmanStats()
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::InitializeRecovery()
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::WriteDagmanStarted(CondorID const&)
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::WriteDagmanFinished(int)
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::WriteRecoveryStarted()
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::WriteRecoveryFinished()
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::JobstateLog()
+  0.00   1275.24     0.00        1     0.00     0.00  JobstateLog::~JobstateLog()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanClassad::GetAcctInfo(MyString&, MyString&)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanClassad::GetSetBatchName(MyString const&, MyString&)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanClassad::InitializeMetrics()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanClassad::GetInfo(MyString&, MyString&)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanClassad::DagmanClassad(CondorID const&)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanClassad::~DagmanClassad()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanMetrics::GetVersion()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanMetrics::SetDagmanIds(CondorID const&, int)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanMetrics::SetStartTime()
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanMetrics::WriteMetricsFile(int, Dag::dag_status)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanMetrics::Report(int, Dag::dag_status)
+  0.00   1275.24     0.00        1     0.00     0.00  DagmanMetrics::DagmanMetrics(Dag*, char const*, int)
+  0.00   1275.24     0.00        1     0.00     0.00  PrioritySimpleList<Job*>::~PrioritySimpleList()
+  0.00   1275.24     0.00        1     0.00     0.00  ThrottleByCategory::ThrottleByCategory()
+  0.00   1275.24     0.00        1     0.00     0.00  ThrottleByCategory::~ThrottleByCategory()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::DumpDotFile()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::CheckAllJobs()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::CreateMetrics(char const*, int)
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::PrintDagFiles(StringList&)
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::ReportMetrics(int)
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::MonitorLogFile()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::SetAllowEvents(int)
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::UnmonitorLogFile()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::CheckThrottleCats()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::SetJobstateLogFileName(char const*)
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::ResolveVarsInterpolations()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::SetPendingNodeReportInterval(int)
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::RecordInitialAndTerminalNodes()
+  0.00   1275.24     0.00        1     0.00     0.00  Dag::GetReject(MyString&)
+  0.00   1275.24     0.00        1     0.00     0.00  Dagman::CheckLogFileMode(CondorVersionInfo const&)
+  0.00   1275.24     0.00        1     0.00     0.00  Dagman::ResolveDefaultLog()
+  0.00   1275.24     0.00        1     0.00     0.00  Dagman::Config()
+  0.00   1275.24     0.00        1     0.00     0.00  HashTable<MyString, Dag*>::~HashTable()
+  0.00   1275.24     0.00        1     0.00     0.00  HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::clear()
+  0.00   1275.24     0.00        1     0.00     0.00  HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::HashTable(unsigned long (*)(MyString const&))
+  0.00   1275.24     0.00        1     0.00     0.00  HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::~HashTable()
+  0.00   1275.24     0.00        1     0.00     0.00  HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::~HashTable()
+  0.00   1275.24     0.00        1     0.00     0.00  std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_erase(std::_Rb_tree_node<MyString>*)
+  0.00   1275.24     0.00        1     0.00     0.00  main
+
+ %         the percentage of the total running time of the
+time       program used by this function.
+
+cumulative a running sum of the number of seconds accounted
+ seconds   for by this function and those listed above it.
+
+ self      the number of seconds accounted for by this
+seconds    function alone.  This is the major sort for this
+           listing.
+
+calls      the number of times this function was invoked, if
+           this function is profiled, else blank.
+
+ self      the average number of milliseconds spent in this
+ms/call    function per call, if this function is profiled,
+	   else blank.
+
+ total     the average number of milliseconds spent in this
+ms/call    function and its descendents per call, if this
+	   function is profiled, else blank.
+
+name       the name of the function.  This is the minor sort
+           for this listing. The index shows the location of
+	   the function in the gprof listing. If the index is
+	   in parenthesis it shows where it would appear in
+	   the gprof listing if it were to be printed.
+
+Copyright (C) 2012-2016 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+		     Call graph (explanation follows)
+
+
+granularity: each sample hit covers 2 byte(s) for 0.00% of 1275.24 seconds
+
+index % time    self  children    called     name
+                                                 <spontaneous>
+[1]     99.4    0.01 1267.15                 condor_event_timer() [1]
+                0.11  910.51    2387/2388        Dag::ProcessLogEvents(bool) [2]
+                0.00  190.78       1/1           ExitSuccess() [9]
+                0.00   65.60    2387/2390        print_status(bool) [15]
+               65.60    0.00    2387/4777        Dag::NumHeldJobProcs() [12]
+                0.20   34.34    2387/2387        Dag::SubmitReadyJobs(Dagman const&) [16]
+                0.00    0.00    7163/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00    2387/4774        ScriptQ::RunWaitingScripts(bool) [94]
+                0.00    0.00    2387/2387        Dag::RunWaitingScripts() [96]
+                0.00    0.00       1/1           Dag::CheckAllJobs() [114]
+                0.00    0.00       1/2391        Dag::PrintDeferrals(debug_level, bool) const [103]
+                0.00    0.00    7161/11943       Dag::NumNodesDone(bool) const [155]
+                0.00    0.00    4774/9556        Dag::NumNodes(bool) const [156]
+                0.00    0.00    4773/4773        Dag::DoneSuccess(bool) const [158]
+                0.00    0.00    2387/2387        Dag::GetCondorLogStatus() [163]
+                0.00    0.00    2387/2388        Dag::DumpNodeStatus(bool, bool) [162]
+                0.00    0.00    2386/2386        Dag::DoneFailed(bool) const [164]
+                0.00    0.00    2386/9545        Dag::FinishedRunning(bool) const [157]
+-----------------------------------------------
+                0.00    0.38       1/2388        Dag::Bootstrap(bool) [26]
+                0.11  910.51    2387/2388        condor_event_timer() [1]
+[2]     71.4    0.11  910.89    2388         Dag::ProcessLogEvents(bool) [2]
+                0.11  910.78  605608/605608      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+                0.00    0.00    2391/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00    2387/2390        JobstateLog::Flush() [161]
+-----------------------------------------------
+                0.11  910.78  605608/605608      Dag::ProcessLogEvents(bool) [2]
+[3]     71.4    0.11  910.78  605608         Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+                0.05  910.11  301610/301610      Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+                0.13    0.11  603220/603220      Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+                0.01    0.11  603220/603220      JobstateLog::WriteEvent(ULogEvent const*, Job*) [38]
+                0.04    0.06  603220/603220      Dag::PrintEvent(debug_level, ULogEvent const*, Job*, bool) [41]
+                0.07    0.01  301610/301610      Dag::ProcessSubmitEvent(Job*, bool, bool&) [45]
+                0.04    0.00  603220/603220      Dag::EventSanityCheck(ULogEvent const*, Job const*, bool*) [57]
+                0.01    0.02  301610/301610      Dag::ProcessNotIdleEvent(Job*, int) [64]
+                0.00    0.02  301610/301610      Dag::ProcessIsIdleEvent(Job*, int) [74]
+                0.01    0.00  603220/603220      Job::SetLastEventTime(ULogEvent const*) [78]
+                0.00    0.00 1208828/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00  301610/539458      Dag::PrintReadyQ(debug_level) const [138]
+-----------------------------------------------
+                0.05  910.11  301610/301610      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[4]     71.4    0.05  910.11  301610         Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+                4.64  905.37  301610/301610      Dag::TerminateJob(Job*, bool, bool) [5]
+                0.04    0.05  301610/301610      Dag::ProcessJobProcEnd(Job*, bool, bool) [43]
+                0.00    0.01  301610/301610      Dag::DecrementProcCount(Job*) [79]
+                0.00    0.00  301610/1329080770     Job::GetStatus() const [18]
+                0.00    0.00  301610/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00  301610/301610      Job::Cleanup() [146]
+                0.00    0.00  301610/301610      Dag::CheckForDagAbort(Job*, char const*) [144]
+-----------------------------------------------
+                4.64  905.37  301610/301610      Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+[5]     71.4    4.64  905.37  301610         Dag::TerminateJob(Job*, bool, bool) [5]
+                1.31  782.43 663215021/663215021     Job::Remove(Job::queue_t, int) [6]
+               47.46   67.79 663215021/663215021     Dag::FindNodeByNodeID(int) const [13]
+                6.35    0.00 663516631/1329080770     Job::GetStatus() const [18]
+                0.01    0.04  301610/301610      Job::TerminateSuccess() [58]
+                0.00    0.00  301610/301610      DagmanMetrics::NodeFinished(bool, bool) [143]
+                0.00    0.00  209651/237848      Dag::StartNode(Job*, bool) [152]
+-----------------------------------------------
+                1.31  782.43 663215021/663215021     Dag::TerminateJob(Job*, bool, bool) [5]
+[6]     61.5    1.31  782.43 663215021         Job::Remove(Job::queue_t, int) [6]
+              719.09   63.34 663215021/663215021     std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::erase(int const&) [7]
+-----------------------------------------------
+              719.09   63.34 663215021/663215021     Job::Remove(Job::queue_t, int) [6]
+[7]     61.4  719.09   63.34 663215021         std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::erase(int const&) [7]
+               63.34    0.00  301454/1206284     std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*) [8]
+-----------------------------------------------
+                             1326731496             std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*) [8]
+               63.34    0.00  301454/1206284     std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::erase(int const&) [7]
+              190.12    0.00  904830/1206284     Job::~Job() [11]
+[8]     19.9  253.46    0.00 1206284+1326731496 std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*) [8]
+                             1326731496             std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*) [8]
+-----------------------------------------------
+                0.00  190.78       1/1           condor_event_timer() [1]
+[9]     15.0    0.00  190.78       1         ExitSuccess() [9]
+                0.05  190.71       1/1           Dag::~Dag() [10]
+                0.00    0.03       1/2390        print_status(bool) [15]
+                0.00    0.00       1/1           JobstateLog::WriteDagmanFinished(int) [98]
+                0.00    0.00       1/1           DagmanMetrics::Report(int, Dag::dag_status) [106]
+                0.00    0.00       1/2391        Dagman::PublishStats() [95]
+                0.00    0.00       1/2388        Dag::DumpNodeStatus(bool, bool) [162]
+                0.00    0.00       1/1           Dag::ReportMetrics(int) [213]
+                0.00    0.00       1/1           tolerant_unlink(char const*) [191]
+                0.00    0.00       1/1           ThrottleByCategory::~ThrottleByCategory() [209]
+                0.00    0.00       1/1           DagmanClassad::~DagmanClassad() [202]
+-----------------------------------------------
+                0.05  190.71       1/1           ExitSuccess() [9]
+[10]    15.0    0.05  190.71       1         Dag::~Dag() [10]
+                0.33  190.29  301610/301610      Job::~Job() [11]
+                0.05    0.00       3/3           HashTable<int, Job*>::~HashTable() [54]
+                0.02    0.00       1/1           DagmanMetrics::~DagmanMetrics() [71]
+                0.02    0.00       1/1           HashTable<MyString, Job*>::~HashTable() [72]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/1           Dag::UnmonitorLogFile() [116]
+                0.00    0.00  301610/301611      util_check_lock_file(char const*) [108]
+                0.00    0.00       2/2           ScriptQ::~ScriptQ() [184]
+                0.00    0.00       2/2           Dag::DeletePinList(std::vector<std::vector<Job*, std::allocator<Job*> >*, std::allocator<std::vector<Job*, std::allocator<Job*> >*> >&) [181]
+                0.00    0.00       1/1           PrioritySimpleList<Job*>::~PrioritySimpleList() [207]
+                0.00    0.00       1/1           std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_erase(std::_Rb_tree_node<MyString>*) [227]
+                0.00    0.00       1/1           JobstateLog::~JobstateLog() [201]
+                0.00    0.00       1/138923      List<Job>::~List() [153]
+                0.00    0.00       1/1           HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::~HashTable() [226]
+                0.00    0.00       1/1           HashTable<MyString, Dag*>::~HashTable() [222]
+-----------------------------------------------
+                0.33  190.29  301610/301610      Dag::~Dag() [10]
+[11]    14.9    0.33  190.29  301610         Job::~Job() [11]
+              190.12    0.00  904830/1206284     std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*) [8]
+                0.14    0.03  301610/301610      List<Job::NodeVar>::~List() [33]
+-----------------------------------------------
+               65.60    0.00    2387/4777        condor_event_timer() [1]
+               65.68    0.00    2390/4777        print_status(bool) [15]
+[12]    10.3  131.29    0.00    4777         Dag::NumHeldJobProcs() [12]
+-----------------------------------------------
+               47.46   67.79 663215021/663215021     Dag::TerminateJob(Job*, bool, bool) [5]
+[13]     9.0   47.46   67.79 663215021         Dag::FindNodeByNodeID(int) const [13]
+               67.79    0.00 663215021/663818241     HashTable<int, Job*>::lookup(int const&, Job*&) const [14]
+-----------------------------------------------
+                0.03    0.00  301610/663818241     Dag::FindNodeByEventID(CondorID) const [62]
+                0.03    0.00  301610/663818241     Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+               67.79    0.00 663215021/663818241     Dag::FindNodeByNodeID(int) const [13]
+[14]     5.3   67.85    0.00 663818241         HashTable<int, Job*>::lookup(int const&, Job*&) const [14]
+-----------------------------------------------
+                0.00    0.03       1/2390        Dag::Bootstrap(bool) [26]
+                0.00    0.03       1/2390        ExitSuccess() [9]
+                0.00    0.03       1/2390        main_init(int, char**) [20]
+                0.00   65.60    2387/2390        condor_event_timer() [1]
+[15]     5.2    0.00   65.68    2390         print_status(bool) [15]
+               65.68    0.00    2390/4777        Dag::NumHeldJobProcs() [12]
+                0.00    0.00   14340/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00    2390/2391        Dagman::PublishStats() [95]
+                0.00    0.00    2390/2391        Dag::PrintDeferrals(debug_level, bool) const [103]
+                0.00    0.00    4780/9556        Dag::NumNodes(bool) const [156]
+                0.00    0.00    4780/11943       Dag::NumNodesDone(bool) const [155]
+                0.00    0.00      77/77          DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+-----------------------------------------------
+                0.20   34.34    2387/2387        condor_event_timer() [1]
+[16]     2.7    0.20   34.34    2387         Dag::SubmitReadyJobs(Dagman const&) [16]
+               21.15    0.00  237848/237848      SimpleList<Job*>::DeleteCurrent() [17]
+               12.31    0.00  237848/237848      PrioritySimpleList<Job*>::DeleteCurrent() [19]
+                0.16    0.29  237848/237848      Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&) [25]
+                0.25    0.00    2387/2388        PrioritySimpleList<Job*>::PrioritySimpleList() [29]
+                0.02    0.15  237848/237848      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.00    0.00  237848/1329080770     Job::GetStatus() const [18]
+                0.00    0.00  240235/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+               21.15    0.00  237848/237848      Dag::SubmitReadyJobs(Dagman const&) [16]
+[17]     1.7   21.15    0.00  237848         SimpleList<Job*>::DeleteCurrent() [17]
+-----------------------------------------------
+                0.00    0.00  237848/1329080770     Dag::SubmitReadyJobs(Dagman const&) [16]
+                0.00    0.00  301610/1329080770     Dag::ProcessIsIdleEvent(Job*, int) [74]
+                0.00    0.00  301610/1329080770     Dag::ProcessNotIdleEvent(Job*, int) [64]
+                0.00    0.00  301610/1329080770     Dag::ProcessJobProcEnd(Job*, bool, bool) [43]
+                0.00    0.00  301610/1329080770     Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+                0.01    0.00  904830/1329080770     Dag::Bootstrap(bool) [26]
+                6.34    0.00 663215021/1329080770     Job::AddParent(Job*, MyString&) [24]
+                6.35    0.00 663516631/1329080770     Dag::TerminateJob(Job*, bool, bool) [5]
+[18]     1.0   12.71    0.00 1329080770         Job::GetStatus() const [18]
+-----------------------------------------------
+               12.31    0.00  237848/237848      Dag::SubmitReadyJobs(Dagman const&) [16]
+[19]     1.0   12.31    0.00  237848         PrioritySimpleList<Job*>::DeleteCurrent() [19]
+-----------------------------------------------
+                                                 <spontaneous>
+[20]     0.6    0.00    7.38                 main_init(int, char**) [20]
+                0.00    6.69       1/1           parse(Dag*, char const*, bool, bool) [21]
+                0.01    0.42       1/1           Dag::Bootstrap(bool) [26]
+                0.24    0.00       1/1           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+                0.00    0.03       1/2390        print_status(bool) [15]
+                0.00    0.00       1/1           JobstateLog::WriteDagmanStarted(CondorID const&) [97]
+                0.00    0.00       1/1           Dagman::Config() [102]
+                0.00    0.00      27/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/1           DagmanClassad::GetAcctInfo(MyString&, MyString&) [104]
+                0.00    0.00       1/1           Dagman::ResolveDefaultLog() [105]
+                0.00    0.00       1/1           DagmanClassad::GetSetBatchName(MyString const&, MyString&) [107]
+                0.00    0.00       1/1           DagmanClassad::DagmanClassad(CondorID const&) [112]
+                0.00    0.00       1/1           util_create_lock_file(char const*, bool) [110]
+                0.00    0.00       1/301611      util_check_lock_file(char const*) [108]
+                0.00    0.00       2/3           CondorVersion [118]
+                0.00    0.00       1/1           DagmanMetrics::SetStartTime() [205]
+                0.00    0.00       1/81          DagmanClassad::CloseConnection(_Qmgr_connection*) [168]
+                0.00    0.00       1/1           FindLastRescueDagNum(char const*, bool, int) [194]
+                0.00    0.00       1/1           Dag::SetAllowEvents(int) [214]
+                0.00    0.00       1/1           parseSetDoNameMunge(bool) [193]
+                0.00    0.00       1/2           Dag::LiftSplices(SpliceLayer) [180]
+                0.00    0.00       1/1           Dag::CreateMetrics(char const*, int) [211]
+                0.00    0.00       1/1           Dag::CheckThrottleCats() [215]
+                0.00    0.00       1/1           Dag::ResolveVarsInterpolations() [217]
+                0.00    0.00       1/9556        Dag::NumNodes(bool) const [156]
+                0.00    0.00       1/1           Dag::GetReject(MyString&) [220]
+                0.00    0.00       1/1           Dag::DumpDotFile() [210]
+                0.00    0.00       1/1           Dag::SetPendingNodeReportInterval(int) [218]
+                0.00    0.00       1/1           Dagman::CheckLogFileMode(CondorVersionInfo const&) [221]
+-----------------------------------------------
+                0.00    6.69       1/1           main_init(int, char**) [20]
+[21]     0.5    0.00    6.69       1         parse(Dag*, char const*, bool, bool) [21]
+                0.00    6.40 663215021/663215021     Dag::AddDependency(Job*, Job*) [22]
+                0.00    0.15  301610/301610      parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+                0.02    0.04 1628953/2625578     Dag::FindNodeByName(char const*) const [40]
+                0.05    0.00 666134005/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.02  786810/1390030     Dag::FindAllNodesByName(char const*, char const*, char const*, int) const [63]
+                0.00    0.01  301610/301610      parse_vars(Dag*, char const*, int) [76]
+                0.00    0.00 2022358/2625578     munge_job_name(char const*) [132]
+                0.00    0.00 1628953/1930563     Dag::LookupSplice(MyString, Dag*&) [133]
+                0.00    0.00 1628953/1930563     List<Job>::Append(Job*) [134]
+                0.00    0.00  138922/138922      List<Job>::List() [154]
+                0.00    0.00  138922/138923      List<Job>::~List() [153]
+                0.00    0.00       1/2           Dag::LiftSplices(SpliceLayer) [180]
+                0.00    0.00       1/1           Dag::RecordInitialAndTerminalNodes() [219]
+                0.00    0.00       1/1           Dag::SetJobstateLogFileName(char const*) [216]
+-----------------------------------------------
+                0.00    6.40 663215021/663215021     parse(Dag*, char const*, bool, bool) [21]
+[22]     0.5    0.00    6.40 663215021         Dag::AddDependency(Job*, Job*) [22]
+                0.00    6.34 663215021/663215021     Job::AddParent(Job*) [23]
+                0.05    0.00 663215021/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.01 663215021/663215021     Job::AddChild(Job*) [89]
+-----------------------------------------------
+                0.00    6.34 663215021/663215021     Dag::AddDependency(Job*, Job*) [22]
+[23]     0.5    0.00    6.34 663215021         Job::AddParent(Job*) [23]
+                0.00    6.34 663215021/663215021     Job::AddParent(Job*, MyString&) [24]
+-----------------------------------------------
+                0.00    6.34 663215021/663215021     Job::AddParent(Job*) [23]
+[24]     0.5    0.00    6.34 663215021         Job::AddParent(Job*, MyString&) [24]
+                6.34    0.00 663215021/1329080770     Job::GetStatus() const [18]
+                0.00    0.00 1326430042/1989645063     Job::Add(Job::queue_t, int) [127]
+                0.00    0.00 663215021/663215021     Job::CanAddParent(Job*, MyString&) [129]
+                0.00    0.00 663215021/663215021     Job::HasParent(Job*) [131]
+-----------------------------------------------
+                0.16    0.29  237848/237848      Dag::SubmitReadyJobs(Dagman const&) [16]
+[25]     0.0    0.16    0.29  237848         Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&) [25]
+                0.28    0.00  237848/237848      fake_condor_submit(CondorID&, Job*, char const*, char const*, char const*) [28]
+                0.01    0.00  237848/777306      Job::SetCondorID(CondorID const&) [55]
+                0.00    0.00  237848/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.01    0.42       1/1           main_init(int, char**) [20]
+[26]     0.0    0.01    0.42       1         Dag::Bootstrap(bool) [26]
+                0.00    0.38       1/2388        Dag::ProcessLogEvents(bool) [2]
+                0.00    0.03       1/2390        print_status(bool) [15]
+                0.01    0.00  904830/1329080770     Job::GetStatus() const [18]
+                0.00    0.00       1/1           JobstateLog::WriteRecoveryStarted() [99]
+                0.00    0.00       1/1           JobstateLog::WriteRecoveryFinished() [100]
+                0.00    0.00       1/1           JobstateLog::InitializeRecovery() [101]
+                0.00    0.00       3/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/1           Dag::MonitorLogFile() [115]
+                0.00    0.00   28197/237848      Dag::StartNode(Job*, bool) [152]
+                0.00    0.00       1/11943       Dag::NumNodesDone(bool) const [155]
+                0.00    0.00       1/1           debug_cache_start_caching() [196]
+                0.00    0.00       1/1           debug_cache_stop_caching() [195]
+                0.00    0.00       1/1           set_fake_condorID(int) [192]
+-----------------------------------------------
+                                                 <spontaneous>
+[27]     0.0    0.28    0.00                 Job::SanityCheck() const [27]
+-----------------------------------------------
+                0.28    0.00  237848/237848      Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&) [25]
+[28]     0.0    0.28    0.00  237848         fake_condor_submit(CondorID&, Job*, char const*, char const*, char const*) [28]
+-----------------------------------------------
+                0.00    0.00       1/2388        Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+                0.25    0.00    2387/2388        Dag::SubmitReadyJobs(Dagman const&) [16]
+[29]     0.0    0.26    0.00    2388         PrioritySimpleList<Job*>::PrioritySimpleList() [29]
+-----------------------------------------------
+                0.24    0.00       1/1           main_init(int, char**) [20]
+[30]     0.0    0.24    0.00       1         Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+                0.00    0.00       1/2388        PrioritySimpleList<Job*>::PrioritySimpleList() [29]
+                0.00    0.00       2/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       3/3           HashTable<int, Job*>::HashTable(unsigned long (*)(int const&)) [178]
+                0.00    0.00       2/2           ExtArray<Job*>::ExtArray(int) [186]
+                0.00    0.00       2/2           ScriptQ::ScriptQ(Dag*) [183]
+                0.00    0.00       1/1           HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::HashTable(unsigned long (*)(MyString const&)) [224]
+                0.00    0.00       1/1           ThrottleByCategory::ThrottleByCategory() [208]
+                0.00    0.00       1/1           JobstateLog::JobstateLog() [200]
+                0.00    0.00       1/1           Dag::PrintDagFiles(StringList&) [212]
+                0.00    0.00       1/1           HaltFileName(MyString const&) [190]
+-----------------------------------------------
+                0.13    0.11  603220/603220      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[31]     0.0    0.13    0.11  603220         Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+                0.00    0.03  301610/301610      Dag::FindNodeByEventID(CondorID) const [62]
+                0.03    0.00  301610/663818241     HashTable<int, Job*>::lookup(int const&, Job*&) const [14]
+                0.02    0.00  301610/777306      Job::SetCondorID(CondorID const&) [55]
+                0.00    0.01  301610/2625578     Dag::FindNodeByName(char const*) const [40]
+                0.01    0.00  301610/301610      Dag::SanityCheckSubmitEvent(CondorID, Job const*) [80]
+                0.00    0.00   63762/603220      HashTable<int, Job*>::insert(int const&, Job* const&, bool) [49]
+                0.00    0.00  301610/539458      Dag::GetEventIDHash(bool) [137]
+-----------------------------------------------
+                0.02    0.15  237848/237848      Dag::SubmitReadyJobs(Dagman const&) [16]
+[32]     0.0    0.02    0.15  237848         Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.07    0.00  237848/237848      Queue<Job*>::enqueue(Job* const&) [50]
+                0.03    0.00  237848/603220      Job::SetStatus(Job::status_t) [46]
+                0.01    0.02  237848/603220      HashTable<int, Job*>::insert(int const&, Job* const&, bool) [49]
+                0.01    0.00  237848/777306      Job::SetCondorID(CondorID const&) [55]
+                0.01    0.00  237848/603220      Dag::UpdateJobCounts(Job*, int) [68]
+                0.00    0.00  237848/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00  237848/539458      Dag::GetEventIDHash(bool) [137]
+-----------------------------------------------
+                0.14    0.03  301610/301610      Job::~Job() [11]
+[33]     0.0    0.14    0.03  301610         List<Job::NodeVar>::~List() [33]
+                0.03    0.00  301610/301610      List<Job::NodeVar>::~List() [65]
+-----------------------------------------------
+                0.00    0.15  301610/301610      parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+[34]     0.0    0.00    0.15  301610         AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [34]
+                0.11    0.00  301610/301610      Job::Job(char const*, char const*, char const*) [39]
+                0.00    0.04  301610/301610      Dag::Add(Job&) [61]
+                0.00    0.01  301610/301610      IsValidNodeName(Dag*, char const*, MyString&) [86]
+                0.00    0.00  301610/301610      IsValidSubmitFileName(char const*, MyString&) [141]
+-----------------------------------------------
+                0.00    0.15  301610/301610      parse(Dag*, char const*, bool, bool) [21]
+[35]     0.0    0.00    0.15  301610         parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+                0.00    0.15  301610/301610      AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [34]
+                0.00    0.00  301610/603220      isReservedWord(char const*) [135]
+                0.00    0.00  301610/301610      containsIllegalChars(char const*) [140]
+                0.00    0.00  301610/2625578     munge_job_name(char const*) [132]
+                0.00    0.00  301610/301610      next_possibly_quoted_token() [142]
+                0.00    0.00  301610/1930563     Dag::LookupSplice(MyString, Dag*&) [133]
+-----------------------------------------------
+                                                 <spontaneous>
+[36]     0.0    0.14    0.00                 HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::iterate(ReadMultipleUserLogs::LogFileMonitor*&) [36]
+-----------------------------------------------
+                0.00    0.04  301610/904830      JobstateLog::WriteJobSuccessOrFailure(Job*) [56]
+                0.01    0.08  603220/904830      JobstateLog::WriteEvent(ULogEvent const*, Job*) [38]
+[37]     0.0    0.01    0.12  904830         JobstateLog::Write(long const*, Job*, char const*, char const*) [37]
+                0.06    0.00  904830/904830      Job::GetJobstateJobTag() [51]
+                0.05    0.00  904830/904830      Job::GetJobstateSequenceNum() [53]
+                0.01    0.00  904830/904834      JobstateLog::Write(long const*, MyString const&) [77]
+-----------------------------------------------
+                0.01    0.11  603220/603220      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[38]     0.0    0.01    0.11  603220         JobstateLog::WriteEvent(ULogEvent const*, Job*) [38]
+                0.01    0.08  603220/904830      JobstateLog::Write(long const*, Job*, char const*, char const*) [37]
+                0.02    0.00  603220/603220      JobstateLog::CondorID2Str(int, int, MyString&) [67]
+-----------------------------------------------
+                0.11    0.00  301610/301610      AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [34]
+[39]     0.0    0.11    0.00  301610         Job::Job(char const*, char const*, char const*) [39]
+                0.00    0.00  301610/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.01  301610/2625578     Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+                0.01    0.02  695015/2625578     Dag::FindAllNodesByName(char const*, char const*, char const*, int) const [63]
+                0.02    0.04 1628953/2625578     parse(Dag*, char const*, bool, bool) [21]
+[40]     0.0    0.04    0.06 2625578         Dag::FindNodeByName(char const*) const [40]
+                0.06    0.00 2625578/2927188     HashTable<MyString, Job*>::lookup(MyString const&, Job*&) const [47]
+-----------------------------------------------
+                0.04    0.06  603220/603220      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[41]     0.0    0.04    0.06  603220         Dag::PrintEvent(debug_level, ULogEvent const*, Job*, bool) [41]
+                0.04    0.02  603220/603220      time_to_str(long, MyString&) [52]
+                0.00    0.00  603220/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1339090475     util_create_lock_file(char const*, bool) [110]
+                0.00    0.00       1/1339090475     util_check_lock_file(char const*) [108]
+                0.00    0.00       1/1339090475     Dag::MonitorLogFile() [115]
+                0.00    0.00       1/1339090475     Dag::UnmonitorLogFile() [116]
+                0.00    0.00       1/1339090475     Dag::CheckAllJobs() [114]
+                0.00    0.00       1/1339090475     Dag::~Dag() [10]
+                0.00    0.00       1/1339090475     DagmanMetrics::WriteMetricsFile(int, Dag::dag_status) [113]
+                0.00    0.00       1/1339090475     DagmanMetrics::Report(int, Dag::dag_status) [106]
+                0.00    0.00       1/1339090475     DagmanClassad::InitializeMetrics() [111]
+                0.00    0.00       1/1339090475     DagmanClassad::GetDagAttribute(char const*, MyString&, bool) [109]
+                0.00    0.00       1/1339090475     DagmanClassad::GetSetBatchName(MyString const&, MyString&) [107]
+                0.00    0.00       2/1339090475     Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+                0.00    0.00       2/1339090475     DagmanClassad::GetAcctInfo(MyString&, MyString&) [104]
+                0.00    0.00       2/1339090475     Dagman::ResolveDefaultLog() [105]
+                0.00    0.00       3/1339090475     Dag::Bootstrap(bool) [26]
+                0.00    0.00       4/1339090475     Dag::PrintDeferrals(debug_level, bool) const [103]
+                0.00    0.00      27/1339090475     main_init(int, char**) [20]
+                0.00    0.00      38/1339090475     Dagman::Config() [102]
+                0.00    0.00      74/1339090475     JobstateLog::InitializeRecovery() [101]
+                0.00    0.00    2391/1339090475     Dagman::PublishStats() [95]
+                0.00    0.00    2391/1339090475     Dag::ProcessLogEvents(bool) [2]
+                0.00    0.00    4774/1339090475     ScriptQ::RunWaitingScripts(bool) [94]
+                0.00    0.00    7163/1339090475     condor_event_timer() [1]
+                0.00    0.00   14340/1339090475     print_status(bool) [15]
+                0.00    0.00  237848/1339090475     Job::SetCondorID(CondorID const&) [55]
+                0.00    0.00  237848/1339090475     Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&) [25]
+                0.00    0.00  237848/1339090475     Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.00    0.00  240235/1339090475     Dag::SubmitReadyJobs(Dagman const&) [16]
+                0.00    0.00  301610/1339090475     Job::Job(char const*, char const*, char const*) [39]
+                0.00    0.00  301610/1339090475     Dag::ProcessJobProcEnd(Job*, bool, bool) [43]
+                0.00    0.00  301610/1339090475     Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+                0.00    0.00  603220/1339090475     Dag::PrintEvent(debug_level, ULogEvent const*, Job*, bool) [41]
+                0.00    0.00  603220/1339090475     Dag::EventSanityCheck(ULogEvent const*, Job const*, bool*) [57]
+                0.00    0.00 1206440/1339090475     Job::SetStatus(Job::status_t) [46]
+                0.00    0.00 1208828/1339090475     Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+                0.00    0.00 4229910/1339090475     parse_vars(Dag*, char const*, int) [76]
+                0.05    0.00 663215021/1339090475     Dag::AddDependency(Job*, Job*) [22]
+                0.05    0.00 666134005/1339090475     parse(Dag*, char const*, bool, bool) [21]
+[42]     0.0    0.10    0.00 1339090475         debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.04    0.05  301610/301610      Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+[43]     0.0    0.04    0.05  301610         Dag::ProcessJobProcEnd(Job*, bool, bool) [43]
+                0.00    0.04  301610/301610      JobstateLog::WriteJobSuccessOrFailure(Job*) [56]
+                0.00    0.00  301610/1329080770     Job::GetStatus() const [18]
+                0.00    0.00  301610/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                                                 <spontaneous>
+[44]     0.0    0.09    0.00                 HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::startIterations() [44]
+-----------------------------------------------
+                0.07    0.01  301610/301610      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[45]     0.0    0.07    0.01  301610         Dag::ProcessSubmitEvent(Job*, bool, bool&) [45]
+                0.01    0.00   63762/603220      Job::SetStatus(Job::status_t) [46]
+                0.00    0.00   63762/603220      Dag::UpdateJobCounts(Job*, int) [68]
+                0.00    0.00  237848/539458      Dag::PrintReadyQ(debug_level) const [138]
+-----------------------------------------------
+                0.01    0.00   63762/603220      Dag::ProcessSubmitEvent(Job*, bool, bool&) [45]
+                0.03    0.00  237848/603220      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.04    0.00  301610/603220      Job::TerminateSuccess() [58]
+[46]     0.0    0.07    0.00  603220         Job::SetStatus(Job::status_t) [46]
+                0.00    0.00 1206440/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.01    0.00  301610/2927188     Dag::NodeExists(char const*) const [87]
+                0.06    0.00 2625578/2927188     Dag::FindNodeByName(char const*) const [40]
+[47]     0.0    0.07    0.00 2927188         HashTable<MyString, Job*>::lookup(MyString const&, Job*&) const [47]
+-----------------------------------------------
+                                                 <spontaneous>
+[48]     0.0    0.07    0.00                 Dag::ProcessFailedSubmit(Job*, int) [48]
+-----------------------------------------------
+                0.00    0.00   63762/603220      Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+                0.01    0.02  237848/603220      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.02    0.02  301610/603220      Dag::Add(Job&) [61]
+[49]     0.0    0.03    0.04  603220         HashTable<int, Job*>::insert(int const&, Job* const&, bool) [49]
+                0.04    0.00      32/32          HashTable<int, Job*>::resize_hash_table(int) [59]
+-----------------------------------------------
+                0.07    0.00  237848/237848      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+[50]     0.0    0.07    0.00  237848         Queue<Job*>::enqueue(Job* const&) [50]
+-----------------------------------------------
+                0.06    0.00  904830/904830      JobstateLog::Write(long const*, Job*, char const*, char const*) [37]
+[51]     0.0    0.06    0.00  904830         Job::GetJobstateJobTag() [51]
+-----------------------------------------------
+                0.04    0.02  603220/603220      Dag::PrintEvent(debug_level, ULogEvent const*, Job*, bool) [41]
+[52]     0.0    0.04    0.02  603220         time_to_str(long, MyString&) [52]
+                0.02    0.00  603220/603220      time_to_str(tm const*, MyString&) [66]
+-----------------------------------------------
+                0.05    0.00  904830/904830      JobstateLog::Write(long const*, Job*, char const*, char const*) [37]
+[53]     0.0    0.05    0.00  904830         Job::GetJobstateSequenceNum() [53]
+-----------------------------------------------
+                0.05    0.00       3/3           Dag::~Dag() [10]
+[54]     0.0    0.05    0.00       3         HashTable<int, Job*>::~HashTable() [54]
+-----------------------------------------------
+                0.01    0.00  237848/777306      Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&) [25]
+                0.01    0.00  237848/777306      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.02    0.00  301610/777306      Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+[55]     0.0    0.05    0.00  777306         Job::SetCondorID(CondorID const&) [55]
+                0.00    0.00  237848/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.04  301610/301610      Dag::ProcessJobProcEnd(Job*, bool, bool) [43]
+[56]     0.0    0.00    0.04  301610         JobstateLog::WriteJobSuccessOrFailure(Job*) [56]
+                0.00    0.04  301610/904830      JobstateLog::Write(long const*, Job*, char const*, char const*) [37]
+-----------------------------------------------
+                0.04    0.00  603220/603220      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[57]     0.0    0.04    0.00  603220         Dag::EventSanityCheck(ULogEvent const*, Job const*, bool*) [57]
+                0.00    0.00  603220/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.01    0.04  301610/301610      Dag::TerminateJob(Job*, bool, bool) [5]
+[58]     0.0    0.01    0.04  301610         Job::TerminateSuccess() [58]
+                0.04    0.00  301610/603220      Job::SetStatus(Job::status_t) [46]
+-----------------------------------------------
+                0.04    0.00      32/32          HashTable<int, Job*>::insert(int const&, Job* const&, bool) [49]
+[59]     0.0    0.04    0.00      32         HashTable<int, Job*>::resize_hash_table(int) [59]
+-----------------------------------------------
+                                                 <spontaneous>
+[60]     0.0    0.04    0.00                 JobstateLog::WriteSubmitFailure(Job*) [60]
+-----------------------------------------------
+                0.00    0.04  301610/301610      AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [34]
+[61]     0.0    0.00    0.04  301610         Dag::Add(Job&) [61]
+                0.02    0.02  301610/603220      HashTable<int, Job*>::insert(int const&, Job* const&, bool) [49]
+                0.00    0.00  301610/301610      HashTable<MyString, Job*>::insert(MyString const&, Job* const&, bool) [147]
+                0.00    0.00  301610/1930563     List<Job>::Append(Job*) [134]
+-----------------------------------------------
+                0.00    0.03  301610/301610      Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+[62]     0.0    0.00    0.03  301610         Dag::FindNodeByEventID(CondorID) const [62]
+                0.03    0.00  301610/663818241     HashTable<int, Job*>::lookup(int const&, Job*&) const [14]
+                0.00    0.00  301610/301610      Dag::GetEventIDHash(bool) const [148]
+-----------------------------------------------
+                0.00    0.01  603220/1390030     parse_vars(Dag*, char const*, int) [76]
+                0.00    0.02  786810/1390030     parse(Dag*, char const*, bool, bool) [21]
+[63]     0.0    0.00    0.03 1390030         Dag::FindAllNodesByName(char const*, char const*, char const*, int) const [63]
+                0.01    0.02  695015/2625578     Dag::FindNodeByName(char const*) const [40]
+-----------------------------------------------
+                0.01    0.02  301610/301610      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[64]     0.0    0.01    0.02  301610         Dag::ProcessNotIdleEvent(Job*, int) [64]
+                0.00    0.01  301610/603220      Job::GetProcIsIdle(int) [69]
+                0.00    0.00  301610/1329080770     Job::GetStatus() const [18]
+                0.00    0.00  301610/603220      Job::SetProcIsIdle(int, bool) [91]
+-----------------------------------------------
+                0.03    0.00  301610/301610      List<Job::NodeVar>::~List() [33]
+[65]     0.0    0.03    0.00  301610         List<Job::NodeVar>::~List() [65]
+-----------------------------------------------
+                0.02    0.00  603220/603220      time_to_str(long, MyString&) [52]
+[66]     0.0    0.02    0.00  603220         time_to_str(tm const*, MyString&) [66]
+-----------------------------------------------
+                0.02    0.00  603220/603220      JobstateLog::WriteEvent(ULogEvent const*, Job*) [38]
+[67]     0.0    0.02    0.00  603220         JobstateLog::CondorID2Str(int, int, MyString&) [67]
+-----------------------------------------------
+                0.00    0.00   63762/603220      Dag::ProcessSubmitEvent(Job*, bool, bool&) [45]
+                0.01    0.00  237848/603220      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.01    0.00  301610/603220      Dag::DecrementProcCount(Job*) [79]
+[68]     0.0    0.02    0.00  603220         Dag::UpdateJobCounts(Job*, int) [68]
+-----------------------------------------------
+                0.00    0.01  301610/603220      Dag::ProcessIsIdleEvent(Job*, int) [74]
+                0.00    0.01  301610/603220      Dag::ProcessNotIdleEvent(Job*, int) [64]
+[69]     0.0    0.00    0.02  603220         Job::GetProcIsIdle(int) [69]
+                0.02    0.00  301610/301610      std::vector<unsigned char, std::allocator<unsigned char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned char*, std::vector<unsigned char, std::allocator<unsigned char> > >, unsigned long, unsigned char const&) [70]
+-----------------------------------------------
+                0.02    0.00  301610/301610      Job::GetProcIsIdle(int) [69]
+[70]     0.0    0.02    0.00  301610         std::vector<unsigned char, std::allocator<unsigned char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned char*, std::vector<unsigned char, std::allocator<unsigned char> > >, unsigned long, unsigned char const&) [70]
+-----------------------------------------------
+                0.02    0.00       1/1           Dag::~Dag() [10]
+[71]     0.0    0.02    0.00       1         DagmanMetrics::~DagmanMetrics() [71]
+-----------------------------------------------
+                0.02    0.00       1/1           Dag::~Dag() [10]
+[72]     0.0    0.02    0.00       1         HashTable<MyString, Job*>::~HashTable() [72]
+-----------------------------------------------
+                                                 <spontaneous>
+[73]     0.0    0.02    0.00                 Dag::RemoveDependency(Job*, Job*) [73]
+-----------------------------------------------
+                0.00    0.02  301610/301610      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[74]     0.0    0.00    0.02  301610         Dag::ProcessIsIdleEvent(Job*, int) [74]
+                0.00    0.01  301610/603220      Job::GetProcIsIdle(int) [69]
+                0.00    0.00  301610/1329080770     Job::GetStatus() const [18]
+                0.00    0.00  301610/603220      Job::SetProcIsIdle(int, bool) [91]
+-----------------------------------------------
+                                                 <spontaneous>
+[75]     0.0    0.02    0.00                 Job::GetPreSkip() const [75]
+-----------------------------------------------
+                0.00    0.01  301610/301610      parse(Dag*, char const*, bool, bool) [21]
+[76]     0.0    0.00    0.01  301610         parse_vars(Dag*, char const*, int) [76]
+                0.00    0.01  603220/1390030     Dag::FindAllNodesByName(char const*, char const*, char const*, int) const [63]
+                0.00    0.00 4229910/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00  301610/2625578     munge_job_name(char const*) [132]
+-----------------------------------------------
+                0.00    0.00       1/904834      JobstateLog::WriteDagmanStarted(CondorID const&) [97]
+                0.00    0.00       1/904834      JobstateLog::WriteDagmanFinished(int) [98]
+                0.00    0.00       1/904834      JobstateLog::WriteRecoveryStarted() [99]
+                0.00    0.00       1/904834      JobstateLog::WriteRecoveryFinished() [100]
+                0.01    0.00  904830/904834      JobstateLog::Write(long const*, Job*, char const*, char const*) [37]
+[77]     0.0    0.01    0.00  904834         JobstateLog::Write(long const*, MyString const&) [77]
+-----------------------------------------------
+                0.01    0.00  603220/603220      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[78]     0.0    0.01    0.00  603220         Job::SetLastEventTime(ULogEvent const*) [78]
+-----------------------------------------------
+                0.00    0.01  301610/301610      Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+[79]     0.0    0.00    0.01  301610         Dag::DecrementProcCount(Job*) [79]
+                0.01    0.00  301610/603220      Dag::UpdateJobCounts(Job*, int) [68]
+-----------------------------------------------
+                0.01    0.00  301610/301610      Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+[80]     0.0    0.01    0.00  301610         Dag::SanityCheckSubmitEvent(CondorID, Job const*) [80]
+-----------------------------------------------
+                                                 <spontaneous>
+[81]     0.0    0.01    0.00                 condor_submit(Dagman const&, char const*, CondorID&, char const*, MyString&, List<Job::NodeVar>*, int, int, char const*, char const*, bool, MyString const&) [81]
+-----------------------------------------------
+                                                 <spontaneous>
+[82]     0.0    0.01    0.00                 Dag::RestartNode(Job*, bool) [82]
+-----------------------------------------------
+                                                 <spontaneous>
+[83]     0.0    0.01    0.00                 Dag::RemoveBatchJob(Job*) [83]
+-----------------------------------------------
+                                                 <spontaneous>
+[84]     0.0    0.01    0.00                 Dag::ProcessAbortEvent(ULogEvent const*, Job*, bool) [84]
+-----------------------------------------------
+                                                 <spontaneous>
+[85]     0.0    0.01    0.00                 Dag::WriteNodeToRescue(_IO_FILE*, Job*, bool, bool) [85]
+-----------------------------------------------
+                0.00    0.01  301610/301610      AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [34]
+[86]     0.0    0.00    0.01  301610         IsValidNodeName(Dag*, char const*, MyString&) [86]
+                0.00    0.01  301610/301610      Dag::NodeExists(char const*) const [87]
+                0.00    0.00  301610/603220      isReservedWord(char const*) [135]
+-----------------------------------------------
+                0.00    0.01  301610/301610      IsValidNodeName(Dag*, char const*, MyString&) [86]
+[87]     0.0    0.00    0.01  301610         Dag::NodeExists(char const*) const [87]
+                0.01    0.00  301610/2927188     HashTable<MyString, Job*>::lookup(MyString const&, Job*&) const [47]
+-----------------------------------------------
+                0.01    0.00 663215021/663215021     Job::AddChild(Job*, MyString&) [90]
+[88]     0.0    0.01    0.00 663215021         Job::CanAddChild(Job*, MyString&) [88]
+-----------------------------------------------
+                0.00    0.01 663215021/663215021     Dag::AddDependency(Job*, Job*) [22]
+[89]     0.0    0.00    0.01 663215021         Job::AddChild(Job*) [89]
+                0.00    0.01 663215021/663215021     Job::AddChild(Job*, MyString&) [90]
+-----------------------------------------------
+                0.00    0.01 663215021/663215021     Job::AddChild(Job*) [89]
+[90]     0.0    0.00    0.01 663215021         Job::AddChild(Job*, MyString&) [90]
+                0.01    0.00 663215021/663215021     Job::CanAddChild(Job*, MyString&) [88]
+                0.00    0.00 663215021/663215021     Job::HasChild(Job*) [130]
+                0.00    0.00 663215021/1989645063     Job::Add(Job::queue_t, int) [127]
+-----------------------------------------------
+                0.00    0.00  301610/603220      Dag::ProcessIsIdleEvent(Job*, int) [74]
+                0.00    0.00  301610/603220      Dag::ProcessNotIdleEvent(Job*, int) [64]
+[91]     0.0    0.01    0.00  603220         Job::SetProcIsIdle(int, bool) [91]
+-----------------------------------------------
+                                                 <spontaneous>
+[92]     0.0    0.01    0.00                 Job::ExecMetrics(int, tm const&, DagmanMetrics*) [92]
+-----------------------------------------------
+                                                 <spontaneous>
+[93]     0.0    0.01    0.00                 Job::TermAbortMetrics(int, tm const&, DagmanMetrics*) [93]
+-----------------------------------------------
+                0.00    0.00    2387/4774        Dag::RunWaitingScripts() [96]
+                0.00    0.00    2387/4774        condor_event_timer() [1]
+[94]     0.0    0.00    0.00    4774         ScriptQ::RunWaitingScripts(bool) [94]
+                0.00    0.00    4774/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/2391        ExitSuccess() [9]
+                0.00    0.00    2390/2391        print_status(bool) [15]
+[95]     0.0    0.00    0.00    2391         Dagman::PublishStats() [95]
+                0.00    0.00    2391/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00    2391/2468        DagmanStats::Publish(compat_classad::ClassAd&) const [160]
+-----------------------------------------------
+                0.00    0.00    2387/2387        condor_event_timer() [1]
+[96]     0.0    0.00    0.00    2387         Dag::RunWaitingScripts() [96]
+                0.00    0.00    2387/4774        ScriptQ::RunWaitingScripts(bool) [94]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[97]     0.0    0.00    0.00       1         JobstateLog::WriteDagmanStarted(CondorID const&) [97]
+                0.00    0.00       1/904834      JobstateLog::Write(long const*, MyString const&) [77]
+                0.00    0.00       1/2390        JobstateLog::Flush() [161]
+-----------------------------------------------
+                0.00    0.00       1/1           ExitSuccess() [9]
+[98]     0.0    0.00    0.00       1         JobstateLog::WriteDagmanFinished(int) [98]
+                0.00    0.00       1/904834      JobstateLog::Write(long const*, MyString const&) [77]
+                0.00    0.00       1/2390        JobstateLog::Flush() [161]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[99]     0.0    0.00    0.00       1         JobstateLog::WriteRecoveryStarted() [99]
+                0.00    0.00       1/904834      JobstateLog::Write(long const*, MyString const&) [77]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[100]    0.0    0.00    0.00       1         JobstateLog::WriteRecoveryFinished() [100]
+                0.00    0.00       1/904834      JobstateLog::Write(long const*, MyString const&) [77]
+                0.00    0.00       1/2390        JobstateLog::Flush() [161]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[101]    0.0    0.00    0.00       1         JobstateLog::InitializeRecovery() [101]
+                0.00    0.00      74/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00  388463/388463      JobstateLog::ParseLine(MyString&, long&, MyString&, int&) [139]
+                0.00    0.00      72/72          std::pair<std::_Rb_tree_iterator<MyString>, bool> std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_insert_unique<MyString const&>(MyString const&) [171]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[102]    0.0    0.00    0.00       1         Dagman::Config() [102]
+                0.00    0.00      38/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/2391        condor_event_timer() [1]
+                0.00    0.00    2390/2391        print_status(bool) [15]
+[103]    0.0    0.00    0.00    2391         Dag::PrintDeferrals(debug_level, bool) const [103]
+                0.00    0.00       4/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[104]    0.0    0.00    0.00       1         DagmanClassad::GetAcctInfo(MyString&, MyString&) [104]
+                0.00    0.00       2/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       2/5           DagmanClassad::GetDagAttribute(char const*, MyString&, bool) [109]
+                0.00    0.00       1/81          DagmanClassad::OpenConnection() [167]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[105]    0.0    0.00    0.00       1         Dagman::ResolveDefaultLog() [105]
+                0.00    0.00       2/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/1           DagmanClassad::GetInfo(MyString&, MyString&) [117]
+                0.00    0.00       1/81          DagmanClassad::CloseConnection(_Qmgr_connection*) [168]
+-----------------------------------------------
+                0.00    0.00       1/1           ExitSuccess() [9]
+[106]    0.0    0.00    0.00       1         DagmanMetrics::Report(int, Dag::dag_status) [106]
+                0.00    0.00       1/1           DagmanMetrics::WriteMetricsFile(int, Dag::dag_status) [113]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[107]    0.0    0.00    0.00       1         DagmanClassad::GetSetBatchName(MyString const&, MyString&) [107]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/5           DagmanClassad::GetDagAttribute(char const*, MyString&, bool) [109]
+                0.00    0.00       1/81          DagmanClassad::OpenConnection() [167]
+                0.00    0.00       1/81          DagmanClassad::CloseConnection(_Qmgr_connection*) [168]
+-----------------------------------------------
+                0.00    0.00       1/301611      main_init(int, char**) [20]
+                0.00    0.00  301610/301611      Dag::~Dag() [10]
+[108]    0.0    0.00    0.00  301611         util_check_lock_file(char const*) [108]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/5           DagmanClassad::GetSetBatchName(MyString const&, MyString&) [107]
+                0.00    0.00       2/5           DagmanClassad::GetInfo(MyString&, MyString&) [117]
+                0.00    0.00       2/5           DagmanClassad::GetAcctInfo(MyString&, MyString&) [104]
+[109]    0.0    0.00    0.00       5         DagmanClassad::GetDagAttribute(char const*, MyString&, bool) [109]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[110]    0.0    0.00    0.00       1         util_create_lock_file(char const*, bool) [110]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           DagmanClassad::DagmanClassad(CondorID const&) [112]
+[111]    0.0    0.00    0.00       1         DagmanClassad::InitializeMetrics() [111]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/81          DagmanClassad::OpenConnection() [167]
+                0.00    0.00       1/81          DagmanClassad::CloseConnection(_Qmgr_connection*) [168]
+                0.00    0.00       1/1           DagmanMetrics::SetDagmanIds(CondorID const&, int) [204]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[112]    0.0    0.00    0.00       1         DagmanClassad::DagmanClassad(CondorID const&) [112]
+                0.00    0.00       1/1           DagmanClassad::InitializeMetrics() [111]
+-----------------------------------------------
+                0.00    0.00       1/1           DagmanMetrics::Report(int, Dag::dag_status) [106]
+[113]    0.0    0.00    0.00       1         DagmanMetrics::WriteMetricsFile(int, Dag::dag_status) [113]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+                0.00    0.00       1/2           DagmanMetrics::GetTime() [179]
+                0.00    0.00       1/1           DagmanMetrics::GetVersion() [203]
+-----------------------------------------------
+                0.00    0.00       1/1           condor_event_timer() [1]
+[114]    0.0    0.00    0.00       1         Dag::CheckAllJobs() [114]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[115]    0.0    0.00    0.00       1         Dag::MonitorLogFile() [115]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::~Dag() [10]
+[116]    0.0    0.00    0.00       1         Dag::UnmonitorLogFile() [116]
+                0.00    0.00       1/1339090475     debug_printf(debug_level, char const*, ...) [42]
+-----------------------------------------------
+                0.00    0.00       1/1           Dagman::ResolveDefaultLog() [105]
+[117]    0.0    0.00    0.00       1         DagmanClassad::GetInfo(MyString&, MyString&) [117]
+                0.00    0.00       2/5           DagmanClassad::GetDagAttribute(char const*, MyString&, bool) [109]
+                0.00    0.00       1/81          DagmanClassad::OpenConnection() [167]
+-----------------------------------------------
+                0.00    0.00       1/3           DagmanMetrics::GetVersion() [203]
+                0.00    0.00       2/3           main_init(int, char**) [20]
+[118]    0.0    0.00    0.00       3         CondorVersion [118]
+-----------------------------------------------
+                0.00    0.00       1/1           __libc_csu_init [431]
+[119]    0.0    0.00    0.00       1         main [119]
+-----------------------------------------------
+                0.00    0.00 663215021/1989645063     Job::AddChild(Job*, MyString&) [90]
+                0.00    0.00 1326430042/1989645063     Job::AddParent(Job*, MyString&) [24]
+[127]    0.0    0.00    0.00 1989645063         Job::Add(Job::queue_t, int) [127]
+-----------------------------------------------
+                0.00    0.00 663215021/1326430042     Job::HasChild(Job*) [130]
+                0.00    0.00 663215021/1326430042     Job::HasParent(Job*) [131]
+[128]    0.0    0.00    0.00 1326430042         std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::find(int const&) [128]
+-----------------------------------------------
+                0.00    0.00 663215021/663215021     Job::AddParent(Job*, MyString&) [24]
+[129]    0.0    0.00    0.00 663215021         Job::CanAddParent(Job*, MyString&) [129]
+-----------------------------------------------
+                0.00    0.00 663215021/663215021     Job::AddChild(Job*, MyString&) [90]
+[130]    0.0    0.00    0.00 663215021         Job::HasChild(Job*) [130]
+                0.00    0.00 663215021/1326430042     std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::find(int const&) [128]
+-----------------------------------------------
+                0.00    0.00 663215021/663215021     Job::AddParent(Job*, MyString&) [24]
+[131]    0.0    0.00    0.00 663215021         Job::HasParent(Job*) [131]
+                0.00    0.00 663215021/1326430042     std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::find(int const&) [128]
+-----------------------------------------------
+                0.00    0.00  301610/2625578     parse_vars(Dag*, char const*, int) [76]
+                0.00    0.00  301610/2625578     parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+                0.00    0.00 2022358/2625578     parse(Dag*, char const*, bool, bool) [21]
+[132]    0.0    0.00    0.00 2625578         munge_job_name(char const*) [132]
+-----------------------------------------------
+                0.00    0.00  301610/1930563     parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+                0.00    0.00 1628953/1930563     parse(Dag*, char const*, bool, bool) [21]
+[133]    0.0    0.00    0.00 1930563         Dag::LookupSplice(MyString, Dag*&) [133]
+-----------------------------------------------
+                0.00    0.00  301610/1930563     Dag::Add(Job&) [61]
+                0.00    0.00 1628953/1930563     parse(Dag*, char const*, bool, bool) [21]
+[134]    0.0    0.00    0.00 1930563         List<Job>::Append(Job*) [134]
+-----------------------------------------------
+                0.00    0.00  301610/603220      parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+                0.00    0.00  301610/603220      IsValidNodeName(Dag*, char const*, MyString&) [86]
+[135]    0.0    0.00    0.00  603220         isReservedWord(char const*) [135]
+-----------------------------------------------
+                0.00    0.00  301610/603220      Dag::RecordInitialAndTerminalNodes() [219]
+                0.00    0.00  301610/603220      DagmanMetrics::DagmanMetrics(Dag*, char const*, int) [206]
+[136]    0.0    0.00    0.00  603220         Job::NumChildren() const [136]
+-----------------------------------------------
+                0.00    0.00  237848/539458      Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [32]
+                0.00    0.00  301610/539458      Dag::LogEventNodeLookup(ULogEvent const*, bool&) [31]
+[137]    0.0    0.00    0.00  539458         Dag::GetEventIDHash(bool) [137]
+-----------------------------------------------
+                0.00    0.00  237848/539458      Dag::ProcessSubmitEvent(Job*, bool, bool&) [45]
+                0.00    0.00  301610/539458      Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [3]
+[138]    0.0    0.00    0.00  539458         Dag::PrintReadyQ(debug_level) const [138]
+-----------------------------------------------
+                0.00    0.00  388463/388463      JobstateLog::InitializeRecovery() [101]
+[139]    0.0    0.00    0.00  388463         JobstateLog::ParseLine(MyString&, long&, MyString&, int&) [139]
+-----------------------------------------------
+                0.00    0.00  301610/301610      parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+[140]    0.0    0.00    0.00  301610         containsIllegalChars(char const*) [140]
+-----------------------------------------------
+                0.00    0.00  301610/301610      AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [34]
+[141]    0.0    0.00    0.00  301610         IsValidSubmitFileName(char const*, MyString&) [141]
+-----------------------------------------------
+                0.00    0.00  301610/301610      parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) [35]
+[142]    0.0    0.00    0.00  301610         next_possibly_quoted_token() [142]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::TerminateJob(Job*, bool, bool) [5]
+[143]    0.0    0.00    0.00  301610         DagmanMetrics::NodeFinished(bool, bool) [143]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+[144]    0.0    0.00    0.00  301610         Dag::CheckForDagAbort(Job*, char const*) [144]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::ResolveVarsInterpolations() [217]
+[145]    0.0    0.00    0.00  301610         Job::ResolveVarsInterpolations() [145]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [4]
+[146]    0.0    0.00    0.00  301610         Job::Cleanup() [146]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::Add(Job&) [61]
+[147]    0.0    0.00    0.00  301610         HashTable<MyString, Job*>::insert(MyString const&, Job* const&, bool) [147]
+                0.00    0.00      16/16          HashTable<MyString, Job*>::resize_hash_table(int) [174]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::FindNodeByEventID(CondorID) const [62]
+[148]    0.0    0.00    0.00  301610         Dag::GetEventIDHash(bool) const [148]
+-----------------------------------------------
+                0.00    0.00  301610/301610      Dag::RecordInitialAndTerminalNodes() [219]
+[149]    0.0    0.00    0.00  301610         Job::NumParents() const [149]
+-----------------------------------------------
+                0.00    0.00  237848/237848      Dag::StartNode(Job*, bool) [152]
+[150]    0.0    0.00    0.00  237848         PrioritySimpleList<Job*>::Append(Job* const&, int) [150]
+-----------------------------------------------
+                0.00    0.00  237848/237848      Dag::StartNode(Job*, bool) [152]
+[151]    0.0    0.00    0.00  237848         PrioritySimpleList<Job*>::InsertAt(int, Job* const&, int) [151]
+                0.00    0.00      16/16          SimpleList<Job*>::resize(int) [172]
+                0.00    0.00      16/16          PrioritySimpleList<Job*>::resize(int) [173]
+-----------------------------------------------
+                0.00    0.00   28197/237848      Dag::Bootstrap(bool) [26]
+                0.00    0.00  209651/237848      Dag::TerminateJob(Job*, bool, bool) [5]
+[152]    0.0    0.00    0.00  237848         Dag::StartNode(Job*, bool) [152]
+                0.00    0.00  237848/237848      PrioritySimpleList<Job*>::InsertAt(int, Job* const&, int) [151]
+                0.00    0.00  237848/237848      PrioritySimpleList<Job*>::Append(Job* const&, int) [150]
+-----------------------------------------------
+                0.00    0.00       1/138923      Dag::~Dag() [10]
+                0.00    0.00  138922/138923      parse(Dag*, char const*, bool, bool) [21]
+[153]    0.0    0.00    0.00  138923         List<Job>::~List() [153]
+-----------------------------------------------
+                0.00    0.00  138922/138922      parse(Dag*, char const*, bool, bool) [21]
+[154]    0.0    0.00    0.00  138922         List<Job>::List() [154]
+-----------------------------------------------
+                0.00    0.00       1/11943       Dag::DoneSuccess(bool) const [158]
+                0.00    0.00       1/11943       Dag::Bootstrap(bool) [26]
+                0.00    0.00    4780/11943       print_status(bool) [15]
+                0.00    0.00    7161/11943       condor_event_timer() [1]
+[155]    0.0    0.00    0.00   11943         Dag::NumNodesDone(bool) const [155]
+-----------------------------------------------
+                0.00    0.00       1/9556        Dag::DoneSuccess(bool) const [158]
+                0.00    0.00       1/9556        main_init(int, char**) [20]
+                0.00    0.00    4774/9556        condor_event_timer() [1]
+                0.00    0.00    4780/9556        print_status(bool) [15]
+[156]    0.0    0.00    0.00    9556         Dag::NumNodes(bool) const [156]
+-----------------------------------------------
+                0.00    0.00    2386/9545        Dag::DoneFailed(bool) const [164]
+                0.00    0.00    2386/9545        condor_event_timer() [1]
+                0.00    0.00    4773/9545        Dag::DoneSuccess(bool) const [158]
+[157]    0.0    0.00    0.00    9545         Dag::FinishedRunning(bool) const [157]
+-----------------------------------------------
+                0.00    0.00    4773/4773        condor_event_timer() [1]
+[158]    0.0    0.00    0.00    4773         Dag::DoneSuccess(bool) const [158]
+                0.00    0.00    4773/9545        Dag::FinishedRunning(bool) const [157]
+                0.00    0.00       1/11943       Dag::NumNodesDone(bool) const [155]
+                0.00    0.00       1/9556        Dag::NumNodes(bool) const [156]
+-----------------------------------------------
+                0.00    0.00    2670/2670        Dag::RecordInitialAndTerminalNodes() [219]
+[159]    0.0    0.00    0.00    2670         ExtArray<Job*>::set(int, Job*) [159]
+                0.00    0.00       8/8           ExtArray<Job*>::resize(int) [175]
+-----------------------------------------------
+                0.00    0.00      77/2468        DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+                0.00    0.00    2391/2468        Dagman::PublishStats() [95]
+[160]    0.0    0.00    0.00    2468         DagmanStats::Publish(compat_classad::ClassAd&) const [160]
+-----------------------------------------------
+                0.00    0.00       1/2390        JobstateLog::WriteDagmanStarted(CondorID const&) [97]
+                0.00    0.00       1/2390        JobstateLog::WriteDagmanFinished(int) [98]
+                0.00    0.00       1/2390        JobstateLog::WriteRecoveryFinished() [100]
+                0.00    0.00    2387/2390        Dag::ProcessLogEvents(bool) [2]
+[161]    0.0    0.00    0.00    2390         JobstateLog::Flush() [161]
+-----------------------------------------------
+                0.00    0.00       1/2388        ExitSuccess() [9]
+                0.00    0.00    2387/2388        condor_event_timer() [1]
+[162]    0.0    0.00    0.00    2388         Dag::DumpNodeStatus(bool, bool) [162]
+-----------------------------------------------
+                0.00    0.00    2387/2387        condor_event_timer() [1]
+[163]    0.0    0.00    0.00    2387         Dag::GetCondorLogStatus() [163]
+-----------------------------------------------
+                0.00    0.00    2386/2386        condor_event_timer() [1]
+[164]    0.0    0.00    0.00    2386         Dag::DoneFailed(bool) const [164]
+                0.00    0.00    2386/9545        Dag::FinishedRunning(bool) const [157]
+-----------------------------------------------
+                0.00    0.00     770/770         DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+[165]    0.0    0.00    0.00     770         DagmanClassad::SetDagAttribute(char const*, int) [165]
+-----------------------------------------------
+                0.00    0.00     100/100         FindLastRescueDagNum(char const*, bool, int) [194]
+[166]    0.0    0.00    0.00     100         RescueDagName(char const*, bool, int) [166]
+-----------------------------------------------
+                0.00    0.00       1/81          DagmanClassad::InitializeMetrics() [111]
+                0.00    0.00       1/81          DagmanClassad::GetInfo(MyString&, MyString&) [117]
+                0.00    0.00       1/81          DagmanClassad::GetSetBatchName(MyString const&, MyString&) [107]
+                0.00    0.00       1/81          DagmanClassad::GetAcctInfo(MyString&, MyString&) [104]
+                0.00    0.00      77/81          DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+[167]    0.0    0.00    0.00      81         DagmanClassad::OpenConnection() [167]
+-----------------------------------------------
+                0.00    0.00       1/81          DagmanClassad::InitializeMetrics() [111]
+                0.00    0.00       1/81          DagmanClassad::GetSetBatchName(MyString const&, MyString&) [107]
+                0.00    0.00       1/81          Dagman::ResolveDefaultLog() [105]
+                0.00    0.00       1/81          main_init(int, char**) [20]
+                0.00    0.00      77/81          DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+[168]    0.0    0.00    0.00      81         DagmanClassad::CloseConnection(_Qmgr_connection*) [168]
+-----------------------------------------------
+                0.00    0.00      77/77          DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+[169]    0.0    0.00    0.00      77         DagmanClassad::SetDagAttribute(char const*, compat_classad::ClassAd const&) [169]
+-----------------------------------------------
+                0.00    0.00      77/77          print_status(bool) [15]
+[170]    0.0    0.00    0.00      77         DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [170]
+                0.00    0.00     770/770         DagmanClassad::SetDagAttribute(char const*, int) [165]
+                0.00    0.00      77/81          DagmanClassad::OpenConnection() [167]
+                0.00    0.00      77/2468        DagmanStats::Publish(compat_classad::ClassAd&) const [160]
+                0.00    0.00      77/77          DagmanClassad::SetDagAttribute(char const*, compat_classad::ClassAd const&) [169]
+                0.00    0.00      77/81          DagmanClassad::CloseConnection(_Qmgr_connection*) [168]
+-----------------------------------------------
+                0.00    0.00      72/72          JobstateLog::InitializeRecovery() [101]
+[171]    0.0    0.00    0.00      72         std::pair<std::_Rb_tree_iterator<MyString>, bool> std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_insert_unique<MyString const&>(MyString const&) [171]
+-----------------------------------------------
+                0.00    0.00      16/16          PrioritySimpleList<Job*>::InsertAt(int, Job* const&, int) [151]
+[172]    0.0    0.00    0.00      16         SimpleList<Job*>::resize(int) [172]
+-----------------------------------------------
+                0.00    0.00      16/16          PrioritySimpleList<Job*>::InsertAt(int, Job* const&, int) [151]
+[173]    0.0    0.00    0.00      16         PrioritySimpleList<Job*>::resize(int) [173]
+-----------------------------------------------
+                0.00    0.00      16/16          HashTable<MyString, Job*>::insert(MyString const&, Job* const&, bool) [147]
+[174]    0.0    0.00    0.00      16         HashTable<MyString, Job*>::resize_hash_table(int) [174]
+-----------------------------------------------
+                0.00    0.00       8/8           ExtArray<Job*>::set(int, Job*) [159]
+[175]    0.0    0.00    0.00       8         ExtArray<Job*>::resize(int) [175]
+-----------------------------------------------
+                0.00    0.00       5/5           __libc_csu_init [431]
+[176]    0.0    0.00    0.00       5         parse_pin_in_out(Dag*, char const*, int, bool) [176]
+-----------------------------------------------
+                0.00    0.00       4/4           Dag::LiftSplices(SpliceLayer) [180]
+[177]    0.0    0.00    0.00       4         HashTable<MyString, Dag*>::iterate(MyString&, Dag*&) [177]
+-----------------------------------------------
+                0.00    0.00       3/3           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[178]    0.0    0.00    0.00       3         HashTable<int, Job*>::HashTable(unsigned long (*)(int const&)) [178]
+-----------------------------------------------
+                0.00    0.00       1/2           DagmanMetrics::SetStartTime() [205]
+                0.00    0.00       1/2           DagmanMetrics::WriteMetricsFile(int, Dag::dag_status) [113]
+[179]    0.0    0.00    0.00       2         DagmanMetrics::GetTime() [179]
+-----------------------------------------------
+                0.00    0.00       1/2           parse(Dag*, char const*, bool, bool) [21]
+                0.00    0.00       1/2           main_init(int, char**) [20]
+[180]    0.0    0.00    0.00       2         Dag::LiftSplices(SpliceLayer) [180]
+                0.00    0.00       4/4           HashTable<MyString, Dag*>::iterate(MyString&, Dag*&) [177]
+                0.00    0.00       2/2           Dag::PropagateDirectoryToAllNodes() [182]
+-----------------------------------------------
+                0.00    0.00       2/2           Dag::~Dag() [10]
+[181]    0.0    0.00    0.00       2         Dag::DeletePinList(std::vector<std::vector<Job*, std::allocator<Job*> >*, std::allocator<std::vector<Job*, std::allocator<Job*> >*> >&) [181]
+-----------------------------------------------
+                0.00    0.00       2/2           Dag::LiftSplices(SpliceLayer) [180]
+[182]    0.0    0.00    0.00       2         Dag::PropagateDirectoryToAllNodes() [182]
+-----------------------------------------------
+                0.00    0.00       2/2           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[183]    0.0    0.00    0.00       2         ScriptQ::ScriptQ(Dag*) [183]
+-----------------------------------------------
+                0.00    0.00       2/2           Dag::~Dag() [10]
+[184]    0.0    0.00    0.00       2         ScriptQ::~ScriptQ() [184]
+                0.00    0.00       2/2           ScriptQ::~ScriptQ() [185]
+-----------------------------------------------
+                0.00    0.00       2/2           ScriptQ::~ScriptQ() [184]
+[185]    0.0    0.00    0.00       2         ScriptQ::~ScriptQ() [185]
+-----------------------------------------------
+                0.00    0.00       2/2           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[186]    0.0    0.00    0.00       2         ExtArray<Job*>::ExtArray(int) [186]
+-----------------------------------------------
+                0.00    0.00       1/2           ThrottleByCategory::~ThrottleByCategory() [209]
+                0.00    0.00       1/2           Dag::CheckThrottleCats() [215]
+[187]    0.0    0.00    0.00       2         HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::iterate(ThrottleByCategory::ThrottleInfo*&) [187]
+-----------------------------------------------
+                0.00    0.00       2/2           HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::insert(MyString const&, ReadMultipleUserLogs::LogFileMonitor* const&, bool) [380]
+[188]    0.0    0.00    0.00       2         HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::needs_resizing() [188]
+-----------------------------------------------
+                0.00    0.00       2/2           HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::~HashTable() [226]
+[189]    0.0    0.00    0.00       2         HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::clear() [189]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[190]    0.0    0.00    0.00       1         HaltFileName(MyString const&) [190]
+-----------------------------------------------
+                0.00    0.00       1/1           ExitSuccess() [9]
+[191]    0.0    0.00    0.00       1         tolerant_unlink(char const*) [191]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[192]    0.0    0.00    0.00       1         set_fake_condorID(int) [192]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[193]    0.0    0.00    0.00       1         parseSetDoNameMunge(bool) [193]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[194]    0.0    0.00    0.00       1         FindLastRescueDagNum(char const*, bool, int) [194]
+                0.00    0.00     100/100         RescueDagName(char const*, bool, int) [166]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[195]    0.0    0.00    0.00       1         debug_cache_stop_caching() [195]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Bootstrap(bool) [26]
+[196]    0.0    0.00    0.00       1         debug_cache_start_caching() [196]
+-----------------------------------------------
+                0.00    0.00       1/1           DagmanStats::DagmanStats() [198]
+[197]    0.0    0.00    0.00       1         DagmanStats::Init() [197]
+-----------------------------------------------
+                0.00    0.00       1/1           Dagman::Dagman() [348]
+[198]    0.0    0.00    0.00       1         DagmanStats::DagmanStats() [198]
+                0.00    0.00       1/1           DagmanStats::Init() [197]
+-----------------------------------------------
+                0.00    0.00       1/1           Dagman::~Dagman() [349]
+[199]    0.0    0.00    0.00       1         DagmanStats::~DagmanStats() [199]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[200]    0.0    0.00    0.00       1         JobstateLog::JobstateLog() [200]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::~Dag() [10]
+[201]    0.0    0.00    0.00       1         JobstateLog::~JobstateLog() [201]
+-----------------------------------------------
+                0.00    0.00       1/1           ExitSuccess() [9]
+[202]    0.0    0.00    0.00       1         DagmanClassad::~DagmanClassad() [202]
+-----------------------------------------------
+                0.00    0.00       1/1           DagmanMetrics::WriteMetricsFile(int, Dag::dag_status) [113]
+[203]    0.0    0.00    0.00       1         DagmanMetrics::GetVersion() [203]
+                0.00    0.00       1/3           CondorVersion [118]
+-----------------------------------------------
+                0.00    0.00       1/1           DagmanClassad::InitializeMetrics() [111]
+[204]    0.0    0.00    0.00       1         DagmanMetrics::SetDagmanIds(CondorID const&, int) [204]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[205]    0.0    0.00    0.00       1         DagmanMetrics::SetStartTime() [205]
+                0.00    0.00       1/2           DagmanMetrics::GetTime() [179]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::CreateMetrics(char const*, int) [211]
+[206]    0.0    0.00    0.00       1         DagmanMetrics::DagmanMetrics(Dag*, char const*, int) [206]
+                0.00    0.00  301610/603220      Job::NumChildren() const [136]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::~Dag() [10]
+[207]    0.0    0.00    0.00       1         PrioritySimpleList<Job*>::~PrioritySimpleList() [207]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[208]    0.0    0.00    0.00       1         ThrottleByCategory::ThrottleByCategory() [208]
+-----------------------------------------------
+                0.00    0.00       1/1           ExitSuccess() [9]
+[209]    0.0    0.00    0.00       1         ThrottleByCategory::~ThrottleByCategory() [209]
+                0.00    0.00       1/2           HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::iterate(ThrottleByCategory::ThrottleInfo*&) [187]
+                0.00    0.00       1/1           HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::~HashTable() [225]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[210]    0.0    0.00    0.00       1         Dag::DumpDotFile() [210]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[211]    0.0    0.00    0.00       1         Dag::CreateMetrics(char const*, int) [211]
+                0.00    0.00       1/1           DagmanMetrics::DagmanMetrics(Dag*, char const*, int) [206]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[212]    0.0    0.00    0.00       1         Dag::PrintDagFiles(StringList&) [212]
+-----------------------------------------------
+                0.00    0.00       1/1           ExitSuccess() [9]
+[213]    0.0    0.00    0.00       1         Dag::ReportMetrics(int) [213]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[214]    0.0    0.00    0.00       1         Dag::SetAllowEvents(int) [214]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[215]    0.0    0.00    0.00       1         Dag::CheckThrottleCats() [215]
+                0.00    0.00       1/2           HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::iterate(ThrottleByCategory::ThrottleInfo*&) [187]
+-----------------------------------------------
+                0.00    0.00       1/1           parse(Dag*, char const*, bool, bool) [21]
+[216]    0.0    0.00    0.00       1         Dag::SetJobstateLogFileName(char const*) [216]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[217]    0.0    0.00    0.00       1         Dag::ResolveVarsInterpolations() [217]
+                0.00    0.00  301610/301610      Job::ResolveVarsInterpolations() [145]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[218]    0.0    0.00    0.00       1         Dag::SetPendingNodeReportInterval(int) [218]
+-----------------------------------------------
+                0.00    0.00       1/1           parse(Dag*, char const*, bool, bool) [21]
+[219]    0.0    0.00    0.00       1         Dag::RecordInitialAndTerminalNodes() [219]
+                0.00    0.00  301610/603220      Job::NumChildren() const [136]
+                0.00    0.00  301610/301610      Job::NumParents() const [149]
+                0.00    0.00    2670/2670        ExtArray<Job*>::set(int, Job*) [159]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[220]    0.0    0.00    0.00       1         Dag::GetReject(MyString&) [220]
+-----------------------------------------------
+                0.00    0.00       1/1           main_init(int, char**) [20]
+[221]    0.0    0.00    0.00       1         Dagman::CheckLogFileMode(CondorVersionInfo const&) [221]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::~Dag() [10]
+[222]    0.0    0.00    0.00       1         HashTable<MyString, Dag*>::~HashTable() [222]
+-----------------------------------------------
+                0.00    0.00       1/1           HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::~HashTable() [225]
+[223]    0.0    0.00    0.00       1         HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::clear() [223]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [30]
+[224]    0.0    0.00    0.00       1         HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::HashTable(unsigned long (*)(MyString const&)) [224]
+-----------------------------------------------
+                0.00    0.00       1/1           ThrottleByCategory::~ThrottleByCategory() [209]
+[225]    0.0    0.00    0.00       1         HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::~HashTable() [225]
+                0.00    0.00       1/1           HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::clear() [223]
+-----------------------------------------------
+                0.00    0.00       1/1           Dag::~Dag() [10]
+[226]    0.0    0.00    0.00       1         HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::~HashTable() [226]
+                0.00    0.00       2/2           HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::clear() [189]
+-----------------------------------------------
+                                  72             std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_erase(std::_Rb_tree_node<MyString>*) [227]
+                0.00    0.00       1/1           Dag::~Dag() [10]
+[227]    0.0    0.00    0.00       1+72      std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_erase(std::_Rb_tree_node<MyString>*) [227]
+                                  72             std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_erase(std::_Rb_tree_node<MyString>*) [227]
+-----------------------------------------------
+
+ This table describes the call tree of the program, and was sorted by
+ the total amount of time spent in each function and its children.
+
+ Each entry in this table consists of several lines.  The line with the
+ index number at the left hand margin lists the current function.
+ The lines above it list the functions that called this function,
+ and the lines below it list the functions this one called.
+ This line lists:
+     index	A unique number given to each element of the table.
+		Index numbers are sorted numerically.
+		The index number is printed next to every function name so
+		it is easier to look up where the function is in the table.
+
+     % time	This is the percentage of the `total' time that was spent
+		in this function and its children.  Note that due to
+		different viewpoints, functions excluded by options, etc,
+		these numbers will NOT add up to 100%.
+
+     self	This is the total amount of time spent in this function.
+
+     children	This is the total amount of time propagated into this
+		function by its children.
+
+     called	This is the number of times the function was called.
+		If the function called itself recursively, the number
+		only includes non-recursive calls, and is followed by
+		a `+' and the number of recursive calls.
+
+     name	The name of the current function.  The index number is
+		printed after it.  If the function is a member of a
+		cycle, the cycle number is printed between the
+		function's name and the index number.
+
+
+ For the function's parents, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the function into this parent.
+
+     children	This is the amount of time that was propagated from
+		the function's children into this parent.
+
+     called	This is the number of times this parent called the
+		function `/' the total number of times the function
+		was called.  Recursive calls to the function are not
+		included in the number after the `/'.
+
+     name	This is the name of the parent.  The parent's index
+		number is printed after it.  If the parent is a
+		member of a cycle, the cycle number is printed between
+		the name and the index number.
+
+ If the parents of the function cannot be determined, the word
+ `<spontaneous>' is printed in the `name' field, and all the other
+ fields are blank.
+
+ For the function's children, the fields have the following meanings:
+
+     self	This is the amount of time that was propagated directly
+		from the child into the function.
+
+     children	This is the amount of time that was propagated from the
+		child's children to the function.
+
+     called	This is the number of times the function called
+		this child `/' the total number of times the child
+		was called.  Recursive calls by the child are not
+		listed in the number after the `/'.
+
+     name	This is the name of the child.  The child's index
+		number is printed after it.  If the child is a
+		member of a cycle, the cycle number is printed
+		between the name and the index number.
+
+ If there are any cycles (circles) in the call graph, there is an
+ entry for the cycle-as-a-whole.  This entry shows who called the
+ cycle (as parents) and the members of the cycle (as children.)
+ The `+' recursive calls entry shows the number of function calls that
+ were internal to the cycle, and the calls entry for each member shows,
+ for that member, how many times it was called from other members of
+ the cycle.
+
+Copyright (C) 2012-2016 Free Software Foundation, Inc.
+
+Copying and distribution of this file, with or without modification,
+are permitted in any medium without royalty provided the copyright
+notice and this notice are preserved.
+
+Index by function name
+
+ [118] CondorVersion         [173] PrioritySimpleList<Job*>::resize(int) [146] Job::Cleanup()
+   [9] ExitSuccess()         [151] PrioritySimpleList<Job*>::InsertAt(int, Job* const&, int) [89] Job::AddChild(Job*)
+  [66] time_to_str(tm const*, MyString&) [29] PrioritySimpleList<Job*>::PrioritySimpleList() [90] Job::AddChild(Job*, MyString&)
+  [52] time_to_str(long, MyString&) [207] PrioritySimpleList<Job*>::~PrioritySimpleList() [130] Job::HasChild(Job*)
+ [190] HaltFileName(MyString const&) [208] ThrottleByCategory::ThrottleByCategory() [23] Job::AddParent(Job*)
+  [42] debug_printf(debug_level, char const*, ...) [209] ThrottleByCategory::~ThrottleByCategory() [24] Job::AddParent(Job*, MyString&)
+  [15] print_status(bool)     [41] Dag::PrintEvent(debug_level, ULogEvent const*, Job*, bool) [131] Job::HasParent(Job*)
+ [166] RescueDagName(char const*, bool, int) [210] Dag::DumpDotFile() [46] Job::SetStatus(Job::status_t)
+  [81] condor_submit(Dagman const&, char const*, CondorID&, char const*, MyString&, List<Job::NodeVar>*, int, int, char const*, char const*, bool, MyString const&) [180] Dag::LiftSplices(SpliceLayer) [39] Job::Job(char const*, char const*, char const*)
+ [135] isReservedWord(char const*) [82] Dag::RestartNode(Job*, bool) [11] Job::~Job()
+  [86] IsValidNodeName(Dag*, char const*, MyString&) [114] Dag::CheckAllJobs() [134] List<Job>::Append(Job*)
+ [191] tolerant_unlink(char const*) [133] Dag::LookupSplice(MyString, Dag*&) [154] List<Job>::List()
+ [192] set_fake_condorID(int)  [5] Dag::TerminateJob(Job*, bool, bool) [153] List<Job>::~List()
+   [1] condor_event_timer()   [22] Dag::AddDependency(Job*, Job*) [33] List<Job::NodeVar>::~List()
+  [28] fake_condor_submit(CondorID&, Job*, char const*, char const*, char const*) [211] Dag::CreateMetrics(char const*, int) [65] List<Job::NodeVar>::~List()
+ [193] parseSetDoNameMunge(bool) [181] Dag::DeletePinList(std::vector<std::vector<Job*, std::allocator<Job*> >*, std::allocator<std::vector<Job*, std::allocator<Job*> >*> >&) [50] Queue<Job*>::enqueue(Job* const&)
+ [194] FindLastRescueDagNum(char const*, bool, int) [212] Dag::PrintDagFiles(StringList&) [95] Dagman::PublishStats()
+ [140] containsIllegalChars(char const*) [213] Dag::ReportMetrics(int) [221] Dagman::CheckLogFileMode(CondorVersionInfo const&)
+ [108] util_check_lock_file(char const*) [25] Dag::SubmitNodeJob(Dagman const&, Job*, CondorID&) [105] Dagman::ResolveDefaultLog()
+ [141] IsValidSubmitFileName(char const*, MyString&) [162] Dag::DumpNodeStatus(bool, bool) [102] Dagman::Config()
+ [110] util_create_lock_file(char const*, bool) [137] Dag::GetEventIDHash(bool) [94] ScriptQ::RunWaitingScripts(bool)
+ [195] debug_cache_stop_caching() [115] Dag::MonitorLogFile() [183] ScriptQ::ScriptQ(Dag*)
+ [196] debug_cache_start_caching() [83] Dag::RemoveBatchJob(Job*) [184] ScriptQ::~ScriptQ()
+  [21] parse(Dag*, char const*, bool, bool) [214] Dag::SetAllowEvents(int) [185] ScriptQ::~ScriptQ()
+  [34] AddNode(Dag*, char const*, char const*, char const*, bool, bool, bool, MyString&) [12] Dag::NumHeldJobProcs() [159] ExtArray<Job*>::set(int, Job*)
+  [35] parse_node(Dag*, char const*, char const*, int, char const*, char const*, char const*) (parse.cpp) [3] Dag::ProcessOneEvent(ULogEventOutcome, ULogEvent const*, bool, bool&) [175] ExtArray<Job*>::resize(int)
+  [76] parse_vars(Dag*, char const*, int) (parse.cpp) [16] Dag::SubmitReadyJobs(Dagman const&) [186] ExtArray<Job*>::ExtArray(int)
+ [132] munge_job_name(char const*) (parse.cpp) [68] Dag::UpdateJobCounts(Job*, int) [177] HashTable<MyString, Dag*>::iterate(MyString&, Dag*&)
+ [176] parse_pin_in_out(Dag*, char const*, int, bool) (parse.cpp) [144] Dag::CheckForDagAbort(Job*, char const*) [222] HashTable<MyString, Dag*>::~HashTable()
+ [142] next_possibly_quoted_token() (parse.cpp) [57] Dag::EventSanityCheck(ULogEvent const*, Job const*, bool*) [174] HashTable<MyString, Job*>::resize_hash_table(int)
+  [17] SimpleList<Job*>::DeleteCurrent() [2] Dag::ProcessLogEvents(bool) [147] HashTable<MyString, Job*>::insert(MyString const&, Job* const&, bool)
+ [172] SimpleList<Job*>::resize(int) [73] Dag::RemoveDependency(Job*, Job*) [72] HashTable<MyString, Job*>::~HashTable()
+ [197] DagmanStats::Init()   [116] Dag::UnmonitorLogFile() [223] HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::clear()
+ [198] DagmanStats::DagmanStats() [215] Dag::CheckThrottleCats() [187] HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::iterate(ThrottleByCategory::ThrottleInfo*&)
+ [199] DagmanStats::~DagmanStats() [84] Dag::ProcessAbortEvent(ULogEvent const*, Job*, bool) [224] HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::HashTable(unsigned long (*)(MyString const&))
+  [38] JobstateLog::WriteEvent(ULogEvent const*, Job*) [43] Dag::ProcessJobProcEnd(Job*, bool, bool) [225] HashTable<MyString, ThrottleByCategory::ThrottleInfo*>::~HashTable()
+  [67] JobstateLog::CondorID2Str(int, int, MyString&) [96] Dag::RunWaitingScripts() [188] HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::needs_resizing()
+ [101] JobstateLog::InitializeRecovery() [85] Dag::WriteNodeToRescue(_IO_FILE*, Job*, bool, bool) [44] HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::startIterations()
+  [97] JobstateLog::WriteDagmanStarted(CondorID const&) [79] Dag::DecrementProcCount(Job*) [189] HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::clear()
+  [60] JobstateLog::WriteSubmitFailure(Job*) [163] Dag::GetCondorLogStatus() [36] HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::iterate(ReadMultipleUserLogs::LogFileMonitor*&)
+  [98] JobstateLog::WriteDagmanFinished(int) [31] Dag::LogEventNodeLookup(ULogEvent const*, bool&) [226] HashTable<MyString, ReadMultipleUserLogs::LogFileMonitor*>::~HashTable()
+  [99] JobstateLog::WriteRecoveryStarted() [74] Dag::ProcessIsIdleEvent(Job*, int) [59] HashTable<int, Job*>::resize_hash_table(int)
+ [100] JobstateLog::WriteRecoveryFinished() [45] Dag::ProcessSubmitEvent(Job*, bool, bool&) [49] HashTable<int, Job*>::insert(int const&, Job* const&, bool)
+  [56] JobstateLog::WriteJobSuccessOrFailure(Job*) [48] Dag::ProcessFailedSubmit(Job*, int) [178] HashTable<int, Job*>::HashTable(unsigned long (*)(int const&))
+ [161] JobstateLog::Flush()   [64] Dag::ProcessNotIdleEvent(Job*, int) [54] HashTable<int, Job*>::~HashTable()
+  [37] JobstateLog::Write(long const*, Job*, char const*, char const*) [4] Dag::ProcessTerminatedEvent(ULogEvent const*, Job*, bool) [160] DagmanStats::Publish(compat_classad::ClassAd&) const
+  [77] JobstateLog::Write(long const*, MyString const&) [80] Dag::SanityCheckSubmitEvent(CondorID, Job const*) [164] Dag::DoneFailed(bool) const
+ [139] JobstateLog::ParseLine(MyString&, long&, MyString&, int&) [216] Dag::SetJobstateLogFileName(char const*) [87] Dag::NodeExists(char const*) const
+ [200] JobstateLog::JobstateLog() [32] Dag::ProcessSuccessfulSubmit(Job*, CondorID const&) [158] Dag::DoneSuccess(bool) const
+ [201] JobstateLog::~JobstateLog() [217] Dag::ResolveVarsInterpolations() [138] Dag::PrintReadyQ(debug_level) const
+ [104] DagmanClassad::GetAcctInfo(MyString&, MyString&) [182] Dag::PropagateDirectoryToAllNodes() [155] Dag::NumNodesDone(bool) const
+ [167] DagmanClassad::OpenConnection() [218] Dag::SetPendingNodeReportInterval(int) [40] Dag::FindNodeByName(char const*) const
+ [168] DagmanClassad::CloseConnection(_Qmgr_connection*) [219] Dag::RecordInitialAndTerminalNodes() [148] Dag::GetEventIDHash(bool) const
+ [109] DagmanClassad::GetDagAttribute(char const*, MyString&, bool) [61] Dag::Add(Job&) [103] Dag::PrintDeferrals(debug_level, bool) const
+ [107] DagmanClassad::GetSetBatchName(MyString const&, MyString&) [26] Dag::Bootstrap(bool) [157] Dag::FinishedRunning(bool) const
+ [169] DagmanClassad::SetDagAttribute(char const*, compat_classad::ClassAd const&) [220] Dag::GetReject(MyString&) [13] Dag::FindNodeByNodeID(int) const
+ [165] DagmanClassad::SetDagAttribute(char const*, int) [152] Dag::StartNode(Job*, bool) [62] Dag::FindNodeByEventID(CondorID) const
+ [111] DagmanClassad::InitializeMetrics() [30] Dag::Dag(StringList&, int, int, int, bool, int, bool, bool, char const*, CondorID const*, bool, bool, char const*, bool, SubmitDagDeepOptions*, bool, MyString const&) [63] Dag::FindAllNodesByName(char const*, char const*, char const*, int) const
+ [170] DagmanClassad::Update(int, int, int, int, int, int, int, int, Dag::dag_status, bool, DagmanStats const&) [10] Dag::~Dag() [156] Dag::NumNodes(bool) const
+ [117] DagmanClassad::GetInfo(MyString&, MyString&) [88] Job::CanAddChild(Job*, MyString&) [75] Job::GetPreSkip() const
+ [112] DagmanClassad::DagmanClassad(CondorID const&) [92] Job::ExecMetrics(int, tm const&, DagmanMetrics*) [149] Job::NumParents() const
+ [202] DagmanClassad::~DagmanClassad() [55] Job::SetCondorID(CondorID const&) [136] Job::NumChildren() const
+ [203] DagmanMetrics::GetVersion() [129] Job::CanAddParent(Job*, MyString&) [27] Job::SanityCheck() const
+ [143] DagmanMetrics::NodeFinished(bool, bool) [69] Job::GetProcIsIdle(int) [18] Job::GetStatus() const
+ [204] DagmanMetrics::SetDagmanIds(CondorID const&, int) [91] Job::SetProcIsIdle(int, bool) [47] HashTable<MyString, Job*>::lookup(MyString const&, Job*&) const
+ [205] DagmanMetrics::SetStartTime() [78] Job::SetLastEventTime(ULogEvent const*) [14] HashTable<int, Job*>::lookup(int const&, Job*&) const
+ [113] DagmanMetrics::WriteMetricsFile(int, Dag::dag_status) [93] Job::TermAbortMetrics(int, tm const&, DagmanMetrics*) [70] std::vector<unsigned char, std::allocator<unsigned char> >::_M_fill_insert(__gnu_cxx::__normal_iterator<unsigned char*, std::vector<unsigned char, std::allocator<unsigned char> > >, unsigned long, unsigned char const&)
+ [106] DagmanMetrics::Report(int, Dag::dag_status) [58] Job::TerminateSuccess() [171] std::pair<std::_Rb_tree_iterator<MyString>, bool> std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_insert_unique<MyString const&>(MyString const&)
+ [179] DagmanMetrics::GetTime() [51] Job::GetJobstateJobTag() [227] std::_Rb_tree<MyString, MyString, std::_Identity<MyString>, std::less<MyString>, std::allocator<MyString> >::_M_erase(std::_Rb_tree_node<MyString>*)
+ [206] DagmanMetrics::DagmanMetrics(Dag*, char const*, int) [53] Job::GetJobstateSequenceNum() [128] std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::find(int const&)
+  [71] DagmanMetrics::~DagmanMetrics() [145] Job::ResolveVarsInterpolations() [7] std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::erase(int const&)
+  [19] PrioritySimpleList<Job*>::DeleteCurrent() [127] Job::Add(Job::queue_t, int) [8] std::_Rb_tree<int, int, std::_Identity<int>, std::less<int>, std::allocator<int> >::_M_erase(std::_Rb_tree_node<int>*)
+ [150] PrioritySimpleList<Job*>::Append(Job* const&, int) [6] Job::Remove(Job::queue_t, int) [119] main
