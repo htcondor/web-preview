@@ -1,6 +1,6 @@
 // Powers the HTCSS User Map
 
-const defaultIconScale = 48
+const defaultIconScale = 42
 
 function getIcon(iconScale){
     let iconSize = [iconScale*2.8, iconScale]
@@ -16,7 +16,10 @@ function getIcon(iconScale){
 }
 
 function getScale(zoom){
-    return defaultIconScale - Math.max(((defaultIconScale / 2) - zoom), 0)
+    console.log("\n-----------------------------------\nZoom: ", zoom)
+    console.log("Scale: ", defaultIconScale * (.5 + (.03*zoom)))
+    console.log("f:", (.5 + (.025*zoom)))
+    return defaultIconScale * (.5 + (.03*zoom))
 }
 
 function create_marker(location, iconScale){
@@ -37,13 +40,14 @@ async function build_map(){
     const zoom = urlParams.get("zoom") ? urlParams.get("zoom") : 3
     const viewerLatitude = urlParams.get("latitude") ? urlParams.get("latitude") : 35
     const viewerLongitude = urlParams.get("longitude") ? urlParams.get("longitude") : -90
+    const scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") : true
 
-    var map = L.map('map', {scrollWheelZoom: false}).setView([viewerLatitude, viewerLongitude], zoom);
+    var map = L.map('map', {scrollWheelZoom: scrollWheelZoom}).setView([viewerLatitude, viewerLongitude], zoom);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
-        id: 'mapbox/dark-v11',
+        id: 'mapbox/light-v11',
         tileSize: 512,
         zoomOffset: -1,
         accessToken: 'pk.eyJ1IjoidGFraW5nZHJha2UiLCJhIjoiY2wya3IyZGNvMDFyOTNsbnhyZjBteHRycSJ9.g6tRaqN8_iJxHgAQKNP6Tw',
