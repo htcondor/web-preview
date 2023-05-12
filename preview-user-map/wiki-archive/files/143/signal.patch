@@ -1,0 +1,557 @@
+diff -ruHp condor-7.4.0.orig/src/condor_c++_util/classad_helpers.cpp condor-7.4.0/src/condor_c++_util/classad_helpers.cpp
+--- condor-7.4.0.orig/src/condor_c++_util/classad_helpers.cpp	2010-02-10 13:04:18.000000000 -0500
++++ condor-7.4.0/src/condor_c++_util/classad_helpers.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -278,7 +278,7 @@ ClassAd *CreateJobAd( const char *owner,
+ 
+ 	job_ad->Assign( ATTR_JOB_NOTIFICATION, NOTIFY_NEVER );
+ 
+-	job_ad->Assign( ATTR_KILL_SIG, "SIGTERM" );
++	
+ 
+ 	job_ad->Assign( ATTR_IMAGE_SIZE, 0 );
+ 
+diff -ruHp condor-7.4.0.orig/src/condor_c++_util/proc_family_direct.cpp condor-7.4.0/src/condor_c++_util/proc_family_direct.cpp
+--- condor-7.4.0.orig/src/condor_c++_util/proc_family_direct.cpp	2010-02-10 13:04:17.000000000 -0500
++++ condor-7.4.0/src/condor_c++_util/proc_family_direct.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -193,6 +193,14 @@ ProcFamilyDirect::kill_family(pid_t pid)
+ }
+ 
+ bool
++ProcFamilyDirect::signal_children(pid_t pid, int sig)
++{
++
++	EXCEPT("ProcFamilyDirect::signal_children should never be called");
++	return false;
++
++}
++bool
+ ProcFamilyDirect::unregister_family(pid_t pid)
+ {
+ 	ProcFamilyDirectContainer* container;
+diff -ruHp condor-7.4.0.orig/src/condor_c++_util/proc_family_direct.h condor-7.4.0/src/condor_c++_util/proc_family_direct.h
+--- condor-7.4.0.orig/src/condor_c++_util/proc_family_direct.h	2010-02-10 13:04:18.000000000 -0500
++++ condor-7.4.0/src/condor_c++_util/proc_family_direct.h	2010-03-01 16:17:48.000000000 -0500
+@@ -65,7 +65,9 @@ public:
+ 	bool continue_family(pid_t);
+ 
+ 	bool kill_family(pid_t);
+-
++	
++	bool signal_children(pid_t, int);
++	
+ 	bool unregister_family(pid_t);
+ 
+ 	// this class currently doesn't support GLEXEC_JOB
+diff -ruHp condor-7.4.0.orig/src/condor_c++_util/proc_family_interface.h condor-7.4.0/src/condor_c++_util/proc_family_interface.h
+--- condor-7.4.0.orig/src/condor_c++_util/proc_family_interface.h	2010-02-10 13:04:17.000000000 -0500
++++ condor-7.4.0/src/condor_c++_util/proc_family_interface.h	2010-03-01 16:17:48.000000000 -0500
+@@ -63,6 +63,8 @@ public:
+ 	virtual bool continue_family(pid_t) = 0;
+ 
+ 	virtual bool kill_family(pid_t) = 0;
++	
++	virtual bool signal_children(pid_t, int) = 0;
+ 
+ 	virtual bool unregister_family(pid_t) = 0;
+ 
+diff -ruHp condor-7.4.0.orig/src/condor_c++_util/proc_family_proxy.cpp condor-7.4.0/src/condor_c++_util/proc_family_proxy.cpp
+--- condor-7.4.0.orig/src/condor_c++_util/proc_family_proxy.cpp	2010-02-10 13:04:18.000000000 -0500
++++ condor-7.4.0/src/condor_c++_util/proc_family_proxy.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -264,6 +264,17 @@ ProcFamilyProxy::kill_family(pid_t pid)
+ }
+ 
+ bool
++ProcFamilyProxy::signal_children(pid_t pid, int sig)
++{
++	bool response;
++	while (!m_client->signal_children(pid, sig, response)) {
++		dprintf(D_ALWAYS, "ProcFamilyProxy::signal_children: ProcD communication error\n");
++		recover_from_procd_error();
++	}
++	return response;
++}
++
++bool
+ ProcFamilyProxy::suspend_family(pid_t pid)
+ {
+ 	bool response;
+diff -ruHp condor-7.4.0.orig/src/condor_c++_util/proc_family_proxy.h condor-7.4.0/src/condor_c++_util/proc_family_proxy.h
+--- condor-7.4.0.orig/src/condor_c++_util/proc_family_proxy.h	2010-02-10 13:04:17.000000000 -0500
++++ condor-7.4.0/src/condor_c++_util/proc_family_proxy.h	2010-03-01 16:17:48.000000000 -0500
+@@ -79,6 +79,9 @@ public:
+ 	// subfamilies of that family)
+ 	//
+ 	bool kill_family(pid_t);
++	
++	// tell the procd to signal all subfamilies of family)	
++        bool signal_children(pid_t, int);
+ 
+ 	// tell the procd we don't care about this family any
+ 	// more
+diff -ruHp condor-7.4.0.orig/src/condor_daemon_core.V6/condor_daemon_core.h condor-7.4.0/src/condor_daemon_core.V6/condor_daemon_core.h
+--- condor-7.4.0.orig/src/condor_daemon_core.V6/condor_daemon_core.h	2010-02-10 13:04:22.000000000 -0500
++++ condor-7.4.0/src/condor_daemon_core.V6/condor_daemon_core.h	2010-03-01 16:17:48.000000000 -0500
+@@ -1048,7 +1048,8 @@ class DaemonCore : public Service
+     int Suspend_Family(pid_t);
+     int Continue_Family(pid_t);
+     int Kill_Family(pid_t);
+-
++    int Signal_Children(pid_t,int);
++    
+ 	/** Used to explicitly initialize our ProcFamilyInterface object.
+ 	    Calling this is not required - if not called, the object
+ 	    will be initialized on-demand: the first time Create_Process
+diff -ruHp condor-7.4.0.orig/src/condor_daemon_core.V6/daemon_core.cpp condor-7.4.0/src/condor_daemon_core.V6/daemon_core.cpp
+--- condor-7.4.0.orig/src/condor_daemon_core.V6/daemon_core.cpp	2010-02-10 13:04:22.000000000 -0500
++++ condor-7.4.0/src/condor_daemon_core.V6/daemon_core.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -8209,7 +8209,13 @@ DaemonCore::Kill_Family(pid_t pid)
+ 	ASSERT(m_proc_family != NULL);
+ 	return m_proc_family->kill_family(pid);
+ }
+-
++int
++DaemonCore::Signal_Children(pid_t pid, int sig)
++{
++	ASSERT(m_proc_family != NULL);
++	dprintf(D_ALWAYS, "sending signal %d to children of family with root %u\n",sig,pid);
++	return m_proc_family->signal_children(pid,sig);
++}
+ void
+ DaemonCore::Proc_Family_Init()
+ {
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_client.cpp condor-7.4.0/src/condor_procd/proc_family_client.cpp
+--- condor-7.4.0.orig/src/condor_procd/proc_family_client.cpp	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_client.cpp	2010-03-01 17:29:42.000000000 -0500
+@@ -420,8 +420,9 @@ ProcFamilyClient::get_usage(pid_t pid, P
+ 	return true;
+ }
+ 
++
+ bool
+-ProcFamilyClient::signal_process(pid_t pid, int sig, bool& response)
++ProcFamilyClient::signal_process(pid_t pid, int sig, proc_family_command_t command, bool& response )
+ {
+ 	ASSERT(m_initialized);
+ 
+@@ -437,7 +438,7 @@ ProcFamilyClient::signal_process(pid_t p
+ 	ASSERT(buffer != NULL);
+ 	char* ptr = (char*)buffer;
+ 
+-	*(proc_family_command_t*)ptr = PROC_FAMILY_SIGNAL_PROCESS;
++	*(proc_family_command_t*)ptr = command;
+ 	ptr += sizeof(proc_family_command_t);
+ 
+ 	*(pid_t*)ptr = pid;
+@@ -469,6 +470,28 @@ ProcFamilyClient::signal_process(pid_t p
+ }
+ 
+ bool
++ProcFamilyClient::signal_process(pid_t pid, int sig, bool& response)
++{
++	ASSERT(m_initialized);
++
++	dprintf(D_PROCFAMILY,
++	        "About to signal process %u using the ProcD\n",
++	        pid);
++	return signal_process ( pid, sig, PROC_FAMILY_SIGNAL_PROCESS, response);
++}
++
++bool
++ProcFamilyClient::signal_children(pid_t pid, int sig, bool& response)
++{
++	ASSERT(m_initialized);
++
++	dprintf(D_PROCFAMILY,
++	        "About to signal children of process %u using the ProcD\n",
++	        pid);
++	return signal_process ( pid, sig, PROC_FAMILY_SIGNAL_CHILDREN, response);
++}
++
++bool
+ ProcFamilyClient::kill_family(pid_t pid, bool& response)
+ {
+ 	ASSERT(m_initialized);
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_client.h condor-7.4.0/src/condor_procd/proc_family_client.h
+--- condor-7.4.0.orig/src/condor_procd/proc_family_client.h	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_client.h	2010-03-01 17:27:29.000000000 -0500
+@@ -91,7 +91,10 @@ public:
+ 	// subfamilies of that family)
+ 	//
+ 	bool kill_family(pid_t, bool&);
+-
++	
++	// tell the procd to kill all subfamilies of a family
++        bool signal_children(pid_t, int, bool&);
++	
+ 	// tell the procd we don't care about this family any
+ 	// more
+ 	//
+@@ -111,6 +114,11 @@ public:
+ 
+ private:
+ 
++	// common code to send a signal to a single process or 
++	// children of a process 
++	//
++	bool signal_process(pid_t, int, proc_family_command_t, bool&);
++	
+ 	// common code for killing, suspending, and
+ 	// continuing a family
+ 	//
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_io.h condor-7.4.0/src/condor_procd/proc_family_io.h
+--- condor-7.4.0.orig/src/condor_procd/proc_family_io.h	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_io.h	2010-03-01 16:17:48.000000000 -0500
+@@ -38,6 +38,7 @@ enum proc_family_command_t {
+ 	PROC_FAMILY_SUSPEND_FAMILY,
+ 	PROC_FAMILY_CONTINUE_FAMILY,
+ 	PROC_FAMILY_KILL_FAMILY,
++	PROC_FAMILY_SIGNAL_CHILDREN,
+ 	PROC_FAMILY_GET_USAGE,
+ 	PROC_FAMILY_UNREGISTER_FAMILY,
+ 	PROC_FAMILY_TAKE_SNAPSHOT,
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_monitor.cpp condor-7.4.0/src/condor_procd/proc_family_monitor.cpp
+--- condor-7.4.0.orig/src/condor_procd/proc_family_monitor.cpp	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_monitor.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -446,6 +446,32 @@ ProcFamilyMonitor::signal_family(pid_t p
+ }
+ 
+ proc_family_error_t
++ProcFamilyMonitor::signal_children(pid_t pid, int sig)
++{ 
++	// get as up to date as possible
++	//
++	snapshot();
++	// find the family
++	//
++	Tree<ProcFamily*>* tree;
++	int ret = m_family_table.lookup(pid, tree);
++	if (ret == -1) {
++		dprintf(D_ALWAYS,
++		        "signal_children error: family with root %u not found\n",
++		        pid);
++		return PROC_FAMILY_ERROR_FAMILY_NOT_FOUND;
++	}
++	
++	// now send the signal and return
++	//
++	dprintf(D_ALWAYS, "ProcFamilyMonitor::signal_children sending signal %d to family with root %u\n", sig, pid);
++	Tree<ProcFamily*>* child = tree->get_child();
++	signal_family(child, sig);
++
++	return PROC_FAMILY_ERROR_SUCCESS;
++}
++
++proc_family_error_t
+ ProcFamilyMonitor::get_family_usage(pid_t pid, ProcFamilyUsage* usage)
+ {
+ 	// find the family
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_monitor.h condor-7.4.0/src/condor_procd/proc_family_monitor.h
+--- condor-7.4.0.orig/src/condor_procd/proc_family_monitor.h	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_monitor.h	2010-03-01 16:17:48.000000000 -0500
+@@ -95,7 +95,12 @@ public:	
+ 	// root pid and all subfamilies
+ 	//
+ 	proc_family_error_t signal_family(pid_t, int);
+-
++	
++	// send a signal to all sub processes in the family with the given
++	// root pid
++	//
++	proc_family_error_t signal_children(pid_t, int);
++	
+ 	// get resource usage information about a family (and all
+ 	// subfamilies)
+ 	//
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_server.cpp condor-7.4.0/src/condor_procd/proc_family_server.cpp
+--- condor-7.4.0.orig/src/condor_procd/proc_family_server.cpp	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_server.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -246,6 +246,18 @@ void ProcFamilyServer::kill_family()
+ 	write_to_client(&err, sizeof(proc_family_error_t));
+ }
+ 
++void ProcFamilyServer::signal_children()
++{
++	pid_t pid;
++	read_from_client(&pid, sizeof(pid_t));
++	int sig;
++	read_from_client(&sig, sizeof(int));
++
++	proc_family_error_t err = m_monitor.signal_children(pid, sig);
++
++	write_to_client(&err, sizeof(proc_family_error_t));
++}
++
+ void
+ ProcFamilyServer::unregister_family()
+ {
+@@ -421,7 +433,12 @@ ProcFamilyServer::wait_loop()
+ 				dprintf(D_ALWAYS, "PROC_FAMILY_KILL_FAMILY\n");
+ 				kill_family();
+ 				break;
+-
++				
++			case PROC_FAMILY_SIGNAL_CHILDREN:
++				dprintf(D_ALWAYS, "PROC_FAMILY_SIGNAL_CHILDREN\n");
++				signal_children();
++				break;
++				
+ 			case PROC_FAMILY_GET_USAGE:
+ 				dprintf(D_ALWAYS, "PROC_FAMILY_GET_USAGE\n");
+ 				get_usage();
+diff -ruHp condor-7.4.0.orig/src/condor_procd/proc_family_server.h condor-7.4.0/src/condor_procd/proc_family_server.h
+--- condor-7.4.0.orig/src/condor_procd/proc_family_server.h	2010-02-10 13:04:15.000000000 -0500
++++ condor-7.4.0/src/condor_procd/proc_family_server.h	2010-03-01 16:17:48.000000000 -0500
+@@ -72,6 +72,7 @@ private:
+ 	void suspend_family();
+ 	void continue_family();
+ 	void kill_family();
++	void signal_children();
+ 	void unregister_family();
+ 	void snapshot();
+ 	void quit();
+diff -ruHp condor-7.4.0.orig/src/condor_startd.V6/boinc_mgr.cpp condor-7.4.0/src/condor_startd.V6/boinc_mgr.cpp
+--- condor-7.4.0.orig/src/condor_startd.V6/boinc_mgr.cpp	2010-02-10 13:04:22.000000000 -0500
++++ condor-7.4.0/src/condor_startd.V6/boinc_mgr.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -347,7 +347,7 @@ BOINC_BackfillMgr::spawnClient( Resource
+ bool
+ BOINC_BackfillMgr::killClient( void )
+ {
+-	bool rval = m_boinc_starter->killHard();
++	bool rval = m_boinc_starter->killHard(SIG_KILL);
+ 	if( ! rval ) {
+ 		dprintf( D_ALWAYS, "BOINC_BackfillMgr::killClient(): "
+ 				 "ERROR telling BOINC starter (pid %d) to hardkill\n",
+diff -ruHp condor-7.4.0.orig/src/condor_startd.V6/claim.cpp condor-7.4.0/src/condor_startd.V6/claim.cpp
+--- condor-7.4.0.orig/src/condor_startd.V6/claim.cpp	2010-02-10 13:04:22.000000000 -0500
++++ condor-7.4.0/src/condor_startd.V6/claim.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -1517,7 +1517,7 @@ Claim::starterKillHard( void )
+ {
+ 	if( c_starter ) {
+ 		changeState( CLAIM_KILLING );
+-		return c_starter->killHard();
++		return c_starter->killHard(USER_DEFINED);
+ 	}
+ 		// if there's no starter, we don't need to kill anything, so
+ 		// it worked...  
+diff -ruHp condor-7.4.0.orig/src/condor_startd.V6/Starter.cpp condor-7.4.0/src/condor_startd.V6/Starter.cpp
+--- condor-7.4.0.orig/src/condor_startd.V6/Starter.cpp	2010-02-10 13:04:22.000000000 -0500
++++ condor-7.4.0/src/condor_startd.V6/Starter.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -35,6 +35,7 @@
+ #include "basename.h"
+ #include "dc_starter.h"
+ #include "classadHistory.h"
++#include "classad_helpers.h"
+ 
+ #if defined(LINUX)
+ #include "glexec_starter.h"
+@@ -1204,20 +1205,55 @@ Starter::getIpAddr( void )
+ 
+ 
+ bool
+-Starter::killHard( void )
++Starter::killHard( level_t level )
+ {
++	ClassAd *jobAd = NULL;
++	jobAd = s_claim->ad();
++	int kill_sig = -1;
++ 
+ 	if( ! active() ) {
+ 		return true;
+ 	}
+-	if( ! kill(DC_SIGHARDKILL) ) {
+-		killpg( SIGKILL );
+-		return false;
++	cancelKillTimer();
++	
++	kill_sig = findRmKillSig( jobAd );
++	
++	if (kill_sig==-1) kill_sig = findSoftKillSig( jobAd );
++	
++	if (level==SIG_KILL || kill_sig==-1){
++		if( ! kill(DC_SIGHARDKILL) ) {
++			killpg( SIGKILL );
++			return false;
++		}
++		dprintf(D_FULLDEBUG, "in starter:killHard starting kill timer\n");
++		startKillTimer(SIG_KILL);	
++	} else if (level==SIG_QUIT) {
++		kill_sig=3; //SIGQUIT
++		if (daemonCore->Signal_Children(s_pid, kill_sig) == FALSE) {
++			dprintf(D_ALWAYS,
++			        "error killing children of starter with pid %u\n",
++				s_pid);
++				return false;
++		} else {
++			dprintf(D_FULLDEBUG, "in starter:killHard  starting kill timer\n");
++			startKillTimer(SIG_QUIT);
++		}
++	} else {
++		//using user defined signal
++		if (daemonCore->Signal_Children(s_pid, kill_sig) == FALSE) {
++			dprintf(D_ALWAYS,
++			        "error killing children of starter with pid %u\n",
++				s_pid);
++				return false;
++		} else {
++			dprintf(D_FULLDEBUG, "in starter:killHard  starting kill timer\n");
++			startKillTimer(USER_DEFINED);
++		}
++	
+ 	}
+-	startKillTimer();
+ 	return true;
+ }
+ 
+-
+ bool
+ Starter::killSoft( void )
+ {
+@@ -1261,7 +1297,7 @@ Starter::resume( void )
+ 
+ 
+ int
+-Starter::startKillTimer( void )
++Starter::startKillTimer( level_t level )
+ {
+ 	if( s_kill_tid >= 0 ) {
+ 			// Timer already started.
+@@ -1279,11 +1315,29 @@ Starter::startKillTimer( void )
+ 
+ 		// Create a periodic timer so that if the kill attempt fails,
+ 		// we keep trying.
+-	s_kill_tid = 
+-		daemonCore->Register_Timer( tmp_killing_timeout,
++		
++	switch (level) {
++		case USER_DEFINED: //just sent a user defined signal so now we set a timer to send SIGQUIT
++			s_kill_tid = 
++			daemonCore->Register_Timer( tmp_killing_timeout,
++						tmp_killing_timeout, 
++						(TimerHandlercpp)&Starter::sigkillStarterSIGQUIT,
++						"sigkillStarterSIGQUIT", this );
++			break;
++		case SIG_QUIT:  //sent SIGQUIT, set a timer to send SIGKILL
++			s_kill_tid = 
++			daemonCore->Register_Timer( tmp_killing_timeout,
++						tmp_killing_timeout, 
++						(TimerHandlercpp)&Starter::sigkillStarterSIGKILL,
++						"sigkillStarterSIGKILL", this );
++			break;
++		default: //SIGKILL
++			s_kill_tid = 
++			daemonCore->Register_Timer( tmp_killing_timeout,
+ 						tmp_killing_timeout, 
+ 						(TimerHandlercpp)&Starter::sigkillStarter,
+ 						"sigkillStarter", this );
++		}								
+ 	if( s_kill_tid < 0 ) {
+ 		EXCEPT( "Can't register DaemonCore timer" );
+ 	}
+@@ -1332,6 +1386,41 @@ Starter::sigkillStarter( void )
+ }
+ 
+ bool
++Starter::sigkillStarterSIGKILL( void )
++{
++		// In case the kill fails for some reason, we are on a periodic
++		// timer that will keep trying.
++
++	if( active() ) {
++		dprintf( D_ALWAYS, "Children of starter (pid %d) are not "
++				 "terminating on SIGQUIT. The startd will now "
++				 "send SIGKILL to the children "
++				 "of starter.\n", s_pid );
++
++		killHard(SIG_KILL);
++	}
++	return true;
++}
++
++bool
++Starter::sigkillStarterSIGQUIT( void )
++{
++		// In case the kill fails for some reason, we are on a periodic
++		// timer that will keep trying.
++
++	if( active() ) {
++		dprintf( D_ALWAYS, "Children of starter (pid %d) are not "
++				 "terminating on remove or kill_sig signal. The startd will now "
++				 "send SIGQUIT to the children "
++				 "of starter.\n", s_pid );
++
++			// Kill all of the starter's children.
++		killHard(SIG_QUIT);
++	}
++	return true;
++}
++
++bool
+ Starter::holdJob(char const *hold_reason,int hold_code,int hold_subcode)
+ {
+ 	if( !s_is_dc ) {
+diff -ruHp condor-7.4.0.orig/src/condor_startd.V6/Starter.h condor-7.4.0/src/condor_startd.V6/Starter.h
+--- condor-7.4.0.orig/src/condor_startd.V6/Starter.h	2010-02-10 13:04:22.000000000 -0500
++++ condor-7.4.0/src/condor_startd.V6/Starter.h	2010-03-01 16:17:48.000000000 -0500
+@@ -29,6 +29,9 @@
+ 
+ #include "../condor_procapi/procapi.h"
+ #include "../condor_procd/proc_family_io.h"
++
++enum level_t {USER_DEFINED, SIG_QUIT, SIG_KILL};
++
+ class Claim;
+ 
+ class Starter : public Service
+@@ -62,7 +65,7 @@ public:
+ 		// of EXECUTE that is passed to the starter
+ 	char const *executeDir();
+ 
+-	bool	killHard( void );
++	bool	killHard( level_t );
+ 	bool	killSoft( void );
+ 	bool	suspend( void );
+ 	bool	resume( void );
+@@ -72,7 +75,9 @@ public:
+ 		// Send SIGKILL to starter + process group (called by our kill
+ 		// timer if we've been hardkilling too long).
+ 	bool	sigkillStarter( void );
+-
++	bool	sigkillStarterSIGKILL( void );
++	bool	sigkillStarterSIGQUIT( void );
++	
+ 	void	publish( ClassAd* ad, amask_t mask, StringList* list );
+ 
+ 	bool	satisfies( ClassAd* job_ad, ClassAd* mach_ad );
+@@ -127,7 +132,10 @@ private:
+ 
+ 	void	initRunData( void );
+ 
+-	int		startKillTimer( void );	    // Timer for how long we're willing 
++	// Timer for how long we're willing 
++	// to "hardkill" before we SIGKILL
++	int	startKillTimer( level_t );	   
++
+ 	void	cancelKillTimer( void );	// to "hardkill" before we SIGKILL
+ 
+ 		// choose EXECUTE directory for starter
+diff -ruHp condor-7.4.0.orig/src/condor_submit.V6/submit.cpp condor-7.4.0/src/condor_submit.V6/submit.cpp
+--- condor-7.4.0.orig/src/condor_submit.V6/submit.cpp	2010-02-10 13:04:21.000000000 -0500
++++ condor-7.4.0/src/condor_submit.V6/submit.cpp	2010-03-01 16:17:48.000000000 -0500
+@@ -5520,9 +5520,14 @@ SetKillSig()
+ 			sig_name = strdup( "SIGTERM" );
+ 			break;
+ 		}
+-	}
+-	buffer.sprintf( "%s=\"%s\"", ATTR_KILL_SIG, sig_name );
+-	InsertJobExpr( buffer );
++		if (JobUniverse != CONDOR_UNIVERSE_VANILLA) {
++			buffer.sprintf( "%s=\"%s\"", ATTR_KILL_SIG, sig_name );
++			InsertJobExpr( buffer );
++		}
++	} else {
++		buffer.sprintf( "%s=\"%s\"", ATTR_KILL_SIG, sig_name );
++		InsertJobExpr( buffer );
++		}
+ 	free( sig_name );
+ 
+ 	sig_name = findKillSigName( RmKillSig, ATTR_REMOVE_KILL_SIG );
