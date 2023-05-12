@@ -1,0 +1,72 @@
+diff --git a/src/condor_c++_util/test_locks.cpp b/src/condor_c++_util/test_locks.cpp
+index ce4c85c..86d495e 100644
+--- a/src/condor_c++_util/test_locks.cpp
++++ b/src/condor_c++_util/test_locks.cpp
+@@ -39,7 +39,7 @@ main( int argc, char *argv[] )
+ 		}
+ 
+ 		cout << "Cmd: ";
+-		cin >> cmd;
++		cin >> cmd;		//Keyboard input
+ 		if( strcmp( cmd, "quit" ) == 0 ) {
+ 			exit( 0 );
+ 		}
+diff --git a/src/condor_master.V6/master.cpp b/src/condor_master.V6/master.cpp
+index 30203d2..1cd7b3c 100644
+--- a/src/condor_master.V6/master.cpp
++++ b/src/condor_master.V6/master.cpp
+@@ -85,6 +85,7 @@ void	run_preen();
+ void	usage(const char* );
+ void	main_shutdown_graceful();
+ void	main_shutdown_fast();
++void	invalidate_ads();
+ void	main_config();
+ int	agent_starter(ReliSock *);
+ int	handle_agent_fetch_log(ReliSock *);
+@@ -1014,6 +1015,8 @@ main_config()
+ void
+ main_shutdown_fast()
+ {
++	invalidate_ads();
++
+ 	MasterShuttingDown = TRUE;
+ 	daemons.SetAllGoneAction( MASTER_EXIT );
+ 
+@@ -1032,6 +1035,8 @@ main_shutdown_fast()
+ void
+ main_shutdown_graceful()
+ {
++	invalidate_ads();
++
+ 	MasterShuttingDown = TRUE;
+ 	daemons.SetAllGoneAction( MASTER_EXIT );
+ 
+@@ -1043,6 +1048,28 @@ main_shutdown_graceful()
+ 	daemons.StopAllDaemons();
+ }
+ 
++void
++invalidate_ads() {
++	ClassAd cmd_ad;
++	cmd_ad.SetMyTypeName( QUERY_ADTYPE );
++	cmd_ad.SetTargetTypeName( MASTER_ADTYPE );
++	
++	MyString line;
++	MyString escaped_name;
++	char* default_name = MasterName;
++	if(!default_name) {
++		default_name = default_daemon_name();
++	}
++	
++	ClassAd::EscapeStringValue( default_name, escaped_name );
++	line.sprintf( "( TARGET.%s == \"%s\" )", ATTR_NAME, escaped_name.Value() );
++	cmd_ad.AssignExpr( ATTR_REQUIREMENTS, line.Value() );
++	cmd_ad.Assign( ATTR_NAME, default_name );
++	cmd_ad.Assign( ATTR_MY_ADDRESS, daemonCore->publicNetworkIpAddr());
++	daemonCore->sendUpdates( INVALIDATE_MASTER_ADS, &cmd_ad, NULL, false );
++	delete [] default_name;
++}
++
+ time_t
+ GetTimeStamp(char* file)
+ {
