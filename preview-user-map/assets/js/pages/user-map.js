@@ -1,31 +1,40 @@
 // Powers the HTCSS User Map
 
-const defaultIconScale = 36
+const defaultIconScale = 48
 
 function getIcon(iconScale){
     let iconSize = [iconScale*2.8, iconScale]
     let iconConfig = {
-        iconUrl: "assets/images/HTCondor_Bird.svg",
+        iconUrl: "/web-preview/preview-user-map/assets/images/HTCondor_Bird.svg",
         iconSize: iconSize,
         iconAnchor: [iconSize[0]*.5, iconSize[1]],
-        shadowUrl: "/assets/images/HTCondor_Bird_Shadow.svg",
+        shadowUrl: "/web-preview/preview-user-map/assets/images/HTCondor_Bird_Shadow.svg",
         shadowAnchor: [iconSize[1], iconSize[1]*.6],
         shadowSize: iconSize
     }
     return L.icon(iconConfig)
 }
 
+function getScale(zoom){
+    return defaultIconScale - Math.max(((defaultIconScale / 2) - zoom), 0)
+}
+
 function create_marker(location, iconScale){
-    return L.marker(location, {icon: getIcon(iconScale)})
+    return [...Array(9).keys()]
+        .map(x => x-5)
+        .map(x => L.marker([location[0], location[1] + (x*360)], {icon: getIcon(iconScale)}))
 }
 
 async function get_icon_locations(){
-    let response = await fetch("/assets/data/htcss-users.json")
+    let response = await fetch("/web-preview/preview-user-map/assets/data/htcss-users.json")
     return response.json()
 }
 
 async function build_map(){
-    var map = L.map('map').setView([51.505, -90], 4);
+
+    const zoom = 3
+
+    var map = L.map('map').setView([35, -90], zoom);
 
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -38,20 +47,13 @@ async function build_map(){
 
     let iconLocations = await get_icon_locations()
 
-    let markers = L.layerGroup(iconLocations.map(x => create_marker(x, defaultIconScale)))
+    let markers = L.layerGroup(iconLocations.flatMap(x => create_marker(x, getScale(zoom))))
 
     markers.addTo(map)
 
     map.on("zoomend", () => {
         let currentZoom = map.getZoom();
-
-        console.log("Current Zoom", currentZoom)
-
-        let scale = defaultIconScale - Math.max(((defaultIconScale / 2) - currentZoom), 0)
-
-        console.log(scale)
-
-        markers.eachLayer(x => x.setIcon(getIcon(scale)))
+        markers.eachLayer(x => x.setIcon(getIcon(getScale(currentZoom))))
     })
 }
 
