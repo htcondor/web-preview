@@ -1,0 +1,92 @@
+Introduction:
+
+We would like to be able to gather statistics for the purpose of improving the
+Condor software and providing guidance to users. The data is to give us insight
+in to what the daemon is doing, and in particular intended to help us determine
+the reasons for badput.
+
+General Guidelines:
+
+We will do the bare minimum of processing of data.  The onus of processing will
+be on the user. Thus the data we collect will observe the following constraints.
+
+* Instantaneous values or totals from the time the daemon was started will be published.
+* Statistical data is not persistent and will be lost when the daemon process exits.
+* The set of statistical values is defined at compile time, based on actual
+  user requests or plausable use cases. Dynamic or user-defined statistics are
+  not envisaged.
+
+To this end, we suggest the following statistics.
+
+## Schedd Ad statistics.
+
+StatLifetime             RelTime   total the schedd has been collecting statistics. (schedd lifetime)
+JobsStatLastUpdateTime   AbsTime   corresponding to the most recent update of the Schedd Ad statistics.
+JobsSubmitted            int     number of jobs submitted over lifetime of schedd
+JobsStarted              int     number of jobs started over schedd lifetime
+JobsCompleted            int     number of jobs successfully completed over schedd lifetime
+JobsExited               int     number of jobs exited (successful or otherwise) over schedd lifetime
+JobsExitedWithCodeXXX    int     number of jobs exited with code XXX over schedd lifetime this ad was published
+JobShadowExceptions      int     number of shadow exceptions over schedd lifetime
+
+TotalJobTimeToStart    RelTime   sum of job wait times to first start, over schedd lifetime
+TotalJobRunningTime    RelTime   sum of job running times over schedd lifetime
+
+## Schedd Ad window'ed statistics
+
+RecentStatWindowTime        RelTime   size of the time window for 'Recent' stats.  grows until it reaches WINDOWED_STAT_WIDTH and then holds there.
+RecentJobsSubmitted         int     number of jobs submitted over most recent sampling window
+RecentJobsStarted           int     Number of jobs started in stat window WINDOWED_STAT_WIDTH
+RecentJobsCompleted         int     number of jobs completed (successfully) over sampling window
+RecentJobsExited            int     number of jobs that exited (successful or otherwise) over window
+RecentJobsExitedWithCodeXXX int     number of jobs exited with code XXX (100, 115, etc) over window
+RecentJobShadowExceptions   int     number of shadow exceptions over window
+
+RecentJobRunningTime        int     running (wall-clock) time of jobs in schedd, over stat window
+
+# these are currently in the code but aren't needed, can be calculated from the above.
+#
+RecentJobStartedPerSec      int     rate (jobs/sec) of jobs starting in stat window
+RecentJobsSubmittedPerSec   int     rate of job submission (jobs/sec) over sampling window
+RecentJobsCompletedPerSec   int     rate of successful job completions over window
+
+##
+## these are not yet in the code.
+## 
+
+JobSizes                    list counts of jobs for each of <job_size_set> for actively running jobs
+JobSizesGoodput             list counts of jobs for each of <job_size_set> for jobs that succeeded
+JobSizesBadput              list counts of jobs for each of <job_size_set> for jobs that failed in some way.
+
+## <job_set_set> is ( < 64k < 256k < 1Mb < 4Mb < 16Mb < 64Mb < 256Mb < 1Gb < 4Gb < 16Gb < 64Gb < 256Gb ...)
+## This is possibly a user configurable set.
+
+JobLifetimes           list  counts of jobs for each of <job_lifetime_set> for actively running jobs
+JobLifetimesGoodput    list  counts of jobs for each of <job_lifetime_set> for jobs that succeeded
+JobLifetimesBadput     list  counts of jobs for each of <job_lifetime_set> for jobs that failed in some way.
+
+## <job_lifetime_set> is ( < 30 sec < 1 min < 10 min < 30 min < 1 hour < 3 hours < 6 hours < 24 hours < 2 days < 7 days < 30 days > 30 days)
+## possibly user configurable set?
+
+## for each daemon
+##
+
+DCStatLifetime            RelTime   total time the daemon has been collecting statistics. (uptime)
+DCStatLastUpdateTime      AbsTime   time of last update of DCxxxx statistics values
+DCSelectWaittime          RelTime   total time spent waiting in select
+DCSignalRuntime           RelTime   total time spent handling signals
+DCSocketRuntime           RelTime   total time spent handling socket messages
+DCPipeRuntime             RelTime   total time spent handling pipe messages
+DCSignals                 int       number of signals handlers called
+DCSockMessages            int       number of socket handlers called
+DCPipeMessages            int       number of pipe handlers called
+DCSockBytes               int       number of bytes passed though the socket (can we do this?)
+DCPipeBytes               int       number of bytes passed though the socket
+DCDebugOuts               int       number of dprintf calls that were written to output.
+
+Implementation:
+
+The statistics will be collected internally in the daemons, and published in
+the daemons' ClassAds. The collection will occur in a statically allocated
+table, with the exception of the binning for the lists (e.g., in JobSizes). The
+binning is envisaged to be a config knob.
