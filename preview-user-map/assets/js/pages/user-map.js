@@ -40,7 +40,7 @@ async function build_map(){
     const zoom = urlParams.get("zoom") ? urlParams.get("zoom") : 3
     const viewerLatitude = urlParams.get("latitude") ? urlParams.get("latitude") : 35
     const viewerLongitude = urlParams.get("longitude") ? urlParams.get("longitude") : -90
-    const scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") : true
+    const scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") !== '0' : true
 
     var map = L.map('map', {scrollWheelZoom: scrollWheelZoom}).setView([viewerLatitude, viewerLongitude], zoom);
 
