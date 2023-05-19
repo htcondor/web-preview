@@ -16,9 +16,6 @@ function getIcon(iconScale){
 }
 
 function getScale(zoom){
-    console.log("\n-----------------------------------\nZoom: ", zoom)
-    console.log("Scale: ", defaultIconScale * (.5 + (.03*zoom)))
-    console.log("f:", (.5 + (.025*zoom)))
     return defaultIconScale * (.5 + (.03*zoom))
 }
 
@@ -28,9 +25,27 @@ function create_marker(location, iconScale){
         .map(x => L.marker([location[0], location[1] + (x*360)], {icon: getIcon(iconScale)}))
 }
 
-async function get_icon_locations(){
+async function get_spreadsheet_values(){
+    let res = await fetch("https://docs.google.com/spreadsheets/d/18dMo5d89HkyzFGnsQaCPw843LPUG-czAneBR7rVThHI/gviz/tq?tqx=out:csv&sheet=htcss_user_registry")
+
+    let text = await res.text()
+
+    let data = Papa.parse(text, {header:true})
+
+    let geocodes = data['data'].map(x => [parseFloat(x['Longitude']), parseFloat(x['Latitude'])])
+
+    return geocodes
+}
+
+async function get_manual_values() {
     let response = await fetch("/web-preview/preview-user-map/assets/data/htcss-users.json")
+
     return response.json()
+}
+
+async function get_icon_locations(){
+    let data = [...(await get_spreadsheet_values()), ...(await get_manual_values())]
+    return data
 }
 
 async function build_map(){
