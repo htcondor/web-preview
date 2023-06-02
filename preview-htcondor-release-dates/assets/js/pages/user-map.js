@@ -5,12 +5,12 @@ const defaultIconScale = 42
 function getIcon(iconScale){
     let iconSize = [iconScale*2.8, iconScale]
     let iconConfig = {
-        iconUrl: "/web-preview/preview-htcondor-release-dates/assets/images/HTCondor_Bird.svg",
+        iconUrl: "/web-preview/preview-htcondor-release-dates/assets/images/icons/star_red.svg",
         iconSize: iconSize,
         iconAnchor: [iconSize[0]*.5, iconSize[1]],
-        shadowUrl: "/web-preview/preview-htcondor-release-dates/assets/images/HTCondor_Bird_Shadow.svg",
-        shadowAnchor: [iconSize[1], iconSize[1]*.6],
-        shadowSize: iconSize
+        shadowUrl: "/web-preview/preview-htcondor-release-dates/assets/images/icons/small_shadow.svg",
+        shadowAnchor: [iconSize[1]/2, (iconSize[1]*.6)/2],
+        shadowSize: [iconSize[0]*.55, iconSize[1]*.3]
     }
     return L.icon(iconConfig)
 }
@@ -26,7 +26,7 @@ function create_marker(location, iconScale){
 }
 
 async function get_spreadsheet_values(){
-    let res = await fetch("https://docs.google.com/spreadsheets/d/18dMo5d89HkyzFGnsQaCPw843LPUG-czAneBR7rVThHI/export?format=csv")
+    let res = await fetch("https://chtc.github.io/data-cache/data/htcss_user_registry.csv")
 
     let text = await res.text()
 
@@ -42,6 +42,10 @@ async function get_spreadsheet_values(){
         return p
     }, [])
 
+    if(cleanGeocodes.length === 0) {
+        console.error("No clean values were returned from the spreadsheet")
+    }
+
     return cleanGeocodes
 }
 
@@ -51,41 +55,58 @@ async function get_manual_values() {
     return response.json()
 }
 
-async function get_icon_locations(){
-    let data = [...(await get_spreadsheet_values()), ...(await get_manual_values())]
-    return data
+class UserMap {
+    constructor() {
+        let urlParams = new URLSearchParams(window.location.search)
+        this.zoom = urlParams.get("zoom") ? urlParams.get("zoom") : 3
+        this.viewerLatitude = urlParams.get("latitude") ? urlParams.get("latitude") : 35
+        this.viewerLongitude = urlParams.get("longitude") ? urlParams.get("longitude") : -90
+        this.scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") !== '0' : true
+
+        var map = L.map('map', {scrollWheelZoom: this.scrollWheelZoom}).setView([this.viewerLatitude, this.viewerLongitude], this.zoom);
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 17,
+            id: 'mapbox/satellite-streets-v12',
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoidGFraW5nZHJha2UiLCJhIjoiY2wya3IyZGNvMDFyOTNsbnhyZjBteHRycSJ9.g6tRaqN8_iJxHgAQKNP6Tw',
+        }).addTo(map);
+
+        this.markerLayer = L.layerGroup()
+        this.markerLayer.addTo(map)
+
+        map.on("zoomend", () => {
+            this.zoom = map.getZoom();
+            this.markerLayer.eachLayer(x => x.setIcon(getIcon(getScale(this.zoom))))
+        })
+
+        this.markerCount = 0
+    }
+
+    updateMarkerCount(numOfNewMarkers) {
+        this.markerCount += numOfNewMarkers
+        document.getElementById("org-count").textContent = this.markerCount
+    }
+
+    addIcon([longitude, latitude]) {
+        const markers = create_marker([longitude, latitude], getScale(this.zoom))
+        markers.forEach(x => this.markerLayer.addLayer(x))
+    }
+
+
+    async addIcons(getter) {
+        let iconLocations = await getter()
+        iconLocations.forEach(x => this.addIcon(x))
+        this.updateMarkerCount(iconLocations.length)
+    }
 }
 
-async function build_map(){
-
-    let urlParams = new URLSearchParams(window.location.search)
-
-    const zoom = urlParams.get("zoom") ? urlParams.get("zoom") : 3
-    const viewerLatitude = urlParams.get("latitude") ? urlParams.get("latitude") : 35
-    const viewerLongitude = urlParams.get("longitude") ? urlParams.get("longitude") : -90
-    const scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") !== '0' : true
-
-    var map = L.map('map', {scrollWheelZoom: scrollWheelZoom}).setView([viewerLatitude, viewerLongitude], zoom);
-
-    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox/light-v11',
-        tileSize: 512,
-        zoomOffset: -1,
-        accessToken: 'pk.eyJ1IjoidGFraW5nZHJha2UiLCJhIjoiY2wya3IyZGNvMDFyOTNsbnhyZjBteHRycSJ9.g6tRaqN8_iJxHgAQKNP6Tw',
-    }).addTo(map);
-
-    let iconLocations = await get_icon_locations()
-
-    let markers = L.layerGroup(iconLocations.flatMap(x => create_marker(x, getScale(zoom))))
-
-    markers.addTo(map)
-
-    map.on("zoomend", () => {
-        let currentZoom = map.getZoom();
-        markers.eachLayer(x => x.setIcon(getIcon(getScale(currentZoom))))
-    })
+function main(){
+    const map = new UserMap();
+    map.addIcons(get_spreadsheet_values)
+    map.addIcons(get_manual_values)
 }
 
-build_map()
+main()
