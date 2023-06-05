@@ -1,0 +1,886 @@
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index e3b5c85..2a52588 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -476,8 +476,11 @@ extern const char * const  ATTR_REMOTE_USER_RESOURCES_IN_USE;
+ extern const char * const  ATTR_REMOTE_VIRTUAL_MACHINE_ID;
+ extern const char * const  ATTR_REMOVE_KILL_SIG;
+ extern const char * const  ATTR_REMOVE_REASON;
++extern const char * const  ATTR_REQUEST_SLOT_RESOURCE_PREFIX;
+ extern const char * const  ATTR_REQUEUE_REASON;
+ extern const char * const  ATTR_REQUIREMENTS;
++extern const char * const  ATTR_SLOT_TYPE;
++extern const char * const  ATTR_SLOT_TYPE_ID;
+ extern const char * const  ATTR_SLOT_WEIGHT;
+ extern const char * const  ATTR_RESULT;
+ extern const char * const  ATTR_RSC_BYTES_SENT;
+@@ -496,6 +499,9 @@ extern const char * const  ATTR_SHADOW_WAIT_FOR_DEBUG;
+ extern const char * const  ATTR_SLOT_ID;
+ extern const char * const  ATTR_SLOT_PARTITIONABLE;
+ extern const char * const  ATTR_SLOT_DYNAMIC;
++extern const char * const  ATTR_SLOT_RESOURCE_PREFIX;
++extern const char * const  ATTR_TOTAL_SLOT_RESOURCE_PREFIX;
++extern const char * const  ATTR_LOCAL_RESOURCE_PREFIX;
+ extern const char * const  ATTR_SOURCE;
+ extern const char * const  ATTR_STAGE_IN_START;
+ extern const char * const  ATTR_STAGE_IN_FINISH;
+diff --git a/src/condor_startd.V6/ResAttributes.cpp b/src/condor_startd.V6/ResAttributes.cpp
+index 36b5025..6eedac4 100644
+--- a/src/condor_startd.V6/ResAttributes.cpp
++++ b/src/condor_startd.V6/ResAttributes.cpp
+@@ -20,8 +20,12 @@
+ 
+ #include "condor_common.h"
+ #include "startd.h"
++#include "my_popen.h"
+ #include <math.h>
+ 
++#include <set>
++#include <algorithm>
++
+ #ifdef WIN32
+ #include "winreg.windows.h"
+ #endif
+@@ -262,6 +266,8 @@ MachAttributes::init_user_settings()
+ 
+ 	} // end while(m_user_specified.next());
+ 
++    
++
+ #ifdef WIN32
+     // build and save off the string of .NET versions.
+     //
+@@ -521,6 +527,101 @@ MachAttributes::compute( amask_t how_much )
+ 
+ }
+ 
++
++void MachAttributes::init_local_resources() {
++    // defines the space of local resources, and their quantity
++    m_machres_map.clear();
++
++    // this may be filled from resource inventory scripts
++    m_machres_attr.Clear();
++
++    // these are reserved for standard/fixed resources
++    std::set<string> fixedRes;
++    fixedRes.insert("cpu");
++    fixedRes.insert("cpus");
++    fixedRes.insert("disk");
++    fixedRes.insert("swap");
++    fixedRes.insert("mem");
++    fixedRes.insert("memory");
++    fixedRes.insert("ram");
++
++    // get the list of defined local resource names:
++    char* ptmp = param("LOCAL_RESOURCE_NAMES");
++    string resnames;
++    if (NULL != ptmp) {
++        resnames = ptmp;
++        free(ptmp);
++    }
++
++    // scan the list of local resources, to obtain their quantity and associated attributes (if any)
++    StringList reslist(resnames.c_str());
++    reslist.rewind();
++    while (const char* rnp = reslist.next()) {
++        string rname(rnp);
++        std::transform(rname.begin(), rname.end(), rname.begin(), ::tolower);
++        if (fixedRes.count(rname) > 0) {
++            EXCEPT("pre-defined resource name '%s' is reserved", rname.c_str());
++        }
++
++        // look for LOCAL_RESOURCE_INVENTORY_<rname> script:
++        string pname;
++        sprintf(pname, "LOCAL_RESOURCE_INVENTORY_%s", rname.c_str());
++        char* invscriptp = param(pname.c_str());
++        if (NULL == invscriptp) {
++            // if there is no inventory script, look for LOCAL_RESOURCE_<rname>:
++            string tname;
++            sprintf(tname, "LOCAL_RESOURCE_%s", rname.c_str());
++            int v = param_integer(tname.c_str(), 0);
++            if (v <= 0) {
++                EXCEPT("Must supply either %s or %s", pname.c_str(), tname.c_str());
++            }
++            m_machres_map[rname] = v;
++            continue;
++        }
++
++        // if there is an inventory script, then attempt to execute it and use its output to
++        // identify the local resource quantity, and any associated attributes:
++        string invscript = invscriptp;
++        free(invscriptp);
++
++        ArgList invcmd;
++        StringList invcmdal(invscript.c_str());
++        invcmdal.rewind();
++        while (char* invarg = invcmdal.next()) {
++            invcmd.AppendArg(invarg);
++        }
++        FILE* fp = my_popen(invcmd, "r", FALSE);
++        if (NULL == fp) {
++            EXCEPT("Failed to execute local resource inventory script \"%s\"\n", invscript.c_str(), rname.c_str());
++        }
++
++        ClassAd invad;
++        char invline[1000];
++        while (fgets(invline, sizeof(invline), fp)) {
++            if (!invad.Insert(invline)) {
++                dprintf(D_ALWAYS, "Failed to insert \"%s\" into machine resource attributes: ignoring\n", invline);
++            }
++        }
++        my_pclose(fp);
++
++        // require the actual resource to be present as an attribute
++        int v = 0;
++        if (!invad.LookupInteger(rname.c_str(), v)) {
++            EXCEPT("Missing required attribute \"%s = <n>\" from output of %s\n", rname.c_str(),  invscript.c_str());
++        }
++
++        // success
++        m_machres_map[rname] = v;
++        invad.Delete(rname.c_str());
++        m_machres_attr.Update(invad);
++    }
++
++    for (slotres_map_t::iterator j(m_machres_map.begin());  j != m_machres_map.end();  ++j) {
++        dprintf(D_ALWAYS, "Local resource %s = %d\n", j->first.c_str(), int(j->second));
++    }
++}
++
++
+ void
+ MachAttributes::final_idle_dprintf()
+ {
+@@ -694,6 +795,13 @@ MachAttributes::publish( ClassAd* cp, amask_t how_much)
+ 			cp->Assign(ATTR_LOCAL_CREDD, m_local_credd);
+ 		}
+ #endif
++
++        // publish any local resources
++        for (slotres_map_t::iterator j(m_machres_map.begin());  j != m_machres_map.end();  ++j) {
++            string attr;
++            sprintf(attr, "%s%s", ATTR_LOCAL_RESOURCE_PREFIX, j->first.c_str());
++            cp->Assign(attr.c_str(), int(j->second));
++        }
+ 	}
+ 
+ 		// We don't want this inserted into the public ad automatically
+@@ -850,6 +958,7 @@ CpuAttributes::CpuAttributes( MachAttributes* map_arg,
+ 							  int num_phys_mem,
+ 							  float virt_mem_fraction,
+ 							  float disk_fraction,
++                              const slotres_map_t& slotres_map,
+ 							  MyString &execute_dir,
+ 							  MyString &execute_partition_id )
+ {
+@@ -859,6 +968,7 @@ CpuAttributes::CpuAttributes( MachAttributes* map_arg,
+ 	c_slot_mem = c_phys_mem = num_phys_mem;
+ 	c_virt_mem_fraction = virt_mem_fraction;
+ 	c_disk_fraction = disk_fraction;
++    c_slotres_map = slotres_map;
+ 	c_execute_dir = execute_dir;
+ 	c_execute_partition_id = execute_partition_id;
+ 	c_idle = -1;
+@@ -920,7 +1030,14 @@ CpuAttributes::publish( ClassAd* cp, amask_t how_much )
+ 
+ 		cp->Assign( ATTR_TOTAL_SLOT_CPUS, c_num_slot_cpus );
+ 		
+-		
++        // publish local resource quantities for this slot
++        for (slotres_map_t::iterator j(c_slotres_map.begin());  j != c_slotres_map.end();  ++j) {
++            string attr;
++            sprintf(attr, "%s%s", ATTR_SLOT_RESOURCE_PREFIX, j->first.c_str());
++            cp->Assign(attr.c_str(), int(j->second));
++            sprintf(attr, "%s%s", ATTR_TOTAL_SLOT_RESOURCE_PREFIX, j->first.c_str());
++            cp->Assign(attr.c_str(), int(c_slottot_map[j->first]));
++        }
+ 	}
+ }
+ 
+@@ -1020,18 +1137,31 @@ CpuAttributes::show_totals( int dflag )
+ 
+ 	if( IS_AUTO_SHARE(c_disk_fraction) ) {
+ 		::dprintf( dflag | D_NOHEADER, 
+-				   ", Disk: auto\n" );
++				   ", Disk: auto" );
+ 	}
+ 	else {
+ 		::dprintf( dflag | D_NOHEADER, 
+-				   ", Disk: %.2f%%\n", 100*c_disk_fraction );
++				   ", Disk: %.2f%%", 100*c_disk_fraction );
+ 	}
++
++    for (slotres_map_t::iterator j(c_slotres_map.begin());  j != c_slotres_map.end();  ++j) {
++        if (IS_AUTO_SHARE(j->second)) {
++            ::dprintf(dflag | D_NOHEADER, ", %s: auto", j->first.c_str()); 
++        } else {
++            ::dprintf(dflag | D_NOHEADER, ", %s: %d", j->first.c_str(), int(j->second));
++        }
++    }
++
++    ::dprintf(dflag | D_NOHEADER, "\n");
+ }
+ 
+ 
+ void
+ CpuAttributes::dprintf( int flags, const char* fmt, ... )
+ {
++    if (NULL == rip) {
++        EXCEPT("CpuAttributes::dprintf() called with NULL resource pointer");
++    }
+ 	va_list args;
+ 	va_start( args, fmt );
+ 	rip->dprintf_va( flags, fmt, args );
+@@ -1053,6 +1183,10 @@ CpuAttributes::operator+=( CpuAttributes& rhs )
+ 		c_disk_fraction += rhs.c_disk_fraction;
+ 	}
+ 
++    for (slotres_map_t::iterator j(c_slotres_map.begin());  j != c_slotres_map.end();  ++j) {
++        j->second += rhs.c_slotres_map[j->first];
++    }
++
+ 	compute( A_TIMEOUT | A_UPDATE ); // Re-compute
+ 
+ 	return *this;
+@@ -1072,6 +1206,10 @@ CpuAttributes::operator-=( CpuAttributes& rhs )
+ 		c_disk_fraction -= rhs.c_disk_fraction;
+ 	}
+ 
++    for (slotres_map_t::iterator j(c_slotres_map.begin());  j != c_slotres_map.end();  ++j) {
++        j->second -= rhs.c_slotres_map[j->first];
++    }
++
+ 	compute( A_TIMEOUT | A_UPDATE ); // Re-compute
+ 
+ 	return *this;
+@@ -1085,6 +1223,10 @@ AvailAttributes::AvailAttributes( MachAttributes* map ):
+ 	a_phys_mem_auto_count = 0;
+ 	a_virt_mem_fraction = 1.0;
+ 	a_virt_mem_auto_count = 0;
++    a_slotres_map = map->machres();
++    for (slotres_map_t::iterator j(a_slotres_map.begin());  j != a_slotres_map.end();  ++j) {
++        a_autocnt_map[j->first] = 0;
++    }
+ }
+ 
+ AvailDiskPartition &
+@@ -1124,27 +1266,46 @@ AvailAttributes::decrement( CpuAttributes* cap )
+ 		new_disk -= cap->c_disk_fraction;
+ 	}
+ 
+-	if( new_cpus < floor || new_phys_mem < floor || 
+-		new_virt_mem < floor || new_disk < floor ) {
+-		return false;
+-	} else {
+-		a_num_cpus = new_cpus;
++    bool resfloor = false;
++    slotres_map_t new_res(a_slotres_map);
++    for (slotres_map_t::iterator j(new_res.begin());  j != new_res.end();  ++j) {
++        if (!IS_AUTO_SHARE(cap->c_slotres_map[j->first])) {
++            j->second -= cap->c_slotres_map[j->first];
++        }
++        if (j->second < floor) { 
++            resfloor = true;
++        }
++    }
+ 
+-		a_phys_mem = new_phys_mem;
+-		if( cap->c_phys_mem == AUTO_MEM ) {
+-			a_phys_mem_auto_count += 1;
+-		}
++	if (resfloor || new_cpus < floor || new_phys_mem < floor || 
++		new_virt_mem < floor || new_disk < floor) {
++	    return false;
++    }
+ 
+-		a_virt_mem_fraction = new_virt_mem;
+-		if( IS_AUTO_SHARE(cap->c_virt_mem_fraction) ) {
+-			a_virt_mem_auto_count += 1;
+-		}
++    a_num_cpus = new_cpus;
++
++    a_phys_mem = new_phys_mem;
++    if( cap->c_phys_mem == AUTO_MEM ) {
++        a_phys_mem_auto_count += 1;
++    }
++
++    a_virt_mem_fraction = new_virt_mem;
++    if( IS_AUTO_SHARE(cap->c_virt_mem_fraction) ) {
++        a_virt_mem_auto_count += 1;
++    }
++
++    partition.m_disk_fraction = new_disk;
++    if( IS_AUTO_SHARE(cap->c_disk_fraction) ) {
++        partition.m_auto_count += 1;
++    }
++
++    for (slotres_map_t::iterator j(a_slotres_map.begin());  j != a_slotres_map.end();  ++j) {
++        j->second = new_res[j->first];
++        if (IS_AUTO_SHARE(cap->c_slotres_map[j->first])) {
++            a_autocnt_map[j->first] += 1;
++        }
++    }
+ 
+-		partition.m_disk_fraction = new_disk;
+-		if( IS_AUTO_SHARE(cap->c_disk_fraction) ) {
+-			partition.m_auto_count += 1;
+-		}
+-	}
+ 	return true;
+ }
+ 
+@@ -1178,6 +1339,19 @@ AvailAttributes::computeAutoShares( CpuAttributes* cap )
+ 		}
+ 		cap->c_disk_fraction = new_value;
+ 	}
++
++    for (slotres_map_t::iterator j(a_slotres_map.begin());  j != a_slotres_map.end();  ++j) {
++        if (IS_AUTO_SHARE(cap->c_slotres_map[j->first])) {
++            // replace auto share vals with final values:
++            ASSERT(a_autocnt_map[j->first] > 0);
++            int new_value = int(j->second / a_autocnt_map[j->first]);
++            if (new_value <= 0) return false;
++            cap->c_slotres_map[j->first] = new_value;
++        }
++        // save off slot resource totals once we have final value:
++        cap->c_slottot_map[j->first] = cap->c_slotres_map[j->first];
++    }
++
+ 	return true;
+ }
+ 
+@@ -1187,7 +1361,11 @@ AvailAttributes::show_totals( int dflag, CpuAttributes *cap )
+ {
+ 	AvailDiskPartition &partition = GetAvailDiskPartition( cap->c_execute_partition_id );
+ 	::dprintf( dflag | D_NOHEADER, 
+-			 "Cpus: %d, Memory: %d, Swap: %.2f%%, Disk: %.2f%%\n",
++			 "Cpus: %d, Memory: %d, Swap: %.2f%%, Disk: %.2f%%",
+ 			 a_num_cpus, a_phys_mem, 100*a_virt_mem_fraction,
+ 			 100*partition.m_disk_fraction );
++    for (slotres_map_t::iterator j(a_slotres_map.begin());  j != a_slotres_map.end();  ++j) {
++        ::dprintf(dflag | D_NOHEADER, ", %s: %d", j->first.c_str(), int(j->second));
++    }
++    ::dprintf(dflag | D_NOHEADER, "\n");
+ }
+diff --git a/src/condor_startd.V6/ResAttributes.h b/src/condor_startd.V6/ResAttributes.h
+index bfb8dc3..467c044 100644
+--- a/src/condor_startd.V6/ResAttributes.h
++++ b/src/condor_startd.V6/ResAttributes.h
+@@ -31,6 +31,10 @@
+ #include "condor_common.h"
+ #include "condor_classad.h"
+ 
++#include <map>
++#include <string>
++using std::string;
++
+ class Resource;
+ 
+ typedef int amask_t;
+@@ -82,6 +86,7 @@ const float AUTO_SHARE = 123;
+ // for a slot.  It is later updated by dividing the remaining resources
+ // evenly between slots using AUTO_MEM.
+ const int AUTO_MEM = -123;
++const int AUTO_RES = -9999;
+ 
+ // This is used with the AttribValue structure to identify the datatype
+ // for the value (selects an entry in the union)
+@@ -179,12 +184,15 @@ typedef struct _AttribValue {
+ class MachAttributes
+ {
+ public:
++    typedef std::map<string, double> slotres_map_t;
++
+ 	MachAttributes();
+ 	~MachAttributes();
+ 
+ 	void init();
+     void init_user_settings(); // read STARTD_PUBLISH_WINREG param and parse it
+                                // creating data structure needed in compute and publish
++    void init_local_resources();
+ 
+ 	void publish( ClassAd*, amask_t );  // Publish desired info to given CA
+ 	void compute( amask_t );			  // Actually recompute desired stats
+@@ -213,6 +221,8 @@ public:
+ 	float		condor_load()	{ return m_condor_load; };
+ 	time_t		keyboard_idle() { return m_idle; };
+ 	time_t		console_idle()	{ return m_console_idle; };
++    const slotres_map_t& machres() const { return m_machres_map; }
++    const ClassAd& machattr() const { return m_machres_attr; }
+ 
+ private:
+ 
+@@ -239,6 +249,9 @@ private:
+ 	int				m_num_cpus;
+ 	int				m_num_real_cpus;
+ 	int				m_phys_mem;
++    slotres_map_t   m_machres_map;
++    ClassAd         m_machres_attr;
++
+ 	char*			m_arch;
+ 	char*			m_opsys;
+ 	int 			m_opsysver;
+@@ -284,11 +297,14 @@ private:
+ class CpuAttributes
+ {
+ public:
++    typedef MachAttributes::slotres_map_t slotres_map_t;
++
+ 	friend class AvailAttributes;
+ 
+ 	CpuAttributes( MachAttributes*, int slot_type, int num_cpus, 
+ 				   int num_phys_mem, float virt_mem_fraction,
+ 				   float disk_fraction,
++                   const slotres_map_t& slotres_map,
+ 				   MyString &execute_dir, MyString &execute_partition_id );
+ 
+ 	void attach( Resource* );	// Attach to the given Resource
+@@ -320,6 +336,8 @@ public:
+ 	unsigned long get_total_disk() { return c_total_disk; }
+ 	char const *executeDir() { return c_execute_dir.Value(); }
+ 	char const *executePartitionID() { return c_execute_partition_id.Value(); }
++    const slotres_map_t& get_slotres_map() { return c_slotres_map; }
++    const MachAttributes* get_mach_attr() { return map; }
+ 
+ 	CpuAttributes& operator+=( CpuAttributes& rhs);
+ 	CpuAttributes& operator-=( CpuAttributes& rhs);
+@@ -342,11 +360,15 @@ private:
+ 		// data structure.
+ 	unsigned long   c_total_disk;
+ 
+-		// Static info
+ 	int				c_phys_mem;
+ 	int				c_slot_mem;
+-	int				c_num_cpus;
+-	int				c_num_slot_cpus;
++	int				c_num_cpus;    
++    // custom slot resources
++    slotres_map_t c_slotres_map;
++    slotres_map_t c_slottot_map;
++
++    // totals
++	int			  c_num_slot_cpus;
+ 
+ 		// These hold the fractions of shared, dynamic resources
+ 		// that are allocated to this CPU.
+@@ -375,6 +397,8 @@ class AvailDiskPartition
+ class AvailAttributes
+ {
+ public:
++    typedef MachAttributes::slotres_map_t slotres_map_t;
++
+ 	AvailAttributes( MachAttributes* map );
+ 
+ 	bool decrement( CpuAttributes* cap );
+@@ -388,6 +412,9 @@ private:
+ 	float			a_virt_mem_fraction;
+ 	int             a_virt_mem_auto_count; // number of slots specifying "auto"
+ 
++    slotres_map_t a_slotres_map;
++    slotres_map_t a_autocnt_map;
++
+ 		// number of slots using "auto" for disk share in each partition
+ 	HashTable<MyString,AvailDiskPartition> m_execute_partitions;
+ 
+diff --git a/src/condor_startd.V6/ResMgr.cpp b/src/condor_startd.V6/ResMgr.cpp
+index d2b0c43..6578e5e 100644
+--- a/src/condor_startd.V6/ResMgr.cpp
++++ b/src/condor_startd.V6/ResMgr.cpp
+@@ -432,6 +432,8 @@ ResMgr::init_resources( void )
+ 
+     stats.Init();
+ 
++    m_attr->init_local_resources();
++
+ 		// These things can only be set once, at startup, so they
+ 		// don't need to be in build_cpu_attrs() at all.
+ 	if (param_boolean("ALLOW_VM_CRUFT", false)) {
+@@ -645,7 +647,7 @@ ResMgr::reconfig_resources( void )
+ CpuAttributes**
+ ResMgr::buildCpuAttrs( int total, int* type_num_array, bool except )
+ {
+-	int i, j, num;
++	int num;
+ 	CpuAttributes* cap;
+ 	CpuAttributes** cap_array;
+ 
+@@ -658,9 +660,9 @@ ResMgr::buildCpuAttrs( int total, int* type_num_array, bool except )
+ 	}
+ 
+ 	num = 0;
+-	for( i=0; i<max_types; i++ ) {
++	for (int i=0; i<max_types; i++) {
+ 		if( type_num_array[i] ) {
+-			for( j=0; j<type_num_array[i]; j++ ) {
++			for (int j=0; j<type_num_array[i]; j++) {
+ 				cap = buildSlot( num+1, type_strings[i], i, except );
+ 				if( avail.decrement(cap) && num < total ) {
+ 					cap_array[num] = cap;
+@@ -679,8 +681,8 @@ ResMgr::buildCpuAttrs( int total, int* type_num_array, bool except )
+ 						EXCEPT( "Ran out of system resources" );
+ 					} else {
+ 							// Gracefully cleanup and abort
+-						for( i=0; i<num; i++ ) {
+-							delete cap_array[i];
++						for(int ii=0; ii<num; ii++ ) {
++							delete cap_array[ii];
+ 						}
+ 						delete [] cap_array;
+ 						return NULL;
+@@ -691,8 +693,9 @@ ResMgr::buildCpuAttrs( int total, int* type_num_array, bool except )
+ 	}
+ 
+ 		// now replace "auto" shares with final value
+-	for( i=0; i<num; i++ ) {
++	for (int i=0; i<num; i++) {
+ 		cap = cap_array[i];
++        cap->show_totals(D_ALWAYS);
+ 		if( !avail.computeAutoShares(cap) ) {
+ 
+ 				// We ran out of system resources.
+@@ -708,13 +711,14 @@ ResMgr::buildCpuAttrs( int total, int* type_num_array, bool except )
+ 				EXCEPT( "Ran out of system resources in auto allocation" );
+ 			} else {
+ 					// Gracefully cleanup and abort
+-				for( i=0; i<num; i++ ) {
+-					delete cap_array[i];
++				for (int j=0;  j<num;  j++) {
++					delete cap_array[j];
+ 				}
+ 				delete [] cap_array;
+ 				return NULL;
+ 			}
+ 		}
++        cap->show_totals(D_ALWAYS);
+ 	}
+ 
+ 	return cap_array;
+@@ -845,9 +849,10 @@ ResMgr::typeNumCmp( int* a, int* b )
+ CpuAttributes*
+ ResMgr::buildSlot( int slot_id, StringList* list, int type, bool except )
+ {
+-	char *attr, *val;
++    typedef CpuAttributes::slotres_map_t slotres_map_t;
+ 	int cpus=0, ram=0;
+ 	float disk=0, swap=0, share;
++    slotres_map_t slotres;
+ 	float default_share = AUTO_SHARE;
+ 
+ 	MyString execute_dir, partition_id;
+@@ -861,7 +866,11 @@ ResMgr::buildSlot( int slot_id, StringList* list, int type, bool except )
+ 	  swap = default_share;
+ 	  disk = default_share;
+ 
+-	  return new CpuAttributes( m_attr, type, cpus, ram, swap, disk, execute_dir, partition_id );
++      for (slotres_map_t::const_iterator j(m_attr->machres().begin());  j != m_attr->machres().end();  ++j) {
++          slotres[j->first] = default_share;
++      }
++
++	  return new CpuAttributes( m_attr, type, cpus, ram, swap, disk, slotres, execute_dir, partition_id );
+ 	}
+ 		// For this parsing code, deal with the following example
+ 		// string list:
+@@ -870,18 +879,24 @@ ResMgr::buildSlot( int slot_id, StringList* list, int type, bool except )
+ 		// the default share for any items not explicitly defined.  Example:
+ 		// "c=1, 25%"
+ 
++    for (slotres_map_t::const_iterator j(m_attr->machres().begin());  j != m_attr->machres().end();  ++j) {
++        slotres[j->first] = AUTO_RES;
++    }
++
+ 	list->rewind();
+-	while( (attr = list->next()) ) {
+-		if( ! (val = strchr(attr, '=')) ) {
++	while (char* attrp = list->next()) {
++        string attr_expr = attrp;
++        string::size_type eqpos = attr_expr.find('=');
++		if (string::npos == eqpos) {
+ 				// There's no = in this description, it must be one
+ 				// percentage or fraction for all attributes.
+ 				// For example "1/4" or "25%".  So, we can just parse
+ 				// it as a percentage and use that for everything.
+-			default_share = parse_value( attr, type, except );
++			default_share = parse_value(attr_expr.c_str(), type, except);
+ 			if( default_share <= 0 && !IS_AUTO_SHARE(default_share) ) {
+ 				dprintf( D_ALWAYS, "ERROR: Bad description of slot type %d: ",
+ 						 type );
+-				dprintf( D_ALWAYS | D_NOHEADER,  "\"%s\" is invalid.\n", attr );
++				dprintf( D_ALWAYS | D_NOHEADER,  "\"%s\" is invalid.\n", attr_expr.c_str() );
+ 				dprintf( D_ALWAYS | D_NOHEADER,
+ 						 "\tYou must specify a percentage (like \"25%%\"), " );
+ 				dprintf( D_ALWAYS | D_NOHEADER, "a fraction (like \"1/4\"),\n" );
+@@ -904,22 +919,25 @@ ResMgr::buildSlot( int slot_id, StringList* list, int type, bool except )
+ 			// Get the value for this attribute.  It'll either be a
+ 			// percentage, or it'll be a distinct value (in which
+ 			// case, parse_value() will return negative.
+-		if( ! val[1] ) {
+-			dprintf( D_ALWAYS,
+-					 "Can't parse attribute \"%s\" in description of slot type %d\n",
+-					 attr, type );
++        string val = attr_expr.substr(1+eqpos);
++		if (val.empty()) {
++			dprintf(D_ALWAYS, "Can't parse attribute \"%s\" in description of slot type %d\n",
++					attr_expr.c_str(), type);
+ 			if( except ) {
+ 				DC_Exit( 4 );
+ 			} else {
+ 				return NULL;
+ 			}
+ 		}
+-		share = parse_value( &val[1], type, except );
+-		if( share < 0.001 ) {
+-				// Invalid share.
+-		}
++		share = parse_value(val.c_str(), type, except);
+ 
+-			// Figure out what attribute we're dealing with.
++		// Figure out what attribute we're dealing with.
++        string attr = attr_expr.substr(0, eqpos);
++        slotres_map_t::const_iterator f(m_attr->machres().find(attr));
++        if (f != m_attr->machres().end()) {
++            slotres[f->first] = compute_local_resource(share, attr, m_attr->machres());
++            continue;
++        }
+ 		switch( tolower(attr[0]) ) {
+ 		case 'c':
+ 			cpus = compute_cpus( share );
+@@ -959,7 +977,7 @@ ResMgr::buildSlot( int slot_id, StringList* list, int type, bool except )
+ 			break;
+ 		default:
+ 			dprintf( D_ALWAYS, "Unknown attribute \"%s\" in slot type %d\n",
+-					 attr, type );
++					 attr.c_str(), type );
+ 			if( except ) {
+ 				DC_Exit( 4 );
+ 			} else {
+@@ -983,9 +1001,14 @@ ResMgr::buildSlot( int slot_id, StringList* list, int type, bool except )
+ 	if( disk <= 0.0001 ) {
+ 		disk = default_share;
+ 	}
++    for (slotres_map_t::iterator j(slotres.begin());  j != slotres.end();  ++j) {
++        if (int(j->second) == AUTO_RES) {
++            j->second = compute_local_resource(default_share, j->first, m_attr->machres());
++        }
++    }
+ 
+ 		// Now create the object.
+-	return new CpuAttributes( m_attr, type, cpus, ram, swap, disk, execute_dir, partition_id );
++	return new CpuAttributes( m_attr, type, cpus, ram, swap, disk, slotres, execute_dir, partition_id );
+ }
+ 
+ void
+@@ -1130,6 +1153,17 @@ ResMgr::compute_phys_mem( float share )
+ }
+ 
+ 
++int ResMgr::compute_local_resource(const float share, const string& rname, const CpuAttributes::slotres_map_t& machres) {
++    CpuAttributes::slotres_map_t::const_iterator f(machres.find(rname));
++    if (f == machres.end()) {
++        EXCEPT("Resource name %s was not defined in local machine resource table\n", rname.c_str());
++    }
++    if (IS_AUTO_SHARE(share)) return int(share);
++    if (share > 0) return int(f->second * share);
++    return int(-share);
++}
++
++
+ void
+ ResMgr::walk( VoidResourceMember memberfunc )
+ {
+diff --git a/src/condor_startd.V6/ResMgr.h b/src/condor_startd.V6/ResMgr.h
+index 7ebaef7..40106d9 100644
+--- a/src/condor_startd.V6/ResMgr.h
++++ b/src/condor_startd.V6/ResMgr.h
+@@ -284,7 +284,7 @@ private:
+ 		// physical memory out of a fractional share.   
+ 	int			compute_cpus( float share );
+ 	int			compute_phys_mem( float share );
+-
++    int         compute_local_resource(const float share, const string& rname, const CpuAttributes::slotres_map_t& machres);
+ 		/* 
+ 		  Return a pointer to a newly-allocated array of CpuAttributes
+ 		  objects of the number and types specified in the config
+diff --git a/src/condor_startd.V6/Resource.cpp b/src/condor_startd.V6/Resource.cpp
+index c4ccee0..124214a 100644
+--- a/src/condor_startd.V6/Resource.cpp
++++ b/src/condor_startd.V6/Resource.cpp
+@@ -1836,14 +1836,23 @@ Resource::publish( ClassAd* cap, amask_t mask )
+ 			cap->Assign(ATTR_VIRTUAL_MACHINE_ID, r_id);
+ 		}
+ 
++        // include any attributes set via local resource inventory
++        cap->Update(r_attr->get_mach_attr()->machattr());
++
++        // advertise the slot type id number, as in SLOT_TYPE_<N>
++        cap->Assign(ATTR_SLOT_TYPE_ID, int(r_attr->type()));
++
+ 		switch (get_feature()) {
+ 		case PARTITIONABLE_SLOT:
+ 			cap->AssignExpr(ATTR_SLOT_PARTITIONABLE, "TRUE");
++            cap->Assign(ATTR_SLOT_TYPE, "Partitionable");
+ 			break;
+ 		case DYNAMIC_SLOT:
+ 			cap->AssignExpr(ATTR_SLOT_DYNAMIC, "TRUE");
++            cap->Assign(ATTR_SLOT_TYPE, "Dynamic");
+ 			break;
+ 		default:
++            cap->Assign(ATTR_SLOT_TYPE, "Static");
+ 			break; // Do nothing
+ 		}
+ 	}		
+diff --git a/src/condor_startd.V6/command.cpp b/src/condor_startd.V6/command.cpp
+index 49a6749..1aef797 100644
+--- a/src/condor_startd.V6/command.cpp
++++ b/src/condor_startd.V6/command.cpp
+@@ -1298,11 +1298,21 @@ request_claim( Resource* rip, Claim *claim, char* id, Stream* stream )
+ 			max((int) ceil((disk / (double) rip->r_attr->get_total_disk()) * 100), 1) );
+ 
+ 
++        for (CpuAttributes::slotres_map_t::const_iterator j(rip->r_attr->get_slotres_map().begin());  j != rip->r_attr->get_slotres_map().end();  ++j) {
++            string reqname;
++            sprintf(reqname, "%s%s", ATTR_REQUEST_SLOT_RESOURCE_PREFIX, j->first.c_str());
++            int reqval = 0;
++            if (!req_classad->EvalInteger(reqname.c_str(), mach_classad, reqval)) reqval = 0;
++            string attr;
++            sprintf(attr, " %s=%d", j->first.c_str(), reqval);
++            type += attr;
++        }
++
+ 		rip->dprintf( D_FULLDEBUG,
+ 					  "Match requesting resources: %s\n", type.Value() );
+ 
+ 		type_list.initializeFromString( type.Value() );
+-		cpu_attrs = resmgr->buildSlot( rip->r_id, &type_list, -1, false );
++		cpu_attrs = resmgr->buildSlot( rip->r_id, &type_list, -rip->type(), false );
+ 		if( ! cpu_attrs ) {
+ 			rip->dprintf( D_ALWAYS,
+ 						  "Failed to parse attributes for request, aborting\n" );
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 014606f..61852e5 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -82,7 +82,9 @@
+ #include "vm_univ_utils.h"
+ #include "condor_md.h"
+ 
++#include <algorithm>
+ #include <string>
++#include <set>
+ 
+ // TODO: hashFunction() is case-insenstive, but when a MyString is the
+ //   hash key, the comparison in HashTable is case-sensitive. Therefore,
+@@ -234,6 +236,8 @@ const char	*MemoryUsage	= "memory_usage";
+ const char	*RequestCpus	= "request_cpus";
+ const char	*RequestMemory	= "request_memory";
+ const char	*RequestDisk	= "request_disk";
++const string  RequestPrefix  = "request_";
++std::set<string> fixedReqRes;
+ 
+ const char	*Universe		= "universe";
+ const char	*MachineCount	= "machine_count";
+@@ -426,6 +430,7 @@ void 	SetExecutable();
+ void 	SetUniverse();
+ void	SetMachineCount();
+ void 	SetImageSize();
++void    SetRequestResources();
+ int64_t	calc_image_size_kb( const char *name);
+ int 	find_cmd( char *name );
+ char *	get_tok();
+@@ -2394,6 +2399,26 @@ void SetFileOptions()
+ }
+ 
+ 
++void SetRequestResources() {
++    for (HASHITER it = hash_iter_begin(ProcVars, PROCVARSIZE); !hash_iter_done(it);  hash_iter_next(it)) {
++        string key = hash_iter_key(it);
++        std::transform(key.begin(), key.end(), key.begin(), ::tolower);
++        // if key is not of form "request_xxx", ignore it:
++        if (key.compare(0, RequestPrefix.length(), RequestPrefix) != 0) continue;
++        // if key is one of the predefined request_cpus, request_memory, etc, also ignore it,
++        // those have their own special handling:
++        if (fixedReqRes.count(key) > 0) continue;
++        string rname = key.substr(RequestPrefix.length());
++        // could get this from 'it', but this prevents unused-line warnings:
++        string val = condor_param(key.c_str());
++        string assign;
++        sprintf(assign, "%s%s = %s", ATTR_REQUEST_SLOT_RESOURCE_PREFIX, rname.c_str(), val.c_str());
++        InsertJobExpr(assign.c_str()); 
++    }
++}
++
++
++
+ /*
+ ** Make a wild guess at the size of the image represented by this a.out.
+ ** Should add up the text, data, and bss sizes, then allow something for
+@@ -6238,6 +6263,7 @@ queue(int num)
+         SetLoadProfile();
+ 		SetPerFileEncryption();  // must be called _before_ SetRequirements()
+ 		SetImageSize();		// must be called _after_ SetTransferFiles()
++        SetRequestResources();
+ 
+ 		SetSimpleJobExprs();
+ 
+@@ -6622,6 +6648,22 @@ check_requirements( char const *orig, MyString &answer )
+ #endif
+ 	}
+ 
++    // identify any custom pslot resource reqs and add them in:
++    for (HASHITER it = hash_iter_begin(ProcVars, PROCVARSIZE); !hash_iter_done(it);  hash_iter_next(it)) {
++        string key = hash_iter_key(it);
++        std::transform(key.begin(), key.end(), key.begin(), ::tolower);
++        // if key is not of form "request_xxx", ignore it:
++        if (key.compare(0, RequestPrefix.length(), RequestPrefix) != 0) continue;
++        // if key is one of the predefined request_cpus, request_memory, etc, also ignore it,
++        // those have their own special handling:
++        if (fixedReqRes.count(key) > 0) continue;
++        string rname = key.substr(RequestPrefix.length());
++        string clause;
++        sprintf(clause, " && (TARGET.%s%s >= %s%s)", ATTR_SLOT_RESOURCE_PREFIX, rname.c_str(), ATTR_REQUEST_SLOT_RESOURCE_PREFIX, rname.c_str());
++        answer += clause;
++    }
++    
++
+ 	if( HasTDP && !checks_tdp ) {
+ 		answer += " && (TARGET.";
+ 		answer += ATTR_HAS_TDP;
+@@ -7063,6 +7105,12 @@ init_params()
+ 	WarnOnUnusedMacros =
+ 		param_boolean_crufty("WARN_ON_UNUSED_SUBMIT_FILE_MACROS",
+ 							 WarnOnUnusedMacros ? true : false) ? 1 : 0;
++
++    // the special "fixed" request_xxx forms
++    fixedReqRes.clear();
++    fixedReqRes.insert(RequestCpus);
++    fixedReqRes.insert(RequestMemory);
++    fixedReqRes.insert(RequestDisk);
+ }
+ 
+ int
+diff --git a/src/condor_utils/condor_attributes.cpp b/src/condor_utils/condor_attributes.cpp
+index 65b7f61..fc0fd12 100644
+--- a/src/condor_utils/condor_attributes.cpp
++++ b/src/condor_utils/condor_attributes.cpp
+@@ -539,8 +539,11 @@ const char * const ATTR_REMOTE_USER_RESOURCES_IN_USE = "RemoteUserResourcesInUse
+ const char * const ATTR_REMOTE_VIRTUAL_MACHINE_ID = "RemoteVirtualMachineID";
+ const char * const ATTR_REMOVE_KILL_SIG          = "RemoveKillSig";
+ const char * const ATTR_REMOVE_REASON            = "RemoveReason";
++const char * const ATTR_REQUEST_SLOT_RESOURCE_PREFIX = "RequestSlotResource_";
+ const char * const ATTR_REQUEUE_REASON           = "RequeueReason";
+ const char * const ATTR_REQUIREMENTS             = "Requirements";
++const char * const ATTR_SLOT_TYPE                = "SlotType";
++const char * const ATTR_SLOT_TYPE_ID             = "SlotTypeID";
+ const char * const ATTR_SLOT_WEIGHT              = "SlotWeight";
+ const char * const ATTR_RESULT                   = "Result";
+ const char * const ATTR_RSC_BYTES_SENT			 = "RSCBytesSent";
+@@ -559,6 +562,9 @@ const char * const ATTR_SHADOW_WAIT_FOR_DEBUG    = "ShadowWaitForDebug";
+ const char * const ATTR_SLOT_ID				 = "SlotID";
+ const char * const ATTR_SLOT_PARTITIONABLE		= "PartitionableSlot";
+ const char * const ATTR_SLOT_DYNAMIC          = "DynamicSlot";
++const char * const ATTR_SLOT_RESOURCE_PREFIX     = "SlotResource_";
++const char * const ATTR_TOTAL_SLOT_RESOURCE_PREFIX = "TotalSlotResource_";
++const char * const ATTR_LOCAL_RESOURCE_PREFIX = "LocalResource_";
+ const char * const ATTR_SOURCE					 = "Source";
+ const char * const ATTR_STAGE_IN_START           = "StageInStart";
+ const char * const ATTR_STAGE_IN_FINISH          = "StageInFinish";
