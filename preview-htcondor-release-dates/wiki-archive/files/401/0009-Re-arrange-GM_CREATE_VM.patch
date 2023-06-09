@@ -1,0 +1,156 @@
+From ae97acfcf3baa78979584c968f0aafcc220877bc Mon Sep 17 00:00:00 2001
+From: Chris Lalancette <clalance@redhat.com>
+Date: Thu, 16 Jun 2011 10:35:10 -0400
+Subject: [PATCH 09/13] Re-arrange GM_CREATE_VM.
+
+There were too many nested if statements which made it hard
+to read.  If we run into an error, bail out early.  This makes
+it much easier to see what is going on.
+
+Signed-off-by: Chris Lalancette <clalance@redhat.com>
+---
+ src/condor_gridmanager/dcloudjob.cpp |  116 ++++++++++++++++-----------------
+ 1 files changed, 56 insertions(+), 60 deletions(-)
+
+diff --git a/src/condor_gridmanager/dcloudjob.cpp b/src/condor_gridmanager/dcloudjob.cpp
+index 8591045..b2be778 100644
+--- a/src/condor_gridmanager/dcloudjob.cpp
++++ b/src/condor_gridmanager/dcloudjob.cpp
+@@ -484,78 +484,74 @@ void DCloudJob::doEvaluateState()
+ 					break;
+ 				}
+ 
+-				// After a submit, wait at least submitInterval
+-				// before trying another one.
+-				if ( now >= lastSubmitAttempt + submitInterval ) {
+-
+-					// Once RequestSubmit() is called at
+-					// least once, you must CancelSubmit()
+-					// once you're done with the request
+-					// call
+-					if ( myResource->RequestSubmit( this ) == false ) {
+-						// If we haven't started the
+-						// START_VM call yet, we can
+-						// abort the submission here
+-						// for held and removed jobs.
+-						if ( (condorState == REMOVED) || (condorState == HELD) ) {
+-
+-							myResource->CancelSubmit( this );
+-							gmState = GM_STOPPED;
+-						}
++				// After a submit, wait at least submitInterval before trying
++				// another one.
++				if ( now < lastSubmitAttempt + submitInterval ) {
++					unsigned int delay = 0;
++
++					if ( (condorState == REMOVED) || (condorState == HELD) ) {
++						gmState = GM_STOPPED;
+ 						break;
+ 					}
+ 
+-					StringList instance_attrs;
+-
+-					rc = gahp->dcloud_submit( m_serviceUrl,
+-								  m_username,
+-								  m_password,
+-								  m_imageId,
+-								  m_instanceName,								  m_realmId,
+-								  m_hwpId,
+-								  m_hwpMemory,
+-								  m_hwpCpu,
+-								  m_hwpStorage,
+-								  m_keyname,
+-								  m_userdata,
+-								  instance_attrs );
+-					if ( rc == GAHPCLIENT_COMMAND_NOT_SUBMITTED ||
+-						rc == GAHPCLIENT_COMMAND_PENDING ) {
+-						break;
++					if ( (lastSubmitAttempt + submitInterval) > now ) {
++						delay = (lastSubmitAttempt + submitInterval) - now;
+ 					}
++					daemonCore->Reset_Timer( evaluateStateTid, delay );
++					break;
++				}
+ 
+-					lastSubmitAttempt = time(NULL);
++				// Once RequestSubmit() is called at least once, you must
++				// CancelSubmit() once you're done with the request call
++				if ( myResource->RequestSubmit( this ) == false ) {
++					// If we haven't started the START_VM call yet, we can
++					// abort the submission here for held and removed jobs.
++					if ( (condorState == REMOVED) || (condorState == HELD) ) {
+ 
+-					if ( rc == 0 ) {
++						myResource->CancelSubmit( this );
++						gmState = GM_STOPPED;
++					}
++					break;
++				}
+ 
+-						WriteGridSubmitEventToUserLog(jobAd);
+-						ProcessInstanceAttrs( instance_attrs );
+-						ASSERT( m_instanceId );
++				StringList instance_attrs;
+ 
+-						if ( remoteJobState == DCLOUD_VM_STATE_STOPPED ) {
+-							gmState = GM_START_VM;
+-						} else {
+-							gmState = GM_SAVE_INSTANCE_ID;
+-						}
++				rc = gahp->dcloud_submit( m_serviceUrl,
++										  m_username,
++										  m_password,
++										  m_imageId,
++										  m_instanceName,
++										  m_realmId,
++										  m_hwpId,
++										  m_hwpMemory,
++										  m_hwpCpu,
++										  m_hwpStorage,
++										  m_keyname,
++										  m_userdata,
++										  instance_attrs );
++				if ( rc == GAHPCLIENT_COMMAND_NOT_SUBMITTED ||
++					 rc == GAHPCLIENT_COMMAND_PENDING ) {
++					break;
++				}
+ 
+-					 } else {
+-						errorString = gahp->getErrorString();
+-						dprintf( D_ALWAYS,"(%d.%d) job submit failed: %s\n",
++				lastSubmitAttempt = time(NULL);
++
++				if ( rc != 0 ) {
++					errorString = gahp->getErrorString();
++					dprintf( D_ALWAYS,"(%d.%d) job submit failed: %s\n",
+ 							 procID.cluster, procID.proc, errorString.Value() );
+-						gmState = GM_HOLD;
+-					}
++					gmState = GM_HOLD;
++					break;
++				}
+ 
+-				} else {
+-					if ( (condorState == REMOVED) || (condorState == HELD) ) {
+-						gmState = GM_STOPPED;
+-						break;
+-					}
++				WriteGridSubmitEventToUserLog(jobAd);
++				ProcessInstanceAttrs( instance_attrs );
++				ASSERT( m_instanceId );
+ 
+-					unsigned int delay = 0;
+-					if ( (lastSubmitAttempt + submitInterval) > now ) {
+-						delay = (lastSubmitAttempt + submitInterval) - now;
+-					}
+-					daemonCore->Reset_Timer( evaluateStateTid, delay );
++				if ( remoteJobState == DCLOUD_VM_STATE_STOPPED ) {
++					gmState = GM_START_VM;
++				} else {
++					gmState = GM_SAVE_INSTANCE_ID;
+ 				}
+ 
+ 				break;
+-- 
+1.7.4.4
+
