@@ -1,0 +1,185 @@
+diff --git a/src/condor_q.V6/queue.cpp b/src/condor_q.V6/queue.cpp
+index d51d468..1a6b748 100644
+--- a/src/condor_q.V6/queue.cpp
++++ b/src/condor_q.V6/queue.cpp
+@@ -56,6 +56,7 @@
+ #include <map>
+ #include <vector>
+ #include "../classad_analysis/analysis.h"
++#include <boost/algorithm/string/join.hpp>
+ 
+ #ifndef WIN32
+ #include <sys/types.h>
+@@ -182,6 +183,14 @@ static  char *userlog_file = NULL;
+ static	CondorQ 	Q;
+ static	QueryResult result;
+ 
++// Constraint lists to be used when processing them locally
++// need 3 lists to mimic whant COndorQ does
++static std::vector<std::string> constrOR1;
++static std::vector<std::string> constrAND;
++static std::vector<std::string> constrOR2;
++
++static std::string getConstr();
++
+ #ifdef HAVE_EXT_POSTGRESQL
+ static  QueryResult result2;
+ #endif
+@@ -970,6 +979,7 @@ processCommandLineArguments (int argc, char *argv[])
+ 				sprintf( constraint, "((%s == %d) && (%s == %d))",
+ 					ATTR_CLUSTER_ID, cluster, ATTR_PROC_ID, proc );
+                                 Q.addOR( constraint );
++				constrOR2.push_back( constraint );
+    
+ 				Q.addDBConstraint(CQ_CLUSTER_ID, cluster);
+ 				Q.addDBConstraint(CQ_PROC_ID, proc);
+@@ -978,13 +988,15 @@ processCommandLineArguments (int argc, char *argv[])
+ 			else if( sscanf ( argv[i], "%d", &cluster ) == 1 ) {
+ 				sprintf( constraint, "(%s == %d)", ATTR_CLUSTER_ID, cluster );
+ 				Q.addOR( constraint );
++				constrOR2.push_back( constraint );
++
+    				Q.addDBConstraint(CQ_CLUSTER_ID, cluster);
+ 				summarize = 0;
+ 			} 
+-			else if( Q.add( CQ_OWNER, argv[i] ) != Q_OK ) {
+-				// this error doesn't seem very helpful... can't we say more?
+-				fprintf( stderr, "Error: Argument %d (%s)\n", i, argv[i] );
+-				exit( 1 );
++			else {
++			  sprintf( constraint, "(%s == \"%s\")", ATTR_OWNER, argv[i] );
++			  Q.add( CQ_OWNER, argv[i] );
++			  constrOR1.push_back( constraint );
+ 			}
+ 			continue;
+ 		}
+@@ -1197,9 +1209,10 @@ processCommandLineArguments (int argc, char *argv[])
+ 					}
+ 				}
+ 				if ( groups ) free(groups);
+-				if (Q.add (CQ_OWNER, ownerName) != Q_OK) {
+-					fprintf (stderr, "Error:  Argument %d (%s)\n", i, argv[i]);
+-					exit (1);
++				{
++				  sprintf( constraint, "(%s == \"%s\")", ATTR_OWNER, ownerName );
++				  Q.add( CQ_OWNER, ownerName );
++				  constrOR1.push_back( constraint );
+ 				}
+ 			}
+ 
+@@ -1217,6 +1230,8 @@ processCommandLineArguments (int argc, char *argv[])
+ 			if (Q.addAND (argv[++i]) != Q_OK) {
+ 				fprintf (stderr, "Error: Argument %d (%s)\n", i, argv[i]);
+ 				exit (1);
++			} else {
++			  constrAND.push_back( argv[i] );
+ 			}
+ 			user_constraint = argv[i];
+ 			summarize = 0;
+@@ -1379,6 +1394,7 @@ processCommandLineArguments (int argc, char *argv[])
+ 			sprintf( expr, "%s == %d || %s == %d || %s == %d", ATTR_JOB_STATUS, RUNNING,
+ 					 ATTR_JOB_STATUS, TRANSFERRING_OUTPUT, ATTR_JOB_STATUS, SUSPENDED );
+ 			Q.addAND( expr.c_str() );
++			constrAND.push_back( expr );
+ 			run = true;
+ 			attrs.append( ATTR_REMOTE_HOST );
+ 			attrs.append( ATTR_JOB_UNIVERSE );
+@@ -1386,7 +1402,10 @@ processCommandLineArguments (int argc, char *argv[])
+ 		}
+ 		else
+ 		if (match_prefix( arg, "hold") || match_prefix( arg, "held")) {
++		        std::string expr;
++			sprintf( expr, "%s == %d", ATTR_JOB_STATUS, HELD );
+ 			Q.add (CQ_STATUS, HELD);		
++			constrOR1.push_back( expr );
+ 			show_held = true;
+ 			widescreen = true;
+ 			attrs.append( ATTR_ENTERED_CURRENT_STATUS );
+@@ -1423,11 +1442,14 @@ processCommandLineArguments (int argc, char *argv[])
+ 				attrs.append( ATTR_GRID_JOB_STATUS );
+ 				attrs.append( ATTR_GLOBUS_STATUS );
+ 				Q.addAND( "JobUniverse == 9" );
++				constrAND.push_back( "JobUniverse == 9" );
+ 			}
+ 		}
+ 		else
+ 		if( match_prefix( arg, "globus" ) ) {
+ 			Q.addAND( "GlobusStatus =!= UNDEFINED" );
++			constrAND.push_back( "GlobusStatus =!= UNDEFINED" );
++
+ 			globus = true;
+ 			if (dash_grid) {
+ 				dash_grid = false;
+@@ -3896,13 +3918,34 @@ fixSubmittorName( char *name, int niceUser )
+ 	return NULL;
+ }
+ 
++static std::string getConstr()
++{
++  std::vector<std::string> constrJoined;
++  if (not constrOR1.empty()) {
++    constrJoined.push_back(std::string("(") + boost::algorithm::join(constrOR1, ") || (") + ")");
++  }
++  if (not constrAND.empty()) {
++    constrJoined.push_back(std::string("(") + boost::algorithm::join(constrAND, ") && (") + ")");
++  }
++  if (not constrOR2.empty()) {
++    constrJoined.push_back(std::string("(") + boost::algorithm::join(constrOR2, ") || (") + ")");
++  }
++
++  if (not constrJoined.empty()) {
++    return (std::string("(") + boost::algorithm::join(constrJoined, ") && (") + ")");
++  } else {
++    return "True";
++  }
++}
++
+ static bool read_classad_file(const char *filename, ClassAdList &classads)
+ {
+     int is_eof, is_error, is_empty;
+     bool success;
+     ClassAd *classad;
+     FILE *file;
+-
++    std::vector<ClassAd *> classad_vector;
++  
+     file = safe_fopen_wrapper_follow(filename, "r");
+     if (file == NULL) {
+         fprintf(stderr, "Can't open file of job ads: %s\n", filename);
+@@ -3911,7 +3954,7 @@ static bool read_classad_file(const char *filename, ClassAdList &classads)
+         do {
+             classad = new ClassAd(file, "\n", is_eof, is_error, is_empty);
+             if (!is_error && !is_empty) {
+-                classads.Insert(classad);
++	        classad_vector.push_back(classad);
+             }
+ 			else {
+ 				delete classad;
+@@ -3924,6 +3967,27 @@ static bool read_classad_file(const char *filename, ClassAdList &classads)
+         }
+ 		fclose(file);
+     }
++
++    std::string constr = getConstr();
++
++    for (std::vector<ClassAd *>::iterator it=classad_vector.begin();
++	 it!=classad_vector.end(); ++it) {
++      ClassAd *classad = *it;
++      bool include_classad=false;
++      if (success) {
++	classad::Value result;
++	if (classad->EvaluateExpr(constr,result)) {
++	  if (not result.IsBooleanValueEquiv(include_classad)) {
++	    include_classad=false;
++	  }
++	}
++      }
++      if (include_classad) {
++	classads.Insert(classad);
++      } else {
++	delete classad;
++      }
++    }
+     return success;
+ }
+ 
