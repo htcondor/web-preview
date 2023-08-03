@@ -223,7 +223,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/1733/">Most Recent</a></li>
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2014/">Throughput Computing 2023</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-update-submodules/past_condor_weeks.html">Workshop Archives</a></li>
         
@@ -467,9 +467,9 @@
                 <div class="d-none d-lg-block col-lg-4">
                     <div class="card h-100">
                         <div class="card-body d-flex flex-column">
-                            <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news/htc23-registration-closing/">Registration Closing for Throughput Computing 2023</a></h3>
+                            <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news/htc23-concludes/">Throughput Computing 2023 Concludes</a></h3>
                             <div>
-                                <span class="text-muted">June  7, 2023</span>
+                                <span class="text-muted">July 14, 2023</span>
                             </div>
                             <hr/>
                             <a href="/web-preview/preview-update-submodules/new.html">
@@ -558,7 +558,7 @@
             <table>
                 <tr><th>HTCondor Week</th></tr>
                 
-                    <tr><td><a href="https://agenda.hep.wisc.edu/event/1733/">Most Recent</a></td></tr>
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2014/">Throughput Computing 2023</a></td></tr>
                 
                     <tr><td><a href="/web-preview/preview-update-submodules/past_condor_weeks.html">Workshop Archives</a></td></tr>
                 
@@ -664,7 +664,7 @@
                     </div>
                     
                 </div>
-                <div class="d-none d-xl-block col-xl-4 my-2">
+                <div class="d-none d-xl-block col-xl-3 my-2">
                     <div class="card h-100">
                         <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Spectrometer.jpg" class="card-img-top" alt="Card Image">
                         <div class="card-body d-flex flex-column">
@@ -837,18 +837,16 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.5.0</span> Feature Release</h3>
-        <p>June  5, 2023</p>
+        <h3><span class="text-secondary">10.7.0</span> Feature Release</h3>
+        <p>July 31, 2023</p>
         <div>
             <ul>
-  <li>Can now define DAGMan save points to be able to rerun DAGs from there</li>
-  <li>Expand default list of environment variables passed to the DAGMan manager</li>
-  <li>Administrators can prevent users using “getenv = true” in submit files</li>
-  <li>Improved throughput when submitting a large number of ARC-CE jobs</li>
-  <li>Execute events contain the slot name, sandbox path, resource quantities</li>
-  <li>Can add attributes of the execution point to be recorded in the user log</li>
-  <li>Enhanced condor_transform_ads tool to ease offline job transform testing</li>
-  <li>Fixed a bug where memory limits over 2 GiB might not be correctly enforced</li>
+  <li>Support for Debian 12 (Bookworm)</li>
+  <li>Can run defrag daemons with different policies on distinct sets of nodes</li>
+  <li>Added want_io_proxy submit command</li>
+  <li>Apptainer is now included in the HTCondor tarballs</li>
+  <li>Fix 10.5.0 bug where reported CPU time is very low when using cgroups v1</li>
+  <li>Fix 10.5.0 bug where .job.ad and .machine.ad were missing for local jobs</li>
 </ul>
 
         </div>
@@ -869,12 +867,16 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.0.5</span> Long Term Support Release</h3>
-        <p>June  9, 2023</p>
+        <h3><span class="text-secondary">10.0.7</span> Long Term Support Release</h3>
+        <p>July 25, 2023</p>
         <div>
             <ul>
-  <li>Rename upgrade9to10checks.py script to condor_upgrade_check</li>
-  <li>Fix spurious warning from condor_upgrade_check about regexes with spaces</li>
+  <li>Fixed bug where held condor cron jobs would never run when released</li>
+  <li>Improved daemon IDTOKENS logging to make useful messages more prominent</li>
+  <li>Remove limit on certificate chain length in SSL authentication</li>
+  <li>condor_config_val -summary now works with a remote configuration query</li>
+  <li>Prints detailed message when condor_remote_cluster fails to fetch a URL</li>
+  <li>Improvements to condor_preen</li>
 </ul>
 
         </div>
