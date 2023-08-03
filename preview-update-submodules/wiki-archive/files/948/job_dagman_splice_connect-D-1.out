@@ -1,0 +1,117 @@
+  timed_cmd 2088 Arguments:
+	Command: 'C:\Perl64\bin\perl.exe C:/condor/execute/dir_5964/userdir/nmi_tools/glue/test/remote_task.pl'
+	Output: '-'
+	Error: '-2'
+	Timeout: 1200.000 sec
+	Options: Dump PIDs on timeout, Kill
+	Environment File: 'NULL'
+	Pre Command: '..\dag_prescript.bat'
+  timed_cmd 2088 Precmd PID: 12248
+  timed_cmd 2088 Precmd exit code: 0
+  timed_cmd 2088 Created PID: 23696 TID: 1368
+16:43:23: REMOTE_TASK.23696 Testname: 'job_dagman_splice_connect-D'
+16:43:23: Removing environment config overides : _CONDOR_SCRATCH_DIR _CONDOR_JOB_AD _CONDOR_CHIRP_CONFIG _CONDOR_JOB_IWD _CONDOR_LOWPORT _CONDOR_SLOT _CONDOR_HIGHPORT _CONDOR_MACHINE_AD
+16:43:23: Setting _condor_TOOL_TIMEOUT_MULTIPLIER=4
+16:43:23: job_dagman_splice_connect-D needs 'personal'
+16:43:23: 'job_dagman_splice_connect-D' requires a personal HTCondor, starting one now.
+16:43:23 CreateLocalConfig: Created remotetaskjob_dagman_splice_connect-D23696 for use as a local config file
+
+		DAEMON_LIST = MASTER, SCHEDD, COLLECTOR, NEGOTIATOR, STARTD
+		NEGOTIATOR_INTERVAL = 5
+		JOB_MAX_VACATE_TIME = 15
+	
+16:43:23 CondorTest::StartCondorWithParams added new node <remotetaskjob_dagman_splice_connect-D>
+	condor_name = remotetaskjob_dagman_splice_connect-D
+	condorlocalsrc = remotetaskjob_dagman_splice_connect-D23696
+	fresh_local = TRUE
+	test_glue = TRUE
+	test_name = remote_task.pl
+16:43:23 Creating a HTCondor node <remotetaskjob_dagman_splice_connect-D> CONDOR_CONFIG=C:\condor\execute\dir_5964\userdir\condor_tests\remote_task.pl.saveme\pdir23696\pdir23696remotetaskjob_dagman_splice_connect-D\condor_config
+16:43:31 CondorPersonal Waiting 120 sec for <remotetaskjob_dagman_splice_connect-D> to be up. MasterTime:30
+	DAEMON_LIST = MASTER SCHEDD COLLECTOR NEGOTIATOR STARTD
+16:44:14 Condor <remotetaskjob_dagman_splice_connect-D> is running. (43 of 120 seconds)
+16:44:14: First perl is perl 5, version 20, subversion 2 (v5.20.2) built for MSWin32-x64-multi-thread.
+16:44:14: attempting to run tests using current perl
+16:44:14: RUNNING batch_test.pl -t 'job_dagman_splice_connect-D'
+---------
+batch_test 3424: 16:44:16 Starting (MSWin32 perl)
+batch_test 3424: job_dagman_splice_connect-D requires a running HTCondor, checking...
+	CONDOR_CONFIG=C:/condor/execute/dir_5964/userdir/condor_tests/remote_task.pl.saveme/pdir23696/pdir23696remotetaskjob_dagman_splice_connect-D\condor_config
+	Querying Master <128.104.103.17:65233?addrs=128.104.103.17-65233&noUDP&sock=21348_20f0> for daemon states.
+	SHARED_PORT_PID = 9420
+	SCHEDD = "Alive"
+	COLLECTOR_PID = 6708
+	SCHEDD_PID = 16544
+	SHARED_PORT = "Alive"
+	COLLECTOR = "Alive"
+	NEGOTIATOR_PID = 8124
+	MASTER_PID = 21348
+	NEGOTIATOR = "Alive"
+	MASTER = "Alive"
+	STARTD_State = "Ready"
+	STARTD_PID = 18912
+	NumDead = 0
+	STARTD = "Alive"
+	AllAlive = true
+	NumHung = 0
+	NumStartup = 0
+	IsReady = true
+	LOG directory "C:\condor\execute\dir_5964\userdir\condor_tests\remote_task.pl.saveme\pdir23696\pdir23696remotetaskjob_dagman_splice_connect-D\log"
+	Collector    6708   no     <128.104.103.17:65233?addrs=128.104.103.17-65233&noUDP&sock=collector_21348>
+	Master       21348  no     <128.104.103.17:65233?addrs=128.104.103.17-65233&noUDP&sock=21348_20f0>
+	Negotiator   8124   no     <128.104.103.17:65233?addrs=128.104.103.17-65233&noUDP&sock=21348_20f0_4>
+	Schedd       16544  no     <128.104.103.17:65233?addrs=128.104.103.17-65233&noUDP&sock=21348_20f0_3>
+	SharedPort   9420   no     
+	Startd       18912  no     <128.104.103.17:65233?addrs=128.104.103.17-65233&noUDP&sock=21348_20f0_5>
+  timed_cmd 23316 Arguments:
+	Command: 'perl job_dagman_splice_connect-D.run'
+	Output: 'job_dagman_splice_connect-D.run.out'
+	Error: 'job_dagman_splice_connect-D.run.out'
+	Timeout: 720.000 sec
+	Options: New Ctrl Group, JobObject, Dump PIDs on timeout, Kill
+	Environment File: 'NULL'
+  timed_cmd 23316 Created PID: 18760 TID: 19104
+Job exit code: 255, Elapsed time: 6.015 sec
+batch_test 3424: 16:44:23 job_dagman_splice_connect-D.run FAILED
+batch_test 3424: 16:44:23 exiting with status=255 signal=0 after 0:00:07 (7 seconds)
+---------
+16:44:23: batch_test returned 255
+16:44:23: Stopping personal HTCondor for 'job_dagman_splice_connect-D'
+16:44:24 CondorPersonal Waiting 120 sec for <remotetaskjob_dagman_splice_connect-D> to be down. MasterTime:160
+	DAEMON_LIST = MASTER SCHEDD COLLECTOR NEGOTIATOR STARTD
+16:44:47 Condor <remotetaskjob_dagman_splice_connect-D> is off. (23 of 120 seconds)
+16:44:47 EndTest: Checking shutdown state of personal HTCondor(s) : 
+
+PASSED check <remotetaskjob_dagman_splice_connect-D> is_down in test CURRENT
+
+
+PASSED check no_cores_or_errors in test CURRENT
+
+16:44:47 TestGlue: 2 check(s) passed
+16:44:47 TestGlue: Final status for remote_task.pl: PASSED
+
+FAILED check run_test in test job_dagman_splice_connect-D
+
+16:44:47: Looking for run.out file
+	compiler_path: C:\condor\execute\dir_5964\userdir\condor_tests.
+	run_out: job_dagman_splice_connect-D.run.out
+	run_out_path: C:\condor\execute\dir_5964\userdir\condor_tests.\job_dagman_splice_connect-D.run.out
+	compiler_path: C:\condor\execute\dir_5964\userdir\condor_tests.
+	test_out: job_dagman_splice_connect-D.out
+	test_out_path: C:\condor\execute\dir_5964\userdir\condor_tests.\job_dagman_splice_connect-D.out
+	test_err: job_dagman_splice_connect-D.err
+	test_err_path: C:\condor\execute\dir_5964\userdir\condor_tests.\job_dagman_splice_connect-D.err
+16:44:47: Printing test output...
+
+----- Start of job_dagman_splice_connect-D.run.out -----
+Dagman Test....
+ref said type is <<>>
+16:44:19 Monitor (Mon18760) Beginning eventlog monitor
+16:44:19 submitted: This test will see submit, executing and unsuccessful completion
+16:44:21 Good. We need the dag to run<1>
+job_dagman_splice_connect-D: FAILED (Unexpected Eviction with requeue)
+
+----- End of job_dagman_splice_connect-D.run.out -----
+
+********************** EXIT REMOTE_TASK.23696: Status:255 ******************
+Job exit code: 255, Elapsed time: 86.409 sec
