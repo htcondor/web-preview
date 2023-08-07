@@ -1,0 +1,1154 @@
+diff --git a/src/condor_dagman/condor_submit_dag.cpp b/src/condor_dagman/condor_submit_dag.cpp
+index 8671401..c7b1cb4 100644
+--- a/src/condor_dagman/condor_submit_dag.cpp
++++ b/src/condor_dagman/condor_submit_dag.cpp
+@@ -157,20 +157,19 @@ doRecursion( SubmitDagDeepOptions &deepOpts,
+ 	while ( (dagFile = shallowOpts.dagFiles.next()) ) {
+ 
+ 			// Get logical lines from this DAG file.
+-		StringList logicalLines;
+-		MyString error = MultiLogFiles::fileNameToLogicalLines(
+-					dagFile, logicalLines );
+-		if ( error != "" ) {
++		MultiLogFiles::FileReader reader;
++		MyString errMsg = reader.Open( dagFile );
++		if ( errMsg != "" ) {
+ 			fprintf( stderr, "Error reading DAG file: %s\n",
+-						error.Value() );
++						errMsg.Value() );
+ 			return 1;
+ 		}
+ 
++
+ 			// Find and parse JOB and SUBDAG lines.
+-		logicalLines.rewind();
+-		const char *dagLine;
+-		while ( (dagLine = logicalLines.next()) ) {
+-			StringList tokens( dagLine, " \t" );
++		MyString dagLine;
++		while ( reader.NextLogicalLine( dagLine ) ) {
++			StringList tokens( dagLine.Value(), " \t" );
+ 			tokens.rewind();
+ 			const char *first = tokens.next();
+ 
+@@ -180,7 +179,7 @@ doRecursion( SubmitDagDeepOptions &deepOpts,
+ 					// file line.
+ 				const char *subFile;
+ 				const char *directory;
+-				if ( parseJobOrDagLine( dagLine, tokens, "submit",
++				if ( parseJobOrDagLine( dagLine.Value(), tokens, "submit",
+ 							subFile, directory ) != 0 ) {
+ 					return 1;
+ 				}
+@@ -210,7 +209,7 @@ doRecursion( SubmitDagDeepOptions &deepOpts,
+ 				const char *inlineOrExt = tokens.next();
+ 				if ( strcasecmp( inlineOrExt, "EXTERNAL" ) ) {
+ 					fprintf( stderr, "ERROR: only SUBDAG EXTERNAL is supported "
+-								"at this time (line: <%s>)\n", dagLine );
++								"at this time (line: <%s>)\n", dagLine.Value() );
+ 					return 1;
+ 				}
+ 
+@@ -218,7 +217,7 @@ doRecursion( SubmitDagDeepOptions &deepOpts,
+ 					// file line.
+ 				const char *nestedDagFile;
+ 				const char *directory;
+-				if ( parseJobOrDagLine( dagLine, tokens, "DAG",
++				if ( parseJobOrDagLine( dagLine.Value(), tokens, "DAG",
+ 							nestedDagFile, directory ) != 0 ) {
+ 					return 1;
+ 				}
+@@ -230,6 +229,8 @@ doRecursion( SubmitDagDeepOptions &deepOpts,
+ 				}
+ 			}
+ 		}
++
++		reader.Close();
+ 	}
+ 
+ 	return result;
+@@ -547,19 +548,17 @@ getOldSubmitFlags(SubmitDagShallowOptions &shallowOpts)
+ {
+ 		// It's not an error for the submit file to not exist.
+ 	if ( fileExists( shallowOpts.strSubFile ) ) {
+-		StringList logicalLines;
+-		MyString error = MultiLogFiles::fileNameToLogicalLines(
+-					shallowOpts.strSubFile, logicalLines );
++		MultiLogFiles::FileReader reader;
++		MyString error = reader.Open( shallowOpts.strSubFile );
+ 		if ( error != "" ) {
+ 			fprintf( stderr, "Error reading submit file: %s\n",
+ 						error.Value() );
+ 			return 1;
+ 		}
+ 
+-		logicalLines.rewind();
+-		const char *subLine;
+-		while ( (subLine = logicalLines.next()) ) {
+-			StringList tokens( subLine, " \t" );
++		MyString subLine;
++		while ( reader.NextLogicalLine( subLine ) ) {
++			StringList tokens( subLine.Value(), " \t" );
+ 			tokens.rewind();
+ 			const char *first = tokens.next();
+ 			if ( first && !strcasecmp( first, "arguments" ) ) {
+@@ -568,6 +567,8 @@ getOldSubmitFlags(SubmitDagShallowOptions &shallowOpts)
+ 				}
+ 			}
+ 		}
++
++		reader.Close();
+ 	}
+ 
+ 	return 0;
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index 28a9818..de4598e 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -3878,16 +3878,12 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ 		return SUBMIT_RESULT_NO_SUBMIT;
+ 	}
+ 
+-		// Note: we're checking for a missing log file spec here instead of
+-		// inside the submit code because we don't want to re-try the submit
+-		// if the log file spec is missing in the submit file.  wenger
+-
+ 		// We now only check for missing log files for Stork jobs because
+ 		// of the default log file feature; that doesn't work for Stork
+ 		// jobs because we can't specify the log file on the command
+ 		// line.  wenger 2009-08-14
+ 	if ( !_allowLogError && node->JobType() == Job::TYPE_STORK &&
+-				!node->CheckForLogFile( _use_default_node_log ) ) {
++				!node->CheckForLogFile( false ) ) {
+ 		debug_printf( DEBUG_NORMAL, "ERROR: No 'log =' value found in "
+ 					"submit file %s for node %s\n", node->GetCmdFile(),
+ 					node->GetJobName() );
+@@ -3905,7 +3901,6 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ 		debug_printf( DEBUG_NORMAL, "Submitting %s Node %s job(s)...\n",
+ 				  	node->JobTypeString(), node->GetJobName() );
+ 
+-    	MyString cmd_file = node->GetCmdFile();
+ 		bool submit_success = false;
+ 
+     	if( node->JobType() == Job::TYPE_CONDOR ) {
+@@ -3913,22 +3908,20 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ 			if ( node->GetNoop() ) {
+       			submit_success = fake_condor_submit( condorID, 0,
+ 							node->GetJobName(), node->GetDirectory(),
+-							_use_default_node_log ? DefaultNodeLog():
+-								node->GetLogFile() ,
+-							!_use_default_node_log && node->GetLogFileIsXml() );
++							node->GetLogFile() ,
++							node->GetLogFileIsXml() );
+ 			} else {
+ 				const char *logFile = node->UsingDefaultLog() ?
+-							DefaultNodeLog() : NULL;
++							node->GetLogFile() : NULL;
+ 					// Note: assigning the ParentListString() return value
+ 					// to a variable here, instead of just passing it directly
+ 					// to condor_submit(), fixes a memory leak(!).
+ 					// wenger 2008-12-18
+ 				MyString parents = ParentListString( node );
+-      			submit_success = condor_submit( dm, cmd_file.Value(), condorID,
++      			submit_success = condor_submit( dm, node->GetCmdFile(), condorID,
+ 							node->GetJobName(), parents,
+ 							node->varsFromDag,
+-							node->GetDirectory(), DefaultNodeLog(),
+-							_use_default_node_log && node->UseDefaultLog(),
++							node->GetDirectory(),
+ 							logFile, ProhibitMultiJobs(),
+ 							node->NumChildren() > 0 && dm._claim_hold_time > 0);
+ 			}
+@@ -3937,13 +3930,12 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ 			if ( node->GetNoop() ) {
+       			submit_success = fake_condor_submit( condorID, 0,
+ 							node->GetJobName(), node->GetDirectory(),
+-							_use_default_node_log ? DefaultNodeLog() :
+-								node->GetLogFile(),
+-							!_use_default_node_log && node->GetLogFileIsXml() );
++							node->GetLogFile(),
++							node->GetLogFileIsXml() );
+ 
+ 			} else {
+-      			submit_success = stork_submit( dm, cmd_file.Value(), condorID,
+-				   		node->GetJobName(), node->GetDirectory() );
++      			submit_success = stork_submit( dm, node->GetCmdFile(),
++						condorID, node->GetJobName(), node->GetDirectory() );
+ 			}
+     	} else {
+ 	    	debug_printf( DEBUG_QUIET, "Illegal job type: %d\n",
+diff --git a/src/condor_dagman/dagman_multi_dag.cpp b/src/condor_dagman/dagman_multi_dag.cpp
+index de77056..0226fda 100644
+--- a/src/condor_dagman/dagman_multi_dag.cpp
++++ b/src/condor_dagman/dagman_multi_dag.cpp
+@@ -73,10 +73,10 @@ GetConfigFile(/* const */ StringList &dagFiles, bool useDagDir,
+ 			//
+ 		StringList		configFiles;
+ 		MyString msg = MultiLogFiles::getValuesFromFile( newDagFile, "config",
+-					configFiles);
++					configFiles );
+ 		if ( msg != "" ) {
+ 			AppendError( errMsg,
+-					MyString("Failed to locate Condor job log files: ") +
++					MyString( "Error getting DAGMan config file: ") +
+ 					msg );
+ 			result = false;
+ 		}
+diff --git a/src/condor_dagman/dagman_submit.cpp b/src/condor_dagman/dagman_submit.cpp
+index bad1a06..ce475ef 100644
+--- a/src/condor_dagman/dagman_submit.cpp
++++ b/src/condor_dagman/dagman_submit.cpp
+@@ -38,6 +38,9 @@
+ typedef bool (* parse_submit_fnc)( const char *buffer, int &jobProcCount,
+ 			int &cluster );
+ 
++	// Get the event mask for the workflow/default log file.
++const char *getEventMask();
++
+ //-------------------------------------------------------------------------
+ /** Parse output from condor_submit, determine the number of job procs
+     and the cluster.
+@@ -244,8 +247,8 @@ bool
+ condor_submit( const Dagman &dm, const char* cmdFile, CondorID& condorID,
+ 			   const char* DAGNodeName, MyString &DAGParentNodeNames,
+ 			   List<Job::NodeVar> *vars,
+-			   const char* directory, const char *defaultLog, bool appendDefaultLog,
+-			   const char *logFile, bool prohibitMultiJobs, bool hold_claim )
++			   const char* directory, const char *workflowLogFile,
++			   bool prohibitMultiJobs, bool hold_claim )
+ {
+ 	TmpDir		tmpDir;
+ 	MyString	errMsg;
+@@ -321,70 +324,30 @@ condor_submit( const Dagman &dm, const char* cmdFile, CondorID& condorID,
+ 				"submit_event_notes = DAG Node: " ) + DAGNodeName;
+ 	args.AppendArg( submitEventNotes.Value() );
+ 
+-		// logFile is null here if there was a log specified
+-		// in the submit file
+-	if ( !logFile ) {
+-		if( appendDefaultLog ) {
+-				// We need to append the DAGman default log file to
+-				// the log file list
+-			args.AppendArg( "-a" );
+-			std::string dlog("dagman_log = ");
+-			dlog += defaultLog;
+-			args.AppendArg(dlog.c_str());
+-			debug_printf( DEBUG_VERBOSE, "Adding a DAGMan auxiliary log %s\n", defaultLog );
+-				// Now append the mask
+-			args.AppendArg( "-a" );
+-			std::string dmask("+");
+-			dmask += ATTR_DAGMAN_WORKFLOW_MASK;
+-			dmask += " = \"";
+-			debug_printf( DEBUG_VERBOSE, "Masking the events recorded in the DAGMAN auxiliary log\n" );
+-			std::stringstream dmaskstrm;
+-			//
+-			// IMPORTANT NOTE:  see all events that we deal with in
+-			// Dag::ProcessOneEvent() -- all of those need to be in the
+-			// event mask!! (wenger 2012-11-16)
+-			//
+-			int mask[] = {
+-				ULOG_SUBMIT,
+-				ULOG_EXECUTE,
+-				ULOG_EXECUTABLE_ERROR,
+-				ULOG_JOB_EVICTED,
+-				ULOG_JOB_TERMINATED,
+-				ULOG_SHADOW_EXCEPTION,
+-				ULOG_JOB_ABORTED,
+-				ULOG_JOB_SUSPENDED,
+-				ULOG_JOB_UNSUSPENDED,
+-				ULOG_JOB_HELD,
+-				ULOG_JOB_RELEASED,
+-				ULOG_POST_SCRIPT_TERMINATED,
+-				ULOG_GLOBUS_SUBMIT,			// For Pegasus
+-				ULOG_JOB_RECONNECT_FAILED,
+-				ULOG_GRID_SUBMIT,			// For Pegasus
+-				-1
+-			};
+-			for(const int*p = &mask[0]; *p != -1; ++p) {
+-				if(p != &mask[0]) {
+-					dmaskstrm << ",";
+-				}
+-				dmaskstrm << *p;
+-			}
+-			dmask += dmaskstrm.str();
+-			debug_printf( DEBUG_VERBOSE, "Mask for auxiliary log is %s\n", dmaskstrm.str().c_str() );
+-			dmask += "\"";
+-			args.AppendArg(dmask.c_str());
+-		}
+-	} else {
+-			// Log was not specified in the submit file
+-			// There is a single user log file for this job;
+-			// That is, the default
++		// workflowLogFile is non-null here if we need to tell the schedd to
++		// use that file as the default/workflow log for this node.
++	if ( workflowLogFile ) {
++			// We need to append the DAGman default log file to
++			// the log file list
+ 		args.AppendArg( "-a" );
+-		std::string dlog("log = ");
+-		dlog += logFile;
+-		args.AppendArg(dlog.c_str());
+-			// We are using the default log
+-			// Never let it be XML
++		std::string dlog( "dagman_log = " );
++		dlog += workflowLogFile;
++		args.AppendArg( dlog.c_str() );
++		debug_printf( DEBUG_VERBOSE, "Adding a DAGMan workflow log %s\n",
++					workflowLogFile );
++
++			// Now append the mask
++		debug_printf( DEBUG_VERBOSE, "Masking the events recorded in the DAGMAN workflow log\n" );
+ 		args.AppendArg( "-a" );
+-		args.AppendArg( "log_xml = False");
++		std::string dmask("+");
++		dmask += ATTR_DAGMAN_WORKFLOW_MASK;
++		dmask += " = \"";
++		const char *eventMask = getEventMask();
++		debug_printf( DEBUG_VERBOSE, "Mask for workflow log is %s\n",
++					eventMask );
++		dmask += eventMask;
++		dmask += "\"";
++		args.AppendArg( dmask.c_str() );
+ 	}
+ 
+ 	ArgList parentNameArgs;
+@@ -638,3 +601,47 @@ bool writePreSkipEvent( CondorID& condorID, Job* job, const char* DAGNodeName,
+ 	}
+ 	return true;
+ }
++
++const char *
++getEventMask()
++{
++	static std::string result("");
++	static std::stringstream dmaskstrm("");
++
++	if ( result == "" ) {
++		//
++		// IMPORTANT NOTE:  see all events that we deal with in
++		// Dag::ProcessOneEvent() -- all of those need to be in the
++		// event mask!! (wenger 2012-11-16)
++		//
++		int mask[] = {
++			ULOG_SUBMIT,
++			ULOG_EXECUTE,
++			ULOG_EXECUTABLE_ERROR,
++			ULOG_JOB_EVICTED,
++			ULOG_JOB_TERMINATED,
++			ULOG_SHADOW_EXCEPTION,
++			ULOG_JOB_ABORTED,
++			ULOG_JOB_SUSPENDED,
++			ULOG_JOB_UNSUSPENDED,
++			ULOG_JOB_HELD,
++			ULOG_JOB_RELEASED,
++			ULOG_POST_SCRIPT_TERMINATED,
++			ULOG_GLOBUS_SUBMIT,			// For Pegasus
++			ULOG_JOB_RECONNECT_FAILED,
++			ULOG_GRID_SUBMIT,			// For Pegasus
++			-1
++		};
++
++		for ( const int *p = &mask[0]; *p != -1; ++p ) {
++			if ( p != &mask[0] ) {
++				dmaskstrm << ",";
++			}
++			dmaskstrm << *p;
++		}
++
++		result = dmaskstrm.str();
++	}
++
++	return result.c_str();
++}
+diff --git a/src/condor_dagman/job.cpp b/src/condor_dagman/job.cpp
+index 9795742..55b6df8 100644
+--- a/src/condor_dagman/job.cpp
++++ b/src/condor_dagman/job.cpp
+@@ -93,8 +93,7 @@ Job::~Job() {
+ //---------------------------------------------------------------------------
+ Job::Job( const job_type_t jobType, const char* jobName,
+ 			const char *directory, const char* cmdFile ) :
+-	_jobType( jobType ), _preskip( PRE_SKIP_INVALID ),
+-			_final( false ), append_default_log(true)
++	_jobType( jobType ), _preskip( PRE_SKIP_INVALID ), _final( false )
+ {
+ 	ASSERT( jobName != NULL );
+ 	ASSERT( cmdFile != NULL );
+@@ -196,8 +195,9 @@ bool Job::Remove (const queue_t queue, const JobID_t jobID)
+ 
+ //---------------------------------------------------------------------------
+ bool
+-Job::CheckForLogFile(bool usingDefault ) const
++Job::CheckForLogFile( bool usingDefault ) const
+ {
++		// Should this use FindLogFile()?  wenger 2014-01-27
+ 	bool tmpLogFileIsXml;
+ 	MyString logFile = MultiLogFiles::loadLogFileNameFromSubFile( _cmdFile,
+ 				_directory, tmpLogFileIsXml, usingDefault );
+@@ -785,8 +785,8 @@ Job::MonitorLogFile( ReadMultipleUserLogs &condorLogReader,
+ 			bool recovery, const char *defaultNodeLog, bool usingDefault )
+ {
+ 	debug_printf( DEBUG_DEBUG_2,
+-				"Attempting to monitor log file for node %s\n",
+-				GetJobName() );
++				"Attempting to monitor log file for node %s; using default?: %d\n",
++				GetJobName(), usingDefault );
+ 
+ 	if ( _logIsMonitored ) {
+ 		debug_printf( DEBUG_DEBUG_1, "Warning: log file for node "
+@@ -797,78 +797,46 @@ Job::MonitorLogFile( ReadMultipleUserLogs &condorLogReader,
+ 	ReadMultipleUserLogs &logReader = (_jobType == TYPE_CONDOR) ?
+ 				condorLogReader : storkLogReader;
+ 
+-    std::string logFileStr;
+-	if ( _jobType == TYPE_CONDOR ) {
+-			// We check to see if the user has specified a log file
+-			// If not, we give him a default
+-    	MyString templogFileStr = MultiLogFiles::loadLogFileNameFromSubFile( _cmdFile,
+-					_directory, _logFileIsXml, usingDefault);
+-		logFileStr = templogFileStr.Value();
+-	} else {
+-		StringList logFiles;
+-		MyString tmpResult = MultiLogFiles::loadLogFileNamesFromStorkSubFile(
+-					_cmdFile, _directory, logFiles );
+-		if ( tmpResult != "" ) {
+-			debug_printf( DEBUG_QUIET, "Error getting Stork log file: %s\n",
+-						tmpResult.Value() );
+-			LogMonitorFailed();
+-			return false;
+-		} else if ( logFiles.number() != 1 ) {
+-			debug_printf( DEBUG_QUIET, "Error: %d Stork log files found "
+-						"in submit file %s; we want 1\n",
+-						logFiles.number(), _cmdFile );
+-			LogMonitorFailed();
+-			return false;
+-		} else {
+-			logFiles.rewind();
+-			logFileStr = logFiles.next();
+-		}
++	MyString logFile;
++	if ( !FindLogFile( usingDefault, logFile ) ) {
++		LogMonitorFailed();
++		return false;
+ 	}
++	// Note:  logFile is "" here if usingDefault is true and this node
++	// is an HTCondor node (not Stork).
+ 
+ 		// Warn the user if the node's log file is in /tmp.
+-	if ( logFileStr.find( "/tmp" ) == 0 ) {
++	if ( logFile.find( "/tmp" ) == 0 ) {
+ 		debug_printf( DEBUG_QUIET, "Warning: "
+ 					"Log file %s for node %s is in /tmp\n",
+-					logFileStr.c_str(), GetJobName() );
+-        check_warning_strictness( usingDefault ? DAG_STRICT_2 : DAG_STRICT_1 );
++					logFile.Value(), GetJobName() );
++			// If we're using the workflow log, we'll only ever get here
++			// for Stork nodes, because they can't use the workflow log.
++        check_warning_strictness( DAG_STRICT_1 );
+ 	}
+ 
+-	if ( logFileStr == "" ) {
+-		logFileStr = defaultNodeLog;
++	if ( logFile == "" ) {
++			// Using the workflow/default log file for this node.
++		logFile = defaultNodeLog;
+ 		_useDefaultLog = true;
+ 			// Default User log is never XML
+-			// This could be specified in the submit file and should be
+-			// ignored.
+ 		_logFileIsXml = false;
+-		debug_printf( DEBUG_NORMAL, "Unable to get log file from "
+-					"submit file %s (node %s); using default (%s)\n",
+-					_cmdFile, GetJobName(), logFileStr.c_str() );
+-		append_default_log = false;
+-	} else {
+-		append_default_log = usingDefault;
+-		if( append_default_log ) {
+-				// DAGman is not going to look at the user-specified log.
+-				// It will look at the defaultNode log.
+-			logFileStr = defaultNodeLog;
+-			_useDefaultLog = false;
+-			_logFileIsXml = false;
+-		}
+ 	}
+ 
+ 		// This function returns true if the log file is on NFS and
+ 		// that is an error.  If the log file is on NFS, but nfsIsError
+ 		// is false, it prints a warning but returns false.
+-	if ( MultiLogFiles::logFileNFSError( logFileStr.c_str(),
++	if ( MultiLogFiles::logFileNFSError( logFile.Value(),
+ 				nfsIsError ) ) {
+ 		debug_printf( DEBUG_QUIET, "Error: log file %s on NFS\n",
+-					logFileStr.c_str() );
++					logFile.Value() );
+ 		LogMonitorFailed();
+ 		return false;
+ 	}
+ 
+ 	delete [] _logFile;
+ 		// Saving log file here in case submit file gets changed.
+-	_logFile = strnewp( logFileStr.c_str() );
++	_logFile = strnewp( logFile.Value() );
+ 	debug_printf( DEBUG_DEBUG_2, "Monitoring log file <%s> for node %s\n",
+ 				GetLogFile(), GetJobName() );
+ 	CondorError errstack;
+@@ -1035,7 +1003,9 @@ Job::FixPriority(Dag& dag)
+ 	}
+ }
+ 
+-bool Job::SetCondorID(const CondorID& cid)
++//---------------------------------------------------------------------------
++bool
++Job::SetCondorID(const CondorID& cid)
+ {
+ 	bool ret = true;
+ 	if(GetCluster() != -1) {
+@@ -1048,7 +1018,9 @@ bool Job::SetCondorID(const CondorID& cid)
+ 	return ret;	
+ }
+ 
+-bool Job::Hold(int proc) 
++//---------------------------------------------------------------------------
++bool
++Job::Hold(int proc) 
+ {
+ 	if( proc >= static_cast<int>( _onHold.size() ) ) {
+ 		_onHold.resize( proc+1, 0 );
+@@ -1065,7 +1037,9 @@ bool Job::Hold(int proc)
+ 	return false;
+ }
+ 
+-bool Job::Release(int proc)
++//---------------------------------------------------------------------------
++bool
++Job::Release(int proc)
+ {
+ 	if( proc >= static_cast<int>( _onHold.size() ) ) {
+ 		dprintf( D_FULLDEBUG, "Received release event for node %s, but job %d.%d "
+@@ -1079,3 +1053,55 @@ bool Job::Release(int proc)
+ 	}
+ 	return false;
+ }
++
++//---------------------------------------------------------------------------
++bool
++Job::FindLogFile( bool usingWorkflowLog, MyString &logFile )
++{
++	if ( _jobType == TYPE_CONDOR ) {
++		if ( usingWorkflowLog ) {
++				// Now, if we're using the workflow log file, we don't
++				// even look at the node's submit file.  (See gittrac
++				// #3843.)
++			logFile = "";
++
++		} else {
++				// We're not in workflow/default log mode, so get the
++				// log file (if any) from the submit file.
++    		logFile = MultiLogFiles::loadLogFileNameFromSubFile(
++						_cmdFile, _directory, _logFileIsXml, false );
++			if ( logFile == "" ) {
++				debug_printf( DEBUG_NORMAL, "Unable to get log file from "
++							"submit file %s (node %s); using default/workflow log\n",
++							_cmdFile, GetJobName() );
++				// Don't return false here, because not specifying the
++				// log file is not an error.
++			}
++		}
++
++	} else {
++			// Workflow/default log file mode is not supported for Stork
++			// nodes, so we always have to get the log file for a Stork
++			// node.
++		StringList logFiles;
++		MyString tmpResult = MultiLogFiles::loadLogFileNamesFromStorkSubFile(
++					_cmdFile, _directory, logFiles );
++		if ( tmpResult != "" ) {
++			debug_printf( DEBUG_QUIET, "Error getting Stork log file: %s\n",
++						tmpResult.Value() );
++			return false;
++
++		} else if ( logFiles.number() != 1 ) {
++			debug_printf( DEBUG_QUIET, "Error: %d Stork log files found "
++						"in submit file %s; we want 1\n",
++						logFiles.number(), _cmdFile );
++			return false;
++
++		} else {
++			logFiles.rewind();
++			logFile = logFiles.next();
++		}
++	}
++
++	return true;
++}
+diff --git a/src/condor_dagman/job.h b/src/condor_dagman/job.h
+index af0d184..ad01b7b 100644
+--- a/src/condor_dagman/job.h
++++ b/src/condor_dagman/job.h
+@@ -224,7 +224,7 @@ class Job {
+ 			default node log
+ 		@return true iff the submit file defines a log file
+ 	*/
+-	bool CheckForLogFile(bool usingDefault) const;
++	bool CheckForLogFile( bool usingDefault ) const;
+ 
+     /** Returns true if a queue is empty (has no jobs)
+         @param queue Selects which queue to look at
+@@ -353,6 +353,8 @@ class Job {
+ 		@param recovery: whether we're in recovery mode
+ 		@param defaultNodeLog: the default log file to be used if the
+ 			node's submit file doesn't define a log file
++		@param usingDefault: whether we're using the default/workflow
++			log at the DAG level
+ 		@return true if successful, false if failed
+ 	*/
+ 	bool MonitorLogFile( ReadMultipleUserLogs &condorLogReader,
+@@ -498,7 +500,6 @@ public:
+ 		// (Note: we may need to track the hold state of each proc in a
+ 		// cluster separately to correctly deal with multi-proc clusters.)
+ 	int _jobProcsOnHold;
+-	bool UseDefaultLog() const { return append_default_log; }
+ 
+ 		/** Mark a job with ProcId == proc as being on hold
+  			Returns false if the job is already on hold
+@@ -510,7 +511,18 @@ public:
+  		    Returns false if the job is not on hold
+ 		*/
+ 	bool Release(int proc);
++
+ private:
++		/** Get the log file specified in the given submit file, if
++			any.  Note that if the job is an HTCondor job and
++			usingWorkflowLog is true, this method will return "" for
++			the log file name.
++			@param usingWorkflowLog: true iff we're using the workflow
++				log file to monitor jobs
++			@param logFile: a MyString to hold the log file name
++			@return true on success, false otherwise
++		*/
++	bool FindLogFile( bool usingWorkflowLog, MyString &logFile );
+ 
+ 		/** _onHold[proc] is nonzero if the condor job 
+  			with ProcId == proc is on hold, and zero
+@@ -626,7 +638,6 @@ private:
+ 
+ 	// whether this is a final job
+ 	bool _final;
+-	bool append_default_log;
+ };
+ 
+ /** A wrapper function for Job::Print which allows a NULL job pointer.
+diff --git a/src/condor_dagman/submit.h b/src/condor_dagman/submit.h
+index b5bcfc0..88894e2 100644
+--- a/src/condor_dagman/submit.h
++++ b/src/condor_dagman/submit.h
+@@ -54,9 +54,8 @@
+ bool condor_submit( const Dagman &dm, const char* cmdFile, CondorID& condorID,
+ 					const char* DAGNodeName, MyString &DAGParentNodeNames,
+ 					List<Job::NodeVar> *vars,
+-					const char* directory, const char *defLog, bool useDefLog,
+-					const char *logFile, bool prohibitMultiJobs,
+-					bool hold_claim );
++					const char* directory, const char *worflowLogFile,
++					bool prohibitMultiJobs, bool hold_claim );
+ 
+ bool stork_submit( const Dagman &dm, const char* cmdFile, CondorID& condorID,
+ 				   const char* DAGNodeName, const char* directory );
+diff --git a/src/condor_tests/job_dagman_jobstate_log.dag b/src/condor_tests/job_dagman_jobstate_log.dag
+index f3fde60..293301a 100644
+--- a/src/condor_tests/job_dagman_jobstate_log.dag
++++ b/src/condor_tests/job_dagman_jobstate_log.dag
+@@ -1,22 +1,29 @@
+-JOBSTATE_LOG job_dagman_jobstate_log.dag.jobstate.log
++JOBSTATE_LOG \
++	job_dagman_jobstate_log.dag.jobstate.log
+ 
+-CONFIG job_dagman_jobstate_log.config
++CONFIG \
++	job_dagman_jobstate_log.config
+ 
+ # This job queues two procs that fail, but the post script succeeds.
+-Job NodeA job_dagman_jobstate_log-nodeA.cmd
+-Script Pre NodeA job_dagman_jobstate_log-pre.pl $JOB
+-Script Post NodeA job_dagman_jobstate_log-post.pl $JOB
++Job NodeA \
++	job_dagman_jobstate_log-nodeA.cmd
++Script \
++	Pre NodeA job_dagman_jobstate_log-pre.pl $JOB
++Script Post \
++	NodeA job_dagman_jobstate_log-post.pl $JOB
+ 
+ # The job queues two procs that succeed.
+ Job NodeB job_dagman_jobstate_log-nodeB.cmd
+ Script Pre NodeB job_dagman_jobstate_log-pre.pl $JOB
+-Script Post NodeB job_dagman_jobstate_log-post.pl $JOB
++Script Post NodeB job_dagman_jobstate_log-post.pl \
++	$JOB
+ 
+ # This node's post script fails the first time, but then succeeds.
+ Job NodeC job_dagman_jobstate_log-nodeC.cmd
+ Script Pre NodeC job_dagman_jobstate_log-pre.pl $JOB
+ Script Post NodeC job_dagman_jobstate_log-nodeC-post.pl $JOB $RETRY
+-Retry NodeC 1
++Retry \
++	NodeC 1
+ 
+ # This node will hold and release the DAG.
+ Job NodeD job_dagman_jobstate_log-nodeD.cmd
+@@ -26,7 +33,10 @@ Job NodeD job_dagman_jobstate_log-nodeD.cmd
+ Job NodeE job_dagman_jobstate_log-nodeE.cmd
+ Script Post NodeE job_dagman_jobstate_log-post.pl $JOB
+ 
+-Parent NodeA Child NodeB
+-Parent NodeB Child NodeC
+-Parent NodeC Child NodeD
++Parent \
++	NodeA Child NodeB
++Parent NodeB \
++	Child NodeC
++Parent NodeC Child \
++	NodeD
+ Parent NodeD Child NodeE
+diff --git a/src/condor_tests/job_dagman_jobstate_log.run b/src/condor_tests/job_dagman_jobstate_log.run
+index 73a63a4..c31568d 100755
+--- a/src/condor_tests/job_dagman_jobstate_log.run
++++ b/src/condor_tests/job_dagman_jobstate_log.run
+@@ -121,6 +121,9 @@ foreach $name (@outfiles) {
+ 	}
+ }
+ 
++# Remove any existing rescue DAGs.
++runcmd("rm -f job_dagman_jobstate_log.dag.rescue*");
++
+ $abnormal = sub 
+ {
+ 	die "Want to see only submit, execute and successful completion\n";
+diff --git a/src/condor_utils/read_multiple_logs.cpp b/src/condor_utils/read_multiple_logs.cpp
+index 37fa3fa..1c82fb3 100644
+--- a/src/condor_utils/read_multiple_logs.cpp
++++ b/src/condor_utils/read_multiple_logs.cpp
+@@ -275,97 +275,51 @@ ReadMultipleUserLogs::readEventFromLog( LogFileMonitor *monitor )
+ }
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+-
+-MyString
+-MultiLogFiles::fileNameToLogicalLines(const MyString &filename,
+-			StringList &logicalLines)
++MultiLogFiles::FileReader::FileReader()
+ {
+-	MyString	result("");
++	_fp = NULL;
++}
+ 
+-	MyString fileContents = readFileToString(filename);
+-	if (fileContents == "") {
+-		result = "Unable to read file: " + filename;
+-		dprintf(D_ALWAYS, "MultiLogFiles: %s\n", result.Value());
+-		return result;
+-	}
++MultiLogFiles::FileReader::~FileReader()
++{
++	Close();
++}
+ 
+-		// Split the file string into physical lines.
+-		// Note: StringList constructor removes leading whitespace from lines.
+-	StringList physicalLines(fileContents.Value(), "\r\n");
+-	physicalLines.rewind();
+-
+-		// Combine lines with continuation characters.
+-	MyString	combineResult = CombineLines(physicalLines, '\\',
+-				filename, logicalLines);
+-	if ( combineResult != "" ) {
+-		result = combineResult;
+-		return result;
++MyString
++MultiLogFiles::FileReader::Open( const MyString &filename )
++{
++	MyString result( "" );
++
++	_fp = safe_fopen_wrapper_follow( filename.Value(), "r" );
++	if ( !_fp ) {
++		result.formatstr( "MultiLogFiles::FileReader::Open(): "
++				"safe_fopen_wrapper_follow(%s) failed with errno %d (%s)\n",
++				filename.Value(), errno, strerror(errno) );
++		dprintf( D_ALWAYS, "%s", result.Value() );
+ 	}
+-	logicalLines.rewind();
+ 
+ 	return result;
+ }
+ 
+-///////////////////////////////////////////////////////////////////////////////
+-
+-MyString
+-MultiLogFiles::readFileToString(const MyString &strFilename)
++bool
++MultiLogFiles::FileReader::NextLogicalLine( MyString &line )
+ {
+-	dprintf( D_FULLDEBUG, "MultiLogFiles::readFileToString(%s)\n",
+-				strFilename.Value() );
+-
+-	FILE *pFile = safe_fopen_wrapper_follow(strFilename.Value(), "r");
+-	if (!pFile) {
+-		dprintf( D_ALWAYS, "MultiLogFiles::readFileToString: "
+-				"safe_fopen_wrapper_follow(%s) failed with errno %d (%s)\n", strFilename.Value(),
+-				errno, strerror(errno) );
+-		return "";
+-	}
+-
+-	if ( fseek(pFile, 0, SEEK_END) != 0 ) {
+-		dprintf( D_ALWAYS, "MultiLogFiles::readFileToString: "
+-				"fseek(%s) failed with errno %d (%s)\n", strFilename.Value(),
+-				errno, strerror(errno) );
+-		fclose(pFile);
+-		return "";
+-	}
+-	int iLength = ftell(pFile);
+-	if ( iLength == -1 ) {
+-		dprintf( D_ALWAYS, "MultiLogFiles::readFileToString: "
+-				"ftell(%s) failed with errno %d (%s)\n", strFilename.Value(),
+-				errno, strerror(errno) );
+-		fclose(pFile);
+-		return "";
+-	}
+-	MyString strToReturn;
+-	strToReturn.reserve_at_least(iLength);
+-
+-	fseek(pFile, 0, SEEK_SET);
+-	char *psBuf = new char[iLength+1];
+-		/*  We now clear the buffer to ensure there will be a NULL at the
+-			end of our buffer after the fread().  Why no just do
+-				psBuf[iLength] = 0  ?
+-			Because on Win32, iLength may not point to the end of 
+-			the buffer because \r\n are converted into \n because
+-			the file is opened in text mode.  
+-		*/
+-	memset(psBuf,0,iLength+1);
+-	int ret = fread(psBuf, 1, iLength, pFile);
+-	if (ret == 0) {
+-		dprintf( D_ALWAYS, "MultiLogFiles::readFileToString: "
+-				"fread failed with errno %d (%s)\n", 
+-				errno, strerror(errno) );
+-		fclose(pFile);
+-		delete [] psBuf;
+-		return "";
++	char *tmpLine = getline( _fp );
++	if ( tmpLine != NULL ) {
++		line = tmpLine;
++		return true;
+ 	}
+-	
+-	fclose(pFile);
+ 
+-	strToReturn = psBuf;
+-	delete [] psBuf;
++	return false; // EOF
++}
+ 
+-	return strToReturn;
++void
++MultiLogFiles::FileReader::Close()
++{
++	if ( !_fp ) {
++		fclose( _fp );
++		_fp = NULL;
++	}
+ }
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+@@ -386,8 +340,8 @@ MultiLogFiles::loadLogFileNameFromSubFile(const MyString &strSubFilename,
+ 		}
+ 	}
+ 
+-	StringList	logicalLines;
+-	if ( fileNameToLogicalLines( strSubFilename, logicalLines ) != "" ) {
++	FileReader reader;
++	if ( reader.Open( strSubFilename ) != "" ) {
+ 		return "";
+ 	}
+ 
+@@ -399,9 +353,8 @@ MultiLogFiles::loadLogFileNameFromSubFile(const MyString &strSubFilename,
+ 		// log file and initial directory (if specified) and combine
+ 		// them into a path to the log file that's either absolute or
+ 		// relative to the DAG submit directory.  Also look for log_xml.
+-	const char *logicalLine;
+-	while( (logicalLine = logicalLines.next()) != NULL ) {
+-		MyString	submitLine(logicalLine);
++	MyString submitLine;
++	while ( reader.NextLogicalLine( submitLine ) ) {
+ 		MyString	tmpLogName = getParamFromSubmitLine(submitLine, "log");
+ 		if ( tmpLogName != "" ) {
+ 			logFileName = tmpLogName;
+@@ -423,6 +376,8 @@ MultiLogFiles::loadLogFileNameFromSubFile(const MyString &strSubFilename,
+ 		}
+ 	}
+ 
++	reader.Close();
++
+ 	if ( !usingDefaultNode ) {
+ 			//
+ 			// Check for macros in the log file name -- we currently don't
+@@ -489,8 +444,8 @@ MultiLogFiles::loadValueFromSubFile(const MyString &strSubFilename,
+ 		}
+ 	}
+ 
+-	StringList	logicalLines;
+-	if ( fileNameToLogicalLines( strSubFilename, logicalLines ) != "" ) {
++	FileReader reader;
++	if ( reader.Open( strSubFilename ) != "" ) {
+ 		return "";
+ 	}
+ 
+@@ -498,15 +453,16 @@ MultiLogFiles::loadValueFromSubFile(const MyString &strSubFilename,
+ 
+ 		// Now look through the submit file logical lines to find the
+ 		// value corresponding to the keyword.
+-	const char *logicalLine;
+-	while( (logicalLine = logicalLines.next()) != NULL ) {
+-		MyString	submitLine(logicalLine);
++	MyString submitLine;
++	while ( reader.NextLogicalLine( submitLine ) ) {
+ 		MyString	tmpValue = getParamFromSubmitLine(submitLine, keyword);
+ 		if ( tmpValue != "" ) {
+ 			value = tmpValue;
+ 		}
+ 	}
+ 
++	reader.Close();
++
+ 		//
+ 		// Check for macros in the value -- we currently don't
+ 		// handle those.
+@@ -721,9 +677,9 @@ MultiLogFiles::getQueueCountFromSubmitFile(const MyString &strSubFilename,
+ 		fullpath = strSubFilename;
+ 	}
+ 
+-	StringList	logicalLines;
+-	if ( (errorMsg = fileNameToLogicalLines( strSubFilename,
+-				logicalLines)) != "" ) {
++	FileReader reader;
++	MyString errMsg = reader.Open( fullpath );
++	if ( errMsg != "" ) {
+ 		return -1;
+ 	}
+ 
+@@ -731,9 +687,8 @@ MultiLogFiles::getQueueCountFromSubmitFile(const MyString &strSubFilename,
+ 		// queue commands, and count up the total number of job procs
+ 		// to be queued.
+ 	const char *	paramName = "queue";
+-	const char *logicalLine;
+-	while( (logicalLine = logicalLines.next()) != NULL ) {
+-		MyString	submitLine(logicalLine);
++	MyString submitLine;
++	while ( reader.NextLogicalLine( submitLine ) ) {
+ 		submitLine.Tokenize();
+ 		const char *DELIM = " ";
+ 		const char *rawToken = submitLine.GetNextToken( DELIM, true );
+@@ -751,6 +706,8 @@ MultiLogFiles::getQueueCountFromSubmitFile(const MyString &strSubFilename,
+ 		}
+ 	}
+ 
++	reader.Close();
++
+ 	return queueCount;
+ }
+ 
+@@ -760,29 +717,27 @@ MyString
+ MultiLogFiles::getValuesFromFile(const MyString &fileName, 
+ 			const MyString &keyword, StringList &values, int skipTokens)
+ {
+-
+ 	MyString	errorMsg;
+-	StringList	logicalLines;
+-	if ( (errorMsg = fileNameToLogicalLines( fileName,
+-				logicalLines )) != "" ) {
++
++	FileReader reader;
++	errorMsg = reader.Open( fileName );
++	if ( errorMsg != "" ) {
+ 		return errorMsg;
+ 	}
+ 
+-	const char *	logicalLine;
+-	while ( (logicalLine = logicalLines.next()) ) {
+-
+-		if ( strcmp(logicalLine, "") ) {
+-
++	MyString logicalLine;
++	while ( reader.NextLogicalLine( logicalLine ) ) {
++		if ( logicalLine != "" ) {
+ 				// Note: StringList constructor removes leading
+ 				// whitespace from lines.
+-			StringList	tokens(logicalLine, " \t");
++			StringList tokens( logicalLine.Value(), " \t" );
+ 			tokens.rewind();
+ 
+ 			if ( !strcasecmp(tokens.next(), keyword.Value()) ) {
+ 					// Skip over unwanted tokens.
+ 				for ( int skipped = 0; skipped < skipTokens; skipped++ ) {
+ 					if ( !tokens.next() ) {
+-						MyString result = MyString( "Improperly-formatted DAG "
++						MyString result = MyString( "Improperly-formatted "
+ 									"file: value missing after keyword <" ) +
+ 									keyword + ">";
+ 			    		return result;
+@@ -791,8 +746,8 @@ MultiLogFiles::getValuesFromFile(const MyString &fileName,
+ 
+ 					// Get the value.
+ 				const char *newValue = tokens.next();
+-				if ( !newValue || !strcmp( newValue, "") ) {
+-					MyString result = MyString( "Improperly-formatted DAG "
++				if ( !newValue || !strcmp( newValue, "" ) ) {
++					MyString result = MyString( "Improperly-formatted "
+ 								"file: value missing after keyword <" ) +
+ 								keyword + ">";
+ 			    	return result;
+@@ -810,13 +765,15 @@ MultiLogFiles::getValuesFromFile(const MyString &fileName,
+ 					}
+ 				}
+ 
+-				if (!alreadyInList) {
++				if ( !alreadyInList ) {
+ 						// Note: append copies the string here.
+ 					values.append(newValue);
+ 				}
+ 			}
+ 		}
+-	}	
++	}
++
++	reader.Close();
+ 
+ 	return "";
+ }
+@@ -850,49 +807,6 @@ MultiLogFiles::getParamFromSubmitLine(MyString &submitLine,
+ 
+ ///////////////////////////////////////////////////////////////////////////////
+ 
+-MyString
+-MultiLogFiles::CombineLines(StringList &listIn, char continuation,
+-		const MyString &filename, StringList &listOut)
+-{
+-	dprintf( D_FULLDEBUG, "MultiLogFiles::CombineLines(%s, %c)\n",
+-				filename.Value(), continuation );
+-
+-	listIn.rewind();
+-
+-		// Physical line is one line in the file.
+-	const char	*physicalLine;
+-	while ( (physicalLine = listIn.next()) != NULL ) {
+-
+-			// Logical line is physical lines combined as needed by
+-			// continuation characters (backslash).
+-		MyString	logicalLine(physicalLine);
+-
+-		while ( logicalLine[logicalLine.Length()-1] == continuation ) {
+-
+-				// Remove the continuation character.
+-			logicalLine.setChar(logicalLine.Length()-1, '\0');
+-
+-				// Append the next physical line.
+-			physicalLine = listIn.next();
+-			if ( physicalLine ) {
+-				logicalLine += physicalLine;
+-			} else {
+-				MyString result = MyString("Improper file syntax: ") +
+-							"continuation character with no trailing line! (" +
+-							logicalLine + ") in file " + filename;
+-				dprintf(D_ALWAYS, "MultiLogFiles: %s\n", result.Value());
+-				return result;
+-			}
+-		}
+-
+-		listOut.append(logicalLine.Value());
+-	}
+-
+-	return ""; // blank means okay
+-}
+-
+-///////////////////////////////////////////////////////////////////////////////
+-
+ unsigned int
+ ReadMultipleUserLogs::hashFuncJobID(const CondorID &key)
+ {
+diff --git a/src/condor_utils/read_multiple_logs.h b/src/condor_utils/read_multiple_logs.h
+index 352b8d2..c1b09a2 100644
+--- a/src/condor_utils/read_multiple_logs.h
++++ b/src/condor_utils/read_multiple_logs.h
+@@ -128,23 +128,40 @@ public:
+ 		*/
+ 	static bool logFileNFSError(const char *fileName, bool nfsIsError);
+ 
+-		/** Reads in the specified file, breaks it into lines, and
+-			combines the lines into "logical" lines (joins continued
+-			lines).
+-			@param The filename
+-			@param The StringList to receive the logical lines
+-			@return "" if okay, error message otherwise
+-		*/
+-	static MyString fileNameToLogicalLines(const MyString &filename,
+-				StringList &logicalLines);
++	class FileReader
++	{
++	public:
++			/** Constructor -- doesn't really do anything -- open is
++				a separate method so errors can be returned.
++			 */
++		FileReader();
++
++			/** Destructor -- closes the file if it's open.
++			 */
++		~FileReader();
++
++			/** Open this file.
++				@param filename: the file to open
++				@return: "" on success; error message on failure
++			 */
++		MyString Open( const MyString &filename );
++
++			/** Real the next "logical" line from the file.  (This means
++				lines are combined if they end with a continuation character.)
++				@param line: a MyString to recieve the line string
++				@return: true iff we got any data
++			 */
++		bool NextLogicalLine( MyString &line );
++
++			/** Close the file.
++			 */
++		void Close();
++
++	private:
++		FILE *_fp;
++	};
+ 
+ private:
+-	    /** Read the entire contents of the given file into a MyString.
+-		 * @param The name of the file.
+-		 * @return The contents of the file.
+-		 */
+-    static MyString readFileToString(const MyString &strFilename);
+-
+ 		/**
+ 		 * Get the given parameter if it is defined in the given submit file
+ 		 * line.
+@@ -157,18 +174,6 @@ private:
+ 			const char *paramName);
+ 
+ 		/**
+-		 * Combine input ("physical") lines that end with the given
+-		 * continuation character into "logical" lines.
+-		 * @param Input string list of "physical" lines.
+-		 * @param Continuation character.
+-		 * @param Filename (for error messages).
+-		 * @param Output string list of "logical" lines.
+-		 * @return "" if okay, or else an error message.
+-		 */
+-	static MyString CombineLines(StringList &listIn, char continuation,
+-			const MyString &filename, StringList &listOut);
+-
+-		/**
+ 		 * Skip whitespace in a std::string buffer.  This is a helper function
+ 		 * for loadLogFileNamesFromStorkSubFile().  When the new ClassAds
+ 		 * parser can skip whitespace on it's own, this function can be
