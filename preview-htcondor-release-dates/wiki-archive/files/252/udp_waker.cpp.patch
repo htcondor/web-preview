@@ -1,0 +1,20 @@
+--- udp_waker.cpp	2010-12-14 13:38:01.000000000 -0600
++++ udp_waker.cpp.new	2010-12-15 13:11:49.000000000 -0600
+@@ -140,7 +140,7 @@
+ 	if ( !found ) {
+ 
+ 		/* no error, just auto-detect the port number */
+-		m_port = detect_port;
++		m_port = default_port;
+ 
+ 	}
+ 
+@@ -258,7 +258,7 @@
+ 
+     /* if we've been given a zero value, then look-up the
+        port number to use */
+-    if ( detect_port == m_port ) {
++    if ( detect_port ) {
+         servent *sp = getservbyname ( "discard", "udp" );
+         if ( sp ) {
+             m_port = ntohs ( sp->s_port );
