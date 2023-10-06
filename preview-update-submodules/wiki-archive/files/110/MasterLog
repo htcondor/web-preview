@@ -1,0 +1,51 @@
+10/08 13:40:15 ******************************************************
+10/08 13:40:15 ** condor_master (CONDOR_MASTER) STARTING UP
+10/08 13:40:15 ** /opt/dev/pristine/pristine_src/src/release_dir/sbin/condor_master
+10/08 13:40:15 ** SubsystemInfo: name=MASTER type=MASTER(2) class=DAEMON(1)
+10/08 13:40:15 ** Configuration: subsystem:MASTER local:<NONE> class:DAEMON
+10/08 13:40:15 ** $CondorVersion: 7.4.0 Oct  8 2009 $
+10/08 13:40:15 ** $CondorPlatform: X86_64-LINUX_F11 $
+10/08 13:40:15 ** PID = 10667
+10/08 13:40:15 ** Log last touched 10/8 13:01:12
+10/08 13:40:15 ******************************************************
+10/08 13:40:15 Using config source: /opt/personal-condor/condor_config
+10/08 13:40:15 Using local config sources: 
+10/08 13:40:15    /opt/personal-condor/condor_config.local
+10/08 13:40:15 DaemonCore: Command Socket at <127.0.0.1:46966>
+10/08 13:40:15 Started DaemonCore process "/opt/personal-condor/release_dir/sbin/condor_collector", pid and pgroup = 10668
+10/08 13:40:18 Started DaemonCore process "/opt/personal-condor/release_dir/sbin/condor_startd", pid and pgroup = 10669
+10/08 13:40:18 Started DaemonCore process "/opt/personal-condor/release_dir/sbin/condor_schedd", pid and pgroup = 10670
+10/08 13:40:18 Started DaemonCore process "/opt/personal-condor/release_dir/sbin/condor_negotiator", pid and pgroup = 10671
+10/08 13:43:46 Got SIGTERM. Performing graceful shutdown.
+10/08 13:43:46 Sent SIGTERM to COLLECTOR (pid 10668)
+10/08 13:43:46 Sent SIGTERM to STARTD (pid 10669)
+10/08 13:43:46 Sent SIGTERM to SCHEDD (pid 10670)
+10/08 13:43:46 Sent SIGTERM to NEGOTIATOR (pid 10671)
+10/08 13:43:46 The COLLECTOR (pid 10668) exited with status 0
+10/08 13:43:46 The NEGOTIATOR (pid 10671) exited with status 0
+10/08 13:43:47 The SCHEDD (pid 10670) exited with status 0
+10/08 13:45:23 attempt to connect to <127.0.0.1:11000> failed: Connection refused (connect errno = 111).
+10/08 13:45:23 ERROR: SECMAN:2004:Failed to create security session to <127.0.0.1:11000> with TCP.|SECMAN:2003:TCP connection to <127.0.0.1:11000> failed.
+10/08 13:45:23 Failed to start non-blocking update to <127.0.0.1:11000>.
+10/08 13:50:23 attempt to connect to <127.0.0.1:11000> failed: Connection refused (connect errno = 111).
+10/08 13:50:23 ERROR: SECMAN:2004:Failed to create security session to <127.0.0.1:11000> with TCP.|SECMAN:2003:TCP connection to <127.0.0.1:11000> failed.
+10/08 13:50:23 Failed to start non-blocking update to <127.0.0.1:11000>.
+10/08 13:55:23 attempt to connect to <127.0.0.1:11000> failed: Connection refused (connect errno = 111).
+10/08 13:55:23 ERROR: SECMAN:2004:Failed to create security session to <127.0.0.1:11000> with TCP.|SECMAN:2003:TCP connection to <127.0.0.1:11000> failed.
+10/08 13:55:23 Failed to start non-blocking update to <127.0.0.1:11000>.
+10/08 14:00:23 attempt to connect to <127.0.0.1:11000> failed: Connection refused (connect errno = 111).
+10/08 14:00:23 ERROR: SECMAN:2004:Failed to create security session to <127.0.0.1:11000> with TCP.|SECMAN:2003:TCP connection to <127.0.0.1:11000> failed.
+10/08 14:00:23 Failed to start non-blocking update to <127.0.0.1:11000>.
+10/08 14:05:23 attempt to connect to <127.0.0.1:11000> failed: Connection refused (connect errno = 111).
+10/08 14:05:23 ERROR: SECMAN:2004:Failed to create security session to <127.0.0.1:11000> with TCP.|SECMAN:2003:TCP connection to <127.0.0.1:11000> failed.
+10/08 14:05:23 Failed to start non-blocking update to <127.0.0.1:11000>.
+10/08 14:10:23 attempt to connect to <127.0.0.1:11000> failed: Connection refused (connect errno = 111).
+10/08 14:10:23 ERROR: SECMAN:2004:Failed to create security session to <127.0.0.1:11000> with TCP.|SECMAN:2003:TCP connection to <127.0.0.1:11000> failed.
+10/08 14:10:23 Failed to start non-blocking update to <127.0.0.1:11000>.
+10/08 14:13:46 Timeout for graceful shutdown has expired for STARTD.
+10/08 14:13:46 Send_Signal: attempt to send signal 3 to process 10669, which has exited but not yet been reaped.
+10/08 14:13:46 ERROR: failed to send SIGQUIT to pid 10669
+10/08 14:13:46 The STARTD (pid 10669) died due to signal 11 (Segmentation fault)
+10/08 14:13:46 All daemons are gone.  Exiting.
+10/08 14:13:46 **** condor_master (condor_MASTER) pid 10667 EXITING WITH STATUS 0
+
