@@ -837,11 +837,13 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.7.1</span> Feature Release</h3>
-        <p>August  9, 2023</p>
+        <h3><span class="text-secondary">10.9.0</span> Feature Release</h3>
+        <p>September 28, 2023</p>
         <div>
             <ul>
-  <li>Fix performance problem detecting futile nodes in a large and bushy DAG</li>
+  <li>The condor_upgrade_check script now provides guidance on updating to 23.0</li>
+  <li>The htchirp Python binding now properly locates the chirp configuration</li>
+  <li>Fix bug that prevented deletion of HTCondor passwords on Windows</li>
 </ul>
 
         </div>
@@ -862,16 +864,24 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">10.0.7</span> Long Term Support Release</h3>
-        <p>July 25, 2023</p>
+        <h3><span class="text-secondary">23.0.0</span> Long Term Support Release</h3>
+        <p>September 30, 2023</p>
         <div>
             <ul>
-  <li>Fixed bug where held condor cron jobs would never run when released</li>
-  <li>Improved daemon IDTOKENS logging to make useful messages more prominent</li>
-  <li>Remove limit on certificate chain length in SSL authentication</li>
-  <li>condor_config_val -summary now works with a remote configuration query</li>
-  <li>Prints detailed message when condor_remote_cluster fails to fetch a URL</li>
-  <li>Improvements to condor_preen</li>
+  <li>Absent slot configuration, execution points will use a partitionable slot</li>
+  <li>Linux cgroups enforce maximum memory utilization by default</li>
+  <li>Can now define DAGMan save points to be able to rerun DAGs from there</li>
+  <li>Much better control over environment variables when using DAGMan</li>
+  <li>Administrators can enable and disable job submission for a specific user</li>
+  <li>Can set a minimum number of CPUs allocated to a user</li>
+  <li>condor_status -gpus shows nodes with GPUs and the GPU properties</li>
+  <li>condor_status -compact shows a row for each slot type</li>
+  <li>Container images may now be transferred via a file transfer plugin</li>
+  <li>Support for Enterprise Linux 9, Amazon Linux 2023, and Debian 12</li>
+  <li>Can write job information in AP history file for every execution attempt</li>
+  <li>Can run defrag daemons with different policies on distinct sets of nodes</li>
+  <li>Add condor_test_token tool to generate a short lived SciToken for testing</li>
+  <li>The job’s executable is no longer renamed to ‘condor_exec.exe’</li>
 </ul>
 
         </div>

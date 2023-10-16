@@ -1005,6 +1005,61 @@
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-9-0">10.9.0</a></b>
+          <span class="px-1">-</span>
+          <span>September 28, 2023</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>The condor_upgrade_check script now provides guidance on updating to 23.0</li>
+  <li>The htchirp Python binding now properly locates the chirp configuration</li>
+  <li>Fix bug that prevented deletion of HTCondor passwords on Windows</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-8-0">10.8.0</a></b>
+          <span class="px-1">-</span>
+          <span>September 14, 2023</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Fold the classads, blahp, and procd RPMs into the main condor RPM</li>
+  <li>Align the Debian packages and package names with the RPM packaging</li>
+  <li>On Linux, the default configuration enforces memory limits with cgroups</li>
+  <li>condor_status -gpus shows nodes with GPUs and the GPU properties</li>
+  <li>condor_status -compact shows a row for each slot type</li>
+  <li>New ENV command controls which environment variables are present in DAGMan</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_x/version-history/feature-versions-10-x.html#version-10-7-1">10.7.1</a></b>
           <span class="px-1">-</span>
           <span>August  9, 2023</span>
@@ -5143,228 +5198,27 @@ issues are in the Vulnerability Reports:</p>
 
       
         <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-7">10.0.7</a></b>
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v23_0/version-history/lts-versions-23-0.html#version-23-0-0">23.0.0</a></b>
           <span class="px-1">-</span>
-          <span>July 25, 2023</span>
+          <span>September 30, 2023</span>
         </div>
       
       <div class="mt-2">
         <ul>
-  <li>Fixed bug where held condor cron jobs would never run when released</li>
-  <li>Improved daemon IDTOKENS logging to make useful messages more prominent</li>
-  <li>Remove limit on certificate chain length in SSL authentication</li>
-  <li>condor_config_val -summary now works with a remote configuration query</li>
-  <li>Prints detailed message when condor_remote_cluster fails to fetch a URL</li>
-  <li>Improvements to condor_preen</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-6">10.0.6</a></b>
-          <span class="px-1">-</span>
-          <span>June 22, 2023</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>In SSL Authentication, use the identity instead of the X.509 proxy subject</li>
-  <li>Can use environment variable to locate the client’s SSL X.509 credential</li>
-  <li>ClassAd aggregate functions now tolerate undefined values</li>
-  <li>Fix Python binding bug where accounting ads were omitted from the result</li>
-  <li>The Python bindings now properly report the HTCondor version</li>
-  <li>remote_initial_dir works when submitting a grid batch job remotely via ssh</li>
-  <li>Add a ClassAd stringlist subset match function</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-5">10.0.5</a></b>
-          <span class="px-1">-</span>
-          <span>June  9, 2023</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Rename upgrade9to10checks.py script to condor_upgrade_check</li>
-  <li>Fix spurious warning from condor_upgrade_check about regexes with spaces</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-4">10.0.4</a></b>
-          <span class="px-1">-</span>
-          <span>May 30, 2023</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Provides script to assist updating from HTCondor version 9 to version 10</li>
-  <li>Fixes a bug where rarely an output file would not be transferred back</li>
-  <li>Fixes counting of submitted jobs, so MAX_JOBS_SUBMITTED works correctly</li>
-  <li>Fixes SSL Authentication failure when PRIVATE_NETWORK_NAME was set</li>
-  <li>Fixes rare crash when SSL or SCITOKENS authentication was attempted</li>
-  <li>Can allow client to present an X.509 proxy during SSL authentication</li>
-  <li>Fixes issue where a users jobs were ignored by the HTCondor-CE on restart</li>
-  <li>Fixes issues where some events that HTCondor-CE depends on were missing</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-3">10.0.3</a></b>
-          <span class="px-1">-</span>
-          <span>April  6, 2023</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>GPU metrics continues to be reported after the startd is reconfigured</li>
-  <li>Fixed issue where GPU metrics could be wildly over-reported</li>
-  <li>Fixed issue that kept jobs from running when installed on Debian or Ubuntu</li>
-  <li>Fixed DAGMan problem when retrying a proc failure in a multi-proc node</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-2">10.0.2</a></b>
-          <span class="px-1">-</span>
-          <span>March  2, 2023</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>HTCondor can optionally create intermediate directories for output files</li>
-  <li>Improved condor_schedd scalability when a user runs more than 1,000 jobs</li>
-  <li>Fix issue where condor_ssh_to_job fails if the user is not in /etc/passwd</li>
-  <li>The Python Schedd.query() now returns the ServerTime attribute for Fifemon</li>
-  <li>VM Universe jobs pass through the host CPU model to support newer kernels</li>
-  <li>HTCondor Python wheel is now available for Python 3.11</li>
-  <li>Fix issue that prevented HTCondor installation on Ubuntu 18.04</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-1">10.0.1</a></b>
-          <span class="px-1">-</span>
-          <span>January  5, 2023</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Add Ubuntu 22.04 (Jammy Jellyfish) support</li>
-  <li>Add file transfer plugin that supports stash:// and osdf:// URLs</li>
-  <li>Fix bug where cgroup memory limits were not enforced on Debian and Ubuntu</li>
-  <li>Fix bug where forcibly removing DAG jobs could crash the condor_schedd</li>
-  <li>Fix bug where Docker repository images cannot be run under Singularity</li>
-  <li>Fix issue where blahp scripts were missing on Debian and Ubuntu platforms</li>
-  <li>Fix bug where curl file transfer plugins would fail on Enterprise Linux 8</li>
-</ul>
-
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/v10_0/version-history/lts-versions-10-0.html#version-10-0-0">10.0.0</a></b>
-          <span class="px-1">-</span>
-          <span>November 10, 2022</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
-  <li>Users can prevent runaway jobs by specifying an allowed duration</li>
-  <li>Able to extend submit commands and create job submit templates</li>
-  <li>Initial implementation of htcondor <noun> <verb> command line interface</verb></noun></li>
-  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
-  <li>Add Container Universe</li>
-  <li>Support for heterogeneous GPUs</li>
-  <li>Improved File transfer error reporting</li>
-  <li>GSI Authentication method has been removed</li>
-  <li>HTCondor now utilizes ARC-CE’s REST interface</li>
-  <li>Support for ARM and PowerPC for Enterprise Linux 8</li>
-  <li>For IDTOKENS, signing key not required on every execution point</li>
-  <li>Trust on first use ability for SSL connections</li>
-  <li>Improvements against replay attacks</li>
+  <li>Absent slot configuration, execution points will use a partitionable slot</li>
+  <li>Linux cgroups enforce maximum memory utilization by default</li>
+  <li>Can now define DAGMan save points to be able to rerun DAGs from there</li>
+  <li>Much better control over environment variables when using DAGMan</li>
+  <li>Administrators can enable and disable job submission for a specific user</li>
+  <li>Can set a minimum number of CPUs allocated to a user</li>
+  <li>condor_status -gpus shows nodes with GPUs and the GPU properties</li>
+  <li>condor_status -compact shows a row for each slot type</li>
+  <li>Container images may now be transferred via a file transfer plugin</li>
+  <li>Support for Enterprise Linux 9, Amazon Linux 2023, and Debian 12</li>
+  <li>Can write job information in AP history file for every execution attempt</li>
+  <li>Can run defrag daemons with different policies on distinct sets of nodes</li>
+  <li>Add condor_test_token tool to generate a short lived SciToken for testing</li>
+  <li>The job’s executable is no longer renamed to ‘condor_exec.exe’</li>
 </ul>
 
       </div>
@@ -5393,6 +5247,177 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+      
+      <div class="d-flex flex-row">
+        <b>10.0.9</b>
+        <span class="px-1">-</span>
+        <span>September 28, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>The condor_upgrade_check script now provides guidance on updating to 23.0</li>
+  <li>The htchirp Python binding now properly locates the chirp configuration</li>
+  <li>Fix bug that prevented deletion of HTCondor passwords on Windows</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.8</b>
+        <span class="px-1">-</span>
+        <span>September 14, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Avoid kernel panic on some Enterprise Linux 8 systems</li>
+  <li>Fix bug where early termination of service nodes could crash DAGMan</li>
+  <li>Limit email about long file transfer queue to once daily</li>
+  <li>Various fixes to condor_adstash</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.7</b>
+        <span class="px-1">-</span>
+        <span>July 25, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Fixed bug where held condor cron jobs would never run when released</li>
+  <li>Improved daemon IDTOKENS logging to make useful messages more prominent</li>
+  <li>Remove limit on certificate chain length in SSL authentication</li>
+  <li>condor_config_val -summary now works with a remote configuration query</li>
+  <li>Prints detailed message when condor_remote_cluster fails to fetch a URL</li>
+  <li>Improvements to condor_preen</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.6</b>
+        <span class="px-1">-</span>
+        <span>June 22, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>In SSL Authentication, use the identity instead of the X.509 proxy subject</li>
+  <li>Can use environment variable to locate the client’s SSL X.509 credential</li>
+  <li>ClassAd aggregate functions now tolerate undefined values</li>
+  <li>Fix Python binding bug where accounting ads were omitted from the result</li>
+  <li>The Python bindings now properly report the HTCondor version</li>
+  <li>remote_initial_dir works when submitting a grid batch job remotely via ssh</li>
+  <li>Add a ClassAd stringlist subset match function</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.5</b>
+        <span class="px-1">-</span>
+        <span>June  9, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Rename upgrade9to10checks.py script to condor_upgrade_check</li>
+  <li>Fix spurious warning from condor_upgrade_check about regexes with spaces</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.4</b>
+        <span class="px-1">-</span>
+        <span>May 30, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Provides script to assist updating from HTCondor version 9 to version 10</li>
+  <li>Fixes a bug where rarely an output file would not be transferred back</li>
+  <li>Fixes counting of submitted jobs, so MAX_JOBS_SUBMITTED works correctly</li>
+  <li>Fixes SSL Authentication failure when PRIVATE_NETWORK_NAME was set</li>
+  <li>Fixes rare crash when SSL or SCITOKENS authentication was attempted</li>
+  <li>Can allow client to present an X.509 proxy during SSL authentication</li>
+  <li>Fixes issue where a users jobs were ignored by the HTCondor-CE on restart</li>
+  <li>Fixes issues where some events that HTCondor-CE depends on were missing</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.3</b>
+        <span class="px-1">-</span>
+        <span>April  6, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>GPU metrics continues to be reported after the startd is reconfigured</li>
+  <li>Fixed issue where GPU metrics could be wildly over-reported</li>
+  <li>Fixed issue that kept jobs from running when installed on Debian or Ubuntu</li>
+  <li>Fixed DAGMan problem when retrying a proc failure in a multi-proc node</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.2</b>
+        <span class="px-1">-</span>
+        <span>March  2, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>HTCondor can optionally create intermediate directories for output files</li>
+  <li>Improved condor_schedd scalability when a user runs more than 1,000 jobs</li>
+  <li>Fix issue where condor_ssh_to_job fails if the user is not in /etc/passwd</li>
+  <li>The Python Schedd.query() now returns the ServerTime attribute for Fifemon</li>
+  <li>VM Universe jobs pass through the host CPU model to support newer kernels</li>
+  <li>HTCondor Python wheel is now available for Python 3.11</li>
+  <li>Fix issue that prevented HTCondor installation on Ubuntu 18.04</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.1</b>
+        <span class="px-1">-</span>
+        <span>January  5, 2023</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Add Ubuntu 22.04 (Jammy Jellyfish) support</li>
+  <li>Add file transfer plugin that supports stash:// and osdf:// URLs</li>
+  <li>Fix bug where cgroup memory limits were not enforced on Debian and Ubuntu</li>
+  <li>Fix bug where forcibly removing DAG jobs could crash the condor_schedd</li>
+  <li>Fix bug where Docker repository images cannot be run under Singularity</li>
+  <li>Fix issue where blahp scripts were missing on Debian and Ubuntu platforms</li>
+  <li>Fix bug where curl file transfer plugins would fail on Enterprise Linux 8</li>
+</ul>
+
+      </div>
+      
+      <div class="d-flex flex-row">
+        <b>10.0.0</b>
+        <span class="px-1">-</span>
+        <span>November 10, 2022</span>
+      </div>
+      <div class="mt-2">
+        <ul>
+  <li>Users can prevent runaway jobs by specifying an allowed duration</li>
+  <li>Able to extend submit commands and create job submit templates</li>
+  <li>Initial implementation of htcondor <noun> <verb> command line interface</verb></noun></li>
+  <li>Initial implementation of Job Sets in the htcondor CLI tool</li>
+  <li>Add Container Universe</li>
+  <li>Support for heterogeneous GPUs</li>
+  <li>Improved File transfer error reporting</li>
+  <li>GSI Authentication method has been removed</li>
+  <li>HTCondor now utilizes ARC-CE’s REST interface</li>
+  <li>Support for ARM and PowerPC for Enterprise Linux 8</li>
+  <li>For IDTOKENS, signing key not required on every execution point</li>
+  <li>Trust on first use ability for SSL connections</li>
+  <li>Improvements against replay attacks</li>
+</ul>
+
+      </div>
       
       <div class="d-flex flex-row">
         <b>9.0.19</b>
