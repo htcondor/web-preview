@@ -922,16 +922,17 @@
 
 <div class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">6.0.0</span> Latest Release</h3>
-        <p>February 20, 2023</p>
+        <h3><span class="text-secondary">23.0.0</span> Latest Release</h3>
+        <p>September 29, 2023</p>
         <div>
             
 <p>Highlights of this release are:</p>
 <ul>
-  <li>Align HTCondor-CE security configuration with HTCondor defaults</li>
-  <li>Add example configuration on how to ban users</li>
-  <li>Add condor_ce_transform_ads command</li>
-  <li>Improve essential directory checking and creation at startup</li>
+  <li>Add grid CA and host certificate/key locations to default SSL search paths</li>
+  <li>Verifies that HTCondor-CE can access the local HTCondor’s SPOOL directory</li>
+  <li>Can use condor_ce_trace without SciToken to test batch system integration</li>
+  <li>condor_ce_upgrade_check checks compatibility with HTCondor 23.0</li>
+  <li>Adds deprecation warnings for old job router configuration syntax</li>
 </ul>
 
         </div>
