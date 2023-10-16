@@ -1,0 +1,679 @@
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 02065c9..7413271 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -55,6 +55,8 @@
+ #include "directory.h"
+ #include "filename_tools.h"
+ #include "spool_version.h"
++#include "condor_holdcodes.h"
++#include "nullfile.h"
+ 
+ #if defined(WANT_CONTRIB) && defined(WITH_MANAGEMENT)
+ #if defined(HAVE_DLOPEN) || defined(WIN32)
+@@ -1025,6 +1027,21 @@ InitJobQueue(const char *job_queue_name,int max_historical_logs)
+ 
+ 			ConvertOldJobAdAttrs( ad, true );
+ 
++				// If input files are going to be spooled, rewrite
++				// the paths in the job ad to point at our spool area.
++				// If the schedd crashes between committing a new job
++				// submission and rewriting the job ad for spooling,
++				// we need to redo the rewriting here.
++			int job_status = -1;
++			int hold_code = -1;
++			ad->LookupInteger(ATTR_JOB_STATUS, job_status);
++			ad->LookupInteger(ATTR_LAST_HOLD_REASON_CODE, hold_code);
++			if ( job_status == HELD && hold_code == CONDOR_HOLD_CODE_SpoolingInput ) {
++				if ( rewriteSpooledJobAd( ad, cluster, proc, true ) ) {
++					JobQueueDirty = true;
++				}
++			}
++
+ 			// count up number of procs in cluster, update ClusterSizeHashTable
+ 			IncrementClusterSize(cluster_num);
+ 
+@@ -2781,16 +2798,6 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 		int proc_id;
+ 		ClassAd *procad;
+ 		ClassAd *clusterad;
+-		bool has_event_log = false;
+-		char *evt_log = param("EVENT_LOG");
+-		if (evt_log != NULL) {
+-			has_event_log = true;
+-			free(evt_log);
+-		}
+-			// keep usr_log in outer scope so we don't open/close the 
+-			// event log over and over.
+-		WriteUserLog usr_log;
+-		usr_log.setCreatorName( Name );
+ 
+ 		int counter = 0;
+ 		int ad_keys_size = new_ad_keys.size();
+@@ -2824,67 +2831,37 @@ CommitTransaction(SetAttributeFlags_t flags /* = 0 */)
+ 					// chain proc ads to cluster ad
+ 				procad->ChainToAd(clusterad);
+ 
+-					// Skip writing submit events for procid != 0 for parallel jobs
+-				int universe = -1;
+-				procad->LookupInteger(ATTR_JOB_UNIVERSE, universe);
+-				if ( universe == CONDOR_UNIVERSE_PARALLEL) {
+-					doFsync = true; // only writing first proc, make sure to sync
+-					if ( proc_id > 0) {
+-						continue;
+-					}
+-				}
+-	
+ 					// convert any old attributes for backwards compatbility
+ 				ConvertOldJobAdAttrs(procad, false);
+ 
+-					// write submit event to global event log
+-				std::string owner, ntdomain, simple_name, gjid, submitUserNotes, submitEventNotes, version;
+-				bool use_xml = false;
+-				SubmitEvent jobSubmit;
+-				procad->LookupString(ATTR_ULOG_FILE, simple_name);
++					// If input files are going to be spooled, rewrite
++					// the paths in the job ad to point at our spool
++					// area.
++				int job_status = -1;
++				int hold_code = -1;
++				procad->LookupInteger(ATTR_JOB_STATUS, job_status);
++				procad->LookupInteger(ATTR_HOLD_REASON_CODE, hold_code);
++				if ( job_status == HELD && hold_code == CONDOR_HOLD_CODE_SpoolingInput ) {
++					JobQueue->BeginTransaction();
++					rewriteSpooledJobAd(procad, cluster_id, proc_id, false);
++					JobQueue->CommitNondurableTransaction();
++					ScheduleJobQueueLogFlush();
++				}
+ 
++				std::string version;
+ 				if ( procad->LookupString( ATTR_VERSION, version ) ) {
+ 					CondorVersionInfo vers( version.c_str() );
+ 					// CRUFT If the submitter is older than 7.5.4, then
+ 					// they are responsible for writing the submit event
+ 					// to the user log.
+-					if ( !vers.built_since_version( 7, 5, 4 ) ) {
+-						simple_name = "";
++					if ( vers.built_since_version( 7, 5, 4 ) ) {
++						SpooledJobFiles::createJobSpoolDirectory(procad,PRIV_UNKNOWN);
++						PROC_ID job_id;
++						job_id.cluster = cluster_id;
++						job_id.proc = proc_id;
++						scheduler.WriteSubmitToUserLog( job_id, doFsync );
+ 					}
+ 				}
+-
+-				strcpy (jobSubmit.submitHost, daemonCore->privateNetworkIpAddr());
+-				if ( procad->LookupString(ATTR_SUBMIT_EVENT_NOTES, submitEventNotes) ) {
+-					jobSubmit.submitEventLogNotes = strnewp(submitEventNotes.c_str());
+-				}
+-				if ( procad->LookupString(ATTR_SUBMIT_EVENT_USER_NOTES, submitUserNotes) ) {
+-					jobSubmit.submitEventUserNotes = strnewp(submitUserNotes.c_str());
+-				}
+-
+-					// userLog is defined in the job ad
+-				if (simple_name.size() > 0) {
+-
+-					procad->LookupString(ATTR_OWNER, owner);
+-					procad->LookupString(ATTR_NT_DOMAIN, ntdomain);
+-					procad->LookupString(ATTR_GLOBAL_JOB_ID, gjid);
+-					procad->LookupBool(ATTR_ULOG_USE_XML, use_xml);
+-
+-					usr_log.setEnableUserLog(true); 
+-					usr_log.setUseXML(use_xml);     
+-					usr_log.setEnableFsync(doFsync);
+-					usr_log.initialize(owner.c_str(), ntdomain.c_str(), simple_name.c_str(),
+-									   0, 0, 0, gjid.c_str());
+-                                       
+-				} else if (has_event_log) {  // EventLog is defined but not UserLog
+-					usr_log.setEnableUserLog(false);
+-					usr_log.initialize(0,0,0,NULL);
+-				}
+-				// we only want to write if there is something to write to - either UserLog or 
+-				if (has_event_log || (simple_name.size() > 0) ) {
+-					usr_log.setGlobalCluster(cluster_id);
+-					usr_log.setGlobalProc(proc_id);
+-					usr_log.writeEvent(&jobSubmit,procad);
+-				}
+ 			}	
+ 		}	// end of loop thru clusters
+ 	}	// end of if a new cluster(s) submitted
+@@ -3764,6 +3741,178 @@ dollarDollarExpand(int cluster_id, int proc_id, ClassAd *ad, ClassAd *startd_ad,
+ }
+ 
+ 
++// Rewrite the job ad when input files will be spooled from a remote
++// submitter. Change Iwd to the job's spool directory and change other
++// file paths to be relative to the new Iwd. Save the original values
++// as SUBMIT_...
++// modify_ad is a boolean that says whether changes should be applied
++// directly to the provided job ClassAd or done via the job queue
++// interface (e.g. SetAttribute()).
++// If SUBMIT_Iwd is already set, we assume rewriting has already been
++// performed.
++// Return true if any changes were made, false otherwise.
++bool
++rewriteSpooledJobAd(ClassAd *job_ad, int cluster, int proc, bool modify_ad)
++{
++		// These three lists must be kept in sync!
++	static const int ATTR_ARRAY_SIZE = 5;
++	static const char *AttrsToModify[ATTR_ARRAY_SIZE] = {
++		ATTR_JOB_CMD,
++		ATTR_JOB_INPUT,
++		ATTR_TRANSFER_INPUT_FILES,
++		ATTR_ULOG_FILE,
++		ATTR_X509_USER_PROXY };
++	static const bool AttrIsList[ATTR_ARRAY_SIZE] = {
++		false,
++		false,
++		true,
++		false,
++		false };
++	static const char *AttrXferBool[ATTR_ARRAY_SIZE] = {
++		ATTR_TRANSFER_EXECUTABLE,
++		ATTR_TRANSFER_INPUT,
++		NULL,
++		NULL,
++		NULL };
++
++	int attrIndex;
++	char new_attr_name[500];
++	char *buf = NULL;
++	ExprTree *expr = NULL;
++	char *SpoolSpace = NULL;
++
++	snprintf(new_attr_name,500,"SUBMIT_%s",ATTR_JOB_IWD);
++	if ( job_ad->LookupExpr( new_attr_name ) ) {
++			// Job ad has already been rewritten. Nothing to do.
++		return false;
++	}
++
++	SpoolSpace = gen_ckpt_name(Spool,cluster,proc,0);
++	ASSERT(SpoolSpace);
++
++		// Backup the original IWD at submit time
++	job_ad->LookupString(ATTR_JOB_IWD,&buf);
++	if ( buf ) {
++		if ( modify_ad ) {
++			job_ad->Assign(new_attr_name,buf);
++		} else {
++			SetAttributeString(cluster,proc,new_attr_name,buf);
++		}
++		free(buf);
++		buf = NULL;
++	} else {
++		if ( modify_ad ) {
++			job_ad->AssignExpr(new_attr_name,"Undefined");
++		} else {
++			SetAttribute(cluster,proc,new_attr_name,"Undefined");
++		}
++	}
++		// Modify the IWD to point to the spool space
++	if ( modify_ad ) {
++		job_ad->Assign(ATTR_JOB_IWD,SpoolSpace);
++	} else {
++		SetAttributeString(cluster,proc,ATTR_JOB_IWD,SpoolSpace);
++	}
++
++		// Backup the original TRANSFER_OUTPUT_REMAPS at submit time
++	expr = job_ad->LookupExpr(ATTR_TRANSFER_OUTPUT_REMAPS);
++	snprintf(new_attr_name,500,"SUBMIT_%s",ATTR_TRANSFER_OUTPUT_REMAPS);
++	if ( expr ) {
++		const char *remap_buf = ExprTreeToString(expr);
++		ASSERT(remap_buf);
++		if ( modify_ad ) {
++			job_ad->AssignExpr(new_attr_name,remap_buf);
++		} else {
++			SetAttribute(cluster,proc,new_attr_name,remap_buf);
++		}
++	}
++	else if(job_ad->LookupExpr(new_attr_name)) {
++			// SUBMIT_TransferOutputRemaps is defined, but
++			// TransferOutputRemaps is not; disable the former,
++			// so that when somebody fetches the sandbox, nothing
++			// gets remapped.
++		if ( modify_ad ) {
++			job_ad->AssignExpr(new_attr_name,"Undefined");
++		} else {
++			SetAttribute(cluster,proc,new_attr_name,"Undefined");
++		}
++	}
++		// Set TRANSFER_OUTPUT_REMAPS to Undefined so that we don't
++		// do remaps when the job's output files come back into the
++		// spool space. We only want to remap when the submitter
++		// retrieves the files.
++	if ( modify_ad ) {
++		job_ad->AssignExpr(ATTR_TRANSFER_OUTPUT_REMAPS,"Undefined");
++	} else {
++		SetAttribute(cluster,proc,ATTR_TRANSFER_OUTPUT_REMAPS,"Undefined");
++	}
++
++		// Now, for all the attributes listed in 
++		// AttrsToModify, change them to be relative to new IWD
++		// by taking the basename of all file paths.
++	for ( attrIndex = 0; attrIndex < ATTR_ARRAY_SIZE; attrIndex++ ) {
++			// Lookup original value
++		bool xfer_it;
++		if (buf) free(buf);
++		buf = NULL;
++		job_ad->LookupString(AttrsToModify[attrIndex],&buf);
++		if (!buf) {
++			// attribute not found, so no need to modify it
++			continue;
++		}
++		if ( nullFile(buf) ) {
++			// null file -- no need to modify it
++			continue;
++		}
++		if ( AttrXferBool[attrIndex] &&
++			 job_ad->LookupBool( AttrXferBool[attrIndex], xfer_it ) && !xfer_it ) {
++				// ad says not to transfer this file, so no need
++				// to modify it
++			continue;
++		}
++			// Create new value - deal with the fact that
++			// some of these attributes contain a list of pathnames
++		StringList old_paths(NULL,",");
++		StringList new_paths(NULL,",");
++		if ( AttrIsList[attrIndex] ) {
++			old_paths.initializeFromString(buf);
++		} else {
++			old_paths.insert(buf);
++		}
++		old_paths.rewind();
++		char *old_path_buf;
++		bool changed = false;
++		const char *base = NULL;
++		while ( (old_path_buf=old_paths.next()) ) {
++			base = condor_basename(old_path_buf);
++			if ( strcmp(base,old_path_buf)!=0 ) {
++				changed = true;
++			}
++			new_paths.append(base);
++		}
++		if ( changed ) {
++				// Backup original value
++			snprintf(new_attr_name,500,"SUBMIT_%s",AttrsToModify[attrIndex]);
++			if ( modify_ad ) {
++				job_ad->Assign(new_attr_name,buf);
++			} else {
++				SetAttributeString(cluster,proc,new_attr_name,buf);
++			}
++				// Store new value
++			char *new_value = new_paths.print_to_string();
++			ASSERT(new_value);
++			if ( modify_ad ) {
++				job_ad->Assign(AttrsToModify[attrIndex],new_value);
++			} else {
++				SetAttributeString(cluster,proc,AttrsToModify[attrIndex],new_value);
++			}
++			free(new_value);
++		}
++	}
++	return true;
++}
++
++
+ ClassAd *
+ GetJobAd(int cluster_id, int proc_id, bool expStartdAd, bool persist_expansions)
+ {
+diff --git a/src/condor_schedd.V6/qmgmt.h b/src/condor_schedd.V6/qmgmt.h
+index db11368..f7c11ff 100644
+--- a/src/condor_schedd.V6/qmgmt.h
++++ b/src/condor_schedd.V6/qmgmt.h
+@@ -102,6 +102,7 @@ bool OwnerCheck2( ClassAd *ad, const char *test_owner, char const *job_owner=NUL
+ bool BuildPrioRecArray(bool no_match_found=false);
+ void DirtyPrioRecArray();
+ extern ClassAd *dollarDollarExpand(int cid, int pid, ClassAd *job, ClassAd *res, bool persist_expansions);
++bool rewriteSpooledJobAd(ClassAd *job_ad, int cluster, int proc, bool modify_ad);
+ ClassAd* GetJobAd(int cluster_id, int proc_id, bool expStartdAd, bool persist_expansions);
+ ClassAd* GetNextJobByCluster( int, int );
+ 
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 978993f..0e977f9 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -1915,13 +1915,13 @@ ResponsibleForPeriodicExprs( ClassAd *jobad )
+ 		// temporary for 7.2 only: avoid evaluating periodic
+ 		// expressions when the job is on hold for spooling
+ 	if( status == HELD ) {
+-		MyString hold_reason;
+-		jobad->LookupString(ATTR_HOLD_REASON,hold_reason);
+-		if( hold_reason == "Spooling input data files" ) {
++		int hold_reason_code = -1;
++		jobad->LookupInteger(ATTR_HOLD_REASON_CODE,hold_reason_code);
++		if( hold_reason_code == CONDOR_HOLD_CODE_SpoolingInput ) {
+ 			int cluster = -1, proc = -1;
+ 			jobad->LookupInteger(ATTR_CLUSTER_ID, cluster);
+ 			jobad->LookupInteger(ATTR_PROC_ID, proc);
+-			dprintf(D_FULLDEBUG,"Skipping periodic expressions for job %d.%d, because hold reason is '%s'\n",cluster,proc,hold_reason.Value());
++			dprintf(D_FULLDEBUG,"Skipping periodic expressions for job %d.%d, because hold reason code is '%d'\n",cluster,proc,hold_reason_code);
+ 			return 0;
+ 		}
+ 	}
+@@ -2528,6 +2528,50 @@ Scheduler::InitializeUserLog( PROC_ID job_id )
+ 
+ 
+ bool
++Scheduler::WriteSubmitToUserLog( PROC_ID job_id, bool do_fsync )
++{
++	std::string submitUserNotes, submitEventNotes;
++
++		// Skip writing submit events for procid != 0 for parallel jobs
++	int universe = -1;
++	GetAttributeInt( job_id.cluster, job_id.proc, ATTR_JOB_UNIVERSE, &universe );
++	if ( universe == CONDOR_UNIVERSE_PARALLEL ) {
++		if ( job_id.proc > 0) {
++			return true;;
++		}
++	}
++
++	WriteUserLog* ULog = this->InitializeUserLog( job_id );
++	if( ! ULog ) {
++			// User didn't want log
++		return true;
++	}
++	SubmitEvent event;
++	ClassAd *job_ad = GetJobAd(job_id.cluster,job_id.proc);
++
++	strcpy (event.submitHost, daemonCore->privateNetworkIpAddr());
++	if ( job_ad->LookupString(ATTR_SUBMIT_EVENT_NOTES, submitEventNotes) ) {
++		event.submitEventLogNotes = strnewp(submitEventNotes.c_str());
++	}
++	if ( job_ad->LookupString(ATTR_SUBMIT_EVENT_USER_NOTES, submitUserNotes) ) {
++		event.submitEventUserNotes = strnewp(submitUserNotes.c_str());
++	}
++
++	ULog->setEnableFsync(do_fsync);
++	bool status = ULog->writeEvent(&event, job_ad);
++	delete ULog;
++
++	if (!status) {
++		dprintf( D_ALWAYS,
++				 "Unable to log ULOG_SUBMIT event for job %d.%d\n",
++				 job_id.cluster, job_id.proc );
++		return false;
++	}
++	return true;
++}
++
++
++bool
+ Scheduler::WriteAbortToUserLog( PROC_ID job_id )
+ {
+ 	WriteUserLog* ULog = this->InitializeUserLog( job_id );
+@@ -2923,26 +2967,6 @@ int
+ Scheduler::spoolJobFilesReaper(int tid,int exit_status)
+ {
+ 	ExtArray<PROC_ID> *jobs;
+-		// These three lists must be kept in sync!
+-	static const int ATTR_ARRAY_SIZE = 5;
+-	static const char *AttrsToModify[ATTR_ARRAY_SIZE] = { 
+-		ATTR_JOB_CMD,
+-		ATTR_JOB_INPUT,
+-		ATTR_TRANSFER_INPUT_FILES,
+-		ATTR_ULOG_FILE,
+-		ATTR_X509_USER_PROXY };
+-	static const bool AttrIsList[ATTR_ARRAY_SIZE] = {
+-		false,
+-		false,
+-		true,
+-		false,
+-		false };
+-	static const char *AttrXferBool[ATTR_ARRAY_SIZE] = {
+-		ATTR_TRANSFER_EXECUTABLE,
+-		ATTR_TRANSFER_INPUT,
+-		NULL,
+-		NULL,
+-		NULL };
+ 
+ 	dprintf(D_FULLDEBUG,"spoolJobFilesReaper tid=%d status=%d\n",
+ 			tid,exit_status);
+@@ -2965,124 +2989,19 @@ Scheduler::spoolJobFilesReaper(int tid,int exit_status)
+ 	}
+ 
+ 
+-	int jobIndex,cluster,proc,attrIndex;
+-	char new_attr_value[500];
+-	char *buf = NULL;
+-	ExprTree *expr = NULL;
+-	char *SpoolSpace = NULL;
+-		// figure out how many jobs we're dealing with
++	int jobIndex,cluster,proc;
+ 	int len = (*jobs).getlast() + 1;
+ 
+-
+ 		// For each job, modify its ClassAd
+ 	for (jobIndex = 0; jobIndex < len; jobIndex++) {
+ 		cluster = (*jobs)[jobIndex].cluster;
+ 		proc = (*jobs)[jobIndex].proc;
+ 
+-		ClassAd *job_ad = GetJobAd(cluster,proc);
+-		if (!job_ad) {
+-			// didn't find this job ad, must've been removed?
+-			// just go to the next one
+-			continue;
+-		}
+-		if ( SpoolSpace ) free(SpoolSpace);
+-		SpoolSpace = gen_ckpt_name(Spool,cluster,proc,0);
+-		ASSERT(SpoolSpace);
+-
+ 		BeginTransaction();
+ 
+-			// Backup the original IWD at submit time
+-		if (buf) free(buf);
+-		buf = NULL;
+-		job_ad->LookupString(ATTR_JOB_IWD,&buf);
+-		if ( buf ) {
+-			snprintf(new_attr_value,500,"SUBMIT_%s",ATTR_JOB_IWD);
+-			SetAttributeString(cluster,proc,new_attr_value,buf);
+-			free(buf);
+-			buf = NULL;
+-		}
+-			// Modify the IWD to point to the spool space			
+-		SetAttributeString(cluster,proc,ATTR_JOB_IWD,SpoolSpace);
+-
+-			// Backup the original TRANSFER_OUTPUT_REMAPS at submit time
+-		expr = job_ad->LookupExpr(ATTR_TRANSFER_OUTPUT_REMAPS);
+-		snprintf(new_attr_value,500,"SUBMIT_%s",ATTR_TRANSFER_OUTPUT_REMAPS);
+-		if ( expr ) {
+-			const char *remap_buf = ExprTreeToString(expr);
+-			ASSERT(remap_buf);
+-			SetAttribute(cluster,proc,new_attr_value,remap_buf);
+-		}
+-		else if(job_ad->LookupExpr(new_attr_value)) {
+-				// SUBMIT_TransferOutputRemaps is defined, but
+-				// TransferOutputRemaps is not; disable the former,
+-				// so that when somebody fetches the sandbox, nothing
+-				// gets remapped.
+-			SetAttribute(cluster,proc,new_attr_value,"Undefined");
+-		}
+-			// Set TRANSFER_OUTPUT_REMAPS to Undefined so that we don't
+-			// do remaps when the job's output files come back into the
+-			// spool space. We only want to remap when the submitter
+-			// retrieves the files.
+-		SetAttribute(cluster,proc,ATTR_TRANSFER_OUTPUT_REMAPS,"Undefined");
+-
+-			// Now, for all the attributes listed in 
+-			// AttrsToModify, change them to be relative to new IWD
+-			// by taking the basename of all file paths.
+-		for ( attrIndex = 0; attrIndex < ATTR_ARRAY_SIZE; attrIndex++ ) {
+-				// Lookup original value
+-			bool xfer_it;
+-			if (buf) free(buf);
+-			buf = NULL;
+-			job_ad->LookupString(AttrsToModify[attrIndex],&buf);
+-			if (!buf) {
+-				// attribute not found, so no need to modify it
+-				continue;
+-			}
+-			if ( nullFile(buf) ) {
+-				// null file -- no need to modify it
+-				continue;
+-			}
+-			if ( AttrXferBool[attrIndex] &&
+-				 job_ad->LookupBool( AttrXferBool[attrIndex], xfer_it ) && !xfer_it ) {
+-					// ad says not to transfer this file, so no need
+-					// to modify it
+-				continue;
+-			}
+-				// Create new value - deal with the fact that
+-				// some of these attributes contain a list of pathnames
+-			StringList old_paths(NULL,",");
+-			StringList new_paths(NULL,",");
+-			if ( AttrIsList[attrIndex] ) {
+-				old_paths.initializeFromString(buf);
+-			} else {
+-				old_paths.insert(buf);
+-			}
+-			old_paths.rewind();
+-			char *old_path_buf;
+-			bool changed = false;
+-			const char *base = NULL;
+-			while ( (old_path_buf=old_paths.next()) ) {
+-				base = condor_basename(old_path_buf);
+-				if ( strcmp(base,old_path_buf)!=0 ) {
+-					changed = true;
+-				}
+-				new_paths.append(base);
+-			}
+-			if ( changed ) {
+-					// Backup original value
+-				snprintf(new_attr_value,500,"SUBMIT_%s",AttrsToModify[attrIndex]);
+-				SetAttributeString(cluster,proc,new_attr_value,buf);
+-					// Store new value
+-				char *new_value = new_paths.print_to_string();
+-				ASSERT(new_value);
+-				SetAttributeString(cluster,proc,AttrsToModify[attrIndex],new_value);
+-				free(new_value);
+-			}
+-		}
+-
+ 			// Set ATTR_STAGE_IN_FINISH if not already set.
+ 		int spool_completion_time = 0;
+-		job_ad->LookupInteger(ATTR_STAGE_IN_FINISH,spool_completion_time);
++		GetAttributeInt(cluster,proc,ATTR_STAGE_IN_FINISH,&spool_completion_time);
+ 		if ( !spool_completion_time ) {
+ 			// The transfer thread specifically slept for 1 second
+ 			// to ensure that the job can't possibly start (and finish)
+@@ -3103,8 +3022,6 @@ Scheduler::spoolJobFilesReaper(int tid,int exit_status)
+ 
+ 	spoolJobFileWorkers->remove(tid);
+ 	delete jobs;
+-	if (SpoolSpace) free(SpoolSpace);
+-	if (buf) free(buf);
+ 	return TRUE;
+ }
+ 
+@@ -3943,8 +3860,11 @@ Scheduler::actOnJobs(int, Stream* s)
+ 			snprintf( buf, 256, "(%s!=%d) && (", ATTR_JOB_STATUS, HELD );
+ 			break;
+ 		case JA_RELEASE_JOBS:
+-				// Only release held jobs
+-			snprintf( buf, 256, "(%s==%d) && (", ATTR_JOB_STATUS, HELD );
++				// Only release held jobs which aren't waiting for
++				// input files to be spooled
++			snprintf( buf, 256, "(%s==%d && %s=!=%d) && (", ATTR_JOB_STATUS,
++					  HELD, ATTR_HOLD_REASON_CODE,
++					  CONDOR_HOLD_CODE_SpoolingInput );
+ 			break;
+ 		case JA_VACATE_JOBS:
+ 		case JA_VACATE_FAST_JOBS:
+@@ -4123,6 +4043,7 @@ Scheduler::actOnJobs(int, Stream* s)
+ 				// the command we're trying to perform
+ 			int status;
+ 			int on_release_status = IDLE;
++			int hold_reason_code = -1;
+ 			if( GetAttributeInt(tmp_id.cluster, tmp_id.proc, 
+ 								ATTR_JOB_STATUS, &status) < 0 ) {
+ 				results.record( tmp_id, AR_NOT_FOUND );
+@@ -4137,7 +4058,9 @@ Scheduler::actOnJobs(int, Stream* s)
+ 				}
+ 				break;
+ 			case JA_RELEASE_JOBS:
+-				if( status != HELD ) {
++				GetAttributeInt(tmp_id.cluster, tmp_id.proc,
++								ATTR_HOLD_REASON_CODE, &hold_reason_code);
++				if( status != HELD || hold_reason_code == CONDOR_HOLD_CODE_SpoolingInput ) {
+ 					results.record( tmp_id, AR_BAD_STATUS );
+ 					continue;
+ 				}
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index 143466d..8d4a879 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -353,6 +353,7 @@ class Scheduler : public Service
+ 						TransferDaemon *&td_ref ); 
+ 	bool			startTransferd( int cluster, int proc ); 
+ 	WriteUserLog*	InitializeUserLog( PROC_ID job_id );
++	bool			WriteSubmitToUserLog( PROC_ID job_id, bool do_fsync );
+ 	bool			WriteAbortToUserLog( PROC_ID job_id );
+ 	bool			WriteHoldToUserLog( PROC_ID job_id );
+ 	bool			WriteReleaseToUserLog( PROC_ID job_id );
+diff --git a/src/condor_utils/file_transfer.cpp b/src/condor_utils/file_transfer.cpp
+index f20ffeb..7aa2552 100644
+--- a/src/condor_utils/file_transfer.cpp
++++ b/src/condor_utils/file_transfer.cpp
+@@ -124,6 +124,7 @@ FileTransfer::FileTransfer()
+ 	PeerDoesTransferAck = false;
+ 	PeerDoesGoAhead = false;
+ 	PeerUnderstandsMkdir = false;
++	TransferUserLog = false;
+ 	Iwd = NULL;
+ 	ExceptionFiles = NULL;
+ 	InputFiles = NULL;
+@@ -320,11 +321,10 @@ FileTransfer::SimpleInit(ClassAd *Ad, bool want_check_perms, bool is_server,
+ 	}
+ 	if ( Ad->LookupString(ATTR_ULOG_FILE, buf) == 1 ) {
+ 		UserLogFile = strdup(condor_basename(buf));
+-			// add to input files if sending from submit to the schedd
+-		if ( (simple_init) && (!nullFile(buf)) ) {			
+-			if ( !InputFiles->file_contains(buf) )
+-				InputFiles->append(buf);			
+-		}
++		// For 7.5.6 and earlier, we want to transfer the user log as
++		// an input file if we're in condor_submit. Otherwise, we don't.
++		// At this point, we don't know what version our peer is,
++		// so we have to delay this decision until UploadFiles().
+ 	}
+ 	if ( Ad->LookupString(ATTR_X509_USER_PROXY, buf) == 1 ) {
+ 		X509UserProxy = strdup(buf);
+@@ -1148,6 +1148,13 @@ FileTransfer::UploadFiles(bool blocking, bool final_transfer)
+ 		EXCEPT("FileTransfer: UploadFiles called on server side");
+ 	}
+ 
++	// If we're a client talking to a 7.5.6 or older schedd, we want
++	// to send the user log as an input file.
++	if ( TransferUserLog && simple_init && !nullFile( UserLogFile ) ) {
++		if ( !InputFiles->file_contains( UserLogFile ) )
++			InputFiles->append( UserLogFile );
++	}
++
+ 	// set flag saying if this is the last upload (i.e. job exited)
+ 	m_final_transfer_flag = final_transfer ? 1 : 0;
+ 
+@@ -3495,6 +3502,12 @@ FileTransfer::setPeerVersion( const CondorVersionInfo &peer_version )
+ 	else {
+ 		PeerUnderstandsMkdir = false;
+ 	}
++
++	if ( peer_version.built_since_version(7,6,0) ) {
++		TransferUserLog = false;
++	} else {
++		TransferUserLog = true;
++	}
+ }
+ 
+ 
+diff --git a/src/condor_utils/file_transfer.h b/src/condor_utils/file_transfer.h
+index a5d4c39..d599f6c 100644
+--- a/src/condor_utils/file_transfer.h
++++ b/src/condor_utils/file_transfer.h
+@@ -276,6 +276,7 @@ class FileTransfer {
+ 	bool PeerDoesTransferAck;
+ 	bool PeerDoesGoAhead;
+ 	bool PeerUnderstandsMkdir;
++	bool TransferUserLog;
+ 	char* Iwd;
+ 	StringList* ExceptionFiles;
+ 	StringList* OutputFiles;

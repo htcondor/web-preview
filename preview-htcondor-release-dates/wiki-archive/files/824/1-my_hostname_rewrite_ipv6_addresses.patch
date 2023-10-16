@@ -1,0 +1,41 @@
+--- condor-8.1.1/src/condor_utils/my_hostname.cpp.ORIG	2013-12-20 14:03:01.000000000 +0100
++++ condor-8.1.1/src/condor_utils/my_hostname.cpp	2013-12-20 14:03:01.000000000 +0100
+@@ -454,17 +454,34 @@
+ 	}
+ 	if(ref) {
+             // Replace the default IP address with the one I am actually using.
++		bool add_brackets = false;
++		if (sock_addr.is_ipv6()) {
++			bool is_sinful = false;
++			if (ref > old_expr_string && (*(ref-1) == '<')) is_sinful=true; 
++			if (is_sinful) add_brackets = true;
++		}
+ 
+ 		int pos = ref-old_expr_string; // position of the reference
+ 		int my_default_ip_len = strlen(my_default_ip);
+ 		int my_sock_ip_len = strlen(my_sock_ip);
+ 
+-		*new_expr_string = (char *)malloc(strlen(old_expr_string) + my_sock_ip_len - my_default_ip_len + 1);
++		*new_expr_string = (char *)malloc(strlen(old_expr_string) + my_sock_ip_len - my_default_ip_len + 3);
+ 		ASSERT(*new_expr_string);
+ 
+-		strncpy(*new_expr_string, old_expr_string,pos);
+-		strcpy(*new_expr_string+pos, my_sock_ip);
+-		strcpy(*new_expr_string+pos+my_sock_ip_len, old_expr_string+pos+my_default_ip_len);
++		char *addptr = *new_expr_string;
++		strncpy(addptr, old_expr_string,pos);
++		addptr += pos;
++		if (add_brackets) {
++			*addptr = '[';
++			++addptr;
++		}
++		strcpy(addptr, my_sock_ip);
++		addptr += my_sock_ip_len;
++		if (add_brackets) {
++			*addptr = ']';
++			++addptr;
++		}
++		strcpy(addptr, old_expr_string+pos+my_default_ip_len);
+ 
+ 		dprintf(D_NETWORK,"Replaced default IP %s with connection IP %s "
+ 				"in outgoing ClassAd attribute %s.\n",
