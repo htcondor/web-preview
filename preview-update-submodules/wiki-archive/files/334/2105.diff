@@ -1,0 +1,70 @@
+diff --git a/src/condor_shadow.V6.1/NTreceivers.cpp b/src/condor_shadow.V6.1/NTreceivers.cpp
+index d3ed7f9..7049f81 100644
+--- a/src/condor_shadow.V6.1/NTreceivers.cpp
++++ b/src/condor_shadow.V6.1/NTreceivers.cpp
+@@ -181,14 +181,25 @@ do_REMOTE_syscall()
+ 		err_msg += ':';
+ 		err_msg += syscall_sock->peer_port();
+ 		err_msg += '>';
++
++            // the socket is closed, there's no way to recover
++            // from this.  so, we have to cancel the socket
++            // handler in daemoncore and delete the relisock.
++		thisRemoteResource->closeClaimSock();
++
++            /* It is possible that we are failing to read the
++            syscall number because the starter went away
++            because we *asked* it to go away. Don't be shocked
++            and surprised if the startd/starter actually did
++            what we asked when we deactivated the claim */
++       if ( thisRemoteResource->wasClaimDeactivated() ) {
++           return 0;
++       }
++
+ 		if( Shadow->supportsReconnect() ) {
+ 				// instead of having to EXCEPT, we can now try to
+ 				// reconnect.  happy day! :)
+ 			dprintf( D_ALWAYS, "%s\n", err_msg.Value() );
+-				// the socket is closed, there's no way to recover
+-				// from this.  so, we have to cancel the socket
+-				// handler in daemoncore and delete the relisock.
+-			thisRemoteResource->closeClaimSock();
+ 
+ 			const char* txt = "Socket between submit and execute hosts "
+ 				"closed unexpectedly";
+diff --git a/src/condor_shadow.V6.1/baseshadow.cpp b/src/condor_shadow.V6.1/baseshadow.cpp
+index 93e720d..93b22f3 100644
+--- a/src/condor_shadow.V6.1/baseshadow.cpp
++++ b/src/condor_shadow.V6.1/baseshadow.cpp
+@@ -651,6 +651,13 @@ BaseShadow::terminateJob( update_style_t kind ) // has a default argument of US_
+ 	// update the job ad in the queue with some important final
+ 	// attributes so we know what happened to the job when using
+ 	// condor_history...
++    if (m_num_cleanup_retries < 1 &&
++        param_boolean("SHADOW_TEST_JOB_CLEANUP_RETRY", false)) {
++		dprintf( D_ALWAYS,
++				 "Testing Failure to perform final update to job queue!\n");
++		retryJobCleanup();
++		return;
++    }
+ 	if( !updateJobInQueue(U_TERMINATE) ) {
+ 		dprintf( D_ALWAYS, 
+ 				 "Failed to perform final update to job queue!\n");
+diff --git a/src/condor_shadow.V6.1/remoteresource.h b/src/condor_shadow.V6.1/remoteresource.h
+index a4871df..f22647e 100644
+--- a/src/condor_shadow.V6.1/remoteresource.h
++++ b/src/condor_shadow.V6.1/remoteresource.h
+@@ -336,6 +336,13 @@ class RemoteResource : public Service {
+ 		/// Did the job on this resource exit with a signal?
+ 	bool exitedBySignal( void ) { return exited_by_signal; };
+ 
++        /** Return true if we already asked the startd to deactivate
++            the claim (aka kill the starter), false if not.
++            @return true if claim deactivated, false if not
++         */
++    bool wasClaimDeactivated( void ) {
++       return already_killed_graceful || already_killed_fast; };
++
+ 		/** If the job on this resource exited with a signal, return
+ 			the signal.  If not, return -1. */
+ 	int exitSignal( void );
