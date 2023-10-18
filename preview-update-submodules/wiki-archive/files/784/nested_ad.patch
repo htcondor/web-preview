@@ -1,0 +1,196 @@
+diff --git a/src/classad/classad/sink.h b/src/classad/classad/sink.h
+index 25a73f8..3d97da9 100644
+--- a/src/classad/classad/sink.h
++++ b/src/classad/classad/sink.h
+@@ -61,7 +61,18 @@ class ClassAdUnParser
+ 		void Unparse( std::string &buffer, const ExprTree *expr );
+ 
+ 			//	for backcompatibility only - NAC
+-		void SetOldClassAd( bool );
++			// In old ClassAd syntax, nested ads should be delimited in
++			// the new syntax (ad enclosed by square brackets and
++			// attributes separated by semicolons), but the outer-most ad
++			// is delimited in the old syntax (no brackets and newlines
++			// instead of semicolons).
++			// If you want to unparse an attribute value (and not a
++			// standalone ad) in the old style, use the second form of
++			// SetOldClassAd() and pass true for attr_value. That will
++			// cause the outermost ClassAd to be delimited in the new
++			// syntax (as well as any nested ads).
++		void SetOldClassAd( bool old_syntax );
++		void SetOldClassAd( bool old_syntax, bool attr_value );
+ 		bool GetOldClassAd();
+ 
+ 		virtual void UnparseAux( std::string &buffer,
+@@ -87,6 +98,7 @@ class ClassAdUnParser
+ 		bool oldClassAd;
+ 		bool xmlUnparse;
+ 		char delimiter; // string delimiter - initialized to '\"' in the constructor
++		bool oldClassAdValue;
+ };
+ 
+ 
+diff --git a/src/classad/sink.cpp b/src/classad/sink.cpp
+index 2f5b96f..54d9496 100644
+--- a/src/classad/sink.cpp
++++ b/src/classad/sink.cpp
+@@ -38,6 +38,7 @@ ClassAdUnParser()
+ 	oldClassAd = false;
+ 	xmlUnparse = false;
+ 	delimiter = '\"';
++	oldClassAdValue = false;
+ 	return;
+ }
+ 
+@@ -448,25 +449,28 @@ UnparseAux( string &buffer, vector< pair<string,ExprTree*> >& attrs )
+ 	vector< pair<string,ExprTree*> >::const_iterator itr;
+ 
+ 	string delim;		// NAC
+-	if( oldClassAd ) {	// NAC
++	if( oldClassAd && !oldClassAdValue ) {	// NAC
+ 		delim = "\n";	// NAC
+ 	}					// NAC
+ 	else {				// NAC
+ 		delim = "; ";	// NAC
+ 	}					// NAC
+ 
+-	if( !oldClassAd ) {	// NAC
++	if( !oldClassAd || oldClassAdValue ) {	// NAC
+ 		buffer += "[ ";
+ 	}					// NAC
+ 	for( itr=attrs.begin( ); itr!=attrs.end( ); itr++ ) {
+ 	  UnparseAux( buffer, itr->first ); 
+ 	  buffer += " = ";
++		bool save = oldClassAdValue;
++		oldClassAdValue = true;
+ 		Unparse( buffer, itr->second );
++		oldClassAdValue = save;
+ //		if( itr+1 != attrs.end( ) ) buffer += "; ";
+ 		if( itr+1 != attrs.end( ) ) buffer += delim;	// NAC
+ 
+ 	}
+-	if( !oldClassAd ) {	// NAC
++	if( !oldClassAd || oldClassAdValue ) {	// NAC
+ 		buffer += " ]";
+ 	}					// NAC
+ 	else {				// NAC
+@@ -514,9 +518,16 @@ UnparseAux( string &buffer, string identifier )
+ 
+ // back compatibility only - NAC
+ void ClassAdUnParser::
+-SetOldClassAd( bool b )
++SetOldClassAd( bool old_syntax )
+ {
+-	oldClassAd = b;
++	oldClassAd = old_syntax;
++}
++
++void ClassAdUnParser::
++SetOldClassAd( bool old_syntax, bool attr_value )
++{
++	oldClassAd = old_syntax;
++	oldClassAdValue = attr_value;
+ }
+ 
+ bool ClassAdUnParser::
+diff --git a/src/condor_utils/ad_printmask.cpp b/src/condor_utils/ad_printmask.cpp
+index 6b7ac8e..be17917 100644
+--- a/src/condor_utils/ad_printmask.cpp
++++ b/src/condor_utils/ad_printmask.cpp
+@@ -278,7 +278,7 @@ calc_widths(AttrList * al, AttrList *target /*=NULL*/ )
+ 					std::string buff;
+ 					if ( fQuote || !result.IsStringValue( buff ) ) {
+ 						classad::ClassAdUnParser unparser;
+-						unparser.SetOldClassAd( true );
++						unparser.SetOldClassAd( true, true );
+ 						unparser.Unparse( buff, val );
+ 					}
+ 					colval = buff.c_str();
+@@ -615,7 +615,7 @@ display (AttrList *al, AttrList *target /* = NULL */)
+ 							bool fQuote = (fmt_info.fmt_letter == 'V');
+ 							if ( fQuote || !result.IsStringValue(buff) ) {
+ 								classad::ClassAdUnParser unparser;
+-								unparser.SetOldClassAd( true );
++								unparser.SetOldClassAd( true, true );
+ 								unparser.Unparse( buff, result );
+ 							}
+ 							pszValue = buff.c_str();
+@@ -658,7 +658,7 @@ display (AttrList *al, AttrList *target /* = NULL */)
+ 							// %v vs %V
+ 							if ( fQuote || !val.IsStringValue( buff ) ) {
+ 								classad::ClassAdUnParser unparser;
+-								unparser.SetOldClassAd( true );
++								unparser.SetOldClassAd( true, true );
+ 								unparser.Unparse( buff, val );
+ 								stringValue.sprintf( tfmt, buff.c_str() );
+ 							}
+diff --git a/src/condor_utils/classad_oldnew.cpp b/src/condor_utils/classad_oldnew.cpp
+index 7e0f7c8..e851a81 100644
+--- a/src/condor_utils/classad_oldnew.cpp
++++ b/src/condor_utils/classad_oldnew.cpp
+@@ -222,7 +222,7 @@ bool _putClassAd( Stream *sock, classad::ClassAd& ad, bool excludeTypes,
+ 	std::string					buf;
+     bool send_server_time = false;
+ 
+-	unp.SetOldClassAd( true );
++	unp.SetOldClassAd( true, true );
+ 
+ 	int numExprs=0;
+ 
+diff --git a/src/condor_utils/compat_classad.cpp b/src/condor_utils/compat_classad.cpp
+index 1ffe4f7..8633e02 100644
+--- a/src/condor_utils/compat_classad.cpp
++++ b/src/condor_utils/compat_classad.cpp
+@@ -1623,7 +1623,7 @@ sPrintAd( MyString &output, classad::ClassAd &ad, bool exclude_private, StringLi
+ 	classad::ClassAd::iterator itr;
+ 
+ 	classad::ClassAdUnParser unp;
+-	unp.SetOldClassAd( true );
++	unp.SetOldClassAd( true, true );
+ 	string value;
+ 
+ 	classad::ClassAd *parent = ad.GetChainedParentAd();
+@@ -1682,7 +1682,7 @@ sPrintExpr(const classad::ClassAd &ad, const char* name)
+     string parsedString;
+ 	classad::ExprTree* expr;
+ 
+-	unp.SetOldClassAd( true );
++	unp.SetOldClassAd( true, true );
+ 
+     expr = ad.Lookup(name);
+ 
+@@ -2252,7 +2252,7 @@ ClassAd::EscapeStringValue(char const *val, MyString &buf)
+     string stringToAppeaseUnparse;
+     classad::ClassAdUnParser unparse;
+ 
+-	unparse.SetOldClassAd( true );
++	unparse.SetOldClassAd( true, true );
+ 
+     tmpValue.SetStringValue(val);
+     unparse.Unparse(stringToAppeaseUnparse, tmpValue);
+diff --git a/src/condor_utils/compat_classad_util.cpp b/src/condor_utils/compat_classad_util.cpp
+index d6d8baa..a00ec5a 100644
+--- a/src/condor_utils/compat_classad_util.cpp
++++ b/src/condor_utils/compat_classad_util.cpp
+@@ -84,7 +84,7 @@ const char *ExprTreeToString( classad::ExprTree *expr )
+ 	classad::ClassAdUnParser unparser;
+ 
+ 	buffer = "";
+-	unparser.SetOldClassAd( true );
++	unparser.SetOldClassAd( true, true );
+ 	unparser.Unparse( buffer, expr );
+ 
+ 	return buffer.c_str();
+diff --git a/src/condor_utils/condor_event.cpp b/src/condor_utils/condor_event.cpp
+index 507fa24..ad5d030 100644
+--- a/src/condor_utils/condor_event.cpp
++++ b/src/condor_utils/condor_event.cpp
+@@ -543,7 +543,7 @@ static void writeUsageAd(FILE * file, ClassAd * pusageAd)
+ 		return;
+ 
+ 	classad::ClassAdUnParser unp;
+-	unp.SetOldClassAd( true );
++	unp.SetOldClassAd( true, true );
+ 
+ 	std::map<std::string, SlotResTermSumy*> useMap;
+ 
