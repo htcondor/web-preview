@@ -1,0 +1,45 @@
+From fa170e24957f81e51c91aca33c0f7f923a30aa9a Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Thu, 13 Apr 2017 13:01:08 +0100
+Subject: [PATCH 1/3] condor_ft-gahp: fix build without openssl
+
+The md5 is apparently used to add a hierachy to the directory structure so
+can be omitted in this case.
+---
+ src/condor_ft-gahp/io_loop.cpp | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/condor_ft-gahp/io_loop.cpp b/src/condor_ft-gahp/io_loop.cpp
+index 4aea97a2af..474d4e4b6a 100644
+--- a/src/condor_ft-gahp/io_loop.cpp
++++ b/src/condor_ft-gahp/io_loop.cpp
+@@ -28,7 +28,9 @@
+ #include "globus_utils.h"
+ #include "subsystem_info.h"
+ #include "file_transfer.h"
+-#include "openssl/md5.h"
++#ifdef HAVE_EXT_OPENSSL
++#include <openssl/md5.h>
++#endif
+ #include "directory.h"
+ #include "_unordered_map.h"
+ #include "basename.h"
+@@ -952,6 +954,7 @@ define_sandbox_path(std::string sid, std::string &path)
+ 	free(t_path);
+ 
+ 
++#ifdef HAVE_EXT_OPENSSL
+ 	// hash the id into ascii.  MD5 is fine here, because we use the actual
+ 	// sandbox id as part of the path, thus making it immune to MD5 collisions.
+ 	// we're only using it to keep filesystems free of directories that contain
+@@ -983,6 +986,7 @@ define_sandbox_path(std::string sid, std::string &path)
+ 	path += c_hex_md5[5];
+ 	path += c_hex_md5[6];
+ 	path += c_hex_md5[7];
++#endif // ifdef HAVE_EXT_OPENSSL
+ 	path += DIR_DELIM_CHAR;
+ 	path += sid;
+ 
+-- 
+2.13.5
+
