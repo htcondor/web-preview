@@ -1,0 +1,83 @@
+*** ../condor-7.5.4/src/condor_schedd.V6/soap_scheddStub.cpp	2010-10-19 00:51:48.000000000 +0530
+--- ../changes_for_vacate_qedit/soap_scheddStub.cpp	2011-01-07 20:17:04.000000000 +0530
+***************
+*** 1349,1354 ****
+--- 1349,1426 ----
+  	return SOAP_OK;
+  }
+  
++ // WIPRO Johnson Implementation of condor_qedit method  - BEGIN
++ int condor__setAttribute(struct soap *soap,
++ 					   struct condor__Transaction *transaction,
++ 					   xsd__int clusterId,
++ 					   xsd__int jobId,
++ 					   char * name,
++ 					   char * value,	
++ 					   struct condor__setAttributeResponse & result)
++ {
++ 	ScheddTransaction *entry;
++ 	if (!stub_prefix("setAttribute",
++ 					 soap,
++ 					 clusterId,
++ 					 jobId,
++ 					 WRITE,
++ 					 false,
++ 					 transaction,
++ 					 result.response,
++ 					 entry)) {
++ 		return SOAP_OK;
++ 	}
++ 
++ 	if (SetAttribute(clusterId, jobId, name, value)) {
++ 		result.response.code = FAIL;
++ 		result.response.message = "Failed to set attribute.";
++ 	} else {
++ 		result.response.code = SUCCESS;
++ 		result.response.message = "Success";
++ 	}
++ 
++ 	stub_suffix("setAttribute", soap, entry, result.response);
++ 
++ 	return SOAP_OK;
++ }
++ // WIPRO - END
++ 
++ // WIPRO Johnson Implementation of condor_vacate method  - BEGIN
++ 
++ int condor__vacateJob(struct soap *soap,
++ 	                    struct condor__Transaction *transaction,
++                        xsd__int clusterId,
++                        xsd__int jobId,
++                        bool fast_vacate,
++                        struct condor__vacateJobResponse & result)
++ {
++     ScheddTransaction *entry;
++     if (!stub_prefix("vacateJob",
++                      soap,
++                      clusterId,
++                      jobId,
++                      WRITE,
++                      false,
++                      transaction,
++                      result.response,
++                      entry)) {
++         return SOAP_OK;
++     }
++ 
++     if (!vacateJob(clusterId, jobId, fast_vacate, transaction->id ? false : true)) {
++         result.response.code = FAIL;
++         result.response.message = "Failed to vacate the Job.";
++     } else {
++         result.response.code = SUCCESS;
++         result.response.message = "Success";
++     }
++ 
++ 	stub_suffix("vacateJob", soap, entry, result.response);
++ 
++ 	return SO AP_OK;
++ }
++ // WIPRO - END
++ 
+  int
+  condor__listSpool(struct soap * soap,
+  				  struct condor__Transaction *transaction,
