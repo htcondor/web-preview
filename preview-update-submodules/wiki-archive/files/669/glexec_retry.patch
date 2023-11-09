@@ -1,0 +1,652 @@
+commit b681e5b65e85aad8c2461b559e7dd984024d581f
+Author: Dan Bradley <dan@hep.wisc.edu>
+Date:   Fri Jan 4 11:35:55 2013 -0600
+
+    Added GLEXEC_RETRIES and GLEXEC_RETRY_DELAY. #2415
+
+diff --git a/src/condor_procd/glexec_kill.unix.cpp b/src/condor_procd/glexec_kill.unix.cpp
+index 176ff73..7af21db 100644
+--- a/src/condor_procd/glexec_kill.unix.cpp
++++ b/src/condor_procd/glexec_kill.unix.cpp
+@@ -23,14 +23,21 @@
+ 
+ static char* glexec_kill_path = NULL;
+ static char* glexec_path = NULL;
++static char glexec_retries_str[50];
++static char glexec_retry_delay_str[50];
+ 
+ void
+-glexec_kill_init(char* glexec_kill, char* glexec)
++glexec_kill_init(char* glexec_kill, char* glexec, int glexec_retries, int glexec_retry_delay)
+ {
+ 	glexec_kill_path = strdup(glexec_kill);
+ 	ASSERT(glexec_kill_path != NULL);
+ 	glexec_path = strdup(glexec);
+ 	ASSERT(glexec_path != NULL);
++	int rc;
++	rc = snprintf(glexec_retries_str,sizeof(glexec_retries_str),"%d",glexec_retries);
++	ASSERT( rc >= 1 && rc < (int)sizeof(glexec_retries_str) );
++	rc = snprintf(glexec_retry_delay_str,sizeof(glexec_retry_delay_str),"%d",glexec_retry_delay);
++	ASSERT( rc >= 1 && rc < (int)sizeof(glexec_retry_delay_str) );
+ }
+ 
+ bool
+@@ -95,6 +102,8 @@ glexec_kill(char* proxy, pid_t target_pid, int sig)
+ 		                proxy,
+ 		                target_pid_str,
+ 		                sig_str,
++		                glexec_retries_str,
++		                glexec_retry_delay_str,
+ 		                NULL};
+ 		execv(glexec_kill_path, argv);
+ 		_exit(1);
+diff --git a/src/condor_procd/glexec_kill.unix.h b/src/condor_procd/glexec_kill.unix.h
+index 507ba70..b025bc9 100644
+--- a/src/condor_procd/glexec_kill.unix.h
++++ b/src/condor_procd/glexec_kill.unix.h
+@@ -20,7 +20,7 @@
+ #ifndef _GLEXEC_KILL_H
+ #define _GLEXEC_KILL_H
+ 
+-void glexec_kill_init(char* glexec_kill, char* glexec);
++void glexec_kill_init(char* glexec_kill, char* glexec, int glexec_retries, int glexec_retry_delay);
+ 
+ bool glexec_kill_check();
+ 
+diff --git a/src/condor_procd/procd_main.cpp b/src/condor_procd/procd_main.cpp
+index e715b87..a7b06bd 100644
+--- a/src/condor_procd/procd_main.cpp
++++ b/src/condor_procd/procd_main.cpp
+@@ -79,6 +79,8 @@ static char* windows_softkill_binary = NULL;
+ //
+ static char* glexec_kill_path = NULL;
+ static char* glexec_path = NULL;
++static int glexec_retries = 0;
++static int glexec_retry_delay = 0;
+ #endif
+ 
+ // Determines if the procd should assign GIDs to family groups internally using
+@@ -119,7 +121,7 @@ usage(void)
+ 	"                         If -E is specified then procd_ctl must be used\n"
+ 	"                         to allocate gids which must then be in this\n"
+ 	"                         range.\n"
+-	"  -I <glexec-kill-path> <glexec-path>\n"
++	"  -I <glexec-kill-path> <glexec-path> <glexec-retries> <glexec-retry-delay>\n"
+ 	"                         Specify the binary which will send a signal\n"
+ 	"                         to a pid and the glexec binary which will run\n"
+ 	"                         the program under the right priviledges.\n");
+@@ -281,13 +283,17 @@ parse_command_line(int argc, char* argv[])
+ 			// glexec and kill script paths
+ 			//
+ 			case 'I':
+-				if (index + 2 >= argc) {
+-					fail_option_args("-I", 2);
++				if (index + 4 >= argc) {
++					fail_option_args("-I", 4);
+ 				}
+ 				index++;
+ 				glexec_kill_path = argv[index];
+ 				index++;
+ 				glexec_path = argv[index];
++				index++;
++				glexec_retries = atoi(argv[index]);
++				index++;
++				glexec_retry_delay = atoi(argv[index]);
+ 				break;
+ #endif
+ 
+@@ -455,7 +461,7 @@ main(int argc, char* argv[])
+ 	// initialize the glexec_kill module
+ 	//
+ 	if (glexec_kill_path != NULL) {
+-		glexec_kill_init(glexec_kill_path, glexec_path);
++		glexec_kill_init(glexec_kill_path, glexec_path, glexec_retries, glexec_retry_delay);
+ 	}
+ #endif
+ 
+diff --git a/src/condor_starter.V6.1/condor_glexec_cleanup b/src/condor_starter.V6.1/condor_glexec_cleanup
+index 80da827..1bb6bc6 100755
+--- a/src/condor_starter.V6.1/condor_glexec_cleanup
++++ b/src/condor_starter.V6.1/condor_glexec_cleanup
+@@ -1,14 +1,16 @@
+ #!/bin/sh
+ 
+-if [ $# != 3 ]
++if [ $# != 5 ]
+ then
+-	echo "usage: $0 <glexec> <proxy> <sandbox>" >&2
++	echo "usage: $0 <glexec> <proxy> <sandbox> <max-glexec-retries> <min-glexec-retry-delay>" >&2
+ 	exit 1
+ fi
+ 
+ GLEXEC="$1"
+ PROXY="$2"
+ SANDBOX="$3"
++MAX_GLEXEC_ERRORS="$4"
++MIN_GLEXEC_RETRY_DELAY="$5"
+ 
+ # tar up the contents of the user-owned sandbox and pipe them
+ # back to a process running as the condor user. make sure not to
+@@ -20,11 +22,52 @@ export GLEXEC_CLIENT_CERT
+ # prevent glexec from creating a proxy in /tmp that is not cleaned up
+ GLEXEC_TARGET_PROXY="$SANDBOX/$PROXY"
+ export GLEXEC_TARGET_PROXY
+-"$GLEXEC" "$SH" -c "rm -f \"$SANDBOX/$PROXY\" && \
++
++glexec_errors=0
++while [ 1 ]; do
++  { "$GLEXEC" "$SH" -c "rm -f \"$SANDBOX/$PROXY\" && \
+                         tar -C \"$SANDBOX\" -c . && \
+-                        rm -rf \"$SANDBOX\"" | \
+-    tar -C "$SANDBOX.condor" -x
++                        rm -rf \"$SANDBOX\"";
++    echo $? > "$SANDBOX.condor/_condor_glexec_rc"
++  } | tar -C "$SANDBOX.condor" -x
++
++  tar_rc=$?
++  glexec_rc=$(cat "$SANDBOX.condor/_condor_glexec_rc")
++  rm -f "$SANDBOX.condor/_condor_glexec_rc"
++  if [ "$glexec_rc" = "" ]; then
++    glexec_rc=2
++  fi
++
++  if [ $glexec_rc -eq 0 ]; then
++    break
++  elif [ $glexec_rc -ne 202 ] && [ $glexec_rc -ne 203 ]; then
++    # Either a non-transient glexec error, or an error from the command
++    # we are asking glexec to run.  Try to finish cleaning up
++    # and then exit non-zero at the end.
++    break
++  fi
++
++  # This _could_ be a transient issue, such as a communication error with GUMS,
++  # so retry up to some limit.
++  glexec_errors=$(( $glexec_errors + 1 ))
++  if [ $glexec_errors -gt $MAX_GLEXEC_ERRORS ]; then
++    break
++  fi
++
++  # truncated exponential backoff
++  # sleep for X * min(100,1+random_number_in_range(0,glexec_errors-1))
++  delay_rand=$(( (1 + 0x0$(hexdump -n 4 -e '"%4x\n"' /dev/urandom) % $glexec_errors) % 100 ))
++  delay=$(( $MIN_GLEXEC_RETRY_DELAY * $delay_rand ))
++  echo "Glexec exited with status $glexec_rc; retrying in $delay seconds." >&2
++  sleep $delay
++done
+ 
+ # move the condor-owned sandbox back in place
+ #
+ mv -f "$SANDBOX.condor" "$SANDBOX"
++
++mv_rc=$?
++
++if [ $mv_rc -ne 0 ] || [ $tar_rc -ne 0 ] || [ $glexec_rc -ne 0 ]; then
++  exit 1
++fi
+diff --git a/src/condor_starter.V6.1/condor_glexec_kill b/src/condor_starter.V6.1/condor_glexec_kill
+index a8ff085..dc92b1e 100755
+--- a/src/condor_starter.V6.1/condor_glexec_kill
++++ b/src/condor_starter.V6.1/condor_glexec_kill
+@@ -2,9 +2,9 @@
+ 
+ echo $0 "$@" > /tmp/glkout
+ 
+-if [ $# != 4 ]
++if [ $# != 6 ]
+ then
+-	echo "usage: $0 <glexec> <proxy> <pid> <signal>" >&2
++	echo "usage: $0 <glexec> <proxy> <pid> <signal> <max-glexec-retries> <min-glexec-retry-delay>" >&2
+ 	exit 1
+ fi
+ 
+@@ -12,6 +12,8 @@ GLEXEC="$1"
+ PROXY="$2"
+ PID="$3"
+ SIGNAL="$4"
++MAX_GLEXEC_ERRORS="$5"
++MIN_GLEXEC_RETRY_DELAY="$6"
+ 
+ # in case glexec creates a target proxy, we will control
+ # where it puts it, and we will make sure it gets cleaned up
+@@ -28,4 +30,33 @@ fi
+ # use glexec to kill the given PID with the given signal
+ #
+ SH=`readlink -f /bin/sh`
+-GLEXEC_CLIENT_CERT="$PROXY" "$GLEXEC" "$SH" -c "if [ -f '$GLEXEC_TARGET_PROXY' ]; then rm '$GLEXEC_TARGET_PROXY'; fi; /bin/kill -$SIGNAL $PID"
++GLEXEC_CLIENT_CERT="$PROXY"
++export GLEXEC_CLIENT_CERT
++
++glexec_errors=0
++while [ 1 ]; do
++  "$GLEXEC" "$SH" -c "if [ -f '$GLEXEC_TARGET_PROXY' ]; then rm '$GLEXEC_TARGET_PROXY'; fi; /bin/kill -$SIGNAL $PID"
++
++  glexec_rc=$?
++  if [ $glexec_rc -eq 0 ]; then
++    break
++  elif [ $glexec_rc -ne 202 ] && [ $glexec_rc -ne 203 ]; then
++    # Either a non-transient glexec error, or an error from the command
++    # we are asking glexec to run.
++    exit 2
++  fi
++
++  # This _could_ be a transient issue, such as a communication error with GUMS,
++  # so retry up to some limit.
++  glexec_errors=$(( $glexec_errors + 1 ))
++  if [ $glexec_errors -gt $MAX_GLEXEC_ERRORS ]; then
++    exit 3
++  fi
++
++  # truncated exponential backoff
++  # sleep for X * min(100,1+random_number_in_range(0,glexec_errors-1))
++  delay_rand=$(( (1 + 0x0$(hexdump -n 4 -e '"%4x\n"' /dev/urandom) % $glexec_errors) % 100 ))
++  delay=$(( $MIN_GLEXEC_RETRY_DELAY * $delay_rand ))
++  echo "Glexec exited with status $glexec_rc; retrying in $delay seconds." >&2
++  sleep $delay
++done
+diff --git a/src/condor_starter.V6.1/condor_glexec_setup b/src/condor_starter.V6.1/condor_glexec_setup
+index 99fd451..afc3d70 100755
+--- a/src/condor_starter.V6.1/condor_glexec_setup
++++ b/src/condor_starter.V6.1/condor_glexec_setup
+@@ -1,14 +1,16 @@
+ #!/bin/sh
+ 
+-if [ $# != 3 ]
++if [ $# != 5 ]
+ then
+-	echo "usage: $0 <glexec> <proxy> <sandbox>" >&2
++	echo "usage: $0 <glexec> <proxy> <sandbox> <max-glexec-retries> <min-glexec-retry-delay>" >&2
+ 	exit 1
+ fi
+ 
+ GLEXEC="$1"
+ PROXY="$2"
+ SANDBOX="$3"
++MAX_GLEXEC_ERRORS="$4"
++MIN_GLEXEC_RETRY_DELAY="$5"
+ 
+ # move the condor-owned sandbox aside to make way for the job's
+ #
+@@ -23,8 +25,33 @@ export GLEXEC_CLIENT_CERT
+ # prevent glexec from creating a proxy in /tmp that is not cleaned up
+ GLEXEC_TARGET_PROXY="$SANDBOX/$PROXY"
+ export GLEXEC_TARGET_PROXY
+-tar -C "$SANDBOX.condor" -c  . | \
+-    "$GLEXEC" "$SH" -c "install -m 755 -d \"$SANDBOX\" && tar -C \"$SANDBOX\" -x" || exit 1
++glexec_errors=0
++while [ 1 ]; do
++  tar -C "$SANDBOX.condor" -c  . | \
++      "$GLEXEC" "$SH" -c "install -m 755 -d \"$SANDBOX\" && tar -C \"$SANDBOX\" -x"
++  glexec_rc=$?
++  if [ $glexec_rc -eq 0 ]; then
++    break
++  elif [ $glexec_rc -ne 202 ] && [ $glexec_rc -ne 203 ]; then
++    # Either a non-transient glexec error, or an error from the command
++    # we are asking glexec to run.
++    exit 2
++  fi
++
++  # This _could_ be a transient issue, such as a communication error with GUMS,
++  # so retry up to some limit.
++  glexec_errors=$(( $glexec_errors + 1 ))
++  if [ $glexec_errors -gt $MAX_GLEXEC_ERRORS ]; then
++    exit 3
++  fi
++
++  # truncated exponential backoff
++  # sleep for X * min(100,1+random_number_in_range(0,glexec_errors-1))
++  delay_rand=$(( (1 + 0x0$(hexdump -n 4 -e '"%4x\n"' /dev/urandom) % $glexec_errors) % 100 ))
++  delay=$(( $MIN_GLEXEC_RETRY_DELAY * $delay_rand ))
++  echo "Glexec exited with status $glexec_rc; retrying in $delay seconds." >&2
++  sleep $delay
++done
+ 
+ # now get rid of everything in the condor-owned sandbox except
+ # the proxy
+diff --git a/src/condor_starter.V6.1/condor_glexec_update_proxy b/src/condor_starter.V6.1/condor_glexec_update_proxy
+index 347ad91..28311b5 100755
+--- a/src/condor_starter.V6.1/condor_glexec_update_proxy
++++ b/src/condor_starter.V6.1/condor_glexec_update_proxy
+@@ -11,6 +11,9 @@ NEW_PROXY="$2"
+ PROXY="$3"
+ SANDBOX="$4"
+ 
++# NOTE: we do not handle glexec retries here because failure of this
++# operation is handled by the shadow.
++
+ if [ $GLEXEC = - ]
+ then
+ 	mv -f "$NEW_PROXY" "$SANDBOX/$PROXY"
+diff --git a/src/condor_starter.V6.1/glexec_privsep_helper.linux.cpp b/src/condor_starter.V6.1/glexec_privsep_helper.linux.cpp
+index 66f734d..1f6e797 100644
+--- a/src/condor_starter.V6.1/glexec_privsep_helper.linux.cpp
++++ b/src/condor_starter.V6.1/glexec_privsep_helper.linux.cpp
+@@ -31,7 +31,9 @@
+ #include "basename.h"
+ 
+ GLExecPrivSepHelper::GLExecPrivSepHelper() :
+-	 m_initialized(false),m_glexec(0),  m_sandbox(0), m_proxy(0),m_sandbox_owned_by_user(false)
++	m_initialized(false),m_glexec(0),  m_sandbox(0), m_proxy(0),m_sandbox_owned_by_user(false),
++	m_glexec_retries(0),m_glexec_retry_delay(0)
++
+ {
+ }
+ 
+@@ -165,6 +167,9 @@ GLExecPrivSepHelper::initialize(const char* proxy, const char* sandbox)
+ 
+ 	m_sandbox_owned_by_user = false;
+ 
++	m_glexec_retries = param_integer("GLEXEC_RETRIES",3,0);
++	m_glexec_retry_delay = param_integer("GLEXEC_RETRY_DELAY",5,0);
++
+ 	m_initialized = true;
+ }
+ 
+@@ -187,6 +192,8 @@ GLExecPrivSepHelper::chown_sandbox_to_user(PrivSepError &err)
+ 	args.AppendArg(m_glexec);
+ 	args.AppendArg(m_proxy);
+ 	args.AppendArg(m_sandbox);
++	args.AppendArg(m_glexec_retries);
++	args.AppendArg(m_glexec_retry_delay);
+ 	MyString error_desc = "error changing sandbox ownership to the user: ";
+ 	int rc = run_script(args,error_desc);
+ 	if( rc != 0) {
+@@ -219,6 +226,8 @@ GLExecPrivSepHelper::chown_sandbox_to_condor(PrivSepError &err)
+ 	args.AppendArg(m_glexec);
+ 	args.AppendArg(m_proxy);
+ 	args.AppendArg(m_sandbox);
++	args.AppendArg(m_glexec_retries);
++	args.AppendArg(m_glexec_retry_delay);
+ 	MyString error_desc = "error changing sandbox ownership to condor: ";
+ 	int rc = run_script(args,error_desc);
+ 	if( rc != 0) {
+@@ -294,77 +303,124 @@ GLExecPrivSepHelper::create_process(const char* path,
+ 		modified_args.AppendArg(args.GetArg(i));
+ 	}
+ 
+-	// setup a UNIX domain socket for communicating with
+-	// condor_glexec_wrapper (see comment above feed_wrapper()
+-	// for details
+-	//
+-	int sock_fds[2];
+-	if (socketpair(PF_UNIX, SOCK_STREAM, 0, sock_fds) == -1)
+-	{
+-		dprintf(D_ALWAYS,
+-		        "GLEXEC: socketpair error: %s\n",
+-		        strerror(errno));
+-		return false;
+-	}
+-	std_fds[0] = sock_fds[1];
++	int glexec_errors = 0;
++	while(1) {
++		// setup a UNIX domain socket for communicating with
++		// condor_glexec_wrapper (see comment above feed_wrapper()
++		// for details
++		//
++		int sock_fds[2];
++		if (socketpair(PF_UNIX, SOCK_STREAM, 0, sock_fds) == -1)
++		{
++			dprintf(D_ALWAYS,
++			        "GLEXEC: socketpair error: %s\n",
++			        strerror(errno));
++			return false;
++		}
++		std_fds[0] = sock_fds[1];
++
++			// now create a pipe for receiving diagnostic stdout/stderr from glexec
++		int glexec_out_fds[2];
++		if (pipe(glexec_out_fds) < 0) {
++			dprintf(D_ALWAYS,
++					"GLEXEC: pipe() error: %s\n",
++					strerror(errno));
++			close(sock_fds[0]);
++			close(sock_fds[1]);
++			return false;
++		}
++		std_fds[1] = glexec_out_fds[1];
++		std_fds[2] = std_fds[1]; // collect glexec stderr and stdout together
++
++		FamilyInfo fi;
++		FamilyInfo* fi_ptr = (family_info != NULL) ? family_info : &fi;
++		MyString proxy_path;
++		proxy_path.sprintf("%s.condor/%s", m_sandbox, m_proxy);
++		fi_ptr->glexec_proxy = proxy_path.Value();
++
++			// At the very least, we need to pass the condor daemon's
++			// X509_USER_PROXY to condor_glexec_run.  Currently, we just
++			// pass all daemon environment.  We do _not_ run
++			// condor_glexec_run in the job environment, because that
++			// would be a security risk and would serve no purpose, since
++			// glexec cleanses the environment anyway.
++		dc_job_opts &= ~(DCJOBOPT_NO_ENV_INHERIT);
++
++		int pid = daemonCore->Create_Process(m_run_script.Value(),
++		                                     modified_args,
++		                                     PRIV_USER_FINAL,
++		                                     reaper_id,
++		                                     FALSE,
++		                                     NULL,
++		                                     iwd,
++		                                     fi_ptr,
++		                                     NULL,
++		                                     std_fds,
++		                                     NULL,
++		                                     nice_inc,
++		                                     NULL,
++		                                     dc_job_opts,
++		                                     core_size_ptr,
++											 NULL,
++											 NULL,
++											 error_msg);
++
++			// close our handle to glexec's end of the diagnostic output pipe
++		close(glexec_out_fds[1]);
++
++		MyString glexec_error_msg;
++		int glexec_rc = 0;
++		int ret_val = feed_wrapper(pid, sock_fds, env, dc_job_opts, job_std_fds, glexec_out_fds[0], &glexec_error_msg, &glexec_rc);
++
++			// if not closed in feed_wrapper, close the glexec error pipe now
++		if( glexec_out_fds[0] != -1 ) {
++			close(glexec_out_fds[0]);
++		}
+ 
+-		// now create a pipe for receiving diagnostic stdout/stderr from glexec
+-	int glexec_out_fds[2];
+-	if (pipe(glexec_out_fds) < 0) {
+-		dprintf(D_ALWAYS,
+-				"GLEXEC: pipe() error: %s\n",
+-				strerror(errno));
+-		close(sock_fds[0]);
+-		close(sock_fds[1]);
+-		return false;
+-	}
+-	std_fds[1] = glexec_out_fds[1];
+-	std_fds[2] = std_fds[1]; // collect glexec stderr and stdout together
+-
+-	FamilyInfo fi;
+-	FamilyInfo* fi_ptr = (family_info != NULL) ? family_info : &fi;
+-	MyString proxy_path;
+-	proxy_path.sprintf("%s.condor/%s", m_sandbox, m_proxy);
+-	fi_ptr->glexec_proxy = proxy_path.Value();
+-
+-		// At the very least, we need to pass the condor daemon's
+-		// X509_USER_PROXY to condor_glexec_run.  Currently, we just
+-		// pass all daemon environment.  We do _not_ run
+-		// condor_glexec_run in the job environment, because that
+-		// would be a security risk and would serve no purpose, since
+-		// glexec cleanses the environment anyway.
+-	dc_job_opts &= ~(DCJOBOPT_NO_ENV_INHERIT);
+-
+-	int pid = daemonCore->Create_Process(m_run_script.Value(),
+-	                                     modified_args,
+-	                                     PRIV_USER_FINAL,
+-	                                     reaper_id,
+-	                                     FALSE,
+-	                                     NULL,
+-	                                     iwd,
+-	                                     fi_ptr,
+-	                                     NULL,
+-	                                     std_fds,
+-	                                     NULL,
+-	                                     nice_inc,
+-	                                     NULL,
+-	                                     dc_job_opts,
+-	                                     core_size_ptr,
+-										 NULL,
+-										 NULL,
+-										 error_msg);
+-
+-		// close our handle to glexec's end of the diagnostic output pipe
+-	close(glexec_out_fds[1]);
+-
+-	int ret_val = feed_wrapper(pid, sock_fds, env, dc_job_opts, job_std_fds, glexec_out_fds[0], error_msg);
+-
+-		// if not closed in feed_wrapper, close the glexec error pipe now
+-	if( glexec_out_fds[0] != -1 ) {
+-		close(glexec_out_fds[0]);
++			// Unlike the other glexec operations where we handle
++			// glexec retry inside the helper script,
++			// condor_glexec_run cannot handle retry for us, because
++			// it must exec glexec rather than spawning it off in a
++			// new process.  Therefore, we handle here retries in case
++			// of transient errors.
++
++		if( ret_val != 0 ) {
++			return ret_val; // success
++		}
++		bool retry = true;
++		if( glexec_rc != 202 && glexec_rc != 203 ) {
++				// Either a non-transient glexec error, or some other
++				// non-glexec error.
++			retry = false;
++		}
++		else {
++			// This _could_ be a transient glexec issue, such as a
++			// communication error with GUMS, so retry up to some
++			// limit.
++			glexec_errors += 1;
++			if( glexec_errors > m_glexec_retries ) {
++				retry = false;
++			}
++		}
++
++		if( !retry ) {
++				// return the most recent glexec error output
++			if( error_msg ) {
++				error_msg->sprintf_cat(glexec_error_msg.Value());
++			}
++			return 0;
++		}
++			// truncated exponential backoff
++		int delay_rand = 1 + (get_random_int() % glexec_errors) % 100;
++		int delay = m_glexec_retry_delay * delay_rand;
++		dprintf(D_ALWAYS,"Glexec exited with status %d; retrying in %d seconds.\n",
++				glexec_rc, delay );
++		sleep(delay);
++			// now try again ...
+ 	}
+ 
+-	return ret_val;
++		// should never get here
++	return 0;
+ }
+ 
+ // we launch the job via a wrapper. the full chain of exec() calls looks
+@@ -392,7 +448,8 @@ GLExecPrivSepHelper::feed_wrapper(int pid,
+                                   int dc_job_opts,
+                                   int job_std_fds[3],
+ 								  int &glexec_err_fd,
+-								  MyString *error_msg)
++								  MyString *error_msg,
++								  int *glexec_rc)
+ {
+ 	// we can now close the end of the socket that we handed down
+ 	// to the wrapper; the other end we'll use to send stuff over
+@@ -437,6 +494,8 @@ GLExecPrivSepHelper::feed_wrapper(int pid,
+ 			if (waitpid(pid,&glexec_status,0)==pid) {
+ 				if (WIFEXITED(glexec_status)) {
+ 					int status = WEXITSTATUS(glexec_status);
++					ASSERT( glexec_rc );
++					*glexec_rc = status;
+ 					dprintf(D_ALWAYS,
+ 							"GLEXEC: glexec call exited with status %d\n",
+ 							status);
+diff --git a/src/condor_starter.V6.1/glexec_privsep_helper.linux.h b/src/condor_starter.V6.1/glexec_privsep_helper.linux.h
+index 2a26bf1..ff9ca2d 100644
+--- a/src/condor_starter.V6.1/glexec_privsep_helper.linux.h
++++ b/src/condor_starter.V6.1/glexec_privsep_helper.linux.h
+@@ -84,7 +84,8 @@ private:
+ 	                 int dc_job_opts,
+ 	                 int job_std_fds[3],
+ 					 int &glexec_err_fd,
+-					 MyString *error_msg);
++					 MyString *error_msg,
++					 int *glexec_rc);
+ 
+ 	// set once we're initialized
+ 	//
+@@ -113,6 +114,9 @@ private:
+ 	// tracks current ownership of the sandbox
+ 	//
+ 	bool m_sandbox_owned_by_user;
++
++	int m_glexec_retries;
++	int m_glexec_retry_delay;
+ };
+ 
+ #endif
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index 55cc52c..84354b1 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -10619,3 +10619,35 @@ usage=
+ url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
+ tags=startd
+ id=610
++
++[GLEXEC_RETRIES]
++aliases=
++default=3
++version=7.8.8
++range=0,
++state=default
++type=int
++is_macro=false
++reconfig=true
++customization=seldom
++friendly_name=number of times to retry calls to glexec
++usage=
++url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
++tags=startd
++id=610
++
++[GLEXEC_RETRY_DELAY]
++aliases=
++default=5
++version=7.8.8
++range=0,
++state=default
++type=int
++is_macro=false
++reconfig=true
++customization=seldom
++friendly_name=minimum time delay in exponential backoff
++usage=
++url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
++tags=startd
++id=610
+diff --git a/src/condor_utils/proc_family_proxy.cpp b/src/condor_utils/proc_family_proxy.cpp
+index 63401a6..b750220 100644
+--- a/src/condor_utils/proc_family_proxy.cpp
++++ b/src/condor_utils/proc_family_proxy.cpp
+@@ -499,6 +499,10 @@ ProcFamilyProxy::start_procd()
+ 		}
+ 		args.AppendArg(glexec);
+ 		free(glexec);
++		int glexec_retries = param_integer("GLEXEC_RETRIES",3,0);
++		int glexec_retry_delay = param_integer("GLEXEC_RETRY_DELAY",5,0);
++		args.AppendArg(glexec_retries);
++		args.AppendArg(glexec_retry_delay);
+ 	}
+ 
+ 	// done constructing the argument list; now register a reaper for
