@@ -1,0 +1,124 @@
+diff --git a/src/condor_q.V6/queue.cpp b/src/condor_q.V6/queue.cpp
+index c74f7ab..c822641 100644
+--- a/src/condor_q.V6/queue.cpp
++++ b/src/condor_q.V6/queue.cpp
+@@ -191,6 +191,10 @@ static std::vector<std::string> constrOR2;
+ 
+ static std::string getConstr();
+ 
++// Constraint on JobIDs for faster filtering
++// a list and not set since we expect a very shallow depth
++static std::vector<CondorID> constrID;
++
+ #ifdef HAVE_EXT_POSTGRESQL
+ static  QueryResult result2;
+ #endif
+@@ -983,6 +987,8 @@ processCommandLineArguments (int argc, char *argv[])
+    
+ 				Q.addDBConstraint(CQ_CLUSTER_ID, cluster);
+ 				Q.addDBConstraint(CQ_PROC_ID, proc);
++				constrID.push_back(CondorID(cluster,proc,-1));
++
+ 				summarize = 0;
+ 			} 
+ 			else if( sscanf ( argv[i], "%d", &cluster ) == 1 ) {
+@@ -991,6 +997,8 @@ processCommandLineArguments (int argc, char *argv[])
+ 				constrOR2.push_back( constraint );
+ 
+    				Q.addDBConstraint(CQ_CLUSTER_ID, cluster);
++				constrID.push_back(CondorID(cluster,-1,-1));
++
+ 				summarize = 0;
+ 			} 
+ 			else {
+@@ -4002,6 +4010,24 @@ static double tmval2double(struct timeval &t)
+   return t.tv_sec+t.tv_usec*1.0e-6;
+ }
+ 
++static bool isSuperset(CondorID &myID, CondorID &testID) 
++{
++  // -1 means in testID all
++  if (testID._cluster==-1) {
++    return true;
++  } else if (myID._cluster!=testID._cluster) {
++    return false;
++  } else if (testID._proc==-1) {
++    return true;
++  } else if (myID._proc!=testID._proc) {
++    return false;
++  } else if (testID._subproc==-1) {
++    return true;
++  } else {
++    return (myID._subproc==testID._subproc);
++  }
++}
++
+ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+ {
+   std::map<CondorID,ClassAd *> cmap;   // classad map ... current classad for job
+@@ -4022,10 +4048,28 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+       // make sure we have seen the submit event
+       // else we just throw it away
+       if (cmap.find(jobid)==cmap.end()) {
+-	//fprintf(stderr, "DEBUG: Missing submit event for %03i.%03i.%03i",event->cluster,event->proc,event->subproc);
+ 	delete event;
+ 	continue;	
+       }
++    } else {
++	if (not constrID.empty()) {
++	  // there are some ID constraint... this ID must be in at least one of them
++	  bool valid_id=false;
++	  for (std::vector<CondorID>::iterator it=constrID.begin();
++	       it!=constrID.end(); ++it) {
++	    if (isSuperset(jobid,*it)) {
++	      valid_id=true;
++	      break;
++	    }
++	  }
++
++	  if (not valid_id) {
++	    // not somtething the user is interested in... skip
++	    // as a side effect, all events for this ID will be ignored
++	    delete event;
++	    continue;
++	  }
++	}
+     }
+      
+     switch(eventNumber) {
+@@ -4536,14 +4580,32 @@ static bool read_userlog_file(const char *filename, ClassAdList &classads)
+     emap[jobid]=event;
+   }
+ 
++
++  std::string constr = getConstr();
++
+   for (std::map<CondorID,ClassAd *>::iterator it=cmap.begin(); it!=cmap.end();++it) {
+     // delete all old events
+     /// can use the cmap index because the instertion happens at the same time
+     delete emap[it->first];
+ 
+-    // output the classad
+-    // the list now gets the ownership
+-    classads.Insert(it->second);
++    // Check if it passed the constraint
++    ClassAd *classad = it->second;
++
++    bool include_classad=false;
++    classad::Value result;
++    if (classad->EvaluateExpr(constr,result)) {
++      if (not result.IsBooleanValueEquiv(include_classad)) {
++	include_classad=false;
++      }
++    }
++    
++    if (include_classad) {
++      // output the classad
++      // the list now gets the ownership
++      classads.Insert(classad);
++    } else {
++      delete classad;
++    }
+   }
+ 
+   return true;
