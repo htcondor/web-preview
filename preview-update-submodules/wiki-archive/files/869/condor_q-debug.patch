@@ -1,0 +1,128 @@
+diff --git a/src/condor_daemon_client/dc_collector.cpp b/src/condor_daemon_client/dc_collector.cpp
+index 4003a0b..d4ca430 100644
+--- a/src/condor_daemon_client/dc_collector.cpp
++++ b/src/condor_daemon_client/dc_collector.cpp
+@@ -30,6 +30,8 @@
+ 
+ std::map< std::string, Timeslice > DCCollector::blacklist;
+ 
++bool DebugBlacklist = false;
++
+ // Instantiate things
+ 
+ DCCollector::DCCollector( const char* dcName, UpdateType uType ) 
+@@ -930,7 +932,11 @@ Timeslice &DCCollector::getBlacklistTimeslice()
+ 	itr = blacklist.find(addr());
+ 	if( itr == blacklist.end() ) {
+ 		Timeslice ts;
+-		
++
++		if ( DebugBlacklist ) {
++			dprintf( D_ALWAYS, "Creating new Blacklist entry for %s\n", addr() );
++			ts.Debug();
++		}
+ 			// Blacklist this collector if last failed contact took more
+ 			// than 1% of the time that has passed since that operation
+ 			// started.  (i.e. if contact fails quickly, don't worry, but
+@@ -941,6 +947,10 @@ Timeslice &DCCollector::getBlacklistTimeslice()
+ 		ts.setMaxInterval(avoid_time);
+ 		ts.setInitialInterval(0);
+ 
++		if ( DebugBlacklist ) {
++			dprintf( D_ALWAYS, "Initialized new Blacklist entry\n" );
++			ts.Debug();
++		}
+ 		itr = blacklist.insert( std::map< std::string, Timeslice >::value_type(addr(),ts) ).first;
+ 	}
+ 	return itr->second;
+@@ -949,7 +959,13 @@ Timeslice &DCCollector::getBlacklistTimeslice()
+ bool
+ DCCollector::isBlacklisted() {
+ 	Timeslice &blacklisted = getBlacklistTimeslice();
+-	return !blacklisted.isTimeToRun();
++	bool rv = !blacklisted.isTimeToRun();
++	if ( DebugBlacklist ) {
++		dprintf( D_ALWAYS, "Checking if collector %s is blacklisted (now = %d): %s\n", addr(), time(NULL), rv ? "Yes" : "No" );
++		blacklisted.Debug();
++	}
++	return rv;
++//	return !blacklisted.isTimeToRun();
+ }
+ 
+ void
+diff --git a/src/condor_daemon_client/dc_collector.h b/src/condor_daemon_client/dc_collector.h
+index 11ff240..f97a823 100644
+--- a/src/condor_daemon_client/dc_collector.h
++++ b/src/condor_daemon_client/dc_collector.h
+@@ -29,6 +29,7 @@
+ #include "daemon_list.h"
+ #include "condor_timeslice.h"
+ 
++extern bool DebugBlacklist;
+ 
+ /** Class to manage the sequence nubmers of individual ClassAds
+  * published by the application
+diff --git a/src/condor_q.V6/queue.cpp b/src/condor_q.V6/queue.cpp
+index 7f639d2..0ea6eb2 100644
+--- a/src/condor_q.V6/queue.cpp
++++ b/src/condor_q.V6/queue.cpp
+@@ -600,6 +600,8 @@ int main (int argc, char **argv)
+ 
+ 	Collectors = NULL;
+ 
++DebugBlacklist = true;
++
+ 	// load up configuration file
+ 	myDistro->Init( argc, argv );
+ 	config();
+diff --git a/src/condor_utils/condor_timeslice.cpp b/src/condor_utils/condor_timeslice.cpp
+index fb87dae..ace0714 100644
+--- a/src/condor_utils/condor_timeslice.cpp
++++ b/src/condor_utils/condor_timeslice.cpp
+@@ -26,6 +26,7 @@ See condor_timeslice.h for how to use it.
+ 
+ #include "condor_common.h"
+ #include "condor_timeslice.h"
++#include "condor_debug.h"
+ 
+ Timeslice::Timeslice() {
+ 		m_timeslice = 0;
+@@ -215,3 +216,25 @@ Timeslice::expediteNextRun()
+ 	m_expedite_next_run = true;
+ 	updateNextStartTime();
+ }
++
++void
++Timeslice::Debug()
++{
++	dprintf( D_ALWAYS, "Timeslice:\n"
++			 "  m_timeslice = %f\n"
++			 "  m_min_interval = %f\n"
++			 "  m_max_interval = %f\n"
++			 "  m_default_interval = %f\n"
++			 "  m_initial_interval = %f\n"
++			 "  m_start_time = %ld, %ld\n"
++			 "  m_last_duration = %f\n"
++			 "  m_avg_duration = %f\n"
++			 "  m_next_start_time = %d\n"
++			 "  m_never_ran_before = %s\n"
++			 "  m_expedite_next_run = %s\n",
++			 m_timeslice, m_min_interval, m_max_interval, m_default_interval,
++			 m_initial_interval, m_start_time.seconds(),
++			 m_start_time.microseconds(), m_last_duration, m_avg_duration,
++			 (int)m_next_start_time, m_never_ran_before ? "true" : "false",
++			 m_expedite_next_run ? "true" : "false" );
++}
+diff --git a/src/condor_utils/condor_timeslice.h b/src/condor_utils/condor_timeslice.h
+index 810487f..905bbe5 100644
+--- a/src/condor_utils/condor_timeslice.h
++++ b/src/condor_utils/condor_timeslice.h
+@@ -96,6 +96,8 @@ class Timeslice {
+ 	void expediteNextRun();
+ 	bool isNextRunExpedited() { return m_expedite_next_run; }
+ 
++	void Debug();
++
+  private:
+ 	double m_timeslice;        // maximum fraction of time to consume
+ 	double m_min_interval;     // minimum delay between runs
