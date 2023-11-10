@@ -1,0 +1,630 @@
+diff --git a/src/condor_daemon_client/dc_collector.cpp b/src/condor_daemon_client/dc_collector.cpp
+index 6e75d2e..6d84cf2 100644
+--- a/src/condor_daemon_client/dc_collector.cpp
++++ b/src/condor_daemon_client/dc_collector.cpp
+@@ -306,6 +306,22 @@ DCCollector::sendUpdate( int cmd, ClassAd* ad1, ClassAd* ad2, bool nonblocking )
+ 		ad2->CopyAttribute(ATTR_MY_ADDRESS,ad1);
+ 	}
+ 
++    // My initial plan was to publish these for schedd, however they will provide
++    // potentially useful context for performance/health assessment of any daemon 
++    std::string tmp;
++    if (ad1) {
++        sprintf(tmp, "%s = %s", ATTR_DETECTED_CPUS, param("DETECTED_CORES"));
++        ad1->Insert(tmp.c_str());
++        sprintf(tmp, "%s = %s", ATTR_DETECTED_MEMORY, param("DETECTED_MEMORY"));
++        ad1->Insert(tmp.c_str());
++    }
++    if (ad2) {
++        sprintf(tmp, "%s = %s", ATTR_DETECTED_CPUS, param("DETECTED_CORES"));
++        ad2->Insert(tmp.c_str());
++        sprintf(tmp, "%s = %s", ATTR_DETECTED_MEMORY, param("DETECTED_MEMORY"));
++        ad2->Insert(tmp.c_str());
++    }
++
+ 		// We never want to try sending an update to port 0.  If we're
+ 		// about to try that, and we're trying to talk to a local
+ 		// collector, we should try re-reading the address file and
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index db01619..6dd1689 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -359,6 +359,8 @@ extern const char * const  ATTR_MAX_HOSTS;
+ extern const char * const  ATTR_MAX_JOB_RETIREMENT_TIME;
+ extern const char * const  ATTR_MAX_JOBS_RUNNING;
+ extern const char * const  ATTR_MEMORY;
++extern const char * const  ATTR_DETECTED_MEMORY;
++extern const char * const  ATTR_DETECTED_CPUS;
+ extern const char * const  ATTR_MIN_HOSTS;
+ extern const char * const  ATTR_MIPS;
+ extern const char * const  ATTR_MPI_IS_MASTER;
+@@ -527,6 +529,27 @@ extern const char * const  ATTR_TOTAL_LOCAL_RUNNING_JOBS;
+ extern const char * const  ATTR_TOTAL_LOCAL_IDLE_JOBS;
+ extern const char * const  ATTR_TOTAL_SCHEDULER_RUNNING_JOBS;
+ extern const char * const  ATTR_TOTAL_SCHEDULER_IDLE_JOBS;
++extern const char * const  ATTR_JOBS_SUBMITTED_CUM;
++extern const char * const  ATTR_JOBS_STARTED_CUM;
++extern const char * const  ATTR_JOBS_EXITED_CUM;
++extern const char * const  ATTR_JOBS_COMPLETED_CUM;
++extern const char * const  ATTR_SHADOW_EXCEPTIONS_CUM;
++extern const char * const  ATTR_MEAN_TIME_TO_START_CUM;
++extern const char * const  ATTR_SUM_TIME_TO_START_CUM;
++extern const char * const  ATTR_MEAN_RUNNING_TIME_CUM;
++extern const char * const  ATTR_SUM_RUNNING_TIME_CUM;
++extern const char * const  ATTR_EXIT_CODE_CUM;
++extern const char * const  ATTR_JOBS_SUBMITTED;
++extern const char * const  ATTR_JOBS_STARTED;
++extern const char * const  ATTR_JOB_START_RATE;
++extern const char * const  ATTR_JOB_SUBMISSION_RATE;
++extern const char * const  ATTR_JOBS_COMPLETED;
++extern const char * const  ATTR_JOB_COMPLETION_RATE;
++extern const char * const  ATTR_JOBS_EXITED;
++extern const char * const  ATTR_SHADOW_EXCEPTIONS;
++extern const char * const  ATTR_MEAN_TIME_TO_START;
++extern const char * const  ATTR_MEAN_RUNNING_TIME;
++extern const char * const  ATTR_EXIT_CODE;
+ extern const char * const  ATTR_TOTAL_SLOTS;
+ extern const char * const  ATTR_TOTAL_TIME_IN_CYCLE;
+ extern const char * const  ATTR_TOTAL_TIME_BACKFILL_BUSY;
+@@ -542,6 +565,8 @@ extern const char * const  ATTR_TOTAL_TIME_PREEMPTING_KILLING;
+ extern const char * const  ATTR_TOTAL_TIME_PREEMPTING_VACATING;
+ extern const char * const  ATTR_TOTAL_TIME_UNCLAIMED_BENCHMARKING;
+ extern const char * const  ATTR_TOTAL_TIME_UNCLAIMED_IDLE;
++extern const char * const  ATTR_WINDOWED_STAT_WIDTH;
++
+ // Deprecated (cruft) -- use: ATTR_TOTAL_SLOTS;
+ extern const char * const  ATTR_TOTAL_VIRTUAL_MACHINES;
+ extern const char * const  ATTR_TOTAL_VIRTUAL_MEMORY;
+diff --git a/src/condor_includes/condor_qmgr.h b/src/condor_includes/condor_qmgr.h
+index 72ac44a..fded0d1 100644
+--- a/src/condor_includes/condor_qmgr.h
++++ b/src/condor_includes/condor_qmgr.h
+@@ -335,5 +335,6 @@ bool Reschedule();
+ 
+ int QmgmtSetEffectiveOwner(char const *owner);
+ 
++int GetJobQueuedCount();
+ 
+ #endif
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index 02065c9..4879ffd 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -99,6 +99,7 @@ static time_t xact_start_time = 0;	// time at which the current transaction was
+ static int cluster_initial_val = 1;		// first cluster number to use
+ static int cluster_increment_val = 1;	// increment for cluster numbers of successive submissions 
+ static int cluster_maximum_val = 0;     // maximum cluster id (default is 0, or 'no max')
++static int job_queued_count = 0;
+ 
+ static void AddOwnerHistory(const MyString &user);
+ 
+@@ -1715,6 +1716,7 @@ NewProc(int cluster_id)
+ 	JobQueue->NewClassAd(key, JOB_ADTYPE, STARTD_ADTYPE);
+ 
+ 	IncrementClusterSize(cluster_id);
++    job_queued_count += 1;
+ 
+ 		// now that we have a real job ad with a valid proc id, then
+ 		// also insert the appropriate GlobalJobId while we're at it.
+@@ -4749,3 +4751,7 @@ dirtyJobQueue()
+ {
+ 	JobQueueDirty = true;
+ }
++
++int GetJobQueuedCount() {
++    return job_queued_count;
++}
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 3138d7d..f7cb961 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -419,6 +419,14 @@ Scheduler::Scheduler() :
+ 	SchedUniverseJobsRunning = 0;
+ 	LocalUniverseJobsIdle = 0;
+ 	LocalUniverseJobsRunning = 0;
++    ShadowExceptionsCum = 0;
++    JobsCompletedCum = 0;
++    JobsExitedCum = 0;
++    JobsStartedCum = 0;
++    TimeToStartCum = 0;
++    RunningTimeCum = 0;
++    LastJobsQueued = 0;
++    LastUpdateTime = time(NULL);
+ 	LocalUnivExecuteDir = NULL;
+ 	ReservedSwap = 0;
+ 	SwapSpace = 0;
+@@ -863,6 +871,8 @@ Scheduler::count_jobs()
+ 	dprintf( D_FULLDEBUG, "N_Owners = %d\n", N_Owners );
+ 	dprintf( D_FULLDEBUG, "MaxJobsRunning = %d\n", MaxJobsRunning );
+ 
++    time_t curTime = time(NULL);
++
+ 	// later when we compute job priorities, we will need PrioRec
+ 	// to have as many elements as there are jobs in the queue.  since
+ 	// we just counted the jobs, lets make certain that PrioRec is 
+@@ -923,6 +933,79 @@ Scheduler::count_jobs()
+ 
+ 	m_ad->Assign(ATTR_SCHEDD_SWAP_EXHAUSTED, (bool)SwapSpaceExhausted);
+ 
++    int updateInterval = max(int(curTime - LastUpdateTime), int(1));
++    LastUpdateTime = curTime;
++    sprintf(tmp, "%s = %d", ATTR_UPDATE_INTERVAL, updateInterval);
++    m_ad->Insert(tmp);
++
++    // one last check for any newly-queued jobs
++    // this count in cumulative within the qmgmt package
++    int jobsQueued = GetJobQueuedCount();
++    update(JobsSubmittedTQ, jobsQueued - LastJobsQueued, curTime);
++    LastJobsQueued = jobsQueued;
++
++    // Update cumulative counts over schedd lifetime
++    sprintf(tmp, "%s = %d", ATTR_JOBS_SUBMITTED_CUM, jobsQueued);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_STARTED_CUM, JobsStartedCum);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_EXITED_CUM, JobsExitedCum);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_COMPLETED_CUM, JobsCompletedCum);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_SHADOW_EXCEPTIONS_CUM, ShadowExceptionsCum);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_MEAN_TIME_TO_START_CUM, (JobsStartedCum > 0) ? double(TimeToStartCum)/double(JobsStartedCum) : 0.0);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %g", ATTR_SUM_TIME_TO_START_CUM, double(TimeToStartCum));
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_MEAN_RUNNING_TIME_CUM, (JobsCompletedCum > 0) ? double(RunningTimeCum)/double(JobsCompletedCum) : 0.0);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %g", ATTR_SUM_RUNNING_TIME_CUM, double(RunningTimeCum));
++    m_ad->Insert(tmp);
++    for (map<int,int>::iterator jj(ExitCodesCum.begin());  jj != ExitCodesCum.end();  ++jj) {
++        sprintf(tmp, "%s%03d = %d", ATTR_EXIT_CODE_CUM, jj->first, jj->second);
++        m_ad->Insert(tmp);
++    }
++
++    // get the time-windowed stats
++    int jobsSubmitted = accumulate(JobsSubmittedTQ, curTime);
++    int jobsStarted = accumulate(JobsStartedTQ, curTime);
++    int jobsCompleted = accumulate(JobsCompletedTQ, curTime);
++    int jobsExited = accumulate(JobsExitedTQ, curTime);
++    int shadowExceptions = accumulate(ShadowExceptionsTQ, curTime);
++    double runningTimeSum = accumulate(RunningTimeTQ, curTime);
++    double timeToStartSum = accumulate(TimeToStartTQ, curTime);
++    double meanRunningTime = (jobsCompleted > 0) ? runningTimeSum / double(jobsCompleted) : 0.0;
++    double meanTimeToStart = (jobsStarted > 0) ? timeToStartSum / double(jobsStarted) : 0.0;
++    sprintf(tmp, "%s = %d", ATTR_WINDOWED_STAT_WIDTH, (int)JobsSubmittedTQ.max_time());
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_SUBMITTED, jobsSubmitted);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_JOB_SUBMISSION_RATE, double(jobsSubmitted)/double(JobsSubmittedTQ.max_time()));
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_STARTED, jobsStarted);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_JOB_START_RATE, double(jobsStarted)/double(JobsStartedTQ.max_time()));
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_COMPLETED, jobsCompleted);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_JOB_COMPLETION_RATE, double(jobsCompleted)/double(JobsCompletedTQ.max_time()));
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_JOBS_EXITED, jobsExited);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %d", ATTR_SHADOW_EXCEPTIONS, shadowExceptions);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_MEAN_TIME_TO_START, meanTimeToStart);
++    m_ad->Insert(tmp);
++    sprintf(tmp, "%s = %f", ATTR_MEAN_RUNNING_TIME, meanRunningTime);
++    m_ad->Insert(tmp);
++    for (map<int,timed_queue<int> >::iterator jj(ExitCodesTQ.begin());  jj != ExitCodesTQ.end();  ++jj) {
++        int n = accumulate(jj->second, curTime);
++        sprintf(tmp, "%s%03d = %d", ATTR_EXIT_CODE, jj->first, n);
++        m_ad->Insert(tmp);
++    }
++
+     daemonCore->publish(m_ad);
+     daemonCore->monitor_data.ExportData(m_ad);
+ 	extra_ads.Publish( m_ad );
+@@ -992,6 +1075,35 @@ Scheduler::count_jobs()
+ 	m_ad->Delete (ATTR_TOTAL_SCHEDULER_IDLE_JOBS);
+ 	m_ad->Delete (ATTR_TOTAL_SCHEDULER_RUNNING_JOBS);
+ 
++    m_ad->Delete(ATTR_JOBS_SUBMITTED_CUM);
++    m_ad->Delete(ATTR_JOBS_STARTED_CUM);
++    m_ad->Delete(ATTR_JOBS_COMPLETED_CUM);
++    m_ad->Delete(ATTR_JOBS_EXITED_CUM);
++    m_ad->Delete(ATTR_SHADOW_EXCEPTIONS_CUM);
++    m_ad->Delete(ATTR_MEAN_TIME_TO_START_CUM);
++    m_ad->Delete(ATTR_SUM_TIME_TO_START_CUM);
++    m_ad->Delete(ATTR_MEAN_RUNNING_TIME_CUM);
++    m_ad->Delete(ATTR_SUM_RUNNING_TIME_CUM);
++    for (map<int,int>::iterator jj(ExitCodesCum.begin());  jj != ExitCodesCum.end();  ++jj) {
++        sprintf(tmp, "%s%03d", ATTR_EXIT_CODE_CUM, jj->first);
++        m_ad->Delete(tmp);
++    }
++    m_ad->Delete(ATTR_UPDATE_INTERVAL);
++    m_ad->Delete(ATTR_JOBS_SUBMITTED);
++    m_ad->Delete(ATTR_JOB_SUBMISSION_RATE);
++    m_ad->Delete(ATTR_JOBS_STARTED);
++    m_ad->Delete(ATTR_JOB_START_RATE);
++    m_ad->Delete(ATTR_JOBS_COMPLETED);
++    m_ad->Delete(ATTR_JOB_COMPLETION_RATE);
++    m_ad->Delete(ATTR_JOBS_EXITED);
++    m_ad->Delete(ATTR_SHADOW_EXCEPTIONS);
++    m_ad->Delete(ATTR_MEAN_TIME_TO_START);
++    m_ad->Delete(ATTR_MEAN_RUNNING_TIME);
++    for (map<int, timed_queue<int> >::iterator jj(ExitCodesTQ.begin());  jj != ExitCodesTQ.end();  ++jj) {
++        sprintf(tmp, "%s%03d", ATTR_EXIT_CODE, jj->first);
++        m_ad->Delete(tmp);
++    }
++
+ 	sprintf(tmp, "%s = \"%s\"", ATTR_SCHEDD_NAME, Name);
+ 	m_ad->InsertOrUpdate(tmp);
+ 
+@@ -7649,8 +7761,7 @@ Scheduler::add_shadow_rec( int pid, PROC_ID* job_id, int univ,
+ 	return new_rec;
+ }
+ 
+-static void
+-add_shadow_birthdate(int cluster, int proc, bool is_reconnect = false)
++void add_shadow_birthdate(int cluster, int proc, bool is_reconnect)
+ {
+ 	dprintf( D_ALWAYS, "Starting add_shadow_birthdate(%d.%d)\n",
+ 			 cluster, proc );
+@@ -7661,6 +7772,13 @@ add_shadow_birthdate(int cluster, int proc, bool is_reconnect = false)
+ 						ATTR_JOB_START_DATE, &job_start_date) < 0) {
+ 		// this is the first time the job has ever run, so set JobStartDate
+ 		SetAttributeInt(cluster, proc, ATTR_JOB_START_DATE, current_time);
++        
++        int qdate = 0;
++        GetAttributeInt(cluster, proc, ATTR_Q_DATE, &qdate);
++        scheduler.JobsStartedCum += 1;
++        scheduler.TimeToStartCum += current_time - qdate;
++        update(scheduler.TimeToStartTQ, current_time - qdate, current_time);
++        update(scheduler.JobsStartedTQ, 1, current_time);
+ 	}
+ 
+ 	// If we're reconnecting, the old ATTR_JOB_CURRENT_START_DATE is still
+@@ -9140,7 +9258,26 @@ Scheduler::jobExitCode( PROC_ID job_id, int exit_code )
+ 			return ret;
+ 		}
+ 	}
+-	
++
++    // update exit code statistics
++    int start_date = 0;
++    GetAttributeInt(job_id.cluster, job_id.proc, ATTR_JOB_START_DATE, &start_date);
++    time_t updateTime = time(NULL);
++    JobsExitedCum += 1;
++    update(JobsExitedTQ, 1, updateTime);
++    map<int,int>::iterator f(ExitCodesCum.find(exit_code));
++    if (f != ExitCodesCum.end()) {
++        f->second += 1;
++    }
++    map<int, timed_queue<int> >::iterator ff(ExitCodesTQ.find(exit_code));
++    if (ff != ExitCodesTQ.end()) {
++        update(ff->second, 1, updateTime);
++    }
++    // check up on submissions as long as we're updating stats
++    int jobsQueued = GetJobQueuedCount();
++    update(JobsSubmittedTQ, jobsQueued - LastJobsQueued, updateTime);
++    LastJobsQueued = jobsQueued;    
++
+ 		// We get the name of the daemon that had a problem for 
+ 		// nice log messages...
+ 	MyString daemon_name;
+@@ -9222,6 +9359,10 @@ Scheduler::jobExitCode( PROC_ID job_id, int exit_code )
+ 				// no break, fall through
+ 		case JOB_EXITED:
+ 			dprintf(D_FULLDEBUG, "Reaper: JOB_EXITED\n");
++            JobsCompletedCum += 1;
++            update(JobsCompletedTQ, 1, updateTime);
++            RunningTimeCum += updateTime - start_date;
++            update(RunningTimeTQ, updateTime - start_date, updateTime);
+ 				// no break, fall through and do the action
+ 
+ 		case JOB_COREDUMPED:
+@@ -9328,6 +9469,8 @@ Scheduler::jobExitCode( PROC_ID job_id, int exit_code )
+ 		// above, but we might need to do this in other cases in
+ 		// the future
+ 	if (reportException && srec != NULL) {
++        ShadowExceptionsCum += 1;
++        update(ShadowExceptionsTQ, 1, updateTime);
+ 			// Record the shadow exception in the job ad.
+ 		int num_excepts = 0;
+ 		GetAttributeInt(job_id.cluster, job_id.proc,
+@@ -10327,6 +10470,36 @@ Scheduler::Init()
+ 
+ 	m_job_machine_attrs_history_length = param_integer("SYSTEM_JOB_MACHINE_ATTRS_HISTORY_LENGTH",1,0);
+ 
++    ExitCodesCum[JOB_EXITED] = 0;
++    ExitCodesCum[JOB_CKPTED] = 0;
++    ExitCodesCum[JOB_KILLED] = 0;
++    ExitCodesCum[JOB_COREDUMPED] = 0;
++    ExitCodesCum[JOB_EXCEPTION] = 0;
++    ExitCodesCum[JOB_NO_MEM] = 0;
++    ExitCodesCum[JOB_SHADOW_USAGE] = 0;
++    ExitCodesCum[JOB_NOT_CKPTED] = 0;
++    ExitCodesCum[JOB_NOT_STARTED] = 0;
++    ExitCodesCum[JOB_BAD_STATUS] = 0;
++    ExitCodesCum[JOB_EXEC_FAILED] = 0;
++    ExitCodesCum[JOB_NO_CKPT_FILE] = 0;
++    ExitCodesCum[JOB_SHOULD_HOLD] = 0;
++    ExitCodesCum[JOB_SHOULD_REMOVE] = 0;
++    ExitCodesCum[JOB_MISSED_DEFERRAL_TIME] = 0;
++    ExitCodesCum[JOB_EXITED_AND_CLAIM_CLOSING] = 0;
++
++    int event_stat_window = param_integer("WINDOWED_STAT_WIDTH", 300, 1, MAXINT);
++    JobsSubmittedTQ.max_time(event_stat_window);
++    JobsStartedTQ.max_time(event_stat_window);
++    JobsCompletedTQ.max_time(event_stat_window);
++    JobsExitedTQ.max_time(event_stat_window);
++    ShadowExceptionsTQ.max_time(event_stat_window);
++    TimeToStartTQ.max_time(event_stat_window);
++    RunningTimeTQ.max_time(event_stat_window);
++    for (map<int,int>::iterator jj(ExitCodesCum.begin());  jj != ExitCodesCum.end();  ++jj) {
++        // instantiate same codes as ExitCodesCum, and set time windows
++        ExitCodesTQ[jj->first].max_time(event_stat_window);
++    }
++
+ 	first_time_in_init = false;
+ }
+ 
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index 143466d..2ac793d 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -29,6 +29,8 @@
+ #ifndef _CONDOR_SCHED_H_
+ #define _CONDOR_SCHED_H_
+ 
++#include <map>
++
+ #include "dc_collector.h"
+ #include "daemon.h"
+ #include "daemon_list.h"
+@@ -54,6 +56,9 @@
+ #include "condor_timeslice.h"
+ #include "condor_claimid_parser.h"
+ #include "transfer_queue.h"
++#include "timed_queue.h"
++
++using std::map;
+ 
+ extern  int         STARTD_CONTACT_TIMEOUT;
+ const	int			NEGOTIATOR_CONTACT_TIMEOUT = 30;
+@@ -297,6 +302,7 @@ class Scheduler : public Service
+ 	friend	void	job_prio(ClassAd *);
+ 	friend  int		find_idle_local_jobs(ClassAd *);
+ 	friend	int		updateSchedDInterval( ClassAd* );
++    friend  void    add_shadow_birthdate(int cluster, int proc, bool is_reconnect = false);
+ 	void			display_shadow_recs();
+ 	int				actOnJobs(int, Stream *);
+ 	void            enqueueActOnJobMyself( PROC_ID job_id, JobAction action, bool notify );
+@@ -531,6 +537,23 @@ private:
+ 	int				SchedUniverseJobsRunning;
+ 	int				LocalUniverseJobsIdle;
+ 	int				LocalUniverseJobsRunning;
++    time_t          LastUpdateTime;
++    int             JobsStartedCum;
++    double          TimeToStartCum;
++    double          RunningTimeCum;
++    int             JobsCompletedCum;
++    int             JobsExitedCum;
++    int             ShadowExceptionsCum;
++    map<int,int>    ExitCodesCum;
++    int             LastJobsQueued;
++    timed_queue<int>  JobsSubmittedTQ;
++    timed_queue<int>  JobsStartedTQ;
++    timed_queue<int>  JobsCompletedTQ;
++    timed_queue<int>  JobsExitedTQ;
++    timed_queue<int>  ShadowExceptionsTQ;
++    map<int,timed_queue<int> >  ExitCodesTQ;
++    timed_queue<double>  TimeToStartTQ;
++    timed_queue<double>  RunningTimeTQ;
+ 	char*			LocalUnivExecuteDir;
+ 	int				BadCluster;
+ 	int				BadProc;
+diff --git a/src/condor_utils/condor_attributes.cpp b/src/condor_utils/condor_attributes.cpp
+index a0d2efb..5e915c6 100644
+--- a/src/condor_utils/condor_attributes.cpp
++++ b/src/condor_utils/condor_attributes.cpp
+@@ -421,6 +421,8 @@ const char * const ATTR_MAX_HOSTS				 = "MaxHosts";
+ const char * const ATTR_MAX_JOB_RETIREMENT_TIME  = "MaxJobRetirementTime";
+ const char * const ATTR_MAX_JOBS_RUNNING         = "MaxJobsRunning";
+ const char * const ATTR_MEMORY                   = "Memory";
++const char * const ATTR_DETECTED_MEMORY          = "DetectedMemory";
++const char * const ATTR_DETECTED_CPUS            = "DetectedCpus";
+ const char * const ATTR_MIN_HOSTS				 = "MinHosts";
+ const char * const ATTR_MIPS                     = "Mips";
+ const char * const ATTR_MPI_IS_MASTER            = "MPIIsMaster";
+@@ -588,6 +590,27 @@ const char * const ATTR_TOTAL_LOCAL_RUNNING_JOBS = "TotalLocalJobsRunning";
+ const char * const ATTR_TOTAL_LOCAL_IDLE_JOBS	 = "TotalLocalJobsIdle";
+ const char * const ATTR_TOTAL_SCHEDULER_RUNNING_JOBS = "TotalSchedulerJobsRunning";
+ const char * const ATTR_TOTAL_SCHEDULER_IDLE_JOBS	 = "TotalSchedulerJobsIdle";
++const char * const ATTR_JOBS_SUBMITTED_CUM = "JobsSubmittedCum";
++const char * const ATTR_JOBS_STARTED_CUM = "JobsStartedCum";
++const char * const ATTR_JOBS_EXITED_CUM = "JobsExitedCum";
++const char * const ATTR_JOBS_COMPLETED_CUM = "JobsCompletedCum";
++const char * const ATTR_SHADOW_EXCEPTIONS_CUM = "ShadowExceptionsCum";
++const char * const ATTR_MEAN_TIME_TO_START_CUM = "MeanTimeToStartCum";
++const char * const ATTR_SUM_TIME_TO_START_CUM = "SumTimeToStartCum";
++const char * const ATTR_MEAN_RUNNING_TIME_CUM = "MeanRunningTimeCum";
++const char * const ATTR_SUM_RUNNING_TIME_CUM = "SumRunningTimeCum";
++const char * const ATTR_EXIT_CODE_CUM = "ExitCodeCum";
++const char * const ATTR_JOBS_SUBMITTED = "JobsSubmitted";
++const char * const ATTR_JOB_SUBMISSION_RATE = "JobSubmissionRate";
++const char * const ATTR_JOBS_STARTED = "JobsStarted";
++const char * const ATTR_JOB_START_RATE = "JobStartRate";
++const char * const ATTR_JOBS_COMPLETED = "JobsCompleted";
++const char * const ATTR_JOB_COMPLETION_RATE = "JobCompletionRate";
++const char * const ATTR_JOBS_EXITED = "JobsExited";
++const char * const ATTR_SHADOW_EXCEPTIONS = "ShadowExceptions";
++const char * const ATTR_MEAN_TIME_TO_START = "MeanTimeToStart";
++const char * const ATTR_MEAN_RUNNING_TIME = "MeanRunningTime";
++const char * const ATTR_EXIT_CODE = "ExitCode";
+ const char * const ATTR_TOTAL_SLOTS			 = "TotalSlots";
+ const char * const ATTR_TOTAL_TIME_IN_CYCLE		   = "TotalTimeInCycle";	
+ const char * const ATTR_TOTAL_TIME_BACKFILL_BUSY      = "TotalTimeBackfillBusy";
+@@ -603,6 +626,7 @@ const char * const ATTR_TOTAL_TIME_PREEMPTING_KILLING = "TotalTimePreemptingKill
+ const char * const ATTR_TOTAL_TIME_PREEMPTING_VACATING = "TotalTimePreemptingVacating";
+ const char * const ATTR_TOTAL_TIME_UNCLAIMED_BENCHMARKING = "TotalTimeUnclaimedBenchmarking";
+ const char * const ATTR_TOTAL_TIME_UNCLAIMED_IDLE     = "TotalTimeUnclaimedIdle";
++const char * const ATTR_WINDOWED_STAT_WIDTH = "WindowedStatWidth";
+ 
+ // Deprecated (cruft) -- use: ATTR_TOTAL_SLOTS;
+ const char * const ATTR_TOTAL_VIRTUAL_MACHINES	 = "TotalVirtualMachines";
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index 71f8895..530500e 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -10135,3 +10135,19 @@ usage=
+ url=
+ tags=
+ id=601
++
++[WINDOWED_STAT_WIDTH]
++aliases=
++default=300
++version=0.0.0
++range=1,1000000000
++state=default
++type=int
++is_macro=false
++reconfig=true
++customization=seldom
++friendly_name=Windowed Statistic Width
++usage=
++url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
++tags=scheduler
++id=602
+diff --git a/src/condor_utils/timed_queue.h b/src/condor_utils/timed_queue.h
+new file mode 100644
+index 0000000..da2794d
+--- /dev/null
++++ b/src/condor_utils/timed_queue.h
+@@ -0,0 +1,127 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2011, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#ifndef _timed_queue_h_
++#define _timed_queue_h_ 1
++
++#include "time.h"
++#include <deque>
++#include "condor_debug.h"
++
++// A deque<> subclass that makes it convenient to time-stamp queue entries
++// and maintain the queue with a configurable time-window and maximum length.
++template <typename Data>
++struct timed_queue : public std::deque<std::pair<time_t, Data> > {
++    typedef std::deque<std::pair<time_t, Data> > base_type;
++
++    typedef typename base_type::size_type size_type;
++    typedef typename base_type::difference_type difference_type;
++    typedef typename base_type::value_type value_type;
++    typedef typename base_type::pointer pointer;
++    typedef typename base_type::reference reference;
++    typedef typename base_type::const_reference const_reference;
++
++    typedef typename base_type::iterator iterator;
++    typedef typename base_type::const_iterator const_iterator;
++    typedef typename base_type::reverse_iterator reverse_iterator;
++    typedef typename base_type::const_reverse_iterator const_reverse_iterator;
++
++    timed_queue() : base_type(), _max_time(0), _max_len(0) {}
++    virtual ~timed_queue() {}
++
++    timed_queue(const timed_queue& src) : base_type(src), _max_time(src._max_time), _max_len(src._max_len) {}
++
++    timed_queue& operator=(const timed_queue& src) {
++        if (this == &src) return *this;
++        base_type::operator=(src);
++        _max_time = src._max_time;
++        _max_len = src._max_len;
++        return *this;
++    }
++
++    void push_front(const Data& d) {
++        push_front(d, time(NULL));
++    }
++
++    void push_front(const Data& d, time_t t) {
++        if (!base_type::empty() && (t < base_type::front().first)) {
++            EXCEPT("timed_queue::push_front, timestamp %lu out of order", (unsigned long)(t));
++        }
++        base_type::push_front(value_type(t, d));
++        if (max_len() > 0) trim_len(max_len());
++        if (max_time() > 0) trim_time(base_type::front().first - max_time());
++    }
++
++    void max_time(size_type t) {
++        _max_time = t;
++        if (max_time() > 0) trim_time(base_type::front().first - max_time());
++    }
++    size_type max_time() const {
++        return _max_time;
++    }
++    void max_len(size_type l) {
++        _max_len = l;
++        if (max_len() > 0) trim_len(max_len());
++    }
++    size_type max_len() const {
++        return _max_len;
++    }
++
++    void trim_time(time_t tmin) {
++        while (!base_type::empty()) {
++            if (base_type::back().first >= tmin) break;
++            base_type::pop_back();
++        }
++    }
++
++    void trim_len(size_type lmax) {
++        while (base_type::size() > lmax) base_type::pop_back();        
++    }
++
++    protected:
++    size_type _max_time;
++    size_type _max_len;
++};
++
++
++// Utility function that will add (n) to the front of the queue if the
++// current time-stamp is the same, otherwise it will push a new entry.
++template <typename Num1, typename Num2>
++void update(timed_queue<Num1>& tq, Num2 n, time_t t) {
++    if (n <= 0) return;
++    if (!tq.empty() && (tq.front().first == t)) {
++        tq.front().second += n;
++    } else {
++        tq.push_front(Num1(n), t);
++    }
++}
++
++// Utility function that will trim the queue and then sum up the entries
++template <typename Num>
++Num accumulate(timed_queue<Num>& tq, time_t t) {
++    tq.trim_time(t - tq.max_time());
++    Num r = 0;
++    for (typename timed_queue<Num>::iterator j(tq.begin());  j != tq.end();  ++j) {
++        r += j->second;
++    }
++    return r;
++}
++
++
++#endif // _timed_queue_h_
