@@ -1,0 +1,32 @@
+From 56be5449a7e7bea5f44c8ba0fc62c2ec74fbb652 Mon Sep 17 00:00:00 2001
+From: Ben Cotton <ben.cotton@cyclecomputing.com>
+Date: Wed, 24 Jun 2015 16:22:59 -0400
+Subject: [PATCH 1/2] Remove the 4th argument (see commit
+ 579f844eab1ddc44a12fe4a07877f0f8ab826531)
+
+
+diff --git a/src/condor_contrib/aviary/src/job/SchedulerObject.cpp b/src/condor_contrib/aviary/src/job/SchedulerObject.cpp
+index 34e217a..1010ddd 100644
+--- a/src/condor_contrib/aviary/src/job/SchedulerObject.cpp
++++ b/src/condor_contrib/aviary/src/job/SchedulerObject.cpp
+@@ -380,7 +380,7 @@ SchedulerObject::suspend(std::string key, std::string &/*reason*/, std::string &
+ 		return false;
+ 	}
+ 
+-	scheduler.enqueueActOnJobMyself(id,JA_SUSPEND_JOBS,true,true);
++	scheduler.enqueueActOnJobMyself(id,JA_SUSPEND_JOBS,true);
+ 
+ 	return true;
+ }
+@@ -395,7 +395,7 @@ SchedulerObject::_continue(std::string key, std::string &/*reason*/, std::string
+ 		return false;
+ 	}
+ 
+-	scheduler.enqueueActOnJobMyself(id,JA_CONTINUE_JOBS,true,true);
++	scheduler.enqueueActOnJobMyself(id,JA_CONTINUE_JOBS,true);
+ 
+ 	return true;
+ }
+-- 
+2.3.5
+
