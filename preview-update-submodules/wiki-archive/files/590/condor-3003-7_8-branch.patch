@@ -1,0 +1,30 @@
+From b5cc6fa23817eca8a2ce192506b7343da24ccf68 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Fri, 6 Jul 2012 10:53:01 -0500
+Subject: [PATCH] Nuke usage of the max memory method for now.
+
+---
+ src/condor_procd/proc_family.cpp |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/condor_procd/proc_family.cpp b/src/condor_procd/proc_family.cpp
+index e7867e6..44ba995 100644
+--- a/src/condor_procd/proc_family.cpp
++++ b/src/condor_procd/proc_family.cpp
+@@ -714,8 +714,12 @@ ProcFamily::aggregate_usage_cgroup(ProcFamilyUsage* usage)
+ 	if (image > m_max_image_size) {
+ 		m_max_image_size = image/1024;
+ 	}
++	// XXX: Try again at using this at a later date.
++	// Currently, it reports the max size *including* the page cache.
++	// Doh!
++	//
+ 	// Try updating the max size using cgroups
+-	update_max_image_size_cgroup();
++	//update_max_image_size_cgroup();
+ 
+ 	// Update CPU
+ 	*handle = NULL;
+-- 
+1.7.10.4
+
