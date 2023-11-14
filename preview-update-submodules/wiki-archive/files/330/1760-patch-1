@@ -1,0 +1,19 @@
+3a0d1be2c12c29b769be78800e67a0745173bb2e
+diff --git a/src/condor_starter.V6.1/condor_glexec_cleanup b/src/condor_starter.V6.1/condor_glexec_cleanup
+index c6061cf..dc986a4 100755
+--- a/src/condor_starter.V6.1/condor_glexec_cleanup
++++ b/src/condor_starter.V6.1/condor_glexec_cleanup
+@@ -17,11 +17,11 @@ SANDBOX="$3"
+ SH=`readlink -f /bin/sh`
+ GLEXEC_CLIENT_CERT="$SANDBOX.condor/$PROXY"
+ export GLEXEC_CLIENT_CERT
+-"$GLEXEC" "$SH" -c "rm \"$SANDBOX/$PROXY\" && \
++"$GLEXEC" "$SH" -c "rm -f \"$SANDBOX/$PROXY\" && \
+                         tar -C \"$SANDBOX\" -c . && \
+                         rm -rf \"$SANDBOX\"" | \
+     tar -C "$SANDBOX.condor" -x
+ 
+ # move the condor-owned sandbox back in place
+ #
+-mv "$SANDBOX.condor" "$SANDBOX"
++mv -f "$SANDBOX.condor" "$SANDBOX"
