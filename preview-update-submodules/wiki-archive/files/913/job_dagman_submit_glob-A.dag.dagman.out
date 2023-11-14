@@ -1,0 +1,202 @@
+11/04/15 11:25:36 ******************************************************
+11/04/15 11:25:36 ** condor_scheduniv_exec.1.0 (CONDOR_DAGMAN) STARTING UP
+11/04/15 11:25:36 ** C:\condor\execute\dir_5468\userdir\condor\bin\condor_dagman.exe
+11/04/15 11:25:36 ** SubsystemInfo: name=DAGMAN type=DAGMAN(10) class=DAEMON(1)
+11/04/15 11:25:36 ** Configuration: subsystem:DAGMAN local:<NONE> class:DAEMON
+11/04/15 11:25:36 ** $CondorVersion: 8.5.1 Nov 04 2015 BuildID: 347568 $
+11/04/15 11:25:36 ** $CondorPlatform: x86_64_Windows8 $
+11/04/15 11:25:36 ** PID = 18812
+11/04/15 11:25:36 ** Log last touched time unavailable (No such file or directory)
+11/04/15 11:25:36 ******************************************************
+11/04/15 11:25:36 Using config source: C:/condor/execute/dir_5468/userdir/condor_tests/remote_task.pl.saveme/pdir19412/pdir19412remotetaskjob_dagman_submit_glob-A\condor_config
+11/04/15 11:25:36 Using local config sources: 
+11/04/15 11:25:36    C:\condor\execute\dir_5468\userdir\condor_tests\remote_task.pl.saveme\pdir19412\pdir19412remotetaskjob_dagman_submit_glob-A\condor_config.local
+11/04/15 11:25:36 config Macros = 66, Sorted = 65, StringBytes = 2779, TablesBytes = 1872
+11/04/15 11:25:36 CLASSAD_CACHING is ENABLED
+11/04/15 11:25:36 Daemon Log is logging: D_ALWAYS D_ERROR
+11/04/15 11:25:36 DaemonCore: No command port requested.
+11/04/15 11:25:36 SharedPortEndpoint: failed to open ./shared_port_ad: No such file or directory
+11/04/15 11:25:36 SharedPortEndpoint: did not successfully find SharedPortServer address. Will retry in 60s.
+11/04/15 11:25:36 DAGMAN_USE_STRICT setting: 1
+11/04/15 11:25:36 DAGMAN_VERBOSITY setting: 3
+11/04/15 11:25:36 DAGMAN_DEBUG_CACHE_SIZE setting: 5242880
+11/04/15 11:25:36 DAGMAN_DEBUG_CACHE_ENABLE setting: False
+11/04/15 11:25:36 DAGMAN_SUBMIT_DELAY setting: 0
+11/04/15 11:25:36 DAGMAN_MAX_SUBMIT_ATTEMPTS setting: 6
+11/04/15 11:25:36 DAGMAN_STARTUP_CYCLE_DETECT setting: False
+11/04/15 11:25:36 DAGMAN_MAX_SUBMITS_PER_INTERVAL setting: 5
+11/04/15 11:25:36 DAGMAN_USER_LOG_SCAN_INTERVAL setting: 5
+11/04/15 11:25:36 DAGMAN_DEFAULT_PRIORITY setting: 0
+11/04/15 11:25:36 DAGMAN_SUPPRESS_NOTIFICATION setting: True
+11/04/15 11:25:36 allow_events (DAGMAN_ALLOW_EVENTS) setting: 114
+11/04/15 11:25:36 DAGMAN_RETRY_SUBMIT_FIRST setting: True
+11/04/15 11:25:36 DAGMAN_RETRY_NODE_FIRST setting: False
+11/04/15 11:25:36 DAGMAN_MAX_JOBS_IDLE setting: 1000
+11/04/15 11:25:36 DAGMAN_MAX_JOBS_SUBMITTED setting: 0
+11/04/15 11:25:36 DAGMAN_MAX_PRE_SCRIPTS setting: 20
+11/04/15 11:25:36 DAGMAN_MAX_POST_SCRIPTS setting: 20
+11/04/15 11:25:36 DAGMAN_ALLOW_LOG_ERROR setting: False
+11/04/15 11:25:36 DAGMAN_MUNGE_NODE_NAMES setting: True
+11/04/15 11:25:36 DAGMAN_PROHIBIT_MULTI_JOBS setting: False
+11/04/15 11:25:36 DAGMAN_SUBMIT_DEPTH_FIRST setting: False
+11/04/15 11:25:36 DAGMAN_ALWAYS_RUN_POST setting: True
+11/04/15 11:25:36 DAGMAN_ABORT_DUPLICATES setting: True
+11/04/15 11:25:36 DAGMAN_ABORT_ON_SCARY_SUBMIT setting: True
+11/04/15 11:25:36 DAGMAN_PENDING_REPORT_INTERVAL setting: 600
+11/04/15 11:25:36 DAGMAN_AUTO_RESCUE setting: True
+11/04/15 11:25:36 DAGMAN_MAX_RESCUE_NUM setting: 100
+11/04/15 11:25:36 DAGMAN_WRITE_PARTIAL_RESCUE setting: True
+11/04/15 11:25:36 DAGMAN_DEFAULT_NODE_LOG setting: @(DAG_DIR)\@(DAG_FILE).nodes.log
+11/04/15 11:25:36 DAGMAN_GENERATE_SUBDAG_SUBMITS setting: True
+11/04/15 11:25:36 DAGMAN_MAX_JOB_HOLDS setting: 100
+11/04/15 11:25:36 DAGMAN_HOLD_CLAIM_TIME setting: 20
+11/04/15 11:25:36 ALL_DEBUG setting: D_ALWAYS D_CMD:1
+11/04/15 11:25:36 DAGMAN_DEBUG setting: 
+11/04/15 11:25:36 DAGMAN_SUPPRESS_JOB_LOGS setting: False
+11/04/15 11:25:36 argv[0] == "condor_scheduniv_exec.1.0"
+11/04/15 11:25:36 argv[1] == "-Lockfile"
+11/04/15 11:25:36 argv[2] == "job_dagman_submit_glob-A.dag.lock"
+11/04/15 11:25:36 argv[3] == "-AutoRescue"
+11/04/15 11:25:36 argv[4] == "1"
+11/04/15 11:25:36 argv[5] == "-DoRescueFrom"
+11/04/15 11:25:36 argv[6] == "0"
+11/04/15 11:25:36 argv[7] == "-Dag"
+11/04/15 11:25:36 argv[8] == "job_dagman_submit_glob-A.dag"
+11/04/15 11:25:36 argv[9] == "-Suppress_notification"
+11/04/15 11:25:36 argv[10] == "-CsdVersion"
+11/04/15 11:25:36 argv[11] == "$CondorVersion: 8.5.1 Nov 04 2015 BuildID: 347568 $"
+11/04/15 11:25:36 argv[12] == "-Verbose"
+11/04/15 11:25:36 argv[13] == "-Force"
+11/04/15 11:25:36 argv[14] == "-Notification"
+11/04/15 11:25:36 argv[15] == "never"
+11/04/15 11:25:36 argv[16] == "-Dagman"
+11/04/15 11:25:36 argv[17] == "C:\condor\execute\dir_5468\userdir\condor\bin\condor_dagman.exe"
+11/04/15 11:25:36 attempt to connect to <128.104.103.11:43197> failed: connect errno = 10048.  Will keep trying for 10 total seconds (10 to go).
+
+11/04/15 11:25:38 Warning: failed to get attribute DAGNodeName
+11/04/15 11:25:38 Default node log file is: <C:\condor\execute\dir_5468\userdir\condor_tests\.\job_dagman_submit_glob-A.dag.nodes.log>
+11/04/15 11:25:38 DAG Lockfile will be written to job_dagman_submit_glob-A.dag.lock
+11/04/15 11:25:38 DAG Input file is job_dagman_submit_glob-A.dag
+11/04/15 11:25:38 Parsing 1 dagfiles
+11/04/15 11:25:38 Parsing job_dagman_submit_glob-A.dag ...
+11/04/15 11:25:38 Dag contains 3 total jobs
+11/04/15 11:25:38 Sleeping for 3 seconds to ensure ProcessId uniqueness
+11/04/15 11:25:41 Warning: ProcessId not confirmed unique
+11/04/15 11:25:41 Bootstrapping...
+11/04/15 11:25:41 Number of pre-completed nodes: 0
+11/04/15 11:25:41 MultiLogFiles: truncating log file C:\condor\execute\dir_5468\userdir\condor_tests\.\job_dagman_submit_glob-A.dag.nodes.log
+11/04/15 11:25:41 DAG status: 0 (DAG_STATUS_OK)
+11/04/15 11:25:41 Of 3 nodes total:
+11/04/15 11:25:41  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+11/04/15 11:25:41   ===     ===      ===     ===     ===        ===      ===
+11/04/15 11:25:41     0       0        0       0       1          2        0
+11/04/15 11:25:41 0 job proc(s) currently held
+11/04/15 11:25:41 Registering condor_event_timer...
+11/04/15 11:25:42 Submitting HTCondor Node NodeA job(s)...
+11/04/15 11:25:42 Adding a DAGMan workflow log C:\condor\execute\dir_5468\userdir\condor_tests\.\job_dagman_submit_glob-A.dag.nodes.log
+11/04/15 11:25:42 Masking the events recorded in the DAGMAN workflow log
+11/04/15 11:25:42 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+11/04/15 11:25:42 submitting: C:\condor\execute\dir_5468\userdir\condor\bin\condor_submit.exe -a dag_node_name' '=' 'NodeA -a +DAGManJobId' '=' '1 -a DAGManJobId' '=' '1 -a submit_event_notes' '=' 'DAG' 'Node:' 'NodeA -a dagman_log' '=' 'C:\condor\execute\dir_5468\userdir\condor_tests\.\job_dagman_submit_glob-A.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never job_dagman_submit_glob-A-nodeA.cmd
+11/04/15 11:25:45 From submit: Submitting job(s)...
+11/04/15 11:25:45 From submit: 3 job(s) submitted to cluster 2.
+11/04/15 11:25:45 	assigned HTCondor ID (2.0.0)
+11/04/15 11:25:45 Just submitted 1 job this cycle...
+11/04/15 11:25:45 Currently monitoring 1 HTCondor log file(s)
+11/04/15 11:25:45 Reassigning the id of job NodeA from (2.0.0) to (2.0.0)
+11/04/15 11:25:45 Event: ULOG_SUBMIT for HTCondor Node NodeA (2.0.0)
+11/04/15 11:25:45 Number of idle job procs: 1
+11/04/15 11:25:45 Reassigning the id of job NodeA from (2.0.0) to (2.1.0)
+11/04/15 11:25:45 Event: ULOG_SUBMIT for HTCondor Node NodeA (2.1.0)
+11/04/15 11:25:45 Number of idle job procs: 1
+11/04/15 11:25:45 Reassigning the id of job NodeA from (2.1.0) to (2.2.0)
+11/04/15 11:25:45 Event: ULOG_SUBMIT for HTCondor Node NodeA (2.2.0)
+11/04/15 11:25:45 Number of idle job procs: 1
+11/04/15 11:25:45 DAG status: 0 (DAG_STATUS_OK)
+11/04/15 11:25:45 Of 3 nodes total:
+11/04/15 11:25:45  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+11/04/15 11:25:45   ===     ===      ===     ===     ===        ===      ===
+11/04/15 11:25:45     0       0        1       0       0          2        0
+11/04/15 11:25:45 0 job proc(s) currently held
+11/04/15 11:26:00 Currently monitoring 1 HTCondor log file(s)
+11/04/15 11:26:00 Event: ULOG_EXECUTE for HTCondor Node NodeA (2.0.0)
+11/04/15 11:26:00 Number of idle job procs: 0
+11/04/15 11:26:00 Event: ULOG_EXECUTE for HTCondor Node NodeA (2.1.0)
+11/04/15 11:26:00 Number of idle job procs: 0
+11/04/15 11:26:00 Event: ULOG_IMAGE_SIZE for HTCondor Node NodeA (2.0.0)
+11/04/15 11:26:00 Event: ULOG_EXECUTE for HTCondor Node NodeA (2.2.0)
+11/04/15 11:26:00 Number of idle job procs: 0
+11/04/15 11:26:00 Event: ULOG_JOB_TERMINATED for HTCondor Node NodeA (2.0.0)
+11/04/15 11:26:00 Number of idle job procs: 0
+11/04/15 11:26:00 Node NodeA job proc (2.0.0) completed successfully.
+11/04/15 11:26:00 Event: ULOG_IMAGE_SIZE for HTCondor Node NodeA (2.1.0)
+11/04/15 11:26:00 Event: ULOG_IMAGE_SIZE for HTCondor Node NodeA (2.2.0)
+11/04/15 11:26:00 Event: ULOG_JOB_TERMINATED for HTCondor Node NodeA (2.2.0)
+11/04/15 11:26:00 Number of idle job procs: 0
+11/04/15 11:26:00 Node NodeA job proc (2.2.0) completed successfully.
+11/04/15 11:26:00 Event: ULOG_JOB_TERMINATED for HTCondor Node NodeA (2.1.0)
+11/04/15 11:26:00 Number of idle job procs: 0
+11/04/15 11:26:00 Node NodeA job proc (2.1.0) completed successfully.
+11/04/15 11:26:00 Node NodeA job completed
+11/04/15 11:26:00 DAG status: 0 (DAG_STATUS_OK)
+11/04/15 11:26:00 Of 3 nodes total:
+11/04/15 11:26:00  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+11/04/15 11:26:00   ===     ===      ===     ===     ===        ===      ===
+11/04/15 11:26:00     1       0        0       0       1          1        0
+11/04/15 11:26:00 0 job proc(s) currently held
+11/04/15 11:26:05 Submitting HTCondor Node NodeB job(s)...
+11/04/15 11:26:05 Adding a DAGMan workflow log C:\condor\execute\dir_5468\userdir\condor_tests\.\job_dagman_submit_glob-A.dag.nodes.log
+11/04/15 11:26:05 Masking the events recorded in the DAGMAN workflow log
+11/04/15 11:26:05 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+11/04/15 11:26:05 submitting: C:\condor\execute\dir_5468\userdir\condor\bin\condor_submit.exe -a dag_node_name' '=' 'NodeB -a +DAGManJobId' '=' '1 -a DAGManJobId' '=' '1 -a submit_event_notes' '=' 'DAG' 'Node:' 'NodeB -a dagman_log' '=' 'C:\condor\execute\dir_5468\userdir\condor_tests\.\job_dagman_submit_glob-A.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"NodeA" -a +KeepClaimIdle' '=' '20 -a notification' '=' 'never job_dagman_submit_glob-A-nodeB.cmd
+11/04/15 11:26:05 From submit: Submitting job(s)...
+11/04/15 11:26:05 From submit: 3 job(s) submitted to cluster 3.
+11/04/15 11:26:05 	assigned HTCondor ID (3.0.0)
+11/04/15 11:26:05 Just submitted 1 job this cycle...
+11/04/15 11:26:05 Currently monitoring 1 HTCondor log file(s)
+11/04/15 11:26:05 Reassigning the id of job NodeB from (3.0.0) to (3.0.0)
+11/04/15 11:26:05 Event: ULOG_SUBMIT for HTCondor Node NodeB (3.0.0)
+11/04/15 11:26:05 Number of idle job procs: 1
+11/04/15 11:26:05 Reassigning the id of job NodeB from (3.0.0) to (3.1.0)
+11/04/15 11:26:05 Event: ULOG_SUBMIT for HTCondor Node NodeB (3.1.0)
+11/04/15 11:26:05 Number of idle job procs: 1
+11/04/15 11:26:05 Reassigning the id of job NodeB from (3.1.0) to (3.2.0)
+11/04/15 11:26:05 Event: ULOG_SUBMIT for HTCondor Node NodeB (3.2.0)
+11/04/15 11:26:05 Number of idle job procs: 1
+11/04/15 11:26:05 DAG status: 0 (DAG_STATUS_OK)
+11/04/15 11:26:05 Of 3 nodes total:
+11/04/15 11:26:05  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+11/04/15 11:26:05   ===     ===      ===     ===     ===        ===      ===
+11/04/15 11:26:05     1       0        1       0       0          1        0
+11/04/15 11:26:05 0 job proc(s) currently held
+11/04/15 11:26:05 attempt to connect to <128.104.103.11:43197> failed: connect errno = 10048.  Will keep trying for 10 total seconds (10 to go).
+
+11/04/15 11:26:12 Currently monitoring 1 HTCondor log file(s)
+11/04/15 11:26:12 Event: ULOG_EXECUTE for HTCondor Node NodeB (3.0.0)
+11/04/15 11:26:12 Number of idle job procs: 0
+11/04/15 11:26:12 Event: ULOG_EXECUTE for HTCondor Node NodeB (3.1.0)
+11/04/15 11:26:12 Number of idle job procs: 0
+11/04/15 11:26:12 Event: ULOG_IMAGE_SIZE for HTCondor Node NodeB (3.0.0)
+11/04/15 11:26:12 Event: ULOG_JOB_TERMINATED for HTCondor Node NodeB (3.0.0)
+11/04/15 11:26:12 Number of idle job procs: 0
+11/04/15 11:26:12 Node NodeB job proc (3.0.0) completed successfully.
+11/04/15 11:26:12 Event: ULOG_IMAGE_SIZE for HTCondor Node NodeB (3.1.0)
+11/04/15 11:26:12 Event: ULOG_JOB_TERMINATED for HTCondor Node NodeB (3.1.0)
+11/04/15 11:26:12 Number of idle job procs: 0
+11/04/15 11:26:12 Node NodeB job proc (3.1.0) completed successfully.
+11/04/15 11:26:32 Currently monitoring 1 HTCondor log file(s)
+11/04/15 11:26:32 Event: ULOG_EXECUTE for HTCondor Node NodeB (3.2.0)
+11/04/15 11:26:32 Number of idle job procs: 0
+11/04/15 11:26:32 Event: ULOG_IMAGE_SIZE for HTCondor Node NodeB (3.2.0)
+11/04/15 11:26:36 SharedPortEndpoint: failed to open ./shared_port_ad: No such file or directory
+11/04/15 11:26:36 SharedPortEndpoint: did not successfully find SharedPortServer address. Will retry in 60s.
+11/04/15 11:27:32 Currently monitoring 1 HTCondor log file(s)
+11/04/15 11:27:32 Event: ULOG_JOB_TERMINATED for HTCondor Node NodeB (3.2.0)
+11/04/15 11:27:32 Number of idle job procs: 0
+11/04/15 11:27:32 Node NodeB job proc (3.2.0) completed successfully.
+11/04/15 11:27:32 Node NodeB job completed
+11/04/15 11:27:32 DAG status: 0 (DAG_STATUS_OK)
+11/04/15 11:27:32 Of 3 nodes total:
+11/04/15 11:27:32  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+11/04/15 11:27:32   ===     ===      ===     ===     ===        ===      ===
+11/04/15 11:27:32     2       0        0       0       1          0        0
+11/04/15 11:27:32 0 job proc(s) currently held
