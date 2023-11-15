@@ -1,0 +1,40 @@
+10/08 14:13:43 100196180 kbytes available for "/opt/personal-condor/execute"
+10/08 14:13:43 100196180 kbytes available for "/opt/personal-condor/execute"
+10/08 14:13:43 100196180 kbytes available for "/opt/personal-condor/execute"
+10/08 14:13:43 CronMgr: 0 jobs alive
+10/08 14:13:46 DaemonCore: No more children processes to reap.
+10/08 14:13:46 shutdown fast
+10/08 14:13:46 StartdCronMgr: Shutting down
+10/08 14:13:46 CronMgr: Killing all jobs
+10/08 14:13:46 Cron: Killing all jobs
+10/08 14:13:46 CronMgr: 0 jobs alive
+10/08 14:13:46 slot1.2: Changing activity: Vacating -> Killing
+10/08 14:13:46 slot1.2: In Starter::kill() with pid 10845, sig 3 (SIGQUIT)
+10/08 14:13:46 Send_Signal: attempt to send signal 3 to process 10845, which has exited but not yet been reaped.
+10/08 14:13:46 slot1.2: Error sending signal to starter, errno = 0 (Success)
+10/08 14:13:46 slot1.2: In Starter::kill_kids() with pid 10845, sig 9 (SIGKILL)
+10/08 14:13:46 slot1.2: State change: Error sending signals to starter
+10/08 14:13:46 slot1.2: Changing state and activity: Preempting/Killing -> Owner/Idle
+10/08 14:13:46 slot1.2: State change: IS_OWNER is false
+10/08 14:13:46 slot1.2: Changing state: Owner -> Unclaimed
+10/08 14:13:46 slot1.2: Changing state: Unclaimed -> Delete
+10/08 14:13:46 Trying to update collector <127.0.0.1:11000>
+10/08 14:13:46 Attempting to send update via UDP to collector tstclair.redhat <127.0.0.1:11000>
+10/08 14:13:46 slot1.2: Resource no longer needed, deleting
+10/08 14:13:46 100196192 kbytes available for "/opt/personal-condor/execute"
+10/08 14:13:46 slot1: Total execute space: 100191072
+Stack dump for process 10669 at timestamp 1255029226 (13 frames)
+condor_startd(dprintf_dump_stack+0xc1)[0x508f54]
+condor_startd[0x5091da]
+/lib64/libpthread.so.0[0x392c20eee0]
+condor_startd(_ZN6Reqexp7unavailEv+0x10)[0x499eea]
+condor_startd(_ZN8Resource17shutdownAllClaimsEb+0x57)[0x4a9913]
+condor_startd(_ZN8Resource13killAllClaimsEv+0x1d)[0x4a98b9]
+condor_startd(_ZN6ResMgr4walkEM8ResourceFvvE+0xd9)[0x4a0ddd]
+condor_startd(_Z18main_shutdown_fastv+0xa8)[0x4ba501]
+condor_startd(_ZN12TimerManager7TimeoutEv+0x38f)[0x5059b7]
+condor_startd(_ZN10DaemonCore6DriverEv+0x828)[0x4e6b96]
+condor_startd(main+0x1a0a)[0x4fe66d]
+/lib64/libc.so.6(__libc_start_main+0xfd)[0x392b61ea2d]
+condor_startd[0x490ff9]
+
