@@ -1,0 +1,55 @@
+From 0df6814b45c5971dec9a3863fba4eafcd89df23b Mon Sep 17 00:00:00 2001
+From: Doug Strain <dstrain@google.com>
+Date: Fri, 2 Sep 2016 15:39:08 -0700
+Subject: [PATCH 1/1] Handle JSON escaping for GCE metadata correctly.
+
+'\' should not be escaped, since multi-line startup
+scripts require sending "\n" to denote a newline.
+---
+ doc/grids/gce.tex            | 6 +++++-
+ src/gce_gahp/gceCommands.cpp | 6 +++++-
+ 2 files changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/doc/grids/gce.tex b/doc/grids/gce.tex
+index 9327d32..040b308 100644
+--- a/doc/grids/gce.tex
++++ b/doc/grids/gce.tex
+@@ -89,7 +89,11 @@ This second option allows a wider range of characters to be used in the
+ metadata values.
+ Each name=value pair should be on its own line.
+ No white space is removed from the lines, except for the newline that
+-separates entries.
++separates entries.  For multi-line metadata, such as multi-line
++startup scripts, write the entire metadata on one line, using "\n"
++to specify a newline.
++See \URL{https://cloud.google.com/compute/docs/startupscript} for an
++example.
+ 
+ Both options can be used at the same time, 
+ but do not use the same metadata name in both places.
+diff --git a/src/gce_gahp/gceCommands.cpp b/src/gce_gahp/gceCommands.cpp
+index fa62ca4..d45f689 100644
+--- a/src/gce_gahp/gceCommands.cpp
++++ b/src/gce_gahp/gceCommands.cpp
+@@ -149,13 +149,17 @@ bool ParseJSONLine( const char *&input, string &key, string &value, int &nesting
+ 	return false;
+ }
+ 
++// Escapes quotes from JSON input
++// Note that we trust the user to escape '\' correctly
++// in order to allow the submission of '\n' and other
++// needed characters (e.g. for multi-line startup scripts)
+ const char *escapeJSONString( const char *value )
+ {
+ 	static string result;
+ 	result.clear();
+ 
+ 	while( *value ) {
+-		if ( *value == '"' || *value == '\\' ) {
++		if ( *value == '"' ) {
+ 			result += '\\';
+ 		}
+ 		result += *value;
+-- 
+2.8.0.rc3.226.g39d4020
+
