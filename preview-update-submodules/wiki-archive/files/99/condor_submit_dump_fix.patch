@@ -1,0 +1,17 @@
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index c310896..40b280f 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -5899,7 +5899,11 @@ queue(int num)
+ 				init_job_ad();
+ 			}
+ 			IsFirstExecutable = false;
+-			ProcId = -1;
++			if ( !IsFirstExecutable && DumpClassAdToFile ) {
++					ProcId = 1;
++			} else {
++				ProcId = -1;
++			}
+ 			ClusterAdAttrs.clear();
+ 		}
+ 
