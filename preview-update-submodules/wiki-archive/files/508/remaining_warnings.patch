@@ -1,0 +1,1822 @@
+diff --git a/src/classad_analysis/analysis.cpp b/src/classad_analysis/analysis.cpp
+index c51500a..914ab03 100644
+--- a/src/classad_analysis/analysis.cpp
++++ b/src/classad_analysis/analysis.cpp
+@@ -497,7 +497,7 @@ AnalyzeJobReqToBuffer( classad::ClassAd *request, ResourceGroup &offers, string
+ 			// create map from original Condition order to sorted order
+ 		int numConds = 0;
+ 		profile->GetNumberOfConditions( numConds );
+-		ExtArray<int> condMap ( numConds );
++		ExtArray<int> condMap ( 0, numConds );
+ 		int i = 0;
+ 		while( mapList.Next( index ) ) {
+ 			condMap[index] = i;
+@@ -1164,16 +1164,16 @@ SuggestConditionModify( Profile *p, ResourceGroup &rg )
+ 
+ 		// Get info from BoolTable for ConditionExplains
+ 		// set up array of operators and get list of attrs;
+-	ExtArray< string > attrs;
+-	ExtArray< ValueRange * > vrs;
++	ExtArray< string > attrs( string(), 64 );
++	ExtArray< ValueRange * > vrs( NULL, 64 );
+ 	string attr = "";
+-	ExtArray<int> vr4Cond ( numConds );
++	ExtArray<int> vr4Cond ( 0, numConds );
+ 	int attrNum = 0;
+ 	int condNum = 0;
+ 	int vrNum = 0;
+-	ExtArray<classad::Operation::OpKind> ops ( numConds );
+-	ExtArray<Condition*> conds ( numConds );
+-	ExtArray<bool> tooComplex ( numConds ); 
++	ExtArray<classad::Operation::OpKind> ops ( classad::Operation::OpKind(), numConds );
++	ExtArray<Condition*> conds ( NULL, numConds );
++	ExtArray<bool> tooComplex ( false, numConds ); 
+ //	classad::Operation::OpKind op1, op2;
+ 	classad::Value val;
+ 	p->Rewind( );
+@@ -1246,7 +1246,7 @@ SuggestConditionModify( Profile *p, ResourceGroup &rg )
+ 	}
+ 
+ 	int numVRs = attrs.getsize( );
+-	ExtArray<classad::Value*> nearestValues ( numVRs );
++	ExtArray<classad::Value*> nearestValues ( NULL, numVRs );
+     for( int i = 0; i < numVRs; i++ ) {
+ 		nearestValues[i] = NULL;
+ 	}
+@@ -1305,7 +1305,7 @@ SuggestConditionModify( Profile *p, ResourceGroup &rg )
+ 	classad::Value currPt, currUpper, currLower;
+ 	BoolValue currBVal, tempBVal;
+ 	val.SetUndefinedValue( );
+-	ExtArray<classad::Value*> tempVals ( numVRs );
++	ExtArray<classad::Value*> tempVals ( NULL, numVRs );
+ 	for( int i = 0; i < numVRs; i++ ) {
+ 		tempVals[i] = NULL;
+ 	}
+@@ -1594,7 +1594,7 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 
+ 	int numReqs = reqList.Number( );
+ 
+-	ExtArray<int> firstContext ( numReqs );
++	ExtArray<int> firstContext ( 0, numReqs );
+     List< string > jobAttrs, undefAttrs, refdAttrs;
+ 	classad::ClassAd::iterator itr;
+ 
+@@ -1609,7 +1609,7 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 	int reqNo = 0;
+ 	List< ExtArray< BoolValue > > boolValueArrayList;
+ 	List< ExtArray< ValueRange * > > intervalArrayList;
+-	ExtArray< BoolValue > literalValues;
++	ExtArray< BoolValue > literalValues(BoolValue(), 64);
+ 	ExtArray< BoolValue > *tempBools = NULL;
+ 	ExtArray< ValueRange * > *tempIntervals = NULL;
+ 	Profile *currProfile;
+@@ -1631,8 +1631,8 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 				tempIntervals = NULL;
+ 			}
+ 			else {
+-				tempBools = new ExtArray< BoolValue>( numRefdAttrs );
+-				tempIntervals = new ExtArray< ValueRange * >(numRefdAttrs);
++				tempBools = new ExtArray< BoolValue>( BoolValue(), numRefdAttrs );
++				tempIntervals = new ExtArray< ValueRange * >(NULL, numRefdAttrs);
+ 				for( int i = 0; i < numRefdAttrs; i++ ) {
+ 					( *tempBools )[i] = bVal;
+ 					( *tempIntervals )[i] = NULL;
+@@ -1655,8 +1655,8 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 				tempIntervals = NULL;
+ 			}
+ 			else {
+-				tempBools = new ExtArray< BoolValue>( numRefdAttrs );
+-				tempIntervals = new ExtArray< ValueRange * >(numRefdAttrs);
++				tempBools = new ExtArray< BoolValue>( BoolValue(), numRefdAttrs );
++				tempIntervals = new ExtArray< ValueRange * >(NULL, numRefdAttrs);
+ 				for( int i = 0; i < numRefdAttrs; i++ ) {
+ 					( *tempBools )[i] = TRUE_VALUE;
+ 					( *tempIntervals )[i] = NULL;
+@@ -1727,8 +1727,8 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 					refdAttrs.Append( new string( currAttr ) );
+ 					numRefdAttrs++;				   
+ 					if( tempBools == NULL ) {
+-						tempBools = new ExtArray< BoolValue>( numRefdAttrs );
+-						tempIntervals = new ExtArray< ValueRange * >( numRefdAttrs );
++						tempBools = new ExtArray< BoolValue>( BoolValue(), numRefdAttrs );
++						tempIntervals = new ExtArray< ValueRange * >( NULL, numRefdAttrs );
+ 						for( int i = 0; i < numRefdAttrs; i++ ) {
+ 							( *tempBools )[i] = TRUE_VALUE;
+ 							( *tempIntervals )[i] = NULL;
+@@ -1785,7 +1785,7 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 
+ 		// Convert machine map
+ 	int numContexts = boolValueArrayList.Number();
+-	ExtArray<int> machineForContext ( numContexts );
++	ExtArray<int> machineForContext ( 0, numContexts );
+     int m = 0;
+   	for( int i = 0; i < numContexts; i++ ) {
+   	    if( ( m+1 ) < numReqs) {
+@@ -1869,7 +1869,7 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 	List< ExtArray< HyperRect * > > allHyperRectangles;
+ 	abvList.Rewind( );
+ 	while( abvList.Next( currentABV ) ) {
+-	    ExtArray< ValueRange * > vrForAttr;
++	    ExtArray< ValueRange * > vrForAttr( NULL, 64 );
+ 		vrForAttr.resize( numRefdAttrs );
+ 		for( int i = 0; i < numRefdAttrs; i++ ) {
+ 			vrForAttr[i] = NULL;
+diff --git a/src/classad_analysis/boolValue.cpp b/src/classad_analysis/boolValue.cpp
+index 061a4ab..b29220d 100644
+--- a/src/classad_analysis/boolValue.cpp
++++ b/src/classad_analysis/boolValue.cpp
+@@ -596,8 +596,8 @@ GenerateABVList( List<AnnotatedBoolVector> &result )
+ 	AnnotatedBoolVector *abv = new AnnotatedBoolVector();
+ 
+ 	int frequency = 0;
+-	ExtArray<bool> seen ( numCols );
+-	ExtArray<bool> tempContexts ( numCols );
++	ExtArray<bool> seen ( false, numCols );
++	ExtArray<bool> tempContexts ( false, numCols );
+     bool hasCommonTrue;
+ 
+ 	for( int i = 0; i < numCols; i++ ) {
+diff --git a/src/classad_analysis/interval.cpp b/src/classad_analysis/interval.cpp
+index fdbca50..93bbbbf 100644
+--- a/src/classad_analysis/interval.cpp
++++ b/src/classad_analysis/interval.cpp
+@@ -2197,7 +2197,7 @@ BuildHyperRects( ExtArray< ValueRange * > &vrs, int dimensions,
+ 	delete tempHRs;
+ 
+ 	ExtArray< HyperRect * > *hrs;
+-	hrs = new ExtArray< HyperRect * >( oldHRs->Number( ) );
++	hrs = new ExtArray< HyperRect * >( NULL, oldHRs->Number( ) );
+ 
+ 	oldHRs->Rewind( );
+ 	for( int i = 0; i < hrs->getsize( ); i++ ) {
+diff --git a/src/condor_collector.V6/collector_stats.cpp b/src/condor_collector.V6/collector_stats.cpp
+index be6afe4..55acc2c 100644
+--- a/src/condor_collector.V6/collector_stats.cpp
++++ b/src/condor_collector.V6/collector_stats.cpp
+@@ -344,7 +344,8 @@ CollectorClassStats::match ( const char *class_name )
+ // **********************************************
+ 
+ // Constructor
+-CollectorClassStatsList::CollectorClassStatsList( int history_size )
++CollectorClassStatsList::CollectorClassStatsList( int history_size ) :
++	classStats(NULL, 64)
+ {
+ 	historySize = history_size;
+ }
+diff --git a/src/condor_collector.V6/view_server.cpp b/src/condor_collector.V6/view_server.cpp
+index 5b0ad9f..e1d66e6 100644
+--- a/src/condor_collector.V6/view_server.cpp
++++ b/src/condor_collector.V6/view_server.cpp
+@@ -121,8 +121,8 @@ void ViewServer::Init()
+ 	}
+ 	GroupHash = new AccHash(100,MyStringHash);
+ 	FileHash = new HashTable< MyString, int >(100,MyStringHash);
+-	OffsetsArray = new ExtArray< ExtOffArray* >(30);
+-	TimesArray = new ExtArray< ExtIntArray* >(30);
++	OffsetsArray = new ExtArray< ExtOffArray* >(NULL, 30);
++	TimesArray = new ExtArray< ExtIntArray* >(NULL, 30);
+ 
+ 	// File data format
+ 
+@@ -363,8 +363,8 @@ int ViewServer::SendListReply(Stream* sock,const MyString& FileName, int FromDat
+ 			// FileName was not found in the FileHash
+ 			// Create the necessary arrays and set the index appropriately
+ 		// dprintf(D_ALWAYS, "No cache found for this file, generating new one...\n");
+-		times_array = new ExtIntArray(100);
+-		offsets = new ExtOffArray(100);
++		times_array = new ExtIntArray(0, 100);
++		offsets = new ExtOffArray(0, 100);
+ 		file_array_index = OffsetsArray->length();
+ 		FileHash->insert( FileName, file_array_index );
+ 		TimesArray->add( times_array );
+@@ -452,8 +452,8 @@ int ViewServer::SendDataReply(Stream* sock,const MyString& FileName, int FromDat
+ 			// FileName was not found in the FileHash
+ 			// Create the necessary arrays and set the index appropriately
+ 		// dprintf(D_ALWAYS, "No cache found for this file, generating new one...\n");
+-		times_array = new ExtIntArray(100);
+-		offsets = new ExtOffArray(100);
++		times_array = new ExtIntArray(0, 100);
++		offsets = new ExtOffArray(0, 100);
+ 		file_array_index = OffsetsArray->length();
+ 		FileHash->insert( FileName, file_array_index );
+ 		TimesArray->add( times_array );
+@@ -779,8 +779,8 @@ void ViewServer::WriteHistory()
+ 						delete (*(*OffsetsArray)[oldFileIndex])[iter];
+ 					}
+ 					delete (*OffsetsArray)[oldFileIndex];
+-					(*TimesArray)[oldFileIndex] = new ExtIntArray;
+-					(*OffsetsArray)[oldFileIndex] = new ExtOffArray;
++					(*TimesArray)[oldFileIndex] = new ExtIntArray(0, 64);
++					(*OffsetsArray)[oldFileIndex] = new ExtOffArray(0, 64);
+ 					if(FileHash->lookup(DataSet[i][j].NewFileName.Value(),
+ 														newFileIndex) != -1) {
+ 							// switch the indices to avoid copying data
+diff --git a/src/condor_daemon_client/dc_collector.cpp b/src/condor_daemon_client/dc_collector.cpp
+index d8490b4..756fd6d 100644
+--- a/src/condor_daemon_client/dc_collector.cpp
++++ b/src/condor_daemon_client/dc_collector.cpp
+@@ -803,14 +803,15 @@ DCCollectorAdSeq::getSequenceAndIncrement( void )
+ //
+ 
+ // Constructor for the Ad Sequence Number Manager
+-DCCollectorAdSeqMan::DCCollectorAdSeqMan( void ) 
++DCCollectorAdSeqMan::DCCollectorAdSeqMan( void )  : adSeqInfo(NULL, 64)
+ {
+ 	numAds = 0;
+ }
+ 
+ // Constructor for the Ad Sequence Number Manager
+ DCCollectorAdSeqMan::DCCollectorAdSeqMan( const DCCollectorAdSeqMan &ref,
+-										  bool copy_list )
++										  bool copy_list ) :
++	adSeqInfo(NULL, 64)
+ {
+ 	numAds = 0;
+ 	if ( ! copy_list ) {
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index 3ceed5e..c216c64 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -335,7 +335,7 @@ DaemonCore::DaemonCore(int PidSize, int ComSize,int SigSize,
+ 
+ 	sec_man = new SecMan();
+ 
+-	sockTable = new ExtArray<SockEnt>(maxSocket);
++	sockTable = new ExtArray<SockEnt>(SockEnt(), maxSocket);
+ 	if(sockTable == NULL)
+ 	{
+ 		EXCEPT("Out of memory!");
+@@ -356,7 +356,7 @@ DaemonCore::DaemonCore(int PidSize, int ComSize,int SigSize,
+ 	if(maxPipe == 0)
+ 		maxPipe = DEFAULT_MAXPIPES;
+ 
+-	pipeTable = new ExtArray<PipeEnt>(maxPipe);
++	pipeTable = new ExtArray<PipeEnt>(PipeEnt(), maxPipe);
+ 	if(pipeTable == NULL)
+ 	{
+ 		EXCEPT("Out of memory!");
+@@ -367,7 +367,7 @@ DaemonCore::DaemonCore(int PidSize, int ComSize,int SigSize,
+ 	blankPipeEnt.index = -1;
+ 	pipeTable->fill(blankPipeEnt);
+ 
+-	pipeHandleTable = new ExtArray<PipeHandle>(maxPipe);
++	pipeHandleTable = new ExtArray<PipeHandle>(PipeHandle(), maxPipe);
+ 	maxPipeHandleIndex = -1;
+ 	maxPipeBuffer = 10240;
+ 
+diff --git a/src/condor_daemon_core.V6/timer_manager.cpp b/src/condor_daemon_core.V6/timer_manager.cpp
+index 948a620..b208a96 100644
+--- a/src/condor_daemon_core.V6/timer_manager.cpp
++++ b/src/condor_daemon_core.V6/timer_manager.cpp
+@@ -573,7 +573,6 @@ void TimerManager::DumpTimerList(int flag, const char* indent)
+ void TimerManager::Start()
+ {
+ 	struct timeval		timer;
+-	int					rv;
+ 
+ 	for(;;)
+ 	{
+@@ -590,12 +589,12 @@ void TimerManager::Start()
+ 			// no timer events registered...  only a signal
+ 			// can save us now!!
+ 			dprintf(D_DAEMONCORE,"TimerManager::Start() about to block with no events!\n");
+-			rv = select(0,0,0,0,NULL);
++			select(0,0,0,0,NULL);
+ 		} else {
+ 			dprintf(D_DAEMONCORE,
+ 				"TimerManager::Start() about to block, timeout=%ld\n",
+ 				(long)timer.tv_sec);
+-			rv = select(0,0,0,0, &timer);
++			select(0,0,0,0, &timer);
+ 		}		
+ 	}
+ }
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index a070319..3540aa2 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -85,6 +85,8 @@ Dag::Dag( /* const */ StringList &dagFiles,
+     _maxPreScripts        (maxPreScripts),
+     _maxPostScripts       (maxPostScripts),
+ 	MAX_SIGNAL			  (64),
++	_splice_initial_nodes(NULL, 64),
++	_splice_final_nodes(NULL, 64),
+ 	_splices              (200, hashFuncMyString, rejectDuplicateKeys),
+ 	_dagFiles             (dagFiles),
+ 	_useDagDir            (useDagDir),
+@@ -3898,7 +3900,7 @@ Dag::RelinquishNodeOwnership(void)
+ 	Job *job = NULL;
+ 	MyString key;
+ 
+-	ExtArray<Job*> *nodes = new ExtArray<Job*>();
++	ExtArray<Job*> *nodes = new ExtArray<Job*>(NULL, 64);
+ 
+ 	// 1. Copy the jobs
+ 	_jobs.Rewind();
+diff --git a/src/condor_dagman/dagman_multi_dag.cpp b/src/condor_dagman/dagman_multi_dag.cpp
+index e3ea59b..00a3841 100644
+--- a/src/condor_dagman/dagman_multi_dag.cpp
++++ b/src/condor_dagman/dagman_multi_dag.cpp
+@@ -148,7 +148,6 @@ FindLastRescueDagNum( const char *primaryDagFile, bool multiDags,
+ 			int maxRescueDagNum )
+ {
+ 	int lastRescue = 0;
+-	bool done = false;
+ 
+ 	for ( int test = 1; test <= maxRescueDagNum; test++ ) {
+ 		MyString testName = RescueDagName( primaryDagFile, multiDags,
+@@ -172,7 +171,6 @@ FindLastRescueDagNum( const char *primaryDagFile, bool multiDags,
+ 		dprintf( D_ALWAYS,
+ 					"Warning: FindLastRescueDagNum() hit maximum "
+ 					"rescue DAG number: %d\n", maxRescueDagNum );
+-		done = true;
+ 	}
+ 
+ 	return lastRescue;
+diff --git a/src/condor_dagman/parse.cpp b/src/condor_dagman/parse.cpp
+index d864cac..88b3ae5 100644
+--- a/src/condor_dagman/parse.cpp
++++ b/src/condor_dagman/parse.cpp
+@@ -46,7 +46,7 @@
+ static const char   COMMENT    = '#';
+ static const char * DELIMITERS = " \t";
+ 
+-static ExtArray<char*> _spliceScope;
++static ExtArray<char*> _spliceScope(NULL, 64);
+ static bool _useDagDir = false;
+ 
+ static int _thisDagNum = -1;
+diff --git a/src/condor_gridmanager/gahp-client.cpp b/src/condor_gridmanager/gahp-client.cpp
+index 90f24ba..6789d9f 100644
+--- a/src/condor_gridmanager/gahp-client.cpp
++++ b/src/condor_gridmanager/gahp-client.cpp
+@@ -2300,7 +2300,7 @@ GahpServer::poll()
+ 	int num_results = 0;
+ 	int i, result_reqid;
+ 	GahpClient* entry;
+-	ExtArray<Gahp_Args*> result_lines;
++	ExtArray<Gahp_Args*> result_lines(NULL, 64);
+ 
+ 	m_in_results = true;
+ 
+diff --git a/src/condor_gridmanager/gt4job.cpp b/src/condor_gridmanager/gt4job.cpp
+index c506899..51740ba 100644
+--- a/src/condor_gridmanager/gt4job.cpp
++++ b/src/condor_gridmanager/gt4job.cpp
+@@ -1537,7 +1537,6 @@ std::string *GT4Job::buildSubmitRSL()
+ 	char *rsl_suffix = NULL;
+ 	StringList stage_in_list;
+ 	StringList stage_out_list;
+-	bool staging_input = false;
+ 	std::string local_url_base = "";
+ 
+ 	if ( !jobAd->LookupString( ATTR_GRIDFTP_URL_BASE, local_url_base ) ) {
+@@ -1813,8 +1812,6 @@ std::string *GT4Job::buildSubmitRSL()
+ 	if ( create_remote_iwd || transfer_executable ||
+ 		 !stage_in_list.isEmpty() ) {
+ 
+-		staging_input = true;
+-
+ 		*rsl += "<fileStageIn>";
+ 		*rsl += "<maxAttempts>5</maxAttempts>";
+ 
+diff --git a/src/condor_includes/proc.h b/src/condor_includes/proc.h
+index b575559..0b13466 100644
+--- a/src/condor_includes/proc.h
++++ b/src/condor_includes/proc.h
+@@ -26,9 +26,12 @@
+ 
+ 
+ // a handy little structure used in a lot of places
+-typedef struct {
++typedef struct PROC_ID_s {
+ 	int		cluster;
+ 	int		proc;
++
++	PROC_ID_s(int c, int p) : cluster(c), proc(p) {}
++        PROC_ID_s() : cluster(0), proc(0) {}
+ } PROC_ID;
+ 
+ #if defined(__cplusplus)
+diff --git a/src/condor_kbdd/XInterface.unix.cpp b/src/condor_kbdd/XInterface.unix.cpp
+index 51102ea..bd276cb 100644
+--- a/src/condor_kbdd/XInterface.unix.cpp
++++ b/src/condor_kbdd/XInterface.unix.cpp
+@@ -247,7 +247,7 @@ XInterface::Connect()
+ 		delete logged_on_users;
+ 	}
+ 
+-	logged_on_users = new ExtArray< char * >;
++	logged_on_users = new ExtArray< char * >(NULL, 64);
+ 
+ 
+ 	dprintf(D_FULLDEBUG, "XInterface::Connect\n");
+diff --git a/src/condor_master.V6/master.cpp b/src/condor_master.V6/master.cpp
+index c70e44f..d2975ce 100644
+--- a/src/condor_master.V6/master.cpp
++++ b/src/condor_master.V6/master.cpp
+@@ -719,7 +719,6 @@ void
+ init_daemon_list()
+ {
+ 	char	*daemon_name;
+-	class daemon	*new_daemon;
+ 	StringList daemon_names, dc_daemon_names;
+ 
+ 	daemons.ordered_daemon_names.clearAll();
+@@ -785,9 +784,9 @@ init_daemon_list()
+ 		while( (daemon_name = ha_names.next()) ) {
+ 			if(daemons.FindDaemon(daemon_name) == NULL) {
+ 				if( dc_daemon_names.contains(daemon_name) ) {
+-					new_daemon = new class daemon(daemon_name, true, true );
++					new class daemon(daemon_name, true, true );
+ 				} else {
+-					new_daemon = new class daemon(daemon_name, false, true );
++					new class daemon(daemon_name, false, true );
+ 				}
+ 			}
+ 		}
+@@ -838,16 +837,16 @@ init_daemon_list()
+ 		while( (daemon_name = daemon_names.next()) ) {
+ 			if(daemons.FindDaemon(daemon_name) == NULL) {
+ 				if( dc_daemon_names.contains(daemon_name) ) {
+-					new_daemon = new class daemon(daemon_name);
++					new class daemon(daemon_name);
+ 				} else {
+-					new_daemon = new class daemon(daemon_name, false);
++					new class daemon(daemon_name, false);
+ 				}
+ 			}
+ 		}
+ 	} else {
+ 		daemons.ordered_daemon_names.create_union( dc_daemon_names, false );
+ 		for(int i = 0; default_daemon_list[i]; i++) {
+-			new_daemon = new class daemon(default_daemon_list[i]);
++			new class daemon(default_daemon_list[i]);
+ 		}
+ 	}
+ 
+diff --git a/src/condor_q.V6/queue.cpp b/src/condor_q.V6/queue.cpp
+index 2874ddf..7cae95f 100644
+--- a/src/condor_q.V6/queue.cpp
++++ b/src/condor_q.V6/queue.cpp
+@@ -215,7 +215,7 @@ static	ExprTree	*stdRankCondition;
+ static	ExprTree	*preemptRankCondition;
+ static	ExprTree	*preemptPrioCondition;
+ static	ExprTree	*preemptionReq;
+-static  ExtArray<PrioEntry> prioTable;
++static  ExtArray<PrioEntry> prioTable(PrioEntry(), 64);
+ #ifndef WIN32
+ #endif
+ 	
+@@ -323,6 +323,7 @@ int main (int argc, char **argv)
+ 	useDB = checkDBconfig();
+ #else 
+ 	useDB = FALSE;
++	if (useDB) {} /* Done to suppress set-but-not-used warnings */
+ #endif /* HAVE_EXT_POSTGRESQL */
+ 
+ #if !defined(WIN32)
+@@ -1950,7 +1951,7 @@ show_queue_buffered( const char* v1, const char* v2, const char* v3, const char*
+ 	const char *query_password;
+ 	int i;
+ 
+-	output_buffer = new ExtArray<clusterProcString*>;
++	output_buffer = new ExtArray<clusterProcString*>(NULL, 64);
+ 
+ 	char *lastUpdate=NULL;
+ 
+@@ -2085,6 +2086,8 @@ show_queue_buffered( const char* v1, const char* v2, const char* v3, const char*
+ 		if(dbconn) {
+ 			free(dbconn);
+ 		}
++#else
++		if (query_password) {} /* Done to suppress set-but-not-used warnings */
+ #endif /* HAVE_EXT_POSTGRESQL */
+ 	} else {
+ 			// fetch queue from schedd and stash it in output_buffer.
+@@ -2363,6 +2366,8 @@ show_queue( const char* v1, const char* v2, const char* v3, const char* v4, bool
+ 			if(dbconn) {
+ 				free(dbconn);
+ 			}
++#else
++			if (query_password) {} /* Done to suppress set-but-not-used warnings */
+ #endif /* HAVE_EXT_POSTGRESQL */
+ 		} else {
+ 				// fetch queue from schedd	
+diff --git a/src/condor_schedd.V6/dedicated_scheduler.cpp b/src/condor_schedd.V6/dedicated_scheduler.cpp
+index 22d238e..12263f0 100644
+--- a/src/condor_schedd.V6/dedicated_scheduler.cpp
++++ b/src/condor_schedd.V6/dedicated_scheduler.cpp
+@@ -85,8 +85,8 @@ AllocationNode::AllocationNode( int cluster_id, int n_procs )
+ 	status = A_NEW;
+ 	num_resources = 0;
+ 
+-	jobs = new ExtArray< ClassAd* >(num_procs);
+-	matches = new ExtArray< MRecArray* >(num_procs);
++	jobs = new ExtArray< ClassAd* >(NULL, num_procs);
++	matches = new ExtArray< MRecArray* >(NULL, num_procs);
+ 	jobs->fill(NULL);
+ 	matches->fill(NULL);
+ 	is_reconnect = false;
+@@ -1460,7 +1460,7 @@ void
+ DedicatedScheduler::addDedicatedCluster( int cluster )
+ {
+ 	if( ! idle_clusters ) {
+-		idle_clusters = new ExtArray<int>;
++		idle_clusters = new ExtArray<int>(0, 64);
+ 		idle_clusters->fill(0);
+ 	}
+ 	int next = idle_clusters->getlast() + 1;
+@@ -1510,7 +1510,7 @@ DedicatedScheduler::sortJobs( void )
+ 				 "DedicatedScheduler::sortJobs: no jobs found\n" );
+ 		return false;
+ 	}		
+-	verified_clusters= new ExtArray<int>( last_cluster );
++	verified_clusters= new ExtArray<int>( 0, last_cluster );
+ 	verified_clusters->fill(0);
+ 	next_cluster = 0;
+ 	for( i=0; i<last_cluster; i++ ) {
+diff --git a/src/condor_schedd.V6/dedicated_scheduler.h b/src/condor_schedd.V6/dedicated_scheduler.h
+index 3f5f6c7..4a7401b 100644
+--- a/src/condor_schedd.V6/dedicated_scheduler.h
++++ b/src/condor_schedd.V6/dedicated_scheduler.h
+@@ -31,7 +31,12 @@ enum NegotiationResult { NR_MATCHED, NR_REJECTED, NR_END_NEGOTIATE,
+ 
+ class CAList : public List<ClassAd> {};
+ 
+-class MRecArray : public ExtArray<match_rec*> {};
++class MRecArray : public ExtArray<match_rec*> {
++
++public:
++	MRecArray() : ExtArray<match_rec*>(NULL, 64) {}
++
++};
+ 
+ class AllocationNode {
+  public:
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 4aaae4d..548c10c 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -403,6 +403,7 @@ static const int USER_HASH_SIZE = 100;
+ Scheduler::Scheduler() :
+     m_adSchedd(NULL),
+     m_adBase(NULL),
++	Owners(OwnerData(), 64),
+ 	GridJobOwners(USER_HASH_SIZE, UserIdentity::HashFcn, updateDuplicateKeys),
+ 	stop_job_queue( "stop_job_queue" ),
+ 	act_on_job_myself_queue( "act_on_job_myself_queue" ),
+@@ -3083,7 +3084,7 @@ Scheduler::abort_job(int, Stream* s)
+ int
+ Scheduler::transferJobFilesReaper(int tid,int exit_status)
+ {
+-	ExtArray<PROC_ID> *jobs;
++	ExtArray<PROC_ID> *jobs = NULL;
+ 	int i;
+ 
+ 	dprintf(D_FULLDEBUG,"transferJobFilesReaper tid=%d status=%d\n",
+@@ -3122,7 +3123,7 @@ Scheduler::transferJobFilesReaper(int tid,int exit_status)
+ int
+ Scheduler::spoolJobFilesReaper(int tid,int exit_status)
+ {
+-	ExtArray<PROC_ID> *jobs;
++	ExtArray<PROC_ID> *jobs = NULL;
+ 
+ 	dprintf(D_FULLDEBUG,"spoolJobFilesReaper tid=%d status=%d\n",
+ 			tid,exit_status);
+@@ -3475,7 +3476,7 @@ Scheduler::spoolJobFiles(int mode, Stream* s)
+ 			break;
+ 	}
+ 
+-	jobs = new ExtArray<PROC_ID>;
++	jobs = new ExtArray<PROC_ID>(PROC_ID(), 64);
+ 	ASSERT(jobs);
+ 
+ 	setQSock(rsock);	// so OwnerCheck() will work
+@@ -3844,7 +3845,7 @@ Scheduler::actOnJobs(int, Stream* s)
+ 	int hold_reason_subcode = 0;
+ 
+ 		// Setup array to hold ids of the jobs we're acting on.
+-	ExtArray<PROC_ID> jobs;
++	ExtArray<PROC_ID> jobs(PROC_ID(), 64);
+ 	PROC_ID tmp_id;
+ 	tmp_id.cluster = -1;
+ 	tmp_id.proc = -1;
+@@ -12312,7 +12313,7 @@ abortJobsByConstraint( const char *constraint,
+ {
+ 	bool result = true;
+ 
+-	ExtArray<PROC_ID> jobs;
++	ExtArray<PROC_ID> jobs(PROC_ID(), 64);
+ 	int job_count;
+ 
+ 	dprintf(D_FULLDEBUG, "abortJobsByConstraint: '%s'\n", constraint);
+@@ -12341,7 +12342,7 @@ abortJobsByConstraint( const char *constraint,
+ 	}
+ 
+ 	job_count--;
+-	ExtArray<PROC_ID> removedJobs;
++	ExtArray<PROC_ID> removedJobs(PROC_ID(), 64);
+ 	int removedJobCount = 0;
+ 	while ( job_count >= 0 ) {
+ 		dprintf(D_FULLDEBUG, "removing: %d.%d\n",
+diff --git a/src/condor_schedd.V6/schedd_td.cpp b/src/condor_schedd.V6/schedd_td.cpp
+index d0f482c..a588cc8 100644
+--- a/src/condor_schedd.V6/schedd_td.cpp
++++ b/src/condor_schedd.V6/schedd_td.cpp
+@@ -152,10 +152,10 @@ Scheduler::requestSandboxLocation(int mode, Stream* s)
+ 		
+ 		dprintf(D_ALWAYS, "Submittor provides procids.\n");
+ 
+-		modify_allow_jobs = new ExtArray<PROC_ID>;
++		modify_allow_jobs = new ExtArray<PROC_ID>(PROC_ID(), 64);
+ 		ASSERT(modify_allow_jobs);
+ 
+-		modify_deny_jobs = new ExtArray<PROC_ID>;
++		modify_deny_jobs = new ExtArray<PROC_ID>(PROC_ID(), 64);
+ 		ASSERT(modify_deny_jobs);
+ 
+ 		if (reqad.LookupString(ATTR_TREQ_JOBID_LIST, jids) == 0) {
+@@ -269,7 +269,7 @@ Scheduler::requestSandboxLocation(int mode, Stream* s)
+ 		}
+ 
+ 		// By definition we'll only save the jobids the user may modify
+-		modify_allow_jobs = new ExtArray<PROC_ID>;
++		modify_allow_jobs = new ExtArray<PROC_ID>(PROC_ID(), 64);
+ 		ASSERT(modify_allow_jobs);
+ 
+ 		setQSock(rsock);	// so OwnerCheck() will work
+diff --git a/src/condor_shadow.V6.1/mpishadow.cpp b/src/condor_shadow.V6.1/mpishadow.cpp
+index 6128872..d5e79bc 100644
+--- a/src/condor_shadow.V6.1/mpishadow.cpp
++++ b/src/condor_shadow.V6.1/mpishadow.cpp
+@@ -32,7 +32,9 @@
+ #include "condor_claimid_parser.h"
+ #include "ipv6_hostname.h"
+ 
+-MPIShadow::MPIShadow() {
++MPIShadow::MPIShadow() :
++	ResourceList(NULL, 64)
++{
+     nextResourceToStart = 0;
+ 	numNodes = 0;
+     shutDownMode = FALSE;
+diff --git a/src/condor_shadow.V6.1/parallelshadow.cpp b/src/condor_shadow.V6.1/parallelshadow.cpp
+index 1489699..58098e7 100644
+--- a/src/condor_shadow.V6.1/parallelshadow.cpp
++++ b/src/condor_shadow.V6.1/parallelshadow.cpp
+@@ -35,7 +35,9 @@
+ 
+ RemoteResource *parallelMasterResource = NULL;
+ 
+-ParallelShadow::ParallelShadow() {
++ParallelShadow::ParallelShadow() :
++	ResourceList(NULL, 64)
++{
+     nextResourceToStart = 0;
+ 	numNodes = 0;
+     shutDownMode = FALSE;
+diff --git a/src/condor_startd.V6/IdDispenser.cpp b/src/condor_startd.V6/IdDispenser.cpp
+index c99bc17..536d170 100644
+--- a/src/condor_startd.V6/IdDispenser.cpp
++++ b/src/condor_startd.V6/IdDispenser.cpp
+@@ -23,7 +23,7 @@
+ 
+ 
+ IdDispenser::IdDispenser( int size, int seed ) :
+-	free_ids(size+2)
++	free_ids(false, size+2)
+ {
+ 	int i;
+ 	free_ids.setFiller(true);
+diff --git a/src/condor_startd.V6/backfill_mgr.cpp b/src/condor_startd.V6/backfill_mgr.cpp
+index e170be9..bb42b59 100644
+--- a/src/condor_startd.V6/backfill_mgr.cpp
++++ b/src/condor_startd.V6/backfill_mgr.cpp
+@@ -60,7 +60,8 @@ BackfillSlot::enterActivity( Activity act )
+ // BackfillMgr
+ // // // // // // // // // // // // 
+ 
+-BackfillMgr::BackfillMgr()
++BackfillMgr::BackfillMgr() :
++	m_slots(NULL, 64)
+ {
+ 	dprintf( D_FULLDEBUG, "Instantiating a BackfillMgr\n" );
+ 
+diff --git a/src/condor_startd.V6/glexec_wrapper.cpp b/src/condor_startd.V6/glexec_wrapper.cpp
+index bf51387..f86a698 100644
+--- a/src/condor_startd.V6/glexec_wrapper.cpp
++++ b/src/condor_startd.V6/glexec_wrapper.cpp
+@@ -52,7 +52,7 @@ main(int, char* argv[])
+ 	int sock_fd = dup(0);
+ 	if (sock_fd == -1) {
+ 		err.sprintf("dup error on FD 0: %s", strerror(errno));
+-		write(0, err.Value(), err.Length() + 1);
++		full_write(0, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 
+@@ -65,7 +65,7 @@ main(int, char* argv[])
+ 	MyString merge_err;
+ 	if (!env.MergeFromV2Raw(env_buf, &merge_err)) {
+ 		err.sprintf("Env::MergeFromV2Raw error: %s", merge_err.Value());
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	env.MergeFrom(environ);
+@@ -77,14 +77,14 @@ main(int, char* argv[])
+ 	int job_fd = read_fd(sock_fd);
+ 	if (dup2(job_fd, 0) == -1) {
+ 		err.sprintf("dup2 to FD 0 error: %s", strerror(errno));
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	close(job_fd);
+ 	if (fcntl(sock_fd, F_SETFD, FD_CLOEXEC) == -1) {
+ 		err.sprintf("fcntl error setting close-on-exec: %s",
+ 		            strerror(errno));
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 
+@@ -95,7 +95,7 @@ main(int, char* argv[])
+ 	char** envp = env.getStringArray();
+ 	execve(argv[1], &argv[1], envp);
+ 	err.sprintf("execve error: %s", strerror(errno));
+-	write(sock_fd, err.Value(), err.Length() + 1);
++	full_write(sock_fd, err.Value(), err.Length() + 1);
+ 	exit(1);
+ }
+ 
+@@ -112,22 +112,22 @@ read_env(int sock_fd)
+ 			            strerror(errno));
+ 		}
+ 		else {
+-			err.sprintf("short read of env size: %d of %d bytes",
++			err.sprintf("short read of env size: %d of %lu bytes",
+ 			            bytes,
+ 			            sizeof(env_len));
+ 		}
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	if (env_len <= 0) {
+ 		err.sprintf("invalid env size %d read from stdin", env_len);
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	char* env_buf = new char[env_len];
+ 	if (env_buf == NULL) {
+ 		err.sprintf("failure to allocate %d bytes", env_len);
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	bytes = full_read(0, env_buf, env_len);
+@@ -141,7 +141,7 @@ read_env(int sock_fd)
+ 			            bytes,
+ 			            env_len);
+ 		}
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	return env_buf;
+@@ -160,11 +160,11 @@ read_fd(int sock_fd)
+ 			            strerror(errno));
+ 		}
+ 		else {
+-			err.sprintf("short read of flag: %d of %d bytes",
++			err.sprintf("short read of flag: %d of %lu bytes",
+ 			            bytes,
+ 			            sizeof(flag));
+ 		}
+-		write(sock_fd, err.Value(), err.Length() + 1);
++		full_write(sock_fd, err.Value(), err.Length() + 1);
+ 		exit(1);
+ 	}
+ 	int fd;
+@@ -172,7 +172,7 @@ read_fd(int sock_fd)
+ 		fd = fdpass_recv(sock_fd);
+ 		if (fd == -1) {
+ 			err.sprintf("fdpass_recv failed\n");
+-			write(sock_fd, err.Value(), err.Length() + 1);
++			full_write(sock_fd, err.Value(), err.Length() + 1);
+ 			exit(1);
+ 		}
+ 	}
+@@ -181,7 +181,7 @@ read_fd(int sock_fd)
+ 		if (fd == -1) {
+ 			err.sprintf("error opening /dev/null: %s",
+ 			            strerror(errno));
+-			write(sock_fd, err.Value(), err.Length() + 1);
++			full_write(sock_fd, err.Value(), err.Length() + 1);
+ 			exit(1);
+ 		}
+ 	}
+diff --git a/src/condor_startd.V6/startd_main.cpp b/src/condor_startd.V6/startd_main.cpp
+index 60cccd9..375183b 100644
+--- a/src/condor_startd.V6/startd_main.cpp
++++ b/src/condor_startd.V6/startd_main.cpp
+@@ -122,14 +122,13 @@ usage( char* MyName)
+ 	fprintf( stderr, "Usage: %s [option]\n", MyName );
+ 	fprintf( stderr, "  where [option] is one of:\n" );
+ 	fprintf( stderr, 
+-			 "     [-skip-benchmarks]\t(don't run initial benchmarks)\n" );
++			 "     [-skip-benchmarks]\t(now a no-op)\n" );
+ 	DC_Exit( 1 );
+ }
+ 
+ void
+ main_init( int, char* argv[] )
+ {
+-	int		skip_benchmarks = FALSE;
+ 	char**	ptr; 
+ 
+ 	// Reset the cron & benchmark managers to a known state
+@@ -143,7 +142,6 @@ main_init( int, char* argv[] )
+ 		}
+ 		switch( ptr[0][1] ) {
+ 		case 's':
+-			skip_benchmarks = TRUE;
+ 			break;
+ 		case 'n':
+ 			ptr++;
+diff --git a/src/condor_starter.V6.1/baseStarter.cpp b/src/condor_starter.V6.1/baseStarter.cpp
+index 7f3e649..d4578ad 100644
+--- a/src/condor_starter.V6.1/baseStarter.cpp
++++ b/src/condor_starter.V6.1/baseStarter.cpp
+@@ -978,9 +978,8 @@ CStarter::startSSHD( int /*cmd*/, Stream* s )
+ 		// about this task.  We avoid needing to know the final exit status
+ 		// by checking for a magic success string at the end of the output.
+ 	int setup_reaper = 1;
+-	int setup_pid;
+ 	if( privSepHelper() ) {
+-		setup_pid = privSepHelper()->create_process(
++		privSepHelper()->create_process(
+ 			ssh_to_job_sshd_setup.Value(),
+ 			setup_args,
+ 			setup_env,
+@@ -994,7 +993,7 @@ CStarter::startSSHD( int /*cmd*/, Stream* s )
+ 			NULL);
+ 	}
+ 	else {
+-		setup_pid = daemonCore->Create_Process(
++		daemonCore->Create_Process(
+ 			ssh_to_job_sshd_setup.Value(),
+ 			setup_args,
+ 			PRIV_USER_FINAL,
+diff --git a/src/condor_starter.V6.1/jic_shadow.cpp b/src/condor_starter.V6.1/jic_shadow.cpp
+index ba423db..fe3ec03 100644
+--- a/src/condor_starter.V6.1/jic_shadow.cpp
++++ b/src/condor_starter.V6.1/jic_shadow.cpp
+@@ -365,7 +365,7 @@ JICShadow::Continue( void )
+ 
+ bool JICShadow::allJobsDone( void )
+ {
+-	bool r1, r2;
++	bool r1, r2 = false;
+ 	ClassAd update_ad;
+ 
+ 	r1 = JobInfoCommunicator::allJobsDone();
+@@ -375,7 +375,7 @@ bool JICShadow::allJobsDone( void )
+ 		r2 = updateShadow( &update_ad, true );
+ 	}
+ 
+-	return r1;
++	return r1 || r2;
+ }
+ 
+ 
+diff --git a/src/condor_starter.V6.1/script_proc.cpp b/src/condor_starter.V6.1/script_proc.cpp
+index 294918c..dab85c7 100644
+--- a/src/condor_starter.V6.1/script_proc.cpp
++++ b/src/condor_starter.V6.1/script_proc.cpp
+@@ -138,12 +138,11 @@ ScriptProc::StartJob()
+ 	args.AppendArg(arg0.Value());
+ 
+ 	MyString args_error;
+-	bool args_success = false;
+ 	if(args2 && *args2) {
+-		args_success = args.AppendArgsV2Raw(args2,&args_error);
++		args.AppendArgsV2Raw(args2,&args_error);
+ 	}
+ 	else if(args1 && *args1) {
+-		args_success = args.AppendArgsV1Raw(args1,&args_error);
++		args.AppendArgsV1Raw(args1,&args_error);
+ 	}
+ 	else {
+ 		dprintf( D_FULLDEBUG, "neither %s nor %s could be found in JobAd\n",
+diff --git a/src/condor_starter.V6.1/vm_gahp_server.cpp b/src/condor_starter.V6.1/vm_gahp_server.cpp
+index 0845c55..6de71b1 100644
+--- a/src/condor_starter.V6.1/vm_gahp_server.cpp
++++ b/src/condor_starter.V6.1/vm_gahp_server.cpp
+@@ -1042,7 +1042,7 @@ VMGahpServer::poll()
+ 	int num_results = 0;
+ 	int i, result_reqid;
+ 	VMGahpRequest* entry;
+-	ExtArray<Gahp_Args*> result_lines;
++	ExtArray<Gahp_Args*> result_lines(NULL, 64);
+ 
+ 	if( m_is_initialized == false ) {
+ 		return 0;
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 3d18e1d..fcd3df1 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -532,10 +532,10 @@ struct SubmitRec {
+ 	char *usernotes;
+ };
+ 
+-ExtArray <SubmitRec> SubmitInfo(10);
++ExtArray <SubmitRec> SubmitInfo(SubmitRec(), 10);
+ int CurrentSubmitInfo = -1;
+ 
+-ExtArray <ClassAd*> JobAdsArray(100);
++ExtArray <ClassAd*> JobAdsArray(NULL, 100);
+ int JobAdsArrayLen = 0;
+ 
+ // explicit template instantiations
+diff --git a/src/condor_tools/give_interactive.cpp b/src/condor_tools/give_interactive.cpp
+index c0cdded..2a39142 100644
+--- a/src/condor_tools/give_interactive.cpp
++++ b/src/condor_tools/give_interactive.cpp
+@@ -47,7 +47,7 @@
+ double priority = 0.00001;
+ const char *pool = NULL;
+ struct 	PrioEntry { MyString name; float prio; };
+-static  ExtArray<PrioEntry> prioTable;
++static  ExtArray<PrioEntry> prioTable(PrioEntry(), 64);
+ #ifndef WIN32
+ #endif
+ ExprTree *rankCondStd;// no preemption or machine rank-preemption 
+diff --git a/src/condor_tools/preen.cpp b/src/condor_tools/preen.cpp
+index 1b225b7..8704fc2 100644
+--- a/src/condor_tools/preen.cpp
++++ b/src/condor_tools/preen.cpp
+@@ -545,11 +545,10 @@ is_v3_ckpt( const char *name )
+ {
+ 	int		cluster;
+ 	int		proc;
+-	int		subproc;
+ 
+ 	cluster = grab_val( name, "cluster" );
+ 	proc = grab_val( name, ".proc" );
+-	subproc = grab_val( name, ".subproc" );
++	grab_val( name, ".subproc" );
+ 
+ 		
+ 	if( proc < 0 ) {
+diff --git a/src/condor_transferd/td_init.cpp b/src/condor_transferd/td_init.cpp
+index c6f65fd..1fccebd 100644
+--- a/src/condor_transferd/td_init.cpp
++++ b/src/condor_transferd/td_init.cpp
+@@ -325,7 +325,6 @@ TransferD::accept_transfer_request_handler(Stream *sock)
+ 	MyString encap_end_line;
+ 	EncapMethod em;
+ 	char *str = NULL;
+-	int rval;
+ 
+ 	dprintf(D_ALWAYS, 
+ 		"Entering TransferD::accept_transfer_request_handler()\n");
+@@ -363,7 +362,7 @@ TransferD::accept_transfer_request_handler(Stream *sock)
+ 			break;
+ 
+ 		case ENCAP_METHOD_OLD_CLASSADS:
+-			rval = accept_transfer_request_encapsulation_old_classads(sock);
++			accept_transfer_request_encapsulation_old_classads(sock);
+ 			break;
+ 
+ 		default:
+diff --git a/src/condor_transferd/td_read_files.cpp b/src/condor_transferd/td_read_files.cpp
+index 93dccf8..a6c7f87 100644
+--- a/src/condor_transferd/td_read_files.cpp
++++ b/src/condor_transferd/td_read_files.cpp
+@@ -210,7 +210,7 @@ TransferD::read_files_thread(void *targ, Stream *sock)
+ 	ThreadArg *thread_arg = (ThreadArg*)targ;
+ 	ReliSock *rsock = (ReliSock*)sock;
+ 	TransferRequest *treq = NULL;
+-	int protocol;
++	//int protocol;
+ 	SimpleList<ClassAd*> *jad_list = NULL;
+ 	ClassAd *jad = NULL;
+ 	int cluster, proc;
+@@ -220,7 +220,7 @@ TransferD::read_files_thread(void *targ, Stream *sock)
+ 
+ 	// even though I'm in a new process, I got here either through forking
+ 	// or through a thread, so this memory is a copy.
+-	protocol = thread_arg->protocol;
++	//protocol = thread_arg->protocol;
+ 	treq = thread_arg->treq;
+ 	delete thread_arg;
+ 
+diff --git a/src/condor_transferd/td_write_files.cpp b/src/condor_transferd/td_write_files.cpp
+index 8da23d7..412a552 100644
+--- a/src/condor_transferd/td_write_files.cpp
++++ b/src/condor_transferd/td_write_files.cpp
+@@ -210,7 +210,7 @@ TransferD::write_files_thread(void *targ, Stream *sock)
+ 	ThreadArg *thread_arg = (ThreadArg*)targ;
+ 	ReliSock *rsock = (ReliSock*)sock;
+ 	TransferRequest *treq = NULL;
+-	int protocol;
++	// int protocol;
+ 	SimpleList<ClassAd*> *jad_list = NULL;
+ 	ClassAd *jad = NULL;
+ 	int cluster, proc;
+@@ -235,7 +235,7 @@ TransferD::write_files_thread(void *targ, Stream *sock)
+ 
+ 	// even though I'm in a new process, I got here either through forking
+ 	// or through a thread, so this memory is a copy.
+-	protocol = thread_arg->protocol;
++	// protocol = thread_arg->protocol;
+ 	treq = thread_arg->treq;
+ 	delete thread_arg;
+ 
+diff --git a/src/condor_utils/MapFile.cpp b/src/condor_utils/MapFile.cpp
+index a01c2cb..bad7363 100644
+--- a/src/condor_utils/MapFile.cpp
++++ b/src/condor_utils/MapFile.cpp
+@@ -24,7 +24,7 @@
+ 
+ 
+ 
+-MapFile::MapFile()
++MapFile::MapFile() : canonical_entries(CanonicalMapEntry(), 64), user_entries(UserMapEntry(), 64)
+ {
+ }
+ 
+@@ -310,7 +310,7 @@ MapFile::PerformMapping(Regex & regex,
+ 						const MyString pattern,
+ 						MyString & output)
+ {
+-	ExtArray<MyString> groups;
++	ExtArray<MyString> groups(MyString(), 64);
+ 
+ 	if (!regex.match(input, &groups)) {
+ 		return false;
+diff --git a/src/condor_utils/condor_config.cpp b/src/condor_utils/condor_config.cpp
+index e5e3468..19aba20 100644
+--- a/src/condor_utils/condor_config.cpp
++++ b/src/condor_utils/condor_config.cpp
+@@ -260,7 +260,7 @@ param_all(void)
+ 	int i;
+ 	ParamValue *sort_array = NULL;
+ 
+-	pvs = new ExtArray<ParamValue>;
++	pvs = new ExtArray<ParamValue>(ParamValue(), 64);
+ 	ASSERT(pvs);
+ 
+ 	// walk the config table and insert everything I found into the list.
+@@ -2189,7 +2189,7 @@ public:
+ 
+ #include "extArray.h"
+ 
+-static ExtArray<RuntimeConfigItem> rArray;
++static ExtArray<RuntimeConfigItem> rArray(RuntimeConfigItem(), 64);
+ 
+ static MyString toplevel_persistent_config;
+ 
+diff --git a/src/condor_utils/condor_crontab.cpp b/src/condor_utils/condor_crontab.cpp
+index 411dff1..b093517 100644
+--- a/src/condor_utils/condor_crontab.cpp
++++ b/src/condor_utils/condor_crontab.cpp
+@@ -328,7 +328,7 @@ CronTab::init() {
+ 	bool failed = false;
+ 	int ctr;
+ 	for ( ctr = 0; ctr < CRONTAB_FIELDS; ctr++ ) {
+-		this->ranges[ctr] = new ExtArray<int>();			
++		this->ranges[ctr] = new ExtArray<int>(0, 64);			
+ 			//
+ 			// Call to expand the parameter
+ 			// The function will modify the queue for us
+@@ -567,7 +567,7 @@ CronTab::matchFields( int *curTime, int *match, int attribute_idx, bool useFirst
+ 			} else {
+ 				//only wildcard in month, so use day of week range
+ 				//this isn't quite right
+-				curRange = new ExtArray<int>( CRONTAB_DAY_OF_MONTH_MAX );
++				curRange = new ExtArray<int>( 0, CRONTAB_DAY_OF_MONTH_MAX );
+ 			}
+ 		}else{
+ 		      // get to here means DOM was specified
+diff --git a/src/condor_utils/do_connect.unix.cpp b/src/condor_utils/do_connect.unix.cpp
+index e3ef290..4614bdc 100644
+--- a/src/condor_utils/do_connect.unix.cpp
++++ b/src/condor_utils/do_connect.unix.cpp
+@@ -257,7 +257,6 @@ int tcp_connect_timeout( int sockfd, const condor_sockaddr& serv_addr,
+ 	fd_set			writefds;
+ 	int				nfound;
+ 	int				nfds;
+-	int				tmp_errno;
+ 	socklen_t		sz;
+ 	int				val = 0;
+ 	int				save_errno;
+@@ -280,7 +279,6 @@ int tcp_connect_timeout( int sockfd, const condor_sockaddr& serv_addr,
+ 
+ 	/* try the connect, which will return immediately */
+ 	if(condor_connect(sockfd, serv_addr) < 0) {
+-		tmp_errno = errno;
+ 		switch( errno ) {
+ 			case EAGAIN:
+ 			case EINPROGRESS:
+diff --git a/src/condor_utils/extArray.h b/src/condor_utils/extArray.h
+index f137539..5c8028a 100644
+--- a/src/condor_utils/extArray.h
++++ b/src/condor_utils/extArray.h
+@@ -28,7 +28,7 @@ class ExtArray
+   public:
+ 
+ 	// ctors/dtor
+-	ExtArray (int = 64); // initial size of array
++	ExtArray (Element filler, int); // initial size of array
+ 	ExtArray (const ExtArray &);
+ 	~ExtArray ();
+ 
+@@ -66,10 +66,11 @@ class ExtArray
+ 
+ template <class Element>
+ ExtArray<Element>::
+-ExtArray (int sz)
++ExtArray (Element tmpfiller, int sz) :
++	size(sz),
++	filler(tmpfiller)
+ {
+ 	// create array of required size
+-	size = sz;
+ 	last = -1;
+ 	array = new Element[size];
+ 	if (!array)
+diff --git a/src/condor_utils/hibernation_manager.cpp b/src/condor_utils/hibernation_manager.cpp
+index 3d7e7bf..a7abcd5 100644
+--- a/src/condor_utils/hibernation_manager.cpp
++++ b/src/condor_utils/hibernation_manager.cpp
+@@ -39,7 +39,8 @@
+ 
+ HibernationManager::HibernationManager( HibernatorBase *hibernator )
+ 	throw ()
+-		: m_primary_adapter( NULL ),
++                : m_adapters ( NULL, 64 ),
++		  m_primary_adapter( NULL ),
+ 		  m_hibernator ( hibernator ),
+ 		  m_interval ( 0 ),
+ 		  m_target_state ( HibernatorBase::NONE ),
+@@ -129,7 +130,7 @@ bool
+ HibernationManager::getSupportedStates( MyString &str ) const
+ {
+ 	str = "";
+-	ExtArray<HibernatorBase::SLEEP_STATE> states;
++	ExtArray<HibernatorBase::SLEEP_STATE> states( HibernatorBase::NONE, 64 );
+ 	if ( !getSupportedStates( states ) ) {
+ 		return false;
+ 	}
+diff --git a/src/condor_utils/hibernator.cpp b/src/condor_utils/hibernator.cpp
+index 234830e..6f8ded9 100644
+--- a/src/condor_utils/hibernator.cpp
++++ b/src/condor_utils/hibernator.cpp
+@@ -241,7 +241,7 @@ HibernatorBase::statesToString( const ExtArray<SLEEP_STATE> &_states,
+ bool
+ HibernatorBase::maskToString( unsigned mask, MyString &str )
+ {
+-	ExtArray<SLEEP_STATE>	_states;
++	ExtArray<SLEEP_STATE>	_states(NONE, 64);
+ 	if( !maskToStates( mask, _states ) ) {
+ 		return false;
+ 	}
+@@ -282,7 +282,7 @@ HibernatorBase::stringToMask( const char *str,
+ {
+ 	mask = 0x0;
+ 
+-	ExtArray<SLEEP_STATE> _states;
++	ExtArray<SLEEP_STATE> _states(NONE, 64);
+ 	if( !stringToStates( str, _states ) ) {
+ 		return false;
+ 	}
+diff --git a/src/condor_utils/killfamily.cpp b/src/condor_utils/killfamily.cpp
+index 9a26822..65cefa4 100644
+--- a/src/condor_utils/killfamily.cpp
++++ b/src/condor_utils/killfamily.cpp
+@@ -263,9 +263,9 @@ KillFamily::takesnapshot()
+ 	int info_status;
+ 	int ignore_status;
+ 
+-	ExtArray<pid_t> pidfamily;
++	ExtArray<pid_t> pidfamily(0, 64);
+ 
+-	new_pids = new ExtArray<a_pid>;
++	new_pids = new ExtArray<a_pid>(a_pid(), 64);
+ 	newpidindex = 0;
+ 
+ 	// On some systems, we can only see process we own, so we must be either
+@@ -349,7 +349,7 @@ KillFamily::takesnapshot()
+ 							// if we got the pid family via login name,
+ 							// we alrady have the decendants.
+ 							if ( !searchLogin ) {
+-								ExtArray<pid_t> detached_family;
++								ExtArray<pid_t> detached_family(0, 64);
+ 								detached_family[0] = 0;
+ 								if (ProcAPI::getPidFamily(currpid,&m_penvid,detached_family,ignore_status) != PROCAPI_FAILURE) {
+ 									for (int k = 0; detached_family[k] != 0; k++) {
+diff --git a/src/condor_utils/proc_id.cpp b/src/condor_utils/proc_id.cpp
+index 86908c0..8b98eec 100644
+--- a/src/condor_utils/proc_id.cpp
++++ b/src/condor_utils/proc_id.cpp
+@@ -90,7 +90,7 @@ mystring_to_procids(MyString &str)
+ 	ExtArray<PROC_ID> *jobs = NULL;
+ 	int i;
+ 
+-	jobs = new ExtArray<PROC_ID>;
++	jobs = new ExtArray<PROC_ID>(PROC_ID(0, 0), 64);
+ 	ASSERT(jobs);
+ 
+ 	sl.rewind();
+diff --git a/src/condor_utils/stringSpace.cpp b/src/condor_utils/stringSpace.cpp
+index af26cf0..e9cf08b 100644
+--- a/src/condor_utils/stringSpace.cpp
++++ b/src/condor_utils/stringSpace.cpp
+@@ -26,7 +26,7 @@
+ template class HashTable<YourSensitiveString,int>;
+ 
+ StringSpace::
+-StringSpace (int initial_size)
++StringSpace (int initial_size) : strTable(SSStringEnt(), initial_size)
+ {
+ 	SSStringEnt filler;
+ 	stringSpace = new HashTable<YourSensitiveString,int>(
+diff --git a/src/condor_utils/stringSpace.h b/src/condor_utils/stringSpace.h
+index 0e8eae6..4a91c5b 100644
+--- a/src/condor_utils/stringSpace.h
++++ b/src/condor_utils/stringSpace.h
+@@ -151,6 +151,7 @@ class StringSpace
+ 		bool        inUse;
+ 		int         refCount; 
+ 		char  *string; 
++		SSStringEnt() : inUse(false), refCount(0), string(NULL) {}
+ 	};
+ 
+ 	class HashTable<YourSensitiveString,int>  *stringSpace;
+diff --git a/src/condor_vm-gahp/vmgahp_common.cpp b/src/condor_vm-gahp/vmgahp_common.cpp
+index c5678b2..e74955f 100644
+--- a/src/condor_vm-gahp/vmgahp_common.cpp
++++ b/src/condor_vm-gahp/vmgahp_common.cpp
+@@ -69,8 +69,6 @@ bool parse_vmgahp_command(const char* raw, Gahp_Args& args)
+ 
+ 	args.reset();
+ 
+-	int beginning = 0;
+-
+ 	int len=strlen(raw);
+ 
+ 	char * buff = (char*)malloc(len+1);
+@@ -96,7 +94,6 @@ bool parse_vmgahp_command(const char* raw, Gahp_Args& args)
+ 			args.add_arg( strdup(buff) );
+ 			buff_len = 0;	// re-set temporary buffer
+ 
+-			beginning = i+1; // next char will be one after whitespace
+ 		} else {
+ 			// It's just a regular character, save it
+ 			buff[buff_len++] = raw[i];
+diff --git a/src/condor_vm-gahp/vmware_type.cpp b/src/condor_vm-gahp/vmware_type.cpp
+index 85403cf..b79f865 100644
+--- a/src/condor_vm-gahp/vmware_type.cpp
++++ b/src/condor_vm-gahp/vmware_type.cpp
+@@ -59,11 +59,6 @@ change_monolithicSparse_snapshot_vmdk_file(const char* file, bool use_fullpath,
+ 		return;
+ 	}
+ 
+-	// find the filesize of vmdk file
+-	int file_size = 0; 
+-	StatWrapper swrap(file);
+-	file_size = swrap.GetBuf()->st_size;
+-
+ 	// read snapshot vmdk file to find "parentFileNameHint"
+ 	int fd = -1;
+ 	fd = safe_open_wrapper_follow(file, O_RDWR);
+diff --git a/src/deltacloud_gahp/dcloudgahp_commands.cpp b/src/deltacloud_gahp/dcloudgahp_commands.cpp
+index 9ef5504..01d2320 100644
+--- a/src/deltacloud_gahp/dcloudgahp_commands.cpp
++++ b/src/deltacloud_gahp/dcloudgahp_commands.cpp
+@@ -141,14 +141,19 @@ static std::string create_failure(const char *req_id, const char *err_msg, ...)
+     va_list ap;
+     char *tmp;
+     unsigned int i;
++    int retval;
+ 
+     buffer += req_id;
+     buffer += ' ';
+ 
+     va_start(ap, err_msg);
+-    vasprintf(&tmp, err_msg, ap);
++    retval = vasprintf(&tmp, err_msg, ap);
+     va_end(ap);
+ 
++    if (retval == -1) {
++        return "";
++    }
++
+     for (i = 0; i < strlen(tmp); i++) {
+         if (tmp[i] == ' ')
+             buffer += '\\';
+diff --git a/src/deltacloud_gahp/dcloudgahp_main.cpp b/src/deltacloud_gahp/dcloudgahp_main.cpp
+index 42a7dd5..c39ef23 100644
+--- a/src/deltacloud_gahp/dcloudgahp_main.cpp
++++ b/src/deltacloud_gahp/dcloudgahp_main.cpp
+@@ -459,7 +459,7 @@ static void registerAllDcloudCommands(void)
+                               dcloud_start_auto_worker);
+ }
+ 
+-int main(int /*argc*/, char */*argv*/[])
++int main(int /*argc*/, char * /*argv*/[])
+ {
+     const char *debug_file = getenv("DELTACLOUD_GAHP_DEBUG_FILE");
+     if (debug_file) {
+diff --git a/src/ec2_gahp/amazonCommands.cpp b/src/ec2_gahp/amazonCommands.cpp
+index a500567..2e94384 100644
+--- a/src/ec2_gahp/amazonCommands.cpp
++++ b/src/ec2_gahp/amazonCommands.cpp
+@@ -202,7 +202,7 @@ bool AmazonRequest::SendRequest() {
+     Regex r; int errCode = 0; const char * errString = 0;
+     bool patternOK = r.compile( "([^:]+)://(([^/]+)(/.*)?)", & errString, & errCode );
+     assert( patternOK );
+-    ExtArray<MyString> groups(5);
++    ExtArray<MyString> groups(MyString(), 5);
+     bool matchFound = r.match( this->serviceURL.c_str(), & groups );
+     if( (! matchFound) || (groups[1] != "http" && groups[1] != "https" && groups[1] != "x509" ) ) {
+         this->errorCode = "E_INVALID_SERVICE_URL";
+diff --git a/src/ec2_gahp/amazongahp_common.cpp b/src/ec2_gahp/amazongahp_common.cpp
+index a50bb40..45b3ebc 100644
+--- a/src/ec2_gahp/amazongahp_common.cpp
++++ b/src/ec2_gahp/amazongahp_common.cpp
+@@ -189,8 +189,6 @@ parse_gahp_command (const char* raw, Gahp_Args* args) {
+ 
+ 	args->reset();
+ 
+-	int beginning = 0;
+-
+ 	int len=strlen(raw);
+ 
+ 	char * buff = (char*)malloc(len+1);
+@@ -214,8 +212,6 @@ parse_gahp_command (const char* raw, Gahp_Args* args) {
+ 			buff[buff_len++] = '\0';
+ 			args->add_arg( strdup(buff) );
+ 			buff_len = 0;	// re-set temporary buffer
+-
+-			beginning = i+1; // next char will be one after whitespace
+ 		}
+ 		else {
+ 			// It's just a regular character, save it
+diff --git a/src/gt2_gahp/my_ez.cpp b/src/gt2_gahp/my_ez.cpp
+index 5a942b6..0276ac2 100644
+--- a/src/gt2_gahp/my_ez.cpp
++++ b/src/gt2_gahp/my_ez.cpp
+@@ -132,14 +132,16 @@ globus_l_gass_server_ez_activate(void);
+ static int
+ globus_l_gass_server_ez_deactivate(void);
+ 
++static char module_name [] = "globus_gass_server_ez";
+ globus_module_descriptor_t globus_i_gass_server_ez_module =
+ {
+-    "globus_gass_server_ez",
++    module_name,
+     globus_l_gass_server_ez_activate,
+     globus_l_gass_server_ez_deactivate,
+     GLOBUS_NULL,
+     GLOBUS_NULL,
+-    &local_version
++    &local_version,
++    GLOBUS_NULL
+ };
+ 
+ 
+@@ -270,10 +272,10 @@ globus_gass_server_ez_init(globus_gass_transfer_listener_t * listener,
+     server->callback=callback;
+ 
+     globus_hashtable_insert(&globus_l_gass_server_ez_listeners,
+-			    (void *)*listener,
++			    (void *)(intptr_t(*listener)),
+ 			    server);
+ 
+-    rc=globus_gass_transfer_register_listen(*listener,
++    rc=globus_gass_transfer_register_listen((*listener),
+ 				globus_l_gass_server_ez_listen_callback,
+ 					(void *)reqattr);
+ 
+@@ -471,7 +473,7 @@ globus_l_gass_server_ez_listen_callback(
+ 				 user_arg,
+ 				 listener,
+ 				 globus_l_gass_server_ez_register_accept_callback,
+-				 (void *)listener);
++				 (void *)(intptr_t(listener)));
+ 
+ 	if ( number_open > 1 ) {
+ 		try_to_listen();
+@@ -504,6 +506,8 @@ globus_l_gass_server_ez_register_accept_callback(
+     globus_byte_t * buf;
+     int amt;
+     int flags=0;
++    char fourohfour[] = "File Not Found";
++    char badrequest[] = "Bad Request";
+ 
+     /* lookup our options */
+     s=(globus_l_gass_server_ez_t *)globus_hashtable_lookup(
+@@ -516,7 +520,7 @@ globus_l_gass_server_ez_register_accept_callback(
+     if(rc != GLOBUS_SUCCESS ||
+        parsed_url.url_path == GLOBUS_NULL || strlen(parsed_url.url_path) == 0U)
+     {
+-        globus_gass_transfer_deny(request, 404, "File Not Found");
++        globus_gass_transfer_deny(request, 404, fourohfour);
+         globus_gass_transfer_request_destroy(request);
+         if (rc == GLOBUS_SUCCESS)
+             globus_url_destroy(&parsed_url);
+@@ -622,7 +626,7 @@ globus_l_gass_server_ez_register_accept_callback(
+                                                1024,
+                                                1,
+                                                globus_l_gass_server_ez_put_callback,
+-                                               (void *) rc);
++                                               (void *) (intptr_t)rc);
+ 	    }
+             break;
+ 
+@@ -651,7 +655,7 @@ globus_l_gass_server_ez_register_accept_callback(
+ 	    }
+ 	    else
+ 	    {
+-		globus_gass_transfer_deny(request, 404, "File Not Found");
++		globus_gass_transfer_deny(request, 404, fourohfour);
+ 		globus_gass_transfer_request_destroy(request);
+ 		goto reregister;
+ 	    }
+@@ -671,11 +675,11 @@ globus_l_gass_server_ez_register_accept_callback(
+                                             amt,
+                                             GLOBUS_FALSE,
+                                             globus_l_gass_server_ez_get_callback,
+-                                            (void *) rc);
++                                            (void *) (intptr_t)rc);
+ 	  break;
+ 	default:
+ 	deny:
+-	  globus_gass_transfer_deny(request, 400, "Bad Request");
++	  globus_gass_transfer_deny(request, 400, badrequest);
+ 	  globus_gass_transfer_request_destroy(request);
+ 
+ 	}
+@@ -778,7 +782,39 @@ globus_l_gass_server_ez_put_callback(
+ 
+     fd = (long) arg;
+ 
+-    globus_libc_write(fd, bytes, len);
++#ifndef TARGET_ARCH_WIN32
++    ssize_t rc;
++#else
++        int rc;
++#endif
++    size_t written = 0;
++
++    while(written < len)
++    {
++        rc = globus_libc_write(fd,
++                               bytes  + written,
++                               len    - written);
++        if(rc < 0)
++        {
++            switch(errno)
++            {
++            case EAGAIN:
++            case EINTR:
++                break;
++            default:
++                goto cleanup;
++            }
++        }
++        else
++        {
++            written += rc;
++        }
++    }
++
++    // NOTE: Errors are completely ignored!
++
++cleanup:
++
+     if(!last_data)
+     {
+         globus_gass_transfer_receive_bytes(request,
+@@ -1017,7 +1053,7 @@ my_globus_gass_server_ez_init(globus_gass_transfer_listener_t * listener,
+ 
+ 	number_open++;
+     globus_hashtable_insert(&globus_l_gass_server_ez_listeners,
+-			    (void *)*listener,
++			    (void *)(intptr_t)*listener,
+ 			    server);
+ 
+ /* insert error handling here*/
+@@ -1048,7 +1084,7 @@ void try_to_listen(void)
+     if (n==-1) return;
+ 
+     s = (globus_l_gass_server_ez_t *)globus_hashtable_lookup(
+-                                                     &globus_l_gass_server_ez_listeners,(void *)gassServerListeners[n]);
++                                                     &globus_l_gass_server_ez_listeners,(void *)(intptr_t)gassServerListeners[n]);
+ 
+     result = globus_gass_transfer_register_listen(
+                                 gassServerListeners[n],
+diff --git a/src/nordugrid_gahp/globus_ftp_client.c b/src/nordugrid_gahp/globus_ftp_client.c
+index 48551db..62e2885 100644
+--- a/src/nordugrid_gahp/globus_ftp_client.c
++++ b/src/nordugrid_gahp/globus_ftp_client.c
+@@ -104,7 +104,8 @@ globus_module_descriptor_t		globus_i_ftp_client_module =
+     globus_l_ftp_client_deactivate,
+     GLOBUS_NULL,
+     GLOBUS_NULL,
+-    &local_version
++    &local_version,
++    GLOBUS_NULL
+ };
+ 
+ /**
+diff --git a/src/nordugrid_gahp/globus_ftp_client_attr.c b/src/nordugrid_gahp/globus_ftp_client_attr.c
+index 6cd44d6..a36a59e 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_attr.c
++++ b/src/nordugrid_gahp/globus_ftp_client_attr.c
+@@ -468,7 +468,7 @@ globus_ftp_client_handleattr_get_clientinfo(
+ 
+         goto error_exit;
+     }
+-    i_attr = *(const globus_i_ftp_client_handleattr_t **) attr;
++    i_attr = *(const globus_i_ftp_client_handleattr_t * const*) attr;
+ 
+     if(app_name && i_attr->clientinfo_app_name)
+     {
+@@ -1163,7 +1163,7 @@ globus_ftp_client_operationattr_set_storage_module(
+     const char *                            module_name,
+     const char *                            module_args)
+ {
+-    char *                                  m_args="";
++    const char *                                  m_args="";
+     globus_object_t *				err;
+     globus_i_ftp_client_operationattr_t *	i_attr;
+     GlobusFuncName(globus_ftp_client_operationattr_set_parallelism);
+@@ -1177,7 +1177,7 @@ globus_ftp_client_operationattr_set_storage_module(
+ 
+     if(module_args != NULL)
+     {
+-        m_args = (char *)module_args;
++        m_args = module_args;
+     }
+     if(module_name != NULL)
+     {
+diff --git a/src/nordugrid_gahp/globus_ftp_client_data.c b/src/nordugrid_gahp/globus_ftp_client_data.c
+index 8369008..24ce93e 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_data.c
++++ b/src/nordugrid_gahp/globus_ftp_client_data.c
+@@ -907,7 +907,7 @@ globus_l_ftp_client_read_all_callback(
+     }
+     
+     if(bytes_read > 0 &&
+-       offset_read + bytes_read > client_handle->read_all_biggest_offset)
++       (globus_off_t)(offset_read + bytes_read) > client_handle->read_all_biggest_offset)
+     {
+ 	client_handle->read_all_biggest_offset = offset_read + bytes_read;
+     }
+@@ -1121,7 +1121,7 @@ globus_i_ftp_client_data_dispatch_queue(
+     globus_i_ftp_client_handle_t *		handle)
+ {
+     globus_i_ftp_client_target_t *		target;
+-    globus_result_t				result;
++    globus_result_t				result = GLOBUS_FAILURE;
+     globus_object_t *				err;
+ 
+     globus_i_ftp_client_debug_printf(1, 
+diff --git a/src/nordugrid_gahp/globus_ftp_client_debug_plugin.c b/src/nordugrid_gahp/globus_ftp_client_debug_plugin.c
+index 5747cd7..be74cb9 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_debug_plugin.c
++++ b/src/nordugrid_gahp/globus_ftp_client_debug_plugin.c
+@@ -359,7 +359,8 @@ globus_module_descriptor_t globus_i_ftp_client_debug_plugin_module =
+     globus_l_ftp_client_debug_plugin_deactivate,
+     GLOBUS_NULL,
+     GLOBUS_NULL,
+-    &local_version
++    &local_version,
++    GLOBUS_NULL
+ };
+ 
+ 
+diff --git a/src/nordugrid_gahp/globus_ftp_client_feature.c b/src/nordugrid_gahp/globus_ftp_client_feature.c
+index 543b5b7..d660045 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_feature.c
++++ b/src/nordugrid_gahp/globus_ftp_client_feature.c
+@@ -373,7 +373,8 @@ globus_ftp_client_is_feature_supported(
+         error = GLOBUS_I_FTP_CLIENT_ERROR_NULL_PARAMETER("u_features");
+         goto error_param;
+     }
+-    if(feature < 0 || feature >= GLOBUS_FTP_CLIENT_FEATURE_MAX)
++    // Note I dropped the test (feature < 0) as feature is unsigned...
++    if(feature >= GLOBUS_FTP_CLIENT_FEATURE_MAX)
+     {
+         error = GLOBUS_I_FTP_CLIENT_ERROR_INVALID_PARAMETER("feature");
+         goto error_param;
+diff --git a/src/nordugrid_gahp/globus_ftp_client_perf_plugin.c b/src/nordugrid_gahp/globus_ftp_client_perf_plugin.c
+index b7c1c25..686ce3a 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_perf_plugin.c
++++ b/src/nordugrid_gahp/globus_ftp_client_perf_plugin.c
+@@ -48,7 +48,8 @@ globus_module_descriptor_t globus_i_ftp_client_perf_plugin_module =
+     globus_l_ftp_client_perf_plugin_deactivate,
+     GLOBUS_NULL,
+     GLOBUS_NULL,
+-    &local_version
++    &local_version,
++    GLOBUS_NULL
+ };
+ 
+ static
+diff --git a/src/nordugrid_gahp/globus_ftp_client_restart_marker.c b/src/nordugrid_gahp/globus_ftp_client_restart_marker.c
+index 9346910..3cdfc8f 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_restart_marker.c
++++ b/src/nordugrid_gahp/globus_ftp_client_restart_marker.c
+@@ -716,7 +716,7 @@ globus_ftp_client_restart_marker_from_string(
+ {
+     globus_off_t				offset;
+     globus_off_t				end;
+-    globus_size_t				consumed;
++    int                                         consumed;
+     globus_object_t *				err;
+     globus_result_t				res;
+     const char *				p;
+diff --git a/src/nordugrid_gahp/globus_ftp_client_restart_marker_plugin.c b/src/nordugrid_gahp/globus_ftp_client_restart_marker_plugin.c
+index 431e192..2f3a0cd 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_restart_marker_plugin.c
++++ b/src/nordugrid_gahp/globus_ftp_client_restart_marker_plugin.c
+@@ -30,6 +30,7 @@
+ #include <stdio.h>
+ #include <time.h>
+ #include <string.h>
++#include "version.h"
+ 
+ #define GLOBUS_L_FTP_CLIENT_RESTART_MARKER_PLUGIN_NAME "globus_ftp_client_restart_marker_plugin"
+ 
+@@ -41,6 +42,9 @@ globus_module_descriptor_t globus_i_ftp_client_restart_marker_plugin_module =
+     GLOBUS_L_FTP_CLIENT_RESTART_MARKER_PLUGIN_NAME,
+     globus_l_ftp_client_restart_marker_plugin_activate,
+     globus_l_ftp_client_restart_marker_plugin_deactivate,
++    GLOBUS_NULL,
++    GLOBUS_NULL,
++    &local_version,
+     GLOBUS_NULL
+ };
+ 
+diff --git a/src/nordugrid_gahp/globus_ftp_client_restart_plugin.c b/src/nordugrid_gahp/globus_ftp_client_restart_plugin.c
+index a485fdc..2d98868 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_restart_plugin.c
++++ b/src/nordugrid_gahp/globus_ftp_client_restart_plugin.c
+@@ -350,7 +350,8 @@ globus_module_descriptor_t globus_i_ftp_client_restart_plugin_module =
+     globus_l_ftp_client_restart_plugin_deactivate,
+     GLOBUS_NULL,
+     GLOBUS_NULL,
+-    &local_version
++    &local_version,
++    GLOBUS_NULL
+ };
+ 
+ 
+@@ -870,7 +871,6 @@ void
+ l_ticker_cb(
+     void *                              user_arg)
+ {
+-    globus_result_t                         result;
+     globus_l_ftp_client_restart_plugin_t *  d;
+     globus_abstime_t	                    when;
+     globus_bool_t                           retry = GLOBUS_TRUE;
+@@ -919,7 +919,7 @@ l_ticker_cb(
+             switch(d->operation)
+             {
+                 case GLOBUS_FTP_CLIENT_GET:
+-                    result = globus_ftp_client_plugin_restart_get(
++                    globus_ftp_client_plugin_restart_get(
+                         d->ticker_ftp_handle,
+                         d->source_url,
+                         &d->source_attr,
+@@ -927,7 +927,7 @@ l_ticker_cb(
+                         &when);
+                     break;
+                 case GLOBUS_FTP_CLIENT_PUT:
+-                    result = globus_ftp_client_plugin_restart_put(
++                    globus_ftp_client_plugin_restart_put(
+                         d->ticker_ftp_handle,
+                         d->dest_url,
+                         &d->dest_attr,
+@@ -935,7 +935,7 @@ l_ticker_cb(
+                         &when);
+                     break;
+                 case GLOBUS_FTP_CLIENT_TRANSFER:
+-                    result = globus_ftp_client_plugin_restart_third_party_transfer(
++                    globus_ftp_client_plugin_restart_third_party_transfer(
+                         d->ticker_ftp_handle,
+                         d->source_url,
+                         &d->source_attr,
+diff --git a/src/nordugrid_gahp/globus_ftp_client_restart_plugin.h b/src/nordugrid_gahp/globus_ftp_client_restart_plugin.h
+index bcac51b..1cd266b 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_restart_plugin.h
++++ b/src/nordugrid_gahp/globus_ftp_client_restart_plugin.h
+@@ -56,6 +56,7 @@
+  */
+ 
+ #include "globus_ftp_client.h"
++#include "globus_ftp_client_plugin.h"
+ 
+ EXTERN_C_BEGIN
+ 
+diff --git a/src/nordugrid_gahp/globus_ftp_client_state.c b/src/nordugrid_gahp/globus_ftp_client_state.c
+index f0f22a1..afca74a 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_state.c
++++ b/src/nordugrid_gahp/globus_ftp_client_state.c
+@@ -3754,7 +3754,7 @@ redo:
+ 
+             if(client_handle->attr.pipeline_callback)
+             {
+-                int                             i;
++                unsigned int                    i;
+                 globus_bool_t                   added = GLOBUS_TRUE;
+                 globus_i_ftp_client_url_ent_t * url_ent;
+     
+@@ -3901,7 +3901,7 @@ redo:
+             
+             if(client_handle->attr.pipeline_callback)
+             {
+-                int                             i;
++                unsigned int                    i;
+                 globus_bool_t                   added = GLOBUS_TRUE;
+                 globus_i_ftp_client_url_ent_t * url_ent;
+     
+@@ -5246,7 +5246,7 @@ globus_l_ftp_client_parse_pasv(
+             while(*p && *p != delim) p++;
+             if(*p)
+             {
+-                int                     j = 0;
++                unsigned int            j = 0;
+                 char *                  s;
+                 char *                  c;
+                 
+@@ -5877,7 +5877,6 @@ globus_l_ftp_client_parse_cksm(
+     globus_ftp_control_response_t *             response)
+ {
+     char *                                      p;
+-    int                                         rc;
+     GlobusFuncName(globus_l_ftp_client_parse_cksm);
+ 
+     if(response->code != 213)
+@@ -5890,7 +5889,7 @@ globus_l_ftp_client_parse_cksm(
+     /* skip 213 <SP> */
+     p += 4;
+ 
+-    rc=sscanf(p, "%s", client_handle->checksum);
++    sscanf(p, "%s", client_handle->checksum);
+ 
+ }
+ 
+@@ -6054,7 +6053,7 @@ globus_l_ftp_client_parse_mlst(
+     globus_byte_t *                             buffer;
+     char *                                      fact_list;
+     char *                                      this_filename;
+-    char *                                      filename;
++    char *                                      filename = NULL;
+     int                                         fact_list_length = 0;
+     int                                         total_fact_list_length = 0;
+     int                                         filename_length = 0;
+diff --git a/src/nordugrid_gahp/globus_ftp_client_throughput_plugin.c b/src/nordugrid_gahp/globus_ftp_client_throughput_plugin.c
+index d44c722..a8fc543 100644
+--- a/src/nordugrid_gahp/globus_ftp_client_throughput_plugin.c
++++ b/src/nordugrid_gahp/globus_ftp_client_throughput_plugin.c
+@@ -42,7 +42,8 @@ globus_module_descriptor_t globus_i_ftp_client_throughput_plugin_module =
+     globus_l_ftp_client_throughput_plugin_deactivate,
+     GLOBUS_NULL,
+     GLOBUS_NULL,
+-    &local_version
++    &local_version,
++    GLOBUS_NULL
+ };
+ 
+ static
+diff --git a/src/nordugrid_gahp/nordugrid_gahp.c b/src/nordugrid_gahp/nordugrid_gahp.c
+index 76f3997..595a944 100644
+--- a/src/nordugrid_gahp/nordugrid_gahp.c
++++ b/src/nordugrid_gahp/nordugrid_gahp.c
+@@ -1438,7 +1438,7 @@ void nordugrid_stage_in_write_callback( void *arg,
+ 		return;
+ 	}
+ 
+-	assert( offset + length == lseek( user_arg->fd, 0, SEEK_CUR ) );
++	assert( (globus_ssize_t)(offset + length) == lseek( user_arg->fd, 0, SEEK_CUR ) );
+ 
+ 	if ( eof ) {
+ 		free( buffer );
+@@ -2369,7 +2369,7 @@ void gridftp_transfer_write_callback( void *arg,
+ 		return;
+ 	}
+ 
+-	assert( offset + length == lseek( user_arg->fd, 0, SEEK_CUR ) );
++	assert( (globus_ssize_t)(offset + length) == lseek( user_arg->fd, 0, SEEK_CUR ) );
+ 
+ 	if ( eof ) {
+ 		free( buffer );
