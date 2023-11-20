@@ -1,0 +1,33 @@
+diff --git a/src/condor_scripts/make-condor-rpm.sh b/src/condor_scripts/make-condor-rpm.sh
+index ae106ab..b918360 100755
+--- a/src/condor_scripts/make-condor-rpm.sh
++++ b/src/condor_scripts/make-condor-rpm.sh
+@@ -142,7 +142,27 @@ cd ${builddir}
+ # as best we can--see %install below
+ 
+ echo "*** Creating RPM spec file..."
+-cat > condor.spec <<EOF
++
++# On RHEL5, the RPM builder repacks any jar files in the release. This
++# is causing problems for the gt4 gahp (#693). In later versions of rpm,
++# the packing can be disabled by setting %__jar_repack (seen below). But
++# on RHEL5, the best we can do is redefine %__os_install_post to omit
++# the jar repacking command.
++grep -q 'Red Hat Enterprise Linux Server release 5' /etc/redhat-release 2>/dev/null
++if [ $? -eq 0 ] ; then
++  cat > condor.spec <<EOF
++%define __os_install_post \
++    /usr/lib/rpm/redhat/brp-compress ; \
++    %{!?__debug_package:/usr/lib/rpm/redhat/brp-strip %{__strip}} ; \
++    /usr/lib/rpm/redhat/brp-strip-static-archive %{__strip} ; \
++    /usr/lib/rpm/redhat/brp-strip-comment-note %{__strip} %{__objdump} ; \
++    /usr/lib/rpm/brp-python-bytecompile ; \
++%{nil}
++EOF
++fi
++
++cat >> condor.spec <<EOF
++%define __jar_repack %{nil}
+ Summary: Condor ${condor_version}
+ Name: condor
+ Version: ${condor_version}
