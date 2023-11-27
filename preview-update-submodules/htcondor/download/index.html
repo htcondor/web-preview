@@ -1019,18 +1019,16 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.0.1</span> Long Term Support Release</h3>
-        <p>October 31, 2023</p>
+        <h3><span class="text-secondary">23.0.2</span> Long Term Support Release</h3>
+        <p>November 20, 2023</p>
         <div>
             <ul>
-  <li>Add HTCondor Python wheel in PyPI for Python 3.12</li>
-  <li>Update to apptainer version 1.2.4 in the HTCondor tarballs</li>
-  <li>Fix 10.6.0 bug that broke PID namespaces</li>
-  <li>Fix Debian and Ubuntu install bug when ‘condor’ user was in LDAP</li>
-  <li>Fix bug where execution times for ARC CE jobs were 60 times too large</li>
-  <li>Fix bug where a failed ‘Service’ node would crash DAGMan</li>
-  <li>Condor-C and Job Router jobs now get resources provisioned updates</li>
-  <li>Update Windows binaries to address curl CVE-2023-38545</li>
+  <li>Fixed a bug when Hashicorp Vault is configured to issue data transfer tokens (which is not the default), job submission could hang and then fail.</li>
+  <li>Improved sandbox and ssh-agent clean up for <code>batch</code> grid universe jobs</li>
+  <li>Fix bug where daemons with a private network address couldn’t communicate</li>
+  <li>Fix cgroup v2 memory enforcement for custom configurations</li>
+  <li>Add <code>DISABLE_SWAP_FOR_JOB</code> support on cgroup v2 systems</li>
+  <li>Fix log rotation for OAuth and Vault credmon daemons</li>
 </ul>
 
         </div>
