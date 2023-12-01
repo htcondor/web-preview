@@ -845,15 +845,15 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.1.0</span> Feature Release</h3>
-        <p>October 31, 2023</p>
+        <h3><span class="text-secondary">23.2.0</span> Feature Release</h3>
+        <p>November 29, 2023</p>
         <div>
             <ul>
-  <li>Add HTCondor Python wheels in PyPI for the aarch64 CPU architecture</li>
-  <li>Enhanced filtering with ‘condor_watch_q’</li>
-  <li>The Access Point can now be told to use a non-standard ssh port when sending jobs to a remote scheduling system (such as Slurm).</li>
-  <li>Laid groundwork to allow an Execution Point running without root access to accurately limit the job’s usage of CPU and Memory in real time via Linux kernel cgroups; this is particularly interesting for glidein pools.</li>
-  <li>HTCondor file transfers using HTTPS can now utilize CA certificates in a non-standard location</li>
+  <li>Add <code>periodic_vacate</code> submit command to restart jobs that are stuck</li>
+  <li>Execution Points now advertise whether or not the execute directory is on rotational storage</li>
+  <li>Add termination log events that report the time a job was running and the time that a job occupied a slot</li>
+  <li>Files written by HTCondor are now written in binary mode on Windows</li>
+  <li>HTCondor now uses the Pelican Platform for OSDF file transfers</li>
 </ul>
 
         </div>
