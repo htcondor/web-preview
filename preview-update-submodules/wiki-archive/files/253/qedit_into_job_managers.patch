@@ -1,0 +1,1373 @@
+diff --git a/src/condor_c++_util/classad_collection.cpp b/src/condor_c++_util/classad_collection.cpp
+index ae7a5e1..ff1b2c2 100644
+--- a/src/condor_c++_util/classad_collection.cpp
++++ b/src/condor_c++_util/classad_collection.cpp
+@@ -130,9 +130,9 @@ Output: true on success, false otherwise
+ */
+ //----------------------------------------------------------------------------------
+ 
+-bool ClassAdCollection::SetAttribute(const char *key, const char *name, const char *value)
++bool ClassAdCollection::SetAttribute(const char *key, const char *name, const char *value, bool is_dirty)
+ {
+-  LogRecord* log=new LogSetAttribute(key,name,value);
++  LogRecord* log=new LogSetAttribute(key,name,value,is_dirty);
+   ClassAdLog::AppendLog(log);
+   // return ChangeClassAd(key);
+   return true;
+@@ -155,6 +155,20 @@ bool ClassAdCollection::DeleteAttribute(const char *key, const char *name)
+   return true;
+ }
+ 
++//----------------------------------------------------------------------------------
++/** Clear the ditry bits for all attributes of a class ad - this operation
++    is not logged.
++Input: key - the class ad's key
++Output: true on success, false otherwise
++*/
++//----------------------------------------------------------------------------------
++bool ClassAdCollection::ClearClassAdDirtyBits(const char* key)
++{
++  ClassAd* Ad;
++  if (table.lookup(HashKey(key),Ad)==-1) return false;
++  Ad->ClearAllDirtyFlags();
++  return true;
++}
+ 
+ #if 0 // NOT USED
+ //----------------------------------------------------------------------------------
+diff --git a/src/condor_c++_util/classad_collection.h b/src/condor_c++_util/classad_collection.h
+index 81e2023..a37edfc 100644
+--- a/src/condor_c++_util/classad_collection.h
++++ b/src/condor_c++_util/classad_collection.h
+@@ -189,9 +189,10 @@ public:
+       @param key The class-ad's key.
+       @param name the name of the attribute.
+       @param value the value of the attrinute.
++      @param is_dirty the parameter should be marked dirty in the classad.
+       @return true on success, false otherwise.
+   */
+-  bool SetAttribute(const char* key, const char* name, const char* value);
++  bool SetAttribute(const char* key, const char* name, const char* value, const bool is_dirty=false);
+ 
+   /** Delete an attribute in a class-ad.
+       @param key The class-ad's key.
+@@ -200,6 +201,12 @@ public:
+   */
+   bool DeleteAttribute(const char* key, const char* name);
+ 
++  /** Clear all parameter dirty bits in a class-ad.
++      @param key The class-ad's key.
++      @return true on success, false otherwise.
++  */
++  bool ClearClassAdDirtyBits(const char* key);
++
+   /** Get a class-ad from the repository.
+       Note that the class-ad returned cannot be modified directly.
+       @param key The class-ad's key.
+diff --git a/src/condor_c++_util/classad_log.cpp b/src/condor_c++_util/classad_log.cpp
+index 041466c..e10bfa7 100644
+--- a/src/condor_c++_util/classad_log.cpp
++++ b/src/condor_c++_util/classad_log.cpp
+@@ -801,7 +801,7 @@ LogDestroyClassAd::ReadBody(FILE* fp)
+ 	return readword(fp, key);
+ }
+ 
+-LogSetAttribute::LogSetAttribute(const char *k, const char *n, const char *val)
++LogSetAttribute::LogSetAttribute(const char *k, const char *n, const char *val, bool dirty)
+ {
+ 	op_type = CondorLogOp_SetAttribute;
+ 	key = strdup(k);
+@@ -811,6 +811,7 @@ LogSetAttribute::LogSetAttribute(const char *k, const char *n, const char *val)
+ 	} else {
+ 		value = strdup("UNDEFINED");
+ 	}
++        is_dirty = dirty;
+ }
+ 
+ 
+@@ -831,6 +832,8 @@ LogSetAttribute::Play(void *data_structure)
+ 	if (table->lookup(HashKey(key), ad) < 0)
+ 		return -1;
+ 	rval = ad->AssignExpr(name, value);
++	ad->SetDirtyFlag(name, is_dirty);
++
+ 
+ #if HAVE_DLOPEN
+ 	ClassAdLogPluginManager::SetAttribute(key, name, value);
+diff --git a/src/condor_c++_util/classad_log.h b/src/condor_c++_util/classad_log.h
+index bbf920e..d005b18 100644
+--- a/src/condor_c++_util/classad_log.h
++++ b/src/condor_c++_util/classad_log.h
+@@ -209,7 +209,7 @@ private:
+ 
+ class LogSetAttribute : public LogRecord {
+ public:
+-	LogSetAttribute(const char *key, const char *name, const char *value);
++	LogSetAttribute(const char *key, const char *name, const char *value, const bool dirty=false);
+ 	virtual ~LogSetAttribute();
+ 	int Play(void *data_structure);
+ 	virtual char const *get_key() { return key; }
+@@ -223,6 +223,7 @@ private:
+ 	char *key;
+ 	char *name;
+ 	char *value;
++        bool is_dirty;
+ };
+ 
+ class LogDeleteAttribute : public LogRecord {
+diff --git a/src/condor_c++_util/command_strings.cpp b/src/condor_c++_util/command_strings.cpp
+index 752cae6..db798e6 100644
+--- a/src/condor_c++_util/command_strings.cpp
++++ b/src/condor_c++_util/command_strings.cpp
+@@ -172,6 +172,8 @@ const struct Translation DCTranslation[] = {
+ 	{ "CREATE_JOB_OWNER_SEC_SESSION", CREATE_JOB_OWNER_SEC_SESSION },
+ 	{ "START_SSHD", START_SSHD },
+ 	{ "RECYCLE_SHADOW", RECYCLE_SHADOW },
++	{ "CLEAR_DIRTY_JOB_ATTRS", CLEAR_DIRTY_JOB_ATTRS },
++	{ "UPDATE_JOBAD", UPDATE_JOBAD },
+ 	{ NULL, 0 }
+ };
+ 
+diff --git a/src/condor_c++_util/condor_attributes.cpp b/src/condor_c++_util/condor_attributes.cpp
+index 17563d2..f7faab8 100644
+--- a/src/condor_c++_util/condor_attributes.cpp
++++ b/src/condor_c++_util/condor_attributes.cpp
+@@ -355,6 +355,7 @@ const char * const ATTR_JOB_UNIVERSE             = "JobUniverse";
+ const char * const ATTR_JOB_GRID_TYPE			 = "JobGridType";
+ const char * const ATTR_JOB_WALL_CLOCK_CKPT		 = "WallClockCheckpoint";
+ const char * const ATTR_JOB_QUEUE_BIRTHDATE		 = "JobQueueBirthdate";
++const char * const ATTR_JOB_DIRTY		 = "JobDirty";
+ // VM universe
+ const char * const ATTR_JOB_VM_TYPE				= "JobVMType";
+ const char * const ATTR_JOB_VM_MEMORY				= "JobVMMemory";
+diff --git a/src/condor_daemon_client/dc_schedd.cpp b/src/condor_daemon_client/dc_schedd.cpp
+index 3f2aaa1..650b0ab 100644
+--- a/src/condor_daemon_client/dc_schedd.cpp
++++ b/src/condor_daemon_client/dc_schedd.cpp
+@@ -1734,3 +1734,40 @@ bool DCSchedd::recycleShadow( int previous_job_exit_reason, ClassAd **new_job_ad
+ 
+ 	return true;
+ }
++
++bool DCSchedd::clearDirtyAttrs( int cluster, int proc, MyString &error_msg )
++{
++	int timeout = 300;
++	CondorError errstack;
++
++	ReliSock sock;
++	sock.allow_one_empty_message();
++	if( !connectSock(&sock,timeout,&errstack) ) {
++		error_msg.sprintf("Failed to connect to schedd: %s",
++						  errstack.getFullText());
++		return false;
++	}
++
++	if( !startCommand(CLEAR_DIRTY_JOB_ATTRS, &sock, timeout, &errstack) ) {
++		error_msg.sprintf("Failed to send CLEAR_DIRTY_JOB_ATTRS to schedd: %s",
++						  errstack.getFullText());
++		return false;
++	}
++
++	if( !forceAuthentication(&sock, &errstack) ) {
++		error_msg.sprintf("Failed to authenticate: %s",
++						  errstack.getFullText());
++		return false;
++	}
++
++	sock.encode();
++	if( !sock.put( cluster ) ||
++		!sock.put( proc ) ||
++		!sock.end_of_message() )
++	{
++		error_msg = "Failed to send job id to clear";
++		return false;
++	}
++
++	return true;
++}
+diff --git a/src/condor_daemon_client/dc_schedd.h b/src/condor_daemon_client/dc_schedd.h
+index 9368791..982b3d2 100644
+--- a/src/condor_daemon_client/dc_schedd.h
++++ b/src/condor_daemon_client/dc_schedd.h
+@@ -300,6 +300,7 @@ public:
+ 		// Returns false on error (see error_msg)
+ 		// If no new job found, returns true with *new_job_ad=NULL
+ 	bool recycleShadow( int previous_job_exit_reason, ClassAd **new_job_ad, MyString &error_msg );
++	bool clearDirtyAttrs( int cluster, int proc, MyString &error_msg );
+ 
+ private:
+ 		/** This method actually does all the brains for all versions
+diff --git a/src/condor_gridmanager/basejob.cpp b/src/condor_gridmanager/basejob.cpp
+index ba74bde..3bd7b91 100644
+--- a/src/condor_gridmanager/basejob.cpp
++++ b/src/condor_gridmanager/basejob.cpp
+@@ -31,6 +31,7 @@
+ #include "condor_config.h"
+ #include "condor_email.h"
+ #include "classad_helpers.h"
++#include "classad_merge.h"
+ 
+ #define HASH_TABLE_SIZE			500
+ 
+@@ -650,8 +651,7 @@ void BaseJob::JobAdUpdateFromSchedd( const ClassAd *new_ad )
+ 	new_ad->LookupInteger( ATTR_JOB_STATUS, new_condor_state );
+ 
+ 	if ( new_condor_state == condorState ) {
+-			// The job state in the sched hasn't changed, so we can ignore
+-			// this "update".
++		MergeClassAds( jobAd, (ClassAd*)new_ad, true );
+ 		return;
+ 	}
+ 
+@@ -713,6 +713,9 @@ void BaseJob::JobAdUpdateFromSchedd( const ClassAd *new_ad )
+ 			// TODO do we need to update any other attributes?
+ 		SetEvaluateState();
+ 	}
++	else {
++		MergeClassAds( jobAd, (ClassAd*)new_ad, true );
++	}
+ 
+ }
+ 
+diff --git a/src/condor_gridmanager/gridmanager.cpp b/src/condor_gridmanager/gridmanager.cpp
+index 2eeff94..8974407 100644
+--- a/src/condor_gridmanager/gridmanager.cpp
++++ b/src/condor_gridmanager/gridmanager.cpp
+@@ -99,6 +99,7 @@ struct ScheddUpdateRequest {
+ HashTable <PROC_ID, ScheddUpdateRequest *> pendingScheddUpdates( HASH_TABLE_SIZE,
+ 													 hashFuncPROC_ID );
+ bool addJobsSignaled = false;
++bool updateJobsSignaled = false;
+ bool checkLeasesSignaled = false;
+ int contactScheddTid = TIMER_UNSET;
+ int contactScheddDelay;
+@@ -120,6 +121,7 @@ int doContactSchedd();
+ // handlers
+ int ADD_JOBS_signalHandler( int );
+ int REMOVE_JOBS_signalHandler( int );
++int UPDATE_JOBAD_signalHandler( int );
+ int CHECK_LEASES_signalHandler( int );
+ 
+ 
+@@ -414,6 +416,9 @@ Register()
+ 								 (SignalHandler)&REMOVE_JOBS_signalHandler,
+ 								 "REMOVE_JOBS_signalHandler", NULL );
+ 
++	daemonCore->Register_Signal( UPDATE_JOBAD, "UpdateJobAd",
++								 (SignalHandler)&UPDATE_JOBAD_signalHandler,
++								 "UPDATE_JOBAD_signalHandler", NULL );
+ /*
+ 	daemonCore->Register_Signal( GRIDMAN_CHECK_LEASES, "CheckLeases",
+ 								 (SignalHandler)&CHECK_LEASES_signalHandler,
+@@ -487,12 +492,24 @@ REMOVE_JOBS_signalHandler( int )
+ 	return TRUE;
+ }
+ 
++int
++UPDATE_JOBAD_signalHandler( int )
++{
++	dprintf(D_FULLDEBUG,"Received UPDATE_JOBAD signal\n");
++	if ( !updateJobsSignaled ) {
++		RequestContactSchedd();
++		updateJobsSignaled = true;
++	}
++
++	return TRUE;
++}
++
+ // Call initJobExprs before using any of the expr_*
+ // variables.  It is safe to repeatedly call
+ // initJobExprs.
+ static const char * expr_false = "FALSE";
++static const char * expr_true = "TRUE";
+ // Not currently used
+-//static const char * expr_true = "TRUE";
+ //static const char * expr_undefined = "UNDEFINED";
+ 	// The job is matched, or in unknown match state.
+ 	// definately unmatched
+@@ -515,6 +532,8 @@ static MyString expr_schedd_job_constraint;
+ static MyString expr_completely_done;
+ 	// Opposite of expr_completely_done
+ static MyString expr_not_completely_done;
++	// Whether the job has dirty attributes
++static MyString expr_has_dirty_attrs;
+ 
+ static void 
+ initJobExprs()
+@@ -531,6 +550,7 @@ initJobExprs()
+ 	// It should be in the process of leaving the queue.
+ 	expr_completely_done.sprintf("(%s =?= \"%s\")", ATTR_JOB_MANAGED, MANAGED_DONE);
+ 	expr_not_completely_done.sprintf("(%s =!= \"%s\")", ATTR_JOB_MANAGED, MANAGED_DONE);
++	expr_has_dirty_attrs.sprintf("(%s =?= %s)", ATTR_JOB_DIRTY, expr_true);
+ 
+ 	done = true;
+ }
+@@ -559,10 +579,15 @@ doContactSchedd()
+ 	bool schedd_updates_complete = false;
+ 	bool schedd_deletes_complete = false;
+ 	bool add_remove_jobs_complete = false;
++	bool update_jobs_complete = false;
+ 	bool commit_transaction = true;
+ 	int failure_line_num = 0;
+ 	bool send_reschedule = false;
+ 	MyString error_str = "";
++	StringList dirty_job_ids;
++	char *job_id_str;
++	PROC_ID job_id;
++	MyString err;
+ 
+ 	dprintf(D_FULLDEBUG,"in doContactSchedd()\n");
+ 
+@@ -911,6 +936,50 @@ contact_schedd_next_add_job:
+ 
+ 	add_remove_jobs_complete = true;
+ 
++
++	// Retrieve dirty attributes
++	/////////////////////////////////////////////////////
++	if ( updateJobsSignaled ) {
++		sprintf( expr_buf, "%s && %s && %s && %s && %s",
++				 expr_schedd_job_constraint.Value(), 
++				 expr_not_completely_done.Value(),
++				 expr_not_held.Value(),
++				 expr_managed.Value(),
++				 expr_has_dirty_attrs.Value()
++				 );
++		dprintf( D_FULLDEBUG,"Using constraint %s\n",expr_buf);
++		next_ad = GetNextJobByConstraint( expr_buf, 1 );
++		while ( next_ad != NULL ) {
++			ClassAd updates;
++			char str[PROC_ID_STR_BUFLEN];
++			next_ad->LookupInteger( ATTR_CLUSTER_ID, job_id.cluster );
++			next_ad->LookupInteger( ATTR_PROC_ID, job_id.proc );
++			if ( GetDirtyAttributes( job_id.cluster, job_id.proc, &updates ) < 0 ) {
++				dprintf( D_ALWAYS, "Failed to retrieve dirty attributes for job %d.%d\n", job_id.cluster, job_id.proc );
++				failure_line_num = __LINE__;
++				delete next_ad;
++				goto contact_schedd_disconnect;
++		        }
++			else {
++				dprintf (D_FULLDEBUG, "Retrieved updated attributes for job %d.%d\n", job_id.cluster, job_id.proc);
++				updates.dPrint(D_JOB);
++			}
++			if ( BaseJob::JobsByProcId.lookup( job_id, curr_job ) == 0 ) {
++				curr_job->JobAdUpdateFromSchedd( &updates );
++				ProcIdToStr( job_id, str );
++				dirty_job_ids.append( str );
++			}
++			else {
++				dprintf( D_ALWAYS, "Don't know about updated job %d.%d. "
++						 "Ignoring it\n",
++						 job_id.cluster, job_id.proc );
++			}
++			delete next_ad;
++			next_ad = GetNextJobByConstraint( expr_buf, 0 );
++		}
++	}
++	update_jobs_complete = true;
++
+ //	if ( BeginTransaction() < 0 ) {
+ 	errno = 0;
+ 	BeginTransaction();
+@@ -1068,11 +1137,27 @@ contact_schedd_next_add_job:
+ 		goto contact_schedd_failure;
+ 	}
+ 
++	if ( update_jobs_complete == true ) {
++		updateJobsSignaled = false;
++	} else {
++		error_str.sprintf( "Schedd connection error during dirty attribute update at line %d!", failure_line_num );
++		goto contact_schedd_failure;
++	}
++
+ 	if ( schedd_updates_complete == false ) {
+ 		error_str.sprintf( "Schedd connection error during updates at line %d!", failure_line_num );
+ 		goto contact_schedd_failure;
+ 	}
+ 
++	// Clear dirty bits for all jobs updated
++	dirty_job_ids.rewind();
++	while ( (job_id_str = dirty_job_ids.next()) != NULL ) {
++		StrToProcId(job_id_str, job_id);
++		if ( ! ScheddObj->clearDirtyAttrs( job_id.cluster, job_id.proc, err ) ) {
++			dprintf(D_ALWAYS, "Failed to notify schedd to clear dirty attributes for job %s.%s\n", job_id.cluster, job_id.proc);
++		}
++	}
++
+ 	// Wake up jobs that had schedd updates pending and delete job
+ 	// objects that wanted to be deleted
+ 	pendingScheddUpdates.startIterations();
+@@ -1143,6 +1228,15 @@ contact_schedd_next_add_job:
+ 
+ 	scheddFailureCount = 0;
+ 
++	// For each job that had dirty attributes, re-evaluate the policy
++	dirty_job_ids.rewind();
++	while ( (job_id_str = dirty_job_ids.next()) != NULL ) {
++		StrToProcId(job_id_str, job_id);
++		if ( BaseJob::JobsByProcId.lookup( job_id, curr_job ) == 0 ) {
++			curr_job->EvalPeriodicJobExpr();
++		}
++	}
++
+ dprintf(D_FULLDEBUG,"leaving doContactSchedd()\n");
+ 	return TRUE;
+ 
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index 8226a07..992be1c 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -295,6 +295,7 @@ extern const char * const  ATTR_JOB_GRID_TYPE;
+ extern const char * const  ATTR_JOB_WALL_CLOCK_CKPT;
+ extern const char * const  ATTR_JOB_QUEUE_BIRTHDATE;
+ extern const char * const  ATTR_JOB_REQUIRES_SANDBOX;
++extern const char * const  ATTR_JOB_DIRTY;
+ extern const char * const  ATTR_JOB_VM_TYPE;
+ extern const char * const  ATTR_JOB_VM_MEMORY;
+ extern const char * const  ATTR_JOB_VM_VCPUS;
+diff --git a/src/condor_includes/condor_commands.h b/src/condor_includes/condor_commands.h
+index 08751d4..3dc775e 100644
+--- a/src/condor_includes/condor_commands.h
++++ b/src/condor_includes/condor_commands.h
+@@ -163,6 +163,7 @@
+ #define GET_JOB_CONNECT_INFO (SCHED_VERS+109) // schedd: get connection information for starter running a job
+ 
+ #define RECYCLE_SHADOW (SCHED_VERS+110) // schedd: get a new job for a shadow
++#define CLEAR_DIRTY_JOB_ATTRS (SCHED_VERS+111) // schedd: clear dirty attributes for a job
+ 
+ // HAD-related commands
+ #define HAD_ALIVE_CMD                   (HAD_COMMANDS_BASE + 0)
+@@ -392,6 +393,7 @@ const int QUERY_GENERIC_ADS = 74;
+ #define MPI_START_COMRADE      (DCSHADOW_BASE+2)  // for MPI & parallel shadow
+ #define GIVE_MATCHES 	       (DCSHADOW_BASE+3)  // for MPI & parallel shadow
+ #define RECEIVE_JOBAD		   (DCSHADOW_BASE+4)
++#define UPDATE_JOBAD		   (DCSHADOW_BASE+5)
+ 
+ 
+ /*
+diff --git a/src/condor_includes/condor_qmgr.h b/src/condor_includes/condor_qmgr.h
+index 8e78ff5..72a87c6 100644
+--- a/src/condor_includes/condor_qmgr.h
++++ b/src/condor_includes/condor_qmgr.h
+@@ -36,6 +36,7 @@ typedef int (*scan_func)(ClassAd *ad);
+ 
+ typedef unsigned char SetAttributeFlags_t;
+ const SetAttributeFlags_t NONDURABLE = 1;
++const SetAttributeFlags_t SETDIRTY = 2;
+ 
+ #define SHADOW_QMGMT_TIMEOUT 300
+ 
+@@ -101,28 +102,32 @@ int DestroyCluster(int cluster_id, const char *reason = NULL);
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeByConstraint(const char *constraint, const char *attr,
+-							 const char *value);
++							 const char *value,
++							 SetAttributeFlags_t flags=0);
+ /** For all jobs in the queue for which constraint evaluates to true, set
+ 	attr = value.  The value should be a valid ClassAd value (strings
+ 	should be surrounded by quotes).
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeIntByConstraint(const char *constraint, const char *attr,
+-								int value);
++							 int value,
++							 SetAttributeFlags_t flags=0);
+ /** For all jobs in the queue for which constraint evaluates to true, set
+ 	attr = value.  The value should be a valid ClassAd value (strings
+ 	should be surrounded by quotes).
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeFloatByConstraint(const char *constraing, const char *attr,
+-								  float value);
++							   float value,
++							   SetAttributeFlags_t flags=0);
+ /** For all jobs in the queue for which constraint evaluates to true, set
+ 	attr = value.  The value should be a valid ClassAd value (strings
+ 	should be surrounded by quotes).
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeStringByConstraint(const char *constraint, const char *attr,
+-								   const char *value);
++							     const char *value,
++							     SetAttributeFlags_t flags=0);
+ /** Set attr = value for job with specified cluster and proc.  The value
+ 	should be a valid ClassAd value (strings should be surrounded by
+ 	quotes)
+@@ -221,6 +226,12 @@ int GetAttributeString( int cluster_id, int proc_id, char const *attr_name,
+ 	@return -1 on failure; 0 on success
+ */
+ int GetAttributeExprNew(int cluster, int proc, const char *attr, char **value);
++
++/** Retrieves a classad of attributes that are marked as dirty, then clears
++	the dirty list
++*/
++int GetDirtyAttributes(int cluster_id, int proc_id, ClassAd *updated_attrs);
++
+ /** Delete specified attribute for job with specified cluster and proc.
+ 	@return -1 on failure; 0 on success
+ */
+@@ -289,7 +300,9 @@ void InitJobQueue(const char *job_queue_name,int max_historical_logs);
+ void CleanJobQueue();
+ bool setQSock( ReliSock* rsock );
+ void unsetQSock();
+-
++void MarkJobClean(PROC_ID job_id);
++void MarkJobClean(int cluster_id, int proc_id);
++void MarkJobClean(const char* job_id_str);
+ 
+ int rusage_to_float(struct rusage, float *, float *);
+ int float_to_rusage(float, float, struct rusage *);
+diff --git a/src/condor_schedd.V6/grid_universe.cpp b/src/condor_schedd.V6/grid_universe.cpp
+index fc6b61c..386fa2f 100644
+--- a/src/condor_schedd.V6/grid_universe.cpp
++++ b/src/condor_schedd.V6/grid_universe.cpp
+@@ -383,6 +383,25 @@ GridUniverseLogic::lookupGmanByOwner(const char* owner, const char* attr_value,
+ 	return result;
+ }
+ 
++int
++GridUniverseLogic::FindGManagerPid(const char* owner,
++					const char* attr_value,	
++					int cluster, int proc)
++{
++	gman_node_t* gman_node;
++
++	if ( attr_value && strlen(attr_value)==0 ) {
++		attr_value = NULL;
++	}
++
++	if ( (gman_node=lookupGmanByOwner(owner, attr_value, cluster, proc)) ) {
++		return gman_node->pid;
++	}
++	else {
++		return -1;
++	}
++}
++
+ GridUniverseLogic::gman_node_t *
+ GridUniverseLogic::StartOrFindGManager(const char* owner, const char* domain,
+ 	   	const char* attr_value, const char* attr_name, int cluster, int proc)
+diff --git a/src/condor_schedd.V6/grid_universe.h b/src/condor_schedd.V6/grid_universe.h
+index dca47bb..72fc1cf 100644
+--- a/src/condor_schedd.V6/grid_universe.h
++++ b/src/condor_schedd.V6/grid_universe.h
+@@ -40,6 +40,9 @@ class GridUniverseLogic : public Service
+ 			   	const char* attr_value, const char* attr_name, int cluster, 
+ 				int proc);
+ 
++		static int FindGManagerPid(const char* owner,
++							const char* attr_value,
++							int cluster, int proc);
+ 		static void reconfig() { signal_all(SIGHUP); }
+ 		static void shutdown_graceful() { signal_all(SIGTERM); }
+ 		static void shutdown_fast() { signal_all(SIGQUIT); }
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index ed44856..0a655cb 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -83,6 +83,7 @@ void	FindPrioJob(PROC_ID &);
+ 
+ static bool qmgmt_was_initialized = false;
+ static ClassAdCollection *JobQueue = 0;
++static StringList DirtyJobIDs;
+ static int next_cluster_num = -1;
+ static int next_proc_num = 0;
+ static int active_cluster_num = -1;	// client is restricted to only insert jobs to the active cluster
+@@ -124,8 +125,11 @@ static ClusterSizeHashTable_t *ClusterSizeHashTable = 0;
+ static int TotalJobsCount = 0;
+ 
+ static int flush_job_queue_log_timer_id = -1;
++static int dirty_notice_timer_id = -1;
+ static int flush_job_queue_log_delay = 0;
++static int dirty_notice_interval = 0;
+ static int HandleFlushJobQueueLogTimer(Service *);
++static int PeriodicDirtyAttributeNotification(Service *);
+ static void ScheduleJobQueueLogFlush();
+ 
+ bool qmgmt_all_users_trusted = false;
+@@ -683,6 +687,7 @@ InitQmgmt()
+     cluster_maximum_val = param_integer("SCHEDD_CLUSTER_MAXIMUM_VALUE",0,0);
+ 
+ 	flush_job_queue_log_delay = param_integer("SCHEDD_JOB_QUEUE_LOG_FLUSH_DELAY",5,0);
++	dirty_notice_interval = param_integer("SCHEDD_JOB_QUEUE_NOTIFY_UPDATES",30,0);
+ }
+ 
+ void
+@@ -960,6 +965,8 @@ DestroyJobQueue( void )
+ 	delete JobQueue;
+ 	JobQueue = NULL;
+ 
++	DirtyJobIDs.clearAll();
++
+ 		// There's also our hashtable of the size of each cluster
+ 	delete ClusterSizeHashTable;
+ 	ClusterSizeHashTable = NULL;
+@@ -1777,7 +1784,8 @@ int DestroyCluster(int cluster_id, const char* reason)
+ 
+ int
+ SetAttributeByConstraint(const char *constraint, const char *attr_name,
+-						 const char *attr_value)
++						 const char *attr_value,
++						 SetAttributeFlags_t flags)
+ {
+ 	ClassAd	*ad;
+ 	int cluster_num, proc_num;
+@@ -1792,7 +1800,7 @@ SetAttributeByConstraint(const char *constraint, const char *attr_name,
+ 			 (proc_num > -1) &&
+ 			 EvalBool(ad, constraint)) {
+ 			found_one = 1;
+-			if( SetAttribute(cluster_num,proc_num,attr_name,attr_value) < 0 ) {
++			if( SetAttribute(cluster_num,proc_num,attr_name,attr_value,flags) < 0 ) {
+ 				had_error = 1;
+ 			}
+ 			FreeJobAd(ad);	// a no-op on the server side
+@@ -1811,7 +1819,7 @@ SetAttributeByConstraint(const char *constraint, const char *attr_name,
+ 
+ int
+ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+-			 const char *attr_value, SetAttributeFlags_t flags )
++			 const char *attr_value, SetAttributeFlags_t flags)
+ {
+ //	LogSetAttribute	*log;
+ 	char			key[PROC_ID_STR_BUFLEN];
+@@ -1968,7 +1976,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 						 &nice_user );
+ 		user.sprintf( "\"%s%s@%s\"", (nice_user) ? "nice-user." : "",
+ 				 owner, scheduler.uidDomain() );
+-		SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value() );
++		SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value(), flags );
+ 
+ 			// Also update the owner history hash table
+ 		AddOwnerHistory(owner);
+@@ -1998,7 +2006,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 			>= 0 ) {
+ 			user.sprintf( "\"%s%s@%s\"", (nice_user) ? "nice-user." :
+ 					 "", owner.Value(), scheduler.uidDomain() );
+-			SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value() );
++			SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value(), flags );
+ 		}
+ 	}
+ 	else if (stricmp(attr_name, ATTR_PROC_ID) == 0) {
+@@ -2034,7 +2042,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 			// UNEXPANDED.
+ 		int status = UNEXPANDED;
+ 		GetAttributeInt( cluster_id, proc_id, ATTR_JOB_STATUS, &status );
+-		SetAttributeInt( cluster_id, proc_id, ATTR_LAST_JOB_STATUS, status );
++		SetAttributeInt( cluster_id, proc_id, ATTR_LAST_JOB_STATUS, status, flags );
+ 	}
+ 
+ 	// If any of the attrs used to create the signature are
+@@ -2078,7 +2086,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 			// first, store the actual value
+ 			MyString raw_attribute = attr_name;
+ 			raw_attribute += "_RAW";
+-			JobQueue->SetAttribute(key, raw_attribute.Value(), attr_value);
++			JobQueue->SetAttribute(key, raw_attribute.Value(), attr_value, flags & SETDIRTY);
+ 
+ 			long ivalue;
+ 			double fvalue;
+@@ -2174,20 +2182,82 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 		old_nondurable_level = JobQueue->IncNondurableCommitLevel();
+ 	}
+ 
+-	JobQueue->SetAttribute(key, attr_name, attr_value);
++	JobQueue->SetAttribute(key, attr_name, attr_value, flags & SETDIRTY);
+ 
++	int status;
+ 	if( flags & NONDURABLE ) {
+ 		JobQueue->DecNondurableCommitLevel( old_nondurable_level );
+ 
+ 		ScheduleJobQueueLogFlush();
+ 	}
+ 
++	// Get the job's status and only mark dirty if it is running
++	GetAttributeInt( cluster_id, proc_id, ATTR_JOB_STATUS, &status );
++	if( flags & SETDIRTY  && status == RUNNING ) {
++		SetAttribute( cluster_id, proc_id, ATTR_JOB_DIRTY, "true" );
++
++		// Add the key to list of dirty classads
++		DirtyJobIDs.rewind();
++		if( ! DirtyJobIDs.contains( key ) ) {
++			DirtyJobIDs.append( key );
++		}
++
++		// Start timer to ensure notice is confirmed
++		if( dirty_notice_timer_id <= 0 ) {
++			dprintf(D_FULLDEBUG, "Starting dirty attribute notification timer\n");
++			dirty_notice_timer_id = daemonCore->Register_Timer(
++				dirty_notice_interval,
++				dirty_notice_interval,
++				PeriodicDirtyAttributeNotification,
++				"PeriodicDirtyAttributeNotification");
++		}
++
++		SendDirtyJobAdNotification(key);
++	}
++
+ 	JobQueueDirty = true;
+ 
+ 	return 0;
+ }
+ 
+ void
++SendDirtyJobAdNotification(char *job_id_str)
++{
++	PROC_ID job_id;
++	int pid = -1;
++
++	StrToId(job_id_str, job_id.cluster, job_id.proc);
++	shadow_rec *srec = scheduler.FindSrecByProcID(job_id);
++	if( srec ) {
++		pid = srec->pid;
++	}
++	else {
++		pid = scheduler.FindGManagerPid(job_id);
++	}
++
++	if( pid > 0 ) {
++		dprintf(D_FULLDEBUG, "Sending signal %d, to pid %d\n", UPDATE_JOBAD, pid);
++		classy_counted_ptr<DCSignalMsg> msg = new DCSignalMsg(pid, UPDATE_JOBAD);
++		daemonCore->Send_Signal_nonblocking(msg.get());
++//		daemonCore->Send_Signal(srec->pid, UPDATE_JOBAD);
++	}
++	else {
++		dprintf(D_ALWAYS, "Failed to send signal %d, no job manager found\n", UPDATE_JOBAD);
++	}
++}
++
++int
++PeriodicDirtyAttributeNotification(Service *)
++{
++	char	*job_id;
++
++	DirtyJobIDs.rewind();
++	while( (job_id = DirtyJobIDs.next()) != NULL ) {
++		SendDirtyJobAdNotification(job_id);
++	}
++}
++
++void
+ ScheduleJobQueueLogFlush()
+ {
+ 		// Flush the log after a short delay so that we avoid spending
+@@ -2739,6 +2809,45 @@ GetAttributeExprNew(int cluster_id, int proc_id, const char *attr_name, char **v
+ 
+ 
+ int
++GetDirtyAttributes(int cluster_id, int proc_id, ClassAd *updated_attrs)
++{
++	ClassAd 	*ad;
++	char		key[PROC_ID_STR_BUFLEN];
++	char		*val;
++	char		*name;
++	ExprTree 	*expr;
++
++	IdToStr(cluster_id,proc_id,key);
++
++	if(!JobQueue->LookupClassAd(key, ad)) {
++		return -1;
++	}
++
++	// Don't send an update for this attribute.  It is intended to be
++	// for use by the schedd and gridmaanger
++	ad->SetDirtyFlag(ATTR_JOB_DIRTY, false);
++
++	ad->ResetExpr();
++	while( (expr = ad->NextDirtyExpr()) != NULL )
++	{
++		expr->LArg()->PrintToNewStr(&name);
++		if(!ad->ClassAdAttributeIsPrivate(name))
++		{
++			if(!JobQueue->LookupInTransaction(key, name, val) )
++			{
++				expr->RArg()->PrintToNewStr(&val);
++			}
++			updated_attrs->AssignExpr(name, val);
++			free(val);
++		}
++		free(name);
++	}
++
++	return 0;
++}
++
++
++int
+ DeleteAttribute(int cluster_id, int proc_id, const char *attr_name)
+ {
+ 	ClassAd				*ad;
+@@ -2775,6 +2884,46 @@ DeleteAttribute(int cluster_id, int proc_id, const char *attr_name)
+ 	return 1;
+ }
+ 
++void
++MarkJobClean(PROC_ID job_id)
++{
++
++	MarkJobClean(job_id.cluster, job_id.proc);
++}
++
++void
++MarkJobClean(int cluster_id, int proc_id)
++{
++	char	key[PROC_ID_STR_BUFLEN];
++
++	IdToStr(cluster_id,proc_id,key);
++	MarkJobClean(key);
++}
++
++void
++MarkJobClean(const char* job_id_str)
++{
++	int cluster;
++	int proc;
++
++	if(JobQueue->ClearClassAdDirtyBits(job_id_str))
++	{
++		dprintf(D_FULLDEBUG, "Cleared dirty attributes for job %s\n", job_id_str);
++	}
++
++	DirtyJobIDs.rewind();
++	DirtyJobIDs.remove(job_id_str);
++
++	if( DirtyJobIDs.isEmpty() && dirty_notice_timer_id > 0 )
++	{
++		dprintf(D_FULLDEBUG, "Cancelling dirty attribute notification timer\n");
++		daemonCore->Cancel_Timer(dirty_notice_timer_id);
++		dirty_notice_timer_id = -1;
++	}
++	StrToId(job_id_str, cluster, proc);
++	SetAttribute(cluster, proc, ATTR_JOB_DIRTY, "false");
++}
++
+ ClassAd *
+ dollarDollarExpand(int cluster_id, int proc_id, ClassAd *ad, ClassAd *startd_ad, bool persist_expansions)
+ {
+diff --git a/src/condor_schedd.V6/qmgmt.h b/src/condor_schedd.V6/qmgmt.h
+index 6751de1..9cdd233 100644
+--- a/src/condor_schedd.V6/qmgmt.h
++++ b/src/condor_schedd.V6/qmgmt.h
+@@ -82,6 +82,8 @@ time_t GetOriginalJobQueueBirthdate();
+ void DestroyJobQueue( void );
+ int handle_q(Service *, int, Stream *sock);
+ void dirtyJobQueue( void );
++void SendDirtyJobAdNotification(char *job_id_str);
++
+ bool isQueueSuperUser( const char* user );
+ 
+ // Verify that the user issuing a command (test_owner) is authorized
+diff --git a/src/condor_schedd.V6/qmgmt_constants.h b/src/condor_schedd.V6/qmgmt_constants.h
+index b440bfe..e08dc1f 100644
+--- a/src/condor_schedd.V6/qmgmt_constants.h
++++ b/src/condor_schedd.V6/qmgmt_constants.h
+@@ -47,3 +47,5 @@
+ #define CONDOR_CloseSocket			10028
+ #define CONDOR_SendSpoolFileIfNeeded 10029
+ #define CONDOR_CommitTransaction    10031
++#define	CONDOR_SetAttributeByConstraint2	10032		/* Rob */
++#define CONDOR_GetDirtyAttributes	10033		/* Rob */
+diff --git a/src/condor_schedd.V6/qmgmt_receivers.cpp b/src/condor_schedd.V6/qmgmt_receivers.cpp
+index b1bb18e..1cdbd2d 100644
+--- a/src/condor_schedd.V6/qmgmt_receivers.cpp
++++ b/src/condor_schedd.V6/qmgmt_receivers.cpp
+@@ -224,16 +224,21 @@ do_Q_request(ReliSock *syscall_sock,bool &may_fork)
+ #endif
+ 
+ 	case CONDOR_SetAttributeByConstraint:
++	case CONDOR_SetAttributeByConstraint2:
+ 	  {
+ 		char *attr_name=NULL;
+ 		char *attr_value=NULL;
+ 		char *constraint=NULL;
+ 		int terrno;
++		SetAttributeFlags_t flags = 0;
+ 
+ 		assert( syscall_sock->code(constraint) );
+ 		dprintf( D_SYSCALLS, "  constraint = %s\n",constraint);
+ 		assert( syscall_sock->code(attr_value) );
+ 		assert( syscall_sock->code(attr_name) );
++		if( request_num == CONDOR_SetAttributeByConstraint2 ) {
++			assert( syscall_sock->code( flags ) );
++		}
+ 		assert( syscall_sock->end_of_message() );;
+ 
+ 		if (strcmp (attr_name, ATTR_MYPROXY_PASSWORD) == 0) {
+@@ -244,7 +249,7 @@ do_Q_request(ReliSock *syscall_sock,bool &may_fork)
+ 		} else {
+ 
+ 			errno = 0;
+-			rval = SetAttributeByConstraint( constraint, attr_name, attr_value );
++			rval = SetAttributeByConstraint( constraint, attr_name, attr_value, flags );
+ 			terrno = errno;
+ 			dprintf( D_SYSCALLS, "\trval = %d, errno = %d\n", rval, terrno );
+ 		}
+@@ -596,6 +601,50 @@ do_Q_request(ReliSock *syscall_sock,bool &may_fork)
+ 		return 0;
+ 	}
+ 
++	case CONDOR_GetDirtyAttributes:
++	  {
++		int cluster_id = -1;
++		int proc_id = -1;
++		ClassAd updates;
++
++		int terrno;
++
++		assert( syscall_sock->code(cluster_id) );
++		dprintf( D_SYSCALLS, "	cluster_id = %d\n", cluster_id );
++		assert( syscall_sock->code(proc_id) );
++		dprintf( D_SYSCALLS, "	proc_id = %d\n", proc_id );
++		assert( syscall_sock->end_of_message() );;
++
++		errno = 0;
++		rval = GetDirtyAttributes( cluster_id, proc_id, &updates );
++
++		terrno = errno;
++		dprintf( D_SYSCALLS, "\trval = %d, errno = %d\n", rval, terrno );
++
++		syscall_sock->encode();
++
++		if ( !syscall_sock->code(rval) ) {
++			return -1;
++		}
++		if( rval < 0 ) {
++			if ( !syscall_sock->code(terrno) ) {
++					return -1;
++			}
++		}
++		if( rval >= 0 ) {
++			MyString val;
++			updates.sPrint(val);
++			char* ad_str = strdup(val.Value());
++			if ( !syscall_sock->code(ad_str) ) {
++					free(ad_str);
++					return -1;
++			}
++			free(ad_str);
++		}
++		assert( syscall_sock->end_of_message() );;
++		return 0;
++	}
++
+ 	case CONDOR_DeleteAttribute:
+ 	  {
+ 		int cluster_id = -1;
+diff --git a/src/condor_schedd.V6/qmgmt_send_stubs.cpp b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+index 0be0fe2..1f31f83 100644
+--- a/src/condor_schedd.V6/qmgmt_send_stubs.cpp
++++ b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+@@ -192,17 +192,23 @@ DestroyClusterByConstraint( char *constraint )
+ 
+ 
+ int
+-SetAttributeByConstraint( char const *constraint, char const *attr_name, char const *attr_value )
++SetAttributeByConstraint( char const *constraint, char const *attr_name, char const *attr_value, SetAttributeFlags_t flags )
+ {
+ 	int	rval = -1;
+ 
+ 		CurrentSysCall = CONDOR_SetAttributeByConstraint;
++		if( flags ) {
++			CurrentSysCall = CONDOR_SetAttributeByConstraint2;
++		}
+ 
+ 		qmgmt_sock->encode();
+ 		assert( qmgmt_sock->code(CurrentSysCall) );
+ 		assert( qmgmt_sock->put(constraint) );
+ 		assert( qmgmt_sock->put(attr_value) );
+ 		assert( qmgmt_sock->put(attr_name) );
++		if( flags ) {
++			assert( qmgmt_sock->code(flags) );
++		}
+ 		assert( qmgmt_sock->end_of_message() );
+ 
+ 		qmgmt_sock->decode();
+@@ -500,6 +506,40 @@ GetAttributeExprNew( int cluster_id, int proc_id, char const *attr_name, char **
+ 
+ 
+ int
++GetDirtyAttributes(int cluster_id, int proc_id, ClassAd *updated_attrs)
++{
++	int	rval = -1;
++	char	*attrs = NULL;
++	int	size;
++	MyString errs;
++
++	CurrentSysCall = CONDOR_GetDirtyAttributes;
++
++	qmgmt_sock->encode();
++	assert( qmgmt_sock->code(CurrentSysCall) );
++	assert( qmgmt_sock->code(cluster_id) );
++	assert( qmgmt_sock->code(proc_id) );
++	assert( qmgmt_sock->end_of_message() );
++
++	qmgmt_sock->decode();
++	assert( qmgmt_sock->code(rval) );
++	if( rval < 0 ) {
++		assert( qmgmt_sock->code(terrno) );
++		assert( qmgmt_sock->end_of_message() );
++		errno = terrno;
++		return rval;
++	}
++	assert( qmgmt_sock->code(attrs) );
++	assert( qmgmt_sock->end_of_message() );
++
++	updated_attrs->initFromString((const char *)attrs, &errs);
++	free(attrs);
++
++	return rval;
++}
++
++
++int
+ DeleteAttribute( int cluster_id, int proc_id, char const *attr_name )
+ {
+ 	int	rval = -1;
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.cpp b/src/condor_schedd.V6/qmgr_job_updater.cpp
+index 128de25..bda11ff 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.cpp
++++ b/src/condor_schedd.V6/qmgr_job_updater.cpp
+@@ -25,10 +25,12 @@
+ #include "condor_attributes.h"
+ #include "condor_classad.h"
+ #include "internet.h"
++#include "classad_merge.h"
+ 
+ 
+ #include "qmgr_job_updater.h"
+ #include "condor_qmgr.h"
++#include "dc_schedd.h"
+ 
+ 
+ QmgrJobUpdater::QmgrJobUpdater( ClassAd* job, const char* schedd_address )
+@@ -333,6 +335,39 @@ QmgrJobUpdater::updateJob( update_t type, SetAttributeFlags_t commit_flags )
+ }
+ 
+ 
++bool
++QmgrJobUpdater::retrieveJobUpdates( void )
++{
++	ClassAd updates;
++	ExprTree* tree = NULL;
++	char *name = NULL;
++	char *value = NULL;
++	ReliSock sock;
++	CondorError* errstack;
++
++	if ( !ConnectQ( schedd_addr, SHADOW_QMGMT_TIMEOUT, false ) ) {
++		return false;
++	}
++	if ( GetDirtyAttributes( cluster, proc, &updates ) < 0 ) {
++		DisconnectQ(NULL,false);
++		return false;
++	}
++	DisconnectQ( NULL, false );
++
++	dprintf( D_FULLDEBUG, "Retrieved updated attributes from schedd\n" );
++	updates.dPrint( D_JOB );
++	MergeClassAds( job_ad, &updates, true );
++
++	DCSchedd schedd( schedd_addr );
++	MyString error;
++	if ( ! schedd.clearDirtyAttrs( cluster, proc, error ) ) {
++		dprintf( D_ALWAYS, "clearDirtyAttrs() failed: %s\n", error.Value( ) );
++		return false;
++	}
++	return true;
++}
++
++
+ void
+ QmgrJobUpdater::periodicUpdateQ( void )
+ {
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.h b/src/condor_schedd.V6/qmgr_job_updater.h
+index 5d40ace..ea377fb 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.h
++++ b/src/condor_schedd.V6/qmgr_job_updater.h
+@@ -87,6 +87,10 @@ public:
+ 		*/
+ 	bool watchAttribute( const char* attr, update_t type = U_NONE );
+ 
++		/** Connect to the job queue and retrieve changed attributes
++		*/
++	bool retrieveJobUpdates( void );
++
+ private:
+ 
+ 		/** Initialize our StringLists for attributes we want to keep
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 2e01967..a061b79 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -453,6 +453,8 @@ Scheduler::Scheduler() :
+ 	timeoutid = -1;
+ 	startjobsid = -1;
+ 	periodicid = -1;
++//	dirtyNoticeId = -1;
++//	DirtyJobIDs = NULL;
+ 
+ #ifdef WANT_QUILL
+ 	quill_enabled = FALSE;
+@@ -605,6 +607,10 @@ Scheduler::~Scheduler()
+ 		delete this->cronTabs;
+ 	}
+ 
++//	if ( DirtyJobIDs ) {
++//		DirtyJobIDs->clearAll();
++//		delete DirtyJobIDs;
++//	}
+ }
+ 
+ void
+@@ -1550,6 +1556,9 @@ abort_job_myself( PROC_ID job_id, JobAction action, bool log_hold,
+ 				ATTR_JOB_STATUS,job_id.cluster, job_id.proc);
+ 	}
+ 
++	// Mark the job clean
++	MarkJobClean(job_id);
++
+ 	int job_universe = CONDOR_UNIVERSE_STANDARD;
+ 	job_ad->LookupInteger(ATTR_JOB_UNIVERSE,job_universe);
+ 
+@@ -8716,6 +8725,7 @@ _mark_job_running(PROC_ID* job_id)
+ 		SetAttributeInt(job_id->cluster, job_id->proc,
+ 						ATTR_NUM_JOB_STARTS, num);
+ 	}
++	MarkJobClean(*job_id);
+ }
+ 
+ void
+@@ -9603,6 +9613,7 @@ Scheduler::jobExitCode( PROC_ID job_id, int exit_code )
+ 		daemon_name = ( IsLocalUniverse( srec ) ? "Local Starter" : "Shadow" );
+ 	}
+ 
++	MarkJobClean( job_id );
+ 		//
+ 		// If this boolean gets set to true, then we need to report
+ 		// that an Exception occurred for the job.
+@@ -9739,6 +9750,7 @@ Scheduler::jobExitCode( PROC_ID job_id, int exit_code )
+ 					this->cronTabs->remove(job_id);
+ 				}
+ 			} // CronTab
++
+ 			break;
+ 		}
+ 
+@@ -10294,10 +10306,14 @@ Scheduler::Init()
+ 			// we're done with the old version, so don't leak memory 
+ 		free( oldUidDomain );
+ 	}
++//	if( DirtyJobIDs == NULL ) {
++//		DirtyJobIDs = new StringList;
++//	}
+ 
+ 		////////////////////////////////////////////////////////////////////
+ 		// Grab all the optional parameters from the config file.
+ 		////////////////////////////////////////////////////////////////////
++//	dirtyNoticeInterval = param_integer("SCHEDD_JOB_QUEUE_NOTIFY_JOB_UPDATES",30,0);
+ 
+ 	if( schedd_name_in_config ) {
+ 		tmp = param( "SCHEDD_NAME" );
+@@ -10952,6 +10968,10 @@ Scheduler::Register()
+ 								  (CommandHandlercpp)&Scheduler::get_job_connect_info_handler,
+ 								  "get_job_connect_info", this, WRITE );
+ 
++	daemonCore->Register_Command( CLEAR_DIRTY_JOB_ATTRS, "CLEAR_DIRTY_JOB_ATTRS",
++								  (CommandHandlercpp)&Scheduler::clear_dirty_job_attrs_handler,
++								  "clear_dirty_job_attrs_handler", this, WRITE );
++
+ 	 // reaper
+ 	shadowReaperId = daemonCore->Register_Reaper(
+ 		"reaper",
+@@ -13711,3 +13731,56 @@ Scheduler::finishRecycleShadow(shadow_rec *srec)
+ 	delete new_ad;
+ 	delete stream;
+ }
++
++int
++Scheduler::FindGManagerPid(PROC_ID job_id)
++{
++	MyString owner;
++	MyString domain;
++	ClassAd *job_ad = GetJobAd(job_id.cluster,job_id.proc);
++
++	if ( ! job_ad ) {
++		return -1;
++	}
++
++	job_ad->LookupString(ATTR_OWNER,owner);
++	job_ad->LookupString(ATTR_NT_DOMAIN,domain);
++	UserIdentity userident(owner.Value(),domain.Value(),job_ad);
++	return GridUniverseLogic::FindGManagerPid(userident.username().Value(),
++                                        userident.auxid().Value(), 0, 0);
++}
++
++int
++Scheduler::clear_dirty_job_attrs_handler(int /*cmd*/, Stream *stream)
++{
++	int cluster_id;
++	int proc_id;
++	Sock *sock = (Sock *)stream;
++
++		// force authentication
++	sock->decode();
++	if( !sock->triedAuthentication() ) {
++		CondorError errstack;
++		if( ! SecMan::authenticate_sock(sock, WRITE, &errstack) ||
++			! sock->getFullyQualifiedUser() )
++		{
++			dprintf( D_ALWAYS,
++					 "clear_dirty_job_attrs_handler(): authentication failed: %s\n", 
++					 errstack.getFullText() );
++			return FALSE;
++		}
++	}
++
++	sock->decode();
++	if( !sock->get( cluster_id ) ||
++		!sock->get( proc_id ) ||
++		!sock->end_of_message() )
++	{
++		dprintf(D_ALWAYS,
++			"clear_dirty_job_attrs_handler() failed to receive job id\n");
++		return FALSE;
++	}
++
++	MarkJobClean( cluster_id, proc_id );
++	return TRUE;
++}
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index a9dbeaf..60e9e2d 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -313,6 +313,7 @@ class Scheduler : public Service
+ 	void			finishRecycleShadow(shadow_rec *srec);
+ 
+ 	int				requestSandboxLocation(int mode, Stream* s);
++	int			FindGManagerPid(PROC_ID job_id);
+ 
+ 	// match managing
+ 	int 			publish( ClassAd *ad );
+@@ -541,6 +542,8 @@ private:
+ 	int				jobThrottleNextJobDelay;	// used by jobThrottle()
+ 
+ 	int				shadowReaperId; // daemoncore reaper id for shadows
++//	int 				dirtyNoticeId;
++//	int 				dirtyNoticeInterval;
+ 
+ 		// Here we enqueue calls to 'contactStartd' when we can't just 
+ 		// call it any more.  See contactStartd and the call to it...
+@@ -701,6 +704,9 @@ private:
+ 	int get_job_connect_info_handler(int, Stream* s);
+ 	int get_job_connect_info_handler_implementation(int, Stream* s);
+ 
++		// Mark a job as clean
++	int clear_dirty_job_attrs_handler(int, Stream *stream);
++
+ 		// A bit that says wether or not we've sent email to the admin
+ 		// about a shadow not starting.
+ 	int sent_shadow_failure_email;
+diff --git a/src/condor_shadow.V6.1/baseshadow.cpp b/src/condor_shadow.V6.1/baseshadow.cpp
+index c71e4cd..33aaedf 100644
+--- a/src/condor_shadow.V6.1/baseshadow.cpp
++++ b/src/condor_shadow.V6.1/baseshadow.cpp
+@@ -1296,3 +1296,19 @@ BaseShadow::getMachineName( MyString & /*machineName*/ )
+ {
+ 	return false;
+ }
++
++
++int
++BaseShadow::handleUpdateJobAd( int sig )
++{
++	dprintf ( D_FULLDEBUG, "In handleUpdateJobAd, sig %d\n", sig );
++	if (!job_updater->retrieveJobUpdates()) {
++		dprintf(D_ALWAYS, "Error: Failed to update JobAd\n");
++		return -1;
++	}
++
++	// Attributes might have changed that would cause the job policy
++	// to evaluate differently, so evaluate now.
++	shadow_user_policy.checkPeriodic();
++	return 0;
++}
+diff --git a/src/condor_shadow.V6.1/baseshadow.h b/src/condor_shadow.V6.1/baseshadow.h
+index e26fa89..57e7a76 100644
+--- a/src/condor_shadow.V6.1/baseshadow.h
++++ b/src/condor_shadow.V6.1/baseshadow.h
+@@ -244,6 +244,10 @@ class BaseShadow : public Service
+ 		 */
+ 	virtual int handleJobRemoval(int sig) = 0;
+ 
++		/** Update this job.
++		 */
++	int handleUpdateJobAd(int sig);
++
+ 		/** This function returns a file pointer that one can 
+ 			write an email message into.
+ 			@return A mail message file pointer.
+diff --git a/src/condor_shadow.V6.1/shadow_v61_main.cpp b/src/condor_shadow.V6.1/shadow_v61_main.cpp
+index 3a3d08b..11d5dc4 100644
+--- a/src/condor_shadow.V6.1/shadow_v61_main.cpp
++++ b/src/condor_shadow.V6.1/shadow_v61_main.cpp
+@@ -293,6 +293,7 @@ void startShadow( ClassAd *ad )
+ 
+ }
+ 
++
+ int handleJobRemoval(Service*,int sig)
+ {
+ 	if( Shadow ) {
+@@ -302,6 +303,16 @@ int handleJobRemoval(Service*,int sig)
+ }
+ 
+ 
++int handleUpdateJobAd(Service*,int sig)
++//int handleUpdateJobAd(Service*,int sig, Stream *sock)
++{
++	if( Shadow ) {
++		return Shadow->handleUpdateJobAd(sig);
++	}
++	return 0;
++}
++
++
+ void
+ main_init(int argc, char *argv[])
+ {
+@@ -324,6 +335,13 @@ main_init(int argc, char *argv[])
+ 	daemonCore->Register_Signal( SIGUSR1, "SIGUSR1", 
+ 		(SignalHandler)&handleJobRemoval,"handleJobRemoval");
+ 
++		// ragister UPDATE_JOBAD for qedit changes
++	daemonCore->Register_Signal( UPDATE_JOBAD, "UPDATE_JOBAD", 
++		(SignalHandler)&handleUpdateJobAd,"handleUpdateJobAd");
++//	daemonCore->Register_Command( UPDATE_JOBAD, "UPDATE_JOBAD",
++//		(CommandHandler)&handleUpdateJobAd, "handleUpdateJobAd", NULL,
++//		WRITE, D_FULLDEBUG);
++
+ 	int shadow_worklife = param_integer( "SHADOW_WORKLIFE", 3600 );
+ 	if( shadow_worklife > 0 ) {
+ 		shadow_worklife_expires = time(NULL) + shadow_worklife;
+diff --git a/src/condor_tools/qedit.cpp b/src/condor_tools/qedit.cpp
+index d2de173..020b780 100644
+--- a/src/condor_tools/qedit.cpp
++++ b/src/condor_tools/qedit.cpp
+@@ -188,7 +188,7 @@ main(int argc, char *argv[])
+ 		}
+ 		if (UseConstraint) {
+ 			if (SetAttributeByConstraint(constraint.Value(), argv[nextarg],
+-										 argv[nextarg+1]) < 0) {
++										 argv[nextarg+1], SETDIRTY) < 0) {
+ 				fprintf(stderr,
+ 						"Failed to set attribute \"%s\" by constraint: %s\n",
+ 						argv[nextarg], constraint.Value());
+@@ -196,7 +196,7 @@ main(int argc, char *argv[])
+ 			}
+ 		} else {
+ 			if (SetAttribute(cluster, proc, argv[nextarg],
+-							 argv[nextarg+1]) < 0) {
++							 argv[nextarg+1], SETDIRTY) < 0) {
+ 				fprintf(stderr,
+ 						"Failed to set attribute \"%s\" for job %d.%d.\n",
+ 						argv[nextarg], cluster, proc);
