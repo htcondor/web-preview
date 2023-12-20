@@ -1,0 +1,87 @@
+diff --git a/src/condor_c++_util/condor_config.cpp b/src/condor_c++_util/condor_config.cpp
+index 1bebe16..51b6044 100644
+--- a/src/condor_c++_util/condor_config.cpp
++++ b/src/condor_c++_util/condor_config.cpp
+@@ -82,6 +82,7 @@
+ #include "extArray.h"
+ #include "subsystem_info.h"
+ #include "param_info.h"
++#include "Regex.h"
+ 
+ #if HAVE_EXT_GCB
+ #include "GCB.h"
+@@ -934,6 +935,27 @@ process_directory( char* dirlist, char* host )
+ 	char **paths;
+ 	char *tmp;
+ 	int local_required;
++    Regex* excludeFilesRegex;
++    bool canCompileRegex;
++
++    excludeFilesRegex = new Regex();
++    const char* _errstr;
++    int _erroffset;
++
++    char* excludeRegex = param("LOCAL_CONFIG_DIR_EXCLUDE_REGEXP");
++
++    if(excludeRegex)
++    {
++        canCompileRegex = excludeFilesRegex->compile(excludeRegex,&_errstr, &_erroffset);
++
++        if(!canCompileRegex)
++            EXCEPT(_errstr);
++
++        if(!excludeFilesRegex->isInitialized() )
++        {   
++            EXCEPT("Could not init regex to exclude files in %s\n", __FILE__); 
++        }
++    }
+ 	
+ 	local_required = true;	
+ 	tmp = param( "REQUIRE_LOCAL_CONFIG_FILE" );
+@@ -959,8 +981,12 @@ process_directory( char* dirlist, char* host )
+ 				// don't consider directories
+ 				// maybe we should squash symlinks here...
+ 				if(! files->IsDirectory() ) {
+-					paths[i] = strdup(files->GetFullPath());
+-					i++;
++
++                    if(!excludeRegex || !excludeFilesRegex->match(file))
++                    {
++                        paths[i] = strdup(files->GetFullPath());
++                        i++;
++                    }
+ 				}
+ 			}
+ 			delete files;
+@@ -978,6 +1004,7 @@ process_directory( char* dirlist, char* host )
+ 		}
+ 		free(paths);
+ 	}
++    delete excludeFilesRegex;
+ }
+ 
+ // Try to find the "condor" user's home directory
+diff --git a/src/condor_c++_util/param_info.in b/src/condor_c++_util/param_info.in
+index 308e19b..6ee86c0 100644
+--- a/src/condor_c++_util/param_info.in
++++ b/src/condor_c++_util/param_info.in
+@@ -9911,3 +9911,19 @@ usage=
+ url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
+ tags=schedd
+ id=600
++
++[LOCAL_CONFIG_DIR_EXCLUDE_REGEXP]
++aliases=
++default=
++version=0.0.0
++range=.*
++state=default
++type=string
++is_macro=false
++reconfig=true
++customization=seldom
++friendly_name=Local Config Dir Exclude Regex
++usage=
++url=
++tags=c++_util,condor_config
++id=601
