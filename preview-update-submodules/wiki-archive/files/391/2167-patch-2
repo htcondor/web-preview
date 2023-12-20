@@ -1,0 +1,332 @@
+ee3b5330e0affcd432e9909d1f7f545a2478eb0b
+diff --git a/src/condor_dagman/condor_submit_dag.cpp b/src/condor_dagman/condor_submit_dag.cpp
+index 663d9ba..4c91c17 100644
+--- a/src/condor_dagman/condor_submit_dag.cpp
++++ b/src/condor_dagman/condor_submit_dag.cpp
+@@ -806,6 +806,11 @@ void writeSubmitFile(/* const */ SubmitDagDeepOptions &deepOpts,
+ 		args.AppendArg("-Import_env");
+ 	}
+ 
++	if( deepOpts.priority != 0 ) {
++		args.AppendArg("-Priority");
++		args.AppendArg(deepOpts.priority);
++	}
++
+ 	MyString arg_str,args_error;
+ 	if(!args.GetArgsStringV1WackedOrV2Quoted(&arg_str,&args_error)) {
+ 		fprintf(stderr,"Failed to insert arguments: %s",args_error.Value());
+@@ -1107,6 +1112,14 @@ parseCommandLine(SubmitDagDeepOptions &deepOpts,
+ 			{
+ 				// No-op here
+ 			}
++			else if( (strArg.find("-prio") != -1) ) // -priority
++			{
++				if(iArg + 1 >= argc) {
++					fprintf(stderr, "-priority argument needs a value\n");
++					printUsage();
++				}
++				deepOpts.priority = atoi(argv[++iArg]);
++			}
+ 			else
+ 			{
+ 				fprintf( stderr, "ERROR: unknown option %s\n", strArg.Value() );
+@@ -1241,5 +1254,6 @@ int printUsage()
+ 	printf("    -import_env         (explicitly import env into submit file)\n");
+ 	printf("    -DumpRescue         (DAGMan dumps rescue DAG and exits)\n");
+ 	printf("    -valgrind           (create submit file to run valgrind on DAGMan)\n");
++	printf("    -priority <priority> (jobs will run with this priority by default)\n");
+ 	exit(1);
+ }
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index 75c5792..6ad23e9 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -79,7 +79,7 @@ Dag::Dag( /* const */ StringList &dagFiles,
+ 		  const char *storkRmExe, const CondorID *DAGManJobID,
+ 		  bool prohibitMultiJobs, bool submitDepthFirst,
+ 		  const char *defaultNodeLog, bool generateSubdagSubmits,
+-		  const SubmitDagDeepOptions *submitDagDeepOpts, bool isSplice,
++		  SubmitDagDeepOptions *submitDagDeepOpts, bool isSplice,
+ 		  const MyString &spliceScope ) :
+     _maxPreScripts        (maxPreScripts),
+     _maxPostScripts       (maxPostScripts),
+@@ -1354,9 +1354,14 @@ Dag::StartNode( Job *node, bool isRetry )
+ 		return true;
+     }
+ 	// no PRE script exists or is done, so add job to the queue of ready jobs
++	node->FixPriority(0,*this);
+ 	if ( isRetry && m_retryNodeFirst ) {
+ 		_readyQ->Prepend( node, -node->_nodePriority );
+ 	} else {
++		if(node->_hasNodePriority){
++			node->varNamesFromDag->Append(new MyString("priority"));
++			node->varValsFromDag->Append(new MyString(node->_nodePriority));
++		}
+ 		if ( _submitDepthFirst ) {
+ 			_readyQ->Prepend( node, -node->_nodePriority );
+ 		} else {
+@@ -3381,9 +3386,17 @@ Dag::GetEventIDHash(bool isNoop, int jobType) const
+ // NOTE: dag addnode/removenode/adddep/removedep methods don't
+ // necessarily insure internal consistency...that's currently up to
+ // the higher level calling them to get right...
++//---------------------------------------------------------------------------
+ 
++namespace {
++void swap_priorities(Job* job, SubmitDagDeepOptions* sdo)
++{
++	int priority = job->_nodePriority;
++	job->_nodePriority = sdo->priority;
++	sdo->priority = priority;
++}
++}
+ 
+-//---------------------------------------------------------------------------
+ Dag::submit_result_t
+ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ {
+@@ -3413,6 +3426,9 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+    	if ( node->JobType() == Job::TYPE_CONDOR && !node->GetNoop() &&
+ 				node->GetDagFile() != NULL && _generateSubdagSubmits ) {
+ 		bool isRetry = node->GetRetries() > 0;
++		if( node->_hasNodePriority && node->_nodePriority > _submitDagDeepOpts->priority ){
++			swap_priorities(node,_submitDagDeepOpts);
++		}
+ 		if ( runSubmitDag( *_submitDagDeepOpts, node->GetDagFile(),
+ 					node->GetDirectory(), isRetry ) != 0 ) {
+ 			debug_printf( DEBUG_QUIET,
+@@ -3420,8 +3436,14 @@ Dag::SubmitNodeJob( const Dagman &dm, Job *node, CondorID &condorID )
+ 						"for node %s.\n", node->GetJobName() );
+ 				// Hmm -- should this be a node failure, since it probably
+ 				// won't work on retry?  wenger 2010-03-26
++			if( node->_hasNodePriority && node->_nodePriority < _submitDagDeepOpts->priority ){
++				swap_priorities(node,_submitDagDeepOpts);
++			}
+ 			return SUBMIT_RESULT_NO_SUBMIT;
+ 		}
++		if( node->_hasNodePriority && node->_nodePriority < _submitDagDeepOpts->priority ){
++			swap_priorities(node,_submitDagDeepOpts);
++		}
+ 	}
+ 
+ 	if ( !node->MonitorLogFile( _condorLogRdr, _storkLogRdr, _nfsLogIsError,
+@@ -3988,5 +4010,22 @@ Dag::ResolveVarsInterpolations(void)
+ 	}
+ }
+ 
+-
+-
++//---------------------------------------------------------------------------
++// Iterate over the jobs and set the default priority
++void Dag::SetDefaultPriorities()
++{
++	if(GetDefaultPriority() != 0) {
++		Job* job;
++		_jobs.Rewind();
++		while( (job = _jobs.Next()) != NULL ) {
++			// If the DAG file has already assigned a priority
++			// Leave this job alone for now
++			if( !job->_hasNodePriority ) {
++				job->_hasNodePriority = true;
++				job->_nodePriority = GetDefaultPriority();
++			} else if( GetDefaultPriority() > job->_nodePriority ) {
++				job->_nodePriority = GetDefaultPriority();
++			}
++		}
++	}
++}
+diff --git a/src/condor_dagman/dag.h b/src/condor_dagman/dag.h
+index 696c6fd..ac956e1 100644
+--- a/src/condor_dagman/dag.h
++++ b/src/condor_dagman/dag.h
+@@ -138,7 +138,7 @@ class Dag {
+ 		 const char *storkRmExe, const CondorID *DAGManJobId,
+ 		 bool prohibitMultiJobs, bool submitDepthFirst,
+ 		 const char *defaultNodeLog, bool generateSubdagSubmits,
+-		 const SubmitDagDeepOptions *submitDagDeepOpts,
++		 SubmitDagDeepOptions *submitDagDeepOpts,
+ 		 bool isSplice = false, const MyString &spliceScope = "root" );
+ 
+     ///
+@@ -668,6 +668,9 @@ class Dag {
+ 	void SetMaxJobHolds(int maxJobHolds) { _maxJobHolds = maxJobHolds; }
+ 
+ 	JobstateLog &GetJobstateLog() { return _jobstateLog; }
++	void SetDefaultPriorities();
++	void SetDefaultPriority(const int prio) { _defaultPriority = prio; }
++	int GetDefaultPriority() const { return _defaultPriority; }
+ 
+   private:
+ 
+@@ -1021,7 +1024,7 @@ class Dag {
+ 	bool	_generateSubdagSubmits;
+ 
+ 		// Options for running condor_submit_dag on nested DAGs.
+-	const SubmitDagDeepOptions *_submitDagDeepOpts;
++	SubmitDagDeepOptions *_submitDagDeepOpts;
+ 
+ 		// Dag objects are used to parse splice files, which are like include
+ 		// files that ultimately result in a larger in memory dag. To toplevel
+@@ -1056,6 +1059,7 @@ class Dag {
+ 
+ 		// The object for logging to the jobstate.log file (for Pegasus).
+ 	JobstateLog _jobstateLog;
++	int _defaultPriority;
+ };
+ 
+ #endif /* #ifndef DAG_H */
+diff --git a/src/condor_dagman/dagman_main.cpp b/src/condor_dagman/dagman_main.cpp
+index 504a898..d5ab8ef 100644
+--- a/src/condor_dagman/dagman_main.cpp
++++ b/src/condor_dagman/dagman_main.cpp
+@@ -75,6 +75,7 @@ static void Usage() {
+             "\t\t[-UseDagDir]\n"
+             "\t\t[-AutoRescue <0|1>]\n"
+             "\t\t[-DoRescueFrom <int N>]\n"
++            "\t\t[-Priority <int N>]\n"
+ 			"\t\t[-AllowVersionMismatch]\n"
+ 			"\t\t[-DumpRescue]\n"
+ 			"\t\t[-Verbose]\n"
+@@ -130,7 +131,8 @@ Dagman::Dagman() :
+ 	dumpRescueDag(false),
+ 	_defaultNodeLog(NULL),
+ 	_generateSubdagSubmits(true),
+-	_maxJobHolds(100)
++	_maxJobHolds(100),
++	_defaultPriority(0)
+ {
+     debug_level = DEBUG_VERBOSE;  // Default debug level is verbose output
+ }
+@@ -225,6 +227,8 @@ Dagman::Config()
+ 		m_user_log_scan_interval, 1, INT_MAX);
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_USER_LOG_SCAN_INTERVAL setting: %d\n",
+ 				m_user_log_scan_interval );
++	_defaultPriority = param_integer("DAGMAN_DEFAULT_PRIORITY", 0, INT_MIN,
++		INT_MAX, false);
+ 
+ 
+ 		// Event checking setup...
+@@ -731,6 +735,13 @@ void main_init (int argc, char ** const argv) {
+         } else if( !strcasecmp( "-import_env", argv[i] ) ) {
+ 			dagman._submitDagDeepOpts.importEnv = true;
+ 
++        } else if( !strcasecmp( "-priority", argv[i] ) ) {
++		++i;
++		if( i >= argc || strcmp( argv[i], "" ) == 0 ) {
++			debug_printf( DEBUG_NORMAL, "No priority value specified\n");
++			Usage();
++		}
++		dagman._submitDagDeepOpts.priority = atoi(argv[i]);
+         } else {
+     		debug_printf( DEBUG_SILENT, "\nUnrecognized argument: %s\n",
+ 						argv[i] );
+@@ -997,7 +1008,12 @@ void main_init (int argc, char ** const argv) {
+ 	dagman.dag->SetAllowEvents( dagman.allow_events );
+ 	dagman.dag->SetConfigFile( dagman._dagmanConfigFile );
+ 	dagman.dag->SetMaxJobHolds( dagman._maxJobHolds );
+-
++	if( dagman._submitDagDeepOpts.priority != 0 ) { // From command line
++		dagman.dag->SetDefaultPriority(dagman._submitDagDeepOpts.priority);
++	} else if( dagman._defaultPriority != 0 ) { // From config file
++		dagman.dag->SetDefaultPriority(dagman._defaultPriority);
++		dagman._submitDagDeepOpts.priority = dagman._defaultPriority;
++	}
+     //
+     // Parse the input files.  The parse() routine
+     // takes care of adding jobs and dependencies to the DagMan
+@@ -1039,7 +1055,9 @@ void main_init (int argc, char ** const argv) {
+ 					 	dagFile );
+     	}
+ 	}
+-
++	if( dagman.dag->GetDefaultPriority() != 0 ) {
++		dagman.dag->SetDefaultPriorities(); // Applies to the nodes of the dag
++	}
+ 	dagman.dag->GetJobstateLog().WriteDagmanStarted( dagman.DAGManJobId );
+ 	if ( rescueDagNum > 0 ) {
+ 			// Get our Pegasus sequence numbers set correctly.
+diff --git a/src/condor_dagman/dagman_main.h b/src/condor_dagman/dagman_main.h
+index b1ab94e..41ec296 100644
+--- a/src/condor_dagman/dagman_main.h
++++ b/src/condor_dagman/dagman_main.h
+@@ -195,6 +195,7 @@ class Dagman {
+ 	int _maxJobHolds;
+ 
+ 	static strict_level_t _strict;
++	int _defaultPriority;
+ };
+ 
+ #endif	// ifndef DAGMAN_MAIN_H
+diff --git a/src/condor_dagman/dagman_recursive_submit.cpp b/src/condor_dagman/dagman_recursive_submit.cpp
+index 313ab41..8bad218 100644
+--- a/src/condor_dagman/dagman_recursive_submit.cpp
++++ b/src/condor_dagman/dagman_recursive_submit.cpp
+@@ -120,6 +120,10 @@ runSubmitDag( const SubmitDagDeepOptions &deepOpts,
+ 	if ( deepOpts.updateSubmit ) {
+ 		args.AppendArg( "-update_submit" );
+ 	}
++	if( deepOpts.priority != 0) {
++		args.AppendArg( "-Priority" );
++		args.AppendArg( deepOpts.priority );
++	}
+ 
+ 	args.AppendArg( dagFile );
+ 
+diff --git a/src/condor_dagman/dagman_recursive_submit.h b/src/condor_dagman/dagman_recursive_submit.h
+index a4200d4..29ae178 100644
+--- a/src/condor_dagman/dagman_recursive_submit.h
++++ b/src/condor_dagman/dagman_recursive_submit.h
+@@ -107,6 +107,7 @@ struct SubmitDagDeepOptions
+ 	bool recurse; // whether to recursively run condor_submit_dag on nested DAGs
+ 	bool updateSubmit; // allow updating submit file w/o -force
+ 	bool importEnv; // explicitly import environment into .condor.sub file
++	int priority; // Priority of parent of DAG node
+ 	
+ 	SubmitDagDeepOptions() 
+ 	{ 
+@@ -122,6 +123,7 @@ struct SubmitDagDeepOptions
+ 		recurse = false;
+ 		updateSubmit = false;
+ 		importEnv = false;
++		priority = 0;
+ 	}
+ };
+ 
+diff --git a/src/condor_dagman/job.cpp b/src/condor_dagman/job.cpp
+index 627610c..1e0a337 100644
+--- a/src/condor_dagman/job.cpp
++++ b/src/condor_dagman/job.cpp
+@@ -965,3 +965,22 @@ Job::SetLastEventTime( const ULogEvent *event )
+ 	struct tm eventTm = event->eventTime;
+ 	_lastEventTime = mktime( &eventTm );
+ }
++//---------------------------------------------------------------------------
++// If there is a cycle, could this enter an infinite loop?
++// No: If there is a cycle, there will be equality, and recursion will stop
++// It makes no sense to insert job priorities on linear DAGs;
++void
++Job::FixPriority(const int /* priority */,Dag& dag)
++{
++	set<JobID_t> parents = GetQueueRef(Q_PARENTS);
++	for(set<JobID_t>::iterator p = parents.begin(); p != parents.end(); ++p){
++		Job* parent = dag.FindNodeByNodeID(*p);
++		if( parent->_hasNodePriority ) {
++			// Nothing to do if parent priority is small
++			if( parent->_nodePriority > _nodePriority ) {
++				_nodePriority = parent->_nodePriority;
++				_hasNodePriority = true;
++			}
++		}
++	}
++}
+diff --git a/src/condor_dagman/job.h b/src/condor_dagman/job.h
+index b79c804..74a90b6 100644
+--- a/src/condor_dagman/job.h
++++ b/src/condor_dagman/job.h
+@@ -411,6 +411,7 @@ class Job {
+ 		@return the last event time.
+ 	*/
+ 	time_t GetLastEventTime() { return _lastEventTime; }
++	void FixPriority(const int priority,Dag& dag);
+ 
+     /** */ CondorID _CondorID;
+     /** */ status_t _Status;
