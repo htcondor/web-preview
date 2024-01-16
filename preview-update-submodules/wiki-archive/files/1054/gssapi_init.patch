@@ -1,0 +1,11 @@
+--- globus_toolkit-6.0.1506371041/gsi/gssapi/source/library/init_sec_context.c	2017-09-25 15:35:57.000000000 -0500
++++ globus_toolkit-6.0.1506371041-patched/gsi/gssapi/source/library/init_sec_context.c	2020-08-20 14:56:45.000000000 -0500
+@@ -385,7 +385,7 @@
+          * to get back in sync which we will ignore
+          */
+ 
+-        if (output_token->length != 0)
++        if (BIO_pending(context->gss_wbio) != 0)
+         {
+             context->gss_state=GSS_CON_ST_FLAGS;
+             break;
