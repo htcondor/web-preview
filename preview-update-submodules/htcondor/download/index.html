@@ -990,15 +990,15 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.2.0</span> Feature Release</h3>
-        <p>November 29, 2023</p>
+        <h3><span class="text-secondary">23.3.0</span> Feature Release</h3>
+        <p>January  4, 2024</p>
         <div>
             <ul>
-  <li>Add <code>periodic_vacate</code> submit command to restart jobs that are stuck</li>
-  <li>Execution Points now advertise whether or not the execute directory is on rotational storage</li>
-  <li>Add termination log events that report the time a job was running and the time that a job occupied a slot</li>
-  <li>Files written by HTCondor are now written in binary mode on Windows</li>
-  <li>HTCondor now uses the Pelican Platform for OSDF file transfers</li>
+  <li>Restore limited support for Enterprise Linux 7 systems</li>
+  <li>Additional assistance converting old syntax job routes to new syntax</li>
+  <li>Able to capture output to debug DAGMan PRE and POST scripts</li>
+  <li>Execution Points advertise when jobs are running with cgroup enforcement</li>
+  <li>All the fixes from HTCondor 23.0.3 LTS</li>
 </ul>
 
         </div>
@@ -1019,16 +1019,15 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.0.2</span> Long Term Support Release</h3>
-        <p>November 20, 2023</p>
+        <h3><span class="text-secondary">23.0.3</span> Long Term Support Release</h3>
+        <p>January  4, 2024</p>
         <div>
             <ul>
-  <li>Fixed a bug when Hashicorp Vault is configured to issue data transfer tokens (which is not the default), job submission could hang and then fail.</li>
-  <li>Improved sandbox and ssh-agent clean up for <code>batch</code> grid universe jobs</li>
-  <li>Fix bug where daemons with a private network address couldn’t communicate</li>
-  <li>Fix cgroup v2 memory enforcement for custom configurations</li>
-  <li>Add <code>DISABLE_SWAP_FOR_JOB</code> support on cgroup v2 systems</li>
-  <li>Fix log rotation for OAuth and Vault credmon daemons</li>
+  <li>Preliminary support for openSUSE LEAP 15</li>
+  <li>All non-zero exit values from file transfer plugins are now errors</li>
+  <li>Fix crash in Python bindings when job submission fails</li>
+  <li>Chirp uses a 5120 byte buffer and errors out for bigger messages</li>
+  <li>condor_adstash now recognizes GPU usage values as floating point numbers</li>
 </ul>
 
         </div>
