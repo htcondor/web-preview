@@ -1,0 +1,25 @@
+From 7fd2c8413b1c9e1bc517178d73fcf6839dfaa7e6 Mon Sep 17 00:00:00 2001
+From: Chris Lalancette <clalance@redhat.com>
+Date: Thu, 16 Jun 2011 15:16:17 -0400
+Subject: [PATCH 11/13] Remove an unnecessary break statement in GM_SUBMITTED.
+
+Signed-off-by: Chris Lalancette <clalance@redhat.com>
+---
+ src/condor_gridmanager/dcloudjob.cpp |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+diff --git a/src/condor_gridmanager/dcloudjob.cpp b/src/condor_gridmanager/dcloudjob.cpp
+index 3953800..97dd0f5 100644
+--- a/src/condor_gridmanager/dcloudjob.cpp
++++ b/src/condor_gridmanager/dcloudjob.cpp
+@@ -609,7 +609,6 @@ void DCloudJob::doEvaluateState()
+ 
+ 				} else if ( probeNow ) {
+ 					gmState = GM_PROBE_JOB;
+-					break;
+ 				}
+ 
+ 				break;
+-- 
+1.7.4.4
+
