@@ -1,0 +1,206 @@
+--- ./src/condor_utils/ipv6_hostname.cpp.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_utils/ipv6_hostname.cpp	2015-01-27 17:26:52.000000000 +0100
+@@ -12,6 +12,7 @@
+ static condor_sockaddr local_ipaddr;
+ static condor_sockaddr local_ipv4addr;
+ static condor_sockaddr local_ipv6addr;
++static bool local_ipv6addr_more_desirable = true;
+ static MyString local_hostname;
+ static MyString local_fqdn;
+ static bool hostname_initialized = false;
+@@ -153,6 +154,7 @@
+ 				if(desireability > local_hostname_desireability) {
+ 					result = "new winner";
+ 					dprintf(D_HOSTNAME, "   I like it.\n");
++					local_ipv6addr_more_desirable = (addr.get_protocol() == CP_IPV6);
+ 					local_hostname_desireability = desireability;
+ 
+ 					const char* dotpos = strchr(name, '.');
+@@ -232,6 +234,14 @@
+ 	return local_ipaddr;
+ }
+ 
++condor_sockaddr get_preferred_local_ipaddr()
++{
++	init_local_hostname();
++	if (local_ipv6addr_more_desirable && local_ipv6addr.is_ipv6()) { return local_ipv6addr; }
++	else if (local_ipv4addr.is_ipv4()) { return local_ipv4addr; }
++	else return local_ipaddr;
++}
++
+ MyString get_local_hostname()
+ {
+ 	init_local_hostname();
+--- ./src/condor_utils/internet.cpp.ORIG	2015-01-27 17:19:51.000000000 +0100
++++ ./src/condor_utils/internet.cpp	2015-01-27 17:20:31.000000000 +0100
+@@ -786,6 +786,9 @@
+ {
+ 	int start_trial, this_trial;
+ 	int pid, range;
++	ipv4or6_storage ss;
++	socklen_t len = sizeof(ss);
++	int r;
+ 
+ 	// Use hash function with pid to get the starting point
+     pid = (int) getpid();
+@@ -793,16 +796,30 @@
+     // this line must be changed to use the hash function of condor
+     start_trial = low_port + (pid * 173/*some prime number*/ % range);
+ 
++	r = getsockname(fd, &(ss.sa), &len);
++	if (r != 0) {
++		dprintf(D_ALWAYS, "ERROR: getsockname failed, errno: %d\n",
++				errno);
++		return FALSE;
++	}
++	if (ss.all.ss_family == AF_INET) {
++		ss.v4.sin_addr.s_addr = htonl(INADDR_ANY);
++	}
++	else if (ss.all.ss_family == AF_INET6) {
++		ss.v6.sin6_addr = in6addr_any;
++	}
++
+     this_trial = start_trial;
+ 	do {
+-		struct sockaddr_in sa_in;
+ 		priv_state old_priv;
+ 		int bind_return_value;
+ 
+-		memset(&sa_in, 0, sizeof(sa_in));
+-		sa_in.sin_family = AF_INET;
+-		sa_in.sin_addr.s_addr = htonl(INADDR_ANY);
+-		sa_in.sin_port = htons((u_short)this_trial++);
++		if (ss.all.ss_family == AF_INET) {
++			ss.v4.sin_port = htons((u_short)this_trial++);
++		}
++		else if (ss.all.ss_family == AF_INET6) {
++			ss.v6.sin6_port = htons((u_short)this_trial++);
++		}
+ 
+ // windows doesn't have privileged ports.
+ #ifndef WIN32
+@@ -812,7 +829,7 @@
+ 			old_priv = set_root_priv();
+ 		}
+ #endif
+-		bind_return_value = bind(fd, (struct sockaddr *)&sa_in, sizeof(sa_in));
++		bind_return_value = bind(fd, &(ss.sa), len);
+ #ifndef WIN32
+ 		if (this_trial <= 1024) {
+ 			set_priv (old_priv);
+--- ./src/condor_utils/my_hostname.cpp.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_utils/my_hostname.cpp	2015-01-27 16:48:52.000000000 +0100
+@@ -57,8 +57,7 @@
+ 
+ const char* my_ip_string() {
+     static MyString __my_ip_string;
+-	// TODO: Picking IPv4 arbitrarily.
+-    __my_ip_string = get_local_ipaddr(CP_IPV4).to_ip_string();
++    __my_ip_string = get_preferred_local_ipaddr().to_ip_string();
+     return __my_ip_string.Value();
+ }
+ 
+--- ./src/condor_utils/store_cred.cpp.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_utils/store_cred.cpp	2015-01-27 16:49:28.000000000 +0100
+@@ -604,8 +604,7 @@
+ 
+ 		MyString my_fqdn_str = get_local_fqdn();
+ 		MyString my_hostname_str = get_local_hostname();
+-		// TODO: Arbitrarily picking IPv4
+-		MyString my_ip_str = get_local_ipaddr(CP_IPV4).to_ip_string();
++		MyString my_ip_str = get_preferred_local_ipaddr().to_ip_string();
+ 
+ 		// figure out if we're on the CREDD_HOST
+ 		bool on_credd_host = (strcasecmp(my_fqdn_str.Value(), credd_host) == MATCH);
+--- ./src/condor_includes/ipv6_hostname.h.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_includes/ipv6_hostname.h	2015-01-27 16:47:25.000000000 +0100
+@@ -27,6 +27,7 @@
+ void reset_local_hostname();
+ 
+ condor_sockaddr get_local_ipaddr(condor_protocol proto);
++condor_sockaddr get_preferred_local_ipaddr();
+ MyString get_local_hostname();
+ MyString get_local_fqdn();
+ 
+--- ./src/condor_starter.V6.1/mpi_master_proc.cpp.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_starter.V6.1/mpi_master_proc.cpp	2015-01-27 16:49:53.000000000 +0100
+@@ -303,9 +303,8 @@
+ 				// At this point, we can actually do our pseudo
+ 				// syscall to tell the shadow.  First, create the
+ 				// string we need and stuff it in a ClassAd 
+-				// // TODO: Arbitrarily chooses IPv4, shouldn't?
+ 			sprintf( buf, "%s=\"%s:%d\"", ATTR_MPI_MASTER_ADDR, 
+-					 get_local_ipaddr(CP_IPV4).to_ip_string().Value(), port );
++					 get_preferred_local_ipaddr().to_ip_string().Value(), port );
+ 			ClassAd ad;
+ 			ad.Insert( buf );
+ 
+--- ./src/condor_syscall_lib/special_stubs.cpp.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_syscall_lib/special_stubs.cpp	2015-01-27 17:28:47.000000000 +0100
+@@ -44,6 +44,11 @@
+ }
+ 
+ condor_sockaddr
++get_preferred_local_ipaddr() {
++	return syscall_sock->my_addr();	
++}
++
++condor_sockaddr
+ get_local_ipaddr( condor_protocol ) {
+ 	return syscall_sock->my_addr();	
+ }
+--- ./src/condor_startd.V6/command.cpp.ORIG	2014-12-16 23:34:40.000000000 +0100
++++ ./src/condor_startd.V6/command.cpp	2015-01-29 17:10:26.000000000 +0100
+@@ -23,6 +23,7 @@
+ #include "condor_mkstemp.h"
+ #include "startd.h"
+ #include "vm_common.h"
++#include "condor_ipv6.h"
+ #include "ipv6_hostname.h"
+ #include "consumption_policy.h"
+ 
+@@ -1860,20 +1861,19 @@
+ 		assert( streamSA.from_ip_string( stream->my_ip_str() ) );
+ 
+ 		if( streamSA.is_ipv6() ) {
+-			dprintf( D_ALWAYS, "WARNING -- request to run standard-universe job via IPv6.  Expect problems.\n" );
++			dprintf( D_FULLDEBUG, "Running standard-universe job via IPv6.\n" );
+ 		}
+ 
+-		//
+-		// Be sure to create only IPv4 sockets.
+-		//
+ 		stRec.version_num = VERSION_FOR_FLOCK;
+-
+-		rsock_1.bind( CP_IPV4, false, 0, false );
++		// Binding to IPv6 allows to take advantage of dual/hybrid stack binding
++		if (_condor_is_ipv6_mode()) rsock_1.bind( CP_IPV6, false, 0, false );
++		else rsock_1.bind( CP_IPV4, false, 0, false );
+ 		rsock_1.listen();
+ 		sock_1 = rsock_1.get_file_desc();
+ 		stRec.ports.port1 = rsock_1.get_port();
+ 
+-		rsock_2.bind( CP_IPV4, false, 0, false );
++		if (_condor_is_ipv6_mode()) rsock_2.bind( CP_IPV6, false, 0, false );
++		else rsock_2.bind( CP_IPV4, false, 0, false );
+ 		rsock_2.listen();
+ 		sock_2 = rsock_2.get_file_desc();
+ 		stRec.ports.port2 = rsock_2.get_port();
+@@ -1883,10 +1883,13 @@
+ 		// Send our local IP address, too.
+ 		// stRec.ip_addr actually is never used.
+ 		// Just make sure that it does not have 0 value.
+-		// // TODO: Arbitrarily picking IPv4 
+-		condor_sockaddr local_addr = get_local_ipaddr(CP_IPV4);
+-		struct in_addr local_in_addr = local_addr.to_sin().sin_addr;
+-		memcpy( &stRec.ip_addr, &local_in_addr, sizeof(struct in_addr) );
++		condor_sockaddr local_addr = get_preferred_local_ipaddr();
++		if (local_addr.get_protocol() == CP_IPV4) {
++			struct in_addr local_in_addr = local_addr.to_sin().sin_addr;
++			memcpy( &stRec.ip_addr, &local_in_addr, sizeof(struct in_addr) );
++		} else {
++			stRec.ip_addr = -6; // ip_addr won't be used. Give a hint it's IPv6.
++		}
+ 
+ 		stream->encode();
+ 		if (!stream->code(stRec)) {
