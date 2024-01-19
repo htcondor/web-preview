@@ -1,0 +1,124 @@
+diff --git a/doc/misc/negotiatorad.tex b/doc/misc/negotiatorad.tex
+index d47da7d..da1aff8 100644
+--- a/doc/misc/negotiatorad.tex
++++ b/doc/misc/negotiatorad.tex
+@@ -15,6 +15,13 @@
+   The number \AdAttr{<X>} appended to the attribute name indicates how
+   many negotiation cycles ago this cycle happened.
+ 
++\index{ClassAd Negotiator attribute!LastNegotiationCycleCandidateSlots<X>}
++\item[\AdAttr{LastNegotiationCycleCandidateSlots<X>}:] The number of slot
++  ads after filtering by \Macro{GROUP\_DYNAMIC\_MACH\_CONSTRAINT}.  This 
++  is the number of slots actually considered for matching.  The number 
++  \AdAttr{<X>} appended to the attribute name indicates how many 
++  negotiation cycles ago this cycle happened.
++
+ \index{ClassAd Negotiator attribute!LastNegotiationCycleDuration<X>}
+ \item[\AdAttr{LastNegotiationCycleDuration<X>}:] The number of seconds
+   that it took to complete the negotiation cycle.  The number \AdAttr{<X>}
+@@ -27,12 +34,84 @@
+   appended to the attribute name indicates how many negotiation cycles
+   ago this cycle happened.
+ 
++\index{ClassAd Negotiator attribute!LastNegotiationCycleMatchRate<X>}
++\item[\AdAttr{LastNegotiationCycleMatchRate<X>}:] The number of matched jobs
++  divided by the duration of this cycle (jobs/second).  The number \AdAttr{<X>}
++  appended to the attribute name indicates how many negotiation cycles
++  ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCycleMatchRateSustained<X>}
++\item[\AdAttr{LastNegotiationCycleMatchRateSustained<X>}:] The number of
++  matched jobs divided by the period of this cycle (jobs/second).  The period is
++  the time elapsed between the end of previous cycle and end of this cycle, and
++  so this rate includes the interval between cycles.  The number \AdAttr{<X>}
++  appended to the attribute name indicates how many negotiation cycles
++  ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCycleNumIdleJobs<X>}
++\item[\AdAttr{LastNegotiationCycleNumIdleJobs<X>}:] The number of
++  idle jobs considered for matchmaking.  The number \AdAttr{<X>}
++  appended to the attribute name indicates how many negotiation cycles
++  ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCycleNumJobsConsidered<X>}
++\item[\AdAttr{LastNegotiationCycleNumJobsConsidered<X>}:] The number of
++  jobs requests returned from the schedulers for consideration.  The 
++  number \AdAttr{<X>} appended to the attribute name indicates how many 
++  negotiation cycles ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCycleNumSchedulers<X>}
++\item[\AdAttr{LastNegotiationCycleNumSchedulers<X>}:] The number of
++  individual schedulers negotiated with during matchmaking.  The number 
++  \AdAttr{<X>} appended to the attribute name indicates how many 
++  negotiation cycles ago this cycle happened.
++
+ \index{ClassAd Negotiator attribute!LastNegotiationCycleRejections<X>}
+-\item[\AdAttr{LastNegotiationCycleDuration<X>}:] The number of
++\item[\AdAttr{LastNegotiationCycleRejections<X>}:] The number of
+   rejections that occurred in the negotiation cycle.  The number \AdAttr{<X>}
+   appended to the attribute name indicates how many negotiation cycles
+   ago this cycle happened.
+ 
++\index{ClassAd Negotiator attribute!LastNegotiationCycleEnd<X>}
++\item[\AdAttr{LastNegotiationCycleEnd<X>}:] The time, represented as the
++  number of seconds since the Unix epoch, at which the negotiation
++  cycle ended. The number \AdAttr{<X>} appended to the attribute name 
++  indicates how many negotiation cycles ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCyclePeriod<X>}
++\item[\AdAttr{LastNegotiationCyclePeriod<X>}:] The number of seconds
++  elapsed between the end of the previous negotiation cycle and the 
++  end of this cycle.  The number \AdAttr{<X>} appended to the 
++  attribute name indicates how many negotiation cycles ago this 
++  cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCyclePhase1Duration<X>}
++\item[\AdAttr{LastNegotiationCyclePhase1Duration<X>}:] The duration, in 
++  seconds, of Phase 1 of the negotiation cycle: the process of getting 
++  job, submitter and claim ads from the collector. The number \AdAttr{<X>} 
++  appended to the attribute name indicates how many negotiation cycles 
++  ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCyclePhase2Duration<X>}
++\item[\AdAttr{LastNegotiationCyclePhase2Duration<X>}:] The duration, in 
++  seconds, of Phase 2 of the negotiation cycle: the process of filtering slots
++  and processing accounting group configuration. The number \AdAttr{<X>}
++  appended to the attribute name indicates how many negotiation cycles
++  ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCyclePhase3Duration<X>}
++\item[\AdAttr{LastNegotiationCyclePhase3Duration<X>}:] The duration, in
++  seconds, of Phase 3 of the negotiation cycle: sorting submitters by
++  priority.  The number \AdAttr{<X>} appended to the attribute name 
++  indicates how many negotiation cycles ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCyclePhase4Duration<X>}
++\item[\AdAttr{LastNegotiationCyclePhase4Duration<X>}:] The duration, in
++  seconds, of Phase 4 of the negotiation cycle: the process of matching
++  slots to jobs in conjunction with the schedulers. The number \AdAttr{<X>}
++  appended to the attribute name indicates how many negotiation cycles
++  ago this cycle happened.
++
+ \index{ClassAd Negotiator attribute!LastNegotiationCycleStartTime<X>}
+ \item[\AdAttr{LastNegotiationCycleStartTime<X>}:]
+   The time, represented as the number of second elapsed since the Unix
+@@ -58,6 +137,19 @@
+   in the negotiation cycle.  The number \AdAttr{<X>} appended to the
+   attribute name indicates how many negotiation cycles ago this cycle
+   happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCycleTotalSlots<X>}
++\item[\AdAttr{LastNegotiationCycleTotalSlots<X>}:] The total number of
++  slot ads received by the negotiator. The number \AdAttr{<X>}
++  appended to the attribute name indicates how many negotiation cycles
++  ago this cycle happened.
++
++\index{ClassAd Negotiator attribute!LastNegotiationCycleTrimmedSlots<X>}
++\item[\AdAttr{LastNegotiationCycleTrimmedSlots<X>}:] The number of slot
++  ads left after trimming currently claimed slots (when enabled).  The 
++  number \AdAttr{<X>} appended to the attribute name indicates how many 
++  negotiation cycles ago this cycle happened.
++
+ \index{ClassAd Negotiator attribute!Machine}
+ \item[\AdAttr{Machine}:] A string with the machine's fully qualified 
+   host name.
