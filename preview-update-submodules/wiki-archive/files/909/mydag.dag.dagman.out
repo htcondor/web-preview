@@ -1,0 +1,669 @@
+10/22/15 15:44:16 I am: hostname: submit-5, fully qualified doman name: submit-5.chtc.wisc.edu, IP: 128.104.101.92, IPv4: 128.104.101.92, IPv6: 
+10/22/15 15:44:16 I am: hostname: submit-5, fully qualified doman name: submit-5.chtc.wisc.edu, IP: 128.104.101.92, IPv4: 128.104.101.92, IPv6: 
+10/22/15 15:44:16 ******************************************************
+10/22/15 15:44:16 ** condor_scheduniv_exec.5768099.0 (CONDOR_DAGMAN) STARTING UP
+10/22/15 15:44:16 ** /usr/bin/condor_dagman
+10/22/15 15:44:16 ** SubsystemInfo: name=DAGMAN type=DAGMAN(10) class=DAEMON(1)
+10/22/15 15:44:16 ** Configuration: subsystem:DAGMAN local:<NONE> class:DAEMON
+10/22/15 15:44:16 ** $CondorVersion: 8.5.0 Sep 16 2015 BuildID: 341710 $
+10/22/15 15:44:16 ** $CondorPlatform: X86_64-RedHat_6.6 $
+10/22/15 15:44:16 ** PID = 3354277
+10/22/15 15:44:16 ** Log last touched time unavailable (No such file or directory)
+10/22/15 15:44:16 ******************************************************
+10/22/15 15:44:16 Using config source: /etc/condor/condor_config
+10/22/15 15:44:16 Using local config sources: 
+10/22/15 15:44:16    /etc/condor/config.d/00-chtc-global.conf
+10/22/15 15:44:16    /etc/condor/config.d/01-chtc-submit.conf
+10/22/15 15:44:16    /etc/condor/config.d/02-chtc-flocking.conf
+10/22/15 15:44:16    /etc/condor/config.d/04-chtc-blacklist.conf
+10/22/15 15:44:16    /etc/condor/config.d/10chtc-ischtcsubmit.conf
+10/22/15 15:44:16    /etc/condor/config.d/13uid_domain.conf
+10/22/15 15:44:16    /etc/condor/config.d/14sec_enable_match_password_authentication.conf
+10/22/15 15:44:16    /etc/condor/config.d/20_ADMINISTRATOR_access_level.conf
+10/22/15 15:44:16    /etc/condor/config.d/20_NEGOTIATOR_access_level.conf
+10/22/15 15:44:16    /etc/condor/config.d/20_flightworthy_requests.conf
+10/22/15 15:44:16    /etc/condor/config.d/20_gsi.conf
+10/22/15 15:44:16    /etc/condor/config.d/20_ssl_client.conf
+10/22/15 15:44:16    /etc/condor/config.d/20_ssl_server.conf
+10/22/15 15:44:16    /etc/condor/config.d/60-campus_factory.config
+10/22/15 15:44:16    /etc/condor/config.d/75chtc_lockless_logging.conf
+10/22/15 15:44:16    /etc/condor/config.d/97-submit-5.conf
+10/22/15 15:44:16    /etc/condor/config.d/99-scale.conf
+10/22/15 15:44:16    /etc/condor/config.d/99_gratia.conf
+10/22/15 15:44:16    /etc/condor/condor_config.local
+10/22/15 15:44:16 config Macros = 232, Sorted = 232, StringBytes = 12338, TablesBytes = 8552
+10/22/15 15:44:16 CLASSAD_CACHING is ENABLED
+10/22/15 15:44:16 Daemon Log is logging: D_ALWAYS D_ERROR
+10/22/15 15:44:16 DaemonCore: No command port requested.
+10/22/15 15:44:16 Using DAGMan config file: /home/ckoch5/tests/dag_max_idle/dagman_config
+10/22/15 15:44:16 DAGMAN_USE_STRICT setting: 1
+10/22/15 15:44:16 DAGMAN_VERBOSITY setting: 3
+10/22/15 15:44:16 DAGMAN_DEBUG_CACHE_SIZE setting: 5242880
+10/22/15 15:44:16 DAGMAN_DEBUG_CACHE_ENABLE setting: False
+10/22/15 15:44:16 DAGMAN_SUBMIT_DELAY setting: 0
+10/22/15 15:44:16 DAGMAN_MAX_SUBMIT_ATTEMPTS setting: 6
+10/22/15 15:44:16 DAGMAN_STARTUP_CYCLE_DETECT setting: False
+10/22/15 15:44:16 DAGMAN_MAX_SUBMITS_PER_INTERVAL setting: 5
+10/22/15 15:44:16 DAGMAN_USER_LOG_SCAN_INTERVAL setting: 5
+10/22/15 15:44:16 DAGMAN_DEFAULT_PRIORITY setting: 0
+10/22/15 15:44:16 DAGMAN_SUPPRESS_NOTIFICATION setting: True
+10/22/15 15:44:16 allow_events (DAGMAN_ALLOW_EVENTS) setting: 114
+10/22/15 15:44:16 DAGMAN_RETRY_SUBMIT_FIRST setting: True
+10/22/15 15:44:16 DAGMAN_RETRY_NODE_FIRST setting: False
+10/22/15 15:44:16 DAGMAN_MAX_JOBS_IDLE setting: 12
+10/22/15 15:44:16 DAGMAN_MAX_JOBS_SUBMITTED setting: 0
+10/22/15 15:44:16 DAGMAN_MAX_PRE_SCRIPTS setting: 20
+10/22/15 15:44:16 DAGMAN_MAX_POST_SCRIPTS setting: 20
+10/22/15 15:44:16 DAGMAN_ALLOW_LOG_ERROR setting: False
+10/22/15 15:44:16 DAGMAN_MUNGE_NODE_NAMES setting: True
+10/22/15 15:44:16 DAGMAN_PROHIBIT_MULTI_JOBS setting: False
+10/22/15 15:44:16 DAGMAN_SUBMIT_DEPTH_FIRST setting: False
+10/22/15 15:44:16 DAGMAN_ALWAYS_RUN_POST setting: True
+10/22/15 15:44:16 DAGMAN_ABORT_DUPLICATES setting: True
+10/22/15 15:44:16 DAGMAN_ABORT_ON_SCARY_SUBMIT setting: True
+10/22/15 15:44:16 DAGMAN_PENDING_REPORT_INTERVAL setting: 600
+10/22/15 15:44:16 DAGMAN_AUTO_RESCUE setting: True
+10/22/15 15:44:16 DAGMAN_MAX_RESCUE_NUM setting: 100
+10/22/15 15:44:16 DAGMAN_WRITE_PARTIAL_RESCUE setting: True
+10/22/15 15:44:16 DAGMAN_DEFAULT_NODE_LOG setting: @(DAG_DIR)/@(DAG_FILE).nodes.log
+10/22/15 15:44:16 DAGMAN_GENERATE_SUBDAG_SUBMITS setting: True
+10/22/15 15:44:16 DAGMAN_MAX_JOB_HOLDS setting: 100
+10/22/15 15:44:16 DAGMAN_HOLD_CLAIM_TIME setting: 20
+10/22/15 15:44:16 ALL_DEBUG setting: 
+10/22/15 15:44:16 DAGMAN_DEBUG setting: 
+10/22/15 15:44:16 DAGMAN_SUPPRESS_JOB_LOGS setting: False
+10/22/15 15:44:16 argv[0] == "condor_scheduniv_exec.5768099.0"
+10/22/15 15:44:16 argv[1] == "-Lockfile"
+10/22/15 15:44:16 argv[2] == "mydag.dag.lock"
+10/22/15 15:44:16 argv[3] == "-AutoRescue"
+10/22/15 15:44:16 argv[4] == "1"
+10/22/15 15:44:16 argv[5] == "-DoRescueFrom"
+10/22/15 15:44:16 argv[6] == "0"
+10/22/15 15:44:16 argv[7] == "-Dag"
+10/22/15 15:44:16 argv[8] == "mydag.dag"
+10/22/15 15:44:16 argv[9] == "-Suppress_notification"
+10/22/15 15:44:16 argv[10] == "-CsdVersion"
+10/22/15 15:44:16 argv[11] == "$CondorVersion: 8.5.0 Sep 16 2015 BuildID: 341710 $"
+10/22/15 15:44:16 argv[12] == "-Dagman"
+10/22/15 15:44:16 argv[13] == "/usr/bin/condor_dagman"
+10/22/15 15:44:18 Warning: failed to get attribute DAGNodeName
+10/22/15 15:44:18 Default node log file is: </home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log>
+10/22/15 15:44:18 DAG Lockfile will be written to mydag.dag.lock
+10/22/15 15:44:18 DAG Input file is mydag.dag
+10/22/15 15:44:18 Parsing 1 dagfiles
+10/22/15 15:44:18 Parsing mydag.dag ...
+10/22/15 15:44:18 Dag contains 15 total jobs
+10/22/15 15:44:18 Sleeping for 3 seconds to ensure ProcessId uniqueness
+10/22/15 15:44:21 Bootstrapping...
+10/22/15 15:44:21 Number of pre-completed nodes: 0
+10/22/15 15:44:21 MultiLogFiles: truncating log file /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:21 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:44:21 Of 15 nodes total:
+10/22/15 15:44:21  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:44:21   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:44:21     0       0        0       0      15          0        0
+10/22/15 15:44:21 0 job proc(s) currently held
+10/22/15 15:44:21 Registering condor_event_timer...
+10/22/15 15:44:22 Submitting HTCondor Node 1 job(s)...
+10/22/15 15:44:22 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:22 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:22 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:22 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '1 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '1 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:24 From submit: Submitting job(s)...
+10/22/15 15:44:24 From submit: 3 job(s) submitted to cluster 5768130.
+10/22/15 15:44:24 	assigned HTCondor ID (5768130.0.0)
+10/22/15 15:44:24 Submitting HTCondor Node 2 job(s)...
+10/22/15 15:44:24 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:24 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:24 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:24 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '2 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '2 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:24 From submit: Submitting job(s)...
+10/22/15 15:44:24 From submit: 3 job(s) submitted to cluster 5768131.
+10/22/15 15:44:24 	assigned HTCondor ID (5768131.0.0)
+10/22/15 15:44:24 Submitting HTCondor Node 3 job(s)...
+10/22/15 15:44:24 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:24 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:24 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:24 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '3 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '3 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:25 From submit: Submitting job(s)...
+10/22/15 15:44:25 From submit: 3 job(s) submitted to cluster 5768132.
+10/22/15 15:44:25 	assigned HTCondor ID (5768132.0.0)
+10/22/15 15:44:25 Submitting HTCondor Node 4 job(s)...
+10/22/15 15:44:25 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:25 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:25 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:25 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '4 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '4 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:25 From submit: Submitting job(s)...
+10/22/15 15:44:25 From submit: 3 job(s) submitted to cluster 5768133.
+10/22/15 15:44:25 	assigned HTCondor ID (5768133.0.0)
+10/22/15 15:44:25 Submitting HTCondor Node 5 job(s)...
+10/22/15 15:44:25 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:25 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:25 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:25 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '5 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '5 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:25 From submit: Submitting job(s)...
+10/22/15 15:44:25 From submit: 3 job(s) submitted to cluster 5768134.
+10/22/15 15:44:25 	assigned HTCondor ID (5768134.0.0)
+10/22/15 15:44:25 Just submitted 5 jobs this cycle...
+10/22/15 15:44:25 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:44:25 Reassigning the id of job 1 from (5768130.0.0) to (5768130.0.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 1 (5768130.0.0)
+10/22/15 15:44:25 Number of idle job procs: 1
+10/22/15 15:44:25 Reassigning the id of job 1 from (5768130.0.0) to (5768130.1.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 1 (5768130.1.0)
+10/22/15 15:44:25 Number of idle job procs: 1
+10/22/15 15:44:25 Reassigning the id of job 1 from (5768130.1.0) to (5768130.2.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 1 (5768130.2.0)
+10/22/15 15:44:25 Number of idle job procs: 1
+10/22/15 15:44:25 Reassigning the id of job 2 from (5768131.0.0) to (5768131.0.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 2 (5768131.0.0)
+10/22/15 15:44:25 Number of idle job procs: 2
+10/22/15 15:44:25 Reassigning the id of job 2 from (5768131.0.0) to (5768131.1.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 2 (5768131.1.0)
+10/22/15 15:44:25 Number of idle job procs: 2
+10/22/15 15:44:25 Reassigning the id of job 2 from (5768131.1.0) to (5768131.2.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 2 (5768131.2.0)
+10/22/15 15:44:25 Number of idle job procs: 2
+10/22/15 15:44:25 Reassigning the id of job 3 from (5768132.0.0) to (5768132.0.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 3 (5768132.0.0)
+10/22/15 15:44:25 Number of idle job procs: 3
+10/22/15 15:44:25 Reassigning the id of job 3 from (5768132.0.0) to (5768132.1.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 3 (5768132.1.0)
+10/22/15 15:44:25 Number of idle job procs: 3
+10/22/15 15:44:25 Reassigning the id of job 3 from (5768132.1.0) to (5768132.2.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 3 (5768132.2.0)
+10/22/15 15:44:25 Number of idle job procs: 3
+10/22/15 15:44:25 Reassigning the id of job 4 from (5768133.0.0) to (5768133.0.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 4 (5768133.0.0)
+10/22/15 15:44:25 Number of idle job procs: 4
+10/22/15 15:44:25 Reassigning the id of job 4 from (5768133.0.0) to (5768133.1.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 4 (5768133.1.0)
+10/22/15 15:44:25 Number of idle job procs: 4
+10/22/15 15:44:25 Reassigning the id of job 4 from (5768133.1.0) to (5768133.2.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 4 (5768133.2.0)
+10/22/15 15:44:25 Number of idle job procs: 4
+10/22/15 15:44:25 Reassigning the id of job 5 from (5768134.0.0) to (5768134.0.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 5 (5768134.0.0)
+10/22/15 15:44:25 Number of idle job procs: 5
+10/22/15 15:44:25 Reassigning the id of job 5 from (5768134.0.0) to (5768134.1.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 5 (5768134.1.0)
+10/22/15 15:44:25 Number of idle job procs: 5
+10/22/15 15:44:25 Reassigning the id of job 5 from (5768134.1.0) to (5768134.2.0)
+10/22/15 15:44:25 Event: ULOG_SUBMIT for HTCondor Node 5 (5768134.2.0)
+10/22/15 15:44:25 Number of idle job procs: 5
+10/22/15 15:44:25 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:44:25 Of 15 nodes total:
+10/22/15 15:44:25  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:44:25   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:44:25     0       0        5       0      10          0        0
+10/22/15 15:44:25 0 job proc(s) currently held
+10/22/15 15:44:30 Submitting HTCondor Node 6 job(s)...
+10/22/15 15:44:30 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:30 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:30 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:30 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '6 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '6 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:31 From submit: Submitting job(s)...
+10/22/15 15:44:31 From submit: 3 job(s) submitted to cluster 5768135.
+10/22/15 15:44:31 	assigned HTCondor ID (5768135.0.0)
+10/22/15 15:44:31 Submitting HTCondor Node 7 job(s)...
+10/22/15 15:44:31 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:31 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:31 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:31 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '7 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '7 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:31 From submit: Submitting job(s)...
+10/22/15 15:44:31 From submit: 3 job(s) submitted to cluster 5768136.
+10/22/15 15:44:31 	assigned HTCondor ID (5768136.0.0)
+10/22/15 15:44:31 Submitting HTCondor Node 8 job(s)...
+10/22/15 15:44:31 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:31 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:31 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:31 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '8 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '8 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:31 From submit: Submitting job(s)...
+10/22/15 15:44:31 From submit: 3 job(s) submitted to cluster 5768137.
+10/22/15 15:44:31 	assigned HTCondor ID (5768137.0.0)
+10/22/15 15:44:31 Submitting HTCondor Node 9 job(s)...
+10/22/15 15:44:31 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:31 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:31 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:31 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '9 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '9 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:31 From submit: Submitting job(s)...
+10/22/15 15:44:31 From submit: 3 job(s) submitted to cluster 5768138.
+10/22/15 15:44:31 	assigned HTCondor ID (5768138.0.0)
+10/22/15 15:44:31 Submitting HTCondor Node 10 job(s)...
+10/22/15 15:44:31 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:31 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:31 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:31 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '10 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '10 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:32 From submit: Submitting job(s)...
+10/22/15 15:44:32 From submit: 3 job(s) submitted to cluster 5768139.
+10/22/15 15:44:32 	assigned HTCondor ID (5768139.0.0)
+10/22/15 15:44:32 Just submitted 5 jobs this cycle...
+10/22/15 15:44:32 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:44:32 Reassigning the id of job 6 from (5768135.0.0) to (5768135.0.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 6 (5768135.0.0)
+10/22/15 15:44:32 Number of idle job procs: 6
+10/22/15 15:44:32 Reassigning the id of job 6 from (5768135.0.0) to (5768135.1.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 6 (5768135.1.0)
+10/22/15 15:44:32 Number of idle job procs: 6
+10/22/15 15:44:32 Reassigning the id of job 6 from (5768135.1.0) to (5768135.2.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 6 (5768135.2.0)
+10/22/15 15:44:32 Number of idle job procs: 6
+10/22/15 15:44:32 Reassigning the id of job 7 from (5768136.0.0) to (5768136.0.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 7 (5768136.0.0)
+10/22/15 15:44:32 Number of idle job procs: 7
+10/22/15 15:44:32 Reassigning the id of job 7 from (5768136.0.0) to (5768136.1.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 7 (5768136.1.0)
+10/22/15 15:44:32 Number of idle job procs: 7
+10/22/15 15:44:32 Reassigning the id of job 7 from (5768136.1.0) to (5768136.2.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 7 (5768136.2.0)
+10/22/15 15:44:32 Number of idle job procs: 7
+10/22/15 15:44:32 Reassigning the id of job 8 from (5768137.0.0) to (5768137.0.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 8 (5768137.0.0)
+10/22/15 15:44:32 Number of idle job procs: 8
+10/22/15 15:44:32 Reassigning the id of job 8 from (5768137.0.0) to (5768137.1.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 8 (5768137.1.0)
+10/22/15 15:44:32 Number of idle job procs: 8
+10/22/15 15:44:32 Reassigning the id of job 8 from (5768137.1.0) to (5768137.2.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 8 (5768137.2.0)
+10/22/15 15:44:32 Number of idle job procs: 8
+10/22/15 15:44:32 Reassigning the id of job 9 from (5768138.0.0) to (5768138.0.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 9 (5768138.0.0)
+10/22/15 15:44:32 Number of idle job procs: 9
+10/22/15 15:44:32 Reassigning the id of job 9 from (5768138.0.0) to (5768138.1.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 9 (5768138.1.0)
+10/22/15 15:44:32 Number of idle job procs: 9
+10/22/15 15:44:32 Reassigning the id of job 9 from (5768138.1.0) to (5768138.2.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 9 (5768138.2.0)
+10/22/15 15:44:32 Number of idle job procs: 9
+10/22/15 15:44:32 Reassigning the id of job 10 from (5768139.0.0) to (5768139.0.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 10 (5768139.0.0)
+10/22/15 15:44:32 Number of idle job procs: 10
+10/22/15 15:44:32 Reassigning the id of job 10 from (5768139.0.0) to (5768139.1.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 10 (5768139.1.0)
+10/22/15 15:44:32 Number of idle job procs: 10
+10/22/15 15:44:32 Reassigning the id of job 10 from (5768139.1.0) to (5768139.2.0)
+10/22/15 15:44:32 Event: ULOG_SUBMIT for HTCondor Node 10 (5768139.2.0)
+10/22/15 15:44:32 Number of idle job procs: 10
+10/22/15 15:44:32 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:44:32 Of 15 nodes total:
+10/22/15 15:44:32  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:44:32   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:44:32     0       0       10       0       5          0        0
+10/22/15 15:44:32 0 job proc(s) currently held
+10/22/15 15:44:37 Submitting HTCondor Node 11 job(s)...
+10/22/15 15:44:37 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:37 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:37 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:37 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '11 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '11 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:38 From submit: Submitting job(s)...
+10/22/15 15:44:38 From submit: 3 job(s) submitted to cluster 5768140.
+10/22/15 15:44:38 	assigned HTCondor ID (5768140.0.0)
+10/22/15 15:44:38 Submitting HTCondor Node 12 job(s)...
+10/22/15 15:44:38 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:38 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:38 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:38 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '12 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '12 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:38 From submit: Submitting job(s)...
+10/22/15 15:44:38 From submit: 3 job(s) submitted to cluster 5768141.
+10/22/15 15:44:38 	assigned HTCondor ID (5768141.0.0)
+10/22/15 15:44:38 Submitting HTCondor Node 13 job(s)...
+10/22/15 15:44:38 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:38 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:38 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:38 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '13 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '13 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:38 From submit: Submitting job(s)...
+10/22/15 15:44:38 From submit: 3 job(s) submitted to cluster 5768142.
+10/22/15 15:44:38 	assigned HTCondor ID (5768142.0.0)
+10/22/15 15:44:38 Submitting HTCondor Node 14 job(s)...
+10/22/15 15:44:38 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:38 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:38 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:38 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '14 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '14 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:38 From submit: Submitting job(s)...
+10/22/15 15:44:38 From submit: 3 job(s) submitted to cluster 5768143.
+10/22/15 15:44:38 	assigned HTCondor ID (5768143.0.0)
+10/22/15 15:44:38 Submitting HTCondor Node 15 job(s)...
+10/22/15 15:44:38 Adding a DAGMan workflow log /home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log
+10/22/15 15:44:38 Masking the events recorded in the DAGMAN workflow log
+10/22/15 15:44:38 Mask for workflow log is 0,1,2,4,5,7,9,10,11,12,13,16,17,24,27
+10/22/15 15:44:38 submitting: /usr/bin/condor_submit -a dag_node_name' '=' '15 -a +DAGManJobId' '=' '5768099 -a DAGManJobId' '=' '5768099 -a submit_event_notes' '=' 'DAG' 'Node:' '15 -a dagman_log' '=' '/home/ckoch5/tests/dag_max_idle/./mydag.dag.nodes.log -a +DAGManNodesMask' '=' '"0,1,2,4,5,7,9,10,11,12,13,16,17,24,27" -a DAG_STATUS' '=' '0 -a FAILED_COUNT' '=' '0 -a +DAGParentNodeNames' '=' '"" -a notification' '=' 'never template.submit
+10/22/15 15:44:38 From submit: Submitting job(s)...
+10/22/15 15:44:38 From submit: 3 job(s) submitted to cluster 5768144.
+10/22/15 15:44:38 	assigned HTCondor ID (5768144.0.0)
+10/22/15 15:44:38 Just submitted 5 jobs this cycle...
+10/22/15 15:44:38 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:44:38 Reassigning the id of job 11 from (5768140.0.0) to (5768140.0.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 11 (5768140.0.0)
+10/22/15 15:44:38 Number of idle job procs: 11
+10/22/15 15:44:38 Reassigning the id of job 11 from (5768140.0.0) to (5768140.1.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 11 (5768140.1.0)
+10/22/15 15:44:38 Number of idle job procs: 11
+10/22/15 15:44:38 Reassigning the id of job 11 from (5768140.1.0) to (5768140.2.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 11 (5768140.2.0)
+10/22/15 15:44:38 Number of idle job procs: 11
+10/22/15 15:44:38 Reassigning the id of job 12 from (5768141.0.0) to (5768141.0.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 12 (5768141.0.0)
+10/22/15 15:44:38 Number of idle job procs: 12
+10/22/15 15:44:38 Reassigning the id of job 12 from (5768141.0.0) to (5768141.1.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 12 (5768141.1.0)
+10/22/15 15:44:38 Number of idle job procs: 12
+10/22/15 15:44:38 Reassigning the id of job 12 from (5768141.1.0) to (5768141.2.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 12 (5768141.2.0)
+10/22/15 15:44:38 Number of idle job procs: 12
+10/22/15 15:44:38 Reassigning the id of job 13 from (5768142.0.0) to (5768142.0.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 13 (5768142.0.0)
+10/22/15 15:44:38 Number of idle job procs: 13
+10/22/15 15:44:38 Reassigning the id of job 13 from (5768142.0.0) to (5768142.1.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 13 (5768142.1.0)
+10/22/15 15:44:38 Number of idle job procs: 13
+10/22/15 15:44:38 Reassigning the id of job 13 from (5768142.1.0) to (5768142.2.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 13 (5768142.2.0)
+10/22/15 15:44:38 Number of idle job procs: 13
+10/22/15 15:44:38 Reassigning the id of job 14 from (5768143.0.0) to (5768143.0.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 14 (5768143.0.0)
+10/22/15 15:44:38 Number of idle job procs: 14
+10/22/15 15:44:38 Reassigning the id of job 14 from (5768143.0.0) to (5768143.1.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 14 (5768143.1.0)
+10/22/15 15:44:38 Number of idle job procs: 14
+10/22/15 15:44:38 Reassigning the id of job 14 from (5768143.1.0) to (5768143.2.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 14 (5768143.2.0)
+10/22/15 15:44:38 Number of idle job procs: 14
+10/22/15 15:44:38 Reassigning the id of job 15 from (5768144.0.0) to (5768144.0.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 15 (5768144.0.0)
+10/22/15 15:44:38 Number of idle job procs: 15
+10/22/15 15:44:38 Reassigning the id of job 15 from (5768144.0.0) to (5768144.1.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 15 (5768144.1.0)
+10/22/15 15:44:38 Number of idle job procs: 15
+10/22/15 15:44:38 Reassigning the id of job 15 from (5768144.1.0) to (5768144.2.0)
+10/22/15 15:44:38 Event: ULOG_SUBMIT for HTCondor Node 15 (5768144.2.0)
+10/22/15 15:44:38 Number of idle job procs: 15
+10/22/15 15:44:38 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:44:38 Of 15 nodes total:
+10/22/15 15:44:38  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:44:38   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:44:38     0       0       15       0       0          0        0
+10/22/15 15:44:38 0 job proc(s) currently held
+10/22/15 15:46:03 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 1 (5768130.0.0)
+10/22/15 15:46:03 Number of idle job procs: 14
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 12 (5768141.0.0)
+10/22/15 15:46:03 Number of idle job procs: 13
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 13 (5768142.0.0)
+10/22/15 15:46:03 Number of idle job procs: 12
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 8 (5768137.1.0)
+10/22/15 15:46:03 Number of idle job procs: 11
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 12 (5768141.1.0)
+10/22/15 15:46:03 Number of idle job procs: 11
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 13 (5768142.1.0)
+10/22/15 15:46:03 Number of idle job procs: 11
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 14 (5768143.0.0)
+10/22/15 15:46:03 Number of idle job procs: 10
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 8 (5768137.0.0)
+10/22/15 15:46:03 Number of idle job procs: 10
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 15 (5768144.2.0)
+10/22/15 15:46:03 Number of idle job procs: 9
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 15 (5768144.1.0)
+10/22/15 15:46:03 Number of idle job procs: 9
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 1 (5768130.0.0)
+10/22/15 15:46:03 Number of idle job procs: 9
+10/22/15 15:46:03 Node 1 job proc (5768130.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 9 (5768138.0.0)
+10/22/15 15:46:03 Number of idle job procs: 8
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 9 (5768138.2.0)
+10/22/15 15:46:03 Number of idle job procs: 8
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 7 (5768136.2.0)
+10/22/15 15:46:03 Number of idle job procs: 7
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 9 (5768138.1.0)
+10/22/15 15:46:03 Number of idle job procs: 7
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 10 (5768139.0.0)
+10/22/15 15:46:03 Number of idle job procs: 6
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 3 (5768132.1.0)
+10/22/15 15:46:03 Number of idle job procs: 5
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 5 (5768134.1.0)
+10/22/15 15:46:03 Number of idle job procs: 4
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 1 (5768130.2.0)
+10/22/15 15:46:03 Number of idle job procs: 4
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 5 (5768134.0.0)
+10/22/15 15:46:03 Number of idle job procs: 4
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 2 (5768131.1.0)
+10/22/15 15:46:03 Number of idle job procs: 3
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 10 (5768139.1.0)
+10/22/15 15:46:03 Number of idle job procs: 3
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 4 (5768133.2.0)
+10/22/15 15:46:03 Number of idle job procs: 2
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 4 (5768133.1.0)
+10/22/15 15:46:03 Number of idle job procs: 2
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 4 (5768133.0.0)
+10/22/15 15:46:03 Number of idle job procs: 2
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 6 (5768135.0.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 3 (5768132.2.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 2 (5768131.1.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 2 job proc (5768131.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 4 (5768133.1.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 4 job proc (5768133.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 3 (5768132.1.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 3 job proc (5768132.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 1 (5768130.2.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 1 job proc (5768130.2.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 5 (5768134.0.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 5 job proc (5768134.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 5 (5768134.1.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 5 job proc (5768134.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 6 (5768135.0.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 6 job proc (5768135.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 4 (5768133.0.0)
+10/22/15 15:46:03 Number of idle job procs: 1
+10/22/15 15:46:03 Node 4 job proc (5768133.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 11 (5768140.0.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 4 (5768133.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 4 job proc (5768133.2.0) completed successfully.
+10/22/15 15:46:03 Node 4 job completed
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 10 (5768139.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 7 (5768136.1.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 15 (5768144.0.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 11 (5768140.1.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 12 (5768141.0.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 12 job proc (5768141.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 13 (5768142.0.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 13 job proc (5768142.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 11 (5768140.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 12 (5768141.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 8 (5768137.1.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 8 job proc (5768137.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 3 (5768132.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 3 job proc (5768132.2.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 12 (5768141.1.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 12 job proc (5768141.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 13 (5768142.1.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 13 job proc (5768142.1.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 13 (5768142.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 14 (5768143.0.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 14 job proc (5768143.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 15 (5768144.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 15 job proc (5768144.2.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_EXECUTE for HTCondor Node 14 (5768143.2.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 8 (5768137.0.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 8 job proc (5768137.0.0) completed successfully.
+10/22/15 15:46:03 Event: ULOG_JOB_TERMINATED for HTCondor Node 15 (5768144.1.0)
+10/22/15 15:46:03 Number of idle job procs: 0
+10/22/15 15:46:03 Node 15 job proc (5768144.1.0) completed successfully.
+10/22/15 15:46:03 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:46:03 Of 15 nodes total:
+10/22/15 15:46:03  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:46:03   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:46:03     1       0       14       0       0          0        0
+10/22/15 15:46:03 0 job proc(s) currently held
+10/22/15 15:46:08 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:46:08 Event: ULOG_EXECUTE for HTCondor Node 5 (5768134.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 9 (5768138.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 9 job proc (5768138.2.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 9 (5768138.0.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 9 job proc (5768138.0.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 7 (5768136.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 7 job proc (5768136.2.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 9 (5768138.1.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 9 job proc (5768138.1.0) completed successfully.
+10/22/15 15:46:08 Node 9 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 10 (5768139.1.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 10 job proc (5768139.1.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 10 (5768139.0.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 10 job proc (5768139.0.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 11 (5768140.0.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 11 job proc (5768140.0.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 10 (5768139.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 10 job proc (5768139.2.0) completed successfully.
+10/22/15 15:46:08 Node 10 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 15 (5768144.0.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 15 job proc (5768144.0.0) completed successfully.
+10/22/15 15:46:08 Node 15 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 11 (5768140.1.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 11 job proc (5768140.1.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 11 (5768140.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 11 job proc (5768140.2.0) completed successfully.
+10/22/15 15:46:08 Node 11 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 13 (5768142.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 13 job proc (5768142.2.0) completed successfully.
+10/22/15 15:46:08 Node 13 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 12 (5768141.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 12 job proc (5768141.2.0) completed successfully.
+10/22/15 15:46:08 Node 12 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 14 (5768143.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 14 job proc (5768143.2.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_EXECUTE for HTCondor Node 8 (5768137.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 7 (5768136.1.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 7 job proc (5768136.1.0) completed successfully.
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 5 (5768134.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 5 job proc (5768134.2.0) completed successfully.
+10/22/15 15:46:08 Node 5 job completed
+10/22/15 15:46:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 8 (5768137.2.0)
+10/22/15 15:46:08 Number of idle job procs: 0
+10/22/15 15:46:08 Node 8 job proc (5768137.2.0) completed successfully.
+10/22/15 15:46:08 Node 8 job completed
+10/22/15 15:46:08 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:46:08 Of 15 nodes total:
+10/22/15 15:46:08  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:46:08   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:46:08     9       0        6       0       0          0        0
+10/22/15 15:46:08 0 job proc(s) currently held
+10/22/15 15:51:08 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:51:08 Event: ULOG_EXECUTE for HTCondor Node 14 (5768143.1.0)
+10/22/15 15:51:08 Number of idle job procs: 0
+10/22/15 15:51:08 Event: ULOG_JOB_TERMINATED for HTCondor Node 14 (5768143.1.0)
+10/22/15 15:51:08 Number of idle job procs: 0
+10/22/15 15:51:08 Node 14 job proc (5768143.1.0) completed successfully.
+10/22/15 15:51:08 Node 14 job completed
+10/22/15 15:51:08 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:51:08 Of 15 nodes total:
+10/22/15 15:51:08  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:51:08   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:51:08    10       0        5       0       0          0        0
+10/22/15 15:51:08 0 job proc(s) currently held
+10/22/15 15:57:49 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:57:49 Event: ULOG_EXECUTE for HTCondor Node 1 (5768130.1.0)
+10/22/15 15:57:49 Number of idle job procs: 0
+10/22/15 15:57:54 Currently monitoring 1 HTCondor log file(s)
+10/22/15 15:57:54 Event: ULOG_EXECUTE for HTCondor Node 2 (5768131.0.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Event: ULOG_EXECUTE for HTCondor Node 7 (5768136.0.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Event: ULOG_EXECUTE for HTCondor Node 3 (5768132.0.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Event: ULOG_EXECUTE for HTCondor Node 6 (5768135.2.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Event: ULOG_EXECUTE for HTCondor Node 6 (5768135.1.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Event: ULOG_EXECUTE for HTCondor Node 2 (5768131.2.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 1 (5768130.1.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 1 job proc (5768130.1.0) completed successfully.
+10/22/15 15:57:54 Node 1 job completed
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 2 (5768131.2.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 2 job proc (5768131.2.0) completed successfully.
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 2 (5768131.0.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 2 job proc (5768131.0.0) completed successfully.
+10/22/15 15:57:54 Node 2 job completed
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 3 (5768132.0.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 3 job proc (5768132.0.0) completed successfully.
+10/22/15 15:57:54 Node 3 job completed
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 7 (5768136.0.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 7 job proc (5768136.0.0) completed successfully.
+10/22/15 15:57:54 Node 7 job completed
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 6 (5768135.2.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 6 job proc (5768135.2.0) completed successfully.
+10/22/15 15:57:54 Event: ULOG_JOB_TERMINATED for HTCondor Node 6 (5768135.1.0)
+10/22/15 15:57:54 Number of idle job procs: 0
+10/22/15 15:57:54 Node 6 job proc (5768135.1.0) completed successfully.
+10/22/15 15:57:54 Node 6 job completed
+10/22/15 15:57:54 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:57:54 Of 15 nodes total:
+10/22/15 15:57:54  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:57:54   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:57:54    15       0        0       0       0          0        0
+10/22/15 15:57:54 0 job proc(s) currently held
+10/22/15 15:57:54 All jobs Completed!
+10/22/15 15:57:54 Note: 0 total job deferrals because of -MaxJobs limit (0)
+10/22/15 15:57:54 Note: 0 total job deferrals because of -MaxIdle limit (12)
+10/22/15 15:57:54 Note: 0 total job deferrals because of node category throttles
+10/22/15 15:57:54 Note: 0 total PRE script deferrals because of -MaxPre limit (20) or DEFER
+10/22/15 15:57:54 Note: 0 total POST script deferrals because of -MaxPost limit (20) or DEFER
+10/22/15 15:57:54 DAG status: 0 (DAG_STATUS_OK)
+10/22/15 15:57:54 Of 15 nodes total:
+10/22/15 15:57:54  Done     Pre   Queued    Post   Ready   Un-Ready   Failed
+10/22/15 15:57:54   ===     ===      ===     ===     ===        ===      ===
+10/22/15 15:57:54    15       0        0       0       0          0        0
+10/22/15 15:57:54 0 job proc(s) currently held
+10/22/15 15:57:54 Wrote metrics file mydag.dag.metrics.
+10/22/15 15:57:54 Metrics not sent because of PEGASUS_METRICS or CONDOR_DEVELOPERS setting.
+10/22/15 15:57:54 **** condor_scheduniv_exec.5768099.0 (condor_DAGMAN) pid 3354277 EXITING WITH STATUS 0
