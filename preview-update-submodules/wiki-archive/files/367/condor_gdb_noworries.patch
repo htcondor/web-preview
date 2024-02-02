@@ -1,0 +1,77 @@
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index 45001a2..852e13e 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -41,6 +41,9 @@ void Generic_stop_logging();
+ #if HAVE_CLONE
+ #include <sched.h>
+ #include <sys/syscall.h>
++#include <asm/ldt.h>
++#include <asm/prctl.h>
++#include <sys/prctl.h>
+ #endif
+ 
+ #if HAVE_RESOLV_H && HAVE_DECL_RES_INIT
+@@ -6363,6 +6366,9 @@ private:
+ 	size_t *m_core_hard_limit;
+ 	const int    *m_affinity_mask;
+ 	Env m_envobject;
++#if HAVE_CLONE
++	unsigned long parent_fs_register;
++#endif
+ };
+ 
+ enum {
+@@ -6454,11 +6460,22 @@ pid_t CreateProcessForkit::fork_exec() {
+ 
+ 		enterCreateProcessChild(m_errorpipe[1]);
+ 
++			// Muck around with the thread-local-storage
++			// By passing a zero'd-out TLS, we don't crash GDB.
++		if (syscall(SYS_arch_prctl,ARCH_GET_FS,&parent_fs_register)) {
++			dprintf(D_ALWAYS, "Unable to get parent TLS %s.\n", strerror(errno));
++		} else {
++			dprintf(D_ALWAYS, "Got parent register.\n");
++		}
++		struct user_desc tls;
++		memset((void*)&tls, 0, sizeof(user_desc));
++		tls.entry_number = -1;
++
+ 		newpid = clone(
+ 			CreateProcessForkit::clone_fn,
+ 			child_stack_ptr,
+-			(CLONE_VM|CLONE_VFORK|SIGCHLD),
+-			this );
++			(CLONE_VM|CLONE_VFORK|SIGCHLD|CLONE_SETTLS),
++			this, NULL, &tls );
+ 
+ 		exitCreateProcessChild();
+ 
+@@ -6546,6 +6563,16 @@ void CreateProcessForkit::exec() {
+ 			  Derek Wright <wright@cs.wisc.edu> 2004-12-15
+ 		********************************************************/
+ 
++	unsigned long my_fs_register;
++	// Save our TLS area
++	if (syscall( SYS_arch_prctl, ARCH_GET_FS, &my_fs_register)) {
++		EXCEPT("Unable to retrieve my FS register\n");
++	}
++	// Restore the parent's TLS area
++	if (syscall( SYS_arch_prctl, ARCH_SET_FS, parent_fs_register)) {
++		EXCEPT("Unable to restore parent FS register\n");
++	}
++
+ 	pid_t pid = clone_safe_getpid();
+ 	pid_t ppid = clone_safe_getppid();
+ 	DaemonCore::PidEntry* pidinfo = NULL;
+@@ -6975,6 +7002,10 @@ void CreateProcessForkit::exec() {
+ 		}
+ 	}
+ 
++	if (syscall(SYS_arch_prctl, ARCH_SET_FS, my_fs_register)) {
++		EXCEPT("Unable to restore my TLS!");
++	}
++
+ 		// now head into the proper priv state...
+ 	if ( m_priv != PRIV_UNKNOWN ) {
+ 			// This is tricky in the case where we share memory with our

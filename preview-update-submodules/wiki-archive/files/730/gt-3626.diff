@@ -1,0 +1,94 @@
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index d1536a5..bbca731 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -452,9 +452,12 @@ DaemonCore::DaemonCore(int PidSize, int ComSize,int SigSize,
+ 	if( max_fds > 0 ) {
+ 		dprintf(D_ALWAYS,"Setting maximum file descriptors to %d.\n",max_fds);
+ 
+-		priv_state priv = set_root_priv();
+-		limit(RLIMIT_NOFILE,max_fds,CONDOR_REQUIRED_LIMIT,"MAX_FILE_DESCRIPTORS");
+-		set_priv(priv);
++        TemporaryPrivSentry sentry( PRIV_ROOT );
++        if( is_root() ) {
++	        limit(RLIMIT_NOFILE,max_fds,CONDOR_REQUIRED_LIMIT,"MAX_FILE_DESCRIPTORS");
++        } else {
++    	    limit(RLIMIT_NOFILE,max_fds,CONDOR_HARD_LIMIT,"MAX_FILE_DESCRIPTORS");
++        }
+ 	}
+ #endif
+ 
+diff --git a/src/condor_examples/condor_config.generic b/src/condor_examples/condor_config.generic
+index 772bfa0..ea79a2e 100644
+--- a/src/condor_examples/condor_config.generic
++++ b/src/condor_examples/condor_config.generic
+@@ -1173,6 +1173,13 @@ PREEN_ARGS			= -m -r
+ ##  COLLECTOR_HOST, a useful technique for personal Condor installs.
+ COLLECTOR_ADDRESS_FILE = $(LOG)/.collector_address
+ 
++##
++##  Conventional HTCondor installations start up as root, and can thus
++##  set their own file descriptor limit.  Upping the collector's doesn't
++##  hurt anything and ameliorates a common scalability problem.
++##
++# COLLECTOR_MAX_FILE_DESCRIPTORS = 10240
++
+ 
+ ##--------------------------------------------------------------------
+ ##  condor_negotiator
+@@ -1559,6 +1566,14 @@ SCHEDD_DAEMON_AD_FILE = $(SPOOL)/.schedd_classad
+ ## (Currently, these are periodic_hold, periodic_release, and periodic_remove.)
+ #PERIODIC_EXPR_INTERVAL = 60
+ 
++##
++##  Conventional HTCondor installations start up as root, and can thus
++##  set their own file descriptor limit.  Upping the schedd's limit has
++##  some minor downsides (larger buffers passed to select() and the like), 
++##  but upping it makes a class of difficult-to-debug problems much rarer.
++##
++# SCHEDD_MAX_FILE_DESCRIPTORS = 4096
++
+ ######
+ ## Queue management settings:
+ ######
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index 0ca7d99..2641835 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -10970,3 +10970,36 @@ usage=
+ url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
+ tags=starter
+ id=615
++
++[COLLECTOR_MAX_FILE_DESCRIPTORS]
++aliases=
++default=10240
++version=0.0.0
++range=0,
++state=default
++type=int
++is_macro=false
++reconfig=false
++customization=seldom
++friendly_name=Collector Max File Descriptors
++usage=Set the limit on file descriptor usage for the collector.
++url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
++tags=
++id=616
++
++[SCHEDD_MAX_FILE_DESCRIPTORS]
++aliases=
++default=4096
++version=0.0.0
++range=0,
++state=default
++type=int
++is_macro=false
++reconfig=false
++customization=seldom
++friendly_name=Schedd Max File Descriptors
++usage=Set the limit on file descriptor usage for the scheduler.
++url=http://cs.wisc.edu/condor/manual/v7.3/3_3Configuration.html#SECTION
++tags=
++id=617
++
