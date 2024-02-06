@@ -1,0 +1,411 @@
+diff --git a/doc/admin-man/configure.tex b/doc/admin-man/configure.tex
+index a283b9d..1895cb4 100644
+--- a/doc/admin-man/configure.tex
++++ b/doc/admin-man/configure.tex
+@@ -10773,6 +10773,23 @@ not changed by doing a \Condor{reconfig}.
+   in \File{.condor.sub} are considered nested DAGs.
+   The default value if not defined is \Expr{True}.
+ 
++\label{param:DAGManRemoveNodeJobs}
++\item[\Macro{DAGMAN\_REMOVE\_NODE\_JOBS}]
++  A boolean value that controls whether \Condor{dagman} removes its
++  node jobs itself when it is removed (in addition to the \Condor{schedd}
++  removing them).
++  Note that setting \MacroNI{DAGMAN\_REMOVE\_NODE\_JOBS} to
++  \Expr{True} is the safer option (setting it to \Expr{False}
++  means that there is some chance of endig up with "orphan"
++  node jobs).  Setting \MacroNI{DAGMAN\_REMOVE\_NODE\_JOBS} to
++  \Expr{False} is a performance optimization (decreasing the load
++  on the \Condor{schedd} when a \Condor{dagman} job is removed).
++  Note that even if \MacroNI{DAGMAN\_REMOVE\_NODE\_JOBS} is set
++  to \Expr{False}, \Condor{dagman} will remove its node jobs in
++  some cases, such as a DAG abort triggered by an \Arg{ABORT-DAG-ON}
++  command.
++  Defaults to \Expr{True}.
++
+ \label{param:DAGManMungeNodeNames}
+ \item[\Macro{DAGMAN\_MUNGE\_NODE\_NAMES}]
+   A boolean value that controls whether \Condor{dagman} automatically
+diff --git a/doc/version-history/8-5.history.tex b/doc/version-history/8-5.history.tex
+index 5effb4f..1558cb3 100644
+--- a/doc/version-history/8-5.history.tex
++++ b/doc/version-history/8-5.history.tex
+@@ -29,7 +29,16 @@ The details of each version are described below.
+ 
+ \begin{itemize}
+ 
+-\item None.
++%TEMP -- move to version 8.5.8!
++\item Fixed a bug that could result in "orphan" node jobs staying
++in the queue when an instance of \Condor{dagman} is removed.
++\Ticket{5702}
++
++%TEMP -- move to version 8.5.8!
++\item Added the new \MacroNI{DAGMAN\_REMOVE\_NODE\_JOBS} configuration
++macro, which allows users to configure whether \Condor{dagman}
++removes its node jobs when \Condor{dagman} itself is removed.
++\Ticket{5175}
+ 
+ \end{itemize}
+ 
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index aa3d8a2..a8780df 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -1454,6 +1454,8 @@ Dag::SubmitReadyJobs(const Dagman &dm)
+ {
+ 	debug_printf( DEBUG_DEBUG_1, "Dag::SubmitReadyJobs()\n" );
+ 
++	time_t cycleStart = time( NULL );
++
+ 		// Jobs deferred by category throttles.
+ 	PrioritySimpleList<Job*> deferredJobs;
+ 
+@@ -1522,6 +1524,16 @@ Dag::SubmitReadyJobs(const Dagman &dm)
+ 			break; // break out of while loop
+ 		}
+ 
++			// Check whether this submit cycle is taking too long.
++		time_t now = time( NULL );
++		time_t elapsed = now - cycleStart;
++		if ( elapsed > dm.m_user_log_scan_interval ) {
++       		debug_printf( DEBUG_QUIET,
++						"Warning: Submit cycle elapsed time (%d s) has exceeded log scan interval (%d s); bailing out of submit loop\n",
++						(int)elapsed, dm.m_user_log_scan_interval );
++			break; // break out of while loop
++		}
++
+ 			// remove & submit first job from ready queue
+ 		Job* job;
+ 		_readyQ->Rewind();
+@@ -1945,7 +1957,7 @@ Dag::NumNodesDone( bool includeFinal ) const
+ // where we need to condor_rm any running node jobs, and the schedd
+ // won't do it for us.  wenger 2014-10-29.
+ void Dag::RemoveRunningJobs ( const CondorID &dmJobId, bool removeCondorJobs,
+-			bool bForce) const
++			bool bForce ) const
+ {
+ 	if ( bForce ) removeCondorJobs = true;
+ 
+diff --git a/src/condor_dagman/dagman_main.cpp b/src/condor_dagman/dagman_main.cpp
+index 8f22208..6c26c69 100644
+--- a/src/condor_dagman/dagman_main.cpp
++++ b/src/condor_dagman/dagman_main.cpp
+@@ -144,7 +144,8 @@ Dagman::Dagman() :
+ 	_doRecovery(false),
+ 	_suppressJobLogs(false),
+ 	_batchName(""),
+-	_dagmanClassad(NULL)
++	_dagmanClassad(NULL),
++	_removeNodeJobs(true)
+ {
+     debug_level = DEBUG_VERBOSE;  // Default debug level is verbose output
+ }
+@@ -453,6 +454,11 @@ Dagman::Config()
+ 	debug_printf( DEBUG_NORMAL, "DAGMAN_SUPPRESS_JOB_LOGS setting: %s\n",
+ 				_suppressJobLogs ? "True" : "False" );
+ 
++	_removeNodeJobs = param_boolean( "DAGMAN_REMOVE_NODE_JOBS",
++				_removeNodeJobs );
++	debug_printf( DEBUG_NORMAL, "DAGMAN_REMOVE_NODE_JOBS setting: %s\n",
++				_removeNodeJobs ? "True" : "False" );
++
+ 	// enable up the debug cache if needed
+ 	if (debug_cache_enabled) {
+ 		debug_cache_set_size(debug_cache_size);
+@@ -571,7 +577,8 @@ int main_shutdown_remove(Service *, int) {
+     debug_printf( DEBUG_QUIET, "Received SIGUSR1\n" );
+ 	// We don't remove Condor node jobs here because the schedd will
+ 	// automatically remove them itself.
+-	main_shutdown_rescue( EXIT_ABORT, Dag::DAG_STATUS_RM, false );
++	main_shutdown_rescue( EXIT_ABORT, Dag::DAG_STATUS_RM,
++				dagman._removeNodeJobs );
+ 	return FALSE;
+ }
+ 
+@@ -1540,7 +1547,9 @@ void condor_event_timer () {
+ 	dagman.dag->RunWaitingScripts();
+ 
+ 	int justSubmitted;
++	debug_printf( DEBUG_DEBUG_1, "Starting submit cycle\n" );
+ 	justSubmitted = dagman.dag->SubmitReadyJobs(dagman);
++	debug_printf( DEBUG_DEBUG_1, "Finished submit cycle\n" );
+ 	if( justSubmitted ) {
+ 			// Note: it would be nice to also have the proc submit
+ 			// count here.  wenger, 2006-02-08.
+diff --git a/src/condor_dagman/dagman_main.h b/src/condor_dagman/dagman_main.h
+index f6c7a06..591e6c9 100644
+--- a/src/condor_dagman/dagman_main.h
++++ b/src/condor_dagman/dagman_main.h
+@@ -230,6 +230,10 @@ class Dagman {
+ 	MyString _batchName;
+ 
+ 	DagmanClassad *_dagmanClassad;
++
++		// True iff we should remove node jobs ourself when we are
++		// condor_rm'ed.
++	bool _removeNodeJobs;
+ };
+ 
+ #endif	// ifndef DAGMAN_MAIN_H
+diff --git a/src/condor_dagman/scriptQ.cpp b/src/condor_dagman/scriptQ.cpp
+index f43f9af..870e039 100644
+--- a/src/condor_dagman/scriptQ.cpp
++++ b/src/condor_dagman/scriptQ.cpp
+@@ -131,8 +131,6 @@ ScriptQ::RunWaitingScripts( bool justOne )
+ 	int scriptsRun = 0;
+ 	time_t now = time( NULL );
+ 
+-		// Note:  We do NOT want to re-evaluate maxNum each time through
+-		// the loop!
+ 	int lastScriptNum = _waitingQueue->Length();
+ 	for ( int curScriptNum = 0; curScriptNum < lastScriptNum;
+ 				++curScriptNum ) {
+diff --git a/src/condor_tests/job_dagman_rm-nodeA.pl b/src/condor_tests/job_dagman_rm-nodeA.pl
+index 8c58014..ff96983 100755
+--- a/src/condor_tests/job_dagman_rm-nodeA.pl
++++ b/src/condor_tests/job_dagman_rm-nodeA.pl
+@@ -12,7 +12,13 @@ print "Job for node $ARGV[0]\n";
+ 	"job_dagman_rm-NodeD-job.started",
+ 	"job_dagman_rm-NodeD-job.finished",
+ 	"job_dagman_rm-NodeE-job.started",
+-	"job_dagman_rm-NodeE-job.finished");
++	"job_dagman_rm-NodeE-job.finished",
++	"job_dagman_rm-NodeF-job.started",
++	"job_dagman_rm-NodeF-job.finished",
++	"job_dagman_rm-NodeZ-job.started",
++	"job_dagman_rm-NodeZ-job.finished");
++push(@tmpfiles, glob("job_dagman_rm-NodeZ-job.*.started"));
++push(@tmpfiles, glob("job_dagman_rm-NodeZ-job.*.finished"));
+ 
+ foreach $fname (@tmpfiles) {
+ 	if (-e $fname) {
+diff --git a/src/condor_tests/job_dagman_rm-nodeE.cmd b/src/condor_tests/job_dagman_rm-nodeE.cmd
+index b8649e4..83697b6 100644
+--- a/src/condor_tests/job_dagman_rm-nodeE.cmd
++++ b/src/condor_tests/job_dagman_rm-nodeE.cmd
+@@ -4,8 +4,5 @@ arguments = "job_dagman_rm-NodeE-job $(DAGManJobId)"
+ log = job_dagman_rm-nodeE.log
+ output = job_dagman_rm-nodeE.out
+ error = job_dagman_rm-nodeE.err
+-# Note: we need getenv = true for the node job to talk to the schedd of
+-# the personal condor that's running the test.
+-getenv       = true
+ notification = NEVER
+ queue
+diff --git a/src/condor_tests/job_dagman_rm-nodeE.pl b/src/condor_tests/job_dagman_rm-nodeE.pl
+index d60c051..014eeff 100755
+--- a/src/condor_tests/job_dagman_rm-nodeE.pl
++++ b/src/condor_tests/job_dagman_rm-nodeE.pl
+@@ -20,18 +20,7 @@ foreach $fname (@tmpfiles) {
+ }
+ 
+ 
+-print "Condor_rm'ing parent DAGMan ($ARGV[1])\n";
+-
+-my @array = ();
+-runCondorTool("condor_rm $ARGV[1]",\@array,2,{emit_output=>1});
+-
+-print "$ARGV[0] waiting for DAGMan to exit\n";
+-$lockfile = "job_dagman_rm.dag.lock";
+-while (-e $lockfile) {
+-	sleep(1);
+-}
+-
+-
++# We should get condor_rm'ed before we get to here...
+ runcmd("touch $ARGV[0].finished");
+ print "$ARGV[0] finished\n";
+ 
+diff --git a/src/condor_tests/job_dagman_rm-nodeF.cmd b/src/condor_tests/job_dagman_rm-nodeF.cmd
+new file mode 100644
+index 0000000..4752de7
+--- /dev/null
++++ b/src/condor_tests/job_dagman_rm-nodeF.cmd
+@@ -0,0 +1,11 @@
++universe = scheduler
++executable = ./job_dagman_rm-nodeF.pl
++arguments = "job_dagman_rm-NodeF-job $(DAGManJobId)"
++log = job_dagman_rm-nodeF.log
++output = job_dagman_rm-nodeF.out
++error = job_dagman_rm-nodeF.err
++# Note: we need getenv = true for the node job to talk to the schedd of
++# the personal condor that's running the test.
++getenv       = true
++notification = NEVER
++queue
+diff --git a/src/condor_tests/job_dagman_rm-nodeF.pl b/src/condor_tests/job_dagman_rm-nodeF.pl
+new file mode 100755
+index 0000000..773ba40
+--- /dev/null
++++ b/src/condor_tests/job_dagman_rm-nodeF.pl
+@@ -0,0 +1,28 @@
++#! /usr/bin/env perl
++
++use CondorTest;
++use CondorUtils;
++
++print "$ARGV[0] started\n";
++runcmd("touch $ARGV[0].started");
++
++# Make sure NodeZ jobs are getting submitted.
++sleep(20);
++
++print "Condor_rm'ing parent DAGMan ($ARGV[1])\n";
++
++my @array = ();
++runCondorTool("condor_rm $ARGV[1]",\@array,2,{emit_output=>1});
++
++print "$ARGV[0] waiting for DAGMan to exit\n";
++$lockfile = "job_dagman_rm.dag.lock";
++while (-e $lockfile) {
++	sleep(1);
++}
++
++
++# We should get condor_rm'ed before we get to here...
++runcmd("touch $ARGV[0].finished");
++print "$ARGV[0] finished\n";
++
++exit(0);
+diff --git a/src/condor_tests/job_dagman_rm-nodeZ.cmd b/src/condor_tests/job_dagman_rm-nodeZ.cmd
+new file mode 100644
+index 0000000..a60160b
+--- /dev/null
++++ b/src/condor_tests/job_dagman_rm-nodeZ.cmd
+@@ -0,0 +1,8 @@
++universe = scheduler
++executable = ./job_dagman_rm-wait.pl
++arguments = "job_dagman_rm-NodeZ-job.$(CLUSTER)"
++log = job_dagman_rm-nodeZ.log
++output = job_dagman_rm-nodeZ.out
++error = job_dagman_rm-nodeZ.err
++notification = NEVER
++queue
+diff --git a/src/condor_tests/job_dagman_rm-wait.pl b/src/condor_tests/job_dagman_rm-wait.pl
+index ced519a..38e97ce 100755
+--- a/src/condor_tests/job_dagman_rm-wait.pl
++++ b/src/condor_tests/job_dagman_rm-wait.pl
+@@ -12,6 +12,7 @@ while (-e $lockfile) {
+ 	sleep(1);
+ }
+ 
++# We should get condor_rm'ed before we get to here...
+ runcmd("touch $ARGV[0].finished");
+ print "$ARGV[0] finished\n";
+ 
+diff --git a/src/condor_tests/job_dagman_rm.config b/src/condor_tests/job_dagman_rm.config
+new file mode 100644
+index 0000000..d1377d3
+--- /dev/null
++++ b/src/condor_tests/job_dagman_rm.config
+@@ -0,0 +1,8 @@
++DAGMAN_USER_LOG_SCAN_INTERVAL = 10
++
++# So we don't finish submitting the Z jobs before DAGMan is
++# condor_rm'ed.
++DAGMAN_SUBMIT_DELAY = 10
++DAGMAN_MAX_SUBMITS_PER_INTERVAL = 10
++
++#DAGMAN_REMOVE_NODE_JOBS = true
+diff --git a/src/condor_tests/job_dagman_rm.dag b/src/condor_tests/job_dagman_rm.dag
+index 72ff674..abc40ed 100644
+--- a/src/condor_tests/job_dagman_rm.dag
++++ b/src/condor_tests/job_dagman_rm.dag
+@@ -1,3 +1,4 @@
++CONFIG job_dagman_rm.config
+ NODE_STATUS_FILE job_dagman_rm.status
+ 
+ # This node initializes things (removes files that need to be removed,
+@@ -18,7 +19,28 @@ Parent NodeA Child NodeC
+ Job NodeD job_dagman_rm-nodeD.cmd
+ Parent NodeA Child NodeD
+ 
+-# This node will condor_rm the parent DAGMan job once the other nodes
+-# are in the right state.
++# This node will wait for NodeB, NodeC, and NodeD to get into the
++# right state.
+ Job NodeE job_dagman_rm-nodeE.cmd
+ Parent NodeA Child NodeE
++
++# This node will condor_rm the parent DAGMan job once the other nodes
++# are in the right state.
++Job NodeF job_dagman_rm-nodeF.cmd
++Parent NodeE Child NodeF
++# Make sure this gets submitted before Z nodes.
++Priority NodeF 10
++
++# DAGMan should get condor_rm'ed while we're in the middle of
++# submitting these jobs.
++Job NodeZ00 job_dagman_rm-nodeZ.cmd
++Job NodeZ01 job_dagman_rm-nodeZ.cmd
++Job NodeZ02 job_dagman_rm-nodeZ.cmd
++Job NodeZ03 job_dagman_rm-nodeZ.cmd
++Job NodeZ04 job_dagman_rm-nodeZ.cmd
++Job NodeZ05 job_dagman_rm-nodeZ.cmd
++Job NodeZ06 job_dagman_rm-nodeZ.cmd
++Job NodeZ07 job_dagman_rm-nodeZ.cmd
++Job NodeZ08 job_dagman_rm-nodeZ.cmd
++Job NodeZ09 job_dagman_rm-nodeZ.cmd
++Parent NodeE Child NodeZ00 NodeZ01 NodeZ02 NodeZ03 NodeZ04 NodeZ05 NodeZ06 NodeZ07 NodeZ08 NodeZ09
+diff --git a/src/condor_tests/job_dagman_rm.run b/src/condor_tests/job_dagman_rm.run
+index 0a0e724..17c4e38 100755
+--- a/src/condor_tests/job_dagman_rm.run
++++ b/src/condor_tests/job_dagman_rm.run
+@@ -33,6 +33,8 @@ $dagman_args = "-verbose";
+ 	"job_dagman_rm-nodeA.log",
+ 	"job_dagman_rm-nodeD.log",
+ 	"job_dagman_rm-nodeE.log",
++	"job_dagman_rm-nodeF.log",
++	"job_dagman_rm-nodeZ.log",
+ 	"job_dagman_rm.dag.rescue001");
+ 
+ my $killedchosen = 0;
+@@ -65,6 +67,10 @@ $aborted = sub
+ 	CondorTest::debug("NodeD exited\n",1);
+ 	runcmd("condor_wait job_dagman_rm-nodeE.log");
+ 	CondorTest::debug("NodeE exited\n",1);
++	runcmd("condor_wait job_dagman_rm-nodeF.log");
++	CondorTest::debug("NodeF exited\n",1);
++	runcmd("condor_wait job_dagman_rm-nodeZ.log");
++	CondorTest::debug("NodeZ exited\n",1);
+ 
+ 	CondorTest::debug("Verifying output\n",1);
+ 	$diditpass = 1;
+@@ -84,8 +90,14 @@ $aborted = sub
+ 		$diditpass = 0;
+ 	}
+ 
+-	if (-e "job_dagman_rm-NodeE-job.finished") {
+-		CondorTest::debug("Error: file NodeE-job.finished exists; NodeE job should have been condor_rm'ed\n",1);
++	if (-e "job_dagman_rm-NodeF-job.finished") {
++		CondorTest::debug("Error: file NodeF-job.finished exists; NodeF job should have been condor_rm'ed\n",1);
++		$diditpass = 0;
++	}
++
++	@Zfiles = glob("job_dagman_rm-NodeZ-job.*.finished");
++	if ($#Zfiles >= 0) {
++		CondorTest::debug("Error: found @Zfiles; NodeZ jobs should have been condor_rm'ed\n",1);
+ 		$diditpass = 0;
+ 	}
+ 
+diff --git a/src/condor_utils/param_info.in b/src/condor_utils/param_info.in
+index c24642a..4fd8fe1 100644
+--- a/src/condor_utils/param_info.in
++++ b/src/condor_utils/param_info.in
+@@ -1157,6 +1157,15 @@ friendly_name=Dagman Pegasus Report Timeout
+ review=?
+ tags=dagman,dagman_main
+ 
++[DAGMAN_REMOVE_NODE_JOBS]
++default=true
++type=bool
++reconfig=false
++customization=normal
++friendly_name=Dagman Remove Node Jobs
++review=?
++tags=dagman,dagman_main
++
+ [DAGMAN_SUBMIT_DELAY]
+ default=0
+ type=int
