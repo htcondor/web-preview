@@ -742,115 +742,114 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl py-4">
-    <link href="/web-preview/preview-update-submodules/assets/css/vulnerabilities.css" rel="stylesheet">
-
-<h1>
-    HTCONDOR-2020-0001
-</h1>
-<hr>
-<table width='100%' summary='whole page'>
-<tr>
-    <td width='25%'><p class='h'>Summary:</p></td>
-    <td class='sv'><p class='v'>&nbsp;</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-        A piece of secret information is written in the clear to the STARTD_HISTORY file.  An attacker could use this secret information to control the slot of another user, including running their own code as that user.
-        <a href="http://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2019-18823">CVE-2019-18823</a>
-    </p></td>
-</tr>
-<tr><td colspan='2'>
-<br><table class='sumtable' width='100%' summary='short values'>
-<tr>
-<th width='20%'>Component</th>
-<th width='20%'>Vulnerable Versions</th>
-<th width='20%'>Platform</th>
-<th width='20%'>Availability</th>
-<th width='20%'>Fix Available</th>
-</tr>
-<tr>
-<td class='sv'>condor_startd</td>
-<td class='sv'>All before 8.8.8 (stable) and 8.9.6 (devel)</td>
-<td class='sv'>all</td>
-<td class='sv'>not known to be publicly exploited</td>
-<td class='sv'>8.8.8, 8.9.6</td>
-</tr>
-<tr>
-<th width='20%'>Status</th>
-<th width='20%'>Access Required</th>
-<th width='20%'>Host Type Required</th>
-<th width='20%'>Effort Required</th>
-<th width='20%'>Impact/Consequences</th>
-</tr>
-<tr>
-<td class='sv'>Verified</td>
-<td class='sv'>login access to an execute machine or the ability to submit a job</td>
-<td class='sv'>execute hosts that are not configured to use authentication or use match password authentication</td>
-<td class='sv'>high</td>
-<td class='sv'>high</td>
-</tr>
-<tr>
-<th width='20%'>Fixed Date</th>
-<th width='20%'>Credit</th>
-</tr>
-<tr>
-<td class='sv'>2020-03-01</td>
-<td class='sv'>Todd Tannenbaum</td>
-</tr>
-</table>
-</td></tr>
-<tr>
-    <td width='25%'><p class='h'>Access Required:</p></td>
-	<td class='sv'><p class='v'>
-	</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-	Be able to read a world-readable file on an execute machine.  Even if a user does not have login access to the execute machine, the attacker can submit a job and that job can then look at the STARTD_HISTORY on the machine where it executes.  Execute machines configured to require a strong credential-based authentication method (e.g. authentication method such as pool password, SSL, Kerberos, GSI, or TOKEN) and have match password authentication disabled are not vulnerable.
-    </p></td>
-</tr>
-<tr>
-    <td width='25%'><p class='h'>Effort Required:</p></td>
-    <td class='sv'><p class='v'>high</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-        A thorough understanding of the HTCondor code and the ability to write custom tools is required to exploit this vulnerability.  Also, the pool must be using host-based authorization or have match password authentication enabled (the default) to be vulnerable.  If authentication has been set up for the pool and match password authentication is disabled, the attacker would also need to gain access to the condor credentials.
-    </p></td>
-</tr>
-<tr>
-    <td width='25%'><p class='h'>Impact/Consequences:</p></td>
-    <td class='sv'><p class='v'>high</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-	Using the secret information, they could then manipulate another user's running job, including evicting that job or replacing that job with one that executes the attacker's own code.  This could possibly allow the attacker to get access to the user's job data files which may contain sensitive information.  Pools that are not configured to use daemon-to-daemon authentication or have match password authentication enabled (the default) are vulnerable.
-</p></td>
-</tr>
-<tr>
-    <td width='25%'><p class='h'>Workaround:</p></td>
-</tr>
-<tr>
-    <td colspan='2' class='sv'><p>
-        Disable STARTD_HISTORY, which is on by default.  You can do this by adding "STARTD_HISTORY=" in your condor_config file.
-<p>	Alternatively, the administrator can configure authentication for daemon-to-daemon communications and disable match password authentication.  To disable match password authentication, add "SEC_ENABLE_MATCH_PASSWORD_AUTHENTICATION=False" to your condor_config file. See the security section of the manual for more information about configuring daemon-to-daemon authentication. Be advised that disabling match password authentication can put significant extra load on the submit machines of a large pool (thousands of nodes).
-<p> After installing updated binaries or working around the issue, you should restart HTCondor.  The secret written to the log will no longer be relevant and you do not need to scrub or delete the log.
-    </p></td>
-</tr>
-
-<tr>
-    <td width='25%'><p class='h'>Full Details:</p></td>
-    <td class='sv'>
-	Embargoed until future notice.
-    </td>
-</tr>
-
-</table>
+    
 
 
 
+    <div class="bg-light">
+    <hr class="my-0">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-auto">
+                <div class="d-flex my-2">
+                    <span class="fs-4 my-auto">Featured User</span>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr class="my-0">
 </div>
+
+<div class="container-xxl py-4">
+    <div id="news-container" class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+            <h1>Preserving Historic Wisconsin aerial photos with a little help from  CHTC</h1>
+            <div class="row justify-content-between">
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">Malia Bicoy</span>
+                </div>
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">February  6, 2024</span>
+                </div>
+            </div>
+
+            
+            <div class="mt-4 fs-5"><h3 id="associate-state-cartographer-jim-lacy-works-with-chtc-to-digitize-and-preserve-historical-aerial-photography-for-the-public">Associate State Cartographer Jim Lacy works with CHTC to digitize and preserve historical aerial photography for the public.</h3>
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/sidebyside.jpg" height="402" width="1000" class="figure-img img-fluid rounded" alt="Two aerial photos of Madison, Wisconsin in 1937 available on WHAIFinder." />
+  <figcaption class="figure-caption">Two aerial photos of Madison, Wisconsin in 1937 available on WHAIFinder.<br /></figcaption>
+</figure>
+
+<p>Right now, hundreds of thousands of historic aerial photos from around Wisconsin are gradually aging in file cabinets on the University of 
+Wisconsin-Madison campus, with some of the photos approaching 100 years old. Although historical photography is a captivating and well-trodden 
+method to study the past, without intervention, this opportunity will be lost as the photos get older and begin to decay.</p>
+
+<p>Addressing this challenge is the <a href="https://www.sco.wisc.edu/">State Cartographer’s Office</a> (SCO) and the
+<a href="https://geography.wisc.edu/maplibrary/">Arthur H. Robinson Map Library</a> (RML), units within 
+the <a href="https://geography.wisc.edu/">Department of Geography</a> at the University of Wisconsin-Madison, who are working to digitally preserve 
+Wisconsin aerial photography from the twentieth century. The SCO and RML team created a free digital tool in 2011 called 
+the <a href="https://maps.sco.wisc.edu/WHAIFinder/">Wisconsin Historic Aerial Image Finder</a> (WHAIFinder), where the public can view and download digital 
+versions of the air-photos at any time. The platform currently provides almost 40,000 Wisconsin aerial images, ranging from 1937-1941.</p>
+
+<p>SCO’s Associate State Cartographer <a href="https://www.sco.wisc.edu/staff/jim-lacy/">Jim Lacy</a> continues the effort of digitizing Wisconsin 
+air-photos from other decades alongside Map &amp; Geospatial Data Librarian <a href="https://geography.wisc.edu/maplibrary/staff/">Jaime Martindale</a> from 
+the RML. “We really want to work hard to digitally preserve all of that photography. That way it’s available forever,” Lacy said.</p>
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Lacy-portrait.jpeg" height="300" width="264" class="figure-img img-fluid rounded" alt="Associate State Cartographer Jim Lacy" />
+  <figcaption class="figure-caption">Associate State Cartographer Jim Lacy<br /></figcaption>
+</figure>
+
+<p>One of the steps necessary when digitizing the photography is to convert the images to Cloud Optimized GeoTIFF (COG) format and generate jpegs. 
+This caused a computing bottleneck for Lacy, who experimented with his local PC and found that about 100,000 images in need of converting would 
+take over a month to process. “What we’re doing with the COG conversion frankly is not that complicated.” Lacy said, “It’s basically reformatting data, 
+but it’s still fairly compute intensive.”</p>
+
+<p>Asking himself if there was a better way, Lacy went in search of a <a href="https://www.linkedin.com/feed/update/urn:li:activity:7143673958825885696/">solution</a> 
+and looked to the <a href="https://chtc.cs.wisc.edu/">Center for High Throughput Computing</a> (CHTC) last November for a more efficient computing option. 
+Specializing in high throughput computing (HTC), CHTC allows for users like Lacy to split their work up into a large amount of smaller-scale jobs 
+that can be processed in parallel. He attended a CHTC workshop and worked in close collaboration with the CHTC facilitation team to find the right 
+computing techniques.</p>
+
+<p>“The facilitators were extremely helpful in giving me pushes in the right direction,” Lacy remarked. He found that using the
+<a href="https://htcondor.org/">HTCondor</a> Software Suite (HTCSS) was a “learning curve,” despite his previous experience with necessary user elements 
+like shell scripting and UNIX. “It took some learning, patience, and a lot of trial and error.”</p>
+
+<p>The impact of using CHTC services and capacity was noteworthy. Running his own case study using input files from 
+the <a href="https://naip-usdaonline.hub.arcgis.com/">National Agriculture Imagery Program</a> (NAIP) for Dane County, Lacy found that what took his local 
+PC 93 minutes to run took five minutes when done through CHTC. “It’s been a huge time saver,” Lacy stated. He also found that utilizing CHTC allowed 
+room for mistakes and experimentation. “If we were to use a desktop PC it would take a week each time. For us, the option of repeatability is really 
+important.”</p>
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/lacysnapshot.jpg" height="299" width="556" class="figure-img img-fluid rounded" alt="A snapshot of Lacy's presentation analyzing the differences between using CHTC versus a local PC." />
+  <figcaption class="figure-caption">A snapshot of Lacy's presentation analyzing the differences between using CHTC versus a local PC.<br /></figcaption>
+</figure>
+
+<p>One issue Lacy had while using CHTC pertained to the data transfer time, despite the entire process taking less time than his local PC. In his case 
+study, the total data transfer overhead came out to around 21 hours. That was 14 times longer than the amount of time it took to process the data. 
+Lacy recently met with CHTC, including members of the facilitation team and the <a href="https://pelicanplatform.org/">Pelican</a> project to discuss possible 
+improvements to data transferring, as well as making the entire process less hands-on.</p>
+
+<p>Utilizing open capacity from a research computing center, Lacy views his work with the SCO to be atypical to the research world. 
+“We do some research, but our main focus is outreach and connecting people to mapping related resources. We’re all about the Wisconsin Idea,” 
+Lacy remarked. “The goal of the Wisconsin Idea is to share our knowledge and help other folks solve problems. ”</p>
+</div>
+        </div>
+    </div>
+</div>
+
+
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
     <div class="container-xxl">
