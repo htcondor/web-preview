@@ -1,0 +1,13 @@
+diff --git src/condor_schedd.V6/dedicated_scheduler.cpp src/condor_schedd.V6/dedicated_scheduler.cpp
+index 4418557..66dccb7 100644
+--- src/condor_schedd.V6/dedicated_scheduler.cpp
++++ src/condor_schedd.V6/dedicated_scheduler.cpp
+@@ -3091,7 +3091,7 @@ DedicatedScheduler::shutdownMpiJob( shadow_rec* srec , bool kill /* = false */)
+ 	for( i=0; i<alloc->num_procs; i++ ) {
+ 		matches = (*alloc->matches)[i];
+ 		n = matches->getlast();
+-		for( m=0 ; m <= n ; m++ ) {
++		for( m=n ; m >= 0 ; m-- ) {
+ 			if (kill) {
+ 				dprintf( D_ALWAYS, "Dedicated job abnormally ended, releasing claim\n");
+ 				releaseClaim( (*matches)[m], true );
