@@ -1,0 +1,17 @@
+#!/bin/sh
+
+# variables:
+USER=slauson
+HOSTNAME=glow-c004
+SSH_ADD_SCRIPT=/scratch.1/slauson/condor-blahp_over_ssh/expect_script
+REMOTE_SCRIPT=/home/slauson/remote-test/batch_gahp.wrapper
+PRIVATE_KEY_LOC=~/.ssh/id_rsa
+PASSPHRASE=#2085
+
+eval `ssh-agent -s`
+
+$SSH_ADD_SCRIPT $PRIVATE_KEY_LOC $PASSPHRASE
+
+ssh $USER@$HOSTNAME $REMOTE_SCRIPT "$@"
+
+eval `ssh-agent -sk`
