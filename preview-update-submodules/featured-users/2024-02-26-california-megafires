@@ -808,7 +808,7 @@ habitat suitability maps to see how much area burned, and in what severity.”
 
 <figure class="figure float-end" style="margin-left: 1em">
   <img src= "https://raw.githubusercontent.com/CHTC/Articles/main/images/j_ayars_profile_pic.jpg" height="667" width="500" class="figure-img img-fluid rounded" alt="Photo of Jessalyn Ayars">
-  <figcaption class="figure-caption">Jessalyn Ayars posing in front of mountains<br/></figcaption>
+  <figcaption class="figure-caption">Jessalyn Ayars at work.s<br/></figcaption>
 </figure>
 
 Very quickly, Ayars knew that doing this hundreds of times by hand was impractical. “That’s just so much data — 
@@ -819,8 +819,8 @@ with CHTC from earlier research.
 The CHTC Research Computing Facilitators (RCF) helped Ayars and her team break down large chunks of data into smaller
 jobs that could scale-out to run simultaneously using capacity provided by [the NSF funded OSPool](https://osg-htc.org/services/open_science_pool.html).
 “The folks at CHTC were super helpful in setting me up for all the processing, breaking down that giant problem 
-into one species and one fire severity at a time so they could run in parallel across the more than 50 sites that 
-contribute capacity to the OSPool,” she said.
+into one species and one fire severity at a time so they could run in parallel" across the more than 50 sites that 
+contribute capacity to the OSPool, she said.
 
 “I would recommend anyone interested in using HTC [high throughput computing] or just curious about whether or 
 not it would be helpful for their work to reach out to CHTC,” she said. “It’s a great resource and they’re great 
