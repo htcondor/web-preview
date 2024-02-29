@@ -742,31 +742,27 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
+    
+
+
+
     <div class="bg-light">
     <hr class="my-0">
     <div class="container-xxl">
         <div class="row">
             <div class="col-auto">
                 <div class="d-flex my-2">
-                    <span class="fs-4 my-auto">Software News</span>
+                    <span class="fs-4 my-auto">Featured User</span>
                 </div>
             </div>
             <div class="col-auto d-flex">
                 <div class="d-flex my-2">
                     <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/new.html">View all</a></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-auto d-flex">
-                <div class="d-flex my-2">
-                    <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news-archive.html">View Archives</a></span>
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <hr class="my-0">
 </div>
@@ -774,15 +770,72 @@
 <div class="container-xxl py-4">
     <div id="news-container" class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
-            <h1>ATLAS and BNL Bring Amazon EC2 Online</h1>
-            <span class="fs-3 text-muted">March  2, 2016</span>
+            <h1>Ecologists utilizing HTC to examine the effects of megafires on wildlife</h1>
+            <div class="row justify-content-between">
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">Bryna Goeking</span>
+                </div>
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">February 29, 2024</span>
+                </div>
+            </div>
+
             
-            <div class="mt-4 fs-5"><p>This  <a href="http://www.opensciencegrid.org/atlas-and-bnl-bring-amazon-ec2-online/" data-proofer-ignore="">Open Science Grid news article</a> discusses how a pilot project at the RHIC/ATLAS Computing Facility (RACF) at Brookhaven National Laboratory has used HTCondor-G to incorporate virtual machines from Amazon’s Amazon’s Elastic Compute Cloud (EC2) spot market into a scientific computation platform. The ATLAS experiment is moving towards using commercial clouds for computation as budget constraints make maintaining dedicated data centers more difficult.</p>
+            <div class="mt-4 fs-5">**Studying the impact of two high-fire years in California on over 600 species, ecologists enlist help from CHTC.**
+
+
+The western United States is seeing an unprecedented increase in wildfires. Researcher 
+[Jessalyn Ayars](https://www.fs.usda.gov/research/about/people/jessalyn.ayars) and her 
+team examined how severe wildfires impact the habitats of over 600 species across two megafire 
+years in California. Ayars, a former Post-Baccalaureate Research Fellow at the Rocky Mountain 
+Research Station located in Colorado, investigated this impact on wildlife with Dr. [Gavin Jones](https://www.fs.usda.gov/research/about/people/gavin.jones) 
+and Dr. [Anu Kramer](https://peery.russell.wisc.edu/anu-kramer/) of the University of Wisconsin—Madison. 
+Their research was enabled by capacity provided by the [Center for High Throughput Computing (CHTC)](https://chtc.cs.wisc.edu/) 
+and [published](https://www.pnas.org/doi/10.1073/pnas.2312909120#sec-3) in the Proceedings of the National Academy of Sciences.
+
+“Megafires are extremely large, high-severity fires. They are increasing worldwide, especially in the western U.S.” 
+Ayars explained. “In 2020 and 2021 California experienced a severe fire season.” California was also favorable for 
+the team to study due to its extensive maps showing the habitat suitability for all vertebrate species. Typically, 
+ecologists will study the effects of one species or a small number of species after wildfire — Ayars’ research is 
+novel in that it surveys a wide range of species.
+
+Surveying a wide range of species across a state led to a bottleneck of data to analyze: “Each species was a gigantic 
+math problem across the state of California. We were dealing with 608 vertebrae species, each with a suitability map 
+the size of California at a 30-meter resolution. To get our results we needed to overlay the fire maps [with] the
+habitat suitability maps to see how much area burned, and in what severity.”
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src= "https://raw.githubusercontent.com/CHTC/Articles/main/images/j_ayars_profile_pic.jpg" height="667" width="500" class="figure-img img-fluid rounded" alt="Photo of Jessalyn Ayars">
+  <figcaption class="figure-caption">Jessalyn Ayars posing in front of mountains<br/></figcaption>
+</figure>
+
+Very quickly, Ayars knew that doing this hundreds of times by hand was impractical. “That’s just so much data — 
+it wasn’t possible to do it all on a desktop computer,” she said. Ayars learned about the CHTC from her advisor 
+at the Rocky Mountain Research Station, Dr. Gavin Jones, who received his Ph.D. from UW-Madison and had connections 
+with CHTC from earlier research.
+
+The CHTC Research Computing Facilitators (RCF) helped Ayars and her team break down large chunks of data into smaller
+jobs that could scale-out to run simultaneously using capacity provided by [the NSF funded OSPool](https://osg-htc.org/services/open_science_pool.html).
+“The folks at CHTC were super helpful in setting me up for all the processing, breaking down that giant problem 
+into one species and one fire severity at a time so they could run in parallel across the more than 50 sites that 
+contribute capacity to the OSPool,” she said.
+
+“I would recommend anyone interested in using HTC [high throughput computing] or just curious about whether or 
+not it would be helpful for their work to reach out to CHTC,” she said. “It’s a great resource and they’re great 
+at teaching you.” Ayars gave a special shout-out to [Rachel Lombardi](https://www.cs.wisc.edu/staff/lombardi-rachel/)  
+and [Christina Koch,](https://www.cs.wisc.edu/staff/koch-christina/) two RCFs at CHTC. Research computing facilitators
+help new or potential users of CHTC services understand what computing resources are available on and off the UW-Madison 
+campus and provide support for adapting workloads to harness HTC.
+
+Ayars hopes that her team’s work will be a “call to action” for other wildlife ecologists studying the impact of wildfires 
+on species. “These conditions are so different from what wildlife evolved in, and from what researchers have studied wildfire
+in. It’s hard to say how wildlife will respond to these wildfires going forward.”
 </div>
         </div>
     </div>
 </div>
-
 
 
 </main>
