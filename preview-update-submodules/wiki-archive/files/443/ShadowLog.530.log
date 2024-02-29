@@ -1,0 +1,334 @@
+08/15/11 16:10:48 Reading from /proc/cpuinfo
+08/15/11 16:10:48 Found: Physical-IDs:True; Core-IDs:True
+08/15/11 16:10:48 Analyzing 24 processors using IDs...
+08/15/11 16:10:48 Looking at processor #0 (PID:1, CID:0):
+08/15/11 16:10:48 Comparing P#0   and P#1  : pid:1!=0 or  cid:0!=0 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#2  : pid:1!=1 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#3  : pid:1!=0 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#4  : pid:1!=1 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#5  : pid:1!=0 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#6  : pid:1!=1 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#7  : pid:1!=0 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#8  : pid:1!=1 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#9  : pid:1!=0 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#10 : pid:1!=1 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#11 : pid:1!=0 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#12 : pid:1==1 and cid:0==0 (match=2)
+08/15/11 16:10:48 Comparing P#0   and P#13 : pid:1!=0 or  cid:0!=0 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#14 : pid:1!=1 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#15 : pid:1!=0 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#16 : pid:1!=1 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#17 : pid:1!=0 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#18 : pid:1!=1 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#19 : pid:1!=0 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#20 : pid:1!=1 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#21 : pid:1!=0 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#22 : pid:1!=1 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 Comparing P#0   and P#23 : pid:1!=0 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 ncpus = 1
+08/15/11 16:10:48 P0: match->2
+08/15/11 16:10:48 P12: match->2
+08/15/11 16:10:48 Looking at processor #1 (PID:0, CID:0):
+08/15/11 16:10:48 Comparing P#1   and P#2  : pid:0!=1 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#3  : pid:0!=0 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#4  : pid:0!=1 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#5  : pid:0!=0 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#6  : pid:0!=1 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#7  : pid:0!=0 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#8  : pid:0!=1 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#9  : pid:0!=0 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#10 : pid:0!=1 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#11 : pid:0!=0 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#12 : pid:0!=1 or  cid:0!=0 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#13 : pid:0==0 and cid:0==0 (match=2)
+08/15/11 16:10:48 Comparing P#1   and P#14 : pid:0!=1 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#15 : pid:0!=0 or  cid:0!=1 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#16 : pid:0!=1 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#17 : pid:0!=0 or  cid:0!=2 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#18 : pid:0!=1 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#19 : pid:0!=0 or  cid:0!=8 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#20 : pid:0!=1 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#21 : pid:0!=0 or  cid:0!=9 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#22 : pid:0!=1 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 Comparing P#1   and P#23 : pid:0!=0 or  cid:0!=10 (match=No)
+08/15/11 16:10:48 ncpus = 2
+08/15/11 16:10:48 P1: match->2
+08/15/11 16:10:48 P13: match->2
+08/15/11 16:10:48 Looking at processor #2 (PID:1, CID:1):
+08/15/11 16:10:48 Comparing P#2   and P#3  : pid:1!=0 or  cid:1!=1 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#4  : pid:1!=1 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#5  : pid:1!=0 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#6  : pid:1!=1 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#7  : pid:1!=0 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#8  : pid:1!=1 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#9  : pid:1!=0 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#10 : pid:1!=1 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#11 : pid:1!=0 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#12 : pid:1!=1 or  cid:1!=0 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#13 : pid:1!=0 or  cid:1!=0 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#14 : pid:1==1 and cid:1==1 (match=2)
+08/15/11 16:10:48 Comparing P#2   and P#15 : pid:1!=0 or  cid:1!=1 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#16 : pid:1!=1 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#17 : pid:1!=0 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#18 : pid:1!=1 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#19 : pid:1!=0 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#20 : pid:1!=1 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#21 : pid:1!=0 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#22 : pid:1!=1 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 Comparing P#2   and P#23 : pid:1!=0 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 ncpus = 3
+08/15/11 16:10:48 P2: match->2
+08/15/11 16:10:48 P14: match->2
+08/15/11 16:10:48 Looking at processor #3 (PID:0, CID:1):
+08/15/11 16:10:48 Comparing P#3   and P#4  : pid:0!=1 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#5  : pid:0!=0 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#6  : pid:0!=1 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#7  : pid:0!=0 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#8  : pid:0!=1 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#9  : pid:0!=0 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#10 : pid:0!=1 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#11 : pid:0!=0 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#12 : pid:0!=1 or  cid:1!=0 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#13 : pid:0!=0 or  cid:1!=0 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#14 : pid:0!=1 or  cid:1!=1 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#15 : pid:0==0 and cid:1==1 (match=2)
+08/15/11 16:10:48 Comparing P#3   and P#16 : pid:0!=1 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#17 : pid:0!=0 or  cid:1!=2 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#18 : pid:0!=1 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#19 : pid:0!=0 or  cid:1!=8 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#20 : pid:0!=1 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#21 : pid:0!=0 or  cid:1!=9 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#22 : pid:0!=1 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 Comparing P#3   and P#23 : pid:0!=0 or  cid:1!=10 (match=No)
+08/15/11 16:10:48 ncpus = 4
+08/15/11 16:10:48 P3: match->2
+08/15/11 16:10:48 P15: match->2
+08/15/11 16:10:48 Looking at processor #4 (PID:1, CID:2):
+08/15/11 16:10:48 Comparing P#4   and P#5  : pid:1!=0 or  cid:2!=2 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#6  : pid:1!=1 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#7  : pid:1!=0 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#8  : pid:1!=1 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#9  : pid:1!=0 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#10 : pid:1!=1 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#11 : pid:1!=0 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#12 : pid:1!=1 or  cid:2!=0 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#13 : pid:1!=0 or  cid:2!=0 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#14 : pid:1!=1 or  cid:2!=1 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#15 : pid:1!=0 or  cid:2!=1 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#16 : pid:1==1 and cid:2==2 (match=2)
+08/15/11 16:10:48 Comparing P#4   and P#17 : pid:1!=0 or  cid:2!=2 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#18 : pid:1!=1 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#19 : pid:1!=0 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#20 : pid:1!=1 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#21 : pid:1!=0 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#22 : pid:1!=1 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 Comparing P#4   and P#23 : pid:1!=0 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 ncpus = 5
+08/15/11 16:10:48 P4: match->2
+08/15/11 16:10:48 P16: match->2
+08/15/11 16:10:48 Looking at processor #5 (PID:0, CID:2):
+08/15/11 16:10:48 Comparing P#5   and P#6  : pid:0!=1 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#7  : pid:0!=0 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#8  : pid:0!=1 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#9  : pid:0!=0 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#10 : pid:0!=1 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#11 : pid:0!=0 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#12 : pid:0!=1 or  cid:2!=0 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#13 : pid:0!=0 or  cid:2!=0 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#14 : pid:0!=1 or  cid:2!=1 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#15 : pid:0!=0 or  cid:2!=1 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#16 : pid:0!=1 or  cid:2!=2 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#17 : pid:0==0 and cid:2==2 (match=2)
+08/15/11 16:10:48 Comparing P#5   and P#18 : pid:0!=1 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#19 : pid:0!=0 or  cid:2!=8 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#20 : pid:0!=1 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#21 : pid:0!=0 or  cid:2!=9 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#22 : pid:0!=1 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 Comparing P#5   and P#23 : pid:0!=0 or  cid:2!=10 (match=No)
+08/15/11 16:10:48 ncpus = 6
+08/15/11 16:10:48 P5: match->2
+08/15/11 16:10:48 P17: match->2
+08/15/11 16:10:48 Looking at processor #6 (PID:1, CID:8):
+08/15/11 16:10:48 Comparing P#6   and P#7  : pid:1!=0 or  cid:8!=8 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#8  : pid:1!=1 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#9  : pid:1!=0 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#10 : pid:1!=1 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#11 : pid:1!=0 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#12 : pid:1!=1 or  cid:8!=0 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#13 : pid:1!=0 or  cid:8!=0 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#14 : pid:1!=1 or  cid:8!=1 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#15 : pid:1!=0 or  cid:8!=1 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#16 : pid:1!=1 or  cid:8!=2 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#17 : pid:1!=0 or  cid:8!=2 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#18 : pid:1==1 and cid:8==8 (match=2)
+08/15/11 16:10:48 Comparing P#6   and P#19 : pid:1!=0 or  cid:8!=8 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#20 : pid:1!=1 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#21 : pid:1!=0 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#22 : pid:1!=1 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 Comparing P#6   and P#23 : pid:1!=0 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 ncpus = 7
+08/15/11 16:10:48 P6: match->2
+08/15/11 16:10:48 P18: match->2
+08/15/11 16:10:48 Looking at processor #7 (PID:0, CID:8):
+08/15/11 16:10:48 Comparing P#7   and P#8  : pid:0!=1 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#9  : pid:0!=0 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#10 : pid:0!=1 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#11 : pid:0!=0 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#12 : pid:0!=1 or  cid:8!=0 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#13 : pid:0!=0 or  cid:8!=0 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#14 : pid:0!=1 or  cid:8!=1 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#15 : pid:0!=0 or  cid:8!=1 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#16 : pid:0!=1 or  cid:8!=2 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#17 : pid:0!=0 or  cid:8!=2 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#18 : pid:0!=1 or  cid:8!=8 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#19 : pid:0==0 and cid:8==8 (match=2)
+08/15/11 16:10:48 Comparing P#7   and P#20 : pid:0!=1 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#21 : pid:0!=0 or  cid:8!=9 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#22 : pid:0!=1 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 Comparing P#7   and P#23 : pid:0!=0 or  cid:8!=10 (match=No)
+08/15/11 16:10:48 ncpus = 8
+08/15/11 16:10:48 P7: match->2
+08/15/11 16:10:48 P19: match->2
+08/15/11 16:10:48 Looking at processor #8 (PID:1, CID:9):
+08/15/11 16:10:48 Comparing P#8   and P#9  : pid:1!=0 or  cid:9!=9 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#10 : pid:1!=1 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#11 : pid:1!=0 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#12 : pid:1!=1 or  cid:9!=0 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#13 : pid:1!=0 or  cid:9!=0 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#14 : pid:1!=1 or  cid:9!=1 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#15 : pid:1!=0 or  cid:9!=1 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#16 : pid:1!=1 or  cid:9!=2 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#17 : pid:1!=0 or  cid:9!=2 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#18 : pid:1!=1 or  cid:9!=8 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#19 : pid:1!=0 or  cid:9!=8 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#20 : pid:1==1 and cid:9==9 (match=2)
+08/15/11 16:10:48 Comparing P#8   and P#21 : pid:1!=0 or  cid:9!=9 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#22 : pid:1!=1 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 Comparing P#8   and P#23 : pid:1!=0 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 ncpus = 9
+08/15/11 16:10:48 P8: match->2
+08/15/11 16:10:48 P20: match->2
+08/15/11 16:10:48 Looking at processor #9 (PID:0, CID:9):
+08/15/11 16:10:48 Comparing P#9   and P#10 : pid:0!=1 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#11 : pid:0!=0 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#12 : pid:0!=1 or  cid:9!=0 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#13 : pid:0!=0 or  cid:9!=0 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#14 : pid:0!=1 or  cid:9!=1 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#15 : pid:0!=0 or  cid:9!=1 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#16 : pid:0!=1 or  cid:9!=2 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#17 : pid:0!=0 or  cid:9!=2 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#18 : pid:0!=1 or  cid:9!=8 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#19 : pid:0!=0 or  cid:9!=8 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#20 : pid:0!=1 or  cid:9!=9 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#21 : pid:0==0 and cid:9==9 (match=2)
+08/15/11 16:10:48 Comparing P#9   and P#22 : pid:0!=1 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 Comparing P#9   and P#23 : pid:0!=0 or  cid:9!=10 (match=No)
+08/15/11 16:10:48 ncpus = 10
+08/15/11 16:10:48 P9: match->2
+08/15/11 16:10:48 P21: match->2
+08/15/11 16:10:48 Looking at processor #10 (PID:1, CID:10):
+08/15/11 16:10:48 Comparing P#10  and P#11 : pid:1!=0 or  cid:10!=10 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#12 : pid:1!=1 or  cid:10!=0 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#13 : pid:1!=0 or  cid:10!=0 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#14 : pid:1!=1 or  cid:10!=1 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#15 : pid:1!=0 or  cid:10!=1 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#16 : pid:1!=1 or  cid:10!=2 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#17 : pid:1!=0 or  cid:10!=2 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#18 : pid:1!=1 or  cid:10!=8 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#19 : pid:1!=0 or  cid:10!=8 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#20 : pid:1!=1 or  cid:10!=9 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#21 : pid:1!=0 or  cid:10!=9 (match=No)
+08/15/11 16:10:48 Comparing P#10  and P#22 : pid:1==1 and cid:10==10 (match=2)
+08/15/11 16:10:48 Comparing P#10  and P#23 : pid:1!=0 or  cid:10!=10 (match=No)
+08/15/11 16:10:48 ncpus = 11
+08/15/11 16:10:48 P10: match->2
+08/15/11 16:10:48 P22: match->2
+08/15/11 16:10:48 Looking at processor #11 (PID:0, CID:10):
+08/15/11 16:10:48 Comparing P#11  and P#12 : pid:0!=1 or  cid:10!=0 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#13 : pid:0!=0 or  cid:10!=0 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#14 : pid:0!=1 or  cid:10!=1 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#15 : pid:0!=0 or  cid:10!=1 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#16 : pid:0!=1 or  cid:10!=2 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#17 : pid:0!=0 or  cid:10!=2 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#18 : pid:0!=1 or  cid:10!=8 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#19 : pid:0!=0 or  cid:10!=8 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#20 : pid:0!=1 or  cid:10!=9 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#21 : pid:0!=0 or  cid:10!=9 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#22 : pid:0!=1 or  cid:10!=10 (match=No)
+08/15/11 16:10:48 Comparing P#11  and P#23 : pid:0==0 and cid:10==10 (match=2)
+08/15/11 16:10:48 ncpus = 12
+08/15/11 16:10:48 P11: match->2
+08/15/11 16:10:48 P23: match->2
+08/15/11 16:10:48 Looking at processor #12 (PID:1, CID:0):
+08/15/11 16:10:48 Looking at processor #13 (PID:0, CID:0):
+08/15/11 16:10:48 Looking at processor #14 (PID:1, CID:1):
+08/15/11 16:10:48 Looking at processor #15 (PID:0, CID:1):
+08/15/11 16:10:48 Looking at processor #16 (PID:1, CID:2):
+08/15/11 16:10:48 Looking at processor #17 (PID:0, CID:2):
+08/15/11 16:10:48 Looking at processor #18 (PID:1, CID:8):
+08/15/11 16:10:48 Looking at processor #19 (PID:0, CID:8):
+08/15/11 16:10:48 Looking at processor #20 (PID:1, CID:9):
+08/15/11 16:10:48 Looking at processor #21 (PID:0, CID:9):
+08/15/11 16:10:48 Looking at processor #22 (PID:1, CID:10):
+08/15/11 16:10:48 Looking at processor #23 (PID:0, CID:10):
+08/15/11 16:10:48 Using IDs: 24 processors, 12 CPUs, 12 HTs
+08/15/11 16:10:48 passwd_cache::cache_uid(): getpwnam("condor") failed: user not found
+08/15/11 16:10:48 passwd_cache::cache_uid(): getpwnam("condor") failed: user not found
+08/15/11 16:10:48 Setting maximum accepts per cycle 4.
+08/15/11 16:10:48 ******************************************************
+08/15/11 16:10:48 ** condor_shadow (CONDOR_SHADOW) STARTING UP
+08/15/11 16:10:48 ** /opt/condor/sbin/condor_shadow
+08/15/11 16:10:48 ** SubsystemInfo: name=SHADOW type=SHADOW(6) class=DAEMON(1)
+08/15/11 16:10:48 ** Configuration: subsystem:SHADOW local:<NONE> class:DAEMON
+08/15/11 16:10:48 ** $CondorVersion: 7.6.2 Jul 14 2011 BuildID: 351672 $
+08/15/11 16:10:48 ** $CondorPlatform: x86_64_rhap_5 $
+08/15/11 16:10:48 ** PID = 530
+08/15/11 16:10:48 ** Log last touched time unavailable (No such file or directory)
+08/15/11 16:10:48 ******************************************************
+08/15/11 16:10:48 Using config source: /opt/condor/local/condor_config_schedd1
+08/15/11 16:10:48 Using local config sources: 
+08/15/11 16:10:48    /opt/condor/local/condor_config.local
+08/15/11 16:10:48    /opt/condor/bin/cycle_cache_config.py /opt/condor/local/cache_config 30 30 http://cycleserver:8080/cycle_server/getConfig.s?machineName=amplmoscnd1.cycleclient.com |
+08/15/11 16:10:48 Running as root.  Enabling specialized core dump routines
+08/15/11 16:10:48 Not using shared port because USE_SHARED_PORT=false
+08/15/11 16:10:48 DaemonCore: command socket at <10.78.194.211:38313?noUDP>
+08/15/11 16:10:48 DaemonCore: private command socket at <10.78.194.211:38313>
+08/15/11 16:10:48 DaemonCore: UDP Command socket not created.
+08/15/11 16:10:48 Setting maximum accepts per cycle 4.
+08/15/11 16:10:48 Will use UDP to update collector AMPWWHMOS07.cycleclient.com <10.78.193.194:9618>
+08/15/11 16:10:48 Not using shared port because USE_SHARED_PORT=false
+08/15/11 16:10:48 Spool format version requires >= 1 (I support version 1)
+08/15/11 16:10:48 Spool format version is 1 (I require version >= 1)
+08/15/11 16:10:48 Reading job ClassAd from STDIN
+08/15/11 16:10:48 Initializing a VANILLA shadow for job 1736.9
+08/15/11 16:10:48 (1736.9) (530): passwd_cache::cache_uid(): getpwnam("Daily") failed: user not found
+08/15/11 16:10:48 (1736.9) (530): Daily not in passwd file
+08/15/11 16:10:48 (1736.9) (530): init_user_ids() failed as user Daily
+08/15/11 16:10:48 (1736.9) (530): set_user_egid() called when UserIds not inited!
+08/15/11 16:10:48 (1736.9) (530): set_user_euid() called when UserIds not inited!
+08/15/11 16:10:48 (1736.9) (530): passwd_cache::cache_uid(): getpwnam("Daily") failed: user not found
+08/15/11 16:10:48 (1736.9) (530): Daily not in passwd file
+08/15/11 16:10:48 (1736.9) (530): WriteUserLog::initialize: init_user_ids() failed!
+08/15/11 16:10:48 (1736.9) (530): Failed to initialize user log to /opt/condor/local/spool/1/1736/9/cluster1736.proc9.subproc0/5585-9.log
+08/15/11 16:10:48 (1736.9) (530): Job 1736.9 going into Hold state (code 22,0): Failed to initialize user log to /opt/condor/local/spool/1/1736/9/cluster1736.proc9.subproc0/5585-9.log
+08/15/11 16:10:48 (1736.9) (530): RemoteResource::killStarter(): DCStartd object NULL!
+08/15/11 16:10:48 (1736.9) (530): Initialized the following authorization table:
+08/15/11 16:10:48 (1736.9) (530): Authorizations yet to be resolved:
+08/15/11 16:10:48 (1736.9) (530): allow READ:  */* */*
+08/15/11 16:10:48 (1736.9) (530): allow WRITE:  */* */*
+08/15/11 16:10:48 (1736.9) (530): allow NEGOTIATOR:  */10.78.193.194 */10.78.193.194 */10.78.193.194 */amplmoscnd1.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */10.78.194.211
+08/15/11 16:10:48 (1736.9) (530): allow ADMINISTRATOR:  */10.78.193.194 */10.78.193.194 */10.78.193.194 */amplmoscnd1.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */10.78.194.211
+08/15/11 16:10:48 (1736.9) (530): allow OWNER:  */10.78.193.194 */10.78.193.194 */10.78.193.194 */10.78.193.194 */amplmoscnd1.cycleclient.com */amplmoscnd1.cycleclient.com */amplmoscnd1.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */AMPWWHMOS07.cycleclient.com */10.78.194.211 */10.78.194.211 */10.78.194.211
+08/15/11 16:10:48 (1736.9) (530): allow CONFIG:  */10.78.193.194 */amplmoscnd1.cycleclient.com */AMPWWHMOS07.cycleclient.com */10.78.194.211
+08/15/11 16:10:48 (1736.9) (530): allow DAEMON:  */* */*
+08/15/11 16:10:48 (1736.9) (530): allow ADVERTISE_STARTD:  */* */*
+08/15/11 16:10:48 (1736.9) (530): allow ADVERTISE_SCHEDD:  */* */*
+08/15/11 16:10:48 (1736.9) (530): allow ADVERTISE_MASTER:  */* */*
+08/15/11 16:10:48 (1736.9) (530): set_user_egid() called when UserIds not inited!
+08/15/11 16:10:48 (1736.9) (530): set_user_euid() called when UserIds not inited!
+08/15/11 16:10:48 (1736.9) (530): Updating Job Queue: SetAttribute(BytesRecvd = 0.0)
+08/15/11 16:10:48 (1736.9) (530): Updating Job Queue: SetAttribute(BytesSent = 0.0)
+08/15/11 16:10:48 (1736.9) (530): Updating Job Queue: SetAttribute(HoldReason = "Failed to initialize user log to /opt/condor/local/spool/1/1736/9/cluster1736.proc9.subproc0/5585-9.log")
+08/15/11 16:10:48 (1736.9) (530): Updating Job Queue: SetAttribute(HoldReasonCode = 22)
+08/15/11 16:10:48 (1736.9) (530): Updating Job Queue: SetAttribute(HoldReasonSubCode = 0)
+08/15/11 16:10:48 (1736.9) (530): **** condor_shadow (condor_SHADOW) pid 530 EXITING WITH STATUS 112
