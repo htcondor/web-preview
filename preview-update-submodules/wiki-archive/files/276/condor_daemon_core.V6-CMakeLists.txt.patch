@@ -1,0 +1,15 @@
+diff --git a/src/condor_daemon_core.V6/CMakeLists.txt b/src/condor_daemon_core.V6/CMakeLists.txt
+index ac06cf2..9df4aa6 100644
+--- a/src/condor_daemon_core.V6/CMakeLists.txt
++++ b/src/condor_daemon_core.V6/CMakeLists.txt
+@@ -26,6 +26,10 @@ if (GSOAP_SRC)
+ 	list(APPEND DCSourceFiles ${GSOAP_SRC} )
+ endif()
+ 
++if (DARWIN)
++	link_libraries(resolv)
++endif(DARWIN)
++
+ #create the library
+ condor_static_lib(daemon_core "${DCHeaderFiles};${DCSourceFiles}")
+ 

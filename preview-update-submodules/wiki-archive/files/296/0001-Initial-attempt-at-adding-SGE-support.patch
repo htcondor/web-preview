@@ -1,0 +1,46 @@
+From fe94ac1fd847e132e5ea068f574f09b654fb2243 Mon Sep 17 00:00:00 2001
+From: Derek Weitzel <djw8605@gmail.com>
+Date: Thu, 17 Mar 2011 16:35:26 -0500
+Subject: [PATCH] Initial attempt at adding SGE support
+
+---
+ src/condor_gridmanager/infnbatchjob.cpp |    1 +
+ src/condor_submit.V6/submit.cpp         |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletions(-)
+
+diff --git a/src/condor_gridmanager/infnbatchjob.cpp b/src/condor_gridmanager/infnbatchjob.cpp
+index 9395646..9e0663c 100644
+--- a/src/condor_gridmanager/infnbatchjob.cpp
++++ b/src/condor_gridmanager/infnbatchjob.cpp
+@@ -122,6 +122,7 @@ bool INFNBatchJobAdMatch( const ClassAd *job_ad ) {
+ 		 ( strncasecmp( resource.c_str(), "blah", 4 ) == 0 ||
+ 		   strncasecmp( resource.c_str(), "pbs", 4 ) == 0 ||
+ 		   strncasecmp( resource.c_str(), "lsf", 4 ) == 0 ||
++		   strncasecmp( resource.c_str(), "sge", 4 ) == 0 ||
+ 		   strncasecmp( resource.c_str(), "nqs", 4 ) == 0 ||
+ 		   strncasecmp( resource.c_str(), "naregi", 6 ) == 0 ) ) {
+ 
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 4a19918..5f6e938 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -1738,7 +1738,7 @@ SetUniverse()
+ 			// Validate
+ 			// Valid values are (as of 7.5.1): nordugrid, globus,
+ 			//    gt2, gt5, gt4, infn, blah, pbs, lsf, nqs, naregi, condor,
+-			//    amazon, unicore, cream, deltacloud
++			//    amazon, unicore, cream, deltacloud, sge
+ 
+ 			// CRUFT: grid-type 'blah' is deprecated. Now, the specific batch
+ 			//   system names should be used (pbs, lsf). Glite are the only
+@@ -1750,6 +1750,7 @@ SetUniverse()
+ 				(strcasecmp (JobGridType, "infn") == MATCH) ||
+ 				(strcasecmp (JobGridType, "blah") == MATCH) ||
+ 				(strcasecmp (JobGridType, "pbs") == MATCH) ||
++				(strcasecmp (JobGridType, "sge") == MATCH) ||
+ 				(strcasecmp (JobGridType, "lsf") == MATCH) ||
+ 				(strcasecmp (JobGridType, "nqs") == MATCH) ||
+ 				(strcasecmp (JobGridType, "naregi") == MATCH) ||
+-- 
+1.7.4.1
+
