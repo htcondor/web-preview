@@ -1,0 +1,564 @@
+diff --git a/src/condor_procd/local_server.UNIX.cpp b/src/condor_procd/local_server.UNIX.cpp
+index 466532d..fe75e92 100644
+--- a/src/condor_procd/local_server.UNIX.cpp
++++ b/src/condor_procd/local_server.UNIX.cpp
+@@ -144,7 +144,8 @@ LocalServer::set_client_principal(const char* uid_str)
+ }
+ 
+ bool
+-LocalServer::accept_connection(int timeout, bool &accepted)
++LocalServer::accept_connection(int timeout, bool &accepted,
++	const fd_set *addl_fds, fd_set *result_fds)
+ {
+ 	ASSERT(m_initialized);
+ 
+@@ -157,7 +158,7 @@ LocalServer::accept_connection(int timeout, bool &accepted)
+ 	// see if a connection arrives within the timeout period
+ 	//
+ 	bool ready;
+-	if (!m_reader->poll(timeout, ready)) {
++	if (!m_reader->poll(timeout, ready, addl_fds, result_fds)) {
+ 		return false;
+ 	}
+ 	if (!ready) {
+@@ -261,6 +262,3 @@ bool LocalServer::consistent(void)
+ 	return m_reader->consistent();
+ }
+ 
+-
+-
+-
+diff --git a/src/condor_procd/local_server.h b/src/condor_procd/local_server.h
+index 8e13725..6780aeb 100644
+--- a/src/condor_procd/local_server.h
++++ b/src/condor_procd/local_server.h
+@@ -56,9 +56,16 @@ public:
+ 
+ 	// wait up to the specified number of seconds to receive a client
+ 	// connection; second param is set to true if one is received,
+-	// false otherwise
+-	//
++	// false otherwise.  On non-Windows platforms,
++	// the third parameter allows the caller to specify additional FDs to
++	// watch over.  The fourth parameter, if non-null, returns the set of
++	// FDs from the additional FDs which fired.
++#if defined(WIN32)
+ 	bool accept_connection(int, bool&);
++#else
++	bool accept_connection(int timeout, bool& ready,
++		const fd_set* addl_fds=NULL, fd_set* result_fds=NULL);
++#endif
+ 
+ 	// close a connection, making it possible to accept another one
+ 	// via the accept_connection method
+diff --git a/src/condor_procd/named_pipe_reader.unix.cpp b/src/condor_procd/named_pipe_reader.unix.cpp
+index 9e7ee35..8ff973f 100644
+--- a/src/condor_procd/named_pipe_reader.unix.cpp
++++ b/src/condor_procd/named_pipe_reader.unix.cpp
+@@ -23,6 +23,7 @@
+ #include "named_pipe_reader.unix.h"
+ #include "named_pipe_watchdog.unix.h"
+ #include "named_pipe_util.unix.h"
++#include <memory>
+ 
+ bool
+ NamedPipeReader::initialize(const char* addr)
+@@ -145,7 +146,7 @@ NamedPipeReader::read_data(void* buffer, int len)
+ }
+ 
+ bool
+-NamedPipeReader::poll(int timeout, bool& ready)
++NamedPipeReader::poll(int timeout, bool& ready, const fd_set *additional_fds, fd_set *result_fds)
+ {
+ 	// TODO: select on the watchdog pipe, if we have one. this
+ 	// currently isn't a big deal since we only use poll() on
+@@ -155,10 +156,23 @@ NamedPipeReader::poll(int timeout, bool& ready)
+ 
+ 	ASSERT(timeout >= -1);
+ 
+-	fd_set read_fd_set;
++	std::auto_ptr<fd_set> read_fd_set_ptr(result_fds);
++	if (!result_fds) {
++		read_fd_set_ptr.reset(new fd_set);
++	}
++
++	fd_set &read_fd_set = *read_fd_set_ptr;
+ 	FD_ZERO(&read_fd_set);
+ 	FD_SET(m_pipe, &read_fd_set);
+ 
++	int max_fd = m_pipe;
++	if (additional_fds)
++		for (int idx=0; idx < FD_SETSIZE; idx++)
++			if (FD_ISSET(idx, additional_fds)) {
++				FD_SET(idx, &read_fd_set);
++				max_fd = max_fd >= idx ? max_fd : idx;
++			}
++
+ 	struct timeval* tv_ptr = NULL;
+ 	struct timeval tv;
+ 	if (timeout != -1) {
+@@ -167,8 +181,9 @@ NamedPipeReader::poll(int timeout, bool& ready)
+ 		tv_ptr = &tv;
+ 	}
+ 
+-	int ret = select(m_pipe + 1, &read_fd_set, NULL, NULL, tv_ptr);
++	int ret = select(max_fd + 1, &read_fd_set, NULL, NULL, tv_ptr);
+ 	if (ret == -1) {
++		if (result_fds) read_fd_set_ptr.release();
+ 		if( errno == EINTR ) {
+ 				// We could keep looping until all of the time has passed,
+ 				// but currently nothing depends on this, so just return
+@@ -186,6 +201,10 @@ NamedPipeReader::poll(int timeout, bool& ready)
+ 
+ 	ready = FD_ISSET(m_pipe, &read_fd_set);
+ 
++	if (result_fds) {
++		read_fd_set_ptr.release();
++		FD_CLR(m_pipe, result_fds);
++	}
+ 	return true;
+ }
+ 
+diff --git a/src/condor_procd/named_pipe_reader.unix.h b/src/condor_procd/named_pipe_reader.unix.h
+index 2f52d67..ac14b05 100644
+--- a/src/condor_procd/named_pipe_reader.unix.h
++++ b/src/condor_procd/named_pipe_reader.unix.h
+@@ -62,9 +62,11 @@ public:
+ 
+ 	// second parameter is set to true if the named pipe
+ 	// becomes ready for reading within the given timeout
+-	// period, otherwise it's set to false
+-	//
+-	bool poll(int, bool&);
++	// period, otherwise it's set to false.
++	// If additional_fds is given, then those FDs are also included in
++	// the poll.  If result_fds is given, then the ready FDs are
++	// returned in that parameter EXCEPT for the fd associated with the pipe.
++	bool poll(int, bool&, const fd_set *additional_fds=NULL, fd_set *result_fds=NULL);
+ 
+ 	// Determine if the named pipe on the disk is the actual named pipe that
+ 	// was initially opened. In practice it means that the dev and inode fields
+diff --git a/src/condor_procd/proc_family.cpp b/src/condor_procd/proc_family.cpp
+index d35ffcc..49b4b51 100644
+--- a/src/condor_procd/proc_family.cpp
++++ b/src/condor_procd/proc_family.cpp
+@@ -28,13 +28,15 @@
+ #endif
+ 
+ #if defined(HAVE_EXT_LIBCGROUP)
++#include <unistd.h>
++#include <sys/eventfd.h>
++
+ #include "libcgroup.h"
+ 
+ #define FROZEN "FROZEN"
+ #define THAWED "THAWED"
+ #define BLOCK_STATS_LINE_MAX 64
+ 
+-#include <unistd.h>
+ long ProcFamily::clock_tick = sysconf( _SC_CLK_TCK );
+ #endif
+ 
+@@ -54,7 +56,9 @@ ProcFamily::ProcFamily(ProcFamilyMonitor* monitor,
+ 	m_member_list(NULL)
+ #if defined(HAVE_EXT_LIBCGROUP)
+ 	, m_cgroup_string(""),
+-	m_cm(CgroupManager::getInstance())
++	m_cm(CgroupManager::getInstance()),
++	m_oom_fd(-1),
++	m_oom_efd(-1)
+ #endif
+ {
+ #if !defined(WIN32)
+@@ -85,6 +89,15 @@ ProcFamily::~ProcFamily()
+ 		free(m_proxy);
+ 	}
+ #endif
++
++#if defined(HAVE_EXT_LIBCGROUP)
++	if (m_oom_fd != -1)
++		close(m_oom_fd);
++	if (m_oom_efd != -1) {
++		m_monitor->unsubscribe_oom_event(m_oom_efd);
++		close(m_oom_efd);
++	}
++#endif
+ }
+ 
+ #if defined(HAVE_EXT_LIBCGROUP)
+@@ -196,6 +209,160 @@ after_restore:
+ }
+ 
+ int
++ProcFamily::setup_oom_score()
++{
++	// Set the procd so it is not subject to OOM.
++	int oomadj_fd = open("/proc/self/oom_adj", O_WRONLY | O_CLOEXEC);
++	if (oomadj_fd == -1) {
++		dprintf(D_PROCFAMILY,
++			"Unable to open oom_adj for the procd: (errno=%u, %s)\n",
++			errno, strerror(errno));
++		return 1;
++	}
++
++	size_t nleft = 3;
++	ssize_t nwritten;
++	const char * ptr = "-17";
++	while (nleft > 0) {
++		nwritten = write(oomadj_fd, ptr, nleft);
++		if (nwritten < 0) {
++			if (errno == EINTR)
++				continue;
++			dprintf(D_PROCFAMILY,
++				"Unable to write into oom_adj file for procd: (errno=%u, %s)\n",
++				errno, strerror(errno));
++			close(oomadj_fd);
++			return 1;
++		}
++		nleft -= nwritten;
++		ptr += nwritten;
++	}
++	close(oomadj_fd);
++	return 0;
++}
++
++int
++ProcFamily::setup_oom_event()
++{
++	// Initialize the event descriptor
++	m_oom_efd = eventfd(0, EFD_CLOEXEC);
++	if (m_oom_efd == -1) {
++		dprintf(D_PROCFAMILY,
++			"Unable to create new event FD for ProcFamily %u: %u %s\n",
++			m_root_pid, errno, strerror(errno));
++		return 1;
++	}
++
++	// Find the memcg location on disk
++	void * handle = NULL;
++	struct cgroup_mount_point mount_info;
++	int ret = cgroup_get_controller_begin(&handle, &mount_info);
++	std::stringstream oom_control;
++	std::stringstream event_control;
++	bool found_memcg = false;
++	while (ret == 0) {
++		if (strcmp(mount_info.name, MEMORY_CONTROLLER_STR) == 0) {
++			found_memcg = true;
++			oom_control << mount_info.path << "/";
++			event_control << mount_info.path << "/";
++			break;
++		}
++		cgroup_get_controller_next(&handle, &mount_info);
++	}
++	if (!found_memcg && (ret != ECGEOF)) {
++		dprintf(D_PROCFAMILY,
++			"Error while locating memcg controller for ProcFamily %u: %u %s\n",
++			m_root_pid, ret, cgroup_strerror(ret));
++		return 1;
++	}
++	cgroup_get_controller_end(&handle);
++	if (found_memcg == false) {
++		dprintf(D_PROCFAMILY,
++			"Memcg is not available; OOM notification disabled for ProcFamily %u.\n",
++			m_root_pid);
++		return 1;
++	}
++
++	// Finish constructing the location of the control files
++	oom_control << m_cgroup_string << "/memory.oom_control";
++	std::string oom_control_str = oom_control.str();
++	event_control << m_cgroup_string << "/cgroup.event_control";
++	std::string event_control_str = event_control.str();
++
++	// Open the oom_control and event control files
++	m_oom_fd = open(oom_control_str.c_str(), O_RDONLY | O_CLOEXEC);
++	if (m_oom_fd == -1) {
++		dprintf(D_PROCFAMILY,
++			"Unable to open the OOM control file for ProcFamily %u: %u %s\n",
++			m_root_pid, errno, strerror(errno));
++		return 1;
++	}
++	int event_ctrl_fd = open(event_control_str.c_str(), O_WRONLY | O_CLOEXEC);
++	if (event_ctrl_fd == -1) {
++		dprintf(D_PROCFAMILY,
++			"Unable to open event control for ProcFamily %u: %u %s\n",
++			m_root_pid, errno, strerror(errno));
++		return 1;
++	}
++
++	// Inform Linux we will be handling the OOM events for this container.
++	int oom_fd2 = open(oom_control_str.c_str(), O_WRONLY | O_CLOEXEC);
++	if (oom_fd2 == -1) {
++		dprintf(D_PROCFAMILY,
++			"Unable to open the OOM control file for writing for ProcFamily %u: %u %s\n",
++			m_root_pid, errno, strerror(errno));
++		return 1;
++	}
++	const char limits [] = "1";
++	size_t nleft = 1;
++	ssize_t nwritten;
++	while (nleft > 0) {
++		nwritten = write(oom_fd2, &limits, 1);
++		if (nwritten < 0) {
++			if (errno == EINTR)
++				continue;
++			dprintf(D_PROCFAMILY,
++				"Unable to set OOM control to %s for ProcFamily %u: %u %s\n",
++					limits, m_root_pid, errno, strerror(errno));
++			close(event_ctrl_fd);
++			close(oom_fd2);
++			return 1;
++		}
++		if (nwritten > 0)
++			break;
++	}
++	close(oom_fd2);
++
++	// Create the subscription string:
++	std::stringstream sub_ss;
++	sub_ss << m_oom_efd << " " << m_oom_fd;
++	std::string sub_str = sub_ss.str();
++
++	// Basically, full_write without bringing in condor_utils...
++	nleft = sub_str.size();
++	const char * ptr = sub_str.c_str();
++	while (nleft > 0) {
++		nwritten = write(event_ctrl_fd, ptr, nleft);
++		if (nwritten < 0) {
++			if (errno == EINTR)
++				continue;
++			dprintf(D_PROCFAMILY,
++				"Unable to write into event control file for ProcFamily %u: %u %s\n",
++				m_root_pid, errno, strerror(errno));
++			close(event_ctrl_fd);
++			return 1;
++		}
++		nleft -= nwritten;
++		ptr += nwritten;
++	}
++	close(event_ctrl_fd);
++
++	// Inform the monitor it should watch our event fd
++	m_monitor->subscribe_oom_event(*this, m_oom_efd);
++	return 0;
++}
++
++int
+ ProcFamily::set_cgroup(const std::string &cgroup_string)
+ {
+ 	if (cgroup_string == "/") {
+@@ -224,6 +391,11 @@ ProcFamily::set_cgroup(const std::string &cgroup_string)
+ 		return 1;
+ 	}
+ 
++	// Configure settings for OOM killer.  If we successfully manage the
++	// OOM for the family, then we also mark ourselves immune to OOM.
++	if (!setup_oom_event())
++		setup_oom_score();
++
+ 	// Now that we have a cgroup, let's move all the existing processes to it
+ 	ProcFamilyMember* member = m_member_list;
+ 	while (member != NULL) {
+@@ -311,10 +483,9 @@ ProcFamily::spree_cgroup(int sig)
+ 	ASSERT (m_cgroup.isValid());
+ 	cgroup_get_cgroup(&const_cast<struct cgroup&>(m_cgroup.getCgroup()));
+ 
+-	void **handle = (void **)malloc(sizeof(void*));
+-	ASSERT (handle != NULL);
++	void *handle = NULL;
+ 	pid_t pid;
+-	err = cgroup_get_task_begin(m_cgroup_string.c_str(), FREEZE_CONTROLLER_STR, handle, &pid);
++	err = cgroup_get_task_begin(m_cgroup_string.c_str(), FREEZE_CONTROLLER_STR, &handle, &pid);
+ 	if ((err > 0) && (err != ECGEOF))
+ 		handle = NULL;
+ 	while (err != ECGEOF) {
+@@ -325,14 +496,13 @@ ProcFamily::spree_cgroup(int sig)
+ 			goto release;
+ 		}
+ 		send_signal(pid, sig);
+-		err = cgroup_get_task_next(handle, &pid);
++		err = cgroup_get_task_next(&handle, &pid);
+ 	}
+ 	err = 0;
+ 
+ 	release:
+ 	if (handle != NULL) {
+-		cgroup_get_task_end(handle);
+-		free(handle);
++		cgroup_get_task_end(&handle);
+ 	}
+ 
+ 	freezer_cgroup(THAWED);
+diff --git a/src/condor_procd/proc_family.h b/src/condor_procd/proc_family.h
+index 28a854c..e3655b9 100644
+--- a/src/condor_procd/proc_family.h
++++ b/src/condor_procd/proc_family.h
+@@ -180,8 +180,18 @@ private:
+ 	Cgroup m_cgroup;
+ 	std::string m_cgroup_string;
+ 	CgroupManager &m_cm;
++
++	// File descriptors used for OOM management.
++	int m_oom_fd, m_oom_efd;
+ 	static long clock_tick;
+ 
++	// Manage the OOM settings for Condor.
++	// If cgroups are used, indicate to the system that we should
++	// handle the OOM events for any running jobs and that we are immune
++	// to the built-in OOM killer
++	int setup_oom_score();
++	int setup_oom_event();
++
+ 	int count_tasks_cgroup();
+ 	int aggregate_usage_cgroup_blockio(ProcFamilyUsage*);
+ 	int aggregate_usage_cgroup(ProcFamilyUsage*);
+diff --git a/src/condor_procd/proc_family_monitor.cpp b/src/condor_procd/proc_family_monitor.cpp
+index ac1535b..35c38de 100644
+--- a/src/condor_procd/proc_family_monitor.cpp
++++ b/src/condor_procd/proc_family_monitor.cpp
+@@ -61,6 +61,7 @@ ProcFamilyMonitor::ProcFamilyMonitor(pid_t pid,
+ #endif
+ #if defined(HAVE_EXT_LIBCGROUP)
+ 	m_cgroup_tracker = NULL;
++	FD_ZERO(&m_event_set);
+ #endif
+ 	m_login_tracker = new LoginTracker(this);
+ 	ASSERT(m_login_tracker != NULL);
+@@ -374,6 +375,45 @@ ProcFamilyMonitor::track_family_via_cgroup(pid_t pid, const char * cgroup)
+ 
+ 	return PROC_FAMILY_ERROR_SUCCESS;
+ }
++
++void
++ProcFamilyMonitor::subscribe_oom_event(ProcFamily & family, int efd)
++{
++	m_oom_events.push_back(std::pair<ProcFamily *,int>(&family, efd));
++	FD_SET(efd, &m_event_set);
++}
++
++void
++ProcFamilyMonitor::unsubscribe_oom_event(int efd)
++{
++	std::vector<std::pair<ProcFamily *,int> >::iterator it;
++	for (it=m_oom_events.begin(); it != m_oom_events.end(); it++) {
++		if (efd == it->second) {
++			m_oom_events.erase(it);
++			FD_CLR(efd, &m_event_set);
++			return;
++		}
++	}
++}
++
++void
++ProcFamilyMonitor::notify_event(int fd)
++{
++	bool did_spree = false;
++	std::vector<std::pair<ProcFamily *,int> >::const_iterator it;
++	for (it=m_oom_events.begin(); it != m_oom_events.end(); it++) {
++		if (fd == it->second) {
++			it->first->spree(SIGKILL);
++			did_spree = true;
++		}
++	}
++	if (!did_spree) {
++		dprintf(D_PROCFAMILY,
++			"Got an unexpected notification for ProcFamily monitor.\n");
++		return;
++	}
++	unsubscribe_oom_event(fd);
++}
+ #endif
+ 
+ proc_family_error_t
+diff --git a/src/condor_procd/proc_family_monitor.h b/src/condor_procd/proc_family_monitor.h
+index 6c60500..8decf0f 100644
+--- a/src/condor_procd/proc_family_monitor.h
++++ b/src/condor_procd/proc_family_monitor.h
+@@ -33,6 +33,7 @@ class PIDTracker;
+ class GroupTracker;
+ #endif
+ #if defined(HAVE_EXT_LIBCGROUP)
++#include <sys/select.h>
+ class CGroupTracker;
+ #endif
+ class LoginTracker;
+@@ -98,6 +99,16 @@ public:
+ 
+ 	// Associate a cgroup with a family
+ 	proc_family_error_t track_family_via_cgroup(pid_t, const char*);
++
++	// Retrieve the event fds for the associated server to monitor
++	const fd_set & get_event_fds() const {return m_event_set;}
++
++	// Inform the monitor of a new event FD to watch
++	void subscribe_oom_event(ProcFamily & family, int efd);
++	void unsubscribe_oom_event(int efd);
++
++	// Notify the monitor one of its event FDs has triggered.
++	void notify_event(int fd);
+ #endif
+ 
+ 	// for sending signals to a single process
+@@ -180,6 +191,8 @@ private:
+ #endif
+ #if defined(HAVE_EXT_LIBCGROUP)
+ 	CGroupTracker*      m_cgroup_tracker;
++	fd_set              m_event_set;
++	std::vector<std::pair<ProcFamily*, int> > m_oom_events;
+ #endif
+ 	LoginTracker*       m_login_tracker;
+ 	EnvironmentTracker* m_environment_tracker;
+diff --git a/src/condor_procd/proc_family_server.cpp b/src/condor_procd/proc_family_server.cpp
+index f5bc13b..6657545 100644
+--- a/src/condor_procd/proc_family_server.cpp
++++ b/src/condor_procd/proc_family_server.cpp
+@@ -405,17 +405,37 @@ ProcFamilyServer::wait_loop()
+ 	
+ 		time_t time_before = time(NULL);
+ 		bool command_ready;
++
++		// Wait for a connection or one of the event FDs to fire
++#if defined(HAVE_EXT_LIBCGROUP)
++		fd_set fired_fds;
++		const fd_set &input_fds = m_monitor.get_event_fds();
++		bool ok = m_server->accept_connection(snapshot_countdown,
++		                                      command_ready,
++		                                      &input_fds,
++		                                      &fired_fds);
++#else
+ 		bool ok = m_server->accept_connection(snapshot_countdown,
+ 		                                      command_ready);
++#endif
+ 		if (!ok) {
+ 			EXCEPT("ProcFamilyServer: failed trying to accept client\n");
+ 		}
+ 		if (!command_ready) {
+-			// timeout; make sure we execute the timer handler
++			// possible timeout; make sure we execute the timer handler
+ 			// next time around by explicitly setting the
+ 			// countdown to zero
+ 			//
+ 			snapshot_countdown = 0;
++
++#if defined(HAVE_EXT_LIBCGROUP)
++			// Another possibility is one of the event FDs has fired.
++			for (int idx=0; idx<FD_SETSIZE; idx++) {
++				if (FD_ISSET(idx, &input_fds) && FD_ISSET(idx, &fired_fds)) {
++					m_monitor.notify_event(idx);
++				}
++			}
++#endif
+ 			continue;
+ 		}
+ 
+@@ -429,7 +449,9 @@ ProcFamilyServer::wait_loop()
+ 		}
+ 
+ 		// read the command int from the client
+-		//
++		// Note that we don't check our event FDs while intereacting
++		// with the client; we assume that if they can talk to us, we
++		// don't worry about a potential Denial of Service
+ 		int command;
+ 		read_from_client(&command, sizeof(int));
+ 
