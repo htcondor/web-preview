@@ -18,25 +18,22 @@ Grab the **htcondor/web** image from our Docker Hub:
 docker pull dockerreg.chtc.wisc.edu:443/htcondor/web
 ```
 
-## Building the website
+### Run Docker Manually
 
-**Make sure you have pulled submodules before building, otherwise you will be missing files and your build will break.**
-
-After making changes to the Jekyll source files, use the Docker image to preview your changes. Run the following from your computer while inside the checked-out copy of the website source:
+At the website root:
 
 ```
-docker run -p 8000:8000 --rm --volume $PWD:/srv/jekyll -it jekyll/jekyll:latest /bin/sh
+docker run -it -p 8002:8000 -v $PWD:/app -w /app ruby:2.7 /bin/bash
 ```
 
 This will utilize the latest Jekyll version and map port `8000` to your host.  Within the container, a small HTTP server can be started with the following command:
 
 ```
-jekyll serve --watch -H 0.0.0.0 -P 8000
+bundle install
+bundle exec jekyll serve --watch --config _config.yml -H 0.0.0.0 -P 8000
 ```
 
-This will build and serve the website; it can be viewed by navigating your web browser to <http://localhost:8000>.
-
-With the `--watch` flag set, any changes you make to the website source will cause a new version of the website to be built; it takes 500 seconds on a M1 processor between hitting "Save" and then "Refresh" on the website.
+https://localhost:8002
 
 
 ## Previewing Branches
