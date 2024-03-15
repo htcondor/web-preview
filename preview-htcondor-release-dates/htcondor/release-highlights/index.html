@@ -1044,6 +1044,37 @@
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/23.x/version-history/feature-versions-23-x.html#version-23-5-2">23.5.2</a></b>
+          <span class="px-1">-</span>
+          <span>March 14, 2024</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Old ClassAd based syntax is disabled by default for the job router</li>
+  <li>Can efficiently manage/enforce disk space using LVM partitions</li>
+  <li>GPU discovery is enabled on all Execution Points by default</li>
+  <li>Prevents accessing unallocated GPUs using cgroup v1 enforcement</li>
+  <li>New <code>condor_submit</code> commands for constraining GPU properties</li>
+  <li>Add ability to transfer EP’s starter log back to the Access Point</li>
+  <li>Can use VOMS attributes when mapping identities of SSL connections</li>
+  <li>The CondorVersion string contains the source git SHA</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/23.x/version-history/feature-versions-23-x.html#version-23-4-0">23.4.0</a></b>
           <span class="px-1">-</span>
           <span>February  8, 2024</span>
@@ -5360,6 +5391,34 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-23-0.html#version-23-0-6">23.0.6</a></b>
+          <span class="px-1">-</span>
+          <span>March 14, 2024</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Fix DAGMan where descendants of removed retry-able jobs are marked futile</li>
+  <li>Ensure the <code>condor_test_token</code> works correctly when invoked as root</li>
+  <li>Fix bug where empty multi-line values could cause a crash</li>
+  <li><code>condor_qusers</code> returns proper exit code for errors in formatting options</li>
+  <li>Fix crash in job router when a job transform is missing an argument</li>
+</ul>
+
+      </div>
     
       
 
