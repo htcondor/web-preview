@@ -990,15 +990,18 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.4.0</span> Feature Release</h3>
-        <p>February  8, 2024</p>
+        <h3><span class="text-secondary">23.5.2</span> Feature Release</h3>
+        <p>March 14, 2024</p>
         <div>
             <ul>
-  <li>condor_submit warns about unit-less request_disk and request_memory</li>
-  <li>Separate condor-credmon-local RPM package provides local SciTokens issuer</li>
-  <li>Fix bug where NEGOTIATOR_SLOT_CONSTRAINT was ignored since version 23.3.0</li>
-  <li>The htcondor command line tool can process multiple event logs at once</li>
-  <li>Prevent Docker daemon from keeping a duplicate copy of the job’s stdout</li>
+  <li>Old ClassAd based syntax is disabled by default for the job router</li>
+  <li>Can efficiently manage/enforce disk space using LVM partitions</li>
+  <li>GPU discovery is enabled on all Execution Points by default</li>
+  <li>Prevents accessing unallocated GPUs using cgroup v1 enforcement</li>
+  <li>New <code>condor_submit</code> commands for constraining GPU properties</li>
+  <li>Add ability to transfer EP’s starter log back to the Access Point</li>
+  <li>Can use VOMS attributes when mapping identities of SSL connections</li>
+  <li>The CondorVersion string contains the source git SHA</li>
 </ul>
 
         </div>
@@ -1017,17 +1020,21 @@
         </div>
     </div>
 </div>
+<div class="alert alert-danger" role="alert" style="margin-bottom: 24px; text-align: center;">
+    Find or add yourself to the global network of HTCondor users!<br>
+    <a class="btn btn-danger mt-3" href="https://htcondor.org/user-map">HTCSS User Map</a>
+</div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.0.4</span> Long Term Support Release</h3>
-        <p>February  8, 2024</p>
+        <h3><span class="text-secondary">23.0.6</span> Long Term Support Release</h3>
+        <p>March 14, 2024</p>
         <div>
             <ul>
-  <li>NVIDIA_VISIBLE_DEVICES environment variable lists full uuid of slot GPUs</li>
-  <li>Fix problem where some container jobs would see GPUs not assigned to them</li>
-  <li>Restore condor keyboard monitoring that was broken since HTCondor 23.0.0</li>
-  <li>In condor_adstash, the search engine timeouts now apply to all operations</li>
-  <li>Ensure the prerequisite perl modules are installed for condor_gather_info</li>
+  <li>Fix DAGMan where descendants of removed retry-able jobs are marked futile</li>
+  <li>Ensure the <code>condor_test_token</code> works correctly when invoked as root</li>
+  <li>Fix bug where empty multi-line values could cause a crash</li>
+  <li><code>condor_qusers</code> returns proper exit code for errors in formatting options</li>
+  <li>Fix crash in job router when a job transform is missing an argument</li>
 </ul>
 
         </div>
