@@ -1,0 +1,19 @@
+commit 81e65fb0e79316bdd3a67db31dd9aad4100f633e
+Author: Dan Bradley <dan@hep.wisc.edu>
+Date:   Thu Jun 14 09:45:42 2012 -0500
+
+    Fixed JobRouter bug when yielding orphaned job. #3030
+
+diff --git a/src/condor_job_router/JobRouter.cpp b/src/condor_job_router/JobRouter.cpp
+index 03b2fc9..a4fe31b 100644
+--- a/src/condor_job_router/JobRouter.cpp
++++ b/src/condor_job_router/JobRouter.cpp
+@@ -1043,7 +1043,7 @@ JobRouter::AdoptOrphans() {
+ 
+ 		MyString error_details;
+ 		PROC_ID src_proc_id = getProcByString(src_key.c_str());
+-		if(!yield_job(*src_ad,m_schedd1_name,m_schedd2_name,false,src_proc_id.cluster,src_proc_id.proc,&error_details,JobRouterName().c_str(),true,m_release_on_hold)) {
++		if(!yield_job(*src_ad,m_schedd1_name,m_schedd1_pool,false,src_proc_id.cluster,src_proc_id.proc,&error_details,JobRouterName().c_str(),true,m_release_on_hold)) {
+ 			dprintf(D_ALWAYS,"JobRouter (src=%s): failed to yield orphan job: %s\n",
+ 					src_key.c_str(),
+ 					error_details.Value());
