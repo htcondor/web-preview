@@ -1,0 +1,760 @@
+diff --git a/src/condor_unit_tests/OTEST_Directory.cpp b/src/condor_unit_tests/OTEST_Directory.cpp
+index 4ee26ec..178ca44 100644
+--- a/src/condor_unit_tests/OTEST_Directory.cpp
++++ b/src/condor_unit_tests/OTEST_Directory.cpp
+@@ -30,8 +30,8 @@
+ #include "directory.h"
+ #include "condor_getcwd.h"
+ 
+-static bool setup(void);
+-static bool cleanup(void);
++static void setup(void);
++static void cleanup(void);
+ static bool test_path_constructor_null(void);
+ static bool test_path_constructor_current(void);
+ static bool test_path_constructor_file(void);
+@@ -292,19 +292,11 @@ bool OTEST_Directory(void) {
+ 	driver.register_function(test_delete_file_later_file);
+ 	driver.register_function(test_delete_file_later_dir);
+ 
+-	// If setup fails, abort since many of the tests will fail
+-	if(!setup()) {
+-		emit_alert("Setup failed, aborting.");
+-		cleanup();
+-		ABORT;
+-	}
++	setup();
+ 
+ 	int status = driver.do_all_functions();
+ 	
+-	if(!cleanup()) {
+-		emit_alert("Cleanup failed, aborting.");
+-		ABORT;
+-	}
++	cleanup();
+ 
+ 	return status;
+ }
+@@ -344,97 +336,95 @@ bool OTEST_Directory(void) {
+ 			link_dir/
+ 
+  */
+-static bool setup() {
+-	bool ret_val = true;
++static void setup() {
+ 
+ 	// Get the current working directory
+-	ret_val &= condor_getcwd(original_dir);
++	cut_assert_true( condor_getcwd(original_dir) );
+ 	
+ 	// Directory strings
+-	sprintf(tmp, "tmp%c", DIR_DELIM_CHAR);
++	cut_assert_gz( sprintf(tmp, "tmp%c", DIR_DELIM_CHAR) );
+ 	
+ 	// Make a temporary directory to test
+-	ret_val &= !mkdir(tmp, 0700);
+-	ret_val &= !chdir(tmp);
++	cut_assert_z( mkdir(tmp, 0700) );
++	cut_assert_z( chdir(tmp) );
+ 	
+ 	// Store some directories
+-	ret_val &= condor_getcwd(tmp_dir);
+-	empty_dir.sprintf("%s%c%s", tmp_dir.Value(), DIR_DELIM_CHAR, "empty_dir");
+-	full_dir.sprintf("%s%c%s", tmp_dir.Value(), DIR_DELIM_CHAR, "full_dir");
+-	invalid_dir.sprintf("%s%c", "DoesNotExist", DIR_DELIM_CHAR);
+-	file_dir.sprintf("%s%c%s", full_dir.Value(), DIR_DELIM_CHAR, "full_file");
++	cut_assert_true( condor_getcwd(tmp_dir) );
++	cut_assert_gz( empty_dir.sprintf("%s%c%s", tmp_dir.Value(), DIR_DELIM_CHAR, "empty_dir") );
++	cut_assert_gz( full_dir.sprintf("%s%c%s", tmp_dir.Value(), DIR_DELIM_CHAR, "full_dir") );
++	cut_assert_gz( invalid_dir.sprintf("%s%c", "DoesNotExist", DIR_DELIM_CHAR) );
++	cut_assert_gz( file_dir.sprintf("%s%c%s", full_dir.Value(), DIR_DELIM_CHAR, "full_file") );
+ 	
+ 	// Put some files/directories in there
+-	ret_val &= !mkdir("empty_dir", 0700);
+-	ret_val &= !mkdir("full_dir", 0700);
++	cut_assert_z( mkdir("empty_dir", 0700) );
++	cut_assert_z( mkdir("full_dir", 0700) );
+ 	
+-	ret_val &= !chdir("full_dir");
+-	ret_val &= !mkdir("link_dir", 0700);
+-	ret_val &= !mkdir("delete_dir_1", 0700);
+-	ret_val &= !mkdir("delete_dir_2", 0700);
+-	ret_val &= !mkdir("delete_dir_3", 0700);
+-	ret_val &= !mkdir("delete_dir_4", 0700);
+-	ret_val &= !mkdir("delete_dir_11", 0700);
+-	ret_val &= !chdir("delete_dir_11");
+-	ret_val &= !mkdir("dir", 0700);
+-	ret_val &= (safe_fopen_wrapper("file", "w+") != NULL);
+-	ret_val &= !chdir("..");
+-	ret_val &= !mkdir("delete_dir_12", 0700);
+-	ret_val &= !chdir("delete_dir_12");
+-	ret_val &= !mkdir("dir", 0700);
+-	ret_val &= (safe_fopen_wrapper("file", "w+") != NULL);
+-	ret_val &= !chdir("..");
+-	ret_val &= !mkdir("delete_dir_13", 0700);
+-	ret_val &= !chdir("delete_dir_13");
+-	ret_val &= !mkdir("dir", 0700);
+-	ret_val &= (safe_fopen_wrapper("file", "w+") != NULL);
+-	ret_val &= !chdir("..");
+-	ret_val &= !mkdir("dir", 0700);
+-	ret_val &= !chdir("dir");
+-	ret_val &= !mkdir("dir", 0700);
+-	ret_val &= (safe_fopen_wrapper("file", "w+") != NULL);
+-	ret_val &= !chdir("..");
+-	ret_val &= (safe_fopen_wrapper("delete_file_1", "w+") != NULL);
+-	ret_val &= (safe_fopen_wrapper("delete_file_2", "w+") != NULL);
+-	ret_val &= (safe_fopen_wrapper("delete_file_3", "w+") != NULL);
+-	ret_val &= (safe_fopen_wrapper("delete_file_4", "w+") != NULL);
+-	ret_val &= (safe_fopen_wrapper("delete_file_5", "w+") != NULL);
+-	ret_val &= (safe_fopen_wrapper("delete_file_6", "w+") != NULL);
+-	ret_val &= (safe_fopen_wrapper("empty_file", "w+") != NULL);
++	cut_assert_z( chdir("full_dir") );
++	cut_assert_z( mkdir("link_dir", 0700) );
++	cut_assert_z( mkdir("delete_dir_1", 0700) );
++	cut_assert_z( mkdir("delete_dir_2", 0700) );
++	cut_assert_z( mkdir("delete_dir_3", 0700) );
++	cut_assert_z( mkdir("delete_dir_4", 0700) );
++	cut_assert_z( mkdir("delete_dir_11", 0700) );
++	cut_assert_z( chdir("delete_dir_11") );
++	cut_assert_z( mkdir("dir", 0700) );
++	create_empty_file("file", "w+");
++	cut_assert_z( chdir("..") );
++	cut_assert_z( mkdir("delete_dir_12", 0700) );
++	cut_assert_z( chdir("delete_dir_12") );
++	cut_assert_z( mkdir("dir", 0700) );
++	create_empty_file("file", "w+");
++	cut_assert_z( chdir("..") );
++	cut_assert_z( mkdir("delete_dir_13", 0700) );
++	cut_assert_z( chdir("delete_dir_13") );
++	cut_assert_z( mkdir("dir", 0700) );
++	create_empty_file("file", "w+");
++	cut_assert_z( chdir("..") );
++	cut_assert_z( mkdir("dir", 0700) );
++	cut_assert_z( chdir("dir") );
++	cut_assert_z( mkdir("dir", 0700) );
++	create_empty_file("file", "w+");
++	cut_assert_z( chdir("..") );
++	create_empty_file("delete_file_1", "w+");
++	create_empty_file("delete_file_2", "w+");
++	create_empty_file("delete_file_3", "w+");
++	create_empty_file("delete_file_4", "w+");
++	create_empty_file("delete_file_5", "w+");
++	create_empty_file("delete_file_6", "w+");
++	create_empty_file("empty_file", "w+");
+ 	FILE* file_1 = safe_fopen_wrapper("full_file", "w+");
+ 
+ 	// Add some text
+-	ASSERT(file_1);
+-	fprintf(file_1, "This is some text!");
+-	ret_val &= !chdir("..");
++	cut_assert_not_null( file_1 );
++	cut_assert_gz( fprintf(file_1, "This is some text!") );
++	cut_assert_z( chdir("..") );
+ 	
+ 	// Create some symbolic links
+ 	MyString link;
+-	link.sprintf("%s%c%s", full_dir.Value(), DIR_DELIM_CHAR, "full_file");
+-	ret_val &= !symlink(link.Value(), "symlink_file");
+-	link.sprintf("%s%c%s", full_dir.Value(), DIR_DELIM_CHAR, "link_dir");
+-	ret_val &= !symlink(link.Value(), "symlink_dir");
++	cut_assert_true( link.sprintf("%s%c%s", full_dir.Value(), DIR_DELIM_CHAR, "full_file") );
++	cut_assert_z( symlink(link.Value(), "symlink_file") );
++	cut_assert_true( link.sprintf("%s%c%s", full_dir.Value(), DIR_DELIM_CHAR, "link_dir") );
++	cut_assert_z( symlink(link.Value(), "symlink_dir") );
+ 	
+ 	// Get back to original directory
+-	ret_val &= !chdir(original_dir.Value());
++	cut_assert_z( chdir(original_dir.Value()) );
+ 
+ 	// Close FILE* that was written to
+-	ret_val &= !fclose(file_1);
++	cut_assert_z( fclose(file_1) );
+ 	
+ 	// Get the current time
+ 	current_time = time(NULL);
+ 
+-	return ret_val;
+ }
+ 
+-static bool cleanup() {
++static void cleanup() {
+ 	// Remove the created files/directories/symlinks
+-	chdir(tmp);
+-	rmdir("empty_dir");
+-	remove("symlink_file");
+-	remove("symlink_dir");
+-	chdir("full_dir");
+-	rmdir("link_dir");
++	cut_assert_z( chdir(tmp) );
++	cut_assert_z( rmdir("empty_dir") );
++	cut_assert_z( remove("symlink_file") );
++	cut_assert_z( remove("symlink_dir") );
++	cut_assert_z( chdir("full_dir") );
++	cut_assert_z( rmdir("link_dir") );
+ 	
+ 	// Just in case any of these weren't removed...
+ 	rmdir("delete_dir_1");
+@@ -472,13 +462,13 @@ static bool cleanup() {
+ 	remove("delete_file_5");
+ 	remove("delete_file_6");
+ 	
+-	remove("empty_file");
+-	remove("full_file");
+-	chdir("..");
+-	rmdir("full_dir");
+-	chdir("..");
++	cut_assert_z( remove("empty_file") );
++	cut_assert_z( remove("full_file") );
++	cut_assert_z( chdir("..") );
++	cut_assert_z( rmdir("full_dir") );
++	cut_assert_z( chdir("..") );
+ 	
+-	return (rmdir(tmp) == 0);
++	cut_assert_z( rmdir(tmp) );
+ }
+ 
+ static bool test_path_constructor_null() {
+diff --git a/src/condor_unit_tests/OTEST_StatInfo.cpp b/src/condor_unit_tests/OTEST_StatInfo.cpp
+index ffd83d7..15ab9e2 100644
+--- a/src/condor_unit_tests/OTEST_StatInfo.cpp
++++ b/src/condor_unit_tests/OTEST_StatInfo.cpp
+@@ -30,8 +30,8 @@
+ #include "stat_info.h"
+ #include "condor_getcwd.h"
+ 
+-static bool setup(void);
+-static bool cleanup(void);
++static void setup(void);
++static void cleanup(void);
+ static bool test_path_constructor_null(void);
+ static bool test_path_constructor_file(void);
+ static bool test_path_constructor_dir(void);
+@@ -221,19 +221,11 @@ bool OTEST_StatInfo(void) {
+ 	driver.register_function(test_get_group_symlink_file);
+ 	driver.register_function(test_get_group_symlink_dir);
+ 
+-	//If setup fails, abort since many of the tests will fail
+-	if(!setup()) {
+-		emit_alert("Setup failed, aborting.");
+-		cleanup();
+-		ABORT;
+-	}
++	setup();
+ 
+ 	int status = driver.do_all_functions();
+ 	
+-	if(!cleanup()) {
+-		emit_alert("Cleanup failed, aborting.");
+-		ABORT;
+-	}
++	cleanup();
+ 
+ 	return status;
+ }
+@@ -252,77 +244,79 @@ bool OTEST_StatInfo(void) {
+ 			link_dir/
+ 
+  */
+-static bool setup() {
+-	bool ret_val = true;
++static void setup() {
+ 	int tmp_fd;
+ 
+ 	//Get the current working directory
+-	ret_val &= condor_getcwd(original_dir);
++	cut_assert_true( condor_getcwd(original_dir) );
+ 	original_dir += DIR_DELIM_CHAR;
+ 	
+ 	//Directory strings
+-	sprintf(tmp, "tmp%c", DIR_DELIM_CHAR);
++	cut_assert_gz( sprintf(tmp, "tmp%c", DIR_DELIM_CHAR) );
+ 	
+ 	//Make a temporary directory to test
+-	ret_val &= !mkdir("tmp", 0700);
+-	ret_val &= !chdir("tmp");
++	cut_assert_z( mkdir("tmp", 0700) );
++	cut_assert_z( chdir("tmp") );
+ 	
+ 	//Store some directories
+-	ret_val &= condor_getcwd(tmp_dir);
++	cut_assert_true( condor_getcwd(tmp_dir) );
+ 	tmp_dir += DIR_DELIM_CHAR;
+-	empty_dir.sprintf("%s%s%c", tmp_dir.Value(), "empty_dir", DIR_DELIM_CHAR);
+-	full_dir.sprintf("%s%s%c", tmp_dir.Value(), "full_dir", DIR_DELIM_CHAR);
+-	invalid_dir.sprintf("%s%c", "DoesNotExist", DIR_DELIM_CHAR);
+-	file_dir.sprintf("%s%s%c", full_dir.Value(), "full_file", DIR_DELIM_CHAR);
++	cut_assert_true( empty_dir.sprintf("%s%s%c", tmp_dir.Value(), "empty_dir",
++					 DIR_DELIM_CHAR) );
++	cut_assert_true( full_dir.sprintf("%s%s%c", tmp_dir.Value(), "full_dir",
++					 DIR_DELIM_CHAR) );
++	cut_assert_true( invalid_dir.sprintf("%s%c", "DoesNotExist",
++					 DIR_DELIM_CHAR) );
++	cut_assert_true( file_dir.sprintf("%s%s%c", full_dir.Value(), "full_file",
++					 DIR_DELIM_CHAR) );
+ 	
+ 	//Put some files/directories in there
+-	ret_val &= !mkdir("empty_dir", 0700);
+-	ret_val &= !mkdir("full_dir", 0700);
++	cut_assert_z( mkdir("empty_dir", 0700) );
++	cut_assert_z( mkdir("full_dir", 0700) );
+ 	
+ 	//Create some symbolic links
+ 	MyString link;
+-	link.sprintf("%s%s", full_dir.Value(), "full_file");
+-	ret_val &= !symlink(link.Value(), "symlink_file");
+-	link.sprintf("%s%s", full_dir.Value(), "link_dir");
+-	ret_val &= !symlink(link.Value(), "symlink_dir");
++	cut_assert_true( link.sprintf("%s%s", full_dir.Value(), "full_file") );
++	cut_assert_z( symlink(link.Value(), "symlink_file") );
++	cut_assert_true( link.sprintf("%s%s", full_dir.Value(), "link_dir") );
++	cut_assert_z( symlink(link.Value(), "symlink_dir") );
+ 	
+-	ret_val &= !chdir("full_dir");
++	cut_assert_z( chdir("full_dir") );
+ 
+ 	// Make a zero length, but executable, file
+-	tmp_fd = safe_open_wrapper("executable_file", O_RDWR | O_CREAT);
+-	ret_val &= !close(tmp_fd);
+-	ret_val &= !chmod("executable_file", 0755);
++	tmp_fd = cut_assert_gz( safe_open_wrapper("executable_file", O_RDWR | 
++							 O_CREAT) );
++	cut_assert_z( close(tmp_fd) );
++	cut_assert_z( chmod("executable_file", 0755) );
+ 
+ 	// Make an empty file, leave the fd open.
+-	ret_val &= !mkdir("link_dir", 0700);
+-	fd = safe_open_wrapper("empty_file", O_RDWR | O_CREAT);
++	cut_assert_z( mkdir("link_dir", 0700) );
++	fd = cut_assert_gz( safe_open_wrapper("empty_file", O_RDWR | O_CREAT) );
+ 
+ 	//Add some text
+ 	FILE* file_1 = safe_fopen_wrapper("full_file", "w+");
+-	ASSERT(file_1);
+-	fprintf(file_1, "This is some text!");
+-	ret_val &= !chdir("..");
++	cut_assert_not_null( file_1 );
++	cut_assert_gz( fprintf(file_1, "This is some text!") );
++	cut_assert_z( chdir("..") );
+ 	
+ 	//Get back to original directory
+-	ret_val &= !chdir("..");
++	cut_assert_z( chdir("..") );
+ 
+ 	//Close FILE* that were written to
+-	ret_val &= !fclose(file_1);
++	cut_assert_z( fclose(file_1) );
+ 	
+ 	//Get the current time
+ 	current_time = time(NULL);
+-
+-	return ret_val;
+ }
+ 
+-static bool cleanup() {
++static void cleanup() {
+ 	//Remove the created files/directories/symlinks
+-	chdir("tmp");
+-	rmdir("empty_dir");
+-	remove("symlink_file");
+-	remove("symlink_dir");
+-	chdir("full_dir");
+-	rmdir("link_dir");
++	cut_assert_z( chdir("tmp") );
++	cut_assert_z( rmdir("empty_dir") );
++	cut_assert_z( remove("symlink_file") );
++	cut_assert_z( remove("symlink_dir") );
++	cut_assert_z( chdir("full_dir") );
++	cut_assert_z( rmdir("link_dir") );
+ 	
+ 	//Just in case any of these weren't removed...
+ 	remove("empty_file");
+@@ -332,9 +326,8 @@ static bool cleanup() {
+ 	rmdir("full_dir");
+ 	chdir("..");
+ 
+-	close(fd);
+-	
+-	return rmdir("tmp") == 0;
++	cut_assert_z( close(fd) );
++	cut_assert_z( rmdir("tmp") );
+ }
+ 
+ static bool test_path_constructor_null() {
+diff --git a/src/condor_unit_tests/OTEST_TmpDir.cpp b/src/condor_unit_tests/OTEST_TmpDir.cpp
+index 0b29923..49d84e7 100644
+--- a/src/condor_unit_tests/OTEST_TmpDir.cpp
++++ b/src/condor_unit_tests/OTEST_TmpDir.cpp
+@@ -32,8 +32,8 @@
+ #include "basename.h"
+ #include "directory.h"
+ 
+-static bool setup(void);
+-static bool cleanup(void);
++static void setup(void);
++static void cleanup(void);
+ static bool test_cd2tmpdir_null(void);
+ static bool test_cd2tmpdir_empty(void);
+ static bool test_cd2tmpdir_dot(void);
+@@ -149,25 +149,16 @@ bool OTEST_TmpDir(void) {
+ 	driver.register_function(test_cd2maindir_error_good);
+ 	driver.register_function(test_cd2maindir_error_bad);
+ 
+-	//If setup fails, abort since many of the tests will fail
+-	if(!setup()) {
+-		emit_alert("Setup failed, aborting.");
+-		cleanup();
+-		ABORT;
+-	}
+-	
++	setup();
++
+ 	int status = driver.do_all_functions();
+ 	
+-	if(!cleanup()) {
+-		emit_alert("Cleanup failed, aborting.");
+-		ABORT;
+-	}
++	cleanup();
+ 
+ 	return status;
+ }
+ 
+-static bool setup() {
+-	bool ret_val = true;
++static void setup() {
+ 
+ 	if ( PATH_MAX >= 4096 ) {
+ 		long_dir_depth = 10;
+@@ -180,12 +171,12 @@ static bool setup() {
+ 	}
+ 
+ 	//Get current working directory
+-	ret_val &= condor_getcwd(original_dir);
++	cut_assert_true( condor_getcwd(original_dir) );
+ 
+ 	//Get parent directory
+-	ret_val &= !chdir("..");
+-	ret_val &= condor_getcwd(parent_dir);
+-	ret_val &= !chdir(original_dir.Value());
++	cut_assert_z( chdir("..") );
++	cut_assert_true( condor_getcwd(parent_dir) );
++	cut_assert_z( chdir(original_dir.Value()) );
+ 
+ 	//Create a long string
+ 	for(int i = 0; i < 256; i++) {
+@@ -194,62 +185,59 @@ static bool setup() {
+ 	long_dir[255] = '\0';
+ 	
+ 	//Create some non-existent files
+-	sprintf(non_existent, "DoesNotExist%c", DIR_DELIM_CHAR);
+-	sprintf(non_existent_file, "DoesNotExist%cDoesNotExist", 
+-		DIR_DELIM_CHAR);
++	cut_assert_gz( sprintf(non_existent, "DoesNotExist%c", DIR_DELIM_CHAR) );
++	cut_assert_gz( sprintf(non_existent_file, "DoesNotExist%cDoesNotExist", 
++				   DIR_DELIM_CHAR) );
+ 	non_existent[13] = '\0';
+ 	non_existent_file[25] = '\0';
+ 	
+ 	//Get deep directories
+ 	for(int i = 0; i < 9; i++) {
+-		deep_dir.sprintf_cat("tmp%c", DIR_DELIM_CHAR);
++		cut_assert_true( deep_dir.sprintf_cat("tmp%c", DIR_DELIM_CHAR) );
+ 	}
+-	deep_dir.sprintf_cat("tmp");
++	cut_assert_true( deep_dir.sprintf_cat("tmp") );
+ 	
+ 	for(int i = 0; i < long_dir_depth - 1; i++) {
+-		deep_dir_long.sprintf_cat("%s%c", long_dir, DIR_DELIM_CHAR);
++		cut_assert_true( deep_dir_long.sprintf_cat("%s%c", long_dir,
++						 DIR_DELIM_CHAR) );
+ 	}
+-	deep_dir_long.sprintf_cat("%s", long_dir);
++	cut_assert_true( deep_dir_long.sprintf_cat("%s", long_dir) );
+ 	
+ 	//Make some directories to test
+ 	for(int i = 0; i < 10; i++) {
+-		ret_val &= !mkdir("tmp", 0700);
+-		ret_val &= !chdir("tmp");
++		cut_assert_z( mkdir("tmp", 0700) );
++		cut_assert_z( chdir("tmp") );
+ 	}
+-	ret_val &= !chdir(original_dir.Value());
++	cut_assert_z( chdir(original_dir.Value()) );
+ 
+ 	//Make some directories to test
+ 	for(int i = 0; i < long_dir_depth; i++) {
+-		ret_val &= !mkdir(long_dir, 0700);
+-		ret_val &= !chdir(long_dir);
++		cut_assert_z( mkdir(long_dir, 0700) );
++		cut_assert_z( chdir(long_dir) );
+ 	}
+-	ret_val &= !chdir(original_dir.Value());
+-
+-	return ret_val;
++	cut_assert_z( chdir(original_dir.Value()) );
+ }
+ 
+-static bool cleanup() {
+-	bool ret_val = true;
++static void cleanup() {
+ 	
+-	ret_val &= !chdir(deep_dir.Value());
++	cut_assert_z( chdir(deep_dir.Value()) );
+ 
+ 	//Remove the directories
+ 	for(int i = 0; i < 10; i++) {
+-		ret_val &= !chdir("..");
+-		ret_val &= !rmdir("tmp");
++		cut_assert_z( chdir("..") );
++		cut_assert_z( rmdir("tmp") );
+ 	}
+ 	
+ 	for(int i = 0; i < long_dir_depth; i++) {
+-		ret_val &= !chdir(long_dir);
++		cut_assert_z( chdir(long_dir) );
+ 	}
+ 	
+ 	//Remove the directories
+ 	for(int i = 0; i < long_dir_depth; i++) {
+-		ret_val &= !chdir("..");
+-		ret_val &= !rmdir(long_dir);
++		cut_assert_z( chdir("..") );
++		cut_assert_z( rmdir(long_dir) );
+ 	}
+ 
+-	return ret_val;
+ }
+ 
+ static bool test_cd2tmpdir_null() {
+diff --git a/src/condor_unit_tests/unit_test_utils.cpp b/src/condor_unit_tests/unit_test_utils.cpp
+index f7d4060..19c5c16 100644
+--- a/src/condor_unit_tests/unit_test_utils.cpp
++++ b/src/condor_unit_tests/unit_test_utils.cpp
+@@ -284,3 +284,156 @@ void insert_into_ad(ClassAd* ad, const char* attribute, const char* value) {
+ 	buf.sprintf("%s = %s", attribute, value);
+ 	ad->Insert(buf.Value());
+ }
++
++/* don't return anything: the process will die if value not zero */
++void cut_assert_z_impl(int value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (value != 0) {
++		dprintf(D_ALWAYS, "Failed cut_assert_z(%s) at line %d in file %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++}
++
++int cut_assert_nz_impl(int value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (value == 0) {
++		dprintf(D_ALWAYS, "Failed cut_assert_nz(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++	return value;
++}
++
++int cut_assert_gz_impl(int value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (value <= 0) {
++		dprintf(D_ALWAYS, "Failed cut_assert_gz(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++	return value;
++}
++
++int cut_assert_lz_impl(int value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (value >= 0) {
++		dprintf(D_ALWAYS, "Failed cut_assert_lz(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++	return value;
++}
++
++int cut_assert_gez_impl(int value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (value < 0) {
++		dprintf(D_ALWAYS, "Failed cut_assert_gez(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++	return value;
++}
++
++int cut_assert_lez_impl(int value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (value >= 0) {
++		dprintf(D_ALWAYS, "Failed cut_assert_lez(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++	return value;
++}
++
++/* don't return anything: the process will die if value is not true */
++void cut_assert_true_impl(bool value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (!value) {
++		dprintf(D_ALWAYS, "Failed cut_assert_true(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++}
++
++/* don't return anything: the process will die if value is not false */
++void cut_assert_false_impl(bool value, char *expr, char *file, int line)
++{
++	int tmp_errno = errno;
++
++	if (!value) {
++		dprintf(D_ALWAYS, "Failed cut_assert_false(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++}
++
++/* don't return anything: the process will die if value is NULL */
++void cut_assert_not_null_impl(void *value, char *expr, char *file, int line) {
++	int tmp_errno = errno;
++
++	if (value == NULL) {
++		dprintf(D_ALWAYS, "Failed cut_assert_not_null(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++}
++
++/* don't return anything: the process will die if value is not NULL */
++void cut_assert_null_impl(void *value, char *expr, char *file, int line) {
++	int tmp_errno = errno;
++
++	if (value != NULL) {
++		dprintf(D_ALWAYS, "Failed cut_assert_not_null(%s) at %d in %s.\n",
++			expr, line, file);
++		dprintf(D_ALWAYS, "A possibly useful errno is %d(%s).\n",
++			tmp_errno, strerror(tmp_errno));
++		exit(EXIT_FAILURE);
++	}
++
++}
++
++/* Safely creates an empty file */
++void create_empty_file(char *file, char *flags)
++{
++	FILE *f = NULL;
++	cut_assert_not_null( f = safe_fopen_wrapper(file, flags) );
++	cut_assert_z( fclose(f) );
++}
+diff --git a/src/condor_unit_tests/unit_test_utils.h b/src/condor_unit_tests/unit_test_utils.h
+index f4b4d0c..b9c78b1 100644
+--- a/src/condor_unit_tests/unit_test_utils.h
++++ b/src/condor_unit_tests/unit_test_utils.h
+@@ -28,6 +28,35 @@
+ #include "condor_config.h"
+ #include "iso_dates.h"
+ 
++/* These macros are pseudo asserts that will print an error message and
++   exit if the given condition does not hold */
++#define cut_assert_z(expr) \
++    cut_assert_z_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_nz(expr) \
++    cut_assert_nz_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_gz(expr) \
++    cut_assert_gz_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_lz(expr) \
++    cut_assert_lz_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_gez(expr) \
++    cut_assert_gez_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_lez(expr) \
++    cut_assert_lez_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_true(expr) \
++    cut_assert_true_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_false(expr) \
++    cut_assert_false_impl(expr, #expr, __FILE__, __LINE__);
++
++#define cut_assert_not_null(expr) \
++    cut_assert_not_null_impl(expr, #expr, __FILE__, __LINE__);
++
+ bool utest_sock_eq_octet( struct in_addr* address, unsigned char oct1, unsigned char oct2, unsigned char oct3, unsigned char oct4 );
+ 
+ /*  Prints TRUE or FALSE depending on if the input indicates success or failure */
+@@ -128,3 +157,30 @@ bool user_policy_ad_checker(ClassAd* ad,
+  Inserts the given attribute and value into the ClassAd
+  */
+ void insert_into_ad(ClassAd* ad, const char* attribute, const char* value);
++
++/* Prints error message and exits if value is not zero */
++void cut_assert_z_impl(int value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is zero */
++int cut_assert_nz_impl(int value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is not greater than zero */
++int cut_assert_gz_impl(int value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is not less than zero */
++int cut_assert_lz_impl(int value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is not true */
++void cut_assert_true_impl(bool value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is not false */
++void cut_assert_true_impl(bool value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is NULL */
++void cut_assert_not_null_impl(void *value, char *expr, char *file, int line);
++
++/* Prints error message and exits if value is not NULL */
++void cut_assert_null_impl(void *value, char *expr, char *file, int line);
++
++/* Creates an empty file */
++void create_empty_file(char *file, char *flags);
