@@ -1,0 +1,146 @@
+diff --git a/src/condor_includes/set_user_priv_from_ad.h b/src/condor_includes/set_user_priv_from_ad.h
+index 6486afd..06fefa2 100644
+--- a/src/condor_includes/set_user_priv_from_ad.h
++++ b/src/condor_includes/set_user_priv_from_ad.h
+@@ -34,4 +34,7 @@
+ //
+ priv_state set_user_priv_from_ad(classad::ClassAd const &ad);
+ 
++// Lookup user info in ad and call init_user_ids()
++bool init_user_ids_from_ad( const classad::ClassAd &ad );
++
+ #endif
+diff --git a/src/condor_job_router/JobRouterHookMgr.cpp b/src/condor_job_router/JobRouterHookMgr.cpp
+index e67f7f1..105e3a1 100644
+--- a/src/condor_job_router/JobRouterHookMgr.cpp
++++ b/src/condor_job_router/JobRouterHookMgr.cpp
+@@ -220,13 +220,17 @@ JobRouterHookMgr::hookTranslateJob(RoutedJob* r_job, std::string &route_info)
+ 		return -1;
+ 	}
+ 
+-	set_user_priv_from_ad(r_job->src_ad);
++	if (init_user_ids_from_ad(r_job->src_ad) == false) {
++		delete translate_client;
++		return -1;
++	}
+ 	if (0 == spawn(translate_client, NULL, &hook_stdin, PRIV_USER_FINAL))
+ 	{
+ 		dprintf(D_ALWAYS|D_FAILURE,
+ 				"ERROR in JobRouterHookMgr::hookTranslateJob: "
+ 				"failed to spawn HOOK_TRANSLATE_JOB (%s)\n", hook_translate);
+ 		delete translate_client;
++		uninit_user_ids();
+ 		return -1;
+ 	}
+ 	uninit_user_ids();
+@@ -284,13 +288,17 @@ JobRouterHookMgr::hookUpdateJobInfo(RoutedJob* r_job)
+ 		return -1;
+ 	}
+ 
+-	set_user_priv_from_ad(r_job->src_ad);
++	if (init_user_ids_from_ad(r_job->src_ad) == false) {
++		delete status_client;
++		return -1;
++	}
+ 	if (0 == spawn(status_client, NULL, &hook_stdin, PRIV_USER_FINAL))
+ 	{
+ 		dprintf(D_ALWAYS|D_FAILURE,
+ 				"ERROR in JobRouterHookMgr::hookUpdateJobInfo: "
+ 				"failed to spawn HOOK_UPDATE_JOB_INFO (%s)\n", hook_update_job_info);
+ 		delete status_client;
++		uninit_user_ids();
+ 		return -1;
+ 
+ 	}
+@@ -352,13 +360,17 @@ JobRouterHookMgr::hookJobExit(RoutedJob* r_job)
+ 		return -1;
+ 	}
+ 
+-	set_user_priv_from_ad(r_job->src_ad);
++	if (init_user_ids_from_ad(r_job->src_ad) == false) {
++		delete exit_client;
++		return -1;
++	}
+ 	if (0 == spawn(exit_client, NULL, &hook_stdin, PRIV_USER_FINAL))
+ 	{
+ 		dprintf(D_ALWAYS|D_FAILURE,
+ 				"ERROR in JobRouterHookMgr::hookJobExit: "
+ 				"failed to spawn HOOK_JOB_EXIT (%s)\n", hook_job_exit);
+ 		delete exit_client;
++		uninit_user_ids();
+ 		return -1;
+ 
+ 	}
+@@ -421,13 +433,17 @@ JobRouterHookMgr::hookJobCleanup(RoutedJob* r_job)
+ 		return -1;
+ 	}
+ 
+-	set_user_priv_from_ad(r_job->src_ad);
++	if (init_user_ids_from_ad(r_job->src_ad) == false) {
++		delete cleanup_client;
++		return -1;
++	}
+ 	if (0 == spawn(cleanup_client, NULL, &hook_stdin, PRIV_USER_FINAL))
+ 	{
+ 		dprintf(D_ALWAYS|D_FAILURE,
+ 				"ERROR in JobRouterHookMgr::JobCleanup: "
+ 				"failed to spawn HOOK_JOB_CLEANUP (%s)\n", hook_cleanup);
+ 		delete cleanup_client;
++		uninit_user_ids();
+ 		return -1;
+ 
+ 	}
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 89cd3f0..164be2a 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -14657,6 +14657,7 @@ WriteCompletionVisa(ClassAd* ad)
+ 	                   iwd.Value(),
+ 	                   NULL);
+ 	set_priv(prev_priv_state);
++	uninit_user_ids();
+ }
+ 
+ int
+diff --git a/src/condor_utils/set_user_priv_from_ad.cpp b/src/condor_utils/set_user_priv_from_ad.cpp
+index cd6d0cd..39dd245 100644
+--- a/src/condor_utils/set_user_priv_from_ad.cpp
++++ b/src/condor_utils/set_user_priv_from_ad.cpp
+@@ -24,22 +24,32 @@
+ #include "condor_attributes.h"
+ #include "set_user_priv_from_ad.h"
+ 
+-priv_state set_user_priv_from_ad(classad::ClassAd const &ad)
++bool init_user_ids_from_ad( const classad::ClassAd &ad )
+ {
+ 	std::string owner;
+ 	std::string domain;
+ 
+ 	if (!ad.EvaluateAttrString(ATTR_OWNER,  owner)) {
+ 		dPrintAd(D_ALWAYS, ad);
+-		EXCEPT("Failed to find %s in job ad.", ATTR_OWNER);
++		dprintf( D_ALWAYS, "Failed to find %s in job ad.\n", ATTR_OWNER );
++		return false;
+ 	}
+ 
+ 	ad.EvaluateAttrString(ATTR_NT_DOMAIN, domain);
+ 
+ 	if (!init_user_ids(owner.c_str(), domain.c_str())) {
+-		EXCEPT("Failed in init_user_ids(%s,%s)",
+-			   owner.c_str(),
+-			   domain.c_str());
++		dprintf( D_ALWAYS, "Failed in init_user_ids(%s,%s)\n",
++				 owner.c_str(), domain.c_str() );
++		return false;
++	}
++
++	return true;
++}
++
++priv_state set_user_priv_from_ad(classad::ClassAd const &ad)
++{
++	if ( !init_user_ids_from_ad( ad ) ) {
++		EXCEPT( "Failed to initialize user ids." );
+ 	}
+ 
+ 	return set_user_priv();
