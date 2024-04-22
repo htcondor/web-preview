@@ -1,0 +1,36 @@
+--- session.c~	  2010-11-30 19:02:59.000000000 -0600
++++ session.c	  2011-06-21 11:28:59.000000000 -0500
+@@ -1671,6 +1671,11 @@ do_child(Session *s, const char *command
+   shell = (pw->pw_shell[0] == '\0') ? _PATH_BSHELL : pw->pw_shell;
+ 
+	/*
++	 * Ignore the shell from the password data.  Always use /bin/sh.
++	  */
++	  shell = _PATH_BSHELL;
++
++	/*
+ 	 * Make sure $SHELL points to the shell from the password file,
+ 	  * even if shell is overridden from login.conf
+ 	   */
+--- auth.c~	2010-11-30 19:21:51.000000000 -0600
++++ auth.c	2011-06-21 11:46:16.000000000 -0500
+@@ -145,6 +145,8 @@ allowed_user(struct passwd * pw)
+ #ifdef USE_LIBIAF
+		free((void *) passwd);
+ #endif /* USE_LIBIAF */
++	   /* Dan: disabling check for locked account */
++	      locked = 0;
+ 	      	     if (locked) {
+ 		     		 logit("User %.100s not allowed because account is locked",
+ 				 	     	        pw->pw_name);
+@@ -158,8 +160,7 @@ allowed_user(struct passwd * pw)
+    */
+    if (options.chroot_directory == NULL ||
+        strcasecmp(options.chroot_directory, "none") == 0) {
+-					     char *shell = xstrdup((pw->pw_shell[0] == '\0') ?
+-					     	      _PATH_BSHELL : pw->pw_shell); /* empty = /bin/sh */
++						      		   char *shell = xstrdup(_PATH_BSHELL); /* Dan: forced shell to /bin/sh */
+ 
+		if (stat(shell, &st) != 0) {
+ 		   		logit("User %.100s not allowed because shell %.100s "
+
