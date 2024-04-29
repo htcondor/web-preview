@@ -1,0 +1,211 @@
+diff --git a/src/condor_c++_util/condor_attributes.cpp b/src/condor_c++_util/condor_attributes.cpp
+index 8a8b311..eaedbf4 100644
+--- a/src/condor_c++_util/condor_attributes.cpp
++++ b/src/condor_c++_util/condor_attributes.cpp
+@@ -265,6 +265,7 @@ const char * const ATTR_HOLD_KILL_SIG            = "HoldKillSig";
+ const char * const ATTR_HOOK_KEYWORD             = "HookKeyword";
+ const char * const ATTR_IDLE_JOBS                = "IdleJobs";
+ const char * const ATTR_IMAGE_SIZE				 = "ImageSize";
++const char * const ATTR_RESIDENT_SET_SIZE        = "ResidentSetSize";
+ const char * const ATTR_INTERACTIVE			 = "Interactive";
+ const char * const ATTR_IS_DAEMON_CORE           = "IsDaemonCore";
+ const char * const ATTR_IS_OWNER                 = "IsOwner";
+diff --git a/src/condor_c++_util/proc_family_direct.cpp b/src/condor_c++_util/proc_family_direct.cpp
+index 429ea20..a232366 100644
+--- a/src/condor_c++_util/proc_family_direct.cpp
++++ b/src/condor_c++_util/proc_family_direct.cpp
+@@ -127,6 +127,7 @@ ProcFamilyDirect::get_usage(pid_t pid, ProcFamilyUsage& usage, bool full)
+ 
+ 	usage.percent_cpu = 0.0;
+ 	usage.total_image_size = 0;
++    usage.total_resident_set_size = 0;
+ 	if (full) {
+ 		pid_t* family_array;
+ 		int family_size = family->currentfamily(family_array);
+@@ -141,6 +142,7 @@ ProcFamilyDirect::get_usage(pid_t pid, ProcFamilyUsage& usage, bool full)
+ 		if (ret != PROCAPI_FAILURE) {
+ 			usage.percent_cpu = proc_info.cpuusage;
+ 			usage.total_image_size = proc_info.imgsize;
++            usage.total_resident_set_size = proc_info.rssize;
+ 		}
+ 		else {
+ 			dprintf(D_ALWAYS,
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index f26657d..6801216 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -205,6 +205,7 @@ extern const char * const  ATTR_HOLD_KILL_SIG;
+ extern const char * const  ATTR_HOOK_KEYWORD;
+ extern const char * const  ATTR_IDLE_JOBS;
+ extern const char * const  ATTR_IMAGE_SIZE;
++extern const char * const  ATTR_RESIDENT_SET_SIZE;
+ extern const char * const  ATTR_INTERACTIVE;
+ extern const char * const  ATTR_IS_DAEMON_CORE;
+ extern const char * const  ATTR_IS_OWNER;
+diff --git a/src/condor_procd/proc_family.cpp b/src/condor_procd/proc_family.cpp
+index 6efdd0a..c2e1c3c 100644
+--- a/src/condor_procd/proc_family.cpp
++++ b/src/condor_procd/proc_family.cpp
+@@ -127,6 +127,7 @@ ProcFamily::aggregate_usage(ProcFamilyUsage* usage)
+ 		// current total image size
+ 		//
+ 		usage->total_image_size += member->m_proc_info->imgsize;
++		usage->total_resident_set_size += member->m_proc_info->rssize;
+ 
+ 		// number of alive processes
+ 		//
+diff --git a/src/condor_procd/proc_family_io.h b/src/condor_procd/proc_family_io.h
+index 2c22f9f..0226a10 100644
+--- a/src/condor_procd/proc_family_io.h
++++ b/src/condor_procd/proc_family_io.h
+@@ -82,6 +82,7 @@ struct ProcFamilyUsage {
+ 	double        percent_cpu;
+ 	unsigned long max_image_size;
+ 	unsigned long total_image_size;
++    unsigned long total_resident_set_size;
+ 	int           num_procs;
+ };
+ 
+diff --git a/src/condor_procd/proc_family_monitor.cpp b/src/condor_procd/proc_family_monitor.cpp
+index 52155b2..bbab337 100644
+--- a/src/condor_procd/proc_family_monitor.cpp
++++ b/src/condor_procd/proc_family_monitor.cpp
+@@ -469,6 +469,7 @@ ProcFamilyMonitor::get_family_usage(pid_t pid, ProcFamilyUsage* usage)
+ 	usage->sys_cpu_time = 0;
+ 	usage->percent_cpu = 0.0;
+ 	usage->total_image_size = 0;
++    usage->total_resident_set_size = 0;
+ 	usage->num_procs = 0;
+ 	get_family_usage(tree, usage);
+ 
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.cpp b/src/condor_schedd.V6/qmgr_job_updater.cpp
+index 081898b..3655fe5 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.cpp
++++ b/src/condor_schedd.V6/qmgr_job_updater.cpp
+@@ -102,6 +102,7 @@ QmgrJobUpdater::initJobQueueAttrLists( void )
+ 
+ 	common_job_queue_attrs = new StringList();
+ 	common_job_queue_attrs->insert( ATTR_IMAGE_SIZE );
++	common_job_queue_attrs->insert( ATTR_RESIDENT_SET_SIZE );
+ 	common_job_queue_attrs->insert( ATTR_DISK_USAGE );
+ 	common_job_queue_attrs->insert( ATTR_JOB_REMOTE_SYS_CPU );
+ 	common_job_queue_attrs->insert( ATTR_JOB_REMOTE_USER_CPU );
+diff --git a/src/condor_shadow.V6.1/remoteresource.cpp b/src/condor_shadow.V6.1/remoteresource.cpp
+index ba112f5..2dcd8bc 100644
+--- a/src/condor_shadow.V6.1/remoteresource.cpp
++++ b/src/condor_shadow.V6.1/remoteresource.cpp
+@@ -960,7 +960,11 @@ RemoteResource::updateFromStarter( ClassAd* update_ad )
+ 			jobAd->Assign(ATTR_IMAGE_SIZE, int_value);
+ 		}
+ 	}
+-			
++
++	if( update_ad->LookupInteger(ATTR_RESIDENT_SET_SIZE, int_value) ) {
++	    jobAd->Assign(ATTR_RESIDENT_SET_SIZE, int_value);
++	}
++
+ 	if( update_ad->LookupInteger(ATTR_DISK_USAGE, int_value) ) {
+ 		if( int_value > disk_usage ) {
+ 			disk_usage = int_value;
+diff --git a/src/condor_startd.V6/vmuniverse_mgr.cpp b/src/condor_startd.V6/vmuniverse_mgr.cpp
+index e60df65..0f5da1b 100644
+--- a/src/condor_startd.V6/vmuniverse_mgr.cpp
++++ b/src/condor_startd.V6/vmuniverse_mgr.cpp
+@@ -105,8 +105,10 @@ VMStarterInfo::getUsageOfVM(ProcFamilyUsage &usage)
+ 
+ 	if( updated ) {
+ 		usage.total_image_size = m_vm_alive_pinfo.imgsize;
++		usage.total_resident_set_size = m_vm_alive_pinfo.rssize;
+ 	}else {
+ 		usage.total_image_size = 0;
++        usage.total_resident_set_size = 0;
+ 	}
+ 
+ 	if( (DebugFlags & D_FULLDEBUG) && (DebugFlags & D_LOAD) ) {
+@@ -965,6 +967,7 @@ VMUniverseMgr::getUsageForVM(pid_t s_pid, ProcFamilyUsage &usage)
+ 		usage.max_image_size = vm_usage.max_image_size;
+ 	}
+ 	usage.total_image_size += vm_usage.total_image_size;
++	usage.total_resident_set_size += vm_usage.total_resident_set_size;
+ 	return true;
+ }
+ 
+diff --git a/src/condor_starter.V6.1/vanilla_proc.cpp b/src/condor_starter.V6.1/vanilla_proc.cpp
+index 781c3fe..d27ac8c 100644
+--- a/src/condor_starter.V6.1/vanilla_proc.cpp
++++ b/src/condor_starter.V6.1/vanilla_proc.cpp
+@@ -231,8 +231,11 @@ VanillaProc::PublishUpdateAd( ClassAd* ad )
+ 	ad->InsertOrUpdate( buf );
+ 	sprintf( buf, "%s=%lu", ATTR_JOB_REMOTE_USER_CPU, usage->user_cpu_time );
+ 	ad->InsertOrUpdate( buf );
++
+ 	sprintf( buf, "%s=%lu", ATTR_IMAGE_SIZE, usage->max_image_size );
+ 	ad->InsertOrUpdate( buf );
++	sprintf( buf, "%s=%lu", ATTR_RESIDENT_SET_SIZE, usage->total_resident_set_size );
++	ad->InsertOrUpdate( buf );
+ 
+ 		// Update our knowledge of how many processes the job has
+ 	num_pids = usage->num_procs;
+diff --git a/src/condor_starter.V6.1/vm_proc.cpp b/src/condor_starter.V6.1/vm_proc.cpp
+index ed340d4..4dca816 100644
+--- a/src/condor_starter.V6.1/vm_proc.cpp
++++ b/src/condor_starter.V6.1/vm_proc.cpp
+@@ -1202,13 +1202,15 @@ VMProc::PublishUpdateAd( ClassAd* ad )
+ 		ad->Assign(ATTR_JOB_REMOTE_SYS_CPU, sys_time );
+ 		ad->Assign(ATTR_JOB_REMOTE_USER_CPU, user_time );
+ 		ad->Assign(ATTR_IMAGE_SIZE, (int)0);
++		ad->Assign(ATTR_RESIDENT_SET_SIZE, (int)0);
+ 	}else {
+ 		// Update usage of process for VM
+ 		long sys_time = 0;
+ 		long user_time = 0;
+ 		unsigned long max_image = 0;
++        unsigned long rss = 0;
+ 
+-		getUsageOfVM(sys_time, user_time, max_image);
++		getUsageOfVM(sys_time, user_time, max_image, rss);
+ 		
+ 		// Added to update CPU Usage of VM in ESX
+ 		if ( (long)m_vm_cputime > user_time ) {
+@@ -1218,8 +1220,11 @@ VMProc::PublishUpdateAd( ClassAd* ad )
+ 		// Publish it into the ad.
+ 		ad->Assign(ATTR_JOB_REMOTE_SYS_CPU, (float)sys_time );
+ 		ad->Assign(ATTR_JOB_REMOTE_USER_CPU, (float)user_time );
++
+ 		buf.sprintf("%s=%lu", ATTR_IMAGE_SIZE, max_image );
+ 		ad->InsertOrUpdate( buf.Value());
++		buf.sprintf("%s=%lu", ATTR_RESIDENT_SET_SIZE, rss );
++		ad->InsertOrUpdate( buf.Value());
+ 	}
+ 
+ 	if( m_vm_checkpoint ) {
+@@ -1466,12 +1471,15 @@ VMProc::updateUsageOfVM()
+ }
+ 
+ void
+-VMProc::getUsageOfVM(long &sys_time, long& user_time, unsigned long &max_image)
++VMProc::getUsageOfVM(long &sys_time, long& user_time, unsigned long &max_image, unsigned long& rss)
+ {
+ 	updateUsageOfVM();
+ 	sys_time = m_vm_exited_pinfo.sys_time + m_vm_alive_pinfo.sys_time;
+ 	user_time = m_vm_exited_pinfo.user_time + m_vm_alive_pinfo.user_time;
+ 
++	rss = (m_vm_exited_pinfo.rssize > m_vm_alive_pinfo.rssize) ? 
++		   m_vm_exited_pinfo.rssize : m_vm_alive_pinfo.rssize;
++
+ #if defined(WIN32)
+ 	max_image = (m_vm_exited_pinfo.rssize > m_vm_alive_pinfo.rssize) ? 
+ 		m_vm_exited_pinfo.rssize : m_vm_alive_pinfo.rssize;
+diff --git a/src/condor_starter.V6.1/vm_proc.h b/src/condor_starter.V6.1/vm_proc.h
+index b97125d..909d821 100644
+--- a/src/condor_starter.V6.1/vm_proc.h
++++ b/src/condor_starter.V6.1/vm_proc.h
+@@ -100,7 +100,7 @@ class VMProc : public OsProc
+ 		void setVMIP(const char *ip);
+ 
+ 		void updateUsageOfVM();
+-		void getUsageOfVM(long &sys_time, long& user_time, unsigned long &max_image);
++		void getUsageOfVM(long &sys_time, long& user_time, unsigned long &max_image, unsigned long& rss);
+ 		void killProcessForVM();
+ 
+ 		// If interal vmgahp error occurs, call this function 
