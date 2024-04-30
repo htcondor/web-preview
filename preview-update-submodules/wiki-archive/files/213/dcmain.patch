@@ -1,0 +1,13 @@
+diff --git a/src/condor_daemon_core.V6/daemon_core_main.cpp b/src/condor_daemon_core.V6/daemon_core_main.cpp
+index ca090fb..549430e 100644
+--- a/src/condor_daemon_core.V6/daemon_core_main.cpp
++++ b/src/condor_daemon_core.V6/daemon_core_main.cpp
+@@ -1674,7 +1674,7 @@ int main( int argc, char** argv )
+ 			else {
+ 				ptr++;
+ 				if( ptr && *ptr ) {
+-					logDir = *ptr;
++					logDir = condor_dirname(*ptr);
+ 					dcargs += 2;
+ 				} else {
+ 					fprintf( stderr, "DaemonCore: ERROR: -log needs another "
