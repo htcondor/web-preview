@@ -1,0 +1,1332 @@
+Index: condor_c++_util/MyString.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_c++_util/MyString.C,v
+retrieving revision 1.1.2.5.10.9.4.11
+diff -u -p -r1.1.2.5.10.9.4.11 MyString.C
+--- condor_c++_util/MyString.C	15 Feb 2006 22:06:42 -0000	1.1.2.5.10.9.4.11
++++ condor_c++_util/MyString.C	14 Sep 2010 15:16:27 -0000
+@@ -383,6 +383,42 @@ MyString::Substr(int pos1, int pos2) con
+ // character before them.  it does NOT convert newlines to
+ // the two chars '\n'.
+ 
++
++int 
++MyString::EscapeCharsInPlace(const MyString& Q, const char escape)  
++{
++
++	int count = 0;
++
++	// create a result string.  may as well reserve the length to
++	// begin with so we don't recopy the string for EVERY character.
++	// this algorithm WILL recopy the string for each char that ends
++	// up being escaped.
++	MyString S;
++	S.reserve(Len);
++	
++	// go through each char in this string
++	for (int i = 0; i < Len; i++) {
++		
++		// if it is in the set of chars to escape,
++		// drop an escape onto the end of the result
++		if (Q.FindChar(Data[i]) >= 0) {
++			// this character needs escaping
++			S += escape;
++			count++;
++		}
++		
++		// put this char into the result
++		S += Data[i];
++	}
++	
++	// copy result into this MyString via assignment operator
++	*this = S;
++
++	// thats it!
++	return count;
++}
++
+ MyString 
+ MyString::EscapeChars(const MyString& Q, const char escape) const 
+ {
+Index: condor_c++_util/MyString.h
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_c++_util/MyString.h,v
+retrieving revision 1.19.10.10.10.11.4.12
+diff -u -p -r1.19.10.10.10.11.4.12 MyString.h
+--- condor_c++_util/MyString.h	15 Feb 2006 22:06:42 -0000	1.19.10.10.10.11.4.12
++++ condor_c++_util/MyString.h	14 Sep 2010 15:16:27 -0000
+@@ -192,6 +192,7 @@ class MyString 
+      *  original string is "Alain", you will get "Al\ain" in a new
+      *  string.  */
+ 	MyString EscapeChars(const MyString& Q, const char escape) const;
++	int EscapeCharsInPlace(const MyString& Q, const char escape);
+ 
+ 	/** Returns the position at which a character is first found. Begins
+ 	 * counting from FirstPos. Returns -1 if it's not found. 
+Index: condor_c++_util/classad_log.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_c++_util/classad_log.C,v
+retrieving revision 1.24.4.3.18.3.14.5
+diff -u -p -r1.24.4.3.18.3.14.5 classad_log.C
+--- condor_c++_util/classad_log.C	10 Apr 2006 21:26:15 -0000	1.24.4.3.18.3.14.5
++++ condor_c++_util/classad_log.C	14 Sep 2010 15:16:27 -0000
+@@ -124,7 +124,25 @@ ClassAdLog::ClassAdLog(const char *filen
+ 		delete active_transaction;
+ 		active_transaction = NULL;
+ 	}
+-	TruncLog();
++
++	readonly = false;
++	if (param_boolean("CLASSAD_LOG_READONLY",false)) {
++		readonly=true;
++		if (log_fp) fclose(log_fp);
++		if (log_fd) close(log_fd);
++
++		log_fd = open(NULL_FILE, O_RDWR | O_CREAT, 0600);
++		if (log_fd < 0) {
++			EXCEPT("readonly=true failed to open log %s, errno = %d", NULL_FILE, errno);
++		}
++
++		log_fp = fdopen(log_fd, "r+");
++		if (log_fp == NULL) {
++			EXCEPT("readonly=true failed to fdopen log %s, errno = %d", NULL_FILE, errno);
++		}
++	} else {
++		TruncLog();
++	}
+ }
+ 
+ ClassAdLog::~ClassAdLog()
+@@ -161,7 +179,7 @@ ClassAdLog::AppendLog(LogRecord *log)
+ 	      EXCEPT("flush to %s failed, errno = %d", log_filename, errno);
+ 	    }
+ 	    //MD: syncing the data as done before
+-	    if (fsync(fileno(log_fp)) < 0) {
++	    if (!readonly && fsync(fileno(log_fp)) < 0) {
+ 	      EXCEPT("fsync of %s failed, errno = %d", log_filename, errno);
+ 	    }
+ 	  }
+@@ -321,7 +339,12 @@ ClassAdLog::CommitTransaction()
+ 	if (!EmptyTransaction) {
+ 		LogEndTransaction *log = new LogEndTransaction;
+ 		active_transaction->AppendLog(log);
+-		active_transaction->Commit(log_fp, (void *)&table);
++		if ( readonly ) {
++				// Commit w/ NULL fp arg to avoid disk write
++			active_transaction->Commit(NULL, (void *)&table);
++		} else {
++			active_transaction->Commit(log_fp, (void *)&table);
++		}
+ 	}
+ 	delete active_transaction;
+ 	active_transaction = NULL;
+@@ -501,7 +524,7 @@ ClassAdLog::LogState(FILE *fp)
+ 	if (fflush(fp) !=0){
+ 	  EXCEPT("fflush of %s failed, errno = %d", log_filename, errno);
+ 	}
+-	if (fsync(fileno(fp)) < 0) {
++	if (!readonly && fsync(fileno(fp)) < 0) {
+ 		EXCEPT("fsync of %s failed, errno = %d", log_filename, errno);
+ 	} 
+ }
+Index: condor_c++_util/classad_log.h
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_c++_util/classad_log.h,v
+retrieving revision 1.13.10.1.20.1.26.4
+diff -u -p -r1.13.10.1.20.1.26.4 classad_log.h
+--- condor_c++_util/classad_log.h	10 Apr 2006 21:26:15 -0000	1.13.10.1.20.1.26.4
++++ condor_c++_util/classad_log.h	14 Sep 2010 15:16:27 -0000
+@@ -97,6 +97,7 @@ private:
+ 	bool EmptyTransaction;
+ 	int max_historical_logs;
+ 	unsigned long historical_sequence_number;
++	bool readonly;
+ 
+ 	bool SaveHistoricalLogs();
+ };
+Index: condor_collector.V6/collector.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_collector.V6/collector.C,v
+retrieving revision 1.43.10.6.10.16.4.15
+diff -u -p -r1.43.10.6.10.16.4.15 collector.C
+--- condor_collector.V6/collector.C	7 Apr 2006 22:07:15 -0000	1.43.10.6.10.16.4.15
++++ condor_collector.V6/collector.C	14 Sep 2010 15:16:27 -0000
+@@ -1033,6 +1033,7 @@ void CollectorDaemon::Config()
+     collector.scheduleHousekeeper( ClassadLifetime );
+     if (MasterCheckInterval>0) collector.scheduleDownMasterCheck( MasterCheckInterval );
+ 
++
+     // if we're not the View Collector, let's set something up to forward
+     // all of our ads to the view collector.
+     if(View_Collector) {
+@@ -1124,6 +1125,65 @@ void CollectorDaemon::Config()
+         forkQuery.setMaxWorkers( 0 );
+     }
+ 
++
++	// For testing, an option to boot up the collector w/ a bunch
++	// of classads.
++	tmp = param("COLLECTOR_LOAD_STARTD_ADS");
++	if ( tmp ) {
++		int EndFlag = 0;
++		int ErrorFlag = 0;
++		int EmptyFlag = 0;
++		int count = 0;
++		int insert = 0;
++		ClassAd *curr_ad = NULL;
++		
++		FILE *fp = fopen(tmp,"r");
++		if ( !fp ) {
++			EXCEPT("Could not read file %s",tmp);
++		}
++		dprintf(D_ALWAYS,"Reading ads from %s\n",tmp);
++		do {
++
++			if( !( curr_ad=new ClassAd(fp,"\n", EndFlag, ErrorFlag, EmptyFlag) )) {
++				EXCEPT("Out of memory");
++			}
++			if (EndFlag) {
++				break;
++			}
++			if ( ErrorFlag || EmptyFlag ) {
++				ErrorFlag= 0;
++				EmptyFlag = 0;
++				if (ad) delete ad;
++				ad = NULL;
++				continue;
++			}
++	
++			count++;
++			if ( count % 100 == 0) {
++				dprintf(D_ALWAYS,"    Read %d ads....\n",count);
++			}
++
++			if (curr_ad) {
++				curr_ad->Insert("WantClaiming = False");
++			}
++
++			collector.collect(UPDATE_STARTD_AD, 
++				curr_ad, 
++				NULL,		// sockaddr_in *from
++				insert,		// an extended error return value.
++				NULL);		// Sock *
++
++		} while(!EndFlag);
++
++		dprintf(D_ALWAYS,"Done reading from %s -- %d ads read\n",tmp,count);
++
++		if (curr_ad) delete curr_ad;
++		curr_ad = NULL;
++		if (tmp) free(tmp);
++		tmp = NULL;
++	}
++
++
+     return;
+ }
+ 
+@@ -1156,11 +1216,18 @@ int CollectorDaemon::sendCollectorAd()
+             dprintf (D_ALWAYS, "Error making collector ad (startd scan) \n");
+     }
+ 
++
+     // If we don't have any machines, then bail out. You oftentimes
+     // see people run a collector on each macnine in their pool. Duh.
+     if(machinesTotal == 0) {
+ 		return 1;
+ 	} 
++
++	if (!ad) {
++		dprintf (D_ALWAYS, "Error making collector ad\n");
++		return 0;
++    }
++
+     // insert values into the ad
+     char line[100];
+     sprintf(line,"%s = %d",ATTR_RUNNING_JOBS,submittorRunningJobs);
+Index: condor_collector.V6/collector_engine.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_collector.V6/collector_engine.C,v
+retrieving revision 1.29.10.4.20.8.12.10
+diff -u -p -r1.29.10.4.20.8.12.10 collector_engine.C
+--- condor_collector.V6/collector_engine.C	21 Mar 2006 20:56:28 -0000	1.29.10.4.20.8.12.10
++++ condor_collector.V6/collector_engine.C	14 Sep 2010 15:16:27 -0000
+@@ -471,7 +471,7 @@ collect (int command,ClassAd *clientAd,s
+ 		// if we want to store private ads
+ 		if (!sock)
+ 		{
+-			dprintf (D_ALWAYS, "Want private ads, but no socket given!\n");
++			dprintf (D_FULLDEBUG, "Want private ads, but no socket given!\n");
+ 			break;
+ 		}
+ 		else
+@@ -887,7 +887,7 @@ updateClassAd (CollectorHashTable &hashT
+ 	if ( hashTable.lookup (hk, old_ad) == -1)
+     {	 	
+ 		// no ... new ad
+-		dprintf (D_ALWAYS, "%s: Inserting ** \"%s\"\n", adType, hashString.GetCStr() );
++		dprintf (D_FULLDEBUG, "%s: Inserting ** \"%s\"\n", adType, hashString.GetCStr() );
+ 
+ 		// Update statistics
+ 		collectorStats->update( label, NULL, new_ad );
+@@ -951,7 +951,7 @@ checkMasterStatus (ClassAd *ad)
+ 	if (MasterAds.lookup (hk, old) == -1)
+ 	{
+ 		// ad was not there ... enter status as RECENTLY_DOWN
+-		dprintf(D_ALWAYS,"WARNING:  No master ad for < %s >\n", hk.name.GetCStr() );
++		dprintf(D_FULLDEBUG,"WARNING:  No master ad for < %s >\n", hk.name.GetCStr() );
+ 		if (MasterAds.insert (hk, RECENTLY_DOWN) == -1)
+ 		{
+ 			EXCEPT ("Out of memory");
+Index: condor_collector.V6/collector_stats.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_collector.V6/collector_stats.C,v
+retrieving revision 1.1.2.14.12.8
+diff -u -p -r1.1.2.14.12.8 collector_stats.C
+--- condor_collector.V6/collector_stats.C	5 Apr 2006 16:40:53 -0000	1.1.2.14.12.8
++++ condor_collector.V6/collector_stats.C	14 Sep 2010 15:16:27 -0000
+@@ -514,7 +514,7 @@ CollectorDaemonStatsList::updateStats( c
+ 
+ 		MyString	string;
+ 		key.getstr( string );
+-		dprintf( D_ALWAYS,
++		dprintf( D_FULLDEBUG,
+ 				 "stats: Inserting new hashent for %s\n", string.GetCStr() );
+ 	}
+ 
+Index: condor_includes/condor_commands.h
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_includes/condor_commands.h,v
+retrieving revision 1.39.8.23.6.4.14.26
+diff -u -p -r1.39.8.23.6.4.14.26 condor_commands.h
+--- condor_includes/condor_commands.h	5 Apr 2006 22:39:23 -0000	1.39.8.23.6.4.14.26
++++ condor_includes/condor_commands.h	14 Sep 2010 15:16:27 -0000
+@@ -157,6 +157,7 @@
+ #define VM_REGISTER	(SCHED_VERS+98)		// Virtual Machine
+ #define DELEGATE_GSI_CRED_SCHEDD	(SCHED_VERS+99) // delegate refreshed gsi proxy to schedd
+ #define DELEGATE_GSI_CRED_STARTER (SCHED_VERS+100) // delegate refreshed gsi proxy to starter
++#define NEGOTIATE_WITH_RESOURCE_REQUESTS (SCHED_VERS+101)
+ 
+ // HAD-related commands
+ #define HAD_ALIVE_CMD                   (HAD_COMMANDS_BASE + 0)
+Index: condor_negotiator.V6/matchmaker.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_negotiator.V6/matchmaker.C,v
+retrieving revision 1.71.10.19.10.8.12.36
+diff -u -p -r1.71.10.19.10.8.12.36 matchmaker.C
+--- condor_negotiator.V6/matchmaker.C	14 Apr 2006 00:31:46 -0000	1.71.10.19.10.8.12.36
++++ condor_negotiator.V6/matchmaker.C	14 Sep 2010 15:16:27 -0000
+@@ -53,7 +53,7 @@ enum { _MM_ERROR, MM_NO_MATCH, MM_GOOD_M
+ typedef int (*lessThanFunc)(AttrList*, AttrList*, void*);
+ 
+ static bool want_simple_matching = false;
+-
++static bool sendResourceRequests = false;
+ 
+ Matchmaker::
+ Matchmaker ()
+@@ -342,6 +342,7 @@ reinitialize ()
+ 		free( preferred_collector );
+ 	}
+ 
++	sendResourceRequests = param_boolean("SCHEDD_SEND_RESOURCE_REQUESTS",false);
+ 	want_simple_matching = param_boolean("NEGOTIATOR_SIMPLE_MATCHING",false);
+ 	want_matchlist_caching = param_boolean("NEGOTIATOR_MATCHLIST_CACHING",false);
+ 	ConsiderPreemption = param_boolean("NEGOTIATOR_CONSIDER_PREEMPTION",true);
+@@ -688,6 +689,8 @@ Matchmaker::
+ compute_signficant_attrs(ClassAdList & startdAds)
+ {
+ 	char *result = NULL;
++	static char* last_result = NULL;
++	time_t startTime = time(NULL);
+ 
+ 	// Figure out list of all external attribute references in all startd ads
+ 	dprintf(D_FULLDEBUG,"Entering compute_signficant_attrs()\n");
+@@ -775,8 +778,19 @@ compute_signficant_attrs(ClassAdList & s
+ 	external_references.remove_anycase(ATTR_SUBMITTOR_PRIO);
+ 		// Note: print_to_string mallocs memory on the heap
+ 	result = external_references.print_to_string();
+-	dprintf(D_FULLDEBUG,"Leaving compute_signficant_attrs() - result=%s\n",
++	dprintf(D_FULLDEBUG,"Leaving compute_signficant_attrs() time *%d* - result=%s\n",
++					time(NULL) - startTime,
+ 					result ? result : "(none)" );
++	if ( publicAd && update_collector_tid != -1 && result && 
++		 ( (last_result && strcmp(result,last_result)) || !last_result) )
++	{
++		// our significant attrs changed, reset the timer to go off asap
++		// so we can refresh the sig attrs in the negotiator ad
++		publicAd->Assign("SIG_ATTRS",result);
++		if ( last_result ) free(last_result);
++		last_result = strdup(result);
++		daemonCore->Reset_Timer( update_collector_tid, 0, update_interval );
++	}
+ 	return result;
+ }
+ 
+@@ -846,10 +860,24 @@ negotiationTime ()
+ 	}
+ 	job_attr_references = compute_signficant_attrs(startdAds);
+ 
++	// shotcut if we have no schedd ads here, no need to continue. 
++	// TODO ---- THIS SHOULD NOT STAY, SINCE WE MUST STILL PERFORM ACCOUNTING
++	// EVEN IF THERE ARE NO SUBMIITERS.
++	if (scheddAds.MyLength() == 0)
++	{
++
++		dprintf( D_ALWAYS, "---------- Finished Negotiation Cycle (No Submitters)----------\n" );
++		completedLastCycleTime = time(NULL);
++		return TRUE;
++	}
++
++
+ 	// ----- Recalculate priorities for schedds
+-	dprintf( D_ALWAYS, "Phase 2:  Performing accounting ...\n" );
++	dprintf( D_ALWAYS, "Phase 2:  Performing accounting\n" );
+ 	accountant.UpdatePriorities();
++	dprintf( D_ALWAYS, "Phase 2.1:  Performing accounting ... start checkmatches\n" );
+ 	accountant.CheckMatches( startdAds );
++	dprintf( D_ALWAYS, "Phase 2.3:  Performing accounting ... done\n" );
+ 	// if don't care about preemption, we can trim out all non Unclaimed ads now.
+ 	// note: we cannot trim out the Unclaimed ads before we call CheckMatches,
+ 	// otherwise CheckMatches will do the wrong thing (because it will not see
+@@ -1042,6 +1070,10 @@ negotiationTime ()
+ 
+ 	completedLastCycleTime = time(NULL);
+ 
++	if ( param_boolean("CS739",false) ) {
++		DC_Exit(55);
++	}
++
+ 	return TRUE;
+ }
+ 
+@@ -1260,7 +1292,7 @@ negotiateWithGroup ( ClassAdList& startd
+ 					}
+ 					startTime = time(NULL);
+ 					result=negotiate( scheddName,scheddAddr,scheddPrio,
+-								  scheddAbsShare, scheddLimit,
++								  scheddAbsShare, scheddLimit, schedd,
+ 								  startdAds, startdPvtAds, 
+ 								  send_ad_to_schedd, scheddVersion, ignore_schedd_limit,
+ 								  startTime);
+@@ -1631,7 +1663,7 @@ obtainAdsFromCollector (
+ 
+ int Matchmaker::
+ negotiate( char *scheddName, char *scheddAddr, double priority, double share,
+-		   int scheddLimit,
++		   int scheddLimit, ClassAd *scheddAd,
+ 		   ClassAdList &startdAds, ClassAdList &startdPvtAds, 
+ 		   int send_ad_to_schedd, const CondorVersionInfo & scheddVersion,
+ 		   bool ignore_schedd_limit, time_t startTime)
+@@ -1649,12 +1681,23 @@ negotiate( char *scheddName, char *sched
+ 	char		prioExpr[128], remoteUser[128];
+ 	int negotiate_command = NEGOTIATE;
+ 
++	// for resource request stuff
++	ClassAd * requestAd = NULL;
++	int resource_request_num, resource_request_total;
++	int curr_resource_request_autocluster, curr_resource_request_count, curr_resource_request_total;
++	resource_request_num = resource_request_total = 0;
++	curr_resource_request_autocluster = curr_resource_request_count = curr_resource_request_total = 0;
++
+ 		// Starting w/ ver 6.7.15, the schedd supports the 
+ 		// NEGOTIATE_WITH_SIGATTRS command that expects a
+ 		// list of significant attributes.  
+ 	if ( job_attr_references && scheddVersion.built_since_version(6,7,15) ) {
+ 		negotiate_command = NEGOTIATE_WITH_SIGATTRS;
+ 	}
++
++	if ( sendResourceRequests ) {
++		negotiate_command = NEGOTIATE_WITH_RESOURCE_REQUESTS;
++	}
+ 	
+ 	// 0.  connect to the schedd --- ask the cache for a connection
+ 	sock = sockCache->findReliSock( scheddAddr );
+@@ -1689,7 +1732,7 @@ negotiate( char *scheddName, char *sched
+ 			// session, we just want to encode the NEGOTIATE int on
+ 			// the socket...
+ 		sock->encode();
+-		if( ! sock->put(negotiate_command) ) {
++		if( !sock->put(negotiate_command) ) {
+ 			dprintf( D_ALWAYS, "    Failed to send NEGOTIATE to %s\n",
+ 					 scheddAddr );
+ 			sockCache->invalidateSock( scheddAddr );
+@@ -1767,24 +1810,71 @@ negotiate( char *scheddName, char *sched
+ 
+ 
+ 		// 2a.  ask for job information
+-		dprintf (D_FULLDEBUG, "    Sending SEND_JOB_INFO/eom\n");
+-		sock->encode();
+-		if (!sock->put(SEND_JOB_INFO) || !sock->end_of_message())
+-		{
+-			dprintf (D_ALWAYS, "    Failed to send SEND_JOB_INFO/eom\n");
+-			sockCache->invalidateSock(scheddAddr);
+-			return MM_ERROR;
+-		}
++		if ( !sendResourceRequests ) {
++				// get next job by asking the schedd
++			dprintf (D_FULLDEBUG, "    Sending SEND_JOB_INFO/eom\n");
++			sock->encode();
++			if (!sock->put(SEND_JOB_INFO) || !sock->end_of_message())
++			{
++				dprintf (D_ALWAYS, "    Failed to send SEND_JOB_INFO/eom\n");
++				sockCache->invalidateSock(scheddAddr);
++				return MM_ERROR;
++			}
+ 
+-		// 2b.  the schedd may either reply with JOB_INFO or NO_MORE_JOBS
+-		dprintf (D_FULLDEBUG, "    Getting reply from schedd ...\n");
+-		sock->decode();
+-		if (!sock->get (reply))
+-		{
+-			dprintf (D_ALWAYS, "    Failed to get reply from schedd\n");
+-			sock->end_of_message ();
+-            sockCache->invalidateSock(scheddAddr);
+-			return MM_ERROR;
++			// 2b.  the schedd may either reply with JOB_INFO or NO_MORE_JOBS
++			dprintf (D_FULLDEBUG, "    Getting reply from schedd ...\n");
++			sock->decode();
++			if (!sock->get (reply))
++			{
++				dprintf (D_ALWAYS, "    Failed to get reply from schedd\n");
++				sock->end_of_message ();
++				sockCache->invalidateSock(scheddAddr);
++				return MM_ERROR;
++			}
++		} else {
++			char buf[40];
++			// get next job from the distilled resource request info
++//	ClassAd * requestAd = NULL;
++//	int resource_request_num, resource_request_total
++// curr_resource_request_autocluster, curr_resource_request_count, curr_resource_request_total;
++			if ( resource_request_total == 0 ) {
++				resource_request_num = -1;				
++				scheddAd->LookupInteger("REQUESTS",resource_request_total);
++				ASSERT(resource_request_total);	// TODO - make this more resiliant
++			}
++			if ( curr_resource_request_count <= 0 ) {
++				if (requestAd) delete requestAd;
++				requestAd = NULL;
++			}
++			if ( requestAd == NULL ) {
++				resource_request_num++;
++				if ( resource_request_num < resource_request_total ) {
++					char *tmp = NULL;
++					sprintf(buf,"REQUEST%d",resource_request_num);
++					scheddAd->LookupString(buf,&tmp);
++					ASSERT(tmp);
++					requestAd = new ClassAd(tmp,'~');
++					ASSERT(requestAd);
++					requestAd->SetMyTypeName(JOB_ADTYPE);
++					requestAd->SetTargetTypeName(STARTD_ADTYPE);
++					free(tmp);
++					sprintf(buf,"REQUEST%d_AUTOCLUSTER",resource_request_num);
++					scheddAd->LookupInteger(buf,curr_resource_request_autocluster);
++					sprintf(buf,"REQUEST%d_COUNT",resource_request_num);
++					scheddAd->LookupInteger(buf,curr_resource_request_total);
++					curr_resource_request_count = curr_resource_request_total;
++					ASSERT(curr_resource_request_total);
++				} else {
++						// no more requests
++					reply = NO_MORE_JOBS;
++				}
++			}
++			if ( requestAd ) {
++				curr_resource_request_count--;
++				ASSERT(curr_resource_request_count >= 0);
++				reply = JOB_INFO;
++				request = *requestAd;	// assignment operator makes deep copy (we hope)
++			}						
+ 		}
+ 
+ 		// 2c.  if the schedd replied with NO_MORE_JOBS, cleanup and quit
+@@ -1815,13 +1905,20 @@ negotiate( char *scheddName, char *sched
+ 
+ 		// 2d.  get the request 
+ 		dprintf (D_FULLDEBUG,"    Got JOB_INFO command; getting classad/eom\n");
+-		if (!request.initFromStream(*sock) || !sock->end_of_message())
+-		{
+-			dprintf(D_ALWAYS, "    JOB_INFO command not followed by ad/eom\n");
+-			sock->end_of_message();
+-            sockCache->invalidateSock(scheddAddr);
+-			return MM_ERROR;
++		if ( !sendResourceRequests ) {
++			if (!request.initFromStream(*sock) || !sock->end_of_message())
++			{
++				dprintf(D_ALWAYS, "    JOB_INFO command not followed by ad/eom\n");
++				sock->end_of_message();
++				sockCache->invalidateSock(scheddAddr);
++				return MM_ERROR;
++			}
++		} else {
++			// use autocluster as clusterid, and count as the proc
++			request.Assign(ATTR_CLUSTER_ID,curr_resource_request_autocluster);
++			request.Assign(ATTR_PROC_ID,curr_resource_request_count);
+ 		}
++
+ 		if (!request.LookupInteger (ATTR_CLUSTER_ID, cluster) ||
+ 			!request.LookupInteger (ATTR_PROC_ID, proc))
+ 		{
+@@ -1875,19 +1972,21 @@ negotiate( char *scheddName, char *sched
+ 					dprintf(D_ALWAYS|D_MATCH|D_NOHEADER, "%s\n",
+ 							diagnostic_message);
+ 				}
+-				sock->encode();
+-				if ((want_match_diagnostics) ? 
+-					(!sock->put(REJECTED_WITH_REASON) ||
+-					 !sock->put(diagnostic_message) ||
+-					 !sock->end_of_message()) :
+-					(!sock->put(REJECTED) || !sock->end_of_message()))
++				if ( !sendResourceRequests ) {	
++					sock->encode();
++					if ((want_match_diagnostics) ? 
++						(!sock->put(REJECTED_WITH_REASON) ||
++						 !sock->put(diagnostic_message) ||
++						 !sock->end_of_message()) :
++						(!sock->put(REJECTED) || !sock->end_of_message()))
+ 					{
+-						dprintf (D_ALWAYS, "      Could not send rejection\n");
+-						sock->end_of_message ();
+-						sockCache->invalidateSock(scheddAddr);
+-						
+-						return MM_ERROR;
++							dprintf (D_ALWAYS, "      Could not send rejection\n");
++							sock->end_of_message ();
++							sockCache->invalidateSock(scheddAddr);
++							
++							return MM_ERROR;
+ 					}
++				}
+ 				result = MM_NO_MATCH;
+ 				continue;
+ 			}
+@@ -1942,6 +2041,11 @@ negotiate( char *scheddName, char *sched
+ 		if (result == MM_NO_MATCH) 
+ 		{
+ 			i--;		// haven't used any resources this cycle
++			if ( sendResourceRequests ) {
++				// we didn't find a match, so set the count to 0 to move
++				// on to the next resource request
++				curr_resource_request_count = 0;
++			}
+ 			continue;
+ 		}
+ 
+@@ -1954,15 +2058,27 @@ negotiate( char *scheddName, char *sched
+ 		} else  {
+ 			startdAds.Delete (offer);
+ 		}	
++
++		// decrement the resource request count here
++		if ( sendResourceRequests && requestAd ) {
++			char buf[40];
++			curr_resource_request_total--;
++			if ( curr_resource_request_total >= 0 ) {
++				sprintf(buf,"REQUEST%d_COUNT",resource_request_num);
++				requestAd->Assign(buf,curr_resource_request_total);
++			}
++		}
+ 	}
+ 
+ 
+ 	// break off negotiations
+-	sock->encode();
+-	if (!sock->put (END_NEGOTIATE) || !sock->end_of_message())
+-	{
+-		dprintf (D_ALWAYS, "    Could not send END_NEGOTIATE/eom\n");
+-        sockCache->invalidateSock(scheddAddr);
++	if ( !sendResourceRequests ) {
++		sock->encode();
++		if (!sock->put (END_NEGOTIATE) || !sock->end_of_message())
++		{
++			dprintf (D_ALWAYS, "    Could not send END_NEGOTIATE/eom\n");
++			sockCache->invalidateSock(scheddAddr);
++		}
+ 	}
+ 
+ 	// ... and continue negotiating with others
+@@ -2035,7 +2151,11 @@ matchmakingAlgorithm(char *scheddName, c
+ 		// request attributes
+ 	int				requestAutoCluster = -1;
+ 
+-	request.LookupInteger(ATTR_AUTO_CLUSTER_ID, requestAutoCluster);
++	if ( sendResourceRequests ) {
++		request.LookupInteger(ATTR_CLUSTER_ID, requestAutoCluster);
++	} else {
++		request.LookupInteger(ATTR_AUTO_CLUSTER_ID, requestAutoCluster);
++	}
+ 
+ 		// If this incoming job is from the same user, same schedd,
+ 		// and is in the same autocluster, and we have a MatchList cache,
+@@ -2878,8 +2998,13 @@ void Matchmaker::
+ init_public_ad()
+ {
+ 	static MyString line;
+-
+-	if( publicAd ) delete( publicAd );
++	char *sigattrs = NULL;
++		
++		// Save SIG_ATTRS before we delete the publicAd 
++	if( publicAd ) {
++		publicAd->LookupString("SIG_ATTRS",&sigattrs);
++		delete( publicAd );
++	}
+ 	publicAd = new ClassAd();
+ 
+ 	publicAd->SetMyTypeName(NEGOTIATOR_ADTYPE);
+@@ -2888,6 +3013,12 @@ init_public_ad()
+ 	line.sprintf ("%s = \"%s\"", ATTR_MACHINE, my_full_hostname());
+ 	publicAd->Insert(line.Value());
+ 
++	if ( sigattrs ) {
++		publicAd->Assign("SIG_ATTRS",sigattrs);
++		free(sigattrs);
++		sigattrs = NULL;
++	}
++
+ 	char* defaultName = NULL;
+ 	if( NegotiatorName ) {
+ 		line.sprintf("%s = \"%s\"", ATTR_NAME, NegotiatorName );
+Index: condor_negotiator.V6/matchmaker.h
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_negotiator.V6/matchmaker.h,v
+retrieving revision 1.19.10.7.20.1.22.14
+diff -u -p -r1.19.10.7.20.1.22.14 matchmaker.h
+--- condor_negotiator.V6/matchmaker.h	15 Feb 2006 22:07:41 -0000	1.19.10.7.20.1.22.14
++++ condor_negotiator.V6/matchmaker.h	14 Sep 2010 15:16:27 -0000
+@@ -114,7 +114,7 @@ class Matchmaker : public Service
+ 		**/
+ 		int negotiate( char *scheddName, char *scheddAddr, 
+ 		   double priority, double share,
+-		   int scheddLimit,
++		   int scheddLimit, ClassAd *scheddAd,
+ 		   ClassAdList &startdAds, ClassAdList &startdPvtAds, 
+ 		   int send_ad_to_schedd, const CondorVersionInfo & scheddVersion,
+ 		   bool ignore_schedd_limit, time_t startTime);
+Index: condor_schedd.V6/autocluster.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_schedd.V6/autocluster.C,v
+retrieving revision 1.1.2.1.24.7
+diff -u -p -r1.1.2.1.24.7 autocluster.C
+--- condor_schedd.V6/autocluster.C	6 Apr 2006 19:58:55 -0000	1.1.2.1.24.7
++++ condor_schedd.V6/autocluster.C	14 Sep 2010 15:16:27 -0000
+@@ -57,6 +57,20 @@ void AutoCluster::clearArray()
+ 	array.truncate(-1);
+ }
+ 	
++bool AutoCluster::getResourceRequestAd( const int autocluster, MyString & string)
++{
++	int size = array.getlast() + 1;
++	if ( autocluster < 0 || 
++		 autocluster >= size ||
++		 array[autocluster] == NULL )
++	{
++		return false;
++	}
++
++	string += *(array[autocluster]);
++	return true;
++}
++
+ bool AutoCluster::config(const char* significant_target_attrs)
+ {
+ 	bool sig_attrs_changed = false;
+@@ -183,6 +197,17 @@ void AutoCluster::sweep()
+ 			}
+ 		}
+ 	}
++
++	// this section just prints some info to the log
++	size = array.getlast() + 1;
++	int count = 0;
++	for (i=0; i < size ; i++) {
++		if ( array[i] ) {
++			dprintf(D_FULLDEBUG,"AUTOCLUSTER %d *%s*\n",i,array[i]->Value());
++			count++;
++		}
++	}
++	dprintf(D_ALWAYS,"AUTOCLUSTER TOTAL COUNT = %d\n",count);
+ }
+ 
+ int AutoCluster::getAutoClusterid( ClassAd *job )
+@@ -215,8 +240,10 @@ int AutoCluster::getAutoClusterid( Class
+ 	const char* next_attr = NULL;
+ 	while ( (next_attr=significant_attrs->next()) != NULL ) {
+ 		buf[0] = '\0';
+-		job->sPrintExpr(buf,sizeof(buf),next_attr);
+-		signature += buf;
++		if ( job->sPrintExpr(buf,sizeof(buf),next_attr) ) {
++			signature += buf;
++			signature += '~';  // seperator char between attrs
++		}
+ 	}
+ 		// now put significant attrs from self into the signature.
+ 		// note: only do this if signficant_attributes is not explicitly
+@@ -226,9 +253,15 @@ int AutoCluster::getAutoClusterid( Class
+ 	if ( !sig_attrs_came_from_config_file ) {
+ 		// get all internal references in the job ad.
+ 		StringList external_refs;	// we do not care about these
+-		job->GetReferences(ATTR_REQUIREMENTS,internal_refs,external_refs);
++		job->GetReferences(ATTR_REQUIREMENTS,internal_refs,external_refs);		
+ 		internal_refs.remove_anycase(ATTR_CURRENT_TIME);	// never want this attr
+-		internal_refs.append(ATTR_REQUIREMENTS);	// always want this attr
++		internal_refs.append(ATTR_REQUIREMENTS);	// always want this attr (TODO and its refs)
++		if ( param_boolean("SCHEDD_SEND_RESOURCE_REQUESTS",false) || 
++			 param_boolean("NEGOTIATOR_MATCHLIST_CACHING",false) ) 
++		{
++			internal_refs.append(ATTR_RANK);	// always want this attr (TODO and its refs)
++			job->GetReferences(ATTR_RANK,internal_refs,external_refs);
++		}
+ 		internal_refs.rewind();
+ 		next_attr = NULL;
+ 		while ( (next_attr=internal_refs.next()) != NULL ) {
+@@ -238,11 +271,18 @@ int AutoCluster::getAutoClusterid( Class
+ 				continue;
+ 			}
+ 			buf[0] = '\0';
+-			job->sPrintExpr(buf,sizeof(buf),next_attr);
+-			signature += buf;
++			if ( job->sPrintExpr(buf,sizeof(buf),next_attr) ) {
++				signature += buf;
++				signature += '~';  // seperator char between attrs
++			}
+ 		}
+ 	}
+ 
++		// escape double quotes from our signature, just so it is
++		// easy to store as a ClassAd string value
++		// COMMENTED OUT ---- they already are escaped??
++	//signature.EscapeCharsInPlace("\"",'\\');
++
+ 		// try to find a fit
+ 	int size = array.getlast() + 1;
+ 	for (i=0; i < size ; i++) {
+Index: condor_schedd.V6/autocluster.h
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_schedd.V6/autocluster.h,v
+retrieving revision 1.1.2.2.24.4
+diff -u -p -r1.1.2.2.24.4 autocluster.h
+--- condor_schedd.V6/autocluster.h	15 Feb 2006 22:08:00 -0000	1.1.2.2.24.4
++++ condor_schedd.V6/autocluster.h	14 Sep 2010 15:16:27 -0000
+@@ -78,6 +78,8 @@ public:
+ 	*/
+ 	int getAutoClusterid( ClassAd *job );
+ 
++	bool getResourceRequestAd( const int autocluster, MyString & string);
++
+ 		// garbage collection methods...
+ 
+ 	/** Set the deletion flag for all autocluster id entries in the class.  
+Index: condor_schedd.V6/qmgmt.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_schedd.V6/qmgmt.C,v
+retrieving revision 1.97.4.26.6.14.4.50
+diff -u -p -r1.97.4.26.6.14.4.50 qmgmt.C
+--- condor_schedd.V6/qmgmt.C	11 Apr 2006 01:31:53 -0000	1.97.4.26.6.14.4.50
++++ condor_schedd.V6/qmgmt.C	14 Sep 2010 15:16:27 -0000
+@@ -284,6 +284,30 @@ ConvertOldJobAdAttrs( ClassAd *job_ad, b
+ 		return;
+ 	}
+ 
++
++
++		// CRUFT
++		// Round some attributes by default if we picked up 
++		// an old queue (pre v6.7.19) to help w/ AutoClustering code.
++	if ( startup && param_boolean("SCHEDD_ROUND_OLD_VALUES",true) ) {
++		int int_val;
++		if (!job_ad->LookupInteger("ExecutableSize_RAW",int_val)) {
++			if (job_ad->LookupInteger("ExecutableSize",int_val)) {
++				SetAttributeInt(cluster,proc,"ExecutableSize",int_val);
++			}
++		}
++		if (!job_ad->LookupInteger("ImageSize_RAW",int_val)) {
++			if (job_ad->LookupInteger("ImageSize",int_val)) {
++				SetAttributeInt(cluster,proc,"ImageSize",int_val);
++			}
++		}
++		if (!job_ad->LookupInteger("DiskUsage_RAW",int_val)) {
++			if (job_ad->LookupInteger("DiskUsage",int_val)) {
++				SetAttributeInt(cluster,proc,"DiskUsage",int_val);
++			}
++		}
++	}
++
+ 		// CRUFT
+ 		// Convert old job ads to the new format of GridResource
+ 		// and GridJobId. This switch happened on the V6_7-lease
+@@ -1617,8 +1641,11 @@ SetAttribute(int cluster_id, int proc_id
+ 				ivalue = (long) token.floatVal;	// truncation conversion
+ 			}
+ 
+-			// round it.  note we always round UP!!  
+-			ivalue = ((ivalue / base ) + 1) * base;  // +1 means round up
++			// round it.  note we always round UP!!  also note we don't want
++			// to round a value that is sitting at zero.
++			if ( ivalue ) {
++				ivalue = ((ivalue / base ) + 1) * base;  // +1 means round up
++			}
+ 
+ 			// make it a string, courtesty MyString conversion.
+ 			temp_buf = ivalue;
+Index: condor_schedd.V6/schedd.C
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_schedd.V6/schedd.C,v
+retrieving revision 1.232.4.102.6.27.4.116
+diff -u -p -r1.232.4.102.6.27.4.116 schedd.C
+--- condor_schedd.V6/schedd.C	14 Apr 2006 00:31:50 -0000	1.232.4.102.6.27.4.116
++++ condor_schedd.V6/schedd.C	14 Sep 2010 15:16:27 -0000
+@@ -147,6 +147,7 @@ bool jobManagedDone(ClassAd * ad);
+ int	WallClockCkptInterval = 0;
+ static bool gridman_per_job = false;
+ int STARTD_CONTACT_TIMEOUT = 45;
++bool sendResourceRequests = false;
+ 
+ #ifdef CARMI_OPS
+ struct shadow_rec *find_shadow_by_cluster( PROC_ID * );
+@@ -554,6 +555,14 @@ Scheduler::check_claim_request_timeouts(
+ 	}
+ }
+ 
++int 
++clear_autocluster_id( ClassAd *job )
++{
++	job->Delete(ATTR_AUTO_CLUSTER_ID);
++	return 0;
++}
++
++
+ /*
+ ** Examine the job queue to determine how many CONDOR jobs we currently have
+ ** running, and how many individual users own them.
+@@ -562,8 +571,12 @@ int
+ Scheduler::count_jobs()
+ {
+ 	int		i, j;
+-	int		prio_compar();
+ 	char	tmp[512];
++	time_t start_time = time(NULL);
++	time_t end_time = start_time;
++	static int times_in_count_jobs = 0;
++		
++	times_in_count_jobs++;
+ 
+ 	 // copy owner data to old-owners table
+ 	ExtArray<OwnerData> OldOwners(Owners);
+@@ -763,6 +776,11 @@ Scheduler::count_jobs()
+ 		}
+ 	}
+ 
++	end_time = time(NULL);
++	dprintf(D_ALWAYS,"count_jobs visit *%d* owner time *%d*\n",
++			times_in_count_jobs,end_time - start_time);
++	start_time = end_time;
++
+ 	// The per user queue ads should not have NumUsers in them --- only
+ 	// the schedd ad should.  In addition, they should not have
+ 	// TotalRunningJobs and TotalIdleJobs
+@@ -776,33 +794,171 @@ Scheduler::count_jobs()
+ 	sprintf(tmp, "%s = \"%s\"", ATTR_SCHEDD_NAME, Name);
+ 	ad->InsertOrUpdate(tmp);
+ 
++	// if using resource requests, make PrioRec array here
++	if ( sendResourceRequests ) {
++	
++		bool gotit = false;
++		do
++		{
++			// fetch sig attrs from negotiator ad
++		CondorQuery query(NEGOTIATOR_AD);
++		QueryResult q;
++		ClassAdList result;
++		CollectorList * collectors = CollectorList::create();
++		q = collectors->query (query, result);
++		delete collectors;
++		if ( q != Q_OK ) {
++			dprintf(D_FULLDEBUG,
++				"ERROR: could not fetch negotiator ad from local collector- %s\n",
++				getStrQueryResult(q));
++			return false;
++		}
++		ClassAd *neg_ad = NULL;
++		result.Rewind();
++		neg_ad = result.Next();
++		if ( neg_ad ) {
++			dprintf(D_ALWAYS,"Got negotiator ad\n");
++			char *sig_attrs_from_cm=NULL;
++			neg_ad->LookupString("SIG_ATTRS",&sig_attrs_from_cm);
++			if (sig_attrs_from_cm) {
++				if ( autocluster.config(sig_attrs_from_cm) ) {
++					// clear out auto cluster id attributes
++					WalkJobQueue( (int(*)(ClassAd *))clear_autocluster_id );
++				}
++				free(sig_attrs_from_cm);
++				sig_attrs_from_cm = NULL;
++				gotit = true;
++			} else {
++				dprintf(D_ALWAYS,"No SIG_ATTRS attribute\n");
++				sleep(2);
++			}
++		} else {
++			dprintf(D_ALWAYS,"Failed to get negotiator ad\n");
++				sleep(2);
++		}
++		} while (!gotit);
++	
++		start_time = time(NULL);
++
++		autocluster.mark();
++		N_PrioRecs = 0;
++
++		WalkJobQueue( (int(*)(ClassAd *))job_prio );
++
++		end_time = time(NULL);
++		dprintf(D_ALWAYS,"count_jobs visit *%d* autocluster time *%d*\n",
++			times_in_count_jobs,end_time - start_time);
++		start_time = end_time;
++
++		if( !shadow_prio_recs_consistent() ) {
++			mail_problem_message();
++		}
++
++			// N_PrioRecs might be 0, if we have no jobs to run at the
++			// moment.  If so, we don't want to call qsort(), since that's
++			// bad.  We can still try to find the owner in the Owners
++			// array, since that's not that expensive, and we need it for
++			// all the flocking logic at the end of this function.
++			// Discovered by Derek Wright and insure-- on 2/28/01
++		if( N_PrioRecs ) {
++			qsort( (char *)PrioRec, N_PrioRecs, sizeof(PrioRec[0]),
++				   (int(*)(const void*, const void*))prio_compar );
++		}
++		autocluster.sweep();
++	}
+ 
+ 	for ( i=0; i<N_Owners; i++) {
++		ClassAd submitterAd(*ad);
++
+ 	  sprintf(tmp, "%s = %d", ATTR_RUNNING_JOBS, Owners[i].JobsRunning);
+ 	  dprintf (D_FULLDEBUG, "Changed attribute: %s\n", tmp);
+-	  ad->InsertOrUpdate(tmp);
++	  submitterAd.InsertOrUpdate(tmp);
+ 
+ 	  sprintf(tmp, "%s = %d", ATTR_IDLE_JOBS, Owners[i].JobsIdle);
+ 	  dprintf (D_FULLDEBUG, "Changed attribute: %s\n", tmp);
+-	  ad->InsertOrUpdate(tmp);
++	  submitterAd.InsertOrUpdate(tmp);
+ 
+ 	  sprintf(tmp, "%s = %d", ATTR_HELD_JOBS, Owners[i].JobsHeld);
+ 	  dprintf (D_FULLDEBUG, "Changed attribute: %s\n", tmp);
+-	  ad->InsertOrUpdate(tmp);
++	  submitterAd.InsertOrUpdate(tmp);
+ 
+ 	  sprintf(tmp, "%s = %d", ATTR_FLOCKED_JOBS, Owners[i].JobsFlocked);
+ 	  dprintf (D_FULLDEBUG, "Changed attribute: %s\n", tmp);
+-	  ad->InsertOrUpdate(tmp);
++	  submitterAd.InsertOrUpdate(tmp);
+ 
+ 	  sprintf(tmp, "%s = \"%s@%s\"", ATTR_NAME, Owners[i].Name, UidDomain);
+ 	  dprintf (D_FULLDEBUG, "Changed attribute: %s\n", tmp);
+-	  ad->InsertOrUpdate(tmp);
++	  submitterAd.InsertOrUpdate(tmp);
+ 
+-	  dprintf( D_ALWAYS, "Sent ad to central manager for %s@%s\n", 
++	  if ( sendResourceRequests ) {
++			int j;
++			bool seen = false;
++			bool done = false;
++			int num_ads = 0;
++			int last_autocluster = -5;
++			int last_autocluster_count = 0;
++			ExtArray<int> requestnums, counts, prios;
++
++			counts.setFiller(0);
++			prios.setFiller(0);
++
++			for ( j=0; j < N_PrioRecs && !done; j++ ) {				
++					// skip forward to the correct owner
++				if ( PrioRec[j].owner && 
++					 strcmp(PrioRec[j].owner,Owners[i].Name) )
++				{
++					if ( seen ) {
++						done = true;
++					} else {
++						continue;
++					}
++				}
++
++				seen = true;
++
++				if ( last_autocluster < 0 ) {
++					last_autocluster = PrioRec[j].auto_cluster_id;
++				}
++
++				if ( !done && (last_autocluster == PrioRec[j].auto_cluster_id) ) {
++					last_autocluster_count++;
++					if ( ((j + 1) < N_PrioRecs) ) {
++						continue;
++					}
++				}  
++
++				char buf[40];
++				MyString request;
++				sprintf(buf,"REQUEST%d",num_ads);
++				if (autocluster.getResourceRequestAd(last_autocluster,request) ) {
++					submitterAd.Assign(buf,request.Value());
++					sprintf(buf,"REQUEST%d_COUNT",num_ads);
++					submitterAd.Assign(buf,last_autocluster_count);
++					sprintf(buf,"REQUEST%d_AUTOCLUSTER",num_ads);
++					submitterAd.Assign(buf,last_autocluster);
++					requestnums.add(num_ads);
++					counts.add(last_autocluster_count);
++					prios.add(0);	// TODO						
++					num_ads++;
++				} else {
++						// should never happen....
++					dprintf(D_ALWAYS,"AutoCluster ERROR Badness at %d cluster %d\n",
++						__LINE__, last_autocluster);
++				}
++
++				
++				last_autocluster = PrioRec[j].auto_cluster_id;
++				last_autocluster_count = 1;
++			}
++			submitterAd.Assign("REQUESTS",num_ads);
++		}
++
++
++	  dprintf( D_ALWAYS, "Sending ad to central manager for %s@%s\n", 
+ 			   Owners[i].Name, UidDomain );
+ 
+ 		// Update collectors
+-	  int num_updates = Collectors->sendUpdates( UPDATE_SUBMITTOR_AD, ad );
++	  int num_updates = Collectors->sendUpdates( UPDATE_SUBMITTOR_AD, &submitterAd );
+ 	  dprintf( D_ALWAYS, "Sent ad to %d collectors for %s@%s\n", 
+ 				 num_updates,
+ 				 Owners[i].Name, UidDomain );
+@@ -995,12 +1151,6 @@ renice_shadow()
+ }
+ 
+ 
+-int 
+-clear_autocluster_id( ClassAd *job )
+-{
+-	job->Delete(ATTR_AUTO_CLUSTER_ID);
+-	return 0;
+-}
+ 
+ int
+ count( ClassAd *job )
+@@ -4242,6 +4392,131 @@ Scheduler::doNegotiate (int i, Stream *s
+ }
+ 
+ 
++int
++Scheduler::getMatchesSocketHandler (Stream *s)
++{
++
++	static char owner[200];
++	static char *ownerptr = NULL;
++	int command = 0;
++	char *claim_id = NULL;
++	ClassAd *my_match_ad = NULL;
++	int rval = KEEP_STREAM;
++
++
++	if ( ownerptr == NULL ) {
++		owner[0] = '\0';
++		ownerptr = owner;
++		command = NEGOTIATE_WITH_RESOURCE_REQUESTS; // must be the first time
++	}
++
++	s->decode();  // all we do is decode -- TODO maybe should have an ACK?
++
++	if ( !command )  {
++		s->code(command);
++	}
++
++	switch ( command ) {
++		
++	case NEGOTIATE_WITH_RESOURCE_REQUESTS:
++		if (!s->code(ownerptr)) {
++			dprintf( D_ALWAYS, "Can't receive owner from manager\n" );
++			rval = (!(KEEP_STREAM));
++			break;
++		}
++
++		if (!s->end_of_message()) {
++			dprintf( D_ALWAYS, "Can't receive owner/EOM from manager\n" );
++			rval = (!(KEEP_STREAM));
++			break;
++		}
++		dprintf (D_ALWAYS, "Getting matches for owner: %s\n", owner);
++		break;
++
++	case PERMISSION_AND_AD:
++
++			if( !s->get(claim_id) ) {
++				dprintf( D_ALWAYS,
++						"Can't receive ClaimId from mgr\n" );
++				rval = (!(KEEP_STREAM));
++				break;
++			}
++
++			// get startd ad from negotiator as well
++			my_match_ad = new ClassAd();
++			if( !my_match_ad->initFromStream(*s) ) {
++				dprintf( D_ALWAYS,
++					"Can't get my match ad from mgr\n" );
++				delete my_match_ad;
++				FREE( claim_id );
++				rval = (!(KEEP_STREAM));
++				break;
++			}
++
++			if( !s->end_of_message() ) {
++				dprintf( D_ALWAYS,
++						"Can't receive eom from mgr\n" );
++				if (my_match_ad)
++					delete my_match_ad;
++				FREE( claim_id );
++				rval = (!(KEEP_STREAM));
++				break;
++			}
++
++			// if we made it here, we got everything
++			if ( claim_id ) {
++				dprintf(D_ALWAYS,"Recevied match for %s claimid=%s\n",
++					owner,claim_id);
++				FREE( claim_id );
++			}
++			if (my_match_ad) delete my_match_ad;
++
++		break;
++
++	case END_NEGOTIATE:
++		// just break here, so we keep rval at keep_stream
++		rval = KEEP_STREAM;
++		break;
++
++	default:
++		if ( command ) {
++			dprintf(D_ALWAYS,
++			"ERROR - getMatchesSocketHandler unrecognized command %d\n",command);
++		} else {
++			dprintf(D_FULLDEBUG,
++			"getMatchesSocketHandler: matchmaker closed socket\n");
++		}
++		rval = (!(KEEP_STREAM));
++		break;
++
++	}	// end of switch
++
++	if ( rval != KEEP_STREAM ) {
++		ownerptr = NULL;
++	}
++
++	return rval;
++}
++
++int
++Scheduler::getMatchesCommand (int i, Stream *s)
++{
++	ASSERT(s);
++	s->timeout( param_integer("NEGOTIATOR_TIMEOUT",20) );
++	int rval = getMatchesSocketHandler(s);
++	if (rval == KEEP_STREAM)
++	{
++		dprintf (D_FULLDEBUG,
++				 "Stashing getMatches socket to negotiator for future reuse\n");
++		daemonCore->
++				Register_Socket(s, "<getMatches Negotiator Socket>", 
++				(SocketHandlercpp)&Scheduler::getMatchesSocketHandler,
++				"<getMatches Negotiator Command>",
++				this, ALLOW);
++	}
++	return rval;
++}
++
+ /* 
+    Helper function used by both DedicatedScheduler::negotiate() and
+    Scheduler::negotiate().  This checks all the various reasons why we
+@@ -9182,6 +9457,8 @@ Scheduler::Init()
+ 		// Grab all the essential parameters we need from the config file.
+ 		////////////////////////////////////////////////////////////////////
+ 
++	sendResourceRequests = param_boolean("SCHEDD_SEND_RESOURCE_REQUESTS",false);
++
+ 		// set defaults for rounding attributes for autoclustering
+ 		// only set these values if nothing is specified in condor_config.
+ 	MyString tmpstr;
+@@ -9800,6 +10077,10 @@ Scheduler::Register()
+ 		 "NEGOTIATE_WITH_SIGATTRS", 
+ 		 (CommandHandlercpp)&Scheduler::doNegotiate, "doNegotiate", 
+ 		 this, NEGOTIATOR );
++	 daemonCore->Register_Command(NEGOTIATE_WITH_RESOURCE_REQUESTS,
++		 "NEGOTIATE_WITH_RESOURCE_REQUESTS",
++		 (CommandHandlercpp)&Scheduler::getMatchesCommand, "getMatchesCommand", 
++		 this, NEGOTIATOR );
+ 	 daemonCore->Register_Command( RESCHEDULE, "RESCHEDULE", 
+ 			(CommandHandlercpp)&Scheduler::reschedule_negotiator, 
+ 			"reschedule_negotiator", this, WRITE);
+@@ -9945,6 +10226,13 @@ extern "C" {
+ int
+ prio_compar(prio_rec* a, prio_rec* b)
+ {
++	if (sendResourceRequests) {
++		// first order sort is by owner
++		int res = strcmp(a->owner,b->owner);
++		if (res) 
++			return res;
++	}
++
+ 	 /* compare job priorities: higher values have more priority */
+ 	 if( a->job_prio < b->job_prio ) {
+ 		  return 1;
+@@ -9953,12 +10241,22 @@ prio_compar(prio_rec* a, prio_rec* b)
+ 		  return -1;
+ 	 }
+ 
++#if 0   // these days, jobs initialize to idle, not unexpanded. 
+ 	 /* here,updown priority and job_priority are both equal */
+ 	 /* check existence of checkpoint files */
+ 	 if (( a->status == UNEXPANDED) && ( b->status != UNEXPANDED))
+ 		  return ( 1);
+ 	 if (( a->status != UNEXPANDED) && ( b->status == UNEXPANDED))
+ 		  return (-1);
++#endif
++
++	 if (sendResourceRequests) {
++		 /* go in order of auto cluster id */
++		if ( a->auto_cluster_id < b->auto_cluster_id )
++			return -1;
++		if ( a->auto_cluster_id > b->auto_cluster_id )
++			return 1;
++	 }
+ 
+ 	 /* check for job submit times */
+ 	 if( a->qdate < b->qdate ) {
+@@ -9974,6 +10272,7 @@ prio_compar(prio_rec* a, prio_rec* b)
+ 	if ( a->id.cluster > b->id.cluster )
+ 		return 1;
+ 
++
+ 	/* finally, go in order of the proc id */
+ 	if ( a->id.proc < b->id.proc )
+ 		return -1;
+Index: condor_schedd.V6/scheduler.h
+===================================================================
+RCS file: /p/condor/repository/CONDOR_SRC/src/condor_schedd.V6/scheduler.h,v
+retrieving revision 1.64.10.28.6.14.4.39
+diff -u -p -r1.64.10.28.6.14.4.39 scheduler.h
+--- condor_schedd.V6/scheduler.h	13 Apr 2006 19:12:27 -0000	1.64.10.28.6.14.4.39
++++ condor_schedd.V6/scheduler.h	14 Sep 2010 15:16:27 -0000
+@@ -217,6 +217,8 @@ class Scheduler : public Service
+ 	void			invalidate_ads();
+ 	
+ 	// negotiation
++	int				getMatchesSocketHandler(Stream *s);
++	int				getMatchesCommand(int i, Stream *s);
+ 	int				doNegotiate(int, Stream *);
+ 	int				negotiatorSocketHandler(Stream *);
+ 	int				delayedNegotiatorHandler(Stream *);
