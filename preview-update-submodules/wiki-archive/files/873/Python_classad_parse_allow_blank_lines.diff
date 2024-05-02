@@ -1,0 +1,13 @@
+diff --git a/src/python-bindings/classad_parsers.cpp b/src/python-bindings/classad_parsers.cpp
+index d872a17..28c5d2d 100644
+--- a/src/python-bindings/classad_parsers.cpp
++++ b/src/python-bindings/classad_parsers.cpp
+@@ -60,7 +60,7 @@ ClassAdWrapper *parseOld(boost::python::object input)
+     for (unsigned idx=0; idx<input_len; idx++)
+     {
+         boost::python::object line = input_list[idx].attr("strip")();
+-        if (line.attr("startswith")("#"))
++        if (line.attr("startswith")("#") || line.attr("isspace")())
+         {
+             continue;
+         }

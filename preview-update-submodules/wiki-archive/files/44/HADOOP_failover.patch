@@ -1,0 +1,77 @@
+Index: src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java
+===================================================================
+--- src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java	(revision 761875)
++++ src/hdfs/org/apache/hadoop/hdfs/server/datanode/DataNode.java	(working copy)
+@@ -831,6 +831,7 @@
+         LOG.warn(StringUtils.stringifyException(re));
+       } catch (IOException e) {
+         LOG.warn(StringUtils.stringifyException(e));
++        doFailOver();
+       }
+     } // while (shouldRun)
+   } // offerService
+@@ -1617,4 +1618,47 @@
+     LOG.info(who + " calls recoverBlock(block=" + block
+         + ", targets=[" + msg + "])");
+   }
++
++  //invoked when datanode loses connection with name node
++  public void doFailOver() {
++    //Currently using the existing serviceplugin
++    if (plugins == null) 
++      return;
++
++    for (ServicePlugin p: plugins) {
++      try {
++        p.changeState(1, this);
++      } catch(Throwable t) {
++        LOG.warn("ServicePlugin " + p + " couldn't not be invoked ", t);
++      }
++    }
++
++    InetSocketAddress newNamenodeAddr = null;
++    DatanodeProtocol oldNamenode = this.namenode;
++
++    try {
++      newNamenodeAddr = NameNode.getAddress(getConf());
++      if (newNamenodeAddr == this.nameNodeAddr)
++        return;
++
++      this.namenode = (DatanodeProtocol)
++        RPC.waitForProxy(DatanodeProtocol.class,
++	                DatanodeProtocol.versionID,
++	                newNamenodeAddr,
++			getConf());
++
++      //make sure storage version matches
++      handshake();
++
++      //register with this new name server
++      register();
++      RPC.stopProxy(oldNamenode);
++      this.nameNodeAddr = newNamenodeAddr;
++
++    } catch (IOException e) {
++       this.namenode = oldNamenode;
++       LOG.warn("Failed to do a failover, exception follows");
++       LOG.warn(StringUtils.stringifyException(e));
++    }
++  }
+ }
+Index: src/core/org/apache/hadoop/util/ServicePlugin.java
+===================================================================
+--- src/core/org/apache/hadoop/util/ServicePlugin.java	(revision 761875)
++++ src/core/org/apache/hadoop/util/ServicePlugin.java	(working copy)
+@@ -43,4 +43,12 @@
+    * This method is invoked when the service instance is about to be shut down.
+    */
+   void stop();
++
++  /**
++   * This method is added as a way to generically incorporate all of the above
++   * methods. This is in case we need to use ServicePlugin for exporting more
++   * state information from data/name nodes.
++   */
++
++  void changeState(int newState, Object service);
+ }
