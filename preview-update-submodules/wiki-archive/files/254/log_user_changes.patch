@@ -1,0 +1,521 @@
+diff --git a/src/condor_includes/condor_qmgr.h b/src/condor_includes/condor_qmgr.h
+index 8e78ff5..b103925 100644
+--- a/src/condor_includes/condor_qmgr.h
++++ b/src/condor_includes/condor_qmgr.h
+@@ -36,6 +36,7 @@ typedef int (*scan_func)(ClassAd *ad);
+ 
+ typedef unsigned char SetAttributeFlags_t;
+ const SetAttributeFlags_t NONDURABLE = 1;
++const SetAttributeFlags_t SHOULDLOG = 4;
+ 
+ #define SHADOW_QMGMT_TIMEOUT 300
+ 
+@@ -101,28 +102,32 @@ int DestroyCluster(int cluster_id, const char *reason = NULL);
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeByConstraint(const char *constraint, const char *attr,
+-							 const char *value);
++							 const char *value,
++							 SetAttributeFlags_t flags=0);
+ /** For all jobs in the queue for which constraint evaluates to true, set
+ 	attr = value.  The value should be a valid ClassAd value (strings
+ 	should be surrounded by quotes).
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeIntByConstraint(const char *constraint, const char *attr,
+-								int value);
++							 int value,
++							 SetAttributeFlags_t flags=0);
+ /** For all jobs in the queue for which constraint evaluates to true, set
+ 	attr = value.  The value should be a valid ClassAd value (strings
+ 	should be surrounded by quotes).
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeFloatByConstraint(const char *constraing, const char *attr,
+-								  float value);
++							   float value,
++							   SetAttributeFlags_t flags=0);
+ /** For all jobs in the queue for which constraint evaluates to true, set
+ 	attr = value.  The value should be a valid ClassAd value (strings
+ 	should be surrounded by quotes).
+ 	@return -1 on failure; 0 on success
+ */
+ int SetAttributeStringByConstraint(const char *constraint, const char *attr,
+-								   const char *value);
++								const char *value,
++								SetAttributeFlags_t flags=0);
+ /** Set attr = value for job with specified cluster and proc.  The value
+ 	should be a valid ClassAd value (strings should be surrounded by
+ 	quotes)
+diff --git a/src/condor_prio/prio.cpp b/src/condor_prio/prio.cpp
+index 99d66b4..4fcfe56 100644
+--- a/src/condor_prio/prio.cpp
++++ b/src/condor_prio/prio.cpp
+@@ -223,7 +223,7 @@ void UpdateJobAd(int cluster, int proc)
+ 		return;
+ 	}
+ 	new_prio = calc_prio( old_prio );
+-	if( (SetAttributeInt(cluster, proc, ATTR_JOB_PRIO, new_prio) < 0) ) {
++	if( (SetAttributeInt(cluster, proc, ATTR_JOB_PRIO, new_prio, SHOULDLOG) < 0) ) {
+ 		fprintf(stderr, "Couldn't set new priority for %d.%d.\n",
+ 				cluster, proc);
+ 		return;
+diff --git a/src/condor_schedd.V6/qmgmt.cpp b/src/condor_schedd.V6/qmgmt.cpp
+index ed44856..17f2fd4 100644
+--- a/src/condor_schedd.V6/qmgmt.cpp
++++ b/src/condor_schedd.V6/qmgmt.cpp
+@@ -1777,7 +1777,8 @@ int DestroyCluster(int cluster_id, const char* reason)
+ 
+ int
+ SetAttributeByConstraint(const char *constraint, const char *attr_name,
+-						 const char *attr_value)
++						 const char *attr_value,
++						 SetAttributeFlags_t flags)
+ {
+ 	ClassAd	*ad;
+ 	int cluster_num, proc_num;
+@@ -1792,7 +1793,7 @@ SetAttributeByConstraint(const char *constraint, const char *attr_name,
+ 			 (proc_num > -1) &&
+ 			 EvalBool(ad, constraint)) {
+ 			found_one = 1;
+-			if( SetAttribute(cluster_num,proc_num,attr_name,attr_value) < 0 ) {
++			if( SetAttribute(cluster_num,proc_num,attr_name,attr_value,flags) < 0 ) {
+ 				had_error = 1;
+ 			}
+ 			FreeJobAd(ad);	// a no-op on the server side
+@@ -1968,7 +1969,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 						 &nice_user );
+ 		user.sprintf( "\"%s%s@%s\"", (nice_user) ? "nice-user." : "",
+ 				 owner, scheduler.uidDomain() );
+-		SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value() );
++		SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value(), flags );
+ 
+ 			// Also update the owner history hash table
+ 		AddOwnerHistory(owner);
+@@ -1998,7 +1999,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 			>= 0 ) {
+ 			user.sprintf( "\"%s%s@%s\"", (nice_user) ? "nice-user." :
+ 					 "", owner.Value(), scheduler.uidDomain() );
+-			SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value() );
++			SetAttribute( cluster_id, proc_id, ATTR_USER, user.Value(), flags );
+ 		}
+ 	}
+ 	else if (stricmp(attr_name, ATTR_PROC_ID) == 0) {
+@@ -2034,7 +2035,7 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 			// UNEXPANDED.
+ 		int status = UNEXPANDED;
+ 		GetAttributeInt( cluster_id, proc_id, ATTR_JOB_STATUS, &status );
+-		SetAttributeInt( cluster_id, proc_id, ATTR_LAST_JOB_STATUS, status );
++		SetAttributeInt( cluster_id, proc_id, ATTR_LAST_JOB_STATUS, status, flags );
+ 	}
+ 
+ 	// If any of the attrs used to create the signature are
+@@ -2079,6 +2080,9 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 			MyString raw_attribute = attr_name;
+ 			raw_attribute += "_RAW";
+ 			JobQueue->SetAttribute(key, raw_attribute.Value(), attr_value);
++			if( flags & SHOULDLOG ) {
++				scheduler.WriteAttrChangeToUserLog(key, raw_attribute.Value(), attr_value);
++			}
+ 
+ 			long ivalue;
+ 			double fvalue;
+@@ -2175,6 +2179,9 @@ SetAttribute(int cluster_id, int proc_id, const char *attr_name,
+ 	}
+ 
+ 	JobQueue->SetAttribute(key, attr_name, attr_value);
++	if( flags & SHOULDLOG ) {
++		scheduler.WriteAttrChangeToUserLog(key, attr_name, attr_value);
++	}
+ 
+ 	if( flags & NONDURABLE ) {
+ 		JobQueue->DecNondurableCommitLevel( old_nondurable_level );
+diff --git a/src/condor_schedd.V6/qmgmt_common.cpp b/src/condor_schedd.V6/qmgmt_common.cpp
+index 55ae5e9..c47b2fc 100644
+--- a/src/condor_schedd.V6/qmgmt_common.cpp
++++ b/src/condor_schedd.V6/qmgmt_common.cpp
+@@ -69,30 +69,31 @@ SetAttributeString(int cl, int pr, const char *name, const char *val, SetAttribu
+ }
+ 
+ int
+-SetAttributeIntByConstraint(const char *con, const char *name, int val)
++SetAttributeIntByConstraint(const char *con, const char *name, int val, SetAttributeFlags_t flags)
+ {
+ 	char buf[100];
+ 	int rval;
+ 
+ 	snprintf(buf,100,"%d",val);
+-	rval = SetAttributeByConstraint(con,name,buf);
++	rval = SetAttributeByConstraint(con,name,buf, flags);
+ 	return(rval);
+ }
+ 
+ int
+-SetAttributeFloatByConstraint(const char *con, const char *name, float val)
++SetAttributeFloatByConstraint(const char *con, const char *name, float val, SetAttributeFlags_t flags)
+ {
+ 	char buf[100];
+ 	int rval;
+ 
+ 	snprintf(buf,100,"%f",val);
+-	rval = SetAttributeByConstraint(con,name,buf);
++	rval = SetAttributeByConstraint(con,name,buf, flags);
+ 	return(rval);
+ }
+ 
+ int
+ SetAttributeStringByConstraint(const char *con, const char *name,
+-							   const char *val)
++							 const char *val,
++							 SetAttributeFlags_t flags)
+ {
+ 	MyString buf;
+ 	int rval;
+@@ -100,7 +101,7 @@ SetAttributeStringByConstraint(const char *con, const char *name,
+ 	buf += '"';
+ 	buf +=  val;
+ 	buf += '"';
+-	rval = SetAttributeByConstraint(con,name,buf.Value());
++	rval = SetAttributeByConstraint(con,name,buf.Value(), flags);
+ 	return(rval);
+ }
+ 
+diff --git a/src/condor_schedd.V6/qmgmt_constants.h b/src/condor_schedd.V6/qmgmt_constants.h
+index b440bfe..10a5dea 100644
+--- a/src/condor_schedd.V6/qmgmt_constants.h
++++ b/src/condor_schedd.V6/qmgmt_constants.h
+@@ -47,3 +47,4 @@
+ #define CONDOR_CloseSocket			10028
+ #define CONDOR_SendSpoolFileIfNeeded 10029
+ #define CONDOR_CommitTransaction    10031
++#define	CONDOR_SetAttributeByConstraint2	10032	/* Rob */
+diff --git a/src/condor_schedd.V6/qmgmt_receivers.cpp b/src/condor_schedd.V6/qmgmt_receivers.cpp
+index b1bb18e..46fc252 100644
+--- a/src/condor_schedd.V6/qmgmt_receivers.cpp
++++ b/src/condor_schedd.V6/qmgmt_receivers.cpp
+@@ -224,16 +224,21 @@ do_Q_request(ReliSock *syscall_sock,bool &may_fork)
+ #endif
+ 
+ 	case CONDOR_SetAttributeByConstraint:
++	case CONDOR_SetAttributeByConstraint2:
+ 	  {
+ 		char *attr_name=NULL;
+ 		char *attr_value=NULL;
+ 		char *constraint=NULL;
+ 		int terrno;
++		SetAttributeFlags_t flags = 0;
+ 
+ 		assert( syscall_sock->code(constraint) );
+ 		dprintf( D_SYSCALLS, "  constraint = %s\n",constraint);
+ 		assert( syscall_sock->code(attr_value) );
+ 		assert( syscall_sock->code(attr_name) );
++		if( request_num == CONDOR_SetAttributeByConstraint2 ) {
++			assert( syscall_sock->code( flags ) );
++		}
+ 		assert( syscall_sock->end_of_message() );;
+ 
+ 		if (strcmp (attr_name, ATTR_MYPROXY_PASSWORD) == 0) {
+@@ -244,7 +249,7 @@ do_Q_request(ReliSock *syscall_sock,bool &may_fork)
+ 		} else {
+ 
+ 			errno = 0;
+-			rval = SetAttributeByConstraint( constraint, attr_name, attr_value );
++			rval = SetAttributeByConstraint( constraint, attr_name, attr_value, flags );
+ 			terrno = errno;
+ 			dprintf( D_SYSCALLS, "\trval = %d, errno = %d\n", rval, terrno );
+ 		}
+diff --git a/src/condor_schedd.V6/qmgmt_send_stubs.cpp b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+index 0be0fe2..b8b2908 100644
+--- a/src/condor_schedd.V6/qmgmt_send_stubs.cpp
++++ b/src/condor_schedd.V6/qmgmt_send_stubs.cpp
+@@ -192,17 +192,23 @@ DestroyClusterByConstraint( char *constraint )
+ 
+ 
+ int
+-SetAttributeByConstraint( char const *constraint, char const *attr_name, char const *attr_value )
++SetAttributeByConstraint( char const *constraint, char const *attr_name, char const *attr_value, SetAttributeFlags_t flags )
+ {
+ 	int	rval = -1;
+ 
+ 		CurrentSysCall = CONDOR_SetAttributeByConstraint;
++		if( flags ) {
++			CurrentSysCall = CONDOR_SetAttributeByConstraint2;
++		}
+ 
+ 		qmgmt_sock->encode();
+ 		assert( qmgmt_sock->code(CurrentSysCall) );
+ 		assert( qmgmt_sock->put(constraint) );
+ 		assert( qmgmt_sock->put(attr_value) );
+ 		assert( qmgmt_sock->put(attr_name) );
++		if( flags ) {
++			assert( qmgmt_sock->code(flags) );
++		}
+ 		assert( qmgmt_sock->end_of_message() );
+ 
+ 		qmgmt_sock->decode();
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.cpp b/src/condor_schedd.V6/qmgr_job_updater.cpp
+index 128de25..12385ad 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.cpp
++++ b/src/condor_schedd.V6/qmgr_job_updater.cpp
+@@ -191,10 +191,11 @@ QmgrJobUpdater::startUpdateTimer( void )
+   modify it to be less potentially harmful for schedd scalability.
+ */
+ bool
+-QmgrJobUpdater::updateAttr( const char *name, const char *expr, bool updateMaster )
++QmgrJobUpdater::updateAttr( const char *name, const char *expr, bool updateMaster, bool log )
+ {
+ 	bool result;
+ 	MyString err_msg;
++	SetAttributeFlags_t flags=0;
+ 
+ 	dprintf( D_FULLDEBUG, "QmgrJobUpdater::updateAttr: %s = %s\n",
+ 			 name, expr );
+@@ -207,8 +208,12 @@ QmgrJobUpdater::updateAttr( const char *name, const char *expr, bool updateMaste
+ 	if (updateMaster) {
+ 		p = 0;
+ 	}
++
++	if (log) {
++		flags = SHOULDLOG;
++	}
+ 	if( ConnectQ(schedd_addr,SHADOW_QMGMT_TIMEOUT) ) {
+-		if( SetAttribute(cluster,p,name,expr) < 0 ) {
++		if( SetAttribute(cluster,p,name,expr,flags) < 0 ) {
+ 			err_msg = "SetAttribute() failed";
+ 			result = FALSE;
+ 		} else {
+@@ -229,11 +234,11 @@ QmgrJobUpdater::updateAttr( const char *name, const char *expr, bool updateMaste
+ 
+ 
+ bool
+-QmgrJobUpdater::updateAttr( const char *name, int value, bool updateMaster )
++QmgrJobUpdater::updateAttr( const char *name, int value, bool updateMaster, bool log )
+ {
+ 	MyString buf;
+     buf.sprintf("%d", value);
+-	return updateAttr(name, buf.Value(), updateMaster);
++	return updateAttr(name, buf.Value(), updateMaster, log);
+ }
+ 
+ 
+diff --git a/src/condor_schedd.V6/qmgr_job_updater.h b/src/condor_schedd.V6/qmgr_job_updater.h
+index 5d40ace..d4d7079 100644
+--- a/src/condor_schedd.V6/qmgr_job_updater.h
++++ b/src/condor_schedd.V6/qmgr_job_updater.h
+@@ -68,10 +68,10 @@ public:
+ 			the schedd can be held hostage by user-jobs that call this
+ 			syscall repeatedly.  :(
+ 		*/
+-	bool updateAttr( const char *name, const char *expr, bool updateMaster );
++	bool updateAttr( const char *name, const char *expr, bool updateMaster, bool log=false );
+ 
+ 		/// Helper version that takes an int value instead of a string expr.
+-	bool updateAttr( const char *name, int value, bool updateMaster );
++	bool updateAttr( const char *name, int value, bool updateMaster, bool log=false );
+ 
+ 		/** Add the given attribute to our list of attributes we
+ 			should watch for changes and update.  The type specifies
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 2e01967..56ce1be 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -2970,6 +2970,36 @@ Scheduler::WriteRequeueToUserLog( PROC_ID job_id, int status, const char * reaso
+ }
+ 
+ 
++bool
++Scheduler::WriteAttrChangeToUserLog( const char* job_id_str, const char* attr,
++					 const char* attr_value)
++{
++	PROC_ID job_id;
++	StrToProcId(job_id_str, job_id);
++	WriteUserLog* ULog = this->InitializeUserLog( job_id );
++	if( ! ULog ) {
++			// User didn't want log
++		return true;
++	}
++
++	GenericEvent event;
++	MyString text;
++
++	text.sprintf("Setting job attribute %s to %s", attr, attr_value);
++	event.setInfoText(text.Value());
++        bool rval = ULog->writeEvent(&event,GetJobAd(job_id.cluster,job_id.proc));
++        delete ULog;
++
++        if (!rval) {
++                dprintf( D_ALWAYS, "Unable to log ULOG_GENERIC event "
++                                 "for job %d.%d\n", job_id.cluster, job_id.proc );
++                return false;
++        }
++
++	return true;
++}
++
++
+ int
+ Scheduler::abort_job(int, Stream* s)
+ {
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index a9dbeaf..dccca83 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -355,6 +355,7 @@ class Scheduler : public Service
+ 	bool			WriteEvictToUserLog( PROC_ID job_id, bool checkpointed = false );
+ 	bool			WriteTerminateToUserLog( PROC_ID job_id, int status );
+ 	bool			WriteRequeueToUserLog( PROC_ID job_id, int status, const char * reason );
++	bool			WriteAttrChangeToUserLog( const char* job_id_str, const char* attr, const char* attr_value);
+ 	int				receive_startd_alive(int cmd, Stream *s);
+ 
+ 		// Public startd socket management functions
+diff --git a/src/condor_shadow.V6.1/NTreceivers.cpp b/src/condor_shadow.V6.1/NTreceivers.cpp
+index ebec770..d81ba16 100644
+--- a/src/condor_shadow.V6.1/NTreceivers.cpp
++++ b/src/condor_shadow.V6.1/NTreceivers.cpp
+@@ -843,7 +843,7 @@ do_REMOTE_syscall()
+ 
+ 		errno = (condor_errno_t)0;
+ 		if ( thisRemoteResource->allowRemoteWriteAttributeAccess(attrname) ) {
+-			rval = pseudo_set_job_attr( attrname , expr);
++			rval = pseudo_set_job_attr( attrname , expr , true );
+ 			terrno = (condor_errno_t)errno;
+ 		} else {
+ 			rval = -1;
+diff --git a/src/condor_shadow.V6.1/baseshadow.cpp b/src/condor_shadow.V6.1/baseshadow.cpp
+index c71e4cd..c3e0e57 100644
+--- a/src/condor_shadow.V6.1/baseshadow.cpp
++++ b/src/condor_shadow.V6.1/baseshadow.cpp
+@@ -1101,16 +1101,16 @@ BaseShadow::log_except(const char *msg)
+ 
+ 
+ bool
+-BaseShadow::updateJobAttr( const char *name, const char *expr )
++BaseShadow::updateJobAttr( const char *name, const char *expr, bool log )
+ {
+-	return job_updater->updateAttr( name, expr, false );
++	return job_updater->updateAttr( name, expr, false, log );
+ }
+ 
+ 
+ bool
+-BaseShadow::updateJobAttr( const char *name, int value )
++BaseShadow::updateJobAttr( const char *name, int value, bool log )
+ {
+-	return job_updater->updateAttr( name, value, false );
++	return job_updater->updateAttr( name, value, false, log );
+ }
+ 
+ 
+diff --git a/src/condor_shadow.V6.1/baseshadow.h b/src/condor_shadow.V6.1/baseshadow.h
+index e26fa89..d653bef 100644
+--- a/src/condor_shadow.V6.1/baseshadow.h
++++ b/src/condor_shadow.V6.1/baseshadow.h
+@@ -318,10 +318,10 @@ class BaseShadow : public Service
+ 	bool updateJobInQueue( update_t type );
+ 
+ 		/** Connect to the job queue and update one attribute */
+-	virtual bool updateJobAttr( const char *name, const char *expr );
++	virtual bool updateJobAttr( const char *name, const char *expr, bool log=false );
+ 
+ 		/** Connect to the job queue and update one integer attribute */
+-	virtual bool updateJobAttr( const char *name, int value );
++	virtual bool updateJobAttr( const char *name, int value, bool log=false );
+ 
+ 		/** Do whatever cleanup (like killing starter(s)) that's
+ 			required before the shadow can exit.
+diff --git a/src/condor_shadow.V6.1/parallelshadow.cpp b/src/condor_shadow.V6.1/parallelshadow.cpp
+index 374b5ad..5f85dce 100644
+--- a/src/condor_shadow.V6.1/parallelshadow.cpp
++++ b/src/condor_shadow.V6.1/parallelshadow.cpp
+@@ -1007,14 +1007,14 @@ ParallelShadow::logReconnectFailedEvent( const char* reason )
+ }
+ 
+ bool
+-ParallelShadow::updateJobAttr( const char *name, const char *expr )
++ParallelShadow::updateJobAttr( const char *name, const char *expr, bool log )
+ {
+-	return job_updater->updateAttr( name, expr, true );
++	return job_updater->updateAttr( name, expr, true, log );
+ }
+ 
+ bool
+-ParallelShadow::updateJobAttr( const char *name, int value )
++ParallelShadow::updateJobAttr( const char *name, int value, bool log )
+ {
+-	return job_updater->updateAttr( name, value, true );
++	return job_updater->updateAttr( name, value, true, log );
+ }
+ 
+diff --git a/src/condor_shadow.V6.1/parallelshadow.h b/src/condor_shadow.V6.1/parallelshadow.h
+index 64e7e83..f79a13d 100644
+--- a/src/condor_shadow.V6.1/parallelshadow.h
++++ b/src/condor_shadow.V6.1/parallelshadow.h
+@@ -132,9 +132,9 @@ class ParallelShadow : public BaseShadow
+ 
+ 	virtual void logDisconnectedEvent( const char* reason );
+ 
+-	virtual bool updateJobAttr(const char*, const char*);
++	virtual bool updateJobAttr(const char*, const char*, bool log=false);
+ 
+-	virtual bool updateJobAttr(const char*, int);
++	virtual bool updateJobAttr(const char*, int, bool log=false);
+ 
+  protected:
+ 
+diff --git a/src/condor_shadow.V6.1/pseudo_ops.cpp b/src/condor_shadow.V6.1/pseudo_ops.cpp
+index 4307abe..790db76 100644
+--- a/src/condor_shadow.V6.1/pseudo_ops.cpp
++++ b/src/condor_shadow.V6.1/pseudo_ops.cpp
+@@ -715,7 +715,7 @@ pseudo_get_job_attr( const char *name, MyString &expr )
+ }
+ 
+ int
+-pseudo_set_job_attr( const char *name, const char *expr )
++pseudo_set_job_attr( const char *name, const char *expr, bool log )
+ {
+ 	RemoteResource *remote;
+ 	if (parallelMasterResource == NULL) {
+@@ -723,7 +723,7 @@ pseudo_set_job_attr( const char *name, const char *expr )
+ 	} else {
+ 		remote = parallelMasterResource;
+ 	}
+-	if(Shadow->updateJobAttr(name,expr)) {
++	if(Shadow->updateJobAttr(name,expr,log)) {
+ 		dprintf(D_SYSCALLS,"pseudo_set_job_attr(%s,%s) succeeded\n",name,expr);
+ 		ClassAd *ad = remote->getJobAd();
+ 		ASSERT(ad);
+diff --git a/src/condor_shadow.V6.1/pseudo_ops.h b/src/condor_shadow.V6.1/pseudo_ops.h
+index 9a3f6dc..5171e9b 100644
+--- a/src/condor_shadow.V6.1/pseudo_ops.h
++++ b/src/condor_shadow.V6.1/pseudo_ops.h
+@@ -34,7 +34,7 @@ int pseudo_get_file_info_new( const char *path, char *&url );
+ int pseudo_get_buffer_info( int *bytes_out, int *block_size_out, int *prefetch_bytes_out );
+ int pseudo_ulog( ClassAd *ad );
+ int pseudo_get_job_attr( const char *name, MyString &expr );
+-int pseudo_set_job_attr( const char *name, const char *expr );
++int pseudo_set_job_attr( const char *name, const char *expr, bool log=false);
+ int pseudo_constrain( const char *expr );
+ int pseudo_get_sec_session_info(
+ 	char const *starter_reconnect_session_info,
+diff --git a/src/condor_tools/qedit.cpp b/src/condor_tools/qedit.cpp
+index d2de173..a63dd76 100644
+--- a/src/condor_tools/qedit.cpp
++++ b/src/condor_tools/qedit.cpp
+@@ -188,7 +188,7 @@ main(int argc, char *argv[])
+ 		}
+ 		if (UseConstraint) {
+ 			if (SetAttributeByConstraint(constraint.Value(), argv[nextarg],
+-										 argv[nextarg+1]) < 0) {
++										 argv[nextarg+1], SHOULDLOG) < 0) {
+ 				fprintf(stderr,
+ 						"Failed to set attribute \"%s\" by constraint: %s\n",
+ 						argv[nextarg], constraint.Value());
+@@ -196,7 +196,7 @@ main(int argc, char *argv[])
+ 			}
+ 		} else {
+ 			if (SetAttribute(cluster, proc, argv[nextarg],
+-							 argv[nextarg+1]) < 0) {
++							 argv[nextarg+1], SHOULDLOG) < 0) {
+ 				fprintf(stderr,
+ 						"Failed to set attribute \"%s\" for job %d.%d.\n",
+ 						argv[nextarg], cluster, proc);

@@ -1,0 +1,101 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>XML Document Type Definition (DTD)</TITLE>
+<META NAME="description" CONTENT="XML Document Type Definition (DTD)">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node9.html">
+<LINK REL="previous" HREF="node7.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node9.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html160"
+  HREF="node9.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html158"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html152"
+  HREF="node7.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html161"
+  HREF="node9.html">XML Schema</A>
+<B> Up:</B> <A NAME="tex2html159"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html153"
+  HREF="node7.html">YACC Grammar</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00080000000000000000"></A>
+<A NAME="sec:dtd"></A>
+<BR>
+XML Document Type Definition (DTD)
+</H1>
+<PRE>
+&lt;!-- Document Type Definition for ClassAds (Classified Advertisements, as used
+     in Condor.  See http://www.cs.wisc.edu/condor for more information. --&gt;
+
+&lt;!-- Root element: a sequence of ClassAd elements --&gt;
+&lt;!ELEMENT classads (i | r | s | e | b | at | rt | un | er | l | c)*&gt;
+
+&lt;!-- A ClassAd (Classified Advertisement):  A set of "attributes". --&gt;
+&lt;!ELEMENT c     (a)* &gt;
+
+&lt;!-- An "attribute" contains a named element --&gt;
+&lt;!ELEMENT a     (i | r | s | e | b | at | rt | un | er | l | c)&gt;
+&lt;!ATTLIST a n   CDATA #REQUIRED&gt;
+
+&lt;!-- Numbers --&gt;
+&lt;!ELEMENT i     (#PCDATA)&gt; &lt;!-- An integer (sequence of digits) --&gt;
+&lt;!ELEMENT r     (#PCDATA)&gt; &lt;!-- A real number in "scientific" notation --&gt;
+
+&lt;!-- Strings --&gt;
+&lt;!ELEMENT s     (#PCDATA)&gt;
+
+&lt;!-- Sub-expressions in native syntax --&gt;
+&lt;!ELEMENT e     (#PCDATA)&gt;
+
+&lt;!-- Booleans: no content, but one mandatory attribute v=t or v=f --&gt;
+&lt;!ELEMENT b     EMPTY&gt;
+&lt;!ATTLIST b v   (t | f) #REQUIRED &gt;
+
+&lt;!-- Timestamps --&gt;
+&lt;!ELEMENT at    (#PCDATA)&gt; &lt;!-- Absoute time, e.g. 2003-01-25T09:00:00-06:00 --&gt;
+&lt;!ELEMENT rt    (#PCDATA)&gt; &lt;!-- Relative time, e.g. P1H15M13.257S --&gt;
+
+&lt;!-- Undefined and error --&gt;
+&lt;!ELEMENT un    (#PCDATA)&gt; &lt;!-- Undefined; content, if any, is "annotation" --&gt;
+&lt;!ELEMENT er    (#PCDATA)&gt; &lt;!-- Error; content, if any, is "annotation" --&gt;
+
+&lt;!-- A List: a sequence of ClassAd elements --&gt;
+&lt;!ELEMENT l     (i | r | s | e | b | at | rt | un | er | l | c)*&gt;
+</PRE>
+
+<P>
+<BR><HR>
+<ADDRESS>
+Alain Roy
+2004-09-30
+</ADDRESS>
+</BODY>
+</HTML>
