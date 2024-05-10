@@ -852,14 +852,16 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.0.8</span> Long Term Support Release</h3>
-        <p>April 11, 2024</p>
+        <h3><span class="text-secondary">23.0.10</span> Long Term Support Release</h3>
+        <p>May  9, 2024</p>
         <div>
             <ul>
-  <li>Fix bug where ssh-agent processes were leaked with grid universe jobs</li>
-  <li>Fix DAGMan crash when a provisioner node was given a parent</li>
-  <li>Fix bug that prevented use of <code>ftp:</code> URLs in file transfer</li>
-  <li>Fix bug where jobs that matched an offline slot never start</li>
+  <li>Preliminary support for Ubuntu 22.04 (Noble Numbat)</li>
+  <li>Warns about deprecated multiple queue statements in a submit file</li>
+  <li>Fix bug where plugins could not signify to retry a file transfer</li>
+  <li>The ‘condor_upgrade_check’ script checks for proper token file permissions</li>
+  <li>Fix bug where the ‘condor_upgrade_check’ script crashes on older platforms</li>
+  <li>The bundled version of apptainer was moved to libexec in the tarball</li>
 </ul>
 
         </div>
