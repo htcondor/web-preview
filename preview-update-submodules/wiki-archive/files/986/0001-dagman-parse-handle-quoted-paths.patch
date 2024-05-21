@@ -1,0 +1,53 @@
+From 01b56688eb1bcf4dd0278eae2b03f0fcee40cbd9 Mon Sep 17 00:00:00 2001
+From: Quintin Hill <Quintin.Hill@arqiva.com>
+Date: Tue, 11 Apr 2017 12:12:23 +0100
+Subject: [PATCH 1/6] dagman/parse: handle quoted paths
+
+Accept simple quoting of paths with spaces in "/path/with spaces".
+---
+ src/condor_dagman/parse.cpp | 15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/src/condor_dagman/parse.cpp b/src/condor_dagman/parse.cpp
+index 2a36a7fb66..0eff306588 100644
+--- a/src/condor_dagman/parse.cpp
++++ b/src/condor_dagman/parse.cpp
+@@ -559,6 +559,17 @@ parse_subdag( Dag *dag,
+ 	return false;
+ }
+ 
++static const char* next_possibly_quoted_token( void )
++{
++	char *remainder = strtok( NULL, "" );
++	while ( remainder[0] == ' ' || remainder[0] == '\t' )
++		remainder++;
++	if ( remainder[0] == '"' )
++		return strtok( ++remainder, "\"" );
++	else
++		return strtok( remainder, DELIMITERS );
++}
++
+ //-----------------------------------------------------------------------------
+ static bool 
+ parse_node( Dag *dag, 
+@@ -615,7 +626,7 @@ parse_node( Dag *dag,
+ 	nodeName = tmpNodeName.Value();
+ 
+ 		// next token is the submit file name
+-	const char *submitFile = strtok( NULL, DELIMITERS );
++	const char *submitFile = next_possibly_quoted_token();
+ 	if ( !submitFile ) {
+ 		debug_printf( DEBUG_QUIET, "ERROR: %s (line %d): no submit file "
+ 					"specified\n", dagFile, lineNum );
+@@ -635,7 +646,7 @@ parse_node( Dag *dag,
+ 				return false;
+ 			}
+ 
+-			directory = strtok( NULL, DELIMITERS );
++			directory = next_possibly_quoted_token();
+ 			if ( !directory ) {
+ 				debug_printf( DEBUG_QUIET, "ERROR: %s (line %d): no directory "
+ 							"specified after DIR keyword\n", dagFile, lineNum );
+-- 
+2.13.5
+
