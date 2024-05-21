@@ -1,0 +1,483 @@
+diff --git a/src/condor_daemon_core.V6/condor_daemon_core.h b/src/condor_daemon_core.V6/condor_daemon_core.h
+index 91fc680..41e7d17 100644
+--- a/src/condor_daemon_core.V6/condor_daemon_core.h
++++ b/src/condor_daemon_core.V6/condor_daemon_core.h
+@@ -58,6 +58,7 @@
+ #include "limit.h"
+ #include "ccb_listener.h"
+ #include "condor_sinful.h"
++#include "filesystem_remap.h"
+ 
+ #include "../condor_procd/proc_family_io.h"
+ class ProcFamilyInterface;
+@@ -1054,27 +1055,30 @@ class DaemonCore : public Service
+         ...
+         @param err_return_msg Returned with error message pertaining to
+                failure inside the method.  Ignored if NULL (default).
++        @param remap Performs bind mounts for the child process.
++               Ignored if NULL (default).  Ignored on non-Linux.
+         @return On success, returns the child pid.  On failure, returns FALSE.
+     */
+     int Create_Process (
+-        const char    *name,
+-        ArgList const &arglist,
+-        priv_state    priv                 = PRIV_UNKNOWN,
+-        int           reaper_id            = 1,
+-        int           want_commanand_port  = TRUE,
+-        Env const     *env                 = NULL,
+-        const char    *cwd                 = NULL,
+-        FamilyInfo    *family_info         = NULL,
+-        Stream        *sock_inherit_list[] = NULL,
+-        int           std[]                = NULL,
+-        int           fd_inherit_list[]    = NULL,
+-        int           nice_inc             = 0,
+-        sigset_t      *sigmask             = NULL,
+-        int           job_opt_mask         = 0,
+-        size_t        *core_hard_limit     = NULL,
+-		int			  *affinity_mask	   = NULL,
+-		char const    *daemon_sock         = NULL,
+-        MyString      *err_return_msg      = NULL
++        const char      *name,
++        ArgList const   &arglist,
++        priv_state      priv                 = PRIV_UNKNOWN,
++        int             reaper_id            = 1,
++        int             want_commanand_port  = TRUE,
++        Env const       *env                 = NULL,
++        const char      *cwd                 = NULL,
++        FamilyInfo      *family_info         = NULL,
++        Stream          *sock_inherit_list[] = NULL,
++        int             std[]                = NULL,
++        int             fd_inherit_list[]    = NULL,
++        int             nice_inc             = 0,
++        sigset_t        *sigmask             = NULL,
++        int             job_opt_mask         = 0,
++        size_t          *core_hard_limit     = NULL,
++        int              *affinity_mask	     = NULL,
++        char const      *daemon_sock         = NULL,
++        MyString        *err_return_msg      = NULL,
++        FilesystemRemap *remap               = NULL
+         );
+ 
+     //@}
+diff --git a/src/condor_daemon_core.V6/daemon_core.cpp b/src/condor_daemon_core.V6/daemon_core.cpp
+index 6aec6c7..099ca25 100644
+--- a/src/condor_daemon_core.V6/daemon_core.cpp
++++ b/src/condor_daemon_core.V6/daemon_core.cpp
+@@ -6290,7 +6290,8 @@ public:
+ 		const sigset_t *the_sigmask,
+ 		size_t *core_hard_limit,
+ 		int		*affinity_mask,
+-		bool want_pid_namespace
++		bool want_pid_namespace,
++		FilesystemRemap *fs_remap
+ 	): m_errorpipe(the_errorpipe), m_args(the_args),
+ 	   m_job_opt_mask(the_job_opt_mask), m_env(the_env),
+ 	   m_inheritbuf(the_inheritbuf),
+@@ -6308,7 +6309,8 @@ public:
+ 	   m_affinity_mask(affinity_mask),
+ 	   m_priv_state(PRIV_UNKNOWN),
+ 	   m_priv_state_parent(PRIV_UNKNOWN),
+-	   m_want_pid_namespace(want_pid_namespace)
++	   m_want_pid_namespace(want_pid_namespace),
++	   m_fs_remap(fs_remap)
+ 	{
+ 	}
+ 
+@@ -6367,6 +6369,7 @@ private:
+ 	priv_state m_priv_state_parent;
+ 	Env m_envobject;
+ 	const bool m_want_pid_namespace;
++	FilesystemRemap *m_fs_remap;
+ };
+ 
+ enum {
+@@ -6440,16 +6443,16 @@ pid_t CreateProcessForkit::fork_exec() {
+ 		struct pollfd fds[0];
+ 		fds[0].fd = m_errorpipe[0];
+ 		fds[0].events = POLLIN;
+-		bool pid_ns = false;
+-		bool killed_child = false;
++		bool pid_ns = false, fs_ns = false, killed_child = false;
+ 		// Both PID and FS namespaces require PRIV_ROOT
+-		if (m_want_pid_namespace) {
++		if (m_want_pid_namespace || m_fs_remap) {
+ 			if (can_switch_ids()) {
+ 				m_priv_state = set_root_priv();
+ 				m_priv_state_parent = m_priv_state;
+ 			}
+ 			if (get_priv_state() == PRIV_ROOT) {
+ 				pid_ns = m_want_pid_namespace;
++				fs_ns = m_fs_remap != NULL;
+ 			} else {
+ 				m_priv_state = PRIV_UNKNOWN;
+ 				m_priv_state_parent = PRIV_UNKNOWN;
+@@ -6491,11 +6494,11 @@ pid_t CreateProcessForkit::fork_exec() {
+ 		enterCreateProcessChild(m_errorpipe[1]);
+ 
+ 		int flags = (CLONE_VM|SIGCHLD);
+-
+-		dprintf(D_ALWAYS, "About to clone.\n");
+ 		// We need a new FS namespace if we get a PID namespace to remount /proc
+ 		if (pid_ns)
+ 			flags |= CLONE_NEWPID|CLONE_NEWNS;
++		if (fs_ns)
++			flags |= CLONE_NEWNS;
+ 		newpid = clone(
+ 				CreateProcessForkit::clone_fn,
+ 				child_stack_ptr,
+@@ -7094,6 +7097,10 @@ void CreateProcessForkit::exec() {
+ 		write(m_errorpipe[1], &errno, sizeof(errno));
+ 		_exit(errno);
+ 	}
++	if (m_fs_remap && m_fs_remap->PerformMappings()) {
++		write(m_errorpipe[1], &errno, sizeof(errno));
++		_exit(errno);
++	}
+ 
+ 	// Restore the privilege state; only needed if we are going to use NEWPID
+ 	if (m_priv_state != PRIV_UNKNOWN)
+@@ -7201,7 +7208,8 @@ int DaemonCore::Create_Process(
+ 			size_t        *core_hard_limit,
+ 			int			  *affinity_mask,
+ 			char const    *daemon_sock,
+-			MyString      *err_return_msg
++			MyString      *err_return_msg,
++			FilesystemRemap *remap
+             )
+ {
+ 	int i, j;
+@@ -7212,6 +7220,9 @@ int DaemonCore::Create_Process(
+ 	MyString executable_buf;
+ 	priv_state current_priv = PRIV_UNKNOWN;
+ 
++	// Remap our executable and CWD if necessary.
++	std::string alt_executable_fullpath, alt_cwd;
++
+ 	// For automagic DC std pipes.
+ 	int dc_pipe_fds[3][2] = {{-1, -1}, {-1, -1}, {-1, -1}};
+ 
+@@ -8195,6 +8206,15 @@ int DaemonCore::Create_Process(
+ 		}
+ 	}
+ 
++	if (remap) {
++		alt_executable_fullpath = remap->RemapFile(executable_fullpath);
++		alt_cwd = remap->RemapDir(cwd);
++		if (alt_executable_fullpath.compare(executable_fullpath))
++			dprintf(D_ALWAYS, "Remapped file: %s\n", alt_executable_fullpath.c_str());
++		if (alt_cwd.compare(cwd))
++			dprintf(D_ALWAYS, "Remapped cwd: %s\n", alt_cwd.c_str());
++	}
++
+ 	{
+ 			// Create a "forkit" object to hold all the state that we need in the child.
+ 			// In some cases, the "fork" will actually be a clone() operation, which
+@@ -8211,9 +8231,9 @@ int DaemonCore::Create_Process(
+ 			time_of_fork,
+ 			mii,
+ 			family_info,
+-			cwd,
++			alt_cwd.length() ? alt_cwd.c_str() : cwd,
+ 			executable,
+-			executable_fullpath,
++			alt_executable_fullpath.length() ? alt_executable_fullpath.c_str() : executable_fullpath,
+ 			std,
+ 			numInheritFds,
+ 			inheritFds,
+@@ -8223,7 +8243,8 @@ int DaemonCore::Create_Process(
+ 			sigmask,
+ 			core_hard_limit,
+ 			affinity_mask,
+-			family_info ? family_info->want_pid_namespace : false);
++			family_info ? family_info->want_pid_namespace : false,
++			remap);
+ 
+ 		newpid = forkit.fork_exec();
+ 	}
+diff --git a/src/condor_starter.V6.1/os_proc.cpp b/src/condor_starter.V6.1/os_proc.cpp
+index 775f97e..1870761 100644
+--- a/src/condor_starter.V6.1/os_proc.cpp
++++ b/src/condor_starter.V6.1/os_proc.cpp
+@@ -70,7 +70,7 @@ OsProc::~OsProc()
+ 
+ 
+ int
+-OsProc::StartJob(FamilyInfo* family_info)
++OsProc::StartJob(FamilyInfo* family_info, FilesystemRemap* fs_remap=NULL)
+ {
+ 	int nice_inc = 0;
+ 	bool has_wrapper = false;
+@@ -494,7 +494,8 @@ OsProc::StartJob(FamilyInfo* family_info)
+ 		                                     core_size_ptr,
+                                              affinity_mask,
+ 											 NULL,
+-                                             &create_process_err_msg);
++                                             &create_process_err_msg,
++                                             fs_remap);
+ 	}
+ 
+ 	// Create_Process() saves the errno for us if it is an "interesting" error.
+diff --git a/src/condor_starter.V6.1/os_proc.h b/src/condor_starter.V6.1/os_proc.h
+index 18a200d..8b5a581 100644
+--- a/src/condor_starter.V6.1/os_proc.h
++++ b/src/condor_starter.V6.1/os_proc.h
+@@ -46,9 +46,9 @@ public:
+ 			output, error files for re-direction, and (finally) call
+ 			daemonCore->Create_Process().
+ 		 */
+-	virtual int StartJob() { return StartJob(NULL); };
++	virtual int StartJob() { return StartJob(NULL, NULL); };
+ 
+-	int StartJob(FamilyInfo*);
++	int StartJob(FamilyInfo*, FilesystemRemap *);
+ 
+ 		/** In this function, we determine if pid == our pid, and if so
+ 			do a CONDOR_job_exit remote syscall.  
+diff --git a/src/condor_starter.V6.1/vanilla_proc.cpp b/src/condor_starter.V6.1/vanilla_proc.cpp
+index 9b2b6ab..ab299a8 100644
+--- a/src/condor_starter.V6.1/vanilla_proc.cpp
++++ b/src/condor_starter.V6.1/vanilla_proc.cpp
+@@ -32,6 +32,8 @@
+ #include "condor_config.h"
+ #include "domain_tools.h"
+ #include "classad_helpers.h"
++#include "filesystem_remap.h"
++#include "directory.h"
+ 
+ #ifdef WIN32
+ #include "executable_scripts.WINDOWS.h"
+@@ -208,6 +210,7 @@ VanillaProc::StartJob()
+ 	}
+ #endif
+ 
++	FilesystemRemap * fs_remap = NULL;
+ #if defined(LINUX)
+ 
+ 	// On Linux kernel 2.6.24 and later, we can give each
+@@ -221,11 +224,59 @@ VanillaProc::StartJob()
+ 	}
+ 	dprintf(D_ALWAYS, "PID namespace option: %s\n", fi.want_pid_namespace ? "true" : "false");
+ 
++	// On Linux kernel 2.4.19 and later, we can give each job its
++	// own FS mounts.
++	if (param_boolean("USE_FS_NAMESPACES", false)) {
++		// It's very likely the 'condor' user doesn't have permission to stat some of these
++		// directories.  Switch to root for now.
++		priv_state original_priv = set_root_priv();
++
++		fs_remap = new FilesystemRemap();
++		std::string working_dir = Starter->GetWorkingDir();
++		if (IsDirectory(working_dir.c_str())) {
++			if (IsDirectory("/tmp")) {
++				dprintf(D_FULLDEBUG, "Adding mapping: %s -> /tmp.\n", working_dir.c_str());
++				fs_remap->AddMapping(working_dir, "/tmp");
++			}
++			if (IsDirectory("/var/tmp")) {
++				dprintf(D_FULLDEBUG, "Adding mapping: %s -> /var/tmp.\n", working_dir.c_str());
++				fs_remap->AddMapping(working_dir, "/var/tmp");
++			}
++			StringList squash_dirs(param("SQUASH_DIRS"));
++			squash_dirs.rewind();
++			char * next_dir;
++			while ((next_dir = squash_dirs.next()) != NULL) {
++				if (IsDirectory(next_dir)) {
++					dprintf(D_FULLDEBUG, "Adding mapping: %s -> %s.\n", working_dir.c_str(), next_dir);
++					fs_remap->AddMapping(working_dir, next_dir);
++				}
++			}
++		}
++		// Don't mangle the IWD until we know how to rewrite the environment.
++/*
++		const char* job_iwd = Starter->jic->jobRemoteIWD();
++		dprintf(D_ALWAYS, "Job IWD: %s\n", job_iwd);
++		if (IsDirectory(job_iwd)) {
++			std::string execute_dir;
++			param(execute_dir, "EXECUTE");
++			if (IsDirectory(execute_dir.c_str())) {
++				dprintf(D_FULLDEBUG, "Adding mapping: %s -> %s.\n", job_iwd, execute_dir.c_str());
++				fs_remap->AddMapping(job_iwd, execute_dir);
++			}
++		}
++*/
++		set_priv(original_priv);
++	}
+ #endif
+ 
+ 	// have OsProc start the job
+ 	//
+-	return OsProc::StartJob(&fi);
++	int retval = OsProc::StartJob(&fi, fs_remap);
++
++	if (fs_remap != NULL)
++		delete fs_remap;
++
++	return retval;
+ }
+ 
+ 
+diff --git a/src/condor_utils/filesystem_remap.cpp b/src/condor_utils/filesystem_remap.cpp
+new file mode 100644
+index 0000000..c670d6d
+--- /dev/null
++++ b/src/condor_utils/filesystem_remap.cpp
+@@ -0,0 +1,74 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2011, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#include "filesystem_remap.h"
++
++#if defined(LINUX)
++#include <sys/mount.h>
++#endif
++
++void FilesystemRemap::AddMapping(std::string source, std::string dest) {
++	if (source[0] == '/' && dest[0] == '/') {
++		std::list<pair_strings>::iterator it;
++		for (it = m_mappings.begin(); it != m_mappings.end(); it++) {
++			if ((it->second.length() == dest.length()) && (it->second.compare(dest) == 0))
++				return;
++		}
++		m_mappings.push_back( std::pair<std::string, std::string>(source, dest) );
++	}
++}
++
++// This is called within the exec
++// IT CANNOT CALL DPRINTF!
++int FilesystemRemap::PerformMappings() {
++	int retval = 0;
++#if defined(LINUX)
++	std::list<pair_strings>::iterator it;
++	for (it = m_mappings.begin(); it != m_mappings.end(); it++) {
++		if ((retval = mount(it->first.c_str(), it->second.c_str(), NULL, MS_BIND, NULL))) {
++			break;
++		}
++	}
++#endif
++	return retval;
++}
++
++std::string FilesystemRemap::RemapFile(std::string target) {
++	if (target[0] != '/')
++		return std::string();
++	size_t pos = target.rfind("/");
++	if (pos == std::string::npos)
++		return target;
++	std::string filename = target.substr(pos, target.size() - pos);
++	std::string directory = target.substr(0, target.size() - filename.size());
++	return RemapDir(directory) + filename;
++}
++
++std::string FilesystemRemap::RemapDir(std::string target) {
++	if (target[0] != '/')
++		return std::string();
++	std::list<pair_strings>::iterator it;
++	for (it = m_mappings.begin(); it != m_mappings.end(); it++) {
++		if ((it->first.compare(0, it->first.length(), target, 0, it->first.length()) == 0)
++				&& (it->second.compare(0, it->second.length(), it->first, 0, it->second.length()) == 0)) {
++			target.replace(0, it->first.length(), it->second);
++		}
++	}
++	return target;
++}
+diff --git a/src/condor_utils/filesystem_remap.h b/src/condor_utils/filesystem_remap.h
+new file mode 100644
+index 0000000..f7e6fd7
+--- /dev/null
++++ b/src/condor_utils/filesystem_remap.h
+@@ -0,0 +1,80 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2011, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#ifndef FILESYSTEM_REMAP_H
++#define FILESYSTEM_REMAP_H
++
++#include <string>
++#include <list>
++#include <utility>
++
++/**
++ * Represents a set of mappings to perform on the filesystem.
++ *
++ * Contains a mapping of source directories that will be remounted to destinations.
++ * So, if we have the mapping (/var/lib/condor/execute/1234) -> (/tmp), this class
++ * will perform the equivalent of this command:
++ *    mount --bind /var/lib/condor/execute/1234 /tmp
++ * This is meant to give Condor the ability to provide per-job temporary directories.
++ */
++typedef std::pair<std::string, std::string> pair_strings;
++
++class FilesystemRemap {
++
++public:
++
++	FilesystemRemap() : m_mappings() {};
++
++	/**
++	 * Add a mapping to the filesystem remap.
++	 * @param source: A source directory that will be remapped to the destination.
++	 * @param dest: A destination directory
++	 */
++	void AddMapping(std::string source, std::string dest);
++
++	/**
++	 * Performs the mappings known to this class.
++	 * This method does not touch the privilege settings - the caller is responsible
++	 * for setting the appropriate context.  This is done because the primary usage
++	 * of this class is the 'exec' part of the clone, where we have special rules
++	 * for touching shared memory.
++	 * @returns: 0 if everything went well, -1 if the remounts failed.
++	 */
++	int PerformMappings();
++
++	/**
++	 * Determine where a directory will be accessible from after the mapping.
++	 * @param Directory to consider.
++	 * @return Renamed directory.
++	 */
++	std::string RemapDir(std::string);
++
++	/**
++	 * Determine where a file will be accessible from after the mapping.
++	 * @param Directory to consider.
++	 * @return Renamed directory.
++	 */
++	std::string RemapFile(std::string);
++
++private:
++
++	std::list<pair_strings> m_mappings;
++
++};
++#endif

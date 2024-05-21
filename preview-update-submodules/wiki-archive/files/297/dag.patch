@@ -1,0 +1,139 @@
+diff -rNup condor-7.4.4.orig/src/condor_c++_util/classad_helpers.cpp condor-7.4.4/src/condor_c++_util/classad_helpers.cpp
+--- condor-7.4.4.orig/src/condor_c++_util/classad_helpers.cpp	2011-02-09 14:47:51.000000000 -0500
++++ condor-7.4.4/src/condor_c++_util/classad_helpers.cpp	2011-02-10 13:49:40.000000000 -0500
+@@ -271,6 +271,7 @@ ClassAd *CreateJobAd( const char *owner,
+ 	job_ad->Assign( ATTR_JOB_STATUS, IDLE );
+ 	job_ad->Assign( ATTR_ENTERED_CURRENT_STATUS, (int)time(NULL) );
+ 
++	job_ad->Assign( ATTR_PRE_JOB_PRIO, 0 );
+ 	job_ad->Assign( ATTR_JOB_PRIO, 0 );
+ 	job_ad->Assign( ATTR_NICE_USER, false );
+ 
+diff -rNup condor-7.4.4.orig/src/condor_c++_util/condor_attributes.cpp condor-7.4.4/src/condor_c++_util/condor_attributes.cpp
+--- condor-7.4.4.orig/src/condor_c++_util/condor_attributes.cpp	2011-02-09 14:47:51.000000000 -0500
++++ condor-7.4.4/src/condor_c++_util/condor_attributes.cpp	2011-02-10 10:11:23.000000000 -0500
+@@ -331,6 +331,7 @@ const char * const ATTR_JOB_OUTPUT				 =
+ const char * const ATTR_JOB_OUTPUT_ORIG			 = "OutOrig";
+ const char * const ATTR_JOB_OUTPUT_SIZE			 = "OutSize";
+ const char * const ATTR_JOB_PID                  = "JobPid";
++const char * const ATTR_PRE_JOB_PRIO             = "PreJobPrio";
+ const char * const ATTR_JOB_PRIO                 = "JobPrio";
+ const char * const ATTR_JOB_COMMITTED_TIME		 = "CommittedTime";
+ const char * const ATTR_JOB_LANGUAGE             = "JobLanguage";
+diff -rNup condor-7.4.4.orig/src/condor_includes/condor_attributes.h condor-7.4.4/src/condor_includes/condor_attributes.h
+--- condor-7.4.4.orig/src/condor_includes/condor_attributes.h	2011-02-09 14:47:51.000000000 -0500
++++ condor-7.4.4/src/condor_includes/condor_attributes.h	2011-02-10 13:42:36.000000000 -0500
+@@ -271,6 +271,7 @@ extern const char * const  ATTR_JOB_OUTP
+ extern const char * const  ATTR_JOB_OUTPUT_ORIG;
+ extern const char * const  ATTR_JOB_OUTPUT_SIZE;
+ extern const char * const  ATTR_JOB_PID;
++extern const char * const  ATTR_PRE_JOB_PRIO;
+ extern const char * const  ATTR_JOB_PRIO;
+ extern const char * const  ATTR_JOB_COMMITTED_TIME;
+ extern const char * const  ATTR_JOB_LANGUAGE;
+diff -rNup condor-7.4.4.orig/src/condor_schedd.V6/dedicated_scheduler.cpp condor-7.4.4/src/condor_schedd.V6/dedicated_scheduler.cpp
+--- condor-7.4.4.orig/src/condor_schedd.V6/dedicated_scheduler.cpp	2011-02-09 14:47:51.000000000 -0500
++++ condor-7.4.4/src/condor_schedd.V6/dedicated_scheduler.cpp	2011-02-09 16:29:56.000000000 -0500
+@@ -4451,15 +4451,27 @@ clusterSortByPrioAndDate( const void *pt
+ 	int qdate1, qdate2;
+ 
+ 	int prio1, prio2;
++	
++	int preprio1, preprio2;
+ 
+ 	if( (GetAttributeInt(cluster1, 0, ATTR_Q_DATE, &qdate1) < 0) || 
+ 		(GetAttributeInt(cluster2, 0, ATTR_Q_DATE, &qdate2) < 0) ||
+ 		(GetAttributeInt(cluster1, 0, ATTR_JOB_PRIO, &prio1) < 0) ||
+-		(GetAttributeInt(cluster2, 0, ATTR_JOB_PRIO, &prio2) < 0)) {
++		(GetAttributeInt(cluster2, 0, ATTR_JOB_PRIO, &prio2) < 0) ||
++		(GetAttributeInt(cluster1, 0, ATTR_PRE_JOB_PRIO, &preprio1) < 0) ||
++		(GetAttributeInt(cluster2, 0, ATTR_PRE_JOB_PRIO, &preprio2) < 0)) {
+ 		
+ 		return -1;
+ 	}
+ 
++	if (preprio1 < preprio2) {
++		return 1;
++	}
++
++	if (preprio1 > preprio2) {
++		return -1;
++	}
++
+ 	if (prio1 < prio2) {
+ 		return 1;
+ 	}
+diff -rNup condor-7.4.4.orig/src/condor_schedd.V6/prio_rec.h condor-7.4.4/src/condor_schedd.V6/prio_rec.h
+--- condor-7.4.4.orig/src/condor_schedd.V6/prio_rec.h	2010-10-11 17:37:00.000000000 -0400
++++ condor-7.4.4/src/condor_schedd.V6/prio_rec.h	2011-02-09 15:33:56.000000000 -0500
+@@ -34,6 +34,7 @@ const 	int		INITIAL_MAX_PRIO_REC = 2048;
+ class prio_rec {
+ public:
+     PROC_ID     id;
++    int         pre_job_prio;
+     int         job_prio;
+     int         status;
+     int         qdate;
+diff -rNup condor-7.4.4.orig/src/condor_schedd.V6/qmgmt.cpp condor-7.4.4/src/condor_schedd.V6/qmgmt.cpp
+--- condor-7.4.4.orig/src/condor_schedd.V6/qmgmt.cpp	2011-02-09 14:47:51.000000000 -0500
++++ condor-7.4.4/src/condor_schedd.V6/qmgmt.cpp	2011-02-10 09:48:09.000000000 -0500
+@@ -3794,12 +3794,13 @@ PrintQ()
+ // seperate. 
+ int get_job_prio(ClassAd *job)
+ {
++    int pre_job_prio;
+     int job_prio;
+     int job_status;
+     PROC_ID id;
+     int     q_date;
+     char    buf[100];
+-	char	owner[100];
++    char	owner[100];
+     int     cur_hosts;
+     int     max_hosts;
+ 	int 	niceUser;
+@@ -3841,7 +3842,8 @@ int get_job_prio(ClassAd *job)
+ 
+ 
+ 	// --- Insert this job into the PrioRec array ---
+-
++	
++    job->LookupInteger(ATTR_PRE_JOB_PRIO, pre_job_prio);
+     job->LookupInteger(ATTR_JOB_PRIO, job_prio);
+     job->LookupInteger(ATTR_Q_DATE, q_date);
+ 	if( job->LookupInteger( ATTR_NICE_USER, niceUser ) && niceUser ) {
+@@ -3866,10 +3868,11 @@ int get_job_prio(ClassAd *job)
+     if (cur_hosts>=max_hosts || job_status==HELD)
+         return cur_hosts;
+ 
+-    PrioRec[N_PrioRecs].id       = id;
+-    PrioRec[N_PrioRecs].job_prio = job_prio;
+-    PrioRec[N_PrioRecs].status   = job_status;
+-    PrioRec[N_PrioRecs].qdate    = q_date;
++    PrioRec[N_PrioRecs].id           = id;
++    PrioRec[N_PrioRecs].pre_job_prio = pre_job_prio;
++    PrioRec[N_PrioRecs].job_prio     = job_prio;
++    PrioRec[N_PrioRecs].status       = job_status;
++    PrioRec[N_PrioRecs].qdate        = q_date;
+ 	if ( auto_id == -1 ) {
+ 		PrioRec[N_PrioRecs].auto_cluster_id = id.cluster;
+ 	} else {
+diff -rNup condor-7.4.4.orig/src/condor_schedd.V6/schedd.cpp condor-7.4.4/src/condor_schedd.V6/schedd.cpp
+--- condor-7.4.4.orig/src/condor_schedd.V6/schedd.cpp	2011-02-09 14:47:51.000000000 -0500
++++ condor-7.4.4/src/condor_schedd.V6/schedd.cpp	2011-02-09 15:32:36.000000000 -0500
+@@ -11168,6 +11168,15 @@ extern "C" {
+ int
+ prio_compar(prio_rec* a, prio_rec* b)
+ {
++	 /* compare submitted job priorities: higher values have more priority */
++	 /* Typically used to prioritize entire DAG jobs over other DAG jobs */
++	 if( a->pre_job_prio < b->pre_job_prio ) {
++		  return 1;
++	 }
++	 if( a->pre_job_prio > b->pre_job_prio ) {
++		  return -1;
++	 }
++	 
+ 	 /* compare job priorities: higher values have more priority */
+ 	 if( a->job_prio < b->job_prio ) {
+ 		  return 1;
