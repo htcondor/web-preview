@@ -1,0 +1,33 @@
+000 (11364.000.000) 05/21 15:12:18 Job submitted from host: <10.20.4.40:9619>
+    DAG Node: monitor
+...
+001 (11364.000.000) 05/21 15:12:23 Job executing on host: <10.20.4.40:9619>
+...
+012 (11364.000.000) 05/21 15:16:56 Job was held.
+	The job attribute OnExitHold expression '( ExitBySignal == false ) && ( ExitCode == 42 )' evaluated to TRUE
+	Code 3 Subcode 0
+...
+012 (11364.000.000) 05/21 15:16:56 Job was held.
+	The job attribute OnExitHold expression '( ExitBySignal == false ) && ( ExitCode == 42 )' evaluated to TRUE
+	Code 3 Subcode 0
+...
+013 (11364.000.000) 05/21 15:21:49 Job was released.
+	The job attribute PeriodicRelease expression 'true' evaluated to TRUE
+...
+001 (11364.000.000) 05/21 15:21:50 Job executing on host: <10.20.4.40:9619>
+...
+005 (11364.000.000) 05/21 15:21:51 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+016 (11364.000.000) 05/21 15:21:55 POST Script terminated.
+	(1) Normal termination (return value 0)
+    DAG Node: monitor
+...
