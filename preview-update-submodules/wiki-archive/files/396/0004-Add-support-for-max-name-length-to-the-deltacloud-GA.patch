@@ -1,0 +1,181 @@
+From 51db81b185440f4fb3340f7af5a19e40e5407a84 Mon Sep 17 00:00:00 2001
+From: Chris Lalancette <clalance@redhat.com>
+Date: Thu, 2 Jun 2011 18:00:09 -0400
+Subject: [PATCH 04/13] Add support for max name length to the deltacloud
+ GAHP.
+
+That is, some backend clouds have a maximum length that
+the name of an instance can be.  Add a GAHP command to call
+into deltacloud to figure out what this length is, if any.
+This will be used by the next commit.
+
+Signed-off-by: Chris Lalancette <clalance@redhat.com>
+---
+ src/deltacloud_gahp/dcloudgahp_commands.cpp |   96 +++++++++++++++++++++++++++
+ src/deltacloud_gahp/dcloudgahp_commands.h   |    2 +
+ src/deltacloud_gahp/dcloudgahp_common.h     |    1 +
+ src/deltacloud_gahp/dcloudgahp_main.cpp     |    8 ++-
+ 4 files changed, 105 insertions(+), 2 deletions(-)
+
+diff --git a/src/deltacloud_gahp/dcloudgahp_commands.cpp b/src/deltacloud_gahp/dcloudgahp_commands.cpp
+index eeb4eaa..774d5a3 100644
+--- a/src/deltacloud_gahp/dcloudgahp_commands.cpp
++++ b/src/deltacloud_gahp/dcloudgahp_commands.cpp
+@@ -695,3 +695,99 @@ cleanup_password:
+ 
+     return ret;
+ }
++
++/*
++ * DELTACLOUD_GET_MAX_NAME_LENGTH <reqid> <url> <user> <password_file>
++ *  where reqid, url, user, and password_file have to be non-NULL.
++ */
++bool dcloud_max_name_length_worker(int argc, char **argv,
++                                   std::string &output_string)
++{
++    char *url, *user, *password_file, *password, *reqid;
++    struct deltacloud_api api;
++    struct deltacloud_link *link;
++    struct deltacloud_feature *feature;
++    struct deltacloud_feature_constraint *constraint;
++    char *max = NULL;
++    bool ret = FALSE;
++
++    if (!verify_number_args(5, argc)) {
++        output_string = create_failure("0", "Wrong_Argument_Number");
++        return FALSE;
++    }
++
++    reqid = argv[1];
++    url = argv[2];
++    user = argv[3];
++    password_file = argv[4];
++
++    dcloudprintf("Arguments: reqid %s, url %s, user %s, password_file %s\n", reqid, url, user, password_file);
++
++    if (STRCASEEQ(url, NULLSTRING)) {
++        output_string = create_failure(reqid, "Invalid_URL");
++        return FALSE;
++    }
++    if (STRCASEEQ(user, NULLSTRING)) {
++        output_string = create_failure(reqid, "Invalid_User");
++        return FALSE;
++    }
++
++    if (STRCASEEQ(password_file, NULLSTRING))
++        password_file = NULL;
++
++    password = read_password_file(password_file);
++    if (!password) {
++        output_string = create_failure(reqid, "Invalid_Password_File");
++        return FALSE;
++    }
++
++    if (deltacloud_initialize(&api, url, user, password) < 0) {
++        output_string = create_failure(reqid, "Deltacloud_Init_Failure: %s",
++                                       deltacloud_get_last_error_string());
++        goto cleanup_password;
++    }
++
++    /* here, we search through the api.links->features->constraints to try and
++     * find a constraint of "max_length".  If we find it, we return it; if not
++     * we just let the higher layers choose a default
++     */
++    deltacloud_for_each(link, api.links) {
++        if (STRCASENEQ(link->rel, "instances"))
++            continue;
++
++        /* OK, we are in the instances collection.  Look at the features */
++        deltacloud_for_each(feature, link->features) {
++            if (STRCASENEQ(feature->name, "user_name"))
++                continue;
++
++            /* OK, we saw the user_name feature; see if it has a length */
++            deltacloud_for_each(constraint, feature->constraints) {
++                if (STRCASEEQ(constraint->name, "max_length")) {
++                    max = strdup(constraint->value);
++                    /* need to use goto here to break all of the loops */
++                    goto done;
++                }
++            }
++        }
++    }
++
++done:
++    output_string = reqid;
++    output_string += " NULL ";
++    if (max == NULL)
++        output_string += "NULL";
++    else {
++        output_string += max;
++        free(max);
++    }
++    output_string += "\n";
++
++    deltacloud_free(&api);
++
++    ret = TRUE;
++
++cleanup_password:
++    free(password);
++
++    return ret;
++}
+diff --git a/src/deltacloud_gahp/dcloudgahp_commands.h b/src/deltacloud_gahp/dcloudgahp_commands.h
+index 431566e..55f6892 100644
+--- a/src/deltacloud_gahp/dcloudgahp_commands.h
++++ b/src/deltacloud_gahp/dcloudgahp_commands.h
+@@ -18,5 +18,7 @@ bool dcloud_action_worker(int argc, char **argv, std::string &output_string);
+ bool dcloud_info_worker(int argc, char **argv, std::string &output_string);
+ bool dcloud_statusall_worker(int argc, char **argv, std::string &output_string);
+ bool dcloud_find_worker(int argc, char **argv, std::string &output_string);
++bool dcloud_max_name_length_worker(int argc, char **argv,
++                                   std::string &output_string);
+ 
+ #endif
+diff --git a/src/deltacloud_gahp/dcloudgahp_common.h b/src/deltacloud_gahp/dcloudgahp_common.h
+index 4f5edd5..0026fba 100644
+--- a/src/deltacloud_gahp/dcloudgahp_common.h
++++ b/src/deltacloud_gahp/dcloudgahp_common.h
+@@ -10,6 +10,7 @@
+ void dcloudprintf_internal(const char *function, const char *fmt, ...);
+ 
+ #define STRCASEEQ(a,b) (strcasecmp(a,b) == 0)
++#define STRCASENEQ(a, b) (strcasecmp(a, b) != 0)
+ 
+ #define NULLSTRING "NULL"
+ 
+diff --git a/src/deltacloud_gahp/dcloudgahp_main.cpp b/src/deltacloud_gahp/dcloudgahp_main.cpp
+index e072815..03deabb 100644
+--- a/src/deltacloud_gahp/dcloudgahp_main.cpp
++++ b/src/deltacloud_gahp/dcloudgahp_main.cpp
+@@ -24,10 +24,11 @@
+ #define GAHP_RESULT_FAILURE					"F"
+ 
+ #define DCLOUD_COMMAND_VM_SUBMIT			"DELTACLOUD_VM_SUBMIT"
+-#define DCLOUD_COMMAND_VM_STATUS_ALL		"DELTACLOUD_VM_STATUS_ALL"
++#define DCLOUD_COMMAND_VM_STATUS_ALL			"DELTACLOUD_VM_STATUS_ALL"
+ #define DCLOUD_COMMAND_VM_ACTION			"DELTACLOUD_VM_ACTION"
+ #define DCLOUD_COMMAND_VM_INFO				"DELTACLOUD_VM_INFO"
+ #define DCLOUD_COMMAND_VM_FIND				"DELTACLOUD_VM_FIND"
++#define DCLOUD_COMMAND_GET_MAX_NAME_LENGTH		"DELTACLOUD_GET_MAX_NAME_LENGTH"
+ 
+ const char * version = "$GahpVersion " DCLOUD_GAHP_VERSION " Feb 4 2010 Condor\\ DELTACLOUDGAHP $";
+ 
+@@ -446,9 +447,12 @@ static void registerAllDcloudCommands(void)
+     registerDcloudGahpCommand(DCLOUD_COMMAND_VM_INFO, dcloud_info_worker);
+ 
+     registerDcloudGahpCommand(DCLOUD_COMMAND_VM_STATUS_ALL,
+-			      dcloud_statusall_worker);
++                              dcloud_statusall_worker);
+ 
+     registerDcloudGahpCommand(DCLOUD_COMMAND_VM_FIND, dcloud_find_worker);
++
++    registerDcloudGahpCommand(DCLOUD_COMMAND_GET_MAX_NAME_LENGTH,
++                              dcloud_max_name_length_worker);
+ }
+ 
+ int main(int argc, char *argv[])
+-- 
+1.7.4.4
+
