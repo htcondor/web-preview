@@ -720,338 +720,143 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="container-xxl py-4">
-    <div class="row flex-column flex-md-row">
-    <div class="col-12 col-md-3 col-xl-2 bg-light mb-4 py-2 me-2 d-none d-md-block">
-        
-
-
-<div class="dropdown">
-    <a
-            class="ps-3 d-block d-md-none text-decoration-none dropdown-toggle"
-            data-bs-toggle="collapse"
-            href="#software-navigation"
-            role="button"
-            aria-expanded="false"
-            aria-controls="software-navigation">
-        <span class="fs-4 my-auto">
-            Software Navigation
-        </span>
-    </a>
-    <div class="multi-collapse collapse d-md-block" id="software-navigation">
-        <ul class="nav nav-pills flex-column">
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/overview/"
-                >
-                    Overview
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/download/"
-                >
-                    Download
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/documentation/"
-                >
-                    Documentation
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/release-highlights/"
-                >
-                    Release Highlights
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/release-plan/"
-                >
-                    Release Plan
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/news/"
-                >
-                    News
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="https://htcondor.readthedocs.io/en/latest/version-history/"
-                >
-                    Full Release Notes&#11023;
-                </a>
-            </li>
-            
-        </ul>
-    </div>
-</div>
-
-    </div>
-    <div class="col">
-        <h1 class="text-secondary">HTCondor Download</h1>
-        <div class="d-block d-md-none bg-light py-2 my-2">
-            
-
-
-<div class="dropdown">
-    <a
-            class="ps-3 d-block d-md-none text-decoration-none dropdown-toggle"
-            data-bs-toggle="collapse"
-            href="#software-navigation"
-            role="button"
-            aria-expanded="false"
-            aria-controls="software-navigation">
-        <span class="fs-4 my-auto">
-            Software Navigation
-        </span>
-    </a>
-    <div class="multi-collapse collapse d-md-block" id="software-navigation">
-        <ul class="nav nav-pills flex-column">
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/overview/"
-                >
-                    Overview
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/download/"
-                >
-                    Download
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/documentation/"
-                >
-                    Documentation
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/release-highlights/"
-                >
-                    Release Highlights
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/release-plan/"
-                >
-                    Release Plan
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="/web-preview/preview-update-submodules/htcondor/news/"
-                >
-                    News
-                </a>
-            </li>
-            
-            
-            
-            <li class="nav-item mx-1">
-                <a
-                        class="nav-link  "
-                        href="https://htcondor.readthedocs.io/en/latest/version-history/"
-                >
-                    Full Release Notes&#11023;
-                </a>
-            </li>
-            
-        </ul>
-    </div>
-</div>
-
-        </div>
-        
+    
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="feature-channel" class="mb-4 card">
-    <div class="card-body">
-        <h3><span class="text-secondary">23.7.2</span> Feature Release</h3>
-        <p>May 21, 2024</p>
-        <div>
-            <ul>
-  <li>Warns about deprecated multiple queue statements in a submit file</li>
-  <li>The semantics of <code>skip_if_dataflow</code> have been improved</li>
-  <li>Removing large DAGs is now non-blocking, preserving schedd performance</li>
-  <li>Periodic policy expressions are now checked during input file transfer</li>
-  <li>Local universe jobs can now specify a container image</li>
-  <li>File transfer plugins can now advertise extra attributes</li>
-  <li>DAGMan can rescue and abort if pending jobs are missing from the job queue</li>
-  <li>Fix so <code>condor_submit -interactive</code> works on cgroup v2 execution points</li>
-</ul>
-
-        </div>
-        <hr>
-        <p>
-            Feature releases distribute HTCondor's new features and also
-            incorporates bug fixes. Most people should use choose this channel and stay up-to-date with
-            HTCondor's latest features.
-        </p>
-        <p class="">
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-23-x.html">Detailed Notes</a> recommended prior to upgrading.
-        </p>
-        <div>
-            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">Installation Guide</a>
-            <a class="btn btn-primary" href="/web-preview/preview-update-submodules/htcondor/release-highlights/index.html#feature-channel">Release Notes</a>
+    <div class="bg-light">
+    <hr class="my-0">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-auto">
+                <div class="d-flex my-2">
+                    <span class="fs-4 my-auto">Featured User</span>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <hr class="my-0">
 </div>
-<div class="alert alert-danger" role="alert" style="margin-bottom: 24px; text-align: center;">
-    Find or add yourself to the global network of HTCondor users!<br>
-    <a class="btn btn-danger mt-3" href="https://htcondor.org/user-map">HTCSS User Map</a>
-</div>
-<div id="long-term-support-channel" class="mb-4 card">
-    <div class="card-body">
-        <h3><span class="text-secondary">23.0.10</span> Long Term Support Release</h3>
-        <p>May  9, 2024</p>
-        <div>
-            <ul>
-  <li>Preliminary support for Ubuntu 22.04 (Noble Numbat)</li>
-  <li>Warns about deprecated multiple queue statements in a submit file</li>
-  <li>Fix bug where plugins could not signify to retry a file transfer</li>
-  <li>The ‘condor_upgrade_check’ script checks for proper token file permissions</li>
-  <li>Fix bug where the ‘condor_upgrade_check’ script crashes on older platforms</li>
-  <li>The bundled version of apptainer was moved to libexec in the tarball</li>
-</ul>
 
-        </div>
-        <hr>
-        <p>
-            Long Term Support (LTS) releases only bug fixes to a particular, fixed set of
-            features from the current LTS channel.  As a result, each LTS channel tends to
-            become more stable over time; read the <a href="https://htcondor.readthedocs.io/en/latest/version-history/">release notes</a>
-            from the current channel to make sure you aren't missing any features you
-            need.
-        </p>
-        <p>
-            If you can't regularly upgrade your machines, this may be the channel
-            for you.
-        </p>
-        <p>
-            Periodically, we will update the set of features that we support with
-            bug fixes and start a new LTS channel.  This will not the change the set
-            of features available to an existing or automatically-updated installation of
-            a LTS channel; you have to make the decision to change manually.  However,
-            after a time, we will stop issuing additional bug fixes for older LTS
-            channels.
-        </p>
-        <p>
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-23-0.html">Detailed Notes</a> recommended prior to upgrading.
-        </p>
-        <div>
-            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/23.0/getting-htcondor/index.html">Installation Guide</a>
-            <a class="btn btn-primary" href="/web-preview/preview-update-submodules/htcondor/release-highlights/index.html#long-term-support-channel">Release Notes</a>
+<div class="container-xxl py-4">
+    <div id="news-container" class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+            <h1></h1>
+            <div class="row justify-content-between">
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">May 21, 2024</span>
+                </div>
+            </div>
+
+            
+            <div class="mt-4 fs-5"><p><em>Since 2022, the <a href="https://path-cc.io/">Partnership to Advance Throughput Computing</a> (PATh) Facility has provided dedicated high throughput
+computing (HTC) 
+capacity to researchers nationwide. Following a year of expansion, here’s a look into the researchers’ work and how it has been enabled by
+the PATh Facility.</em></p>
+
+<p>Searching for more computing capacity, Dr. <a href="https://www.nwmissouri.edu/naturalsciences/directory/chakraborty.htm">Himadri Chakraborty</a> of 
+<a href="https://www.nwmissouri.edu/">Northwest Missouri State University</a> first heard of the <a href="https://path-cc.io/facility/">PATh Facility</a>, a
+purpose-built,
+national-scale distributed high throughput computing (HTC) resource, from his NSF program director. After approaching PATh Research
+Facilitators to 
+acquire an account and computing “credits,” Chakraborty’s team was able to advance their work in physics using computing resources from the
+PATh Facility.
+<a href="https://www.cs.wisc.edu/staff/koch-christina/">Christina Koch</a>, Lead Research Facilitator at CHTC guided Chakraborty’s team in
+transitioning workflows to run within HTCondor.</p>
+
+<p>“As our ambition grew, we were looking out for a larger system, PATh came as a blessing,” Chakraborty reflected. “The ultimate satisfaction is to get 
+some new understanding and learning of the science we are working on,” he reflected. “We hope that this will be one of our first major achievements using 
+the PATh Facility.”</p>
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/HimadriChakraborty2024.jpg" height="240" width="190" class="figure-img img-fluid rounded" alt="Himadri Chakraborty" />
+  <figcaption class="figure-caption">Himadri Chakraborty. <br /></figcaption>
+</figure>
+
+<p>The PATh Facility, created through the Partnership to Advance Throughput Computing (PATh; NSF grant #2030508), enables researchers of an NSF-funded project 
+to use its dedicated distributed high-throughput computing (HTC) capacity. PATh is an ongoing collaboration between the <a href="https://chtc.cs.wisc.edu/">Center for High Throughput Computing</a> (CHTC) 
+and the <a href="https://osg-htc.org/">OSG Consortium</a> to support HTC-enabled research by improving national cyberinfrastructure. The PATh Facility acquires capacity 
+from six institutions — the <a href="https://www.unl.edu/">University of Nebraska-Lincoln</a>, <a href="https://www.syracuse.edu/">Syracuse University</a>, <a href="https://www.fiu.edu/">Florida International University</a>,
+the <a href="https://www.sdsc.edu/">San Diego Supercomputing Center</a>, the <a href="https://www.wisc.edu/">University of Wisconsin-Madison</a> and the <a href="https://tacc.utexas.edu/">Texas Advanced Computing Center</a> 
+— integrated into a single pool of capacity available to users. After becoming fully operational in mid-2022, it saw “the most growth in terms of new projects 
+joining and getting started in 2023,” Koch said.</p>
+
+<p>The PATh Facility guarantees users access through <a href="https://path-cc.io/services/credit-accounts/">credits</a>. Credits operate as a stand-in unit to ensure no 
+one user is monopolizing the Facility’s capacity. Users receive 1,000 start-up credits to test if the PATh Facility is a good fit for them, available as Central
+Processing Unit (CPU) or Graphic Processing Unit (GPU) charges. After this initial testing period, they can apply for supplemental credits by contacting PATh 
+Facilitators and their NSF officer. If users run through all their credits, they are still able to keep running and facilitators will work with them to request 
+additional credits.</p>
+
+<p>In comparison to the PATh Facility, the <a href="https://osg-htc.org/services/open_science_pool">Open Science Pool</a> (OSPool) — another distributed HTC resource created
+by the OSG Consortium — acquires available capacity from idle resources across <a href="https://osg-htc.org/services/open_science_pool/institutions">70 institutions</a> 
+nationwide. Projects may be better suited for the PATh Facility than the OSPool if they need additional cores, memory, data or dedicated time. “Since the PATh 
+Facility is hardware owned and operated by PATh, we can make more guarantees about how long individual computations can run, that people will be able to get certain 
+resources and run computations of a certain size,” Koch explained.</p>
+
+<p>Following the PATh Facility’s growth, some OSPool users have begun to use the Facility’s dedicated capacity in tandem. One example is <a href="https://www.ncsu.edu/">North Carolina State University</a> 
+PhD candidate Matthew Dorsey, who relied on capacity from the OSPool for two years before expanding his research to the newer <a href="https://path-cc.io/facility/">PATh Facility</a>.
+In doing so, he was able to run larger jobs without worrying about running out of capacity. “The transition to the PATh Facility was extremely easy,” Dorsey said. 
+“I was pleased with how seamless it was.”</p>
+
+<p>Dorsey became interested in the OSPool after attending <a href="https://osg-htc.org/school-2024/">OSG School</a> in the summer of 2022. There, he learned the basics of
+<a href="https://htcondor.org/">HTCondor</a> and got to know Koch and other facilitators. Dorsey’s research specializes in statistical physics. He uses computational models
+to study magnetic materials and how magnetic fields can be used to alter properties made from different kinds of magnetic nanoparticles. His work benefits from the 
+consistent access to computing for runs that accumulate over a long period of time.</p>
+
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Dorsey-headshot.jpg" height="240" width="190" class="figure-img img-fluid rounded" alt="Matthew Dorsey" />
+  <figcaption class="figure-caption">Matthew Dorsey. <br /></figcaption>
+</figure>
+
+<p>Dorsey acknowledges that each system has its advantages and disadvantages. For Dorsey, the PATh Facility is better equipped for more complex jobs due to capacity and
+allocated time, while the OSPool is better for testing out comparatively smaller runs. “It was really easy to translate what I was doing on the OSPool to the PATh 
+Facility and quickly scale it up,” Dorsey said.</p>
+
+<p>A testament to the strength of the PATh Facility, the <a href="https://public.nrao.edu/">National Radio Astronomy Observatory</a> (NRAO) used its capacity with the OSPool to 
+develop one of the <a href="https://chtc.cs.wisc.edu/nrao.html">oldest radio images</a> of a well-studied area in space. Working alongside PATh and CHTC staff, the capacity
+from the PATh Facility was instrumental in planning when certain jobs would run, without the risk of reduced capacity from the OSPool.</p>
+
+<p>The PATh Facility makes it possible to support projects with larger computational requirements. <a href="https://metallurgy.mines.edu/project/stevanovic-vladan/">Dr. Vladan Stevanovic</a> 
+of the <a href="https://www.mines.edu/">Colorado School of Mines</a> is studying computational material science and relies heavily on the PATh Facility to plan and run data workflows. 
+Stevanovic became familiar with the PATh Facility after receiving a <a href="https://new.nsf.gov/cise/dear-colleague-letters">Dear Colleague Letter</a> from the NSF.</p>
+
+<p>His work requires more cores than what the OSPool alone could offer, and he was drawn to the PATh Facility due to its specialization in HTC and ability to guarantee 
+availability. Stevanovic and his team hope to develop computational tools to reliably predict the metastable states of solid matter. He describes this work as very 
+computational, and has worked with HTC workflows for over 12 years. “PATh is amazing for my research because its primary purpose is HTC, which I rely on,” he said. 
+“I’m grateful because my project critically depends on PATh,” he said.</p>
+
+<p>Stevanovic also appreciates how easy it was to start using the PATh Facility. Start-up credits are typically granted while or directly after meeting with the Facilitation
+team, and Koch’s team continues to support researchers as they ask the NSF for more credits. “The onboarding process was great, and the support from Christina was amazing.
+We were able to get running and get up to speed quickly.”</p>
+
+<p>Chakraborty’s team faced some initial challenges in switching workflows from in-house to distributed, but coming to the PATh Facility nonetheless expanded the capacity
+available to his team. He recounted that his previous in-house system provided about 28 CPUs per node, while the PATh Facility offers up to 150 CPUs. Overall, Chakraborty
+is optimistic that the new capacity will improve his findings for the future. “We are happy we took that plunge because we went through some difficult times and got help 
+from the PATh folks,” he said. “We’ve made some pretty good progress in making our codes run on PATh. It was mostly to be able to use a larger pool of computer power.”</p>
+
+<p>His work focuses on the simulation of electronic and phonontonic coupled ultrafast relaxation of photoexcited large molecules. The PATh Facility’s new capacity allowed 
+his team to make new advances “of a polymer functional system that has a lot of applications,” he said. “It’s not the end, it’s still preliminary and intermediate, and 
+they are so exciting. We are looking forward to the final results and finding out new physics.”</p>
+
+<p>Interested PIs can submit an interest form on the <a href="https://portal.path-cc.io/documentation/">PATh website</a>, to then meet a research computing facilitator for a consultation. 
+If the researcher is a good fit, PATh Facilitators help the researcher log in and begin using their start-up credits. If they wish to continue, the researcher begins 
+drafting a proposal letter to the NSF, requesting credits. Koch notes that the credit proposal is simpler than a typical project proposal, and the Facilitation team provides
+a multitude of resources such as credit calculators and proposal templates. For users who encounter issues, the facilitation team is available through support email address, 
+and weekly <a href="https://portal.path-cc.io/documentation/support_and_training/support/getting-help-from-RCFs/">support hours</a>, as well as maintaining documentation on the website.</p>
+</div>
         </div>
     </div>
 </div>
 
-    </div>
-</div>
 
-
-</div>
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
     <div class="container-xxl">
