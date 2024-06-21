@@ -1,0 +1,625 @@
+From c6b50d900e5e7bede5bde086c00a8c51974a04cf Mon Sep 17 00:00:00 2001
+From: Dan Bradley <dan@hep.wisc.edu>
+Date: Thu, 24 Feb 2011 14:46:33 -0600
+Subject: [PATCH] Allow schedd to change ownership of claims. #1884
+
+---
+ src/condor_schedd.V6/schedd.cpp           |   95 ++++++++++-
+ src/condor_schedd.V6/schedd_user_prio.cpp |  278 +++++++++++++++++++++++++++++
+ src/condor_schedd.V6/schedd_user_prio.h   |   76 ++++++++
+ src/condor_schedd.V6/scheduler.h          |   12 ++-
+ 4 files changed, 458 insertions(+), 3 deletions(-)
+ create mode 100644 src/condor_schedd.V6/schedd_user_prio.cpp
+ create mode 100644 src/condor_schedd.V6/schedd_user_prio.h
+
+diff --git a/src/condor_schedd.V6/schedd.cpp b/src/condor_schedd.V6/schedd.cpp
+index 0c3aae6..109a1ab 100644
+--- a/src/condor_schedd.V6/schedd.cpp
++++ b/src/condor_schedd.V6/schedd.cpp
+@@ -295,6 +295,13 @@ match_rec::match_rec( char const* claim_id, char const* p, PROC_ID* job_id,
+ 		// Don't know the version of the startd, assume false
+ 		m_startd_sends_alives = false;
+ 	}
++
++	slot_weight = 1.0;
++	if( my_match_ad ) {
++		if( !my_match_ad->EvalFloat(ATTR_SLOT_WEIGHT,NULL,slot_weight) || slot_weight < DBL_MIN ) {
++			slot_weight = 1.0;
++		}
++	}
+ }
+ 
+ void
+@@ -372,6 +379,18 @@ match_rec::setStatus( int stat )
+ 		// socket disconnect.
+ }
+ 
++void match_rec::setUser(char const *new_user)
++{
++	free( user );
++	if( new_user ) {
++		user = strdup(new_user);
++	}
++	else {
++		user = NULL;
++	}
++
++	makeDescription();
++}
+ 
+ ContactStartdArgs::ContactStartdArgs( char const* the_claim_id, char* sinfulstr, bool is_dedicated ) 
+ {
+@@ -1210,6 +1229,10 @@ Scheduler::count_jobs()
+ 
+ 	check_claim_request_timeouts();
+ 
++		// In case usage counts drift from reality,
++		// we recalculate from scratch here.
++	recalcScheddUserPrioUsage();
++
+ 	return 0;
+ }
+ 
+@@ -5954,11 +5977,12 @@ Scheduler::StartJob(match_rec *rec)
+ 	id.cluster = rec->cluster;
+ 	id.proc = rec->proc; 
+ 	ReactivatingMatch = (id.proc == -1);
++	std::string new_user;
+ 	if(!Runnable(&id)) {
+ 			// find the job in the cluster with the highest priority
+ 		id.proc = -1;
+ 		if( rec->my_match_ad ) {
+-			FindRunnableJob(id,rec->my_match_ad,rec->user);
++			m_user_prio_mgr.FindRunnableJob(id,rec->my_match_ad,rec->slot_weight,rec->user,new_user);
+ 		}
+ 	}
+ 	if(id.proc < 0) {
+@@ -6015,6 +6039,9 @@ Scheduler::StartJob(match_rec *rec)
+ 		// This is important for Scheduler::AlreadyMatched(), and also
+ 		// for when we receive an alive command from the startd.
+ 	SetMrecJobID(rec,id);
++	if( !new_user.empty() ) {
++		chownClaim(rec,new_user.c_str() );
++	}
+ 		// Now that the shadow has spawned, consider this match "ACTIVE"
+ 	rec->setStatus( M_ACTIVE );
+ }
+@@ -10319,6 +10346,9 @@ Scheduler::Init()
+ 
+ 	m_job_machine_attrs_history_length = param_integer("SYSTEM_JOB_MACHINE_ATTRS_HISTORY_LENGTH",1,0);
+ 
++	m_user_prio_mgr.config();
++	recalcScheddUserPrioUsage();
++
+ 	first_time_in_init = false;
+ }
+ 
+@@ -11001,6 +11031,8 @@ Scheduler::AddMrec(char const* id, char const* peer, PROC_ID* jobId, const Class
+ 		OptimizeMachineAdForMatchmaking( rec->my_match_ad );
+ 	}
+ 
++	m_user_prio_mgr.addUsage( rec->user, rec->slot_weight );
++
+ 	return rec;
+ }
+ 
+@@ -11069,6 +11101,8 @@ Scheduler::DelMrec(match_rec* match)
+ 		delete match->auth_hole_id;
+ 	}
+ 
++	m_user_prio_mgr.addUsage( match->user, -match->slot_weight );
++
+ 		// Remove this match from the associated shadowRec.
+ 	if (match->shadowRec)
+ 		match->shadowRec->match = NULL;
+@@ -13143,8 +13177,9 @@ Scheduler::RecycleShadow(int /*cmd*/, Stream *stream)
+ 
+ 	new_job_id.cluster = -1;
+ 	new_job_id.proc = -1;
++	std::string new_user;
+ 	if( mrec->my_match_ad && !ExitWhenDone ) {
+-		FindRunnableJob(new_job_id,mrec->my_match_ad,mrec->user);
++		m_user_prio_mgr.FindRunnableJob(new_job_id,mrec->my_match_ad,mrec->slot_weight,mrec->user,new_user);
+ 	}
+ 
+ 		// The standard universe shadow never calls this function,
+@@ -13186,6 +13221,9 @@ Scheduler::RecycleShadow(int /*cmd*/, Stream *stream)
+ 	mark_serial_job_running(&new_job_id);
+ 
+ 	SetMrecJobID(mrec,new_job_id);
++	if( !new_user.empty() ) {
++		chownClaim(mrec, new_user.c_str() );
++	}
+ 	mrec->setStatus( M_ACTIVE );
+ 
+ 	callAboutToSpawnJobHandler(new_job_id.cluster, new_job_id.proc, srec);
+@@ -13306,3 +13344,56 @@ Scheduler::clear_dirty_job_attrs_handler(int /*cmd*/, Stream *stream)
+ 	MarkJobClean( cluster_id, proc_id );
+ 	return TRUE;
+ }
++
++void
++Scheduler::recalcScheddUserPrioUsage()
++{
++	int i;
++
++	if( !m_user_prio_mgr.enabled() ) {
++		return;
++	}
++
++	m_user_prio_mgr.clearUsage();
++
++		// count how many claims belong to each schedd_user_prio record
++	matches->startIterations();
++	match_rec *match;
++	while( matches->iterate( match ) ) {
++		m_user_prio_mgr.addUsage( match->user, match->slot_weight );
++	}
++
++		// disable users with no idle jobs to avoid wasted effort
++	m_user_prio_mgr.markAllUsersInactive();
++	for(i=0; i<N_Owners; i++) {
++		if( Owners[i].Name ) {
++			if( Owners[i].JobsIdle > 0 || Owners[i].JobsRunning > 0 ) {
++				m_user_prio_mgr.markUserActive( Owners[i].Name );
++			}
++		}
++	}
++
++	if( DebugFlags & D_FULLDEBUG ) {
++		m_user_prio_mgr.sortUserPrios(0,NULL);
++		m_user_prio_mgr.printUserPrios(D_FULLDEBUG);
++	}
++}
++
++void
++Scheduler::chownClaim( match_rec *match, char const *new_user )
++{
++		// Technically, this function actually changes the claim user,
++		// not the claim owner.  The startd remembers the claim owner
++		// from when the claim was first requested.  There is currently
++		// no protocol (or need) to change the owner.
++
++	if( new_user && match->user && strcmp(new_user,match->user)==0 ) {
++		return;
++	}
++
++	m_user_prio_mgr.addUsage( match->user, -match->slot_weight );
++
++	match->setUser( new_user );
++
++	m_user_prio_mgr.addUsage( match->user, match->slot_weight );
++}
+diff --git a/src/condor_schedd.V6/schedd_user_prio.cpp b/src/condor_schedd.V6/schedd_user_prio.cpp
+new file mode 100644
+index 0000000..b0d58af
+--- /dev/null
++++ b/src/condor_schedd.V6/schedd_user_prio.cpp
+@@ -0,0 +1,278 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2010, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++
++#include "condor_common.h"
++#include "condor_config.h"
++#include "condor_debug.h"
++#include "schedd_user_prio.h"
++#include "condor_attributes.h"
++#include "qmgmt.h"
++
++ScheddUserPrioMgr::~ScheddUserPrioMgr()
++{
++	deleteUserPrios();
++}
++
++void
++ScheddUserPrioMgr::deleteUserPrios()
++{
++	std::vector< ScheddUserPrio * >::iterator user_prio_itr;
++	for(user_prio_itr = m_user_prios.begin();
++		user_prio_itr != m_user_prios.end();
++		user_prio_itr++ )
++	{
++		delete *user_prio_itr;
++	}
++	m_user_prios.clear();
++	m_user_prio_owner_map.clear();
++}
++
++ScheddUserPrio::ScheddUserPrio():
++	weighted_claims(0),
++	actual_share(0),
++	desired_share(0),
++	desired_share_used(0),
++	inactive(false)
++{
++}
++
++void
++ScheddUserPrioMgr::config()
++{
++	std::string schedd_user_prio_config_str;
++	StringList schedd_user_prio_config_list;
++
++	deleteUserPrios();
++
++	param(schedd_user_prio_config_str,"SCHEDD_USER_SHARES");
++	schedd_user_prio_config_list.initializeFromString(schedd_user_prio_config_str.c_str());
++
++	char const *item;
++	schedd_user_prio_config_list.rewind();
++	while( (item=schedd_user_prio_config_list.next()) ) {
++		ScheddUserPrio *user_prio = new ScheddUserPrio;
++		size_t pos = strcspn(item,"=");
++
++		user_prio->owner.assign(item,pos);
++
++		bool invalid = false;
++		if( item[pos] == '\0' ) {
++			invalid = true;
++		}
++		else {
++			char *end = NULL;
++			user_prio->desired_share = strtod(item+pos+1,&end);
++			if( *end || user_prio->desired_share < DBL_MIN ) {
++				invalid = true;
++			}
++		}
++
++		if( invalid ) {
++			dprintf(D_ALWAYS,"Error: SCHEDD_USER_SHARES contains invalid entry '%s'\n",
++					item);
++			delete user_prio;
++		}
++		else {
++			m_user_prios.push_back(user_prio);
++			m_user_prio_owner_map[user_prio->owner] = m_user_prios.back();
++		}
++	}
++
++	m_consider_changing_claim_owner = m_user_prios.size() > 0;
++}
++
++void
++ScheddUserPrioMgr::clearUsage()
++{
++	std::vector< ScheddUserPrio * >::iterator user_prio_itr;
++	for(user_prio_itr = m_user_prios.begin();
++		user_prio_itr != m_user_prios.end();
++		user_prio_itr++ )
++	{
++		(*user_prio_itr)->weighted_claims = 0;
++	}
++}
++
++void
++ScheddUserPrioMgr::addUsage( std::string const &user, double slot_weight )
++{
++	std::map< std::string, ScheddUserPrio * >::iterator user_rec_itr;
++	user_rec_itr = m_user_prio_owner_map.find(user);
++	if( user_rec_itr == m_user_prio_owner_map.end() ) {
++		return;
++	}
++	user_rec_itr->second->weighted_claims += slot_weight;
++}
++
++void
++ScheddUserPrioMgr::markUserActive( std::string const &user )
++{
++	std::map< std::string, ScheddUserPrio * >::iterator user_rec_itr;
++	user_rec_itr = m_user_prio_owner_map.find(user);
++	if( user_rec_itr == m_user_prio_owner_map.end() ) {
++		return;
++	}
++	user_rec_itr->second->inactive = false;
++}
++
++void
++ScheddUserPrioMgr::markAllUsersInactive()
++{
++	std::vector< ScheddUserPrio * >::iterator user_prio_itr;
++	for(user_prio_itr = m_user_prios.begin();
++		user_prio_itr != m_user_prios.end();
++		user_prio_itr++ )
++	{
++		(*user_prio_itr)->inactive = true;
++	}
++}
++
++void
++ScheddUserPrioMgr::sortUserPrios( double slot_weight,char const *prev_owner )
++{
++	std::vector< ScheddUserPrio * >::iterator user_prio_itr;
++	std::map< std::string, ScheddUserPrio * >::iterator user_prio_map_itr;
++
++	double total_weighted_claims = 0;
++	for(user_prio_itr = m_user_prios.begin();
++		user_prio_itr != m_user_prios.end();
++		user_prio_itr++ )
++	{
++		total_weighted_claims += (*user_prio_itr)->weighted_claims;
++	}
++
++		// avoid division by 0
++	if( total_weighted_claims < 1 ) {
++		total_weighted_claims = 1;
++	}
++
++	if( prev_owner ) {
++			// For purposes of prioritization, don't count this claim
++			// against the total for the user who we are considering
++			// taking it away from.
++		addUsage( prev_owner, -slot_weight );
++	}
++
++	for(user_prio_itr = m_user_prios.begin();
++		user_prio_itr != m_user_prios.end();
++		user_prio_itr++ )
++	{
++		ScheddUserPrio *user_prio = *user_prio_itr;
++		user_prio->actual_share = (user_prio->weighted_claims + slot_weight)/total_weighted_claims;
++		user_prio->desired_share_used = user_prio->actual_share/user_prio->desired_share;
++	}
++
++	std::sort( m_user_prios.begin(), m_user_prios.end(), sortUserPrioPtrs() );
++
++	if( prev_owner ) {
++			// undo temporary adjustment made above
++		addUsage( prev_owner, slot_weight );
++	}
++}
++
++void
++ScheddUserPrioMgr::printUserPrios(int level)
++{
++	std::vector< ScheddUserPrio * >::iterator user_prio_itr;
++
++	dprintf(level,"Schedd user priorities:\n");
++	dprintf(level," Slots   Frac Desired            \n");
++	dprintf(level," Used    Used  Share  Active User\n");
++	dprintf(level,"------ ------ ------- ------ ----\n");
++	for(user_prio_itr = m_user_prios.begin();
++		user_prio_itr != m_user_prios.end();
++		user_prio_itr++ )
++	{
++		ScheddUserPrio *user_prio = *user_prio_itr;
++		dprintf(level,"%6.0f %6.2f %7.2f   %s    %s\n",
++				user_prio->weighted_claims,
++				user_prio->actual_share,
++				user_prio->desired_share,
++				user_prio->inactive ? "N" : "Y",
++				user_prio->owner.c_str());
++	}
++}
++
++void
++ScheddUserPrioMgr::FindRunnableJob(PROC_ID &job_id,ClassAd *machine_ad,double slot_weight,char const *prev_owner,std::string &new_owner)
++{
++	if( !m_consider_changing_claim_owner )
++	{
++		::FindRunnableJob( job_id, machine_ad, prev_owner );
++		return;
++	}
++
++	if( m_user_prio_owner_map.count(prev_owner)==0 ) {
++		dprintf(D_FULLDEBUG,
++				"Not considering giving claim owned by %s to anyone else, "
++				"because that user is not listed in SCHEDD_USER_SHARES.\n",
++				prev_owner);
++		::FindRunnableJob( job_id, machine_ad, prev_owner );
++		return;
++	}
++
++	MyString machine_name;
++	if( machine_ad ) {
++		machine_ad->LookupString(ATTR_NAME,machine_name);
++	}
++
++	dprintf(D_FULLDEBUG,"Considering giving %s, used by %s, to someone else.\n",
++			machine_name.Value(),
++			prev_owner ? prev_owner : "no one");
++
++	sortUserPrios( slot_weight, prev_owner );
++
++	std::vector< ScheddUserPrio * >::iterator schedd_user_prio_itr;
++	for(schedd_user_prio_itr = m_user_prios.begin();
++		schedd_user_prio_itr != m_user_prios.end();
++		schedd_user_prio_itr++ )
++	{
++		ScheddUserPrio *user_prio = *schedd_user_prio_itr;
++		if( user_prio->inactive ) {
++			dprintf(D_FULLDEBUG,
++				"%s does not match any job owned by %s (with no idle jobs).\n",
++				machine_name.Value(),user_prio->owner.c_str());
++			continue;
++		}
++		::FindRunnableJob(job_id,machine_ad,user_prio->owner.c_str());
++		if( job_id.proc != -1 ) {
++			new_owner = user_prio->owner;
++
++			bool owner_changed = !prev_owner || strcmp(new_owner.c_str(),prev_owner)!=0;
++
++			dprintf(D_FULLDEBUG,
++					"%s matches %d.%d owned by %s "
++					"(with %g weighted slots)%s%s.\n",
++					machine_name.Value(),
++					job_id.cluster,job_id.proc,
++					user_prio->owner.c_str(),
++					user_prio->weighted_claims + slot_weight,
++					owner_changed ? " bumping previous user " : "",
++					owner_changed ? (prev_owner ? prev_owner : "no one") : "");
++			break;
++		}
++		dprintf(D_FULLDEBUG,
++				"%s does not match any job owned by %s "
++				"(with %g weighted slots).\n",
++				machine_name.Value(),
++				user_prio->owner.c_str(),
++				user_prio->weighted_claims);
++	}
++}
+diff --git a/src/condor_schedd.V6/schedd_user_prio.h b/src/condor_schedd.V6/schedd_user_prio.h
+new file mode 100644
+index 0000000..b551644
+--- /dev/null
++++ b/src/condor_schedd.V6/schedd_user_prio.h
+@@ -0,0 +1,76 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2010, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ * 
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ * 
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ * 
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#ifndef _CONDOR_SCHED_USER_PRIO_H_
++#define _CONDOR_SCHED_USER_PRIO_H_
++
++#include "proc.h"
++
++struct ScheddUserPrio {
++	std::string owner;         // owner name (or accounting group)
++
++	double weighted_claims;    // sum of slot weights being used by this user
++	double actual_share;       // share of (weighted) slot used by this user
++	                           // plus the slot being considered
++	double desired_share;      // configured share
++	double desired_share_used; // actual_share/desired_share
++
++	bool inactive;
++
++	bool operator <(ScheddUserPrio const &other) const {
++			// this is used to sort by who most deserves a new claim
++		return desired_share_used < other.desired_share_used;
++	}
++
++	ScheddUserPrio();
++};
++
++class ScheddUserPrioMgr {
++ public:
++	~ScheddUserPrioMgr();
++
++	void config();
++	void FindRunnableJob(PROC_ID &job_id,ClassAd *machine_ad,double slot_weight,char const *prev_owner,std::string &new_owner);
++
++	void clearUsage(); // reset usage to 0 and re-enable all users
++	void addUsage( std::string const &user, double slot_weight );
++
++	void markUserActive( std::string const &user );
++	void markAllUsersInactive();
++
++	bool enabled() { return m_consider_changing_claim_owner; }
++
++	void printUserPrios(int debug_level);
++	void sortUserPrios( double slot_weight, char const *prev_owner );
++
++ private:
++	std::vector< ScheddUserPrio * > m_user_prios;
++	std::map< std::string, ScheddUserPrio * > m_user_prio_owner_map; // indexed by owner name
++	bool m_consider_changing_claim_owner;
++
++	void deleteUserPrios();
++
++	struct sortUserPrioPtrs {
++		bool operator ()(ScheddUserPrio const *left,ScheddUserPrio const *right) {
++			return *left < *right;
++		}
++	};
++};
++
++#endif
+diff --git a/src/condor_schedd.V6/scheduler.h b/src/condor_schedd.V6/scheduler.h
+index 143466d..5d29d7e 100644
+--- a/src/condor_schedd.V6/scheduler.h
++++ b/src/condor_schedd.V6/scheduler.h
+@@ -54,6 +54,7 @@
+ #include "condor_timeslice.h"
+ #include "condor_claimid_parser.h"
+ #include "transfer_queue.h"
++#include "schedd_user_prio.h"
+ 
+ extern  int         STARTD_CONTACT_TIMEOUT;
+ const	int			NEGOTIATOR_CONTACT_TIMEOUT = 30;
+@@ -119,6 +120,7 @@ struct OwnerData {
+   NegotiationTimestamp=JobsRunning=JobsIdle=JobsHeld=JobsFlocked=FlockLevel=OldFlockLevel=0; }
+ };
+ 
++
+ class match_rec: public ClaimIdParser
+ {
+  public:
+@@ -161,6 +163,8 @@ class match_rec: public ClaimIdParser
+ 
+ 	bool m_startd_sends_alives;
+ 
++	float slot_weight;
++
+ 		// Set the mrec status to the given value (also updates
+ 		// entered_current_status)
+ 	void	setStatus( int stat );
+@@ -169,6 +173,7 @@ class match_rec: public ClaimIdParser
+ 	char const *description() {
+ 		return m_description.Value();
+ 	}
++	void setUser(char const *new_user);
+ };
+ 
+ class UserIdentity {
+@@ -674,13 +679,16 @@ private:
+ 	int				is_alive(shadow_rec* srec);
+ 	shadow_rec*     find_shadow_rec(PROC_ID*);
+ 	void			NotifyUser(shadow_rec*, const char*, int, int);
+-	
++
+ #ifdef CARMI_OPS
+ 	shadow_rec*		find_shadow_by_cluster( PROC_ID * );
+ #endif
+ 
+ 	void			expand_mpi_procs(StringList *, StringList *);
+ 
++	void recalcScheddUserPrioUsage();
++	void chownClaim( match_rec *match, char const *new_user );
++
+ 	HashTable <HashKey, match_rec *> *matches;
+ 	HashTable <PROC_ID, match_rec *> *matchesByJobID;
+ 	HashTable <int, shadow_rec *> *shadowsByPid;
+@@ -730,6 +738,8 @@ private:
+ 
+ 	StringList m_job_machine_attrs;
+ 	int m_job_machine_attrs_history_length;
++	ScheddUserPrioMgr m_user_prio_mgr;
++
+ };
+ 
+ 
+-- 
+1.7.0.3
+
