@@ -1,0 +1,129 @@
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index 5e6c43d..2cedb68 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -84,6 +84,7 @@ public:
+     int duration_phase3;
+     int duration_phase4;
+ 
++    int unconstrained_slots;
+     int total_slots;
+     int trimmed_slots;
+     int candidate_slots;
+@@ -115,6 +116,7 @@ NegotiationCycleStats::NegotiationCycleStats():
+     duration_phase2(0),
+     duration_phase3(0),
+     duration_phase4(0),
++    unconstrained_slots(0),
+     total_slots(0),
+     trimmed_slots(0),
+     candidate_slots(0),
+@@ -152,6 +154,7 @@ static MyString MachineAdID(ClassAd * ad)
+ 
+ Matchmaker::
+ Matchmaker ()
++   : SlotConstraint(NULL)
+ {
+ 	char buf[64];
+ 
+@@ -251,6 +254,7 @@ Matchmaker::
+     if (DynQuotaMachConstraint) delete DynQuotaMachConstraint;
+ 	if (groupQuotasHash) delete groupQuotasHash;
+ 	if (stashedAds) delete stashedAds;
++    if (SlotConstraint) delete SlotConstraint;
+ 
+ 	int i;
+ 	for(i=0;i<MAX_NEGOTIATION_CYCLE_STATS;i++) {
+@@ -534,9 +538,31 @@ reinitialize ()
+ 	preemption_req_unstable = ! (param_boolean("PREEMPTION_REQUIREMENTS_STABLE",true)) ;
+ 	preemption_rank_unstable = ! (param_boolean("PREEMPTION_RANK_STABLE",true)) ;
+ 
++    // load the constraint for slots that will be available for matchmaking.
++    // used for sharding or as an alternative to GROUP_DYNAMIC_MACH_CONSTRAINT
++    // when the obsolete an ill-advised NEGOTIATOR_STARTD_CONSTRAINT_REMOVE was TRUE
++    if (SlotConstraint) delete SlotConstraint;
++    SlotConstraint = NULL;
++    tmp = param ("NEGOTIATOR_SLOT_CONSTRAINT");
++    if (tmp) {
++       dprintf (D_FULLDEBUG, "%s = %s\n", "NEGOTIATOR_SLOT_CONSTRAINT", tmp);
++       if (ParseClassAdRvalExpr(tmp, SlotConstraint)) {
++          dprintf(D_ALWAYS, "Error parsing NEGOTIATOR_SLOT_CONSTRAINT expresion: %s", tmp);
++          SlotConstraint = NULL;
++       }
++       free (tmp);
++    }
++
++    // load the constraint for calculating the poolsize for matchmaking
++    // used to ignore some slots for calculating the poolsize, but not
++    // for matchmaking.
++    //
+ 	if (DynQuotaMachConstraint) delete DynQuotaMachConstraint;
+ 	DynQuotaMachConstraint = NULL;
+-	tmp = param("GROUP_DYNAMIC_MACH_CONSTRAINT");
++	tmp = param("NEGOTIATOR_SLOT_POOLSIZE_CONSTRAINT");
++    if ( ! tmp) {
++       tmp = param("GROUP_DYNAMIC_MACH_CONSTRAINT");
++    }
+ 	if( tmp ) {
+         dprintf(D_FULLDEBUG, "%s = %s\n", "GROUP_DYNAMIC_MACH_CONSTRAINT",
+                 tmp);
+@@ -1034,16 +1060,36 @@ negotiationTime ()
+ 		return;
+ 	}
+ 
++
+ 		// allocate stat object here, now that we know we are not going
+ 		// to abort the cycle
+ 	StartNewNegotiationCycleStat();
+ 	negotiation_cycle_stats[0]->start_time = start_time;
+ 
++    // restrict slots available for matchmaking if there is a SlotConstraint
++    //
++    int cRawSlots = startdAds.MyLength();
++    int cSlots    = cRawSlots;  // number of slots that match the constraint
++
++    if (SlotConstraint) {
++        const bool remove = true;
++        cSlots = startdAds.Count(SlotConstraint, remove);
++        if (cSlots > 0) {
++            dprintf(D_ALWAYS, "NEGOTIATOR_SLOT_CONSTRAINT reduces slot "
++                    "count from %d to %d\n", cRawSlots, cSlots);
++        } else {
++            dprintf(D_ALWAYS, "warning: 0 out of %d slots match "
++                    "NEGOTIATOR_SLOT_CONSTRAINT\n",
++                    cRawSlots);
++        }
++    }
++
+ 	// Save this for future use.
+ 	// This _must_ come before trimming the startd ads.
+-	int untrimmed_num_startds = startdAds.MyLength();
++	int untrimmed_num_startds = cSlots;
+ 	int numDynGroupSlots = untrimmed_num_startds;
+     negotiation_cycle_stats[0]->total_slots = untrimmed_num_startds;
++    negotiation_cycle_stats[0]->unconstrained_slots = cRawSlots;
+ 
+ 	double minSlotWeight = 0;
+ 	double untrimmedSlotWeightTotal = sumSlotWeights(startdAds,&minSlotWeight,NULL);
+@@ -1076,7 +1122,7 @@ negotiationTime ()
+     // Restrict number of slots available for dynamic quotas.
+     double hgq_total_quota = (accountant.UsingWeightedSlots()) ? untrimmedSlotWeightTotal : (double)numDynGroupSlots;
+     if ( numDynGroupSlots && DynQuotaMachConstraint ) {
+-        bool remove = param_boolean("NEGOTIATOR_STARTD_CONSTRAINT_REMOVE", false);
++        bool remove = false; //param_boolean("NEGOTIATOR_STARTD_CONSTRAINT_REMOVE", false);
+         int matchedSlots = startdAds.Count(DynQuotaMachConstraint, remove);
+         if ( matchedSlots ) {
+             dprintf(D_ALWAYS,"GROUP_DYNAMIC_MACH_CONSTRAINT constraint reduces machine "
+diff --git a/src/condor_negotiator.V6/matchmaker.h b/src/condor_negotiator.V6/matchmaker.h
+index 95a0193..f5e7783 100644
+--- a/src/condor_negotiator.V6/matchmaker.h
++++ b/src/condor_negotiator.V6/matchmaker.h
+@@ -294,6 +294,8 @@ class Matchmaker : public Service
+ 		bool want_inform_startd;	
+ 		/// Should the negotiator use non-blocking connect to contact startds?
+ 		bool want_nonblocking_startd_contact;
++        ExprTree *SlotConstraint; // Filter machineAds by this
++                                  // constraint before matchmaking
+         ExprTree *DynQuotaMachConstraint;   // Filter machineAds by this
+                                             // constraint before calculating
+                                             // dynamic quotas.  Added for CDF.
