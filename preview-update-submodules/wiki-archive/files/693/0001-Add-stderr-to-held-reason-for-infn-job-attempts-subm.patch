@@ -1,0 +1,28 @@
+From c923b71bd42be3345498eed4db57dc87b61bd42b Mon Sep 17 00:00:00 2001
+From: Derek Weitzel <djw8605@gmail.com>
+Date: Thu, 7 Mar 2013 11:44:00 -0600
+Subject: [PATCH] Add stderr to held reason for infn job attempts submit failure. #3489
+
+---
+ src/condor_gridmanager/infnbatchjob.cpp |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/src/condor_gridmanager/infnbatchjob.cpp b/src/condor_gridmanager/infnbatchjob.cpp
+index 43c2e10..65f7f0e 100644
+--- a/src/condor_gridmanager/infnbatchjob.cpp
++++ b/src/condor_gridmanager/infnbatchjob.cpp
+@@ -464,8 +464,9 @@ void INFNBatchJob::doEvaluateState()
+ 			// Transfer input sandbox
+ 			if ( numSubmitAttempts >= MAX_SUBMIT_ATTEMPTS ) {
+ 				if ( errorString == "" ) {
+-					jobAd->Assign( ATTR_HOLD_REASON,
+-								   "Attempts to submit failed" );
++					std::string error_string = "Attempts to submit failed: ";
++					error_string += gahp->getGahpStderr();
++					jobAd->Assign( ATTR_HOLD_REASON, error_string.c_str() );
+ 				}
+ 				gmState = GM_HOLD;
+ 				break;
+-- 
+1.7.4.1
+
