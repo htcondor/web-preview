@@ -968,18 +968,17 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.7.2</span> Feature Release</h3>
-        <p>May 21, 2024</p>
+        <h3><span class="text-secondary">23.8.1</span> Feature Release</h3>
+        <p>June 27, 2024</p>
         <div>
             <ul>
-  <li>Warns about deprecated multiple queue statements in a submit file</li>
-  <li>The semantics of <code>skip_if_dataflow</code> have been improved</li>
-  <li>Removing large DAGs is now non-blocking, preserving schedd performance</li>
-  <li>Periodic policy expressions are now checked during input file transfer</li>
-  <li>Local universe jobs can now specify a container image</li>
-  <li>File transfer plugins can now advertise extra attributes</li>
-  <li>DAGMan can rescue and abort if pending jobs are missing from the job queue</li>
-  <li>Fix so <code>condor_submit -interactive</code> works on cgroup v2 execution points</li>
+  <li>Add new condor-ap package to facilitate Access Point installation</li>
+  <li>HTCondor Docker images are now based on Alma Linux 9</li>
+  <li>HTCondor Docker images are now available for the arm64 CPU architecture</li>
+  <li>The user can now choose which submit method DAGMan will use</li>
+  <li>Can add custom attributes to the User ClassAd with <code>condor_qusers -edit</code></li>
+  <li>Add use-projection option to <code>condor_gangliad</code> to reduce memory footprint</li>
+  <li>Fix bug where interactive submit does not work on cgroup v2 systems (EL9)</li>
 </ul>
 
         </div>
