@@ -1,0 +1,311 @@
+diff --git a/src/condor_gridmanager/condorjob.cpp b/src/condor_gridmanager/condorjob.cpp
+index f3ddff3..451118d 100644
+--- a/src/condor_gridmanager/condorjob.cpp
++++ b/src/condor_gridmanager/condorjob.cpp
+@@ -1532,6 +1532,9 @@ ClassAd *CondorJob::buildSubmitAd()
+ 		submit_ad->Assign( ATTR_X509_USER_PROXY, jobProxy->proxy_filename );
+ 		submit_ad->Assign( ATTR_X509_USER_PROXY_SUBJECT,
+ 						   jobProxy->subject->subject_name );
++		if (jobProxy->subject->email)
++			submit_ad->Assign( ATTR_X509_USER_PROXY_EMAIL,
++						   jobProxy->subject->email );
+ 		if ( jobProxy->subject->has_voms_attrs ) {
+ 			submit_ad->Assign( ATTR_X509_USER_PROXY_FQAN,
+ 							   jobProxy->subject->fqan );
+diff --git a/src/condor_gridmanager/proxymanager.cpp b/src/condor_gridmanager/proxymanager.cpp
+index 30a16cb..fba0337 100644
+--- a/src/condor_gridmanager/proxymanager.cpp
++++ b/src/condor_gridmanager/proxymanager.cpp
+@@ -177,6 +177,7 @@ AcquireProxy( const ClassAd *job_ad, std::string &error,
+ 	ProxySubject *proxy_subject = NULL;
+ 	char *subject_name = NULL;
+ 	char *fqan = NULL;
++	char *email = NULL;
+ 	std::string proxy_path;
+ 	std::string owner;
+ 	char *param_str = NULL;
+@@ -199,6 +200,7 @@ AcquireProxy( const ClassAd *job_ad, std::string &error,
+ 		// Special handling for "use best proxy"
+ 		job_ad->LookupString( ATTR_X509_USER_PROXY_FQAN, &fqan );
+ 		job_ad->LookupString( ATTR_X509_USER_PROXY_SUBJECT, &subject_name );
++		job_ad->LookupString( ATTR_X509_USER_PROXY_SUBJECT, &email );
+ 		if ( subject_name ) {
+ 			if ( fqan == NULL ) {
+ 				fqan = strdup( subject_name );
+@@ -211,6 +213,10 @@ AcquireProxy( const ClassAd *job_ad, std::string &error,
+ 				// create a new ProxySubject and fill it out
+ 				proxy_subject = new ProxySubject;
+ 				proxy_subject->subject_name = strdup( subject_name );
++				if (email)
++					proxy_subject->email = strdup( email );
++				else
++					proxy_subject->email = NULL;
+ 				proxy_subject->fqan = strdup( fqan );
+ 				proxy_subject->has_voms_attrs = has_voms_attrs;
+ 
+@@ -246,6 +252,8 @@ AcquireProxy( const ClassAd *job_ad, std::string &error,
+ 				}
+ 			}
+ 			free( subject_name );
++			if ( email )
++				free( email );
+ 			free( fqan );
+ 			return proxy;
+ 
+@@ -540,6 +548,7 @@ ReleaseProxy( Proxy *proxy, TimerHandlercpp func_ptr, Service *data )
+ 
+ 			SubjectsByName.remove( HashKey(proxy_subject->fqan) );
+ 			free( proxy_subject->subject_name );
++			free( proxy_subject->email );
+ 			free( proxy_subject->fqan );
+ 			delete proxy_subject;
+ 		}
+diff --git a/src/condor_gridmanager/proxymanager.h b/src/condor_gridmanager/proxymanager.h
+index 2172d54..374178c 100644
+--- a/src/condor_gridmanager/proxymanager.h
++++ b/src/condor_gridmanager/proxymanager.h
+@@ -78,6 +78,7 @@ struct Proxy {
+ struct ProxySubject {
+ 	char *fqan;
+ 	char *subject_name;
++	char *email;
+ 	bool has_voms_attrs;
+ 	Proxy *master_proxy;
+ 	List<Proxy> proxies;
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index d2c4f8d..734f004 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -167,6 +167,7 @@ extern const char * const  ATTR_GLOBUS_XML;
+ extern const char * const  ATTR_X509_USER_PROXY;
+ extern const char * const  ATTR_X509_USER_PROXY_EXPIRATION;
+ extern const char * const  ATTR_X509_USER_PROXY_SUBJECT;
++extern const char * const  ATTR_X509_USER_PROXY_EMAIL;
+ extern const char * const  ATTR_X509_USER_PROXY_VONAME;
+ extern const char * const  ATTR_X509_USER_PROXY_FIRST_FQAN;
+ extern const char * const  ATTR_X509_USER_PROXY_FQAN;
+diff --git a/src/condor_includes/globus_utils.h b/src/condor_includes/globus_utils.h
+index 9f44709..6d79c56 100644
+--- a/src/condor_includes/globus_utils.h
++++ b/src/condor_includes/globus_utils.h
+@@ -29,6 +29,10 @@
+ #     include "gssapi.h"
+ #     include "globus_gss_assist.h"
+ #     include "globus_gsi_proxy.h"
++
++// Note: this is from OpenSSL, but should be present if Globus is.
++// Only used if HAVE_EXT_GLOBUS.
++#     include "openssl/x509v3.h"
+ #endif
+ 
+ #if defined(HAVE_EXT_VOMS)
+@@ -251,6 +255,8 @@ int check_x509_proxy( const char *proxy_file );
+ 
+ time_t x509_proxy_expiration_time( const char *proxy_file );
+ 
++char* x509_proxy_email( const char *proxy_file);
++
+ char* x509_proxy_subject_name( const char *proxy_file);
+ 
+ char* x509_proxy_identity_name( const char *proxy_file);
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index c759674..d6182bf 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -5222,6 +5222,15 @@ SetGSICredentials()
+ 			InsertJobExpr(buffer);	
+ 			free( proxy_subject );
+ 
++			/* Insert the proxy email into the ad */
++			char *proxy_email;
++			proxy_email = x509_proxy_email(proxy_file);
++
++			if ( proxy_email ) {
++				InsertJobExprString(ATTR_X509_USER_PROXY_EMAIL, proxy_email);
++				free( proxy_email );
++			}
++
+ 			/* Insert the VOMS attributes into the ad */
+ 			char *voname = NULL;
+ 			char *firstfqan = NULL;
+diff --git a/src/condor_tests/x_java_CondorEcho.class b/src/condor_tests/x_java_CondorEcho.class
+deleted file mode 100644
+index 349e8d2..0000000
+Binary files a/src/condor_tests/x_java_CondorEcho.class and /dev/null differ
+diff --git a/src/condor_utils/condor_attributes.cpp b/src/condor_utils/condor_attributes.cpp
+index f4e0db2..b32ecad 100644
+--- a/src/condor_utils/condor_attributes.cpp
++++ b/src/condor_utils/condor_attributes.cpp
+@@ -226,6 +226,7 @@ const char * const ATTR_GLOBUS_STATUS			 = "GlobusStatus";
+ const char * const ATTR_GLOBUS_XML				 = "GlobusXML";
+ const char * const ATTR_X509_USER_PROXY          = "x509userproxy";
+ const char * const ATTR_X509_USER_PROXY_SUBJECT	 = "x509userproxysubject";
++const char * const ATTR_X509_USER_PROXY_EMAIL	 = "x509UserProxyEmail";
+ const char * const ATTR_X509_USER_PROXY_EXPIRATION	 = "x509UserProxyExpiration";
+ const char * const ATTR_X509_USER_PROXY_VONAME	 = "x509UserProxyVOName";
+ const char * const ATTR_X509_USER_PROXY_FIRST_FQAN	 = "x509UserProxyFirstFQAN";
+diff --git a/src/condor_utils/globus_utils.cpp b/src/condor_utils/globus_utils.cpp
+index 314af5c..9fad300 100644
+--- a/src/condor_utils/globus_utils.cpp
++++ b/src/condor_utils/globus_utils.cpp
+@@ -456,7 +455,6 @@ extract_VOMS_info_from_file( const char* proxy_file, int verify_type, char **von
+ 
+ 	globus_gsi_cred_handle_t         handle       = NULL;
+ 	globus_gsi_cred_handle_attrs_t   handle_attrs = NULL;
+-	char *subject_name = NULL;
+ 	char *my_proxy_file = NULL;
+ 	int error = 0;
+ 
+@@ -514,6 +512,127 @@ extract_VOMS_info_from_file( const char* proxy_file, int verify_type, char **von
+ }
+ #endif /* defined(HAVE_EXT_GLOBUS) */
+ 
++/* Return the email of a given proxy cert. 
++  On error, return NULL.
++  On success, return a pointer to a null-terminated string.
++  IT IS THE CALLER'S RESPONSBILITY TO DE-ALLOCATE THE STIRNG
++  WITH X509_NAME_free().  
++ */             
++char *
++x509_proxy_email( const char *proxy_file )
++{
++#if !defined(HAVE_EXT_GLOBUS)
++	(void) proxy_file;
++	set_error_string( "This version of Condor doesn't support X509 credentials!" );
++	return NULL;
++#else
++
++	globus_gsi_cred_handle_t         handle       = NULL;
++	globus_gsi_cred_handle_attrs_t   handle_attrs = NULL;
++	X509_NAME *email_orig = NULL;
++        STACK_OF(X509) *cert_chain = NULL;
++	GENERAL_NAME *gen;
++	GENERAL_NAMES *gens;
++        X509 *cert = NULL;
++	char *email = NULL;
++	char *my_proxy_file = NULL;
++	int i, j;
++
++	if ( activate_globus_gsi() != 0 ) {
++		return NULL;
++	}
++
++	if (globus_gsi_cred_handle_attrs_init(&handle_attrs)) {
++		set_error_string( "problem during internal initialization1" );
++		goto cleanup;
++	}
++
++	if (globus_gsi_cred_handle_init(&handle, handle_attrs)) {
++		set_error_string( "problem during internal initialization2" );
++		goto cleanup;
++	}
++
++	/* Check for proxy file */
++	if (proxy_file == NULL) {
++		my_proxy_file = get_x509_proxy_filename();
++		if (my_proxy_file == NULL) {
++			goto cleanup;
++		}
++		proxy_file = my_proxy_file;
++	}
++
++	// We should have a proxy file, now, try to read it
++	if (globus_gsi_cred_read_proxy(handle, proxy_file)) {
++		set_error_string( "unable to read proxy file" );
++		goto cleanup;
++	}
++
++	if (globus_gsi_cred_get_cert_chain(handle, &cert_chain)) {
++		cert = NULL;
++		set_error_string( "unable to find certificate in proxy" );
++		goto cleanup;
++	}
++
++	for(i = 0; i < sk_X509_num(cert_chain); ++i) {
++		if((cert = X509_dup(sk_X509_value(cert_chain, i))) == NULL) {
++			continue;
++		}
++		if ((email_orig = (X509_NAME *)X509_get_ext_d2i(cert, NID_pkcs9_emailAddress, 0, 0)) != NULL) {
++			if ((email = X509_NAME_oneline(email_orig, NULL, 0)) == NULL) {
++				continue;
++			} else {
++				email = strdup(email);
++				break;
++			}
++		}
++		gens = (GENERAL_NAMES *)X509_get_ext_d2i(cert, NID_subject_alt_name, 0, 0);
++		if (gens) {
++			for (j = 0; j < sk_GENERAL_NAME_num(gens); ++i) {
++				if ((gen = sk_GENERAL_NAME_value(gens, i)) == NULL) {
++					continue;
++				}
++				if (gen->type != GEN_EMAIL) {
++					continue;
++				}
++				ASN1_IA5STRING *email_ia5 = gen->d.ia5;
++				// Sanity checks.
++				if (email_ia5->type != V_ASN1_IA5STRING) goto cleanup;
++				if (!email_ia5->data || !email_ia5->length) goto cleanup;
++				email = BUF_strdup((char *)email_ia5->data);
++				break;
++			}
++		}
++	}
++
++	if (email == NULL) {
++		set_error_string( "unable to extract email" );
++		goto cleanup;
++	}
++
++ cleanup:
++	if (my_proxy_file) {
++		free(my_proxy_file);
++	}
++
++	if (cert_chain) {
++		sk_X509_free(cert_chain);
++	}
++
++	if (handle_attrs) {
++		globus_gsi_cred_handle_attrs_destroy(handle_attrs);
++	}
++
++	if (handle) {
++		globus_gsi_cred_handle_destroy(handle);
++	}
++
++	if (email_orig) {
++		X509_NAME_free(email_orig);
++	}
++
++	return email;
++#endif /* !defined(HAVE_EXT_GLOBUS) */
++}
+ 
+ /* Return the subject name of a given proxy cert. 
+   On error, return NULL.
+@@ -534,7 +653,6 @@ x509_proxy_subject_name( const char *proxy_file )
+ 	globus_gsi_cred_handle_attrs_t   handle_attrs = NULL;
+ 	char *subject_name = NULL;
+ 	char *my_proxy_file = NULL;
+-	int error = 0;
+ 
+ 	if ( activate_globus_gsi() != 0 ) {
+ 		return NULL;
+@@ -585,7 +703,7 @@ x509_proxy_subject_name( const char *proxy_file )
+ 
+ 	return subject_name;
+ 
+-#endif /* !defined(GSS_AUTHENTICATION) */
++#endif /* !defined(HAVE_EXT_GLOBUS) */
+ }
+ 
+ 
+@@ -612,7 +730,6 @@ x509_proxy_identity_name( const char *proxy_file )
+ 	globus_gsi_cred_handle_attrs_t   handle_attrs = NULL;
+ 	char *subject_name = NULL;
+ 	char *my_proxy_file = NULL;
+-	int error = 0;
+ 
+ 	if ( activate_globus_gsi() != 0 ) {
+ 		return NULL;
