@@ -1,0 +1,185 @@
+Purpose
+-------
+
+This document details how to run and understand the errors of 15
+sequential programs which pass using Condor's checkpointing mechanism
+but which fail under DMTCP. Condor's work to integrate DMTCP will most
+likely go on hold until these programs work properly.
+
+I would advise that once you figure out the bugs, you add these programs
+to your python test suite. These programs and codes are under the
+Apache license as detailed in our downloaded source.
+
+There are two kinds of programs in this test suite, those that checkpoint
+themselves using our bridge api, and those which must have the checkpoint
+action come from an external source (which for our purposes means a human
+typing 'c' at the dmtcp_coordinator prompt). Both of these types must
+be restarted by hand in which case they may further checkpoint and exit
+or continue running to completion. The ones that checkpoint themselves
+do so almost immediately and it is easy to tell the difference between
+them. Also they won't call ckpt_and_exit().
+
+At the end of the document explains what the problems are for each of these
+programs.
+
+Building
+--------
+
+You can probably just type 'make'. This will unpack the dmtcp revision I
+used, build it, install it where you typed make, build the Condor bridge
+api to DMTCP's dmtcpaware library, and then build the test programs.
+
+You may have to change the CFLAGS at the top of the makefile to match the 
+glibc revision and compiler revision you are using.
+
+Running Environment
+-------------------
+
+For programs which checkpoint themselves:
+
+Run a ./dmtcp-local/bin/dmtcp_coordinator in another
+window with no arguments in the cwd of this test suite.
+
+Then, take the first program, suppose job_ckpt_dup_std.dmtcp.exe, and
+run it like this:
+
+./dmtcp-local/bin/dmtcp_checkpoint ./job_ckpt_dup_std.dmtcp.exe
+
+It'll checkpoint immediately, at which point simply run
+./dmtcp_restart_script.sh
+see the output happen, and watch it checkpoint again.
+I just bounce ./dmtcp_restart_script.sh a few dozen/hundred times until the
+program either works, or begins to fail with a segfault.
+
+---
+
+For programs which need external checkpointing:
+
+Run a ./dmtcp-local/bin/dmtcp_coordinator in another
+window with no arguments in the cwd of this test suite.
+
+Then suppose I run this program:
+
+./dmtcp-local/bin/dmtcp_checkpoint ./job_ckpt_open-async-ckpt_std.dmtcp.exe
+
+Now, the program will be running and doing its thing. At this point I
+just hit c<RET> c<RET> c<RET> over and over and over again in the stdin
+window of the dmtcp_coordinator. After an arbitray, but reasonably high,
+number, I CTRL-C the program and run ./dmtcp_restart_script.sh to restart
+it. I'd CTRL-C and restart the program numerous (doxens or hundreds)
+times in a row, and then alternate in all permutations the checkpoint
+and restarting of the process. Eventually, things will begin to fail.
+
+---
+
+Some programs will checkpoint and restart, but eventually lead to failed
+results, the test programs will tell you what inconsistency they discovered.
+
+Command Line Arguments
+----------------------
+
+Some of the programs take command like arguments, the ones that do are
+specified here, all data files are present. So, the first one in the next
+list would be read as:
+./dmtcp_checkpoint ./job_ckpt_dup_std.dmtcp.exe x_data.in
+
+An enviornment means those environment variables and bindings must be present
+before the program is run.
+
+List:
+job_ckpt_dup_std
+    arguments       = x_data.in
+
+job_ckpt_env_std
+    arguments       = foo bar glarch -_condor_aggravate_bugs
+    environment     = alpha=a;bravo=b;charlie=c;
+
+job_ckpt_floats-async_std
+    arguments       = 45
+
+job_ckpt_io-async_std
+    arguments       = 180
+
+job_ckpt_io-buffer-async_std
+    arguments       = x_job_ckpt_io-buffer-async_std.random x_job_ckpt_io-buffer-async_std.linear
+
+job_ckpt_socket-support_std
+    arguments       = http://www.cs.wisc.edu/condor 40
+
+Problems
+--------
+
+job_ckpt_combo-sanity_std
+    After a collection of restarts and checkpoints, segfaults
+    and continues to segfault.  Also, doesn't seem to honor the
+    ckpt_and_die barrier. I should just get ONE line of output
+    each time I restart.
+
+job_ckpt_dup_std
+    Test Failed:
+    Error: file 4 is not a dup of file 6
+
+job_ckpt_env_std
+    Test failed on restart:
+    job_ckpt_env_std.dmtcp.exe: job_ckpt_env_std.cpp:141: void check_vector(char**, StrVector&, const char*): Assertion `strcmp(s1,s2) == MATCH' failed.
+    Abort
+
+job_ckpt_f-reader_std
+    After some checkpoint/restart cycles, segfault on checkpoint.
+
+job_ckpt_floats-async_std
+    When checkpointing with 'c' in coordinator, application died with:
+    [22937] ERROR at dmtcpworker.cpp:403 in waitForStage2Checkpoint; REASON='JASSERT(msg.type == dmtcp::DMT_DO_LOCK_FDS) failed'
+         msg.type = 4
+    Terminating...
+
+job_ckpt_floats_std
+    Occasionally segfaults at end of restarted program.
+
+job_ckpt_fn-areauc_std
+    Works, but sometimes:
+        The application restarts up oddly and checkpoints again.
+        The application aborts on restart.
+
+job_ckpt_integers_std
+    Sometimes segfaults as last action of the program.
+
+job_ckpt_io-async_std
+    Worked, but dirty.
+    [23420] WARNING at connectionstate.cpp:171 in postCheckpoint; REASON='JWARNING(_conToFds[i->first].size() > 0) failed'
+         i->first.conId() = 99005
+    Message: stale connections should be gone by now
+
+job_ckpt_io-buffer-async_std
+    Works often, but sometimes during a 'c' checkpoint:
+    [24940] ERROR at dmtcpworker.cpp:403 in waitForStage2Checkpoint; REASON='JASSERT(msg.type == dmtcp::DMT_DO_LOCK_FDS) failed'
+         msg.type = 4
+    Terminating...
+
+job_ckpt_longjmp_std
+    Segfault on restart.
+
+job_ckpt_signals_std
+    Test failed. Signals not handled properly.
+
+job_ckpt_open-async-ckpt_std
+    Works often but rarely during a restart I see this:
+    [25289] WARNING at connectionstate.cpp:171 in postCheckpoint; REASON='JWARNING(_conToFds[i->first].size() > 0) failed'
+      i->first.conId() = 99006
+    Message: stale connections should be gone by now
+    [25289] WARNING at jsocket.cpp:195 in readAll; REASON='JWARNING(cnt!=0) failed'
+        sockfd() = 821
+        origLen = 232
+        len = 232
+    Message: JSocket needed to read origLen chars,
+    still needs to read len chars, but EOF reached
+    [25289] ERROR at dmtcpmessagetypes.cpp:60 in assertValid; REASON='JASSERT(strcmp ( DMTCP_MAGIC_STRING,_magicBits ) == 0) failed'
+        _magicBits = 
+    Message: read invalid message, _magicBits mismatch.  Did DMTCP coordinator die?
+    Terminating...
+
+job_ckpt_socket-support_std
+    Rarely on restart, the program aborts. Otherwise works.
+
+
+
