@@ -1,0 +1,834 @@
+diff --git a/src/condor_userlog/userlog.cpp b/src/condor_userlog/userlog.cpp
+index f0414b4..ed63d4b 100644
+--- a/src/condor_userlog/userlog.cpp
++++ b/src/condor_userlog/userlog.cpp
+@@ -19,6 +19,7 @@
+ 
+ 
+ #include "condor_common.h"
++#include "condor_classad.h"
+ #include "read_user_log.h"
+ #include "format_time.h"
+ #include "classad_hashtable.h"
+@@ -26,6 +27,12 @@
+ #include "condor_distribution.h"
+ #include "condor_sockaddr.h"
+ #include "ipv6_hostname.h"
++#include <stdio.h>
++#include <string>
++#include <vector>
++#include <boost/algorithm/string/classification.hpp>
++#include <boost/algorithm/string/split.hpp>
++#include <boost/algorithm/string/join.hpp>
+ 
+ /* 
+ ** Job Record format: cluster.proc evict_time wall_time good_time cpu_usage
+@@ -47,15 +54,19 @@
+ */
+ 
+ const char usage[] =
+-"usage: %s [-total | -raw] [-debug] [-evict] [-j cluster[.proc]] [-all] [-hostname] logfile ...\n"
++"usage: %s [-total | -raw] [-debug] [-evict] [-j cluster[.proc]] [-constraint expr] [-all] [-hostname] [-attributes attrlist] [-fullname] [-rotations] logfile ...\n"
+ "\t-help\t\tThis message\n"
+ "\t-total\t\tOnly display job totals\n"
+ "\t-raw\t\tDisplay raw data only\n"
+ "\t-debug\t\tDebug mode\n"
+ "\t-j\t\tSelect a specific cluster or cluster.proc\n"
++"\t-constraint\tSelect only the jobs matching the constraint\n"
+ "\t-evict\t\tSelect only allocations which ended due to eviction\n"
+ "\t-all\t\tSelect all clusters and all allocations\n"
+-"\t-hostname\tDisplay hostname instead of IP address\n";
++"\t-hostname\tDisplay hostname instead of IP address\n"
++"\t-attributes\tDisplay the specified attributest instead of IP address\n"
++"\t-fullname\tDo not shorten names\n"
++"\t-rotations\tFollow rotations\n";
+ 
+ void read_log(const char *filename, int select_cluster, int select_proc);
+ void display_stats();
+@@ -94,6 +105,10 @@ bool debug_mode = false;
+ bool evict_only = false;
+ bool raw_data = false;
+ bool avoid_dns = true;
++bool full_name = false;
++bool follow_rotations = false;
++std::vector<std::string> *attr_list = NULL;
++const char *constraint = NULL;
+ 
+ int
+ main(int argc, char *argv[])
+@@ -111,8 +126,17 @@ main(int argc, char *argv[])
+ 		if (argv[i][0] == '-') {
+ 			switch (argv[i][1]) {
+ 			case 'a':
+-				select_cluster = select_proc = -1;
+-				evict_only = false;
++			        if (argv[i][2] == 'l') {
++				   select_cluster = select_proc = -1;
++				   evict_only = false;
++				} else if (argv[i][2] == 't') {
++				  i++;
++				  attr_list = new std::vector<std::string>;
++				  boost::algorithm::split(*attr_list,argv[i],boost::algorithm::is_any_of(","));
++				} else {
++				  fprintf(stderr, usage, argv[0]);
++				  exit(1);
++				}
+ 				break;
+ 			case 'j': {
+ 				i++;
+@@ -125,6 +149,11 @@ main(int argc, char *argv[])
+ 				}
+ 				break;
+ 			}
++			case 'c': {
++			        i++;
++				constraint = argv[i];
++				break;
++			}
+ 			case 't': {
+ 				totals_only = true;
+ 				break;
+@@ -138,18 +167,30 @@ main(int argc, char *argv[])
+ 				break;
+ 			}
+ 			case 'r': {
+-				raw_data = true;
++				if (argv[i][2] == 'a') {
++				  raw_data = true;
++				} else if (argv[i][2] == 'o') {
++				  follow_rotations = true;
++				} else {
++				  fprintf(stderr, usage, argv[0]);
++				  exit(1);
++				}
+ 				break;
+ 			}
+ 			case 'h': {
+ 				if (argv[i][2] == 'o') {
+ 					avoid_dns = false;
++					attr_list = NULL; // undo any -attributes
+ 				} else {
+ 					fprintf(stderr, usage, argv[0]);
+ 					exit(0);
+ 				}
+ 				break;
+ 			}
++			case 'f': {
++				full_name = true;
++				break;
++			}
+ 			default:
+ 				fprintf(stderr, usage, argv[0]);
+ 				exit(1);
+@@ -192,8 +233,21 @@ display_stats()
+ {
+ 	int i;
+ 
++	char *namefmt;
++	if (full_name) {
++	  namefmt="%-15s ";
++	} else {
++	  namefmt="%-15.15s ";
++	}
++
++	char *headerfmt;
++	if (full_name) {
++	  headerfmt="%-15.15s %9.9s %9.9s %9.9s %9.9s %9.9s %7.7s %6.6s\n";
++	} else {
++	  headerfmt="%15s %9.9s %9.9s %9.9s %9.9s %9.9s %7.7s %6.6s\n";
++	}
+ 	// display HostStatistics
+-	printf("%-15.15s %9.9s %9.9s %9.9s %9.9s %9.9s %7.7s %6.6s\n",
++	printf(headerfmt,
+ 		   "Host/Job", "Wall Time", "Good Time", "CPU Usage",
+ 		   "Avg Alloc", "Avg Lost", "Goodput", "Util.");
+ 	printf("\n");
+@@ -201,7 +255,7 @@ display_stats()
+ 	HostStatistics *hs;
+ 	HStats.startIterations();
+ 	while (HStats.iterate(hs) == 1) {
+-		printf("%-15.15s ", hs->host);
++		printf(namefmt, hs->host);
+ 		printf("%9.9s ", format_time_nosecs(hs->wall_time));
+ 		printf("%9.9s ", format_time_nosecs(hs->good_time));
+ 		printf("%9.9s ", format_time_nosecs(hs->cpu_usage));
+@@ -235,7 +289,7 @@ display_stats()
+ 	for (i=0; i < numJobStats; i++) {
+ 		js = statarray[i];
+ 		sprintf(job, "%d.%d", js->cluster, js->proc);
+-		printf("%-15.15s ", job);
++		printf(namefmt, job);
+ 		printf("%9.9s ", format_time_nosecs(js->wall_time));
+ 		printf("%9.9s ", format_time_nosecs(js->good_time));
+ 		printf("%9.9s ", format_time_nosecs(js->cpu_usage));
+@@ -256,7 +310,7 @@ display_stats()
+ 		delete js;
+ 	}
+ 	printf("\n");
+-	printf("%-15.15s ", "Total");
++	printf(namefmt, "Total");
+ 	printf("%9.9s ", format_time_nosecs(wall_time));
+ 	printf("%9.9s ", format_time_nosecs(good_time));
+ 	printf("%9.9s ", format_time_nosecs(cpu_usage));
+@@ -275,12 +329,27 @@ display_stats()
+ 
+ void
+ new_record(int cluster, int proc, int start_time, int evict_time, 
+-		   int good_time, int cpu_usage, char const *host)
++	   int good_time, int cpu_usage, char const *host, const ClassAd *jobClassAd)
+ {
+ 	static bool initialized = false;
+ 	char hash[40];
+ 	int wall_time = evict_time-start_time;
+ 
++	if (constraint!=NULL) {
++	  classad::Value result;
++	  bool include_classad=false;
++	  if (jobClassAd->EvaluateExpr(constraint,result)) {
++	    if (not result.IsBooleanValueEquiv(include_classad)) {
++	      include_classad=false;
++	    }
++	  }
++	  
++	  if (not include_classad) {
++	    // skip this job
++	    return;
++	  }
++	}
++
+ 	// We detect bad records here.  One cause of bad records is the
+ 	// fact that userlogs timestamps do not contain years, so we
+ 	// always assume we are in the same year, which causes time to run
+@@ -312,33 +381,92 @@ new_record(int cluster, int proc, int start_time, int evict_time,
+ 	js->good_time += good_time;
+ 	js->cpu_usage += cpu_usage;
+ 
+-	char ip_addr[128];
+-	// only use the IP address in the key [TODO:IPV6] Parse IPv6 Addr
+-	strncpy(ip_addr, host+1, sizeof(ip_addr)-1);
+-	ip_addr[sizeof(ip_addr)-1] = '\0';
+-	for (int i=0; i < 128; i++) {
+-		if (ip_addr[i] == ':') {
+-			ip_addr[i] = '\0';
+-			break;
+-		}
+-	}
++	
+ 	HostStatistics *hs;
+-	HashKey hostkey(ip_addr);
+-	if (HStats.lookup(hostkey, hs) < 0) {
+-		condor_sockaddr addr;
+-		const char* hostname = NULL;
+-		MyString hostname_str;
+-		addr.from_sinful(host);
+-		if (!avoid_dns) {
+-			hostname_str = get_hostname(addr);
+-			hostname = hostname_str.Value();
+-		}
+-		if (hostname == NULL) {
+-			hostname = ip_addr;
++	if (attr_list==NULL) {
++	  char ip_addr[128];
++	  // only use the IP address in the key [TODO:IPV6] Parse IPv6 Addr
++	  strncpy(ip_addr, host+1, sizeof(ip_addr)-1);
++	  ip_addr[sizeof(ip_addr)-1] = '\0';
++	  for (int i=0; i < 128; i++) {
++	    if (ip_addr[i] == ':') {
++	      ip_addr[i] = '\0';
++	      break;
++	    }
++	  }
++	  HashKey hostkey(ip_addr);
++	  if (HStats.lookup(hostkey, hs) < 0) {
++	    condor_sockaddr addr;
++	    const char* hostname = NULL;
++	    MyString hostname_str;
++	    addr.from_sinful(host);
++	    if (!avoid_dns) {
++	      hostname_str = get_hostname(addr);
++	      hostname = hostname_str.Value();
++	    }
++	    if (hostname == NULL) {
++	      hostname = ip_addr;
++	    }
++	    hs = new HostStatistics(hostname);
++	    HStats.insert(hostkey, hs);
++	    numHostStats++;
++	  }
++	} else {
++	  std::vector<std::string> attr_vals;
++	  for (std::vector<std::string>::iterator it=attr_list->begin();
++	       it!=attr_list->end(); ++it) {
++	    std::string &attr_name=*it;
++	    
++	    ExprTree *attr_tobj=jobClassAd->Lookup(attr_name);
++	    if (attr_tobj==NULL) {
++	      attr_vals.push_back("UNDEFINED");
++	    } else {
++	      classad::Value attr_vobj;
++	      if (!attr_tobj->Evaluate(attr_vobj)) {
++		attr_vals.push_back("UNSUPPORTED");
++	      } else {
++		std::string s;
++		if (attr_vobj.IsStringValue(s)) {
++		  attr_vals.push_back(s);
++		} else {
++		  long l;
++		  if (attr_vobj.IsIntegerValue(l)) {
++		    char ls[128];
++		    sprintf(ls,"%li",l);
++		    attr_vals.push_back(ls);
++		  } else {
++		    double d;
++		    if (attr_vobj.IsRealValue(d)) {
++		      char ds[128];
++		      sprintf(ds,"%G",d);
++		      attr_vals.push_back(ds);
++		    } else {
++		      bool b;
++		      if (attr_vobj.IsBooleanValue(b)) {
++			if (b) {
++			  attr_vals.push_back("True");
++			} else {
++			  attr_vals.push_back("False");
++			}
++		      } else {
++			attr_vals.push_back("UNSUPPORTED");
++		      }
++		    }
++		  }
+ 		}
+-		hs = new HostStatistics(hostname);
+-		HStats.insert(hostkey, hs);
+-		numHostStats++;
++	      }
++	    } // end interpret Value
++	  } // end for
++
++	  std::string attr_str=boost::algorithm::join(attr_vals, ",");
++	  const char * attr_cstr=attr_str.c_str();
++
++	  HashKey hostkey(attr_cstr);
++	  if (HStats.lookup(hostkey, hs) < 0) {
++	    hs = new HostStatistics(attr_cstr);
++	    HStats.insert(hostkey, hs);
++	    numHostStats++;
++	  }
+ 	}
+ 	hs->allocations++;
+ 	hs->kills += (wall_time != good_time);
+@@ -348,14 +476,26 @@ new_record(int cluster, int proc, int start_time, int evict_time,
+ 
+ 	if (!totals_only) {
+ 		if (!raw_data && !initialized) {
++		        char *headerfmt;
++			if (full_name) {
++			  headerfmt="%-8.8s %-15s %-11.11s %-11.11s %9s %9s %9s\n";
++			} else {
++			  headerfmt="%-8.8s %-15.15s %-11.11s %-11.11s %9s %9s %9s\n";
++			}
++
+ 			printf("\n");
+-			printf("%-8.8s %-15.15s %-11.11s %-11.11s %9s %9s %9s\n",
++			printf(headerfmt,
+ 				   "Job", "Host", "Start Time", "Evict Time", "Wall Time",
+ 				   "Good Time", "CPU Usage");
+-			initialized = true;
++			initialized = true;		}
++		
++		char *namefmt;
++		if (full_name) {
++		  namefmt="%-8.8s %-15s ";
++		} else {
++		  namefmt="%-8.8s %-15.15s ";
+ 		}
+-
+-		printf("%-8.8s %-15.15s ", hash, hs->host);
++		printf(namefmt, hash, hs->host);
+ 		printf("%11s ", format_date(start_time));
+ 		printf("%11s ", format_date(evict_time));
+ 		printf("%9s ", format_time_nosecs(wall_time));
+@@ -364,33 +504,184 @@ new_record(int cluster, int proc, int start_time, int evict_time,
+ 	}
+ }
+ 
++typedef long condor_time_t;
++static condor_time_t getEventTime(ULogEvent *event)
++{
++  return condor_time_t(mktime(&(event->eventTime)));
++}
++
++static double tmval2double(struct timeval &t)
++{
++  return t.tv_sec+t.tv_usec*1.0e-6;
++}
++
++ClassAd *create_new_classad(ULogEvent *event, const char *filename) {
++  ClassAd *jobClassAd = new ClassAd();
++  
++  // Standard header of the job
++  jobClassAd->InsertAttr("MyType","Job");
++  jobClassAd->InsertAttr("TargetType","Machine");
++  // All jusbs must have a Cluster And Proc IDs
++  // SubprocID is not propagated
++  jobClassAd->InsertAttr("ClusterId",event->cluster);
++  jobClassAd->InsertAttr("ProcId",event->proc);
++  
++  // Since we read from the log, let's propagate this info
++  jobClassAd->InsertAttr("UserLog",filename);
++
++  {
++    condor_time_t now = condor_time_t(time(NULL));
++    jobClassAd->InsertAttr("ServerTime",now);
++  }
++
++  // Add a few default values that are expected in all Job ClassAds
++  // and will be updated later on
++  jobClassAd->InsertAttr("CompletionDate",0);
++
++  return jobClassAd;
++}
++
+ void
+ read_log(const char *filename, int select_cluster, int select_proc)
+ {
+-	ReadUserLog ulog;
+-	ULogEventOutcome result;
+-	ULogEvent *event=NULL;
++        std::list<std::string> filenames;
+ 	char hash[40];
+ 	HashTable<HashKey, ExecuteEvent *> ExecRecs(1024, hashFunction);
+ 	HashTable<HashKey, CheckpointedEvent *> CkptRecs(1024, hashFunction);
++	HashTable<HashKey, ClassAd *> ClassAdRecs(1024, hashFunction);
+ 	
+-	if (ulog.initialize(filename,0,false,true)==false) {
+-		fprintf(stderr,
+-			"Error: unable to read log file.\n");
+-			exit(0);			
+-			}		
++	{
++	  FILE *fd;
++	  if ((fd=fopen(filename,"r"))!=NULL) {
++	    fclose(fd);
++	    filenames.push_front(filename);
++	  } else {
++	    fprintf(stderr,
++		    "Error: unable to read log file %s.\n",filename);
++	    exit(0);			
++	  }
++	}
++
++	if (follow_rotations) {
++	  FILE *fd;
++	  {
++	    std::string  fn=std::string(filename)+".old";
++	    if ((fd=fopen(fn.c_str(),"r"))!=NULL) {
++	      fclose(fd);
++	      filenames.push_front(fn);
++	    }
++	  }
++	  for (int i=1; i<1000; i++) { // 1k files should be more than enough!
++	    char nr[8];
++	    sprintf(nr,"%i",i);
++	    std::string  fn=std::string(filename)+"."+nr;
++	    if ((fd=fopen(fn.c_str(),"r"))!=NULL) {
++	      fclose(fd);
++	      filenames.push_front(fn);
++	    } else {
++	      // stop at the first missing file
++	      break;
++	    }
++	  }
++	}
++
++	for (std::list<std::string>::iterator it=filenames.begin();
++	     it!=filenames.end(); ++it) {
++	  ReadUserLog ulog;
++	  ULogEventOutcome result;
++	  ULogEvent *event=NULL;
++	  int count=0;
++
++	  const char *filename=it->c_str();
++	  if (ulog.initialize(filename,0,false,true)==false) {
++	    if (debug_mode) {
++	      fprintf(stderr,
++		      "warning: could not read %s\n",filename);
++	    }
++	    // not fatal
++	    continue;
++	  }
+ 	
+-	while ((result = ulog.readEvent(event)) != ULOG_NO_EVENT) {
++	  while ((result = ulog.readEvent(event)) != ULOG_NO_EVENT) {
+ 		if ((result == ULOG_OK) &&
+ 			(select_cluster == -1 || select_cluster == event->cluster) &&
+ 			(select_proc == -1 || select_proc == event->proc)) {
++		        ++count;
+ 			switch (event->eventNumber) {
+ 			case ULOG_SUBMIT:
++      {
++	SubmitEvent *submit_event=dynamic_cast<SubmitEvent*>(event);
++	ClassAd *jobClassAd = create_new_classad(event,filename);
++
++	// Add the time attributes
++	{
++	  condor_time_t eventTime = getEventTime(event);
++	  jobClassAd->InsertAttr("QDate",eventTime);
++	  jobClassAd->InsertAttr("EnteredCurrentStatus",eventTime);
++	}
++
++	// SubmitHost is usually not available with condor_q
++	// but seems a waste not to propagate the info
++	jobClassAd->InsertAttr("SubmitHost",submit_event->getSubmitHost());
++
++	// Add a few default values that are expected in all Job ClassAds
++	// and will be updated later on
++	jobClassAd->InsertAttr("NumJobStarts",0);
++
++
++	sprintf(hash, "%d.%d", event->cluster, event->proc);
++	HashKey key(hash);
++	ClassAdRecs.insert(key,jobClassAd);
++      }
+ 				delete event;
+ 				break;
+ 			case ULOG_EXECUTE: {
+ 				sprintf(hash, "%d.%d", event->cluster, event->proc);
+ 				HashKey key(hash);
++
++				ClassAd *jobClassAd;
++				if (ClassAdRecs.lookup(key, jobClassAd)< 0) {
++				  // missing submit event... make a default classad
++				  // will miss some attributes, but better this than nothing
++				  if (debug_mode) {
++				    fprintf(stderr,
++					    "warning: execute event "
++					    "(job %s)\n  found before submit "
++					    "event.\n", hash);
++				  }
++				  jobClassAd = create_new_classad(event,filename);
++				  ClassAdRecs.insert(key,jobClassAd);
++				}
++
++      {
++	ExecuteEvent *start_event=dynamic_cast<ExecuteEvent*>(event);
++
++	// Update the time attributes
++	{
++	  condor_time_t eventTime = getEventTime(event);
++	  jobClassAd->InsertAttr("EnteredCurrentStatus",eventTime);
++	  jobClassAd->InsertAttr("JobCurrentStartDate",eventTime);
++	}
++
++	{
++	  classad::Value v;
++	  int i;
++	  if (jobClassAd->EvaluateExpr("NumJobStarts+1",v) && v.IsIntegerValue(i)) {
++	    jobClassAd->InsertAttr("NumJobStarts",i);
++	  } else {
++	    jobClassAd->InsertAttr("NumJobStarts",1);
++	  }
++	}
++
++	jobClassAd->InsertAttr("StartdIpAddr",start_event->getExecuteHost());
++	if (start_event->getRemoteName()!=NULL) {
++	  jobClassAd->InsertAttr("RemoteHost",start_event->getRemoteName());
++	} else {
++	  // the execute host is the 2nd best we have
++	  jobClassAd->InsertAttr("RemoteHost",start_event->getExecuteHost());
++	}
++      }
++
+ 				// check if we already have an execute event for this job
+ 				ExecuteEvent *execEvent;
+ 				if (ExecRecs.lookup(key, execEvent) >= 0) {
+@@ -453,10 +744,44 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 				break;
+ 			}
+ 			case ULOG_JOB_EVICTED: {
+-				ExecuteEvent *execEvent;
+-				JobEvictedEvent *evictEvent = (JobEvictedEvent *)event;
+ 				sprintf(hash, "%d.%d", event->cluster, event->proc);
+ 				HashKey key(hash);
++
++				ClassAd *jobClassAd;
++				if (ClassAdRecs.lookup(key, jobClassAd)< 0) {
++				  // missing submit event... drop all in line
++				  if (debug_mode) {
++				    fprintf(stderr,
++					    "warning: discarding evict event "
++					    "(job %s)\n  found before submit "
++					    "event.\n", hash);
++				  }
++				  delete event;
++				  break;
++				}
++				ClassAdRecs.remove(key);
++
++      {
++	JobEvictedEvent *evict_event=dynamic_cast<JobEvictedEvent*>(event);
++
++
++	// Update the time attributes
++	{
++	  condor_time_t eventTime = getEventTime(event);
++	  jobClassAd->InsertAttr("EnteredCurrentStatus",eventTime);
++	  jobClassAd->InsertAttr("LastVacateTime",eventTime);
++	}
++	
++	{
++	  
++	  const char * reason=evict_event->getReason();
++	  if (reason!=NULL) {
++	    jobClassAd->InsertAttr("LastVacateReason",reason);
++	  }
++	}
++      }
++				ExecuteEvent *execEvent;
++				JobEvictedEvent *evictEvent = (JobEvictedEvent *)event;
+ 				if (ExecRecs.lookup(key, execEvent) < 0) {
+ 					if (debug_mode) {
+ 						fprintf(stderr,
+@@ -475,6 +800,7 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 					delete event;
+ 					break;
+ 				}
++
+ 				time_t start_time, end_time, ckpt_time=0;
+ 				start_time = mktime(&execEvent->eventTime);
+ 				end_time = mktime(&event->eventTime);
+@@ -496,20 +822,89 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 						cpu_usage = 0;
+ 					}
+ 				}
++
+ 				new_record(event->cluster, event->proc, (int)start_time,
+ 						   (int)end_time,
+ 						   (int)ckpt_time-start_time, cpu_usage,
+-						   execEvent->getExecuteHost());
++					           execEvent->getExecuteHost(),
++					           jobClassAd);
+ 				delete execEvent;
+ 				delete event;
++				delete jobClassAd;
+ 				break;
+ 			}
+ 			case ULOG_JOB_TERMINATED: {
++				sprintf(hash, "%d.%d", event->cluster, event->proc);
++				HashKey key(hash);
++
++				ClassAd *jobClassAd;
++				if (ClassAdRecs.lookup(key, jobClassAd)< 0) {
++				  // missing submit event... drop all in line
++				  if (debug_mode) {
++				    fprintf(stderr,
++					    "warning: discarding evict event "
++					    "(job %s)\n  found before submit "
++					    "event.\n", hash);
++				  }
++				  delete event;
++				  break;
++				}
++				ClassAdRecs.remove(key);
++
++      {
++	JobTerminatedEvent *term_event=dynamic_cast<JobTerminatedEvent*>(event);
++
++	// Update the time attributes
++	{
++	  condor_time_t eventTime = getEventTime(event);
++	  jobClassAd->InsertAttr("EnteredCurrentStatus",eventTime);
++	  jobClassAd->InsertAttr("CompletionDate",eventTime);
++	}
++
++	if (term_event->normal) {
++	  // normal termination
++	  jobClassAd->InsertAttr("ExitBySignal",false);
++	  jobClassAd->InsertAttr("ExitCode",term_event->returnValue);
++	} else {
++	  jobClassAd->InsertAttr("ExitBySignal",true);
++	  jobClassAd->InsertAttr("ExitSignal",term_event->signalNumber);
++	}
++
++	jobClassAd->InsertAttr("LastLocalUserCpu",tmval2double(term_event->run_local_rusage.ru_utime));
++	jobClassAd->InsertAttr("LastRemoteUserCpu",tmval2double(term_event->run_remote_rusage.ru_utime));
++	jobClassAd->InsertAttr("LastLocalSysCpu",tmval2double(term_event->run_local_rusage.ru_stime));
++	jobClassAd->InsertAttr("LastRemoteSysCpu",tmval2double(term_event->run_remote_rusage.ru_stime));
++	{
++	  classad::Value v;
++	  if (jobClassAd->EvaluateExpr("real(EnteredCurrentStatus-JobCurrentStartDate)",v))
++	    {
++	      double t;
++	      if (v.IsRealValue(t)) {
++		jobClassAd->InsertAttr("LastRemoteWallClockTime",t);
++	      }
++	    }
++	}
++
++	jobClassAd->InsertAttr("LocalUserCpu",tmval2double(term_event->total_local_rusage.ru_utime));
++	jobClassAd->InsertAttr("RemoteUserCpu",tmval2double(term_event->total_remote_rusage.ru_utime));
++	jobClassAd->InsertAttr("LocalSysCpu",tmval2double(term_event->total_local_rusage.ru_stime));
++	jobClassAd->InsertAttr("RemoteSysCpu",tmval2double(term_event->total_remote_rusage.ru_stime));
++	{
++	  classad::Value v;
++	  if (jobClassAd->EvaluateExpr("RemoteWallClockTime+LastRemoteWallClockTime",v))
++	    {
++	      double t;
++	      if (v.IsRealValue(t)) {
++		jobClassAd->InsertAttr("RemoteWallClockTime",t);
++	      }
++	    }
++	}
++      }
++ 
+ 				ExecuteEvent *execEvent;
+ 				JobTerminatedEvent *terminateEvent =
+ 					(JobTerminatedEvent *)event;
+-				sprintf(hash, "%d.%d", event->cluster, event->proc);
+-				HashKey key(hash);
++
+ 				if (ExecRecs.lookup(key, execEvent) < 0) {
+ 					if (debug_mode) {
+ 						fprintf(stderr,
+@@ -539,20 +934,47 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 							   run_remote_rusage.ru_utime.tv_sec +
+ 							   terminateEvent->
+ 							   run_remote_rusage.ru_stime.tv_sec,
+-							   execEvent->getExecuteHost());
++						           execEvent->getExecuteHost(),
++						           jobClassAd);
+ 				}
+ 				delete execEvent;
+ 				delete event;
++				delete jobClassAd;
+ 				break;
+ 			}
+ 			case ULOG_IMAGE_SIZE:
+ 				delete event;
+ 				break;
+ 			case ULOG_EXECUTABLE_ERROR:
++			case ULOG_JOB_RECONNECT_FAILED:
+ 			case ULOG_SHADOW_EXCEPTION: {
+-				ExecuteEvent *execEvent;
+ 				sprintf(hash, "%d.%d", event->cluster, event->proc);
+ 				HashKey key(hash);
++
++				ClassAd *jobClassAd;
++				if (ClassAdRecs.lookup(key, jobClassAd)< 0) {
++				  // missing submit event... drop all in line
++				  if (debug_mode) {
++				    fprintf(stderr,
++					    "warning: discarding evict event "
++					    "(job %s)\n  found before submit "
++					    "event.\n", hash);
++				  }
++				  delete event;
++				  break;
++				}
++				ClassAdRecs.remove(key);
++
++      {
++	// Update the time attributes
++	{
++	  condor_time_t eventTime = getEventTime(event);
++	  jobClassAd->InsertAttr("EnteredCurrentStatus",eventTime);
++	  jobClassAd->InsertAttr("LastVacateTime",eventTime);
++	}
++      }
++				ExecuteEvent *execEvent;
++
+ 				if (ExecRecs.lookup(key, execEvent) < 0) {
+ 					if (debug_mode) {
+ 						fprintf(stderr,
+@@ -589,27 +1011,77 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 					new_record(event->cluster, event->proc, (int)start_time,
+ 							   (int)end_time,
+ 							   (int)ckpt_time-start_time, cpu_usage,
+-							   execEvent->getExecuteHost());
++						           execEvent->getExecuteHost(),
++						           jobClassAd);
+ 				}
+ 				delete execEvent;
+ 				delete event;
++				delete jobClassAd;
+ 				break;
+ 			}
++			case ULOG_JOB_AD_INFORMATION: {
++				sprintf(hash, "%d.%d", event->cluster, event->proc);
++				HashKey key(hash);
++
++				ClassAd *jobClassAd;
++				if (ClassAdRecs.lookup(key, jobClassAd)< 0) {
++				  // missing submit event... drop all in line
++				  if (debug_mode) {
++				    fprintf(stderr,
++					    "warning: discarding evict event "
++					    "(job %s)\n  found before submit "
++					    "event.\n", hash);
++				  }
++				  delete event;
++				  break;
++				}
++
++      {
++	// The JobAdInformation ClassAd contains both
++	//   the interesting attributes and
++	//   the classad attributes of the previous event
++	// So would I need to do a diff to get only the interesting ones
++	// will not try... some poluttion will result, but we can live with it
++
++	ClassAd *eventClassAd=event->toClassAd();
++
++	// delete attributes that were added by JobAdEvent itself
++	eventClassAd->Delete("MyType");
++	eventClassAd->Delete("Cluster");
++	eventClassAd->Delete("Proc");
++	eventClassAd->Delete("Subproc");
++	eventClassAd->Delete("CurrentTime");
++	eventClassAd->Delete("EventTypeNumber");
++	eventClassAd->Delete("TriggerEventTypeNumber");
++	eventClassAd->Delete("TriggerEventTypeName");
++	
++	// merge the rest
++	jobClassAd->Update(*eventClassAd);
++
++	
++	delete eventClassAd; 
++      }
++   			        delete event;
++                                break;
++			}
+ 			default:
+ 				// ignore the rest of the eveats
++   			        delete event;
+ 				break;
+ 			}
+ 		} else {
+ 			
+ 			if (event!=NULL) delete event;
+ 			if ((result==ULOG_RD_ERROR) || (result == ULOG_UNK_ERROR)) {
++			  if (debug_mode) {
+ 				fprintf(stderr,
+-						"Error: unable to read log file.\n");
+-				exit(0);
++					"Warning: Error reading event %i from log file %s.\n",count,filename);
++			  }
+ 			
+ 			}
+ 		}
+-	}
++	  } // end log read
++	} // end file loop
+ 
+ 	// delete any remaining items in the tables
+ 	ExecuteEvent *execEvent;
+@@ -622,4 +1094,9 @@ read_log(const char *filename, int select_cluster, int select_proc)
+ 	while (CkptRecs.iterate(ckptEvent) == 1) {
+ 		delete ckptEvent;
+ 	}
++	ClassAd *jobClassAd;
++	ClassAdRecs.startIterations();
++	while (ClassAdRecs.iterate(jobClassAd) == 1) {
++		delete jobClassAd;
++	}
+ }
