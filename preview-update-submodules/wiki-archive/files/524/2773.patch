@@ -1,0 +1,31 @@
+From 869d881b8acf2037582acaa9246a88ea312e80fe Mon Sep 17 00:00:00 2001
+From: Ben Cotton <bcotton@sheldon.rcac.purdue.edu>
+Date: Wed, 18 Jan 2012 13:12:14 -0500
+Subject: [PATCH] Patch for #2773
+
+---
+ doc/admin-man/configure.tex |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
+diff --git a/doc/admin-man/configure.tex b/doc/admin-man/configure.tex
+index 1219964..da79768 100644
+--- a/doc/admin-man/configure.tex
++++ b/doc/admin-man/configure.tex
+@@ -785,6 +785,14 @@ File System Configuration File Entries''.
+   be placed in the directory defined by this macro.  \MacroNI{LOG} is
+   required to be defined.  Normally, \MacroUNI{LOG} is defined in
+   terms of \MacroUNI{LOCAL\_DIR}.
++
++\label{param:Run}
++\item[\Macro{RUN}]
++  Used to specify the directory where the Condor master writes its process ID
++  (PID) file. 
++
++  If no value for \MacroNI{RUN} is provided, the value of \MacroNI{LOG}
++  is used.
+   
+ \label{param:Spool}
+ \item[\Macro{SPOOL}]
+-- 
+1.7.7.5
+
