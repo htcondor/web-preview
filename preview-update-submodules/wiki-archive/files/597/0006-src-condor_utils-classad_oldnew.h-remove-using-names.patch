@@ -1,0 +1,26 @@
+>From cfc9aaab9fb7ad857c121ecc0372484d5e34b20b Mon Sep 17 00:00:00 2001
+From: Florian Weimer <fweimer@redhat.com>
+Date: Tue, 10 Jul 2012 13:42:52 +0200
+Subject: [PATCH 6/6] src/condor_utils/classad_oldnew.h: remove using
+ namespace std
+
+---
+ src/condor_utils/classad_oldnew.h |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+diff --git a/src/condor_utils/classad_oldnew.h b/src/condor_utils/classad_oldnew.h
+index 1b950ba..ad39d74 100644
+--- a/src/condor_utils/classad_oldnew.h
++++ b/src/condor_utils/classad_oldnew.h
+@@ -31,8 +31,6 @@
+ #include "classad/matchClassad.h"
+ 
+ 
+-using namespace std;
+-
+ void AttrList_setPublishServerTimeMangled( bool publish);
+ 
+ classad::ClassAd* getOldClassAd( Stream *sock );
+-- 
+1.7.7.6
+
