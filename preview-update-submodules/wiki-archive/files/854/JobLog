@@ -1,0 +1,26 @@
+000 (395.000.000) 11/13 11:28:31 Job submitted from host: <131.225.154.68:9620?sock=27372_59f6_4>
+...
+001 (384.000.000) 11/13 11:28:53 Job executing on host: <131.225.154.68:40999>
+...
+006 (384.000.000) 11/13 11:28:53 Image size of job updated: 27
+	0  -  MemoryUsage of job (MB)
+	0  -  ResidentSetSize of job (KB)
+...
+005 (384.000.000) 11/13 11:28:54 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	3197  -  Run Bytes Sent By Job
+	26368  -  Run Bytes Received By Job
+	3197  -  Total Bytes Sent By Job
+	26368  -  Total Bytes Received By Job
+	Partitionable Resources :    Usage  Request Allocated
+	   Cpus                 :                 1         1
+	   Disk (KB)            :       51       27   7362688
+	   Memory (MB)          :        0     2000      1877
+...
+009 (384.000.000) 11/13 11:29:08 Job was aborted by the user.
+	JobRouter aborted job (by user condor)
+...
