@@ -1,0 +1,355 @@
+diff --git a/src/condor_tools/advertise.cpp b/src/condor_tools/advertise.cpp
+index 85191b1..e686c69 100644
+--- a/src/condor_tools/advertise.cpp
++++ b/src/condor_tools/advertise.cpp
+@@ -30,6 +30,10 @@
+ #include "daemon_list.h"
+ #include "dc_collector.h"
+ #include "my_hostname.h"
++#include "ipv6_hostname.h"
++#include "match_prefix.h"
++
++#define STREAM_ADS_FROM_STDIN 1
+ 
+ void
+ usage( const char *cmd , const char * opt)
+@@ -60,6 +64,113 @@ usage( const char *cmd , const char * opt)
+ 	fprintf(stderr,"Example: %s -debug UPDATE_STORAGE_AD adfile\n\n",cmd);
+ }
+ 
++typedef struct {
++	int cmd_id;
++	int cmd_type;
++	AdTypes atype;
++} CmdAdTypePair;
++static const CmdAdTypePair aCommandToAdType[] = {
++	{ UPDATE_STARTD_AD,          0, STARTD_AD },		// 0
++	{ UPDATE_SCHEDD_AD,          0, SCHEDD_AD },		// 1
++	{ UPDATE_MASTER_AD,          0, MASTER_AD },		// 2
++	{ UPDATE_CKPT_SRVR_AD,       0, CKPT_SRVR_AD },	// 4
++//	{ QUERY_STARTD_ADS,          2, STARTD_AD },		// 5
++//	{ QUERY_SCHEDD_ADS,          2, SCHEDD_AD },		// 6
++//	{ QUERY_MASTER_ADS,          2, MASTER_AD },		// 7
++//	{ QUERY_CKPT_SRVR_ADS,       2, CKPT_SRVR_AD },	// 9
++//	{ QUERY_STARTD_PVT_ADS,      2, STARTD_PVT_AD },	// 10
++	{ UPDATE_SUBMITTOR_AD,       0, SUBMITTOR_AD },	// 11
++//	{ QUERY_SUBMITTOR_ADS,       2, SUBMITTOR_AD },	// 12
++	{ INVALIDATE_STARTD_ADS,     1, STARTD_AD },		// 13
++	{ INVALIDATE_SCHEDD_ADS,     1, SCHEDD_AD },		// 14
++	{ INVALIDATE_MASTER_ADS,     1, MASTER_AD },		// 15
++	{ INVALIDATE_CKPT_SRVR_ADS,  1, CKPT_SRVR_AD },	// 17
++	{ INVALIDATE_SUBMITTOR_ADS,  1, SUBMITTOR_AD },	// 18
++	{ UPDATE_COLLECTOR_AD,       0, COLLECTOR_AD },	// 19
++//	{ QUERY_COLLECTOR_ADS,       2, COLLECTOR_AD },	// 20
++	{ INVALIDATE_COLLECTOR_ADS,  1, COLLECTOR_AD },	// 21
++	{ UPDATE_LICENSE_AD,         0, LICENSE_AD },		// 42
++//	{ QUERY_LICENSE_ADS,         2, LICENSE_AD },		// 43
++	{ INVALIDATE_LICENSE_ADS,    1, LICENSE_AD },		// 44
++	{ UPDATE_STORAGE_AD,         0, STORAGE_AD },		// 45
++//	{ QUERY_STORAGE_ADS,         2, STORAGE_AD },		// 46
++	{ INVALIDATE_STORAGE_ADS,    1, STORAGE_AD },		// 47
++//	{ QUERY_ANY_ADS,             2, ANY_AD },			// 48
++	{ UPDATE_NEGOTIATOR_AD,      0, NEGOTIATOR_AD },	// 49
++//	{ QUERY_NEGOTIATOR_ADS,      2, NEGOTIATOR_AD },	// 50
++	{ INVALIDATE_NEGOTIATOR_ADS, 1, NEGOTIATOR_AD },	// 51
++	{ UPDATE_HAD_AD,             0, HAD_AD },			// 55
++//	{ QUERY_HAD_ADS,             2, HAD_AD },			// 56
++	{ UPDATE_AD_GENERIC,         0, GENERIC_AD },		// 58
++	{ INVALIDATE_ADS_GENERIC,    1, GENERIC_AD },		// 59
++	{ UPDATE_XFER_SERVICE_AD,    0, XFER_SERVICE_AD },	// 61
++//	{ QUERY_XFER_SERVICE_ADS,    2, XFER_SERVICE_AD },	// 62
++	{ INVALIDATE_XFER_SERVICE_ADS,1, XFER_SERVICE_AD },// 63
++	{ UPDATE_LEASE_MANAGER_AD,   0, LEASE_MANAGER_AD },// 64
++//	{ QUERY_LEASE_MANAGER_ADS,   2, LEASE_MANAGER_AD },// 65
++	{ INVALIDATE_LEASE_MANAGER_ADS,1, LEASE_MANAGER_AD },// 66
++	{ UPDATE_GRID_AD,            0, GRID_AD },			// 70
++//	{ QUERY_GRID_ADS,            2, GRID_AD },			// 71
++	{ INVALIDATE_GRID_ADS,       1, GRID_AD },			// 72
++	{ MERGE_STARTD_AD,           4, STARTD_AD },		// 73
++//	{ QUERY_GENERIC_ADS,         2, GENERIC_AD },		// 74
++	{ UPDATE_ACCOUNTING_AD,      0, ACCOUNTING_AD },	// 77
++//	{ QUERY_ACCOUNTING_ADS,      2, ACCOUNTING_AD },	// 78
++	{ INVALIDATE_ACCOUNTING_ADS, 1, ACCOUNTING_AD },	// 79
++};
++
++AdTypes getAdTypeFromCommand(int command)
++{
++	for (int ii = 0; ii < (int)COUNTOF(aCommandToAdType); ++ii) {
++		if (aCommandToAdType[ii].cmd_id == command) return aCommandToAdType[ii].atype;
++	}
++	return NO_AD;
++}
++
++int getCommandFromAdType(int cmd_type, AdTypes adtype)
++{
++	for (int ii = 0; ii < (int)COUNTOF(aCommandToAdType); ++ii) {
++		if (aCommandToAdType[ii].cmd_type == cmd_type && aCommandToAdType[ii].atype == adtype) {
++			return aCommandToAdType[ii].cmd_id;
++		}
++	}
++	return NO_AD;
++}
++
++#ifdef STREAM_ADS_FROM_STDIN
++// this class is used to help parse only one classad from a FILE*.
++// it ignores blank lines rather than treating them as the end of the ad
++// we do this for backward compatiblility.
++class SingleClassAdFileParseHelper : public CondorClassAdFileParseHelper
++{
++ public:
++	// Some compilers whine when you have virtual methods but not an
++	// explicit virtual destructor
++	virtual ~SingleClassAdFileParseHelper() {}
++	SingleClassAdFileParseHelper(ClassAdFileParseType::ParseType ad_format) : CondorClassAdFileParseHelper("<eof>", ad_format) {}
++
++	// return 0 to skip (is_comment), 1 to parse line, 2 for end-of-classad, -1 for abort
++	virtual int PreParse(std::string & line, ClassAd & /*ad*/, FILE* /*file*/) {
++		// check for blank lines or lines whose first character is #
++		// tell the parse to skip those lines, otherwise tell the parser to
++		// parse the line.
++		for (size_t ix = 0; ix < line.size(); ++ix) {
++			if (line[ix] == '#' || line[ix] == '\n')
++				return 0; // skip this line, but don't stop parsing.
++			if (line[ix] != ' ' && line[ix] != '\t' && line[ix] != '\r')
++				return 1; // parse this line
++		}
++		return 1; // parse this line.
++	}
++
++	// return 0 to skip and continue, 1 to re-parse line, 2 to quit parsing with success, -1 to abort parsing.
++	virtual int OnParseError(std::string & line, ClassAd & /*ad*/, FILE* /*file*/) {
++		// print out where we barfed to the log file
++		dprintf(D_ALWAYS,"failed to create classad; bad expr = '%s'\n", line.c_str());
++		return -1; // abort
++	}
++};
++#else
+ // this class is used to help parse one or more ClassAd's from a FILE*
+ class ToolClassAdFileParseHelper : public ClassAdFileParseHelper
+ {
+@@ -114,7 +225,7 @@ class ToolClassAdFileParseHelper : public ClassAdFileParseHelper
+ 	FILE * out;
+ 	std::string delim;
+ };
+-
++#endif
+ 
+ void
+ version()
+@@ -125,23 +236,27 @@ version()
+ int main( int argc, char *argv[] )
+ {
+ 	const char *filename=0;
+-	char *pool=0;
++	const char *pool=0;
+ 	int command=-1;
+ 	int i;
+ 	bool with_ack = false;
+ 	bool allow_multiple = false;
+ 	bool many_connections = false;
++	bool inject_missing_myaddr = true;
++	ClassAdFileParseType::ParseType ads_file_format = ClassAdFileParseType::Parse_long;
+ 
+ 	myDistro->Init( argc, argv );
+ 	config();
+ 
+ 	bool use_tcp = param_boolean( "UPDATE_COLLECTOR_WITH_TCP", true );
++	bool smart_address_injection = param_boolean("CONDOR_ADVERTISE_SMART_MYADDRESS_INJECTION", false);
++	if (smart_address_injection) { inject_missing_myaddr = false; }
+ 
+ 	for( i=1; i<argc; i++ ) {
+-		if(!strcmp(argv[i],"-help") || !strcmp(argv[i],"--help")) {
++		if (is_dash_arg_prefix(argv[i], "help", 1)) {
+ 			usage(argv[0], argv[i+1] ? argv[i+1] : "cmd");
+ 			exit(0);
+-		} else if(!strcmp(argv[i],"-pool")) {
++		} else if (is_dash_arg_prefix(argv[i], "pool", 1)) {
+ 			i++;
+ 			if(!argv[i]) {
+ 				fprintf(stderr,"-pool requires an argument.\n\n");
+@@ -149,22 +264,26 @@ int main( int argc, char *argv[] )
+ 				exit(1);
+ 			}
+ 			pool = argv[i];
+-		} else if(!strncmp(argv[i],"-tcp",strlen(argv[i]))) {
++		} else if (is_dash_arg_prefix(argv[i], "noinject", -1)) {
++			inject_missing_myaddr = false;
++		} else if (is_dash_arg_prefix(argv[i], "addmyaddress", -1)) {
++			inject_missing_myaddr = true;
++		} else if (is_dash_arg_prefix(argv[i], "tcp", 1)) {
+ 			use_tcp = true;
+-		} else if(!strncmp(argv[i],"-udp",strlen(argv[i]))) {
++		} else if (is_dash_arg_prefix(argv[i], "udp", 1)) {
+ 			use_tcp = false;
+-		} else if(!strncmp(argv[i],"-multiple",strlen(argv[i]))) {
++		} else if (is_dash_arg_prefix(argv[i], "multiple", 1)) {
+ 				// We don't set allow_multiple=true by default, because
+ 				// existing users (e.g. glideinWMS) have stray blank lines
+ 				// in the input file.
+ 			allow_multiple = true;
+-		} else if(!strcmp(argv[i],"-version")) {
++		} else if (is_dash_arg_prefix(argv[i], "version", 3)) {
+ 			version();
+ 			exit(0);
+-		} else if(!strcmp(argv[i],"-debug")) {
++		} else if (is_dash_arg_prefix(argv[i], "debug", 1)) {
+ 				// dprintf to console
+ 			dprintf_set_tool_debug("TOOL", 0);
+-		} else if(argv[i][0]!='-' || !strcmp(argv[i],"-")) {
++		} else if (argv[i][0]!='-' || !strcmp(argv[i],"-")) {
+ 			if(command==-1) {
+ 				command = getCollectorCommandNum(argv[i]);
+ 				if(command==-1) {
+@@ -172,6 +291,13 @@ int main( int argc, char *argv[] )
+ 					usage(argv[0], "all");
+ 					exit(1);
+ 				}
++				// default myname injection to false for ads that don't use it in the key.
++				if (smart_address_injection) {
++					AdTypes adt = getAdTypeFromCommand(command);
++					if (adt == STARTD_AD || adt == STARTD_PVT_AD || adt == SCHEDD_AD || adt == MASTER_AD || adt == LICENSE_AD) {
++						inject_missing_myaddr = true;
++					}
++				}
+ 			} else if(!filename) {
+ 				filename = argv[i];
+ 			} else {
+@@ -189,6 +315,7 @@ int main( int argc, char *argv[] )
+ 	}
+ 
+ 	FILE *file;
++	bool close_file = false;
+ 	ClassAdList ads;
+ 	Daemon *collector;
+ 	Sock *sock;
+@@ -208,12 +335,28 @@ int main( int argc, char *argv[] )
+ 		filename = "(stdin)";
+ 	} else {
+ 		file = safe_fopen_wrapper_follow(filename,"r");
++		close_file = true;
+ 	}
+ 	if(!file) {
+ 		fprintf(stderr,"couldn't open %s: %s\n",filename,strerror(errno));
+ 		return 1;
+ 	}
+ 
++#ifdef STREAM_ADS_FROM_STDIN
++	CondorClassAdFileIterator adIter;
++	SingleClassAdFileParseHelper parse_helper(ads_file_format);
++	if (allow_multiple) {
++		adIter.begin(file, close_file, ads_file_format);
++	} else {
++		adIter.begin(file, close_file, parse_helper);
++	}
++
++	ClassAd * ad = adIter.next(NULL);
++	if ( ! ad) {
++		fprintf(stderr,"couldn't parse ClassAd in %s\n", filename);
++		return 1;
++	}
++#else
+ 	// create class that we can use to influence the behavior of Classad::InsertFromFile
+ 	ToolClassAdFileParseHelper parse_helper(allow_multiple, stderr);
+ 
+@@ -247,9 +390,10 @@ int main( int argc, char *argv[] )
+ 		fprintf(stderr,"%s is empty\n",filename);
+ 		return 1;
+ 	}
++#endif
+ 
+ 	CollectorList * collectors;
+-	if ( pool ) {
++	if (pool) {
+ 		collector = new Daemon( DT_COLLECTOR, pool, 0 );
+ 		collectors = new CollectorList();
+ 		collectors->append (collector);
+@@ -258,6 +402,7 @@ int main( int argc, char *argv[] )
+ 	}
+ 
+ 	bool had_error = false;
++	bool first_time = true;
+ 
+ 	collectors->rewind();
+ 	while (collectors->next(collector)) {
+@@ -275,17 +420,27 @@ int main( int argc, char *argv[] )
+ 
+ 		sock = NULL;
+ 
+-		ClassAd *ad;
++		// in case we need to inject our address.
++		MyString my_address;
++		my_address.formatstr( "<%s:0>", my_ip_string() );
++
+ 		int success_count = 0;
+ 		int failure_count = 0;
++#ifdef STREAM_ADS_FROM_STDIN
++		if ( ! first_time) {
++			ads.Rewind();
++			ad = ads.Next();
++		}
++		for(;;) {
++#else
++		ClassAd *ad;
+ 		ads.Rewind();
+ 		while( (ad=ads.Next()) ) {
++#endif
+ 
+-				// If there's no "MyAddress", generate one..
+-			if( !ad->Lookup( ATTR_MY_ADDRESS ) ) {
+-				MyString tmp;
+-				tmp.formatstr( "<%s:0>", my_ip_string() );
+-				ad->Assign( ATTR_MY_ADDRESS, tmp.Value() );
++				// If there's no "MyAddress", generate one
++			if (inject_missing_myaddr && !ad->Lookup( ATTR_MY_ADDRESS)) {
++				ad->Assign(ATTR_MY_ADDRESS, my_address.Value());
+ 			}
+ 
+ 			if ( use_tcp ) {
+@@ -314,7 +469,11 @@ int main( int argc, char *argv[] )
+ 				failure_count++;
+ 				delete sock;
+ 				sock = NULL;
++#ifdef STREAM_ADS_FROM_STDIN
++				goto next_ad;
++#else
+ 				continue;
++#endif
+ 			}
+ 
+ 			if( with_ack ) {
+@@ -326,7 +485,11 @@ int main( int argc, char *argv[] )
+ 					failure_count++;
+ 					delete sock;
+ 					sock = NULL;
++#ifdef STREAM_ADS_FROM_STDIN
++					goto next_ad;
++#else
+ 					continue;
++#endif
+ 				}
+ 
+ 					// ack protocol does not allow for multiple updates,
+@@ -339,7 +502,23 @@ int main( int argc, char *argv[] )
+ 			if (many_connections) {
+ 				sock = NULL;
+ 			}
++
++#ifdef STREAM_ADS_FROM_STDIN
++			next_ad:
++			if (first_time) { 
++				ads.Insert(ad);
++				ad = adIter.next(NULL);
++			} else {
++				ad = ads.Next();
++			}
++			if ( ! ad) {
++				break;
++			}
++		}
++#else
+ 		}
++#endif
++
+ 		if( sock ) {
+ 			CondorVersionInfo const *ver = sock->get_peer_version();
+ 			if( !ver || ver->built_since_version(7,7,3) ) {
