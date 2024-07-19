@@ -1,0 +1,64 @@
+diff --git a/build/cmake/CondorConfigure.cmake b/build/cmake/CondorConfigure.cmake
+index d5af73f..1acde6a 100644
+--- a/build/cmake/CondorConfigure.cmake
++++ b/build/cmake/CondorConfigure.cmake
+@@ -24,7 +24,7 @@ if(${OS_NAME} STREQUAL "DARWIN")
+   endif()
+ 
+   # Support Mac OS X 10.6 and above
+-  set( ENV{MACOSX_DEPLOYMENT_TARGET} 10.6 )
++  set( ENV{MACOSX_DEPLOYMENT_TARGET} 10.8 )
+ elseif(${OS_NAME} MATCHES "WIN")
+ 	cmake_minimum_required(VERSION 2.8.3)
+ 	set(WINDOWS ON)
+@@ -258,6 +258,7 @@ if( NOT WINDOWS)
+ 		if ( ${OS_NAME} STREQUAL "DARWIN" AND "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang" )
+ 			set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -stdlib=libc++ -lc++")
+ 			set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} -lc++")
++			set(CMAKE_STATIC_LINKER_FLAGS "${CMAKE_STATIC_LINKER_FLAGS} -lc++")
+ 			set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -lc++")
+ 		endif()
+ 
+diff --git a/externals/bundles/boost/1.49.0/CMakeLists.txt b/externals/bundles/boost/1.49.0/CMakeLists.txt
+index 30fbe8b..3715acd 100644
+--- a/externals/bundles/boost/1.49.0/CMakeLists.txt
++++ b/externals/bundles/boost/1.49.0/CMakeLists.txt
+@@ -100,6 +100,12 @@ if (NOT PROPER) # AND (NOT Boost_FOUND OR SYSTEM_NOT_UP_TO_SNUFF) )
+ 	set(BOOST_INSTALL echo "nothing")
+ 	unset(BOOST_INCLUDE)
+ 
++	set(BOOST_BUILD_FLAGS "")
++	if (DARWIN AND cxx_11)
++		set(TOOLSET "clang-darwin")
++		set(TOOLSET_OPTIONS 'cxxflags=-std=c++11 -stdlib=libc++' 'linkflags=-lc++ -stdlib=libc++ -std=c++11')
++	endif()
++
+ 	# so the idea of privately staging boost is silly.
+ 	ExternalProject_Add(boost
+ 		#-- Download Step ----------
+@@ -111,7 +117,7 @@ if (NOT PROPER) # AND (NOT Boost_FOUND OR SYSTEM_NOT_UP_TO_SNUFF) )
+ 		#--Configure step ----------
+ 		 CONFIGURE_COMMAND cd ${BOOST_FILENAME} ${CMD_TERM} ${BOOTSTRAP} --prefix=${BOOST_INSTALL_LOC} ${CMD_TERM} echo "Configure complete"
+ 		#--Build Step ----------
+-		BUILD_COMMAND cd ${BOOST_FILENAME} ${CMD_TERM} ${EXEC}bjam ${BOOST_MIN_BUILD_DEP} --prefix=${BOOST_INSTALL_LOC} --libdir=${BOOST_INSTALL_LOC}/lib define=BOOST_HAS_THREADS ${BUILD_OPTIONS} toolset=${TOOLSET} link=static install
++		BUILD_COMMAND cd ${BOOST_FILENAME} ${CMD_TERM} ${EXEC}bjam ${BOOST_MIN_BUILD_DEP} --prefix=${BOOST_INSTALL_LOC} --libdir=${BOOST_INSTALL_LOC}/lib define=BOOST_HAS_THREADS ${BUILD_OPTIONS} toolset=${TOOLSET} ${TOOLSET_OPTIONS} link=static install
+ 		BUILD_IN_SOURCE 1
+ 		#--install Step ----------
+ 		INSTALL_DIR ${BOOST_INSTALL_LOC}
+diff --git a/externals/bundles/gsoap/2.7.10-p5/CMakeLists.txt b/externals/bundles/gsoap/2.7.10-p5/CMakeLists.txt
+index 8f1042e..ca8a61f 100644
+--- a/externals/bundles/gsoap/2.7.10-p5/CMakeLists.txt
++++ b/externals/bundles/gsoap/2.7.10-p5/CMakeLists.txt
+@@ -40,7 +40,11 @@ if (WITH_GSOAP)
+ 							  patch --binary -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/fix_xlocale_insanity.patch &&
+ 							  patch --binary -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/nmi_prereq_hack.patch &&
+ 							  patch --binary -p1 < ${CMAKE_CURRENT_SOURCE_DIR}/openssl_1_0.patch)
+-			set (GSOAP_CONFIGURE ./configure --prefix=${GSOAP_INSTALL_LOC} --disable-dependency-tracking "CPPFLAGS=-I${OPENSSL_INSTALL_LOC}/include/" )
++			set (GSOAP_CXXFLAGS "-I${OPENSSL_INSTALL_LOC}/include/")
++			if (DARWIN AND cxx_11)
++				set (GSOAP_CXXFLAGS "${GSOAP_CXXFLAGS} -std=c++11 -stdlib=libc++ -lc++")
++			endif()
++			set (GSOAP_CONFIGURE CC=${CMAKE_C_COMPILER} CXX=${CMAKE_CXX_COMPILER} ./configure --prefix=${GSOAP_INSTALL_LOC} --disable-dependency-tracking "CXXFLAGS=${GSOAP_CXXFLAGS}" )
+ 			set (GSOAP_MAKE make )
+ 			set (GSOAP_INSTALL make install )
+ 		endif(WINDOWS)

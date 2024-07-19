@@ -1,0 +1,358 @@
+12/13/12 17:12:07 Authorizing server 'unauthenticated@unmapped/129.93.227.88'.
+12/13/12 17:12:08 OpSysMajorVersion:  6 
+12/13/12 17:12:08 OpSysShortName:  SL 
+12/13/12 17:12:08 OpSysLongName:  Scientific Linux release 6.3 (Carbon) 
+12/13/12 17:12:08 OpSysAndVer:  SL6 
+12/13/12 17:12:08 OpSysLegacy:  LINUX 
+12/13/12 17:12:08 OpSysName:  SL 
+12/13/12 17:12:08 OpSysVer:  603 
+12/13/12 17:12:08 OpSys:  LINUX 
+12/13/12 17:12:08 Using processor count: 6 processors, 6 CPUs, 0 HTs
+12/13/12 17:12:08 Reading condor configuration from '/etc/condor/condor_config'
+12/13/12 17:12:08 Enumerating interfaces: lo 127.0.0.1 up
+12/13/12 17:12:08 Enumerating interfaces: eth0 129.93.244.208 up
+12/13/12 17:12:08 Enumerating interfaces: lark 129.93.244.208 up
+12/13/12 17:12:08 KEYCACHE: created: 0x13154d0
+12/13/12 17:12:08 Will use UDP to update collector tusker-ce1.unl.edu <129.93.227.88:9619>
+12/13/12 17:12:08 Trying to query collector <129.93.227.88:9619>
+12/13/12 17:12:08 SECMAN: command 6 QUERY_SCHEDD_ADS to collector tusker-ce1.unl.edu:9619 from TCP port 41521 (blocking).
+12/13/12 17:12:08 SECMAN: no cached key for {<129.93.227.88:9619>,<6>}.
+12/13/12 17:12:08 SECMAN: Security Policy:
+AuthMethods = "FS,KERBEROS,GSI"
+SessionDuration = "60"
+Authentication = "OPTIONAL"
+Enact = "NO"
+Subsystem = "TOOL"
+Integrity = "OPTIONAL"
+NewSession = "YES"
+CryptoMethods = "3DES,BLOWFISH"
+OutgoingNegotiation = "PREFERRED"
+Encryption = "OPTIONAL"
+CurrentTime = time()
+SessionLease = 3600
+ServerPid = 31153
+12/13/12 17:12:08 SECMAN: negotiating security for command 6.
+12/13/12 17:12:08 SECMAN: sending DC_AUTHENTICATE command
+12/13/12 17:12:08 SECMAN: sending following classad:
+Command = 6
+AuthMethods = "FS,KERBEROS,GSI"
+SessionDuration = "60"
+Authentication = "OPTIONAL"
+Enact = "NO"
+Subsystem = "TOOL"
+Integrity = "OPTIONAL"
+RemoteVersion = "$CondorVersion: 7.9.3 Dec 12 2012 PRE-RELEASE-UWCS $"
+NewSession = "YES"
+CryptoMethods = "3DES,BLOWFISH"
+OutgoingNegotiation = "PREFERRED"
+Encryption = "OPTIONAL"
+CurrentTime = time()
+SessionLease = 3600
+ServerPid = 31153
+12/13/12 17:12:08 SECMAN: server responded with:
+Authentication = "NO"
+Integrity = "NO"
+AuthMethodsList = "GSI"
+SessionDuration = "60"
+Encryption = "NO"
+SessionLease = 3600
+RemoteVersion = "$CondorVersion: 7.9.3 Dec 13 2012 PRE-RELEASE-UWCS $"
+CryptoMethods = "3DES,BLOWFISH"
+CurrentTime = time()
+Enact = "YES"
+AuthMethods = "GSI"
+12/13/12 17:12:08 SECMAN: received post-auth classad:
+ValidCommands = "5,6,7,9,12,43,46,48,50,56,62,65,68,71,74,60007,457"
+User = "unauthenticated@unmapped"
+Sid = "tusker-ce1:18961:1355440328:250"
+CurrentTime = time()
+12/13/12 17:12:08 SECMAN: policy to be cached:
+Command = 6
+AuthMethods = "GSI"
+SessionDuration = "60"
+AuthMethodsList = "GSI"
+ValidCommands = "5,6,7,9,12,43,46,48,50,56,62,65,68,71,74,60007,457"
+Sid = "tusker-ce1:18961:1355440328:250"
+Authentication = "NO"
+Enact = "YES"
+Subsystem = "TOOL"
+MyRemoteUserName = "unauthenticated@unmapped"
+UseSession = "YES"
+Integrity = "NO"
+RemoteVersion = "$CondorVersion: 7.9.3 Dec 13 2012 PRE-RELEASE-UWCS $"
+CryptoMethods = "3DES,BLOWFISH"
+OutgoingNegotiation = "PREFERRED"
+User = "unauthenticated@unmapped"
+Encryption = "NO"
+CurrentTime = time()
+SessionLease = 3600
+12/13/12 17:12:08 SECMAN: added session tusker-ce1:18961:1355440328:250 to cache for 60 seconds (3600s lease).
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<5>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<6>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<7>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<9>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<12>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<43>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<46>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<48>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<50>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<56>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<62>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<65>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<68>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<71>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<74>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<60007>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:9619>,<457>} mapped to session tusker-ce1:18961:1355440328:250.
+12/13/12 17:12:08 SECMAN: startCommand succeeded.
+12/13/12 17:12:08 Authorizing server 'unauthenticated@unmapped/129.93.227.88'.
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission ALLOW
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission READ
+12/13/12 17:12:08 ipverify: READ optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission WRITE
+12/13/12 17:12:08 ipverify: WRITE optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission NEGOTIATOR
+12/13/12 17:12:08 ipverify: NEGOTIATOR optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission ADMINISTRATOR
+12/13/12 17:12:08 ipverify: ADMINISTRATOR optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission OWNER
+12/13/12 17:12:08 ipverify: OWNER optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission CONFIG
+12/13/12 17:12:08 ipverify: CONFIG optimized to deny everyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission DAEMON
+12/13/12 17:12:08 ipverify: DAEMON optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission SOAP
+12/13/12 17:12:08 ipverify: SOAP optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission DEFAULT
+12/13/12 17:12:08 ipverify: DEFAULT optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission CLIENT
+12/13/12 17:12:08 ipverify: CLIENT optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission ADVERTISE_STARTD
+12/13/12 17:12:08 ipverify: ADVERTISE_STARTD optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission ADVERTISE_SCHEDD
+12/13/12 17:12:08 ipverify: ADVERTISE_SCHEDD optimized to allow anyone
+12/13/12 17:12:08 IPVERIFY: Subsystem TOOL
+12/13/12 17:12:08 IPVERIFY: Permission ADVERTISE_MASTER
+12/13/12 17:12:08 ipverify: ADVERTISE_MASTER optimized to allow anyone
+12/13/12 17:12:08 Initialized the following authorization table:
+12/13/12 17:12:08 Authorizations yet to be resolved:
+12/13/12 17:12:08 SECMAN: command 489 command 489 to <129.93.227.88:34812> from TCP port 49978 (blocking).
+12/13/12 17:12:08 SECMAN: no cached key for {<129.93.227.88:34812>,<489>}.
+12/13/12 17:12:08 SECMAN: Security Policy:
+AuthMethods = "FS,KERBEROS,GSI"
+SessionDuration = "60"
+Authentication = "OPTIONAL"
+Enact = "NO"
+Subsystem = "TOOL"
+Integrity = "OPTIONAL"
+NewSession = "YES"
+CryptoMethods = "3DES,BLOWFISH"
+OutgoingNegotiation = "PREFERRED"
+Encryption = "OPTIONAL"
+CurrentTime = time()
+SessionLease = 3600
+ServerPid = 31153
+12/13/12 17:12:08 SECMAN: negotiating security for command 489.
+12/13/12 17:12:08 SECMAN: sending DC_AUTHENTICATE command
+12/13/12 17:12:08 SECMAN: sending following classad:
+Command = 489
+AuthMethods = "FS,KERBEROS,GSI"
+SessionDuration = "60"
+Authentication = "OPTIONAL"
+Enact = "NO"
+Subsystem = "TOOL"
+Integrity = "OPTIONAL"
+RemoteVersion = "$CondorVersion: 7.9.3 Dec 12 2012 PRE-RELEASE-UWCS $"
+NewSession = "YES"
+CryptoMethods = "3DES,BLOWFISH"
+OutgoingNegotiation = "PREFERRED"
+Encryption = "OPTIONAL"
+CurrentTime = time()
+SessionLease = 3600
+ServerPid = 31153
+12/13/12 17:12:08 SECMAN: server responded with:
+AuthMethods = "FS"
+SessionDuration = "60"
+AuthMethodsList = "FS,GSI"
+Authentication = "YES"
+Enact = "YES"
+Integrity = "YES"
+RemoteVersion = "$CondorVersion: 7.9.3 Dec 13 2012 PRE-RELEASE-UWCS $"
+CryptoMethods = "3DES,BLOWFISH"
+Encryption = "NO"
+CurrentTime = time()
+ServerTime = 1355440328
+SessionLease = 3600
+12/13/12 17:12:08 SECMAN: new session, doing initial authentication.
+12/13/12 17:12:08 SECMAN: authenticating RIGHT NOW.
+12/13/12 17:12:08 SECMAN: AuthMethodsList: FS,GSI
+12/13/12 17:12:08 SECMAN: Auth methods: FS,GSI
+12/13/12 17:12:08 AUTHENTICATE: in authenticate( addr == 'tusker-ce1.unl.edu', methods == 'FS,GSI')
+12/13/12 17:12:08 AUTHENTICATE: can still try these methods: FS,GSI
+12/13/12 17:12:08 HANDSHAKE: in handshake(my_methods = 'FS,GSI')
+12/13/12 17:12:08 HANDSHAKE: handshake() - i am the client
+12/13/12 17:12:08 HANDSHAKE: sending (methods == 36) to server
+12/13/12 17:12:08 HANDSHAKE: server replied (method = 4)
+12/13/12 17:12:08 AUTHENTICATE: will try to use 4 (FS)
+12/13/12 17:12:08 AUTHENTICATE_FS: used dir /tmp/FS_XXXdGRtxQ, status: 0
+12/13/12 17:12:08 AUTHENTICATE: method 4 (FS) failed.
+12/13/12 17:12:08 AUTHENTICATE: can still try these methods: GSI
+12/13/12 17:12:08 HANDSHAKE: in handshake(my_methods = 'GSI')
+12/13/12 17:12:08 HANDSHAKE: handshake() - i am the client
+12/13/12 17:12:08 HANDSHAKE: sending (methods == 32) to server
+12/13/12 17:12:08 HANDSHAKE: server replied (method = 32)
+12/13/12 17:12:08 AUTHENTICATE: will try to use 32 (GSI)
+12/13/12 17:12:08 This process has a valid certificate & key
+12/13/12 17:12:08 ZKM: VOMS FQAN not present (error 1), ignoring.
+12/13/12 17:12:08 IPVERIFY: checking tusker-ce1.unl.edu against 129.93.227.88
+12/13/12 17:12:08 IPVERIFY: matched 129.93.227.88 to 129.93.227.88
+12/13/12 17:12:08 IPVERIFY: ip found is 1
+12/13/12 17:12:08 Number of aliases: 2
+12/13/12 17:12:08 Checking validity of alias tusker-ce1.unl.edu
+12/13/12 17:12:08 valid GSS connection established to /DC=com/DC=DigiCert-Grid/O=Open Science Grid/OU=Services/CN=tusker-ce1.unl.edu
+12/13/12 17:12:08 AUTHENTICATE: auth_status == 32 (GSI)
+12/13/12 17:12:08 Authentication was a Success.
+12/13/12 17:12:08 ZKM: setting default map to gsi@unmapped
+12/13/12 17:12:08 nameGssToLocal returned failure
+12/13/12 17:12:08 ZKM: post-map: current user is 'gsi'
+12/13/12 17:12:08 ZKM: post-map: current domain is 'unmapped'
+12/13/12 17:12:08 ZKM: post-map: current FQU is 'gsi@unmapped'
+12/13/12 17:12:08 SECMAN: about to enable message authenticator.
+12/13/12 17:12:08 SECMAN: successfully enabled message authenticator!
+12/13/12 17:12:08 SECMAN: received post-auth classad:
+TriedAuthentication = true
+ValidCommands = "511,74000,60004,60012,1112,421,464,478,480,481,486,487,488,489,499,502,507,509,6,12,60007,1111,441,443,457,471"
+User = "uscmsPool018@users.opensciencegrid.org"
+Sid = "tusker-ce1:18962:1355440328:254"
+ServerTime = 1355440328
+CurrentTime = time()
+12/13/12 17:12:08 SECMAN: policy to be cached:
+Command = 489
+AuthMethods = "FS"
+SessionDuration = "60"
+AuthMethodsList = "FS,GSI"
+ValidCommands = "511,74000,60004,60012,1112,421,464,478,480,481,486,487,488,489,499,502,507,509,6,12,60007,1111,441,443,457,471"
+Sid = "tusker-ce1:18962:1355440328:254"
+Authentication = "YES"
+Enact = "YES"
+Subsystem = "TOOL"
+MyRemoteUserName = "uscmsPool018@users.opensciencegrid.org"
+UseSession = "YES"
+TriedAuthentication = true
+Integrity = "YES"
+RemoteVersion = "$CondorVersion: 7.9.3 Dec 13 2012 PRE-RELEASE-UWCS $"
+CryptoMethods = "3DES,BLOWFISH"
+OutgoingNegotiation = "PREFERRED"
+User = "gsi@unmapped"
+Encryption = "NO"
+CurrentTime = time()
+SessionLease = 3600
+12/13/12 17:12:08 SECMAN: added session tusker-ce1:18962:1355440328:254 to cache for 60 seconds (3600s lease).
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<511>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<74000>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<60004>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<60012>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<1112>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<421>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<464>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<478>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<480>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<481>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<486>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<487>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<488>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<489>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<499>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<502>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<507>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<509>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<6>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<12>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<60007>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<1111>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<441>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<443>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<457>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: command {<129.93.227.88:34812>,<471>} mapped to session tusker-ce1:18962:1355440328:254.
+12/13/12 17:12:08 SECMAN: startCommand succeeded.
+12/13/12 17:12:08 Authorizing server 'gsi@unmapped/129.93.227.88'.
+12/13/12 17:12:08 DCSchedd:receiveJobSandbox: 1 jobs matched my constraint ((ClusterId==118))
+12/13/12 17:12:08 entering FileTransfer::SimpleInit
+12/13/12 17:12:08 FILETRANSFER: protocol "http" handled by "/usr/libexec/condor/curl_plugin"
+12/13/12 17:12:08 FILETRANSFER: protocol "ftp" handled by "/usr/libexec/condor/curl_plugin"
+12/13/12 17:12:08 FILETRANSFER: protocol "file" handled by "/usr/libexec/condor/curl_plugin"
+12/13/12 17:12:08 FILETRANSFER: protocol "data" handled by "/usr/libexec/condor/data_plugin"
+12/13/12 17:12:08 Entering FileTransfer::InitDownloadFilenameRemaps
+12/13/12 17:12:08 FileTransfer: output file remaps: _condor_stdout=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru;_condor_stderr=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 entering FileTransfer::DownloadFiles
+12/13/12 17:12:08 entering FileTransfer::Download
+12/13/12 17:12:08 entering FileTransfer::DoDownload sync=0
+12/13/12 17:12:08 FILETRANSFER: incoming file_command is 1
+12/13/12 17:12:08 REMAP: begin with rules: _condor_stdout=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru;_condor_stderr=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 REMAP: 0: _condor_stderr
+12/13/12 17:12:08 REMAP: 1: /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 REMAP: 2: /home/cse496/bbockelm/projects/fedpkg-condor-hcc
+12/13/12 17:12:08 REMAP: 3: /home/cse496/bbockelm/projects
+12/13/12 17:12:08 REMAP: 4: /home/cse496/bbockelm
+12/13/12 17:12:08 REMAP: 5: /home/cse496
+12/13/12 17:12:08 REMAP: 6: /home
+12/13/12 17:12:08 REMAP: 7: 
+12/13/12 17:12:08 REMAP: res is 1 -> /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk !
+12/13/12 17:12:08 Remapped downloaded file from _condor_stderr to /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 Sending GoAhead for 129.93.227.88 to send /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk and all further files.
+12/13/12 17:12:08 Received GoAhead from peer to receive /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk and all further files.
+12/13/12 17:12:08 get_file(): going to write to filename /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 get_file: Receiving 0 bytes
+12/13/12 17:12:08 get_file: wrote 0 bytes to file
+12/13/12 17:12:08 ReliSock::get_file_with_permissions(): going to set permissions 644
+12/13/12 17:12:08 FILETRANSFER: incoming file_command is 1
+12/13/12 17:12:08 REMAP: begin with rules: _condor_stdout=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru;_condor_stderr=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 REMAP: 0: _condor_stdout
+12/13/12 17:12:08 REMAP: 1: /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru
+12/13/12 17:12:08 REMAP: 2: /home/cse496/bbockelm/projects/fedpkg-condor-hcc
+12/13/12 17:12:08 REMAP: 3: /home/cse496/bbockelm/projects
+12/13/12 17:12:08 REMAP: 4: /home/cse496/bbockelm
+12/13/12 17:12:08 REMAP: 5: /home/cse496
+12/13/12 17:12:08 REMAP: 6: /home
+12/13/12 17:12:08 REMAP: 7: 
+12/13/12 17:12:08 REMAP: res is 1 -> /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru !
+12/13/12 17:12:08 Remapped downloaded file from _condor_stdout to /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru
+12/13/12 17:12:08 get_file(): going to write to filename /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru
+12/13/12 17:12:08 get_file: Receiving 1965 bytes
+12/13/12 17:12:08 get_file: wrote 1965 bytes to file
+12/13/12 17:12:08 ReliSock::get_file_with_permissions(): going to set permissions 644
+12/13/12 17:12:08 FILETRANSFER: incoming file_command is 1
+12/13/12 17:12:08 REMAP: begin with rules: _condor_stdout=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru;_condor_stderr=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 REMAP: 0: x509up_u1221.lmt
+12/13/12 17:12:08 REMAP: res is 0 ->  !
+12/13/12 17:12:08 get_file(): going to write to filename /home/cse496/bbockelm/projects/fedpkg-condor-hcc/x509up_u1221.lmt
+12/13/12 17:12:08 get_file: Receiving 0 bytes
+12/13/12 17:12:08 get_file: wrote 0 bytes to file
+12/13/12 17:12:08 ReliSock::get_file_with_permissions(): going to set permissions 600
+12/13/12 17:12:08 FILETRANSFER: incoming file_command is 1
+12/13/12 17:12:08 REMAP: begin with rules: _condor_stdout=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stdout_31053_bEB6ru;_condor_stderr=/home/cse496/bbockelm/projects/fedpkg-condor-hcc/.stderr_31053_AtQ6Jk
+12/13/12 17:12:08 REMAP: 0: .log_31053_AIz2yT
+12/13/12 17:12:08 REMAP: res is 0 ->  !
+12/13/12 17:12:08 get_file(): going to write to filename /home/cse496/bbockelm/projects/fedpkg-condor-hcc/.log_31053_AIz2yT
+12/13/12 17:12:08 get_file: Receiving 720 bytes
+12/13/12 17:12:08 get_file: wrote 720 bytes to file
+12/13/12 17:12:08 ReliSock::get_file_with_permissions(): going to set permissions 644
+12/13/12 17:12:08 FILETRANSFER: incoming file_command is 0
+12/13/12 17:12:08 DoDownload: SCHEDD at 129.93.227.88 failed to send file(s) to <129.93.244.208:49978>: error reading from /var/lib/condor-ce/spool/118/0/cluster118.proc0.subproc0/x509up_u1221.lmt: (errno 13) Permission denied; TOOL failed to receive file(s) from <129.93.227.88:34812>
+12/13/12 17:12:08 DoDownload: exiting with upload errors
+
+DCSchedd::receiveJobSandbox:7003:File transfer failed for target job 118.0: SCHEDD at 129.93.227.88 failed to send file(s) to <129.93.244.208:49978>: error reading from /var/lib/condor-ce/spool/118/0/cluster118.proc0.subproc0/x509up_u1221.lmt: (errno 13) Permission denied; TOOL failed to receive file(s) from <129.93.227.88:34812>
+AUTHENTICATE:1004:Failed to authenticate using FS
