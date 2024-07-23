@@ -1,0 +1,440 @@
+From 7df8ec8fb66a9896428435ecfe1b6ec9a60270b1 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Tue, 25 Sep 2012 19:40:21 -0500
+Subject: [PATCH 1/3] Minimal fixes for C++11 on clang in source.
+
+---
+ src/condor_utils/socket_proxy.h |   28 ++++++++++++++--------------
+ src/condor_utils/store_cred.cpp |    2 +-
+ 2 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/src/condor_utils/socket_proxy.h b/src/condor_utils/socket_proxy.h
+index a8438da..1e6aeb2 100644
+--- a/src/condor_utils/socket_proxy.h
++++ b/src/condor_utils/socket_proxy.h
+@@ -27,6 +27,19 @@
+ // interface is provided (i.e. you call execute() and it only returns
+ // after all of the sockets have finished and closed).
+ 
++#define SOCKET_PROXY_BUFSIZE 1024
++class SocketProxyPair {
++public:
++	SocketProxyPair(int from,int to);
++
++	int from_socket;
++	int to_socket;
++	bool shutdown;
++	size_t buf_begin;
++	size_t buf_end;
++	char buf[SOCKET_PROXY_BUFSIZE];
++};
++
+ class SocketProxy {
+ public:
+ 	SocketProxy();
+@@ -41,7 +54,7 @@ public:
+ 
+ 	char const *getErrorMsg();
+ private:
+-	std::list<class SocketProxyPair> m_socket_pairs;
++	std::list<SocketProxyPair> m_socket_pairs;
+ 	bool m_error;
+ 	MyString m_error_msg;
+ 
+@@ -50,17 +63,4 @@ private:
+ 	void setErrorMsg(char const *msg);
+ };
+ 
+-#define SOCKET_PROXY_BUFSIZE 1024
+-class SocketProxyPair {
+-public:
+-	SocketProxyPair(int from,int to);
+-
+-	int from_socket;
+-	int to_socket;
+-	bool shutdown;
+-	size_t buf_begin;
+-	size_t buf_end;
+-	char buf[SOCKET_PROXY_BUFSIZE];
+-};
+-
+ #endif
+diff --git a/src/condor_utils/store_cred.cpp b/src/condor_utils/store_cred.cpp
+index 0587bbb..d363435 100644
+--- a/src/condor_utils/store_cred.cpp
++++ b/src/condor_utils/store_cred.cpp
+@@ -44,7 +44,7 @@ void SecureZeroMemory(void *p, size_t n)
+ // NOTE: its up to the caller to ensure scrambled has enough room
+ void simple_scramble(char* scrambled,  const char* orig, int len)
+ {
+-	const char deadbeef[] = {0xDE, 0xAD, 0xBE, 0xEF};
++	const unsigned char deadbeef[] = {0xDE, 0xAD, 0xBE, 0xEF};
+ 
+ 	for (int i = 0; i < len; i++) {
+ 		scrambled[i] = orig[i] ^ deadbeef[i % sizeof(deadbeef)];
+-- 
+1.7.9.6 (Apple Git-31.1)
+
+
+From 0f30eaf6c8b932f8fa4f2363651b66285a74ad04 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Tue, 25 Sep 2012 20:05:37 -0500
+Subject: [PATCH 2/3] Fix alignment warnings on sockaddr types using the
+ standard union trick.
+
+---
+ src/condor_utils/condor_netdb.cpp    |   22 +++++++++++++++++++---
+ src/condor_utils/condor_sockaddr.cpp |   12 ++++++++++--
+ src/condor_utils/condor_sockfunc.cpp |   14 +++++++++++---
+ 3 files changed, 40 insertions(+), 8 deletions(-)
+
+diff --git a/src/condor_utils/condor_netdb.cpp b/src/condor_utils/condor_netdb.cpp
+index 126e520..333c7af 100644
+--- a/src/condor_utils/condor_netdb.cpp
++++ b/src/condor_utils/condor_netdb.cpp
+@@ -31,6 +31,16 @@
+ #define   NI_MAXHOST 1025
+ #endif
+ 
++typedef union sockaddr_storage_ptr_u {
++	struct sockaddr    *raw;
++	struct sockaddr_in *in;
++} sockaddr_storage_ptr;
++
++typedef union in_addr_ptr_u {
++	const char         *as_char;
++	struct in_addr     *in;
++} in_addr_ptr;
++
+ /* SPECIAL NAMES:
+  *
+  * If NO_DNS is configured we do some special name/ip handling. IP
+@@ -157,7 +167,9 @@ condor_gethostbyname_ipv6(const char* name) {
+         }
+         // pick only IPv4 address
+         if (iter->ai_addr && iter->ai_addr->sa_family == AF_INET) {
+-            struct sockaddr_in* _sin = (struct sockaddr_in*)iter->ai_addr;
++            sockaddr_storage_ptr sock_address;
++            sock_address.raw = iter->ai_addr;
++            struct sockaddr_in* _sin = sock_address.in;
+             memcpy(&addr_list[addrcount], &_sin->sin_addr, sizeof(struct in_addr));
+             h_addr_list[addrcount] = (char*)&addr_list[addrcount];
+             addrcount++;
+@@ -225,7 +237,9 @@ condor_gethostbyaddr_ipv6(const char *addr, SOCKET_LENGTH_TYPE len, int type) {
+ 
+ 	memset(&sinaddr, 0, sizeof(sinaddr));
+ 	sinaddr.sin_family = type;
+-	sinaddr.sin_addr = *(const struct in_addr*)addr;
++	in_addr_ptr in_address_ptr;
++	in_address_ptr.as_char = addr;
++	sinaddr.sin_addr = *(in_address_ptr.in);
+ 
+ #ifdef HAVE_STRUCT_SOCKADDR_IN_SIN_LEN
+ 	sinaddr.sin_len = sizeof(struct sockaddr_in);
+@@ -399,7 +413,9 @@ convert_ip_to_hostname(const char *addr,
+ 	if (NULL != (default_domain_name = param("DEFAULT_DOMAIN_NAME"))) {
+ 		int h_name_len;
+ 		int i;
+-		strncpy(h_name, inet_ntoa(*((struct in_addr *) addr)), maxlen - 1);
++		in_addr_ptr in_address_ptr;
++		in_address_ptr.as_char = addr;
++		strncpy(h_name, inet_ntoa(*(in_address_ptr.in)), maxlen - 1);
+ 		for (i = 0; h_name[i]; i++) {
+ 			if ('.' == h_name[i]) {
+ 				h_name[i] = '-';
+diff --git a/src/condor_utils/condor_sockaddr.cpp b/src/condor_utils/condor_sockaddr.cpp
+index c4714f4..bb2b73e 100644
+--- a/src/condor_utils/condor_sockaddr.cpp
++++ b/src/condor_utils/condor_sockaddr.cpp
+@@ -4,6 +4,12 @@
+ #include "condor_netaddr.h"
+ #include "ipv6_hostname.h"
+ 
++typedef union sockaddr_storage_ptr_u {
++        const struct sockaddr     *raw;
++        struct sockaddr_in  *in;
++        struct sockaddr_in6 *in6;
++} sockaddr_storage_ptr;
++
+ condor_sockaddr condor_sockaddr::null;
+ 
+ void condor_sockaddr::clear()
+@@ -46,11 +52,13 @@ condor_sockaddr::condor_sockaddr(const in6_addr& in6, unsigned short port)
+ 
+ condor_sockaddr::condor_sockaddr(const sockaddr* sa)
+ {
++	sockaddr_storage_ptr sock_address;
++	sock_address.raw = sa;
+ 	if (sa->sa_family == AF_INET) {
+-		sockaddr_in* sin = (sockaddr_in*)sa;
++		sockaddr_in* sin = sock_address.in;
+ 		init(sin->sin_addr.s_addr, sin->sin_port);
+ 	} else if (sa->sa_family == AF_INET6) {
+-		sockaddr_in6* sin6 = (sockaddr_in6*)sa;
++		sockaddr_in6* sin6 = sock_address.in6;
+ 		v6 = *sin6;
+ 	} else {
+ 		clear();
+diff --git a/src/condor_utils/condor_sockfunc.cpp b/src/condor_utils/condor_sockfunc.cpp
+index e4db2c1..fed5a50 100644
+--- a/src/condor_utils/condor_sockfunc.cpp
++++ b/src/condor_utils/condor_sockfunc.cpp
+@@ -5,6 +5,12 @@
+ #include "ipv6_interface.h"
+ #include "condor_debug.h"
+ 
++typedef union sockaddr_storage_ptr_u {
++        const struct sockaddr     *raw;
++        struct sockaddr_in  *in;
++        struct sockaddr_in6 *in6;
++} sockaddr_storage_ptr;
++
+ int condor_connect(int sockfd, const condor_sockaddr& addr)
+ {
+ 	if (addr.is_ipv6() && addr.is_link_local()) {
+@@ -129,22 +135,24 @@ int condor_getaddrinfo(const char *node,
+ hostent* condor_gethostbyaddr_ipv6(const condor_sockaddr& addr)
+ {
+ 	sockaddr* sa = addr.to_sockaddr();
++	sockaddr_storage_ptr sock_address;
++	sock_address.raw = sa;
+ 	int type = sa->sa_family;
+ 	hostent* ret;
+ 	const char* p_addr = NULL;
+ 	int len;
+ 
+ 	if (type == AF_INET) {
+-		sockaddr_in* sin4 = (sockaddr_in*)sa;
++		sockaddr_in* sin4 = sock_address.in;
+ 		p_addr = (const char*)&sin4->sin_addr;
+ 		len = sizeof(in_addr);
+ 	} else if (type == AF_INET6) {
+-		sockaddr_in6* sin6 = (sockaddr_in6*)sa;
++		sockaddr_in6* sin6 = sock_address.in6;
+ 		p_addr = (const char*)&sin6->sin6_addr;
+ 		len = sizeof(in6_addr);
+ 	} else {
+ 		dprintf(D_ALWAYS, "condor_gethostbyaddr_ipv6 was passed an sa_family of %d. Only AF_INET (%d) and AF_INET6 (%d) can be handled.", type, int(AF_INET), int(AF_INET6));
+-		sockaddr_in* sin4 = (sockaddr_in*)sa;
++		sockaddr_in* sin4 = sock_address.in;
+ 		p_addr = (const char*)&sin4->sin_addr;
+ 		len = 0;
+ 	}
+-- 
+1.7.9.6 (Apple Git-31.1)
+
+
+From 04abf7312e1a943aeeb8a13202d40a7247538159 Mon Sep 17 00:00:00 2001
+From: Brian Bockelman <bbockelm@cse.unl.edu>
+Date: Wed, 26 Sep 2012 19:16:42 -0500
+Subject: [PATCH 3/3] Clang disapproves of your unused variables, parenthesis
+ usage, and POSIXs design of sockaddr.
+
+---
+ src/classad/classad_unit_tester.cpp    |    2 +-
+ src/classad/operators.cpp              |    4 ++--
+ src/classad_analysis/analysis.cpp      |    4 ++--
+ src/condor_privsep/safe.unix.cpp       |    2 ++
+ src/condor_utils/condor_pidenvid.cpp   |    2 ++
+ src/condor_utils/generic_stats.cpp     |   10 +++++++++-
+ src/condor_utils/globus_utils.cpp      |    8 ++++----
+ src/condor_utils/malloc.cpp            |    8 ++++----
+ src/condor_utils/network_adapter.cpp   |    1 +
+ src/condor_utils/open_files_in_pid.cpp |    2 +-
+ src/condor_utils/selector.cpp          |    2 ++
+ 11 files changed, 30 insertions(+), 15 deletions(-)
+
+diff --git a/src/classad/classad_unit_tester.cpp b/src/classad/classad_unit_tester.cpp
+index c2d4029..5ba4d69 100644
+--- a/src/classad/classad_unit_tester.cpp
++++ b/src/classad/classad_unit_tester.cpp
+@@ -447,7 +447,7 @@ static void test_classad(const Parameters &, Results &results)
+         
+         if (rank != NULL) {
+             bool have_references;
+-            if (have_references = c->GetExternalReferences(rank, refs, true)) {
++            if ((have_references = c->GetExternalReferences(rank, refs, true))) {
+                 TEST("have_references", (have_references == true));
+ 
+                 if (have_references) {
+diff --git a/src/classad/operators.cpp b/src/classad/operators.cpp
+index 22c815f..b997608 100644
+--- a/src/classad/operators.cpp
++++ b/src/classad/operators.cpp
+@@ -591,8 +591,8 @@ _Flatten( EvalState &state, Value &val, ExprTree *&tree, int *opPtr ) const
+ 					
+ 	// any op that got past the above is binary, commutative and associative
+ 	// Flatten sub expressions
+-	if( child1 && !child1->Flatten( state, val1, fChild1, &childOp1 ) ||
+-		child2 && !child2->Flatten( state, val2, fChild2, &childOp2 ) ) {
++	if( ( child1 && !child1->Flatten( state, val1, fChild1, &childOp1 ) ) ||
++		( child2 && !child2->Flatten( state, val2, fChild2, &childOp2 ) ) ) {
+ 		delete fChild1;
+ 		delete fChild2;
+ 		tree = NULL;
+diff --git a/src/classad_analysis/analysis.cpp b/src/classad_analysis/analysis.cpp
+index a4c2c5f..d3c270e 100644
+--- a/src/classad_analysis/analysis.cpp
++++ b/src/classad_analysis/analysis.cpp
+@@ -1722,7 +1722,7 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 					BoolValue oldValue = ( *tempBools )[attrNum];
+ 					And( oldValue, conditionValue, newValue );
+ 					( *tempBools )[attrNum] = newValue;
+-					if( ( ( *tempIntervals )[attrNum] == NULL ) ) {
++					if( ( *tempIntervals )[attrNum] == NULL ) {
+ 						( *tempIntervals )[attrNum] = new ValueRange( );
+ 					}
+ 					AddConstraint( ( *tempIntervals )[attrNum],
+@@ -1748,7 +1748,7 @@ AnalyzeAttributes( classad::ClassAd *ad, ResourceGroup &rg, ClassAdExplain &caEx
+ 					}
+ 					( *tempBools )[numRefdAttrs - 1] = conditionValue;
+ 
+-					if( ( ( *tempIntervals )[attrNum] == NULL ) ) {
++					if( ( *tempIntervals )[attrNum] == NULL ) {
+ 						( *tempIntervals )[attrNum] = new ValueRange( );
+ 					}
+ 					AddConstraint( ( *tempIntervals )[attrNum], 
+diff --git a/src/condor_privsep/safe.unix.cpp b/src/condor_privsep/safe.unix.cpp
+index 005f039..07cdf56 100644
+--- a/src/condor_privsep/safe.unix.cpp
++++ b/src/condor_privsep/safe.unix.cpp
+@@ -1146,6 +1146,8 @@ safe_exec_as_user(uid_t uid,
+             fatal_error_exit(1, "error setting personality: %s");
+         }
+     }
++#else
++    if (is_std_univ) {}
+ #endif
+ 
+     /* finally do the exec */
+diff --git a/src/condor_utils/condor_pidenvid.cpp b/src/condor_utils/condor_pidenvid.cpp
+index 76d9591..7a421bf 100644
+--- a/src/condor_utils/condor_pidenvid.cpp
++++ b/src/condor_utils/condor_pidenvid.cpp
+@@ -293,5 +293,7 @@ pidenvid_optimize_final_env(char **env)
+ {
+ #if defined(LINUX)
+ 	pidenvid_shuffle_to_front(env);
++#else
++	if (env) {}
+ #endif
+ }
+diff --git a/src/condor_utils/generic_stats.cpp b/src/condor_utils/generic_stats.cpp
+index 4abb483..22c6909 100644
+--- a/src/condor_utils/generic_stats.cpp
++++ b/src/condor_utils/generic_stats.cpp
+@@ -112,7 +112,15 @@ void stats_entry_recent_histogram<T>::PublishDebug(ClassAd & ad, const char * pa
+                    this->buf.ixHead, this->buf.cItems, this->buf.cMax, this->buf.cAlloc);
+    if (this->buf.pbuf) {
+       for (int ix = 0; ix < this->buf.cAlloc; ++ix) {
+-         str.formatstr_cat(!ix ? "[(" : (ix == this->buf.cMax ? ")|(" : ") ("));
++         // Note: this is tediously broken up into multiple lines because clang produces a format string
++         // warning otherwise.
++         if (!ix) {
++            str.formatstr_cat("[(");
++         } else if (ix == this->buf.cMax) {
++            str.formatstr_cat(")|(");
++         } else {
++            str.formatstr_cat(") (");
++            }
+          this->buf.pbuf[ix].AppendToString(str);
+          }
+       str += ")]";
+diff --git a/src/condor_utils/globus_utils.cpp b/src/condor_utils/globus_utils.cpp
+index 588a944..112ad57 100644
+--- a/src/condor_utils/globus_utils.cpp
++++ b/src/condor_utils/globus_utils.cpp
+@@ -246,9 +246,9 @@ quote_x509_string( char* instr) {
+ 	// phase 1, scan the string to compute the new length
+ 	result_string_len = 0;
+ 	for (tmp_scan_ptr = instr; *tmp_scan_ptr; tmp_scan_ptr++) {
+-		if( ((*tmp_scan_ptr)==x509_fqan_escape[0]) ) {
++		if( (*tmp_scan_ptr)==x509_fqan_escape[0] ) {
+ 			result_string_len += x509_fqan_escape_sub_len;
+-		} else if( ((*tmp_scan_ptr)==x509_fqan_delimiter[0]) ) {
++		} else if( (*tmp_scan_ptr)==x509_fqan_delimiter[0] ) {
+ 			result_string_len += x509_fqan_delimiter_sub_len;
+ 		} else {
+ 			result_string_len++;
+@@ -264,10 +264,10 @@ quote_x509_string( char* instr) {
+ 	result_string_len = 0;
+ 
+ 	for (tmp_scan_ptr = instr; *tmp_scan_ptr; tmp_scan_ptr++) {
+-		if( ((*tmp_scan_ptr)==x509_fqan_escape[0]) ) {
++		if( (*tmp_scan_ptr)==x509_fqan_escape[0] ) {
+ 			strcat(&(result_string[result_string_len]), x509_fqan_escape_sub);
+ 			result_string_len += x509_fqan_escape_sub_len;
+-		} else if( ((*tmp_scan_ptr)==x509_fqan_delimiter[0]) ) {
++		} else if( (*tmp_scan_ptr)==x509_fqan_delimiter[0] ) {
+ 			strcat(&(result_string[result_string_len]), x509_fqan_delimiter_sub);
+ 			result_string_len += x509_fqan_delimiter_sub_len;
+ 		} else {
+diff --git a/src/condor_utils/malloc.cpp b/src/condor_utils/malloc.cpp
+index 40abe88..992b87b 100644
+--- a/src/condor_utils/malloc.cpp
++++ b/src/condor_utils/malloc.cpp
+@@ -120,9 +120,9 @@ myfree(fname, line, ptr)
+ 	}
+ #ifdef lint
+ 	p = (struct chunk *)0;
+-#else lint
++#else
+ 	p = (struct chunk *)(ptr - OFFSET);
+-#endif lint
++#endif
+ 	if (p->magic != MAGIC) {
+ 		if (allocout) {
+ 			fprintf(allocout, ">>>bad free(%s,%d,0x%x)\n",fname,line,ptr);
+@@ -211,9 +211,9 @@ myrealloc(fname, line, ptr, size)
+ 	char *new;
+ #ifdef lint
+ 	p = (struct chunk *)0;
+-#else lint
++#else
+ 	p = (struct chunk *)(ptr - OFFSET);
+-#endif lint
++#endif
+ 	assert(p->buf == ptr);
+ 	new = mymalloc(fname, line, size);
+ 	(void) memcpy(new, ptr, p->size);
+diff --git a/src/condor_utils/network_adapter.cpp b/src/condor_utils/network_adapter.cpp
+index 77c7183..2a11acc 100644
+--- a/src/condor_utils/network_adapter.cpp
++++ b/src/condor_utils/network_adapter.cpp
+@@ -102,6 +102,7 @@ NetworkAdapterBase::createNetworkAdapter ( const char *sinful_or_name,
+ 
+ 	return adapter;
+ #else
++	if (is_primary) {} // Fight compiler warnings!
+ 	return NULL;
+ # endif
+ 
+diff --git a/src/condor_utils/open_files_in_pid.cpp b/src/condor_utils/open_files_in_pid.cpp
+index 6f5476f..d35f7ef 100644
+--- a/src/condor_utils/open_files_in_pid.cpp
++++ b/src/condor_utils/open_files_in_pid.cpp
+@@ -47,7 +47,7 @@ set<MyString> open_files_in_pid(pid_t pid)
+ 	}
+ 
+ #else
+-
++	if (pid) {} // Fight compiler warnings!
+ 	EXCEPT("open_files(): Only available for LINUX!");
+ 
+ #endif
+diff --git a/src/condor_utils/selector.cpp b/src/condor_utils/selector.cpp
+index 2a3ec0c..a70dbc4 100644
+--- a/src/condor_utils/selector.cpp
++++ b/src/condor_utils/selector.cpp
+@@ -174,6 +174,8 @@ describe_fd(int fd) {
+   link_buf[end] = '\0';
+   return strdup(link_buf);
+  cleanup:
++#else
++  if (fd) {}
+ #endif
+   return strdup("");
+ }
+-- 
+1.7.9.6 (Apple Git-31.1)
+
