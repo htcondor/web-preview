@@ -1,0 +1,247 @@
+From 8df4c965da1791fb47215353fdcdd759bdd32cd7 Mon Sep 17 00:00:00 2001
+From: Doug Strain <dstrain@google.com>
+Date: Wed, 7 Sep 2016 16:11:51 -0700
+Subject: [PATCH 1/1] Add gce_json_file for additional JSON
+
+- partial feature implementation
+- additional json to be appended onto the GCE
+  insert request
+
+Note: a full implementation would need to merge json
+in order to accomodate fields already populated by the
+GCE GAHP server.
+---
+ src/condor_gridmanager/gahp-client.cpp  |  3 +++
+ src/condor_gridmanager/gahp-client.h    |  1 +
+ src/condor_gridmanager/gcejob.cpp       |  3 +++
+ src/condor_gridmanager/gcejob.h         |  1 +
+ src/condor_includes/condor_attributes.h |  1 +
+ src/condor_submit.V6/submit.cpp         | 18 ++++++++++++++++++
+ src/gce_gahp/gceCommands.cpp            | 23 ++++++++++++++++++-----
+ src/gce_gahp/gce_gahp_protocol.txt      |  9 ++++++---
+ src/gce_gahp/gce_io_checkfn.cpp         |  5 +++--
+ 9 files changed, 54 insertions(+), 10 deletions(-)
+
+diff --git a/src/condor_gridmanager/gahp-client.cpp b/src/condor_gridmanager/gahp-client.cpp
+index 0ac560b..379210b 100644
+--- a/src/condor_gridmanager/gahp-client.cpp
++++ b/src/condor_gridmanager/gahp-client.cpp
+@@ -7718,6 +7718,7 @@ int GahpClient::gce_instance_insert( const std::string &service_url,
+ 									 const std::string &metadata,
+ 									 const std::string &metadata_file,
+ 									 bool preemptible,
++									 const std::string &json_file,
+ 									 std::string &instance_id )
+ {
+ 	static const char* command = "GCE_INSTANCE_INSERT";
+@@ -7743,6 +7744,8 @@ int GahpClient::gce_instance_insert( const std::string &service_url,
+ 	reqline += metadata_file.empty() ? NULLSTRING : escapeGahpString( metadata_file );
+ 	reqline += " ";
+ 	reqline += preemptible ? "true" : "false";
++	reqline += " ";
++	reqline += json_file.empty() ? NULLSTRING : escapeGahpString( json_file );
+ 
+ 	const char *buf = reqline.c_str();
+ 
+diff --git a/src/condor_gridmanager/gahp-client.h b/src/condor_gridmanager/gahp-client.h
+index 72f4967..7c591c9 100644
+--- a/src/condor_gridmanager/gahp-client.h
++++ b/src/condor_gridmanager/gahp-client.h
+@@ -774,6 +774,7 @@ class GahpClient : public Service {
+ 								 const std::string &metadata,
+ 								 const std::string &metadata_file,
+ 								 bool preemptible,
++								 const std::string &json_file,
+ 								 std::string &instance_id );
+ 
+ 		int gce_instance_delete( std::string service_url,
+diff --git a/src/condor_gridmanager/gcejob.cpp b/src/condor_gridmanager/gcejob.cpp
+index b01e34c..ebb1d89 100644
+--- a/src/condor_gridmanager/gcejob.cpp
++++ b/src/condor_gridmanager/gcejob.cpp
+@@ -177,6 +177,8 @@ GCEJob::GCEJob( ClassAd *classad ) :
+ 
+ 	jobAd->LookupBool( ATTR_GCE_PREEMPTIBLE, m_preemptible );
+ 
++	jobAd->LookupString( ATTR_GCE_JSON_FILE, m_jsonFile );
++
+ 	// get VM machine type
+ 	jobAd->LookupString( ATTR_GCE_MACHINE_TYPE, m_machineType );
+ 
+@@ -557,6 +559,7 @@ void GCEJob::doEvaluateState()
+ 													m_metadata,
+ 													m_metadataFile,
+ 													m_preemptible,
++													m_jsonFile,
+ 													instance_id );
+ 
+ 					if ( rc == GAHPCLIENT_COMMAND_NOT_SUBMITTED ||
+diff --git a/src/condor_gridmanager/gcejob.h b/src/condor_gridmanager/gcejob.h
+index a984aff..84b060f 100644
+--- a/src/condor_gridmanager/gcejob.h
++++ b/src/condor_gridmanager/gcejob.h
+@@ -97,6 +97,7 @@ private:
+ 	std::string m_metadataFile;
+ 	std::string m_machineType;
+ 	bool m_preemptible;
++	std::string m_jsonFile;
+ 
+ 	int m_retry_times;
+ 	
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index 19b09ce..9371033 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -197,6 +197,7 @@
+ #define ATTR_GCE_METADATA  "GceMetadata"
+ #define ATTR_GCE_METADATA_FILE  "GceMetadataFile"
+ #define ATTR_GCE_PREEMPTIBLE  "GcePreemptible"
++#define ATTR_GCE_JSON_FILE  "GceJsonFile"
+ #define ATTR_GCE_PROJECT  "GceProject"
+ #define ATTR_GCE_ZONE  "GceZone"
+ #define ATTR_GID  "Gid"
+diff --git a/src/condor_submit.V6/submit.cpp b/src/condor_submit.V6/submit.cpp
+index 048c413..4492869 100644
+--- a/src/condor_submit.V6/submit.cpp
++++ b/src/condor_submit.V6/submit.cpp
+@@ -637,6 +637,7 @@ const char* GceMachineType = "gce_machine_type";
+ const char* GceMetadata = "gce_metadata";
+ const char* GceMetadataFile = "gce_metadata_file";
+ const char* GcePreemptible = "gce_preemptible";
++const char* GceJsonFile = "gce_json_file";
+ 
+ char const *next_job_start_delay = "next_job_start_delay";
+ char const *next_job_start_delay2 = "NextJobStartDelay";
+@@ -6617,6 +6618,23 @@ SetGridParams()
+ 		free( tmp );
+ 	}
+ 
++	// GceJsonFile is not a necessary parameter
++	if( (tmp = condor_param( GceJsonFile, ATTR_GCE_JSON_FILE )) ) {
++		// check json file can be opened
++		if ( !DisableFileChecks ) {
++			if( ( fp=safe_fopen_wrapper_follow(full_path(tmp),"r") ) == NULL ) {
++				fprintf( stderr, "\nERROR: Failed to open json file %s (%s)\n",
++								 full_path(tmp), strerror(errno));
++				exit(1);
++			}
++			fclose(fp);
++		}
++		buffer.formatstr( "%s = \"%s\"", ATTR_GCE_JSON_FILE,
++				full_path(tmp) );
++		free( tmp );
++		InsertJobExpr( buffer.Value() );
++	}
++
+ 	// CREAM clients support an alternate representation for resources:
+ 	//   host.edu:8443/cream-batchname-queuename
+ 	// Transform this representation into our regular form:
+diff --git a/src/gce_gahp/gceCommands.cpp b/src/gce_gahp/gceCommands.cpp
+index d45f689..4adc5ba 100644
+--- a/src/gce_gahp/gceCommands.cpp
++++ b/src/gce_gahp/gceCommands.cpp
+@@ -817,17 +817,17 @@ GceInstanceInsert::~GceInstanceInsert() { }
+ 
+ // Expecting:GCE_INSTANCE_INSERT <req_id> <serviceurl> <authfile> <project> <zone>
+ //     <instance_name> <machine_type> <image> <metadata> <metadata_file>
+-//     <preemptible>
++//     <preemptible> <json_file>
+ bool GceInstanceInsert::workerFunction(char **argv, int argc, string &result_string) {
+ 	assert( strcasecmp( argv[0], "GCE_INSTANCE_INSERT" ) == 0 );
+ 
+ 	int requestID;
+ 	get_int( argv[1], & requestID );
+ 
+-	if( ! verify_number_args( argc, 12 ) ) {
++	if( ! verify_number_args( argc, 13 ) ) {
+ 		result_string = create_failure_result( requestID, "Wrong_Argument_Number" );
+ 		dprintf( D_ALWAYS, "Wrong number of arguments (%d should be >= %d) to %s\n",
+-				 argc, 12, argv[0] );
++				 argc, 13, argv[0] );
+ 		return false;
+ 	}
+ 
+@@ -863,6 +863,15 @@ bool GceInstanceInsert::workerFunction(char **argv, int argc, string &result_str
+ 			metadata[key] = value;
+ 		}
+ 	}
++	string json_file_contents;
++	if ( strcasecmp( argv[12], NULLSTRING ) ) {
++		if ( !readShortFile( argv[12], json_file_contents ) ) {
++			result_string = create_failure_result( requestID, "Failed to open additional JSON file" );
++			return true;
++		}
++	} else {
++		json_file_contents="";
++	}
+ 
+ 	insert_request.requestBody = "{\n";
+ 	insert_request.requestBody += " \"machineType\": \"";
+@@ -912,8 +921,12 @@ bool GceInstanceInsert::workerFunction(char **argv, int argc, string &result_str
+ 	insert_request.requestBody += "     \"name\": \"External NAT\",\n";
+ 	insert_request.requestBody += "     \"type\": \"ONE_TO_ONE_NAT\"\n";
+ 	insert_request.requestBody += "    }\n   ]\n";
+-	insert_request.requestBody += "  }\n ]\n";
+-	insert_request.requestBody += "}\n";
++	insert_request.requestBody += "  }\n ]";
++	if ( !json_file_contents.empty() ) {
++		insert_request.requestBody += ",\n";
++		insert_request.requestBody += json_file_contents;
++	}
++	insert_request.requestBody += "\n}\n";
+ 
+ 	string auth_file = argv[3];
+ 	if ( !GetAccessToken( auth_file, insert_request.accessToken,
+diff --git a/src/gce_gahp/gce_gahp_protocol.txt b/src/gce_gahp/gce_gahp_protocol.txt
+index 1375ce9..9829e36 100644
+--- a/src/gce_gahp/gce_gahp_protocol.txt
++++ b/src/gce_gahp/gce_gahp_protocol.txt
+@@ -596,7 +596,7 @@
+             <SP> <cred-file> <SP> <project> <SP> <zone>
+             <SP> <instance-name> <SP> <machine-type>
+             <SP> <image> <SP> <metadata> <SP> <metadata-file>
+-            <SP> <gce_preemptible> <CRLF>
++            <SP> <gce_preemptible> <SP> <json-file> <CRLF>
+ 
+         The following attributes are required.
+ 
+@@ -611,8 +611,11 @@
+         * metadata-file = the full path to a file containing metadata
+             name/value pairs of the form
+             <name>=<value>\n<name>=<value>\n...
+-	* gce_preemptible = 'true' or 'false', which will determine
+-	    whether the instance submitted can be preempted
++        * gce_preemptible = 'true' or 'false', which will determine
++            whether the instance submitted can be preempted
++        * json-file = the full path to a file containing additional
++		    JSON that we will be added to the GCE instance insert
++			request
+ 
+     + Result Line:
+ 
+diff --git a/src/gce_gahp/gce_io_checkfn.cpp b/src/gce_gahp/gce_io_checkfn.cpp
+index d852808..7eadd98 100644
+--- a/src/gce_gahp/gce_io_checkfn.cpp
++++ b/src/gce_gahp/gce_io_checkfn.cpp
+@@ -39,7 +39,7 @@ bool GcePing::ioCheck(char **argv, int argc)
+ //     <preemptible>
+ bool GceInstanceInsert::ioCheck(char **argv, int argc)
+ {
+-	return verify_number_args(argc, 12) &&
++	return verify_number_args(argc, 13) &&
+ 		verify_request_id(argv[1]) &&
+ 		verify_string_name(argv[2]) &&
+ 		verify_string_name(argv[3]) &&
+@@ -50,7 +50,8 @@ bool GceInstanceInsert::ioCheck(char **argv, int argc)
+ 		verify_string_name(argv[8]) &&
+ 		verify_string_name(argv[9]) &&
+ 		verify_string_name(argv[10]) &&
+-		verify_string_name(argv[11]);
++		verify_string_name(argv[11]) &&
++		verify_string_name(argv[12]);
+ }
+ 
+ // Expecting:GCE_INSTACE_DELETE <req_id> <serviceurl> <authfile> <project> <zone> <instance_name>
+-- 
+2.8.0.rc3.226.g39d4020
+

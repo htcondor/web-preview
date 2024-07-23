@@ -1,0 +1,131 @@
+10/21 13:07:29 slot1: State change: received RELEASE_CLAIM command
+10/21 13:07:29 slot1: Changing state and activity: Claimed/Idle -> Preempting/Vacating
+10/21 13:07:29 slot1: State change: No preempting claim, returning to owner
+10/21 13:07:29 slot1: Changing state and activity: Preempting/Vacating -> Owner/Idle
+10/21 13:07:29 slot1: State change: IS_OWNER is false
+10/21 13:07:29 slot1: Changing state: Owner -> Unclaimed
+10/21 13:07:32 slot2: State change: IS_OWNER is false
+10/21 13:07:32 slot2: Changing state: Owner -> Unclaimed
+10/21 13:08:27 slot1: match_info called
+10/21 13:08:27 slot1: Received match <128.105.150.210:43920>#1252528090#39109#...
+10/21 13:08:27 slot1: State change: match notification protocol successful
+10/21 13:08:27 slot1: Changing state: Unclaimed -> Matched
+10/21 13:08:32 DC_AUTHENTICATE: attempt to open invalid session s1-10:18413:1256134831:805, failing.
+10/21 13:08:32 DC_AUTHENTICATE: attempt to open invalid session s1-10:18413:1256134831:805, failing.
+10/21 13:08:35 slot2: match_info called
+10/21 13:08:35 slot2: Received match <128.105.150.210:43920>#1252528090#39108#...
+10/21 13:08:35 slot2: State change: match notification protocol successful
+10/21 13:08:35 slot2: Changing state: Unclaimed -> Matched
+10/21 13:08:45 slot2: Request accepted.
+10/21 13:08:45 slot2: Remote owner is jiang@cs.wisc.edu
+10/21 13:08:45 slot2: State change: claiming protocol successful
+10/21 13:08:45 slot2: Changing state: Matched -> Claimed
+10/21 13:09:00 slot2: Got activate_claim request from shadow (<128.105.109.48:34424>)
+10/21 13:09:00 slot2: Remote job ID is 15565.54
+10/21 13:09:00 slot2: Got universe "VANILLA" (5) from request classad
+10/21 13:09:00 slot2: State change: claim-activation protocol successful
+10/21 13:09:00 slot2: Changing activity: Idle -> Busy
+10/21 13:10:56 slot2: match_info called
+10/21 13:10:56 slot2: Preempting claim has correct ClaimId.
+10/21 13:10:56 slot2: New claim has sufficient rank, preempting current claim.
+10/21 13:10:56 slot2: State change: preempting claim based on user priority
+10/21 13:10:56 slot2: State change: claim retirement ended/expired
+10/21 13:10:56 slot2: Changing state and activity: Claimed/Busy -> Preempting/Vacating
+10/21 13:10:56 slot2: Got KILL_FRGN_JOB while in Preempting state, ignoring.
+10/21 13:10:56 Starter pid 15932 exited with status 0
+10/21 13:10:56 slot2: State change: starter exited
+10/21 13:10:56 slot2: State change: preempting claim exists - START is true or undefined
+10/21 13:10:56 slot2: Remote owner is dang@cs.wisc.edu
+10/21 13:10:56 slot2: State change: claiming protocol successful
+10/21 13:10:56 slot2: Changing state and activity: Preempting/Vacating -> Claimed/Idle
+10/21 13:23:27 slot1: State change: match timed out
+10/21 13:23:27 slot1: Changing state: Matched -> Owner
+10/21 13:23:27 slot1: State change: IS_OWNER is false
+10/21 13:23:27 slot1: Changing state: Owner -> Unclaimed
+10/21 13:24:09 slot1: match_info called
+10/21 13:24:09 slot1: Received match <128.105.150.210:43920>#1252528090#39114#...
+10/21 13:24:09 slot1: State change: match notification protocol successful
+10/21 13:24:09 slot1: Changing state: Unclaimed -> Matched
+10/21 13:24:15 slot1: Request accepted.
+10/21 13:24:15 slot1: Remote owner is hwh@amadeus.biosci.arizona.edu
+10/21 13:24:15 slot1: State change: claiming protocol successful
+10/21 13:24:15 slot1: Changing state: Matched -> Claimed
+10/21 13:24:19 slot1: Got activate_claim request from shadow (<128.196.124.145:58317>)
+10/21 13:24:19 slot1: Remote job ID is 266.0
+10/21 13:24:19 slot1: Got universe "JAVA" (10) from request classad
+10/21 13:24:19 slot1: State change: claim-activation protocol successful
+10/21 13:24:19 slot1: Changing activity: Idle -> Busy
+10/21 13:25:28 slot1: match_info called
+10/21 13:25:28 slot1: Preempting claim has correct ClaimId.
+10/21 13:25:28 slot1: New claim has sufficient rank, preempting current claim.
+10/21 13:25:28 slot1: State change: preempting claim based on machine rank
+10/21 13:25:28 slot1: State change: claim retirement ended/expired
+10/21 13:25:28 slot1: Changing state and activity: Claimed/Busy -> Preempting/Vacating
+10/21 13:25:28 Starter pid 25720 exited with status 0
+10/21 13:25:28 slot1: State change: starter exited
+10/21 13:25:28 slot1: State change: preempting claim exists - START is true or undefined
+10/21 13:25:28 slot1: Remote owner is gibson@cs.wisc.edu
+10/21 13:25:28 slot1: State change: claiming protocol successful
+10/21 13:25:28 slot1: Changing state and activity: Preempting/Vacating -> Claimed/Idle
+10/21 13:25:28 Error: can't find resource with ClaimId (<128.105.150.210:43920>#1252528090#39114#...) -- perhaps this claim was already removed?
+10/21 13:25:28 slot1: Got activate_claim request from shadow (<128.105.166.16:39473>)
+10/21 13:25:28 slot1: Remote job ID is 1732.59
+10/21 13:25:28 slot1: Got universe "VANILLA" (5) from request classad
+10/21 13:25:28 slot1: State change: claim-activation protocol successful
+10/21 13:25:28 slot1: Changing activity: Idle -> Busy
+10/21 13:25:30 slot2: State change: START is false
+10/21 13:25:30 slot2: Changing state and activity: Claimed/Idle -> Preempting/Vacating
+10/21 13:25:30 slot2: State change: No preempting claim, returning to owner
+10/21 13:25:30 slot2: Changing state and activity: Preempting/Vacating -> Owner/Idle
+10/21 13:25:30 slot2: State change: IS_OWNER is false
+10/21 13:25:30 slot2: Changing state: Owner -> Unclaimed
+10/21 13:25:30 slot2: State change: IS_OWNER is TRUE
+10/21 13:25:30 slot2: Changing state: Unclaimed -> Owner
+10/21 13:30:43 Got SIGHUP.  Re-reading config files.
+10/21 13:30:44 History file rotation is enabled.
+10/21 13:30:44   Maximum history file size is: 20971520 bytes
+10/21 13:30:44   Number of rotated history files is: 2
+10/21 13:30:52 "/unsup/condor/sbin/condor_starter.pvm -classad" did not produce any output, ignoring
+10/21 13:30:52 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:30:52 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:30:52 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:30:52 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:30:52 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:36:58 Got SIGHUP.  Re-reading config files.
+10/21 13:36:58 History file rotation is enabled.
+10/21 13:36:58   Maximum history file size is: 20971520 bytes
+10/21 13:36:58   Number of rotated history files is: 2
+10/21 13:36:58 slot2: State change: resource no longer needed by configuration
+10/21 13:36:58 slot2: Changing state: Owner -> Delete
+10/21 13:36:58 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:36:58 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:36:58 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:36:58 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:36:58 IPVERIFY: unable to resolve IP address of carnot.che.wisc.edu
+10/21 13:36:58 slot2: Resource no longer needed, deleting
+10/21 13:37:07 "/unsup/condor/sbin/condor_starter.pvm -classad" did not produce any output, ignoring
+10/21 13:37:13 "/unsup/condor/sbin/condor_starter.pvm -classad" did not produce any output, ignoring
+10/21 13:38:43 Got SIGHUP.  Re-reading config files.
+10/21 13:38:43 History file rotation is enabled.
+10/21 13:38:43   Maximum history file size is: 20971520 bytes
+10/21 13:38:43   Number of rotated history files is: 2
+10/21 13:38:43 ERROR "Assertion ERROR on (cur_type_index[t] == type_nums[t])" at line 507 in file ResMgr.cpp
+10/21 13:38:43 slot1: Changing state and activity: Claimed/Busy -> Preempting/Killing
+10/21 13:38:43 startd exiting because of fatal exception.
+10/21 13:39:05 ******************************************************
+10/21 13:39:05 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/21 13:39:05 ** /afs/cs.wisc.edu/unsup/condor-production/condor-7.3.2-2/amd64_rhel5/sbin/condor_startd
+10/21 13:39:05 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/21 13:39:05 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/21 13:39:05 ** $CondorVersion: 7.3.2 Sep  8 2009 BuildID: 180622 $
+10/21 13:39:05 ** $CondorPlatform: X86_64-LINUX_RHEL5 $
+10/21 13:39:05 ** PID = 4215
+10/21 13:39:05 ** Log last touched 10/21 13:38:43
+10/21 13:39:05 ******************************************************
+10/21 13:39:05 Using config source: /var/home/condor/condor_config
+10/21 13:39:05 Using local config sources: 
+10/21 13:39:05    /unsup/condor/etc/condor_config.hosts
+10/21 13:39:05    /unsup/condor/etc/condor_config.global
+10/21 13:39:05    /unsup/condor/etc/condor_config.policy
+10/21 13:39:05    /unsup/condor/etc/condor_config.platform
+10/21 13:39:05    /unsup/condor/etc/condor_config.security
