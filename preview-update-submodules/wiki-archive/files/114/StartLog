@@ -1,0 +1,623 @@
+10/12 12:43:10 ******************************************************
+10/12 12:43:10 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:43:10 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:43:10 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:43:10 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:43:10 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:43:10 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:43:10 ** PID = 6046
+10/12 12:43:10 ** Log last touched time unavailable (No such file or directory)
+10/12 12:43:10 ******************************************************
+10/12 12:43:10 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:43:10 Using local config sources: 
+10/12 12:43:10    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:43:10 DaemonCore: Command Socket at <0.0.0.0:55319>
+Stack dump for process 6046 at timestamp 1255365790 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x67a400]
+/lib/libc.so.6(strncpy+0x1f)[0x1db41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x178a66]
+condor_startd[0x80c0261]
+10/12 12:43:33 ******************************************************
+10/12 12:43:33 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:43:33 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:43:33 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:43:33 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:43:33 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:43:33 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:43:33 ** PID = 6058
+10/12 12:43:33 ** Log last touched 10/12 12:43:10
+10/12 12:43:33 ******************************************************
+10/12 12:43:33 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:43:33 Using local config sources: 
+10/12 12:43:33    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:43:33 DaemonCore: Command Socket at <24.28.193.9:46410>
+10/12 12:43:41 VM-gahp server reported an internal error
+10/12 12:43:41 VM universe will be tested to check if it is available
+10/12 12:43:41 History file rotation is enabled.
+10/12 12:43:41   Maximum history file size is: 20971520 bytes
+10/12 12:43:41   Number of rotated history files is: 2
+10/12 12:43:41 slot1: New machine resource allocated
+10/12 12:43:41 slot2: New machine resource allocated
+10/12 12:43:41 About to run initial benchmarks.
+10/12 12:43:49 Completed initial benchmarks.
+10/12 12:44:09 attempt to connect to <24.28.193.9:37664> failed: timed out after 20 seconds.
+10/12 12:44:09 ERROR: SECMAN:2003:TCP auth connection to <24.28.193.9:37664> failed.
+10/12 12:44:09 Failed to send alive to <0.0.0.0:37664>, will try again...
+10/12 12:44:34 attempt to connect to <24.28.193.9:37664> failed: timed out after 20 seconds.
+10/12 12:44:34 ERROR: SECMAN:2003:TCP auth connection to <24.28.193.9:37664> failed.
+10/12 12:44:34 Failed to send alive to <0.0.0.0:37664>, will try again...
+10/12 12:44:59 attempt to connect to <24.28.193.9:37664> failed: timed out after 20 seconds.
+10/12 12:44:59 ERROR: SECMAN:2003:TCP auth connection to <24.28.193.9:37664> failed.
+10/12 12:44:59 ERROR "FAILED TO SEND INITIAL KEEP ALIVE TO OUR PARENT <0.0.0.0:37664>" at line 9310 in file daemon_core.cpp
+10/12 12:44:59 Deleting Cronmgr
+10/12 12:45:04 All resources are free, exiting.
+10/12 12:45:04 ERROR "Assertion ERROR on (!in_timeout)" at line 248 in file timer_manager.cpp
+10/12 12:45:04 ERROR "Assertion ERROR on (!in_timeout)" at line 248 in file timer_manager.cpp
+10/12 12:45:16 ******************************************************
+10/12 12:45:16 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:45:16 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:45:16 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:45:16 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:45:16 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:45:16 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:45:16 ** PID = 6099
+10/12 12:45:16 ** Log last touched 10/12 12:45:04
+10/12 12:45:16 ******************************************************
+10/12 12:45:16 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:45:16 Using local config sources: 
+10/12 12:45:16    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:45:16 DaemonCore: Command Socket at <0.0.0.0:44171>
+Stack dump for process 6099 at timestamp 1255365916 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x6a6400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 12:45:34 ******************************************************
+10/12 12:45:34 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:45:34 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:45:34 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:45:34 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:45:34 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:45:34 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:45:34 ** PID = 6104
+10/12 12:45:34 ** Log last touched 10/12 12:45:16
+10/12 12:45:34 ******************************************************
+10/12 12:45:34 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:45:34 Using local config sources: 
+10/12 12:45:34    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:45:34 DaemonCore: Command Socket at <0.0.0.0:46866>
+Stack dump for process 6104 at timestamp 1255365934 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0xbcc400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 12:45:51 ******************************************************
+10/12 12:45:51 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:45:51 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:45:51 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:45:51 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:45:51 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:45:51 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:45:51 ** PID = 6111
+10/12 12:45:51 ** Log last touched 10/12 12:45:34
+10/12 12:45:51 ******************************************************
+10/12 12:45:51 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:45:51 Using local config sources: 
+10/12 12:45:51    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:45:51 DaemonCore: Command Socket at <0.0.0.0:35550>
+Stack dump for process 6111 at timestamp 1255365951 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x4c4400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 12:46:24 ******************************************************
+10/12 12:46:24 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:46:24 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:46:24 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:46:24 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:46:24 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:46:24 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:46:24 ** PID = 6115
+10/12 12:46:24 ** Log last touched 10/12 12:45:51
+10/12 12:46:24 ******************************************************
+10/12 12:46:24 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:46:24 Using local config sources: 
+10/12 12:46:24    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:46:24 DaemonCore: Command Socket at <24.28.193.9:49405>
+10/12 12:46:30 VM-gahp server reported an internal error
+10/12 12:46:30 VM universe will be tested to check if it is available
+10/12 12:46:30 History file rotation is enabled.
+10/12 12:46:30   Maximum history file size is: 20971520 bytes
+10/12 12:46:30   Number of rotated history files is: 2
+10/12 12:46:30 slot1: New machine resource allocated
+10/12 12:46:30 slot2: New machine resource allocated
+10/12 12:46:30 About to run initial benchmarks.
+10/12 12:46:34 Completed initial benchmarks.
+10/12 12:46:54 attempt to connect to <24.28.193.9:37664> failed: timed out after 20 seconds.
+10/12 12:46:54 ERROR: SECMAN:2003:TCP auth connection to <24.28.193.9:37664> failed.
+10/12 12:46:54 Failed to send alive to <0.0.0.0:37664>, will try again...
+10/12 12:47:19 attempt to connect to <24.28.193.9:37664> failed: timed out after 20 seconds.
+10/12 12:47:19 ERROR: SECMAN:2003:TCP auth connection to <24.28.193.9:37664> failed.
+10/12 12:47:19 Failed to send alive to <0.0.0.0:37664>, will try again...
+10/12 12:47:44 attempt to connect to <24.28.193.9:37664> failed: timed out after 20 seconds.
+10/12 12:47:44 ERROR: SECMAN:2003:TCP auth connection to <24.28.193.9:37664> failed.
+10/12 12:47:44 ERROR "FAILED TO SEND INITIAL KEEP ALIVE TO OUR PARENT <0.0.0.0:37664>" at line 9310 in file daemon_core.cpp
+10/12 12:47:44 Deleting Cronmgr
+10/12 12:47:54 All resources are free, exiting.
+10/12 12:47:54 ERROR "Assertion ERROR on (!in_timeout)" at line 248 in file timer_manager.cpp
+10/12 12:47:54 ERROR "Assertion ERROR on (!in_timeout)" at line 248 in file timer_manager.cpp
+10/12 12:48:40 ******************************************************
+10/12 12:48:40 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:48:40 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:48:40 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:48:40 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:48:40 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:48:40 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:48:40 ** PID = 6152
+10/12 12:48:40 ** Log last touched 10/12 12:47:54
+10/12 12:48:40 ******************************************************
+10/12 12:48:40 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:48:40 Using local config sources: 
+10/12 12:48:40    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:48:40 DaemonCore: Command Socket at <0.0.0.0:41426>
+Stack dump for process 6152 at timestamp 1255366120 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0xe24400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 12:49:53 ******************************************************
+10/12 12:49:53 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:49:53 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:49:53 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:49:53 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:49:53 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:49:53 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:49:53 ** PID = 6156
+10/12 12:49:53 ** Log last touched 10/12 12:48:40
+10/12 12:49:53 ******************************************************
+10/12 12:49:53 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:49:53 Using local config sources: 
+10/12 12:49:53    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:49:53 DaemonCore: Command Socket at <0.0.0.0:60828>
+Stack dump for process 6156 at timestamp 1255366193 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x78d400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 12:52:10 ******************************************************
+10/12 12:52:10 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:52:10 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:52:10 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:52:10 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:52:10 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:52:10 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:52:10 ** PID = 6162
+10/12 12:52:10 ** Log last touched 10/12 12:49:53
+10/12 12:52:10 ******************************************************
+10/12 12:52:10 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:52:10 Using local config sources: 
+10/12 12:52:10    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:52:10 DaemonCore: Command Socket at <0.0.0.0:52934>
+Stack dump for process 6162 at timestamp 1255366330 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x880400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 12:56:35 ******************************************************
+10/12 12:56:35 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 12:56:35 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 12:56:35 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 12:56:35 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 12:56:35 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 12:56:35 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 12:56:35 ** PID = 6220
+10/12 12:56:35 ** Log last touched 10/12 12:52:10
+10/12 12:56:35 ******************************************************
+10/12 12:56:35 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 12:56:35 Using local config sources: 
+10/12 12:56:35    /home/pmackinn/personal-condor/condor_config.local
+10/12 12:56:35 DaemonCore: Command Socket at <0.0.0.0:41685>
+Stack dump for process 6220 at timestamp 1255366595 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x59e400]
+/lib/libc.so.6(strncpy+0x1f)[0x1db41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x178a66]
+condor_startd[0x80c0261]
+10/12 13:04:11 ******************************************************
+10/12 13:04:11 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:04:11 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:04:11 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:04:11 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:04:11 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:04:11 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:04:11 ** PID = 6311
+10/12 13:04:11 ** Log last touched 10/12 12:56:35
+10/12 13:04:11 ******************************************************
+10/12 13:04:11 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:04:11 Using local config sources: 
+10/12 13:04:11    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:04:11 DaemonCore: Command Socket at <0.0.0.0:47400>
+Stack dump for process 6311 at timestamp 1255367051 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x3c8400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:04:21 ******************************************************
+10/12 13:04:21 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:04:21 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:04:21 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:04:21 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:04:21 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:04:21 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:04:21 ** PID = 6321
+10/12 13:04:21 ** Log last touched 10/12 13:04:11
+10/12 13:04:21 ******************************************************
+10/12 13:04:21 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:04:21 Using local config sources: 
+10/12 13:04:21    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:04:21 DaemonCore: Command Socket at <0.0.0.0:34705>
+Stack dump for process 6321 at timestamp 1255367061 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x89c400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:04:32 ******************************************************
+10/12 13:04:32 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:04:32 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:04:32 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:04:32 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:04:32 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:04:32 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:04:32 ** PID = 6327
+10/12 13:04:32 ** Log last touched 10/12 13:04:21
+10/12 13:04:32 ******************************************************
+10/12 13:04:32 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:04:32 Using local config sources: 
+10/12 13:04:32    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:04:32 DaemonCore: Command Socket at <0.0.0.0:57865>
+Stack dump for process 6327 at timestamp 1255367072 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0xdd7400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:04:45 ******************************************************
+10/12 13:04:45 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:04:45 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:04:45 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:04:45 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:04:45 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:04:45 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:04:45 ** PID = 6334
+10/12 13:04:45 ** Log last touched 10/12 13:04:32
+10/12 13:04:45 ******************************************************
+10/12 13:04:45 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:04:45 Using local config sources: 
+10/12 13:04:45    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:04:45 DaemonCore: Command Socket at <0.0.0.0:57198>
+Stack dump for process 6334 at timestamp 1255367086 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x9f1400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:05:03 ******************************************************
+10/12 13:05:03 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:05:03 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:05:03 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:05:03 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:05:03 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:05:03 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:05:03 ** PID = 6350
+10/12 13:05:03 ** Log last touched 10/12 13:04:46
+10/12 13:05:03 ******************************************************
+10/12 13:05:03 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:05:03 Using local config sources: 
+10/12 13:05:03    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:05:03 DaemonCore: Command Socket at <0.0.0.0:49425>
+Stack dump for process 6350 at timestamp 1255367103 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x1ab400]
+/lib/libc.so.6(strncpy+0x1f)[0x22541f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x1c2a66]
+condor_startd[0x80c0261]
+10/12 13:05:28 ******************************************************
+10/12 13:05:28 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:05:28 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:05:28 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:05:28 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:05:28 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:05:28 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:05:28 ** PID = 6373
+10/12 13:05:28 ** Log last touched 10/12 13:05:03
+10/12 13:05:28 ******************************************************
+10/12 13:05:28 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:05:28 Using local config sources: 
+10/12 13:05:28    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:05:28 DaemonCore: Command Socket at <0.0.0.0:40803>
+Stack dump for process 6373 at timestamp 1255367128 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0xf79400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:06:09 ******************************************************
+10/12 13:06:09 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:06:09 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:06:09 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:06:09 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:06:09 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:06:09 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:06:09 ** PID = 6397
+10/12 13:06:09 ** Log last touched 10/12 13:05:28
+10/12 13:06:09 ******************************************************
+10/12 13:06:09 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:06:09 Using local config sources: 
+10/12 13:06:09    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:06:09 DaemonCore: Command Socket at <0.0.0.0:58648>
+Stack dump for process 6397 at timestamp 1255367169 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x5fb400]
+/lib/libc.so.6(strncpy+0x1f)[0x1db41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x178a66]
+condor_startd[0x80c0261]
+10/12 13:07:22 ******************************************************
+10/12 13:07:22 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:07:22 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:07:22 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:07:22 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:07:22 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:07:22 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:07:22 ** PID = 6403
+10/12 13:07:22 ** Log last touched 10/12 13:06:09
+10/12 13:07:22 ******************************************************
+10/12 13:07:22 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:07:22 Using local config sources: 
+10/12 13:07:22    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:07:22 DaemonCore: Command Socket at <0.0.0.0:56387>
+Stack dump for process 6403 at timestamp 1255367242 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x19e400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:09:39 ******************************************************
+10/12 13:09:39 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:09:39 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:09:39 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:09:39 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:09:39 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:09:39 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:09:39 ** PID = 6423
+10/12 13:09:39 ** Log last touched 10/12 13:07:22
+10/12 13:09:39 ******************************************************
+10/12 13:09:39 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:09:39 Using local config sources: 
+10/12 13:09:39    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:09:39 DaemonCore: Command Socket at <0.0.0.0:44873>
+Stack dump for process 6423 at timestamp 1255367379 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0xe47400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:14:04 ******************************************************
+10/12 13:14:04 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:14:04 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:14:04 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:14:04 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:14:04 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:14:04 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:14:04 ** PID = 6428
+10/12 13:14:04 ** Log last touched 10/12 13:09:39
+10/12 13:14:04 ******************************************************
+10/12 13:14:04 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:14:04 Using local config sources: 
+10/12 13:14:04    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:14:04 DaemonCore: Command Socket at <0.0.0.0:41611>
+Stack dump for process 6428 at timestamp 1255367644 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x757400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
+10/12 13:22:45 ******************************************************
+10/12 13:22:45 ** condor_startd (CONDOR_STARTD) STARTING UP
+10/12 13:22:45 ** /home/pmackinn/git-repos/uw/condor/CONDOR_SRC/src/release_dir/sbin/condor_startd
+10/12 13:22:45 ** SubsystemInfo: name=STARTD type=STARTD(7) class=DAEMON(1)
+10/12 13:22:45 ** Configuration: subsystem:STARTD local:<NONE> class:DAEMON
+10/12 13:22:45 ** $CondorVersion: 7.4.0 Oct  9 2009 $
+10/12 13:22:45 ** $CondorPlatform: I386-LINUX_F11 $
+10/12 13:22:45 ** PID = 6446
+10/12 13:22:45 ** Log last touched 10/12 13:14:04
+10/12 13:22:45 ******************************************************
+10/12 13:22:45 Using config source: /home/pmackinn/personal-condor/condor_config
+10/12 13:22:45 Using local config sources: 
+10/12 13:22:45    /home/pmackinn/personal-condor/condor_config.local
+10/12 13:22:45 DaemonCore: Command Socket at <0.0.0.0:48176>
+Stack dump for process 6446 at timestamp 1255368165 (14 frames)
+condor_startd(dprintf_dump_stack+0xc7)[0x811b76b]
+condor_startd[0x811b942]
+[0x9e9400]
+/lib/libc.so.6(strncpy+0x1f)[0x5ae41f]
+condor_startd(_ZNK18UnixNetworkAdapter7getNameER5ifreqPKc+0x2f)[0x818656b]
+condor_startd(_ZN19LinuxNetworkAdapter11findAdapterEPKc+0x7c)[0x81761f4]
+condor_startd(_ZN18UnixNetworkAdapter10initializeEv+0x66)[0x81862ea]
+condor_startd(_ZN18NetworkAdapterBase12doInitializeEv+0x18)[0x8175936]
+condor_startd(_ZN18NetworkAdapterBase20createNetworkAdapterEPKcb+0xbe)[0x81758bc]
+condor_startd(_ZN6ResMgrC1Ev+0x100)[0x80cab24]
+condor_startd(_Z9main_initiPPc+0x14a)[0x80e3947]
+condor_startd(main+0x1d18)[0x8113e53]
+/lib/libc.so.6(__libc_start_main+0xe6)[0x54ba66]
+condor_startd[0x80c0261]
