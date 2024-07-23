@@ -1,0 +1,176 @@
+From 190a8de1fb86090810cdf3ae51613d8e6cb28f22 Mon Sep 17 00:00:00 2001
+From: Peter MacKinnon <pmackinn@redhat.com>
+Date: Thu, 8 Oct 2009 01:49:26 -0400
+Subject: [PATCH] Added support (if necessary) for more detailed version compatability checking
+
+---
+ src/condor_dagman/Imakefile           |    2 +-
+ src/condor_dagman/dagman_main.cpp     |   18 +++++++++--
+ src/condor_dagman/dagman_ver_info.cpp |   54 +++++++++++++++++++++++++++++++++
+ src/condor_dagman/dagman_ver_info.h   |   42 +++++++++++++++++++++++++
+ 4 files changed, 112 insertions(+), 4 deletions(-)
+ create mode 100644 src/condor_dagman/dagman_ver_info.cpp
+ create mode 100644 src/condor_dagman/dagman_ver_info.h
+
+diff --git a/src/condor_dagman/Imakefile b/src/condor_dagman/Imakefile
+index d2e59ce..aded211 100644
+--- a/src/condor_dagman/Imakefile
++++ b/src/condor_dagman/Imakefile
+@@ -18,7 +18,7 @@ TOOL_LIB = $(STD_LIBS) New_classads_lib $(CONFIGURE_PCRE_LDFLAGS)
+ soapobjs(dagman)
+ 
+ OBJ = dagman_main.o dagman_submit.o dag.o job.o dagman_util.o parse.o debug.o \
+-	script.o scriptQ.o  dagman_commands.o \
++	script.o scriptQ.o  dagman_commands.o dagman_ver_info.o \
+ 	dagman_multi_dag.o throttle_by_category.o $(SOAP_OBJS)
+ 
+ public_c_plus_target($(NAME),bin,$(OBJ),$(LIB))
+diff --git a/src/condor_dagman/dagman_main.cpp b/src/condor_dagman/dagman_main.cpp
+index 6781676..9641f67 100644
+--- a/src/condor_dagman/dagman_main.cpp
++++ b/src/condor_dagman/dagman_main.cpp
+@@ -37,6 +37,7 @@
+ #include "condor_getcwd.h"
+ #include "condor_version.h"
+ #include "subsystem_info.h"
++#include "dagman_ver_info.h"
+ 
+ void ExitSuccess();
+ 
+@@ -647,11 +648,22 @@ int main_init (int argc, char ** const argv) {
+ 						"condor_submit_dag (%s) vs. condor_dagman (%s); "
+ 						"continuing because of -AllowVersionMismatch flag\n",
+ 						csdVersion, CondorVersion() );
+-		} else {
+-        	debug_printf( DEBUG_SILENT, "Version mismatch: condor_submit_dag "
++		}
++		else {
++			// do specific version check first
++			DagmanVersionInfo dvi(CondorVersion(),&dagman);
++			if (dvi.isCompatible(csdVersion)) {
++				debug_printf( DEBUG_NORMAL, "Warning: version mismatch: "
++						"condor_submit_dag (%s) vs. condor_dagman (%s); "
++						"continuing based on internal compatability checks\n",
++						csdVersion, CondorVersion() );
++			}
++			else {
++				debug_printf( DEBUG_SILENT, "Version mismatch: condor_submit_dag "
+ 						"(%s) vs. condor_dagman (%s)\n", csdVersion,
+ 						CondorVersion() );
+-			DC_Exit( EXIT_ERROR );
++				DC_Exit( EXIT_ERROR );
++			}
+ 		}
+ 	}
+ 
+diff --git a/src/condor_dagman/dagman_ver_info.cpp b/src/condor_dagman/dagman_ver_info.cpp
+new file mode 100644
+index 0000000..4c6518f
+--- /dev/null
++++ b/src/condor_dagman/dagman_ver_info.cpp
+@@ -0,0 +1,54 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2007, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#include "condor_common.h"
++#include "condor_config.h"
++#include "condor_debug.h"
++#include "dagman_ver_info.h"
++
++DagmanVersionInfo::DagmanVersionInfo(const char* localVersion, Dagman const* dagman) {
++	m_Cvi = new CondorVersionInfo(localVersion);
++	m_Dagman = dagman;
++}
++
++DagmanVersionInfo::~DagmanVersionInfo() {
++	delete m_Cvi;
++}
++
++bool
++DagmanVersionInfo::isCompatible(const char* otherVersion) const
++{
++	bool compat = false;
++
++	// let CondorVersionInfo do its thing
++	compat = m_Cvi->is_compatible(otherVersion);
++	debug_printf(DEBUG_NORMAL, "compatibility after CondorVersionInfo test is %s\n", compat?"true":"false" );
++
++	/*********************************************************
++		Add any logic on specific compatibilty issues right
++		here!
++	*********************************************************/
++
++	// Rule #n
++	// if some condition then compat = ???
++	// debug_printf(DEBUG_NORMAL, "compatibility after Rule #n is %s\n", compat?"true":"false" );
++
++	// we'll generally assume that CSD & Dagman are compatible if we get to here
++	return compat;
++}
+diff --git a/src/condor_dagman/dagman_ver_info.h b/src/condor_dagman/dagman_ver_info.h
+new file mode 100644
+index 0000000..77f3879
+--- /dev/null
++++ b/src/condor_dagman/dagman_ver_info.h
+@@ -0,0 +1,42 @@
++/***************************************************************
++ *
++ * Copyright (C) 1990-2007, Condor Team, Computer Sciences Department,
++ * University of Wisconsin-Madison, WI.
++ *
++ * Licensed under the Apache License, Version 2.0 (the "License"); you
++ * may not use this file except in compliance with the License.  You may
++ * obtain a copy of the License at
++ *
++ *    http://www.apache.org/licenses/LICENSE-2.0
++ *
++ * Unless required by applicable law or agreed to in writing, software
++ * distributed under the License is distributed on an "AS IS" BASIS,
++ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
++ * See the License for the specific language governing permissions and
++ * limitations under the License.
++ *
++ ***************************************************************/
++
++#ifndef DAGMAN_VER_INFO_H
++#define DAGMAN_VER_INFO_H
++
++// Utility class for encoding comaptability rules. It aggregates
++// CondorVersionInfo (no inheritance).
++// This is dagman-sided checking since condor_submit_dag (CSD) currently
++// lacks facilities to check what version EXE might be used to run the
++// submitted dag
++
++#include "condor_ver_info.h"
++#include "dagman_main.h"
++
++class DagmanVersionInfo  {
++public:
++	DagmanVersionInfo(const char* localVersion, Dagman const* dagman);
++	~DagmanVersionInfo();
++	bool isCompatible(const char* otherVersion) const;
++private:
++	CondorVersionInfo* m_Cvi;
++	Dagman const* m_Dagman;
++};
++
++#endif /* ifndef DAGMAN_VER_INFO_H */
+-- 
+1.6.2.5
+
