@@ -1,0 +1,25 @@
+diff --git a/src/condor_dagman/dag.cpp b/src/condor_dagman/dag.cpp
+index ef0c571..4038c96 100644
+--- a/src/condor_dagman/dag.cpp
++++ b/src/condor_dagman/dag.cpp
+@@ -1670,7 +1670,7 @@ Dag::SubmitReadyJobs(const Dagman &dm)
+ 			deferredJobs.Prepend( job, -job->_effectivePriority );
+ 			_catThrottleDeferredCount++;
+ 		} else {
+-
++			/*
+ 				// Note:  I'm not sure why we don't just use the default
+ 				// constructor here.  wenger 2015-09-25
+ 			CondorID condorID( 0, 0, 0 );
+@@ -1688,6 +1688,11 @@ Dag::SubmitReadyJobs(const Dagman &dm)
+ 			} else {
+ 				EXCEPT( "Illegal submit_result_t value: %d", submit_result );
+ 			}
++			*/
++			// Don't actually submit the job. Just terminate it right away.
++			debug_printf( DEBUG_NORMAL, "Processing job: %s\n", job->GetJobName() );
++			TerminateJob( job, false, false );
++			numSubmitsThisCycle++;
+ 		}
+ 	}
+ 
