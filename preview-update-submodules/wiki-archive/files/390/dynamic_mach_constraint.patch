@@ -1,0 +1,80 @@
+--- src/condor_negotiator.V6/matchmaker.h.SAVE	2008-07-08 13:48:08.000000000 -0500
++++ src/condor_negotiator.V6/matchmaker.h	2008-07-18 16:19:52.000000000 -0500
+@@ -240,6 +240,8 @@
+         ExprTree *DynQuotaMachConstraint;   // Filter machineAds by this
+                                             // constraint before calculating
+                                             // dynamic quotas.  Added for CDF.
++        ExprTree *DynamicMachConstraint;    // Filter machineAds by this
++                                            // constraint before calculations.
+ 
+ 		StringList NegotiatorMatchExprNames;
+ 		StringList NegotiatorMatchExprValues;
+
+
+
+--- src/condor_negotiator.V6/matchmaker.C.SAVE	2008-07-08 13:48:08.000000000 -0500
++++ src/condor_negotiator.V6/matchmaker.C	2008-07-18 15:54:52.000000000 -0500
+@@ -104,6 +104,7 @@
+ 
+ 	update_interval = 5*MINUTE; 
+     DynQuotaMachConstraint = NULL;
++    DynamicMachConstraint = NULL;
+ 
+ 	strcpy(RejectsTable, "rejects");
+ 	strcpy(MatchesTable, "matches");
+@@ -135,6 +136,7 @@
+ 	if (NegotiatorName) free (NegotiatorName);
+ 	if (publicAd) delete publicAd;
+     if ( DynQuotaMachConstraint) delete DynQuotaMachConstraint;
++    if ( DynamicMachConstraint) delete DynamicMachConstraint;
+ }
+ 
+ 
+@@ -380,6 +382,23 @@
+         free (tmp);
+ 	}
+ 
++	if (DynamicMachConstraint) delete DynamicMachConstraint;
++	DynamicMachConstraint = NULL;
++	tmp = param("DYNAMIC_MACH_CONSTRAINT");
++	if( tmp ) {
++        dprintf(D_FULLDEBUG, "%s = %s\n", "DYNAMIC_MACH_CONSTRAINT",
++                tmp);
++		if( Parse(tmp, DynamicMachConstraint) ) {
++			dprintf(
++                D_ALWAYS, 
++                "Error parsing DYNAMIC_MACH_CONSTRAINT expression: %s",
++					tmp
++            );
++            DynamicMachConstraint = NULL;
++		}
++        free (tmp);
++	}
++
+ 	if( first_time ) {
+ 		first_time = false;
+ 	} else { 
+@@ -856,6 +875,23 @@
+ 	// This _must_ come before trimming the startd ads.
+ 	int untrimmed_num_startds = startdAds.MyLength();
+ 
++        // Restrict number of slots available for dynamic quotas.
++    if ( untrimmed_num_startds && DynamicMachConstraint ) {
++        int matchedSlots = startdAds.Count( DynamicMachConstraint );
++        if ( matchedSlots ) {
++//          dprintf(D_FULLDEBUG,
++            dprintf(D_ALWAYS,
++                    "DYNAMIC_MACH_CONSTRAINT constraint reduces machine "
++                    "count from %d to %d\n", untrimmed_num_startds, matchedSlots);
++            untrimmed_num_startds = matchedSlots;
++        } else {
++            dprintf(D_ALWAYS, "warning: 0 out of %d machines match "
++                    "DYNAMIC_MACH_CONSTRAINT for dynamic quotas\n",
++                    untrimmed_num_startds);
++            untrimmed_num_startds = 0;
++        }
++    }
++
+     // Get number of available slots in any state.
+     int numDynGroupSlots = untrimmed_num_startds;
+
