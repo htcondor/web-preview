@@ -1,0 +1,512 @@
+diff --git a/src/condor_negotiator.V6/matchmaker.cpp b/src/condor_negotiator.V6/matchmaker.cpp
+index e4d3a89..137dfb0 100644
+--- a/src/condor_negotiator.V6/matchmaker.cpp
++++ b/src/condor_negotiator.V6/matchmaker.cpp
+@@ -1272,7 +1272,7 @@ negotiationTime ()
+ 
+                     negotiateWithGroup(untrimmed_num_startds, untrimmedSlotWeightTotal, minSlotWeight,
+                                        startdAds, claimIds, *(group->submitterAds), 
+-                                       slots, group->usage, group->name.c_str());
++                                       slots, group->name.c_str());
+                 }
+ 
+                 // Halt when we have negotiated with full deltas
+@@ -1966,15 +1966,10 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 					 double minSlotWeight,
+ 					 ClassAdListDoesNotDeleteAds& startdAds,
+ 					 ClaimIdHash& claimIds, 
+-					 ClassAdListDoesNotDeleteAds& scheddAds, 
+-					 float groupQuota, float groupusage,const char* groupAccountingName)
++					 ClassAdListDoesNotDeleteAds& submitterAds, 
++					 float groupQuota, const char* groupName)
+ {
+     time_t start_time_phase3 = time(NULL);
+-	ClassAd		*schedd;
+-	MyString    scheddName;
+-	MyString    scheddAddr;
+-	int			result;
+-	int			numStartdAds;
+ 	double      slotWeightTotal;
+ 	double		maxPrioValue;
+ 	double		maxAbsPrioValue;
+@@ -1986,49 +1981,55 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 	double		submitterAbsShare = 0.0;
+ 	double		pieLeft;
+ 	double 		pieLeftOrig;
+-	int         scheddAdsCountOrig;
+-	int			totalTime;
+-	bool ignore_schedd_limit;
+-	int			num_idle_jobs;
+-	time_t		startTime;
+-	
++	int         submitterAdsCountOrig;	
+ 
+ 	// ----- Sort the schedd list in decreasing priority order
+ 	dprintf( D_ALWAYS, "Phase 3:  Sorting submitter ads by priority ...\n" );
+-	scheddAds.Sort( (lessThanFunc)comparisonFunction, this );
++	submitterAds.Sort( (lessThanFunc)comparisonFunction, this );
+ 
+     // transition Phase 3 --> Phase 4
+     time_t start_time_phase4 = time(NULL);
+     negotiation_cycle_stats[0]->duration_phase3 += start_time_phase4 - start_time_phase3;
+ 
+-	double scheddUsed=0;
+ 	int spin_pie=0;
+ 	do {
+ 		spin_pie++;
+ 
+-			// invalidate the MatchList cache, because even if it is valid
+-			// for the next user+auto_cluster being considered, we might
+-			// have thrown out matches due to SlotWeight being too high
+-			// given the schedd limit computed in the previous pie spin
+-		DeleteMatchList();
+-
+-		calculateNormalizationFactor( scheddAds, maxPrioValue, normalFactor,
+-									  maxAbsPrioValue, normalAbsFactor);
+-		numStartdAds = untrimmed_num_startds;
+-			// If operating on a group with a quota, consider the size of 
+-			// the "pie" to be limited to the groupQuota, so each user in 
+-			// the group gets a reasonable sized slice.
+-		if ( numStartdAds > groupQuota ) {
++		// On the first spin of the pie we tell the negotiate function to ignore the
++        // submitterLimit w/ respect to jobs which are strictly preferred by resource 
++        // offers (via startd rank).  However, if preemption is not being considered, 
++        // we respect submitter limits on all iterations.
++        const bool ignore_submitter_limit = ((spin_pie == 1) && ConsiderPreemption);
++
++        double groupusage = (NULL != groupName) ? accountant.GetWeightedResourcesUsed(groupName) : 0.0;
++        if (!ignore_submitter_limit && (NULL != groupName) && (groupusage >= groupQuota)) {
++            // If we've met the group quota, and if we are paying attention to submitter limits, halt now
++            dprintf(D_ALWAYS, "Group %s is using its quota %g\n", groupName, groupQuota);
++            break;
++        }
++
++		// invalidate the MatchList cache, because even if it is valid
++		// for the next user+auto_cluster being considered, we might
++		// have thrown out matches due to SlotWeight being too high
++		// given the schedd limit computed in the previous pie spin
++        DeleteMatchList();
++
++        calculateNormalizationFactor(submitterAds, maxPrioValue, normalFactor, maxAbsPrioValue, normalAbsFactor);
++		int numStartdAds = untrimmed_num_startds;
++		// If operating on a group with a quota, consider the size of 
++		// the "pie" to be limited to the groupQuota, so each user in 
++		// the group gets a reasonable sized slice.
++		if (numStartdAds > groupQuota) {
+ 			numStartdAds = groupQuota;
+ 		}
+ 		slotWeightTotal = untrimmedSlotWeightTotal;
+-		if ( slotWeightTotal > groupQuota ) {
++		if (slotWeightTotal > groupQuota) {
+ 			slotWeightTotal = groupQuota;
+ 		}
+ 
+ 		calculatePieLeft(
+-			scheddAds,
+-			groupAccountingName,
++			submitterAds,
++			groupName,
+ 			groupQuota,
+ 			groupusage,
+ 			maxPrioValue,
+@@ -2036,71 +2037,67 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 			normalFactor,
+ 			normalAbsFactor,
+ 			slotWeightTotal,
+-				/* result parameters: */
++			// result parameters:
+ 			pieLeft);
+ 
+ 		pieLeftOrig = pieLeft;
+-		scheddAdsCountOrig = scheddAds.MyLength();
++		submitterAdsCountOrig = submitterAds.MyLength();
+ 
+ 		// ----- Negotiate with the schedds in the sorted list
+-		dprintf( D_ALWAYS, "Phase 4.%d:  Negotiating with schedds ...\n",
+-			spin_pie );
+-		dprintf (D_FULLDEBUG, "    numSlots = %d\n", numStartdAds);
+-		dprintf (D_FULLDEBUG, "    slotWeightTotal = %f\n", slotWeightTotal);
+-		dprintf (D_FULLDEBUG, "    pieLeft = %.3f\n", pieLeft);
+-		dprintf (D_FULLDEBUG, "    NormalFactor = %f\n", normalFactor);
+-		dprintf (D_FULLDEBUG, "    MaxPrioValue = %f\n", maxPrioValue);
+-		dprintf (D_FULLDEBUG, "    NumSubmitterAds = %d\n", scheddAds.MyLength());
+-		scheddAds.Open();
+-        // These are submitter ads, not the actual schedd daemon ads.
+-        // "schedd" seems to be used interchangeably with "submitter" here
+-		while( (schedd = scheddAds.Next()) )
+-		{
+-			// get the name of the submitter and address of the schedd-daemon it came from
+-			if( !schedd->LookupString( ATTR_NAME, scheddName ) ||
+-				!schedd->LookupString( ATTR_SCHEDD_IP_ADDR, scheddAddr ) )
+-			{
+-				dprintf (D_ALWAYS,"  Error!  Could not get %s and %s from ad\n",
+-							ATTR_NAME, ATTR_SCHEDD_IP_ADDR);
+-				dprintf( D_ALWAYS, "  Ignoring this schedd and continuing\n" );
+-				scheddAds.Remove( schedd );
+-				continue;
+-			}
++		dprintf(D_ALWAYS, "Phase 4.%d:  Negotiating with schedds ...\n", spin_pie);
++		dprintf(D_FULLDEBUG, "    numSlots = %d\n", numStartdAds);
++		dprintf(D_FULLDEBUG, "    slotWeightTotal = %f\n", slotWeightTotal);
++		dprintf(D_FULLDEBUG, "    pieLeft = %.3f\n", pieLeft);
++		dprintf(D_FULLDEBUG, "    NormalFactor = %f\n", normalFactor);
++		dprintf(D_FULLDEBUG, "    MaxPrioValue = %f\n", maxPrioValue);
++		dprintf(D_FULLDEBUG, "    NumSubmitterAds = %d\n", submitterAds.MyLength());
++
++		submitterAds.Open();
++		while (ClassAd* submitter = submitterAds.Next()) {
++            if (!ignore_submitter_limit && (NULL != groupName) && (accountant.GetWeightedResourcesUsed(groupName) >= groupQuota)) {
++                // If we met group quota, and if we're respecting submitter limits, halt.
++                // (output message at top of outer loop above)
++                break;
++            }
+ 
+-			num_idle_jobs = 0;
+-			schedd->LookupInteger(ATTR_IDLE_JOBS,num_idle_jobs);
+-			if ( num_idle_jobs < 0 ) {
+-				num_idle_jobs = 0;
++			// Get the name of the submitter and address of the schedd-daemon it came from
++            MyString submitterName;
++            MyString scheddAddr;
++			if (!submitter->LookupString(ATTR_NAME, submitterName) ||
++				!submitter->LookupString(ATTR_SCHEDD_IP_ADDR, scheddAddr)) {
++				dprintf(D_ALWAYS, "  Error!  Could not get %s and %s from ad\n", ATTR_NAME, ATTR_SCHEDD_IP_ADDR);
++				dprintf(D_ALWAYS, "  Ignoring this submitter and continuing\n");
++				submitterAds.Remove(submitter);
++				continue;
+ 			}
+ 
+-			totalTime = 0;
+-			schedd->LookupInteger(ATTR_TOTAL_TIME_IN_CYCLE,totalTime);
+-			if ( totalTime < 0 ) {
+-				totalTime = 0;
++			// If number of idle jobs = 0, don't waste time with negotiate.
++			int num_idle_jobs = 0;
++			submitter->LookupInteger(ATTR_IDLE_JOBS,num_idle_jobs);
++			if (num_idle_jobs <= 0) {
++				dprintf(D_FULLDEBUG, "  Negotiating with %s skipped because no idle jobs\n", submitterName.Value());
++                submitterAds.Remove(submitter);
++                continue;
+ 			}
+ 
+-			if (( num_idle_jobs > 0 ) && (totalTime < MaxTimePerSubmitter) ) {
+-				dprintf(D_ALWAYS,"  Negotiating with %s at %s\n",
+-					scheddName.Value(), scheddAddr.Value());
+-				dprintf(D_ALWAYS, "%d seconds so far\n", totalTime);
++			int totalTime = 0;
++			submitter->LookupInteger(ATTR_TOTAL_TIME_IN_CYCLE, totalTime);
++			if (totalTime > MaxTimePerSubmitter) {
++				dprintf(D_ALWAYS, "  Negotiation with %s skipped because of time limits:  %d seconds spent, max allowed %d\n",
++                        submitterName.Value(), totalTime, MaxTimePerSubmitter);
++				negotiation_cycle_stats[0]->submitters_out_of_time.insert(submitterName.Value());
++                submitterAds.Remove(submitter);
++                continue;                
+ 			}
+ 
+-			// store the verison of the schedd, so we can take advantage of
+-			// protocol improvements in newer versions while still being
+-			// backwards compatible.
+-			char *schedd_ver_string = NULL;
+-			schedd->LookupString(ATTR_VERSION, &schedd_ver_string);
+-			ASSERT(schedd_ver_string);
+-			CondorVersionInfo	scheddVersion(schedd_ver_string);
+-			free(schedd_ver_string);
+-			schedd_ver_string = NULL;
+-
++            // submitterLimit is the limit to be negotiated on this current iteration, not to be confused
++            // with the total number of slots eventually allowed for this submitter.
+ 			double submitterLimit = 0.0;
+ 			double submitterUsage = 0.0;
+ 
+ 			calculateSubmitterLimit(
+-				scheddName.Value(),
+-				groupAccountingName,
++				submitterName.Value(),
++				groupName,
+ 				groupQuota,
+ 				groupusage,
+ 				maxPrioValue,
+@@ -2108,7 +2105,7 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 				normalFactor,
+ 				normalAbsFactor,
+ 				slotWeightTotal,
+-					/* result parameters: */
++				// result parameters:
+ 				submitterLimit,
+ 				submitterUsage,
+ 				submitterShare,
+@@ -2117,9 +2114,9 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 				submitterPrioFactor);
+ 
+ 			double submitterLimitStarved = 0;
+-			if( submitterLimit > pieLeft ) {
++			if (submitterLimit > pieLeft) {
+ 				// Somebody must have taken more than their fair share,
+-				// so this schedd gets starved.  This assumes that
++				// so this submitter gets starved.  This assumes that
+ 				// none of the pie dished out so far was just shuffled
+ 				// around between the users in the current group.
+ 				// If that is not true, a subsequent spin of the pie
+@@ -2128,29 +2125,42 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 				submitterLimit = pieLeft;
+ 			}
+ 
+-			if ( num_idle_jobs > 0 ) {
+-				dprintf (D_FULLDEBUG, "  Calculating submitter limit with the "
+-					"following parameters\n");
+-				dprintf (D_FULLDEBUG, "    SubmitterPrio       = %f\n",
+-					submitterPrio);
+-				dprintf (D_FULLDEBUG, "    SubmitterPrioFactor = %f\n",
+-					 submitterPrioFactor);
+-				dprintf (D_FULLDEBUG, "    submitterShare      = %f\n",
+-					submitterShare);
+-				dprintf (D_FULLDEBUG, "    submitterAbsShare   = %f\n",
+-					submitterAbsShare);
+-				MyString starvation;
+-				if( submitterLimitStarved > 0 ) {
+-					starvation.sprintf(" (starved %f)",submitterLimitStarved);
+-				}
+-				dprintf (D_FULLDEBUG, "    submitterLimit    = %f%s\n",
+-					submitterLimit, starvation.Value());
+-				dprintf (D_FULLDEBUG, "    submitterUsage    = %f\n",
+-					submitterUsage);
++			dprintf(D_ALWAYS, "  Negotiating with %s at %s\n", submitterName.Value(), scheddAddr.Value());
++			dprintf(D_ALWAYS, "  %d seconds so far\n", totalTime);
++
++			dprintf(D_FULLDEBUG, "  Calculating submitter limit with the following parameters\n");
++			dprintf(D_FULLDEBUG, "    SubmitterPrio       = %f\n", submitterPrio);
++			dprintf(D_FULLDEBUG, "    SubmitterPrioFactor = %f\n", submitterPrioFactor);
++			dprintf(D_FULLDEBUG, "    submitterShare      = %f\n", submitterShare);
++			dprintf(D_FULLDEBUG, "    submitterAbsShare   = %f\n", submitterAbsShare);
++			MyString starvation;
++			if (submitterLimitStarved > 0) {
++				starvation.sprintf(" (starved %f)", submitterLimitStarved);
+ 			}
++			dprintf(D_FULLDEBUG, "    submitterLimit    = %f%s\n", submitterLimit, starvation.Value());
++			dprintf(D_FULLDEBUG, "    submitterUsage    = %f\n", submitterUsage);
+ 
+-			// initialize reasons for match failure; do this now
+-			// in case we never actually call negotiate() below.
++
++			if (!ignore_submitter_limit && ((submitterLimit <= 0) || (pieLeft < minSlotWeight))) {
++                // If limit is 0, and we are respecting submitter limits, don't waste time with negotiate
++                negotiation_cycle_stats[0]->submitters_share_limit.insert(submitterName.Value());
++                dprintf(D_FULLDEBUG, "Submitter %s is at its submitter limit %g\n", submitterName.Value(), submitterLimit);
++                submitterAds.Remove(submitter);
++                continue;
++            }
++
++
++			// store the verison of the schedd, so we can take advantage of
++			// protocol improvements in newer versions while still being
++			// backwards compatible.
++			char *schedd_ver_string = NULL;
++			submitter->LookupString(ATTR_VERSION, &schedd_ver_string);
++			ASSERT(schedd_ver_string);
++			CondorVersionInfo	scheddVersion(schedd_ver_string);
++			free(schedd_ver_string);
++			schedd_ver_string = NULL;
++
++			// initialize reasons for match failure
+ 			rejForNetwork = 0;
+ 			rejForNetworkShare = 0;
+ 			rejForConcurrencyLimit = 0;
+@@ -2159,106 +2169,66 @@ negotiateWithGroup ( int untrimmed_num_startds,
+ 			rejPreemptForRank = 0;
+ 			rejForSubmitterLimit = 0;
+ 
+-			// Optimizations: 
+-			// If number of idle jobs = 0, don't waste time with negotiate.
+-			// Likewise, if limit is 0, don't waste time with negotiate EXCEPT
+-			// on the first spin of the pie (spin_pie==1), we must
+-			// still negotiate because on the first spin we tell the negotiate
+-			// function to ignore the submitterLimit w/ respect to jobs which
+-			// are strictly preferred by resource offers (via startd rank).
+-			if ( num_idle_jobs == 0 ) {
+-				dprintf(D_FULLDEBUG,
+-					"  Negotiating with %s skipped because no idle jobs\n",
+-					scheddName.Value());
+-				result = MM_DONE;
+-			} else if (totalTime > MaxTimePerSubmitter) {
+-				dprintf(D_ALWAYS,
+-					"  Negotiation with %s skipped because of time limits:\n",
+-					scheddName.Value());
+-				dprintf(D_ALWAYS,
+-					"  %d seconds spent, max allowed %d\n ",
+-					totalTime, MaxTimePerSubmitter);
+-				negotiation_cycle_stats[0]->submitters_out_of_time.insert(scheddName.Value());
+-				result = MM_DONE;
+-			} else {
+-				if ( (submitterLimit <= 0 || pieLeft < minSlotWeight) && spin_pie > 1 ) {
+-					result = MM_RESUME;
+-				} else {
+-					if ( spin_pie == 1 && ConsiderPreemption ) {
+-						ignore_schedd_limit = true;
+-					} else {
+-						ignore_schedd_limit = false;
+-					}
+-					int numMatched = 0;
+-					startTime = time(NULL);
+-					double limitUsed = 0.0;
+-                    if (negotiation_cycle_stats[0]->active_submitters.count(scheddName.Value()) <= 0) {
+-                        negotiation_cycle_stats[0]->num_idle_jobs += num_idle_jobs;
+-                    }
+-					negotiation_cycle_stats[0]->active_submitters.insert(scheddName.Value());
+-					negotiation_cycle_stats[0]->active_schedds.insert(scheddAddr.Value());
+-					result=negotiate( scheddName.Value(),schedd,submitterPrio,
+-								  submitterAbsShare, submitterLimit,
+-								  startdAds, claimIds, 
+-								  scheddVersion, ignore_schedd_limit,
+-								  startTime, numMatched, limitUsed, pieLeft);
+-					updateNegCycleEndTime(startTime, schedd);
+-				}
+-			}
+-
+-			switch (result)
+-			{
++			int numMatched = 0;
++			time_t startTime = time(NULL);
++			double limitUsed = 0.0;
++            if (negotiation_cycle_stats[0]->active_submitters.count(submitterName.Value()) <= 0) {
++                negotiation_cycle_stats[0]->num_idle_jobs += num_idle_jobs;
++            }
++			negotiation_cycle_stats[0]->active_submitters.insert(submitterName.Value());
++			negotiation_cycle_stats[0]->active_schedds.insert(scheddAddr.Value());
++			int result = negotiate(submitterName.Value(), submitter, submitterPrio,
++                                   submitterAbsShare, submitterLimit,
++                                   startdAds, claimIds, 
++                                   scheddVersion, ignore_submitter_limit,
++                                   startTime, numMatched, limitUsed, pieLeft);
++			updateNegCycleEndTime(startTime, submitter);
++
++			switch (result) {
+ 				case MM_RESUME:
+-					// the schedd hit its resource limit.  must resume 
+-					// negotiations in next spin
+-					scheddUsed += accountant.GetWeightedResourcesUsed(scheddName.Value());
+-                    negotiation_cycle_stats[0]->submitters_share_limit.insert(scheddName.Value());
+-					dprintf(D_FULLDEBUG, "  This submitter hit its submitterLimit.\n");
++					// the submitter hit its resource limit.  must resume negotiations in next spin
++                    negotiation_cycle_stats[0]->submitters_share_limit.insert(submitterName.Value());
++					dprintf(D_FULLDEBUG, "  This submitter hit its submitterLimit: %s\n", submitterName.Value());
+ 					break;
+-				case MM_DONE: 
++
++				case MM_DONE:
+ 					if (rejForNetworkShare) {
+-							// We negotiated for all jobs, but some
+-							// jobs were rejected because this user
+-							// exceeded her fair-share of network
+-							// resources.  Resume negotiations for
+-							// this user in next spin.
++					    // We negotiated for all jobs, but some jobs were rejected because this user
++					    // exceeded her fair-share of network resources.  Resume negotiations for
++					    // this user in next spin.
+ 					} else {
+-							// the schedd got all the resources it
+-							// wanted. delete this schedd ad.
+-						dprintf(D_FULLDEBUG,"  Submitter %s got all it wants; removing it.\n", scheddName.Value());
+-                        scheddUsed += accountant.GetWeightedResourcesUsed(scheddName.Value());
+-                        dprintf( D_FULLDEBUG, " resources used by %s are %f\n",scheddName.Value(),	
+-                                 accountant.GetWeightedResourcesUsed(scheddName.Value()));
+-						scheddAds.Remove( schedd);
++						// the submitter got all the resources it wanted. delete this submitter ad.
++						dprintf(D_FULLDEBUG, "  Submitter %s got all it wants; removing it.\n", submitterName.Value());
++                        dprintf(D_FULLDEBUG, "  Resources used by %s are %f\n", submitterName.Value(),	
++                                accountant.GetWeightedResourcesUsed(submitterName.Value()));
++						submitterAds.Remove(submitter);
+ 					}
+ 					break;
++
+ 				case MM_ERROR:
+ 				default:
+ 					dprintf(D_ALWAYS,"  Error: Ignoring submitter for this cycle\n" );
+ 					sockCache->invalidateSock( scheddAddr.Value() );
+ 	
+-					scheddUsed += accountant.GetWeightedResourcesUsed(scheddName.Value());
+-					dprintf( D_FULLDEBUG, " resources used by %s are %f\n",scheddName.Value(),	
+-						    accountant.GetWeightedResourcesUsed(scheddName.Value()));
+-					scheddAds.Remove( schedd );
+-					negotiation_cycle_stats[0]->submitters_failed.insert(scheddName.Value());
++					dprintf(D_FULLDEBUG, "  Resources used by %s are %f\n", submitterName.Value(),	
++						    accountant.GetWeightedResourcesUsed(submitterName.Value()));
++					submitterAds.Remove(submitter);
++					negotiation_cycle_stats[0]->submitters_failed.insert(submitterName.Value());
+ 			}
+ 		}
+-		scheddAds.Close();
+-		dprintf( D_FULLDEBUG, " resources used scheddUsed= %f\n",scheddUsed);
++		submitterAds.Close();
++	} while (((pieLeft < pieLeftOrig) || (submitterAds.MyLength() < submitterAdsCountOrig))
++             && (submitterAds.MyLength() > 0)
++             && (startdAds.MyLength() > 0));
+ 
+-		groupusage = scheddUsed;
+-	} while ( ( pieLeft < pieLeftOrig || scheddAds.MyLength() < scheddAdsCountOrig )
+-			  && (scheddAds.MyLength() > 0)
+-			  && (startdAds.MyLength() > 0) );
+-
+-	dprintf( D_ALWAYS, " negotiateWithGroup resources used scheddAds length %d \n",scheddAds.MyLength());
++	dprintf(D_ALWAYS, " negotiateWithGroup resources used submitterAds length %d \n", submitterAds.MyLength());
+ 
+     negotiation_cycle_stats[0]->duration_phase4 += time(NULL) - start_time_phase4;    
+ 
+ 	return TRUE;
+ }
+ 
++
+ static int
+ comparisonFunction (AttrList *ad1, AttrList *ad2, void *m)
+ {
+@@ -2570,6 +2540,25 @@ obtainAdsFromCollector (
+ 				// CRUFT: Before 7.3.2, submitter ads had a MyType of
+ 				//   "Scheduler". The only way to tell the difference
+ 				//   was that submitter ads didn't have ATTR_NUM_USERS.
++
++            MyString subname;
++            if (!ad->LookupString(ATTR_NAME, subname)) {
++                dprintf(D_ALWAYS, "WARNING: ignoring submitter ad with no name\n");
++                continue;
++            }
++
++            int numidle=0;
++            ad->LookupInteger(ATTR_IDLE_JOBS, numidle);
++            int numrunning=0;
++            ad->LookupInteger(ATTR_RUNNING_JOBS, numrunning);
++            int requested = numrunning + numidle;
++
++            // This will avoid some wasted effort in negotiation looping
++            if (requested <= 0) {
++                dprintf(D_FULLDEBUG, "Ignoring submitter %s with no requested jobs\n", subname.Value());
++                continue;
++            }
++
+     		ad->Assign(ATTR_TOTAL_TIME_IN_CYCLE, 0);
+ 			scheddAds.Insert(ad);
+ 		}
+diff --git a/src/condor_negotiator.V6/matchmaker.h b/src/condor_negotiator.V6/matchmaker.h
+index e0d647b..d75e05f 100644
+--- a/src/condor_negotiator.V6/matchmaker.h
++++ b/src/condor_negotiator.V6/matchmaker.h
+@@ -170,13 +170,14 @@ class Matchmaker : public Service
+ 		   bool ignore_schedd_limit, time_t startTime, 
+ 		   int &numMatched, double &limitUsed, double &pieLeft);
+ 
+-		int negotiateWithGroup ( int untrimmed_num_startds,
+-								 double untrimmedSlotWeightTotal,
+-								 double minSlotWeight,
+-			ClassAdListDoesNotDeleteAds& startdAds, 
+-			ClaimIdHash& claimIds, ClassAdListDoesNotDeleteAds& scheddAds, 
+-			float groupQuota=INT_MAX, float groupusage=0, const char* groupAccountingName=NULL);
+-
++		int negotiateWithGroup(int untrimmed_num_startds,
++                               double untrimmedSlotWeightTotal,
++                               double minSlotWeight,
++                               ClassAdListDoesNotDeleteAds& startdAds, 
++                               ClaimIdHash& claimIds, 
++                               ClassAdListDoesNotDeleteAds& submitterAds, 
++                               float groupQuota=INT_MAX, 
++                               const char* groupAccountingName=NULL);
+ 		
+ 		ClassAd *matchmakingAlgorithm(const char*,const char*,ClassAd&,ClassAdListDoesNotDeleteAds&,
+ 									  double=-1.0, double=1.0, double=0.0, double=0.0, double=0.0, bool=false);
