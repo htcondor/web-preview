@@ -1,0 +1,792 @@
+diff --git a/src/condor_c++_util/JobLogMirror.cpp b/src/condor_c++_util/JobLogMirror.cpp
+index e84ffee..7a41960 100644
+--- a/src/condor_c++_util/JobLogMirror.cpp
++++ b/src/condor_c++_util/JobLogMirror.cpp
+@@ -20,17 +20,12 @@
+ 
+ #include "JobLogMirror.h"
+ #include "condor_config.h"
+-#include "get_daemon_name.h"
+ 
+-JobLogMirror::JobLogMirror(JobLogConsumer *consumer,
+-						   const char *name_param):
+-	job_log_reader(consumer),
+-	m_name_param(name_param)
++JobLogMirror::JobLogMirror(JobLogConsumer *consumer):
++	job_log_reader(consumer)
+ {
+ 	log_reader_polling_timer = -1;
+ 	log_reader_polling_period = 10;
+-	m_public_ad_update_timer = -1;
+-	m_public_ad_update_interval = -1;
+ }
+ 
+ void
+@@ -40,38 +35,11 @@ JobLogMirror::init() {
+ 
+ void
+ JobLogMirror::stop() {
+-	InvalidatePublicAd();
+-}
+-
+-void
+-JobLogMirror::InitPublicAd() {
+-	m_public_ad = ClassAd();
+-
+-	m_public_ad.SetMyTypeName( GENERIC_ADTYPE );
+-	m_public_ad.SetTargetTypeName( "" );
+-
+-	m_public_ad.Assign(ATTR_NAME,m_name.c_str());
+-
+-    daemonCore->publish(&m_public_ad);
++//	Nothing to do
+ }
+ 
+ void
+ JobLogMirror::config() {
+-	char *name = param(m_name_param);
+-	if(name) {
+-		char *valid_name = build_valid_daemon_name(name);
+-		m_name = valid_name;
+-		free(name);
+-		delete [] valid_name;
+-	}
+-	else {
+-		char *default_name = default_daemon_name();
+-		if(default_name) {
+-			m_name = default_name;
+-			delete [] default_name;
+-		}
+-	}
+-
+ 	char *spool = param("SPOOL");
+ 	if(!spool) {
+ 		EXCEPT("No SPOOL defined in config file.\n");
+@@ -103,31 +71,6 @@ JobLogMirror::config() {
+ 		log_reader_polling_period,
+ 		(Eventcpp)&JobLogMirror::TimerHandler_JobLogPolling, 
+ 		"JobLogMirror::TimerHandler_JobLogPolling", this);
+-
+-	InitPublicAd();
+-
+-	int update_interval = 60;
+-	char *update_interval_str = param("UPDATE_INTERVAL");
+-	if(update_interval_str) {
+-		update_interval = atoi(update_interval_str);
+-		free(update_interval_str);
+-	}
+-	if(m_public_ad_update_interval != update_interval) {
+-		m_public_ad_update_interval = update_interval;
+-
+-		if(m_public_ad_update_timer >= 0) {
+-			daemonCore->Cancel_Timer(m_public_ad_update_timer);
+-			m_public_ad_update_timer = -1;
+-		}
+-		dprintf(D_FULLDEBUG, "Setting update interval to %d\n",
+-				m_public_ad_update_interval);
+-		m_public_ad_update_timer = daemonCore->Register_Timer(
+-			0,
+-			m_public_ad_update_interval,
+-			(Eventcpp)&JobLogMirror::TimerHandler_UpdateCollector,
+-			"JobLogMirror::TimerHandler_UpdateCollector",
+-			this);
+-	}
+ }
+ 
+ void
+@@ -135,13 +78,3 @@ JobLogMirror::TimerHandler_JobLogPolling() {
+ 	dprintf(D_FULLDEBUG, "TimerHandler_JobLogPolling() called\n");
+ 	job_log_reader.Poll();
+ }
+-
+-void
+-JobLogMirror::TimerHandler_UpdateCollector() {
+-	daemonCore->sendUpdates(UPDATE_AD_GENERIC, &m_public_ad);
+-}
+-
+-void
+-JobLogMirror::InvalidatePublicAd() {
+-	daemonCore->sendUpdates(INVALIDATE_ADS_GENERIC, &m_public_ad);
+-}
+diff --git a/src/condor_c++_util/JobLogMirror.h b/src/condor_c++_util/JobLogMirror.h
+index 7737a38..8841aed 100644
+--- a/src/condor_c++_util/JobLogMirror.h
++++ b/src/condor_c++_util/JobLogMirror.h
+@@ -27,31 +27,18 @@
+ 
+ class JobLogMirror: public Service {
+ public:
+-	JobLogMirror(JobLogConsumer *consumer,
+-				 const char *name_param = "NAME");
++	JobLogMirror(JobLogConsumer *consumer);
+ 	void init();
+ 	void config();
+ 	void stop();
+ 
+-	char const *Name() const {return m_name.c_str();}
+ 
+ private:
+-	std::string m_name;
+-	const char *m_name_param;
+-
+-	ClassAd m_public_ad;
+-	int m_public_ad_update_interval;
+-	int m_public_ad_update_timer;
+-
+ 	JobLogReader job_log_reader;
+ 
+ 	int log_reader_polling_timer;
+ 	int log_reader_polling_period;
+ 
+-	virtual void InitPublicAd();
+-	virtual void TimerHandler_UpdateCollector();
+-	virtual void InvalidatePublicAd();
+-
+ 	void TimerHandler_JobLogPolling();
+ };
+ 
+diff --git a/src/condor_c++_util/condor_attributes.cpp b/src/condor_c++_util/condor_attributes.cpp
+index 4cf0563..5f1b28e 100644
+--- a/src/condor_c++_util/condor_attributes.cpp
++++ b/src/condor_c++_util/condor_attributes.cpp
+@@ -736,6 +736,8 @@ const char *ATTR_HAD_INDEX     = "HadIndex";
+ const char *ATTR_TERMINATION_PENDING	= "TerminationPending";
+ const char *ATTR_TERMINATION_EXITREASON	= "TerminationExitReason";
+ 
++const char *ATTR_REPLICATION_LIST      = "ReplicationList";
++
+ // Attributes used in clasads that go back and forth between a submitting
+ // client, the schedd, and the transferd while negotiating for a place to
+ // put/get a sandbox of files and then for when actually putting/getting the
+diff --git a/src/condor_c++_util/condor_query.cpp b/src/condor_c++_util/condor_query.cpp
+index fcfdfb0..9e08d7d 100644
+--- a/src/condor_c++_util/condor_query.cpp
++++ b/src/condor_c++_util/condor_query.cpp
+@@ -494,6 +494,10 @@ fetchAds (ClassAdList &adList, const char *poolName, CondorError* errstack)
+         queryAd.SetTargetTypeName (GRID_ADTYPE);
+         break;
+ 
++	  case HAD_AD:
++		queryAd.SetTargetTypeName (HAD_ADTYPE);
++		break;
++
+ 	  default:
+ 		return Q_INVALID_QUERY;
+ 	}
+diff --git a/src/condor_c++_util/get_daemon_name.cpp b/src/condor_c++_util/get_daemon_name.cpp
+index 78746b1..b126b35 100644
+--- a/src/condor_c++_util/get_daemon_name.cpp
++++ b/src/condor_c++_util/get_daemon_name.cpp
+@@ -100,7 +100,7 @@ get_daemon_name( const char* name )
+ // name@my_full_hostname().  We return the answer in a string which
+ // should be deallocated w/ delete [].
+ char*
+-build_valid_daemon_name( char* name ) 
++build_valid_daemon_name( const char* name ) 
+ {
+ 	char *tmp, *tmpname = NULL, *daemon_name = NULL;
+ 	int size;
+diff --git a/src/condor_c++_util/get_daemon_name.h b/src/condor_c++_util/get_daemon_name.h
+index 708d502..388585a 100644
+--- a/src/condor_c++_util/get_daemon_name.h
++++ b/src/condor_c++_util/get_daemon_name.h
+@@ -28,7 +28,7 @@ extern "C" {
+ 
+ extern char* get_daemon_name(const char* name);
+ extern const char* get_host_part(const char* name);
+-extern char* build_valid_daemon_name(char* name);
++extern char* build_valid_daemon_name(const char* name);
+ extern char* default_daemon_name( void );
+ 
+ #ifdef __cplusplus
+diff --git a/src/condor_daemon_client/daemon.cpp b/src/condor_daemon_client/daemon.cpp
+index 7b06533..c9247c8 100644
+--- a/src/condor_daemon_client/daemon.cpp
++++ b/src/condor_daemon_client/daemon.cpp
+@@ -124,6 +124,9 @@ Daemon::Daemon( const ClassAd* tAd, daemon_t tType, const char* tPool )
+ 	case DT_SCHEDD:
+ 		_subsys = strnewp( "SCHEDD" );
+ 		break;
++	case DT_HAD:
++		_subsys = strnewp( "HAD" );
++		break;
+ 	default:
+ 		EXCEPT( "Invalid daemon_type %d (%s) in ClassAd version of "
+ 				"Daemon object", (int)_type, daemonString(_type) );
+@@ -927,6 +930,9 @@ Daemon::locate( void )
+ 	case DT_LEASE_MANAGER:
+ 		rval = getDaemonInfo( "LEASEMANAGER", LEASE_MANAGER_AD, true );
+ 		break;
++	case DT_HAD:
++		rval = getDaemonInfo( "HAD", HAD_AD );
++		break;
+ 	default:
+ 		EXCEPT( "Unknown daemon type (%d) in Daemon::init", (int)_type );
+ 	}
+@@ -1130,7 +1136,8 @@ Daemon::getDaemonInfo( const char* subsys, AdTypes adtype, bool query_collector)
+ 		ClassAd*			scan;
+ 		ClassAdList			ads;
+ 
+-		if( _type == DT_STARTD && ! strchr(_name, '@') ) { 
++		if( (_type == DT_STARTD && ! strchr(_name, '@')) ||
++			_type == DT_HAD ) { 
+ 				/*
+ 				  So long as an SMP startd has only 1 command socket
+ 				  per startd, we want to take advantage of that and
+diff --git a/src/condor_daemon_client/daemon_types.cpp b/src/condor_daemon_client/daemon_types.cpp
+index 488b726..f3fae52 100644
+--- a/src/condor_daemon_client/daemon_types.cpp
++++ b/src/condor_daemon_client/daemon_types.cpp
+@@ -39,7 +39,8 @@ static const char* daemon_names[] = {
+ 	"stork",
+ 	"quill",
+ 	"transferd",
+-	"lease_manager"
++	"lease_manager",
++	"had"
+ };
+ 
+ extern "C" {
+diff --git a/src/condor_daemon_client/daemon_types.h b/src/condor_daemon_client/daemon_types.h
+index eeef459..200ff8a 100644
+--- a/src/condor_daemon_client/daemon_types.h
++++ b/src/condor_daemon_client/daemon_types.h
+@@ -28,7 +28,7 @@ enum daemon_t { DT_NONE, DT_ANY,  DT_MASTER, DT_SCHEDD, DT_STARTD,
+ 				DT_COLLECTOR, DT_NEGOTIATOR, DT_KBDD, 
+ 				DT_DAGMAN, DT_VIEW_COLLECTOR, DT_CLUSTER,  
+ 				DT_SHADOW, DT_STARTER, DT_CREDD, DT_STORK, DT_QUILL,
+-				DT_TRANSFERD, DT_LEASE_MANAGER,
++				DT_TRANSFERD, DT_LEASE_MANAGER, DT_HAD,
+ 				_dt_threshold_ };
+ 
+ #ifdef __cplusplus
+diff --git a/src/condor_had/ReplicatorStateMachine.cpp b/src/condor_had/ReplicatorStateMachine.cpp
+index b14fe51..c82f741 100644
+--- a/src/condor_had/ReplicatorStateMachine.cpp
++++ b/src/condor_had/ReplicatorStateMachine.cpp
+@@ -22,6 +22,7 @@
+ #include "condor_daemon_core.h"
+ // for 'param' function
+ #include "condor_config.h"
++#include "my_username.h"
+ 
+ #include "ReplicatorStateMachine.h"
+ //#include "HadCommands.h"
+@@ -124,6 +125,9 @@ ReplicatorStateMachine::ReplicatorStateMachine()
+    	m_newlyJoinedWaitingVersionInterval = -1;
+    	m_lastHadAliveTime          = -1;
+    	srand( time( NULL ) );
++	m_classAd = NULL;
++	m_updateCollectorTimerId = -1;
++	m_updateInterval = -1;
+ }
+ // finalizing the delta, belonging to this class only, since the data, belonging
+ // to the base class is finalized implicitly
+@@ -149,15 +153,31 @@ ReplicatorStateMachine::finalize()
+ void
+ ReplicatorStateMachine::finalizeDelta( )
+ {
+-	dprintf( D_ALWAYS, "ReplicatorStateMachine::finalizeDelta started\n" );
++    ClassAd invalidate_ad;
++    MyString line;
++
++    dprintf( D_ALWAYS, "ReplicatorStateMachine::finalizeDelta started\n" );
+     utilCancelTimer(m_replicationTimerId);
+     utilCancelTimer(m_versionRequestingTimerId);
+     utilCancelTimer(m_versionDownloadingTimerId);
++    utilCancelTimer(m_updateCollectorTimerId);
+     m_replicationInterval               = -1;
+     m_hadAliveTolerance                 = -1;
+     m_maxTransfererLifeTime             = -1;
+     m_newlyJoinedWaitingVersionInterval = -1;
+     m_lastHadAliveTime                  = -1;
++    m_updateInterval                    = -1;
++
++    if ( m_classAd != NULL ) {
++        delete m_classAd;
++        m_classAd = NULL;
++    }
++
++    invalidate_ad.SetMyTypeName( QUERY_ADTYPE );
++    invalidate_ad.SetTargetTypeName( GENERIC_ADTYPE );
++    line.sprintf( "%s = %s == \"%s\"", ATTR_REQUIREMENTS, ATTR_NAME, m_name.Value( ) );
++    invalidate_ad.Insert( line.Value( ) );
++    daemonCore->sendUpdates( INVALIDATE_ADS_GENERIC, &invalidate_ad, NULL, false );
+ }
+ void
+ ReplicatorStateMachine::initialize( )
+@@ -214,6 +234,20 @@ ReplicatorStateMachine::reinitialize()
+     } else {
+         utilCrucialError( utilNoParameterError( "HAD_LIST", "HAD" ).Value( ));
+     }
++
++    initializeClassAd();
++    int updateInterval = param_integer ( "REPLICATION_UPDATE_INTERVAL", 300 );
++    if ( m_updateInterval != updateInterval ) {
++        m_updateInterval = updateInterval;
++
++        utilCancelTimer(m_updateCollectorTimerId);
++
++        m_updateCollectorTimerId = daemonCore->Register_Timer ( 0,
++               m_updateInterval,
++               (TimerHandlercpp) &ReplicatorStateMachine::updateCollectors,
++               "ReplicatorStateMachine::updateCollectors", this );
++    }
++
+     // set a timer to replication routine
+     dprintf( D_ALWAYS, "ReplicatorStateMachine::reinitialize setting "
+                                       "replication timer\n" );
+@@ -238,6 +272,52 @@ ReplicatorStateMachine::reinitialize()
+ 	
+ 	beforePassiveStateHandler( );
+ }
++
++void
++ReplicatorStateMachine::initializeClassAd()
++{
++    MyString line;
++
++    if( m_classAd != NULL) {
++        delete m_classAd;
++        m_classAd = NULL;
++    }
++
++    m_classAd = new ClassAd();
++
++    m_classAd->SetMyTypeName(GENERIC_ADTYPE);
++    m_classAd->SetTargetTypeName("Replication");
++
++    m_name.sprintf( "replication@%s -p %d", my_full_hostname( ),
++				  daemonCore->InfoCommandPort( ) );
++    line.sprintf( "%s = \"%s\"", ATTR_NAME, m_name.Value( ) );
++    m_classAd->Insert(line.Value());
++
++    line.sprintf( "%s = \"%s\"", ATTR_MY_ADDRESS,
++                        daemonCore->InfoCommandSinfulString() );
++    m_classAd->Insert(line.Value());
++
++    // publish list of replication nodes
++    char* buffer = param( "REPLICATION_LIST" );
++    char* replAddress = NULL;
++    StringList replList;
++    MyString attrReplList;
++    MyString comma;
++
++    replList.initializeFromString( buffer );
++    replList.rewind( );
++
++    while( ( replAddress = replList.next() ) ) {
++        attrReplList += comma;
++        attrReplList += replAddress;
++        comma = ",";
++    }
++    line.sprintf( "%s = \"%s\"", ATTR_REPLICATION_LIST, attrReplList.Value( ) );
++    m_classAd->Insert(line.Value());
++
++    // publish DC attributes
++    daemonCore->publish(m_classAd);
++}
+ // sends the version of the last execution time to all the replication daemons,
+ // then asks the pool replication daemons to send their own versions to it,
+ // sets a timer to wait till the versions are received
+@@ -898,3 +978,14 @@ ReplicatorStateMachine::versionDownloadingTimer( )
+ 
+ 	m_state = BACKUP;
+ }
++
++/* Function    : updateCollectors
++ * Description : sends the classad update to collectors
++ */
++void
++ReplicatorStateMachine::updateCollectors()
++{
++    if (m_classAd) {
++       daemonCore->sendUpdates (UPDATE_AD_GENERIC, m_classAd);
++    }
++}
+diff --git a/src/condor_had/ReplicatorStateMachine.h b/src/condor_had/ReplicatorStateMachine.h
+index b938af7..f4d67ce 100644
+--- a/src/condor_had/ReplicatorStateMachine.h
++++ b/src/condor_had/ReplicatorStateMachine.h
+@@ -115,6 +115,13 @@ protected:
+     static int 
+ 	downloadReplicaTransfererReaper(Service* service, int pid, int exitStatus);
+ private:
++    MyString       m_name;
++    ClassAd*       m_classAd;
++    int            m_updateCollectorTimerId;
++    int            m_updateInterval;
++
++    void initializeClassAd();
++    void updateCollectors();
+ // Managing stuck transferers
+ 	void killStuckDownloadingTransferer(time_t currentTime);
+ 	void killStuckUploadingTransferers (time_t currentTime);
+diff --git a/src/condor_had/StateMachine.cpp b/src/condor_had/StateMachine.cpp
+index 8148536..38f01af 100644
+--- a/src/condor_had/StateMachine.cpp
++++ b/src/condor_had/StateMachine.cpp
+@@ -123,6 +123,7 @@ HADStateMachine::finalize()
+ 		free(replicationDaemonSinfulString);
+     	replicationDaemonSinfulString = NULL;
+     }
++
+ 	// classad finalizings
+     if( m_classAd != NULL) {
+ 		delete m_classAd;
+@@ -137,7 +138,16 @@ HADStateMachine::finalize()
+ */
+ HADStateMachine::~HADStateMachine()
+ {
++    ClassAd invalidate_ad;
++    MyString line;
++
+     finalize();
++
++    invalidate_ad.SetMyTypeName( QUERY_ADTYPE );
++    invalidate_ad.SetTargetTypeName( HAD_ADTYPE );
++    line.sprintf( "%s = %s == \"%s\"", ATTR_REQUIREMENTS, ATTR_NAME, m_daemonName.Value( ) );
++    invalidate_ad.Insert( line.Value( ) );
++    daemonCore->sendUpdates( INVALIDATE_HAD_ADS, &invalidate_ad, NULL, false );
+ }
+ 
+ 
+@@ -324,13 +334,12 @@ HADStateMachine::initializeClassAd()
+     MyString line;
+     // 'my_username' allocates dynamic string
+     char* userName = my_username();
+-    MyString name;
+ 
+-    name.sprintf( "%s@%s -p %d", userName, my_full_hostname( ),
++    m_daemonName.sprintf( "%s@%s -p %d", userName, my_full_hostname( ),
+ 				  daemonCore->InfoCommandPort( ) );
+     free( userName );
+     // ATTR_NAME is mandatory in order to be accepted by collector
+-    line.sprintf( "%s = \"%s\"", ATTR_NAME, name.Value( ) );
++    line.sprintf( "%s = \"%s\"", ATTR_NAME, m_daemonName.Value( ) );
+     m_classAd->Insert(line.Value());
+ 
+     line.sprintf( "%s = \"%s\"", ATTR_MY_ADDRESS,
+diff --git a/src/condor_had/StateMachine.h b/src/condor_had/StateMachine.h
+index 6537065..553f80d 100644
+--- a/src/condor_had/StateMachine.h
++++ b/src/condor_had/StateMachine.h
+@@ -127,6 +127,7 @@ protected:
+     bool m_usePrimary;
+     StringList* m_otherHADIPs;
+     Daemon* m_masterDaemon;
++    MyString m_daemonName;
+ 
+     List<int> receivedAliveList;
+     List<int> receivedIdList;
+diff --git a/src/condor_includes/condor_attributes.h b/src/condor_includes/condor_attributes.h
+index f16c01e..46c9816 100644
+--- a/src/condor_includes/condor_attributes.h
++++ b/src/condor_includes/condor_attributes.h
+@@ -673,6 +673,8 @@ extern const char * ATTR_HAD_INDEX;
+ extern const char * ATTR_TERMINATION_PENDING;
+ extern const char * ATTR_TERMINATION_EXITREASON;
+ 
++extern const char * ATTR_REPLICATION_LIST;
++
+ extern const char * ATTR_TREQ_DIRECTION;
+ extern const char * ATTR_TREQ_INVALID_REQUEST;
+ extern const char * ATTR_TREQ_INVALID_REASON;
+diff --git a/src/condor_job_router/JobRouter.cpp b/src/condor_job_router/JobRouter.cpp
+index ec37cba..c6003a6 100644
+--- a/src/condor_job_router/JobRouter.cpp
++++ b/src/condor_job_router/JobRouter.cpp
+@@ -37,6 +37,8 @@
+ #include "file_lock.h"
+ #include "classad_newold.h"
+ #include "user_job_policy.h"
++#include "get_daemon_name.h"
++
+ 
+ 
+ const char JR_ATTR_MAX_JOBS[] = "MaxJobs";
+@@ -69,6 +71,9 @@ JobRouter::JobRouter(Scheduler *scheduler): m_jobs(5000,hashFuncStdString,reject
+ 	m_job_router_entries_refresh = 0;
+ 	m_job_router_refresh_timer = -1;
+ 
++        m_public_ad_update_timer = -1;
++        m_public_ad_update_interval = -1;
++
+ 	m_routes = AllocateRoutingTable();
+ 	m_poll_count = 0;
+ 
+@@ -98,8 +103,11 @@ JobRouter::~JobRouter() {
+ 	if(m_router_lock_fd != -1) {
+ 		close(m_router_lock_fd);
+ 	}
+-	if( m_job_router_refresh_timer >= 0 ) {
+-		daemonCore->Cancel_Timer( m_job_router_refresh_timer );
++	if(m_job_router_refresh_timer >= 0) {
++		daemonCore->Cancel_Timer(m_job_router_refresh_timer);
++	}
++	if(m_public_ad_update_timer >= 0) {
++		daemonCore->Cancel_Timer(m_public_ad_update_timer);
+ 	}
+ 
+ #if HAVE_JOB_HOOKS
+@@ -108,6 +116,7 @@ JobRouter::~JobRouter() {
+ 		delete m_hook_mgr;
+ 	}
+ #endif
++	InvalidatePublicAd();
+ }
+ 
+ #include "condor_new_classads.h"
+@@ -367,9 +376,52 @@ JobRouter::config() {
+ 		m_job_router_name = name;
+ 		free(name);
+ 	}
++
++	InitPublicAd();
++
++	int update_interval = param_integer("UPDATE_INTERVAL", 60);
++	if(m_public_ad_update_interval != update_interval) {
++		m_public_ad_update_interval = update_interval;
++
++		if(m_public_ad_update_timer >= 0) {
++			daemonCore->Cancel_Timer(m_public_ad_update_timer);
++			m_public_ad_update_timer = -1;
++		}
++		dprintf(D_FULLDEBUG, "Setting update interval to %d\n",
++			m_public_ad_update_interval);
++		m_public_ad_update_timer = daemonCore->Register_Timer(
++			0,
++			m_public_ad_update_interval,
++			(Eventcpp)&JobRouter::TimerHandler_UpdateCollector,
++			"JobRouter::TimerHandler_UpdateCollector",
++			this);
++	}
++}
++
++void
++JobRouter::InitPublicAd()
++{
++	if (m_job_router_name.size() > 0) {
++		char *valid_name = build_valid_daemon_name(m_job_router_name.c_str());
++		daemonName = valid_name;
++		delete [] valid_name;
++	}
+ 	else {
+-		m_job_router_name = DaemonIdentityString();
++		char *default_name = build_valid_daemon_name("jobrouter");
++		if(default_name) {
++			daemonName = default_name;
++			delete [] default_name;
++		}
+ 	}
++
++	m_public_ad = ClassAd();
++
++	m_public_ad.SetMyTypeName(GENERIC_ADTYPE);
++	m_public_ad.SetTargetTypeName("Job_Router");
++
++	m_public_ad.Assign(ATTR_NAME,daemonName.c_str());
++
++	daemonCore->publish(&m_public_ad);
+ }
+ 
+ void
+@@ -1216,12 +1268,14 @@ JobRouter::UpdateRouteStats() {
+ 	}
+ }
+ 
++/*
+ std::string
+ JobRouter::DaemonIdentityString() {
+ 	std::string identity;
+ 	identity += m_scheduler->Name();
+ 	return identity;
+ }
++*/
+ 
+ void
+ JobRouter::TakeOverJob(RoutedJob *job) {
+@@ -2047,6 +2101,24 @@ JobRouter::CleanupRetiredJob(RoutedJob *job) {
+ 	}
+ }
+ 
++void
++JobRouter::TimerHandler_UpdateCollector() {
++	daemonCore->sendUpdates(UPDATE_AD_GENERIC, &m_public_ad);
++}
++
++void
++JobRouter::InvalidatePublicAd() {
++	ClassAd invalidate_ad;
++	MyString line;
++
++	invalidate_ad.SetMyTypeName(QUERY_ADTYPE);
++	invalidate_ad.SetTargetTypeName(GENERIC_ADTYPE);
++
++	line.sprintf("%s = %s == \"%s\"", ATTR_REQUIREMENTS, ATTR_NAME, daemonName.c_str());
++	invalidate_ad.Insert(line.Value());
++	daemonCore->sendUpdates(INVALIDATE_ADS_GENERIC, &invalidate_ad, NULL, false);
++}
++
+ JobRoute::JobRoute() {
+ 	m_num_jobs = 0;
+ 	m_num_running_jobs = 0;
+diff --git a/src/condor_job_router/JobRouter.h b/src/condor_job_router/JobRouter.h
+index a66325b..4671286 100644
+--- a/src/condor_job_router/JobRouter.h
++++ b/src/condor_job_router/JobRouter.h
+@@ -130,8 +130,12 @@ class JobRouter: public Service {
+ 	int m_periodic_timer_id;
+ 	int m_job_router_polling_period;
+ 
++	int m_public_ad_update_interval;
++	int m_public_ad_update_timer;
++
+ 	char* m_custom_attrs;
+ 	std::string m_job_router_name;
++	std::string daemonName;
+ 
+ 	int m_poll_count;
+ 
+@@ -139,6 +143,7 @@ class JobRouter: public Service {
+ 	class FileLock *m_router_lock;
+ 	std::string m_router_lock_fname;
+ 
++	ClassAd m_public_ad;
+ 
+ 	// Count jobs being managed.  (Excludes RETIRED jobs.)
+ 	int NumManagedJobs();
+@@ -222,6 +227,9 @@ class JobRouter: public Service {
+ 	// same name as this one.
+ 	void GetInstanceLock();
+ 
++	void InitPublicAd();
++	void TimerHandler_UpdateCollector();
++	void InvalidatePublicAd();
+ };
+ 
+ #endif
+diff --git a/src/condor_job_router/Scheduler.h b/src/condor_job_router/Scheduler.h
+index 9f6784a..288e41e 100644
+--- a/src/condor_job_router/Scheduler.h
++++ b/src/condor_job_router/Scheduler.h
+@@ -27,10 +27,9 @@
+ 
+ class Scheduler: virtual public JobLogMirror {
+ public:
+-	Scheduler(NewClassAdJobLogConsumer *_consumer,
+-			  const char *name_param = "JOB_ROUTER_NAME"):
+-		m_consumer(_consumer),
+-		JobLogMirror(_consumer, name_param)
++	Scheduler(NewClassAdJobLogConsumer *_consumer):
++		JobLogMirror(_consumer),
++		m_consumer(_consumer)
+ 	{ }
+ 
+ 	classad::ClassAdCollection *GetClassAds()
+diff --git a/src/condor_negotiator.V6/main.cpp b/src/condor_negotiator.V6/main.cpp
+index 58e4998..d15575d 100644
+--- a/src/condor_negotiator.V6/main.cpp
++++ b/src/condor_negotiator.V6/main.cpp
+@@ -51,6 +51,7 @@ int main_shutdown_graceful()
+ 
+ int main_shutdown_fast()
+ {
++	matchMaker.invalidateNegotiatorAd();
+ #if HAVE_DLOPEN
+ 	NegotiatorPluginManager::Shutdown();
+ #endif
+diff --git a/src/condor_status.V6/setflags.cpp b/src/condor_status.V6/setflags.cpp
+index 0732d6b..1e7f54e 100644
+--- a/src/condor_status.V6/setflags.cpp
++++ b/src/condor_status.V6/setflags.cpp
+@@ -175,6 +175,9 @@ setType (char *dtype, int i, char *argv)
+         } else
+         if (strcmp(dtype, "ANY") == 0) {
+ 	        type = ANY_AD;
++        } else
++        if (strcmp(dtype, "HAD") == 0) {
++	        type = HAD_AD;
+         } else {
+             fprintf (stderr, "Error:  Unknown entity type: %s\n", dtype);
+             exit (1);
+@@ -321,6 +324,11 @@ setMode (Mode mod, int i, char *argv)
+ 			setPPstyle (PP_GENERIC, i, argv);
+ 			break;
+ 
++		  case MODE_HAD_NORMAL:
++			setType ("HAD", i, argv);
++			setPPstyle (PP_GENERIC, i, argv);
++			break;
++
+           default:
+             fprintf (stderr, "Error:  Illegal mode %d\n", mode);
+             break;
+diff --git a/src/condor_status.V6/status.cpp b/src/condor_status.V6/status.cpp
+index 289efad..7288856 100644
+--- a/src/condor_status.V6/status.cpp
++++ b/src/condor_status.V6/status.cpp
+@@ -177,6 +177,7 @@ main (int argc, char *argv[])
+ 	  case MODE_GENERIC_NORMAL:
+ 	  case MODE_ANY_NORMAL:
+ 	  case MODE_GRID_NORMAL:
++	  case MODE_HAD_NORMAL:
+ 		break;
+ 
+ 	  case MODE_OTHER:
+@@ -327,7 +328,8 @@ main (int argc, char *argv[])
+ 		case MODE_GENERIC_NORMAL:
+ 		case MODE_ANY_NORMAL:
+ 		case MODE_OTHER:
+-        case MODE_GRID_NORMAL:
++		case MODE_GRID_NORMAL:
++		case MODE_HAD_NORMAL:
+ 				// These have to go to the collector, anyway.
+ 			break;
+ 		default:
+@@ -615,6 +617,9 @@ firstPass (int argc, char *argv[])
+ 			if (matchPrefix (argv[i], "generic", 7)) {
+ 				setMode (MODE_GENERIC_NORMAL, i, argv[i]);
+ 			} else
++			if (matchPrefix (argv[i], "had", 3)) {
++				setMode (MODE_HAD_NORMAL, i, argv[i]);
++			} else
+ 			if (*argv[i] == '-') {
+ 				fprintf(stderr, "%s: -subsystem requires another argument\n",
+ 						myName);
+@@ -793,6 +798,7 @@ secondPass (int argc, char *argv[])
+ 			  case MODE_STARTD_AVAIL:
+ 			  case MODE_OTHER:
+ 			  case MODE_GRID_NORMAL:
++			  case MODE_HAD_NORMAL:
+ 			  	sprintf(buffer,"(TARGET.%s==\"%s\") || (TARGET.%s==\"%s\")",
+ 						ATTR_NAME, daemonname, ATTR_MACHINE, daemonname );
+ 				if (diagnose) {
+diff --git a/src/condor_status.V6/status_types.h b/src/condor_status.V6/status_types.h
+index 3109f53..4ee8cb7 100644
+--- a/src/condor_status.V6/status_types.h
++++ b/src/condor_status.V6/status_types.h
+@@ -71,7 +71,8 @@ enum Mode {
+     MODE_GENERIC_NORMAL,
+     MODE_ANY_NORMAL,
+     MODE_OTHER,
+-    MODE_GENERIC
++    MODE_GENERIC,
++    MODE_HAD_NORMAL
+ };
+    
+ #endif //__STATUS_TYPES_H__
+diff --git a/src/condor_tools/tool.cpp b/src/condor_tools/tool.cpp
+index 63304bd..a061dc6 100644
+--- a/src/condor_tools/tool.cpp
++++ b/src/condor_tools/tool.cpp
+@@ -1054,6 +1054,9 @@ resolveNames( DaemonList* daemon_list, StringList* name_list )
+ 	case DT_SCHEDD:
+ 		adtype = SCHEDD_AD;
+ 		break;
++	case DT_HAD:
++		adtype = HAD_AD;
++		break;
+ 	default:
+ 			// TODO: can we do better than this?
+ 		fprintf( stderr, "Unrecognized daemon type while resolving names\n" );
