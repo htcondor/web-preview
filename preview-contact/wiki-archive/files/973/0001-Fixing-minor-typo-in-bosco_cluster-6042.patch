@@ -1,0 +1,29 @@
+From 43f5e886becf4ff1ed5161b7a9bea74955127b28 Mon Sep 17 00:00:00 2001
+From: Derek Weitzel <djw8605@gmail.com>
+Date: Mon, 5 Dec 2016 16:12:12 -0600
+Subject: [PATCH] Fixing minor typo in bosco_cluster #6042
+
+Re-installation of Bosco on a remote cluster would fail when
+attempting to modify the entry line in the cluster list.
+---
+ src/condor_contrib/bosco/bosco_cluster | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/condor_contrib/bosco/bosco_cluster b/src/condor_contrib/bosco/bosco_cluster
+index 5e506c4..5e0780e 100755
+--- a/src/condor_contrib/bosco/bosco_cluster
++++ b/src/condor_contrib/bosco/bosco_cluster
+@@ -353,8 +353,8 @@ add_cluster_to_list () {
+     check_cluster_list2 $remote_host
+     if [ $? -eq 0 ]; then
+         tmpfile=`mktemp -t tmpclusterlist.XXXXXX`
+-        sed "/entry=$remote_host max_queued=.*/d" $CLUSTERLIST_LOCATION > tmpfile
+-        mv tmpfile $CLUSTERLIST_LOCATION
++        sed "/entry=$remote_host max_queued=.*/d" $CLUSTERLIST_LOCATION > $tmpfile
++        mv $tmpfile $CLUSTERLIST_LOCATION
+     fi
+ 
+     echo "entry=$remote_host max_queued=$max_queued cluster_type=$cluster_type" >> $CLUSTERLIST_LOCATION
+-- 
+2.6.2
+
