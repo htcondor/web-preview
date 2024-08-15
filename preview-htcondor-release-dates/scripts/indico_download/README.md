@@ -11,3 +11,4 @@ in accordance to the other files there, add a title, and convert the yaml to mar
 ```bash
 docker build -t indico_download . && docker run --rm -it -v $(PWD):/app indico_download 2175
 ```
+fetch
