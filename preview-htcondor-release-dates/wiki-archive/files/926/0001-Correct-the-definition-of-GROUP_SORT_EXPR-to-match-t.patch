@@ -1,0 +1,45 @@
+From 8c8bfe9f993a2b589a5e8e5ab287e939122b02e3 Mon Sep 17 00:00:00 2001
+From: Ben Cotton <ben.cotton@cyclecomputing.com>
+Date: Tue, 23 Feb 2016 14:37:39 -0500
+Subject: [PATCH] Correct the definition of GROUP_SORT_EXPR to match the
+ behavior I observed experimentally (and what the default value would lead one
+ to expect)
+
+---
+ doc/admin-man/configure.tex | 5 +++--
+ doc/admin-man/userprio.tex  | 2 +-
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/doc/admin-man/configure.tex b/doc/admin-man/configure.tex
+index 42e323a..d2162a8 100644
+--- a/doc/admin-man/configure.tex
++++ b/doc/admin-man/configure.tex
+@@ -9285,9 +9285,10 @@ The following configuration macros affect negotiation for group users.
+ \item[\Macro{GROUP\_SORT\_EXPR}]
+   A floating point ClassAd expression that controls the order in which the 
+   \Condor{negotiator} considers groups when allocating resources.
+-  The largest magnitude positive value goes first.
++  The smallest magnitude positive value goes first.
+   The default value is set such that group \Expr{<none>} always
+-  goes last when considering hierarchical group quotas.
++  goes last when considering group quotas and groups are served in order of
++  least quota utilization.
+ 
+ \label{param:NegotiatorAllowQuotaOversubscription}
+ \item[\Macro{NEGOTIATOR\_ALLOW\_QUOTA\_OVERSUBSCRIPTION}]
+diff --git a/doc/admin-man/userprio.tex b/doc/admin-man/userprio.tex
+index 6ed2d2e..d3e9308 100644
+--- a/doc/admin-man/userprio.tex
++++ b/doc/admin-man/userprio.tex
+@@ -773,7 +773,7 @@ This ordering can be replaced by defining configuration variable
+ The \Condor{negotiator} evaluates this ClassAd expression for each group 
+ ClassAd, 
+ sorts the group by the floating point result, 
+-and then negotiates with the largest positive value going first.
++and then negotiates with the smallest positive value going first.
+ Useful attributes to use are documented
+ in section~\ref{sec:Priorities-in-Negotiation-and-Preemption}.
+ 
+-- 
+2.6.4
+
