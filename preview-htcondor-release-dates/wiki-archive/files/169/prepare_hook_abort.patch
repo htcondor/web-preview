@@ -1,0 +1,209 @@
+diff --git a/src/condor_c++_util/hook_utils.cpp b/src/condor_c++_util/hook_utils.cpp
+index fc88fdc..0769f7a 100644
+--- a/src/condor_c++_util/hook_utils.cpp
++++ b/src/condor_c++_util/hook_utils.cpp
+@@ -26,8 +26,9 @@
+ 
+ 
+ char*
+-validateHookPath( const char* hook_param )
++validateHookPath( const char* hook_param, int& hperr )
+ {
++    hperr = 0;
+ 	char* tmp = param(hook_param);
+ 	if (tmp) {
+ 		StatInfo si(tmp);
+@@ -37,6 +38,7 @@ validateHookPath( const char* hook_param )
+ 					"stat() failed with errno %d (%s)\n",
+ 					hook_param, tmp, si_errno, strerror(si_errno));
+ 			free(tmp);
++            hperr = 1;
+ 			return NULL;
+ 		}
+ #if !defined(WIN32)
+@@ -46,6 +48,7 @@ validateHookPath( const char* hook_param )
+ 					"is world-writable! Refusing to use.\n",
+ 					hook_param, tmp);
+ 			free(tmp);
++            hperr = 2;
+ 			return NULL;
+ 		}
+ #endif
+@@ -53,6 +56,7 @@ validateHookPath( const char* hook_param )
+ 			dprintf(D_ALWAYS, "ERROR: path specified for %s (%s) "
+ 					"is not executable.\n", hook_param, tmp);
+ 			free(tmp);
++            hperr = 3;
+ 			return NULL;
+ 		}
+ 			// TODO: forbid symlinks, too?
+@@ -66,6 +70,7 @@ validateHookPath( const char* hook_param )
+ 					"is a world-writable directory (%s)! Refusing to use.\n",
+ 					hook_param, tmp, si.DirPath());
+ 			free(tmp);
++            hperr = 4;
+ 			return NULL;
+ 		}
+ #endif
+diff --git a/src/condor_c++_util/hook_utils.h b/src/condor_c++_util/hook_utils.h
+index abbc4e9..66a3619 100644
+--- a/src/condor_c++_util/hook_utils.h
++++ b/src/condor_c++_util/hook_utils.h
+@@ -29,7 +29,7 @@
+   @return The strdup'ed string from param() if everything is
+     ok, otherwise NULL.
+ */
+-char* validateHookPath( const char* hook_param );
++char* validateHookPath( const char* hook_param, int& hperr );
+ 
+ 
+ #endif /* _CONDOR_HOOK_UTILS_H_ */
+diff --git a/src/condor_job_router/JobRouterHookMgr.cpp b/src/condor_job_router/JobRouterHookMgr.cpp
+index 45145e1..ccfac69 100644
+--- a/src/condor_job_router/JobRouterHookMgr.cpp
++++ b/src/condor_job_router/JobRouterHookMgr.cpp
+@@ -151,8 +151,10 @@ JobRouterHookMgr::getHookPath(HookType hook_type, classad::ClassAd ad)
+ 	if (NULL == hook_path)
+ 	{
+ 		MyString _param;
++        int hperr=0;
+ 		_param.sprintf("%s_HOOK_%s", keyword.c_str(), getHookTypeString(hook_type));
+-		hook_path = validateHookPath(_param.Value());
++		hook_path = validateHookPath(_param.Value(), hperr);
++        if (hperr != 0) dprintf(D_FULLDEBUG, "Path error for hook %s (hperr=%d)\n", _param.Value(), hperr);
+ 		dprintf(D_FULLDEBUG, "Hook %s: %s\n", _param.Value(),
+ 			hook_path ? hook_path : "UNDEFINED");
+ 	}
+diff --git a/src/condor_startd.V6/StartdHookMgr.cpp b/src/condor_startd.V6/StartdHookMgr.cpp
+index bb07f74..55413a9 100644
+--- a/src/condor_startd.V6/StartdHookMgr.cpp
++++ b/src/condor_startd.V6/StartdHookMgr.cpp
+@@ -109,14 +109,16 @@ StartdHookMgr::getHookPath(HookType hook_type, Resource* rip)
+ 	char* path = hook_paths[(int)hook_type];
+ 	if (!path) {
+ 		MyString _param;
++        int hperr=0;
+ 		_param.sprintf("%s_HOOK_%s", keyword, getHookTypeString(hook_type));
+-		path = validateHookPath(_param.Value());
+-		if (!path) {
++		path = validateHookPath(_param.Value(), hperr);
++		if (!path || (hperr != 0)) {
+ 			hook_paths[(int)hook_type] = UNDEFINED;
+ 		}
+ 		else {
+ 			hook_paths[(int)hook_type] = path;
+ 		}
++        if (hperr != 0) rip->dprintf(D_FULLDEBUG, "Path error for hook %s (hperr=%d)\n", _param.Value(), hperr);
+ 		rip->dprintf(D_FULLDEBUG, "Hook %s: %s\n", _param.Value(),
+ 					 path ? path : "UNDEFINED");
+ 	}
+diff --git a/src/condor_starter.V6.1/StarterHookMgr.cpp b/src/condor_starter.V6.1/StarterHookMgr.cpp
+index 41d3154..caa6d25 100644
+--- a/src/condor_starter.V6.1/StarterHookMgr.cpp
++++ b/src/condor_starter.V6.1/StarterHookMgr.cpp
+@@ -85,14 +85,14 @@ StarterHookMgr::initialize(ClassAd* job_ad)
+ 		dprintf(D_FULLDEBUG,
+ 				"Job does not define %s, not invoking any job hooks.\n",
+ 				ATTR_HOOK_KEYWORD);
+-		return false;
++		return true;
+ 	}
+ 	else {
+ 		dprintf(D_FULLDEBUG,
+ 				"Using %s value from job ClassAd: \"%s\"\n",
+ 				ATTR_HOOK_KEYWORD, m_hook_keyword);
+ 	}
+-	reconfig();
++	if (!reconfig()) return false;
+ 	return HookClientMgr::initialize();
+ }
+ 
+@@ -103,23 +103,28 @@ StarterHookMgr::reconfig()
+ 		// Clear out our old copies of each hook's path.
+ 	clearHookPaths();
+ 
+-	m_hook_prepare_job = getHookPath(HOOK_PREPARE_JOB);
+-	m_hook_update_job_info = getHookPath(HOOK_UPDATE_JOB_INFO);
+-	m_hook_job_exit = getHookPath(HOOK_JOB_EXIT);
++    int hperr = 0;
++	m_hook_prepare_job = getHookPath(HOOK_PREPARE_JOB, hperr);
++    if (hperr != 0) return false;
++	m_hook_update_job_info = getHookPath(HOOK_UPDATE_JOB_INFO, hperr);
++    if (hperr != 0) return false;
++	m_hook_job_exit = getHookPath(HOOK_JOB_EXIT, hperr);
++    if (hperr != 0) return false;
+ 
+ 	return true;
+ }
+ 
+ 
+ char*
+-StarterHookMgr::getHookPath(HookType hook_type)
++StarterHookMgr::getHookPath(HookType hook_type, int& hperr)
+ {
++    hperr=0;
+ 	if (!m_hook_keyword) {
+ 		return NULL;
+ 	}
+ 	MyString _param;
+ 	_param.sprintf("%s_HOOK_%s", m_hook_keyword, getHookTypeString(hook_type));
+-	return validateHookPath(_param.Value());
++	return validateHookPath(_param.Value(), hperr);
+ }
+ 
+ 
+diff --git a/src/condor_starter.V6.1/StarterHookMgr.h b/src/condor_starter.V6.1/StarterHookMgr.h
+index c769a1b..a042f47 100644
+--- a/src/condor_starter.V6.1/StarterHookMgr.h
++++ b/src/condor_starter.V6.1/StarterHookMgr.h
+@@ -94,9 +94,10 @@ private:
+ 		   If the job we're running defines a hook keyword, find the
+ 		   validate path to the given hook.
+ 		   @param hook_type The hook you want the path for.
++           @param hperr Returns with non-zero error code if there is a hook path problem
+ 		   @return Path to the hook if defined and valid, otherwise NULL.
+ 		*/
+-	char* getHookPath(HookType hook_type);
++	char* getHookPath(HookType hook_type, int& hperr);
+ 
+ 		/// Clears out all the hook paths we've validated and saved.
+ 	void clearHookPaths( void );
+diff --git a/src/condor_starter.V6.1/jic_local.cpp b/src/condor_starter.V6.1/jic_local.cpp
+index b000903..581b170 100644
+--- a/src/condor_starter.V6.1/jic_local.cpp
++++ b/src/condor_starter.V6.1/jic_local.cpp
+@@ -342,7 +342,7 @@ bool
+ JICLocal::initJobInfo( void ) 
+ {
+ 		// Give our base class a chance.
+-	JobInfoCommunicator::initJobInfo();
++	if (!JobInfoCommunicator::initJobInfo()) return false;
+ 
+ 	char *orig_job_iwd;
+ 
+diff --git a/src/condor_starter.V6.1/jic_shadow.cpp b/src/condor_starter.V6.1/jic_shadow.cpp
+index 334ff7c..d958343 100644
+--- a/src/condor_starter.V6.1/jic_shadow.cpp
++++ b/src/condor_starter.V6.1/jic_shadow.cpp
+@@ -1194,7 +1194,7 @@ bool
+ JICShadow::initJobInfo( void ) 
+ {
+ 		// Give our base class a chance.
+-	JobInfoCommunicator::initJobInfo();
++	if (!JobInfoCommunicator::initJobInfo()) return false;
+ 
+ 	char *orig_job_iwd;
+ 
+diff --git a/src/condor_starter.V6.1/job_info_communicator.cpp b/src/condor_starter.V6.1/job_info_communicator.cpp
+index f0084cc..368cf62 100644
+--- a/src/condor_starter.V6.1/job_info_communicator.cpp
++++ b/src/condor_starter.V6.1/job_info_communicator.cpp
+@@ -712,7 +712,7 @@ JobInfoCommunicator::initJobInfo( void )
+ {
+ #if HAVE_JOB_HOOKS
+ 	m_hook_mgr = new StarterHookMgr;
+-	m_hook_mgr->initialize(job_ad);
++	return m_hook_mgr->initialize(job_ad);
+ #endif
+ 	return true;
+ }
