@@ -1,0 +1,75 @@
+From d31a125e408996da726f06632260ae06949ac056 Mon Sep 17 00:00:00 2001
+From: Ben Cotton <ben.cotton@cyclecomputing.com>
+Date: Wed, 24 Jun 2015 16:39:41 -0400
+Subject: [PATCH 2/2] Change ReliSock::assign to ReliSock::assignSocket (see
+ tickets #4713, #4288)
+
+
+diff --git a/src/condor_contrib/aviary/src/collector/AviaryCollectorPlugin.cpp b/src/condor_contrib/aviary/src/collector/AviaryCollectorPlugin.cpp
+index 7cdfc3b..48268e3 100644
+--- a/src/condor_contrib/aviary/src/collector/AviaryCollectorPlugin.cpp
++++ b/src/condor_contrib/aviary/src/collector/AviaryCollectorPlugin.cpp
+@@ -68,7 +68,7 @@ struct AviaryCollectorPlugin : public Service, CollectorPlugin
+             EXCEPT("Failed to allocate transport socket");
+         }
+         
+-        if (!sock->assign(provider->getListenerSocket())) {
++        if (!sock->assignSocket(provider->getListenerSocket())) {
+             EXCEPT("Failed to bind transport socket");
+         }
+         int index;
+diff --git a/src/condor_contrib/aviary/src/hadoop/AviaryHadoopPlugin.cpp b/src/condor_contrib/aviary/src/hadoop/AviaryHadoopPlugin.cpp
+index 13c7207..f3891e5 100644
+--- a/src/condor_contrib/aviary/src/hadoop/AviaryHadoopPlugin.cpp
++++ b/src/condor_contrib/aviary/src/hadoop/AviaryHadoopPlugin.cpp
+@@ -75,7 +75,7 @@ AviaryHadoopPlugin::earlyInitialize()
+     if (!sock) {
+         EXCEPT("Failed to allocate transport socket");
+     }
+-    if (!sock->assign(provider->getListenerSocket())) {
++    if (!sock->assignSocket(provider->getListenerSocket())) {
+         EXCEPT("Failed to bind transport socket");
+     }
+     int index;
+diff --git a/src/condor_contrib/aviary/src/job/AviaryScheddPlugin.cpp b/src/condor_contrib/aviary/src/job/AviaryScheddPlugin.cpp
+index 644cf71..65d151b 100644
+--- a/src/condor_contrib/aviary/src/job/AviaryScheddPlugin.cpp
++++ b/src/condor_contrib/aviary/src/job/AviaryScheddPlugin.cpp
+@@ -71,7 +71,7 @@ AviaryScheddPlugin::earlyInitialize()
+ 	if (!sock) {
+ 		EXCEPT("Failed to allocate transport socket");
+ 	}
+-	if (!sock->assign(provider->getListenerSocket())) {
++	if (!sock->assignSocket(provider->getListenerSocket())) {
+ 		EXCEPT("Failed to bind transport socket");
+ 	}
+ 	int index;
+diff --git a/src/condor_contrib/aviary/src/locator/AviaryLocatorPlugin.cpp b/src/condor_contrib/aviary/src/locator/AviaryLocatorPlugin.cpp
+index bcb7902..7472a76 100644
+--- a/src/condor_contrib/aviary/src/locator/AviaryLocatorPlugin.cpp
++++ b/src/condor_contrib/aviary/src/locator/AviaryLocatorPlugin.cpp
+@@ -66,7 +66,7 @@ struct AviaryLocatorPlugin : public Service, CollectorPlugin
+ 			EXCEPT("Failed to allocate transport socket");
+ 		}
+ 
+-		if (!sock->assign(provider->getListenerSocket())) {
++		if (!sock->assignSocket(provider->getListenerSocket())) {
+ 			EXCEPT("Failed to bind transport socket");
+ 		}
+ 		int index;
+diff --git a/src/condor_contrib/aviary/src/query/aviary_query_server.cpp b/src/condor_contrib/aviary/src/query/aviary_query_server.cpp
+index d026d1d..e211d5f 100644
+--- a/src/condor_contrib/aviary/src/query/aviary_query_server.cpp
++++ b/src/condor_contrib/aviary/src/query/aviary_query_server.cpp
+@@ -84,7 +84,7 @@ void main_init(int /* argc */, char * /* argv */ [])
+ 		EXCEPT("Failed to allocate transport socket");
+ 	}
+ 
+-	if (!sock->assign(provider->getListenerSocket())) {
++	if (!sock->assignSocket(provider->getListenerSocket())) {
+ 		EXCEPT("Failed to bind transport socket");
+ 	}
+ 	int index;
+-- 
+2.3.5
+
