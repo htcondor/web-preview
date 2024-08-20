@@ -809,6 +809,8 @@
     <div>
         <div class="row gx-0 gy-0 justify-content-center" style="line-height: 1">
             
+            
+            
                 
                 <div class="col-1 d-flex">
                     <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
@@ -1029,13 +1031,6 @@
                 
                 <div class="col-1 d-flex">
                     <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
-                        <span style="font-size: .7rem; line-height: .6rem;">University of Wisconsin-Milwaukee</span>
-                    </div>
-                </div>
-            
-                
-                <div class="col-1 d-flex">
-                    <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
                         <span style="font-size: .7rem; line-height: .6rem;">University of Wisconsin–Milwaukee</span>
                     </div>
                 </div>
@@ -1121,13 +1116,6 @@
                 <div class="col-1 d-flex">
                     <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
                         <span style="font-size: .7rem; line-height: .6rem;">University of Colorado Boulder</span>
-                    </div>
-                </div>
-            
-                
-                <div class="col-1 d-flex">
-                    <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
-                        <span style="font-size: .7rem; line-height: .6rem;">University of Nebraska-Lincoln</span>
                     </div>
                 </div>
             
@@ -1357,6 +1345,13 @@
             
                 
                 <div class="col-1 d-flex">
+                    <div class="border rounded px-1 pb-1 government flex-grow w-100 ">
+                        <span style="font-size: .7rem; line-height: .6rem;">Argonne National Lab</span>
+                    </div>
+                </div>
+            
+                
+                <div class="col-1 d-flex">
                     <div class="border rounded px-1 pb-1 private-sector flex-grow w-100 ">
                         <span style="font-size: .7rem; line-height: .6rem;">Dreamworks Animation</span>
                     </div>
@@ -1421,13 +1416,6 @@
                 
                 <div class="col-1 d-flex">
                     <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
-                        <span style="font-size: .7rem; line-height: .6rem;">Indiana Unversity</span>
-                    </div>
-                </div>
-            
-                
-                <div class="col-1 d-flex">
-                    <div class="border rounded px-1 pb-1 institution flex-grow w-100 highlight">
                         <span style="font-size: .7rem; line-height: .6rem;">Purdue University</span>
                     </div>
                 </div>
@@ -1450,20 +1438,6 @@
                 <div class="col-1 d-flex">
                     <div class="border rounded px-1 pb-1 collaboration flex-grow w-100 ">
                         <span style="font-size: .7rem; line-height: .6rem;">OSG Consortium</span>
-                    </div>
-                </div>
-            
-                
-                <div class="col-1 d-flex">
-                    <div class="border rounded px-1 pb-1 private-sector flex-grow w-100 ">
-                        <span style="font-size: .7rem; line-height: .6rem;">Google Cloud</span>
-                    </div>
-                </div>
-            
-                
-                <div class="col-1 d-flex">
-                    <div class="border rounded px-1 pb-1 government flex-grow w-100 ">
-                        <span style="font-size: .7rem; line-height: .6rem;">Argonne Lab</span>
                     </div>
                 </div>
             
@@ -1546,7 +1520,7 @@
                 bool: {
                     filter: [
                         {
-                            term: {ResourceType: "Payload"}
+                            term: {ResourceType: "Batch"}
                         },
                         {
                             range: {
@@ -1562,7 +1536,7 @@
             aggs: {
                 projects: {
                     "terms": {
-                        field: "ProjectName",
+                        field: "VOName",
                         size: 99999999
                     },
                     aggs: {
@@ -1606,7 +1580,7 @@
 
     function updateCollaborationUsageValues() {
         let usages = getUsage()
-        let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["IceCube"]},{"name":"IGWN","ids":["LIGO","ligo","IGWN_Staff"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21.futurecolliders"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]}]
+        let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["IceCube"]},{"name":"IGWN","ids":["LIGO","ligo","IGWN_Staff"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21.futurecolliders"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]},{"name":"CMS","ids":["cms"]}]
 
         // Using the usages object get all the usages for the collaborations
         // each collaboration has a list of ids that should be summed for final usage
@@ -1651,7 +1625,7 @@
         Collaborations
     </h1>
     <p class="text-center text-secondary fs-5">
-        Scientific collaborations from across the globe rely upon HTCSS to advance their reseasrch.
+        Scientific collaborations from across the globe rely upon HTCSS to advance their research.
         Statistics from these pools generated in the last 365 days.
     </p>
 </div>
@@ -1988,6 +1962,30 @@
                                 <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">Jobs</span></div>
                                 <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">CPU Core Hours</span></div>
                                 <div class="fs-6 ePIC-gpu" style="height: 47px; display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-3 d-flex">
+                <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
+                    <div>
+                        <h4 class="text-center fw-bold">
+                            CMS
+                        </h4>
+                    </div>
+                    <div class="mb-auto">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-end">
+                                <div id="CMS-jobs" class="fs-3">Loading</div>
+                                <div id="CMS-cpu" class="fs-3">Loading</div>
+                                <div id="CMS-gpu" class="fs-3 CMS-gpu">Loading</div>
+                            </div>
+                            <div class="text-end flex-grow">
+                                <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">Jobs</span></div>
+                                <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">CPU Core Hours</span></div>
+                                <div class="fs-6 CMS-gpu" style="height: 47px; display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
                             </div>
                         </div>
                     </div>
