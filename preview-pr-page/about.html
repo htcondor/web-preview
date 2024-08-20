@@ -1527,9 +1527,9 @@
 <script type="module">
     import ElasticSearchQuery, {DATE_RANGE, ENDPOINT, OSPOOL_FILTER, SUMMARY_INDEX} from "/web-preview/preview-pr-page/assets/js/elastic-search.js"
 
-    const elasticSearch = new ElasticSearchQuery(SUMMARY_INDEX, ENDPOINT)
-
     async function getUsage(){
+        const elasticSearch = new ElasticSearchQuery(SUMMARY_INDEX, ENDPOINT)
+
         let voUsageQueryResult = await elasticSearch.search({
             size: 0,
             query: {
@@ -1658,53 +1658,53 @@
             return p
         }, {})
 
-        console.log(projectUsage, voUsage)
-
         return {...projectUsage, ...voUsage}
     }
 
-    function updateCollaborationUsageValues() {
-        let usages = getUsage()
+    async function updateCollaborationUsageValues() {
+        let usages = await getUsage()
         let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["IceCube"]},{"name":"IGWN","ids":["ligo"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21","snowmass21.futurecolliders","snowmass21.energy","snowmass21.en-prod"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]},{"name":"CMS","ids":["cms"]},{"name":"ATLAS","ids":["ATLAS","atlas"]}]
 
         // Using the usages object get all the usages for the collaborations
         // each collaboration has a list of ids that should be summed for final usage
         // Once the summation is complete the populate the cards using the id generated from the collaboration name
+        collaborations.forEach((collaboration) => {
+            let usage = {
+                cpuHours: 0,
+                gpuHours: 0,
+                jobs: 0
+            }
 
-        usages.then((usages) => {
-            collaborations.forEach((collaboration) => {
-                let usage = {
-                    cpuHours: 0,
-                    gpuHours: 0,
-                    jobs: 0
-                }
+            collaboration.ids.forEach((id) => {
+                try {
+                    usage.cpuHours += usages[id].cpuHours
+                    usage.gpuHours += usages[id].gpuHours
+                    usage.jobs += usages[id].jobs
 
-                collaboration.ids.forEach((id) => {
-                    try {
-                        usage.cpuHours += usages[id].cpuHours
-                        usage.gpuHours += usages[id].gpuHours
-                        usage.jobs += usages[id].jobs
-
-                    } catch (e) {
-                        console.error(`Error while summing usage for ${collaboration.name}`)
-                    }
-                })
-
-                document.getElementById(`${collaboration.name}-jobs`).innerText = usage.jobs.toLocaleString()
-                document.getElementById(`${collaboration.name}-cpu`).innerText = usage.cpuHours.toLocaleString()
-                document.getElementById(`${collaboration.name}-gpu`).innerText = usage.gpuHours.toLocaleString()
-                if(usage.gpuHours === 0){
-                    for(const element of document.getElementsByClassName(`${collaboration.name}-gpu`)){
-                        element.style.display = 'none'
-                    }
+                } catch (e) {
+                    console.error(`Error while summing usage for ${collaboration.name}`)
                 }
             })
+
+            document.getElementById(`${collaboration.name}-jobs`).innerText = usage.jobs.toLocaleString()
+            document.getElementById(`${collaboration.name}-cpu`).innerText = usage.cpuHours.toLocaleString()
+            document.getElementById(`${collaboration.name}-gpu`).innerText = usage.gpuHours.toLocaleString()
+            if(usage.gpuHours === 0){
+                for(const element of document.getElementsByClassName(`${collaboration.name}-gpu`)){
+                    element.style.display = 'none'
+                }
+            }
         })
     }
 
-    updateCollaborationUsageValues()
+    document.addEventListener('DOMContentLoaded', function() {
+        updateCollaborationUsageValues().catch((e) => {
+            document.getElementById('collaboration-wrapper').style.display = 'none'
+        })
+    })
 </script>
 
+<div id="collaboration-wrapper">
 <div class="container-xxl pb-4 pt-5">
     <h1 class="text-center">
         Collaborations
@@ -2108,6 +2108,7 @@
             </div>
         
     </div>
+</div>
 </div>
 
 
