@@ -30,7 +30,7 @@ function create_marker([latitude, longitude], iconScale, title){
     let markers = [];
 
     // Adjust this value if you want more or fewer markers
-    const numberOfMarkers = 1; // For example, if you only want one marker per location
+    const numberOfMarkers = 3; // For example, if you only want one marker per location
 
     for (let i = 0; i < numberOfMarkers; i++) {
         // Generate a random jitter within the range for latitude and longitude
@@ -39,10 +39,13 @@ function create_marker([latitude, longitude], iconScale, title){
 
         // Apply jitter and ensure the latitude and longitude are within bounds
         const newLat = Math.min(Math.max(latitude + jitterLat, -90), 90);
-        const newLng = ((longitude + jitterLng + 180) % 360) - 180;
+        const newLng = Math.min(Math.max(longitude + jitterLng, -180), 180);
+
+        // Add points across multiple maps for wide views
+        const finalLng = newLng - (360*Math.floor(numberOfMarkers / 2)) + (360 * i);
 
         // Create a marker with jitter applied and add it to the array
-        const marker = L.marker(L.latLng([newLat, newLng]), {icon: getIcon(iconScale)});
+        const marker = L.marker(L.latLng([newLat, finalLng]), {icon: getIcon(iconScale)});
         if(title) {
             marker.bindPopup(title);
         }
@@ -133,13 +136,14 @@ class UserMap {
         this.viewerLatitude = urlParams.get("latitude") ? urlParams.get("latitude") : 35
         this.viewerLongitude = urlParams.get("longitude") ? urlParams.get("longitude") : -90
         this.scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") !== '0' : true
+        this.style = urlParams.get("style") ? urlParams.get("style") : 'mapbox/streets-v11'
 
         var map = L.map('map', {scrollWheelZoom: this.scrollWheelZoom}).setView([this.viewerLatitude, this.viewerLongitude], this.zoom);
 
         L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
             attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
             maxZoom: 17,
-            id: 'mapbox/satellite-streets-v12',
+            id: this.style,
             tileSize: 512,
             zoomOffset: -1,
             accessToken: 'pk.eyJ1IjoidGFraW5nZHJha2UiLCJhIjoiY2wya3IyZGNvMDFyOTNsbnhyZjBteHRycSJ9.g6tRaqN8_iJxHgAQKNP6Tw',
@@ -158,7 +162,12 @@ class UserMap {
 
     updateMarkerCount(numOfNewMarkers) {
         this.markerCount += numOfNewMarkers
-        document.getElementById("org-count").textContent = this.markerCount
+        for(const element of document.getElementsByClassName("org-count")) {
+            element.textContent = this.markerCount
+        }
+        for(const element of parent.document.getElementsByClassName("org-count")) {
+            element.textContent = this.markerCount
+        }
     }
 
     addIcon(coordinates, title) {
