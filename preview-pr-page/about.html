@@ -771,17 +771,28 @@
     // This script is used to toggle the css styles of the types of institutions
     // on the about page.
 
-    let currentHighlight = 'institution';
-
+    let currentType = 'institution';
     function toggleInstitutionType(type) {
 
+        // Untoggle the current button
+        const currentButton = document.getElementById(currentType);
+        currentButton.classList.remove('btn-secondary');
+        currentButton.classList.add('btn-outline-secondary');
+
+        const button = document.getElementById(type);
+
+        // Change the toggle button class to btn-secondary
+        button.classList.remove('btn-outline-secondary');
+        button.classList.add('btn-secondary');
+
+
         // Untoggle the current highlight
-        const currentElements = document.getElementsByClassName(currentHighlight);
+        const currentElements = document.getElementsByClassName(currentType);
         for (let i = 0; i < currentElements.length; i++) {
             currentElements[i].classList.toggle('highlight');
         }
 
-        currentHighlight = type;
+        currentType = type;
 
         // Toggle the new highlight
         const elements = document.getElementsByClassName(type);
@@ -789,6 +800,11 @@
             elements[i].classList.toggle('highlight');
         }
     }
+
+    // This function is used to get the number of organizations that have reported
+    document.addEventListener('DOMContentLoaded', function() {
+        toggleInstitutionType('institution');
+    });
 </script>
 
 <div class="container-xxl pb-4 pt-5">
@@ -799,10 +815,10 @@
         Sample of institutions using HTCSS to broaden their impact.
     </p>
     <div class="d-flex justify-content-center">
-        <button autofocus class="btn btn-outline-secondary" onclick="toggleInstitutionType('institution')">Academic</button>
-        <button class="btn btn-outline-secondary ms-2" onclick="toggleInstitutionType('government')">Government</button>
-        <button class="btn btn-outline-secondary ms-2" onclick="toggleInstitutionType('private-sector')">Private Sector</button>
-        <button class="btn btn-outline-secondary ms-2" onclick="toggleInstitutionType('collaboration')">Collaborations</button>
+        <button id="institution" class="btn btn-outline-secondary" onclick="toggleInstitutionType('institution')">Academic</button>
+        <button id="government" class="btn btn-outline-secondary ms-2" onclick="toggleInstitutionType('government')">Government</button>
+        <button id="private-sector" class="btn btn-outline-secondary ms-2" onclick="toggleInstitutionType('private-sector')">Private Sector</button>
+        <button id="collaboration" class="btn btn-outline-secondary ms-2" onclick="toggleInstitutionType('collaboration')">Collaborations</button>
     </div>
 </div>
 <div class="p-3">
@@ -1529,8 +1545,16 @@
                                     gte: DATE_RANGE['oneYearAgo']
                                 }
                             }
+                        },
+                        // Filter out all documents that have a VOName that are gluex, dune
+                        {
+                            bool: {
+                                must_not: {
+                                    term: {VOName: "gluex"},
+                                    term: {VOName: "dune"}
+                                }
+                            }
                         }
-                        // Filter out all documents that have a VOName that is not cms, igwn, gluex, or dune
                     ]
                 },
             },
@@ -1641,7 +1665,7 @@
 
     function updateCollaborationUsageValues() {
         let usages = getUsage()
-        let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["icecube"]},{"name":"IGWN","ids":["ligo"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21","snowmass21.futurecolliders","snowmass21.energy","snowmass21.en-prod"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]},{"name":"CMS","ids":["cms"]},{"name":"ATLAS","ids":["ATLAS","atlas"]}]
+        let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["IceCube"]},{"name":"IGWN","ids":["ligo"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21","snowmass21.futurecolliders","snowmass21.energy","snowmass21.en-prod"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]},{"name":"CMS","ids":["cms"]},{"name":"ATLAS","ids":["ATLAS","atlas"]}]
 
         // Using the usages object get all the usages for the collaborations
         // each collaboration has a list of ids that should be summed for final usage
@@ -2544,7 +2568,7 @@
 
 
 
-<div class="container-xxl pb-3">
+<div class="container-xxl py-3">
     <h1 class="text-center">
         Featured HTCSS Users
     </h1>
