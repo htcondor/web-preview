@@ -1514,7 +1514,7 @@
     const elasticSearch = new ElasticSearchQuery(SUMMARY_INDEX, ENDPOINT)
 
     async function getUsage(){
-        let usageQueryResult = await elasticSearch.search({
+        let voUsageQueryResult = await elasticSearch.search({
             size: 0,
             query: {
                 bool: {
@@ -1530,6 +1530,7 @@
                                 }
                             }
                         }
+                        // Filter out all documents that have a VOName that is not cms, igwn, gluex, or dune
                     ]
                 },
             },
@@ -1560,9 +1561,9 @@
             }
         })
 
-        let projectBuckets = usageQueryResult.aggregations.projects.buckets
+        let voProjectBuckets = voUsageQueryResult.aggregations.projects.buckets
 
-        let usage = projectBuckets.reduce((p, v) => {
+        let voUsage = voProjectBuckets.reduce((p, v) => {
             p[v['key']] = {
                 cpuHours: Math.floor(v['projectCpuUse']['value']),
                 cpu: v['projectCpuUse']['value'] != 0,
@@ -1573,14 +1574,74 @@
             return p
         }, {})
 
-        console.log(usage)
 
-        return usage
+        let projectUsageQueryResult = await elasticSearch.search({
+            size: 0,
+            query: {
+                bool: {
+                    filter: [
+                        {
+                            term: {ResourceType: "Payload"}
+                        },
+                        {
+                            range: {
+                                EndTime: {
+                                    lte: DATE_RANGE['now'],
+                                    gte: DATE_RANGE['oneYearAgo']
+                                }
+                            }
+                        }
+                    ]
+                },
+            },
+            aggs: {
+                projects: {
+                    "terms": {
+                        field: "ProjectName",
+                        size: 99999999
+                    },
+                    aggs: {
+                        projectCpuUse: {
+                            sum: {
+                                field: "CoreHours"
+                            }
+                        },
+                        projectGpuUse: {
+                            sum: {
+                                field: "GPUHours"
+                            }
+                        },
+                        projectJobsRan: {
+                            sum: {
+                                field: "Njobs"
+                            }
+                        }
+                    }
+                }
+            }
+        })
+
+        let projectProjectBuckets = projectUsageQueryResult.aggregations.projects.buckets
+
+        let projectUsage = projectProjectBuckets.reduce((p, v) => {
+            p[v['key']] = {
+                cpuHours: Math.floor(v['projectCpuUse']['value']),
+                cpu: v['projectCpuUse']['value'] != 0,
+                gpuHours: Math.floor(v['projectGpuUse']['value']),
+                gpu: v['projectGpuUse']['value'] != 0,
+                jobs: Math.floor(v['projectJobsRan']['value'])
+            }
+            return p
+        }, {})
+
+        console.log(projectUsage, voUsage)
+
+        return {...projectUsage, ...voUsage}
     }
 
     function updateCollaborationUsageValues() {
         let usages = getUsage()
-        let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["IceCube"]},{"name":"IGWN","ids":["LIGO","ligo","IGWN_Staff"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21.futurecolliders"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]},{"name":"CMS","ids":["cms"]}]
+        let collaborations = [{"name":"REDTOP","ids":["REDTOP"]},{"name":"IceCube","ids":["icecube"]},{"name":"IGWN","ids":["ligo"]},{"name":"South Pole Telescope","ids":["spt.all"]},{"name":"Xenon","ids":["xenon"]},{"name":"Future Colliders","ids":["snowmass21","snowmass21.futurecolliders","snowmass21.energy","snowmass21.en-prod"]},{"name":"KOTO","ids":["KOTO"]},{"name":"CLAS12","ids":["CLAS12"]},{"name":"GLUEX","ids":["gluex","GLUEX"]},{"name":"EIC","ids":["EIC"]},{"name":"MOLLER","ids":["MOLLER"]},{"name":"DUNE","ids":["dune"]},{"name":"EHT","ids":["eht"]},{"name":"ePIC","ids":["ePIC"]},{"name":"CMS","ids":["cms"]},{"name":"ATLAS","ids":["ATLAS","atlas"]}]
 
         // Using the usages object get all the usages for the collaborations
         // each collaboration has a list of ids that should be summed for final usage
@@ -1626,8 +1687,14 @@
     </h1>
     <p class="text-center text-secondary fs-5">
         Scientific collaborations from across the globe rely upon HTCSS to advance their research.
-        Statistics from these pools generated in the last 365 days.
     </p>
+</div>
+<div class="container pb-2">
+    <div class="row justify-content-center">
+        <div class="col-auto">
+            Statistics from these pools generated in the last 365 days.
+        </div>
+    </div>
 </div>
 <div class="container-xxl pb-5">
     <div class="row justify-content-center gx-1 gy-1">
@@ -1986,6 +2053,30 @@
                                 <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">Jobs</span></div>
                                 <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">CPU Core Hours</span></div>
                                 <div class="fs-6 CMS-gpu" style="height: 47px; display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-3 d-flex">
+                <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
+                    <div>
+                        <h4 class="text-center fw-bold">
+                            ATLAS
+                        </h4>
+                    </div>
+                    <div class="mb-auto">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-end">
+                                <div id="ATLAS-jobs" class="fs-3">Loading</div>
+                                <div id="ATLAS-cpu" class="fs-3">Loading</div>
+                                <div id="ATLAS-gpu" class="fs-3 ATLAS-gpu">Loading</div>
+                            </div>
+                            <div class="text-end flex-grow">
+                                <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">Jobs</span></div>
+                                <div class="fs-6 d-flex" style="height: 47px"><span class="ms-auto my-auto">CPU Core Hours</span></div>
+                                <div class="fs-6 ATLAS-gpu" style="height: 47px; display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
                             </div>
                         </div>
                     </div>
