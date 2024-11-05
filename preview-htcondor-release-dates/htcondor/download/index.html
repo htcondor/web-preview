@@ -559,6 +559,50 @@
                     <div class="my-2">
                         
 
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2024-11-01-mining-genomes.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Mining millions of genomes for the next powerful antibiotic
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">November  1, 2024</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2024-07-25-collaborations-epic-eic.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Collaborations Between Two National Laboratories and the OSG Consortium Propel Nuclear and High-Energy Physics Forward
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">July 25, 2024</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
 <a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2024-06-13-noaa-on-the-ospool.html">
 
 
@@ -591,50 +635,6 @@
             </h6>
             <div>
                 <span class="text-muted text-decoration-none">May 14, 2024</span>
-            </div>
-        </div>
-    </div>
-
-
-</a>
-
-                    </div>
-                    
-                    <div class="my-2">
-                        
-
-<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2024-04-29-eht-story.html">
-
-
-    <div class="card border-0 ">
-        <div class="p-2 d-flex flex-column">
-            <h6 class="text-decoration-none mb-1">
-                Junior researchers advance black hole research with OSPool open capacity
-            </h6>
-            <div>
-                <span class="text-muted text-decoration-none">April 29, 2024</span>
-            </div>
-        </div>
-    </div>
-
-
-</a>
-
-                    </div>
-                    
-                    <div class="my-2">
-                        
-
-<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-htcondor-release-dates/featured-users/2024-04-19-campus-onboarding.html">
-
-
-    <div class="card border-0 ">
-        <div class="p-2 d-flex flex-column">
-            <h6 class="text-decoration-none mb-1">
-                “Becoming part of something bigger” motivates campus contributions to the OSPool
-            </h6>
-            <div>
-                <span class="text-muted text-decoration-none">April 19, 2024</span>
             </div>
         </div>
     </div>
@@ -971,31 +971,14 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.10.1</span> Feature Release</h3>
-        <p>October  3, 2024</p>
+        <h3><span class="text-secondary">24.1.1</span> Feature Release</h3>
+        <p>October 31, 2024</p>
         <div>
             <ul>
-  <li>Improvements to disk usage enforcement when using LVM
-    <ul>
-      <li>Can encrypt job sandboxes when using LVM</li>
-      <li>More precise tracking of disk usage when using LVM</li>
-      <li>Reduced disk usage tracking overhead</li>
-    </ul>
-  </li>
-  <li>Improvements tracking CPU and memory usage with cgroup v2 (on EL9)
-    <ul>
-      <li>Don’t count kernel cache pages against job’s memory usage</li>
-      <li>Avoid rare inclusion of previous job’s CPU and peak memory usage</li>
-    </ul>
-  </li>
-  <li>HTCondor now re-checks DNS before re-connecting to a collector</li>
-  <li>HTCondor now writes out per job epoch history</li>
-  <li>HTCondor can encrypt network connections without requiring authentication</li>
-  <li>htcondor CLI can now show status for local server, AP, and CM</li>
-  <li>htcondor CLI can now display OAUTH2 credentials</li>
-  <li>Uses job’s sandbox to convert image format for Singularity/Apptainer</li>
-  <li>Bug fix to not lose GPUs in Docker jobs on systemd reconfig</li>
-  <li>Bug fix for PID namespaces and <code>condor_ssh_to_job</code> on EL9</li>
+  <li>Can print contents of stored OAuth2 credential with htcondor CLI tool</li>
+  <li>In DAGMan, inline submit descriptions work when not submitting directly</li>
+  <li>By default, put Docker jobs on hold when CPU architecture doesn’t match</li>
+  <li>Detects and deletes invalid checkpoint and reschedules job</li>
 </ul>
 
         </div>
@@ -1006,7 +989,7 @@
             HTCondor's latest features.
         </p>
         <p class="">
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-23-x.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-24-x.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
             <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">Installation Guide</a>
@@ -1020,12 +1003,29 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">23.0.17</span> Long Term Support Release</h3>
-        <p>October 24, 2024</p>
+        <h3><span class="text-secondary">24.0.1</span> Long Term Support Release</h3>
+        <p>October 31, 2024</p>
         <div>
-            <ul>
-  <li>Bug fix for PID namespaces and condor_ssh_to_job on EL9</li>
-  <li>Augment condor_upgrade_check to find unit suffixes in ClassAd expressions</li>
+            <p>Improvements from the HTCondor 23.x feature series</p>
+<ul>
+  <li>Improved tracking and enforcement of disk usage by using LVM</li>
+  <li>Enhancements to the htcondor CLI tool</li>
+  <li>cgroup v2 support for tracking and enforcement of CPU and memory usage</li>
+  <li>Leverage cgroups to hide GPUs not allocated to the job</li>
+  <li>DAGMan can now produce job credentials when using direct submit</li>
+  <li>New submit commands to aid in matching specific GPU requirements</li>
+  <li>New implementation of the Python bindings, htcondor2 and classad2</li>
+  <li>Improved default security configuration</li>
+  <li>Significant reduction in memory and CPU usage on the Central Manager</li>
+</ul>
+
+<p>Additional highlights:</p>
+<ul>
+  <li>Support for GPUs using AMD’s HIP 6 library</li>
+  <li>Fix bugs when -divide or -repeat was used in GPU detection</li>
+  <li>Proper error message and hold when Docker emits multi-line error message</li>
+  <li>Fix issue where an unresponsive libvirtd blocked an EP from starting up</li>
+  <li>The htcondor CLI now works on Windows</li>
 </ul>
 
         </div>
@@ -1050,10 +1050,10 @@
             channels.
         </p>
         <p>
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-23-0.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
-            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/23.0/getting-htcondor/index.html">Installation Guide</a>
+            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/24.0/getting-htcondor/index.html">Installation Guide</a>
             <a class="btn btn-primary" href="/web-preview/preview-htcondor-release-dates/htcondor/release-highlights/index.html#long-term-support-channel">Release Notes</a>
         </div>
     </div>
