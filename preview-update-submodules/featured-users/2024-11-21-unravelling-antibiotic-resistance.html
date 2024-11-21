@@ -723,31 +723,27 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
+    
+
+
+
     <div class="bg-light">
     <hr class="my-0">
     <div class="container-xxl">
         <div class="row">
             <div class="col-auto">
                 <div class="d-flex my-2">
-                    <span class="fs-4 my-auto">Software News</span>
+                    <span class="fs-4 my-auto">Featured User</span>
                 </div>
             </div>
             <div class="col-auto d-flex">
                 <div class="d-flex my-2">
                     <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/new.html">View all</a></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-auto d-flex">
-                <div class="d-flex my-2">
-                    <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news-archive.html">View Archives</a></span>
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <hr class="my-0">
 </div>
@@ -755,15 +751,45 @@
 <div class="container-xxl py-4">
     <div id="news-container" class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
-            <h1>HTCondor Week 2020 Registration Open</h1>
-            <span class="fs-3 text-muted">February 13, 2020</span>
+            <h1>Erik Wright: A Biologist Using High-Throughput Computing to Unravel Antibiotic Resistance</h1>
+            <div class="row justify-content-between">
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">Ria Dhingra and Bryna Goeking</span>
+                </div>
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">November 21, 2024</span>
+                </div>
+            </div>
+
             
-            <div class="mt-4 fs-5"><p>We invite HTCondor users, administrators, and developers to HTCondor Week 2020, our annual HTCondor user conference, May 19-20, 2020. This will be a free, online event.</p>
+            <div class="mt-4 fs-5"><p><strong><em>“I have stuck with the OSPool because the access is unprecedented—the amount of compute time you can get, the number of jobs you can run at a time”</em></strong></p>
+
+<p><em>Erik Wright, Associate Professor of Biomedical Informatics at the University of Pittsburgh</em></p>
+
+<p>As bacterial infections evolve to develop resistance to drugs, it is critical to investigate methodologies to slow resistance and, potentially, even reverse it. In his quest to discover new antibiotics to counter resistance, Erik Wright’s project, BioMedInfo aims to compare bacteria with resistant genomes by grouping them into a network of genes with related functions.</p>
+
+<p>Originally studying natural antibiotic producers during his time at the University of Wisconsin Madison’s Ph.D. program in Microbiology, Wright’s lab now examines how to shift from the existing treatment paradigm to one that mimics how antibiotics were originally deployed in nature. To do so, Wright compares the genomes of microorganisms, including both those that produce and resist antibiotics. It’s a task that requires an exorbitant amount of computing power, processing huge data sets as separate computing jobs. That’s where the work of <a href="https://osg-htc.org/services/open_science_pool">Open Science Pool</a> (OSPool), an internationally recognized high throughput computing (HTC) resource, comes in.</p>
+
+<p>While pursuing his Ph.D. in Microbiology at the University of Wisconsin-Madison, <a href="https://www.pmi.pitt.edu/people/ant-235">Erik Wright</a> became familiar with the Center for High Throughput Computing (CHTC) and built relationships with the CHTC research facilitators who helped him organize tasks to run in a high throughput environment. Eight years after graduating with his PhD, Wright still relies on the OSPool for much of his work in genomics. Self-identifying as someone who found a niche of doing biology tied to computing, Wright sees significant value for HTC helping biologists investigate questions they can pursue with this capacity, stating that “without the right amount of capacity, some questions are kind of closed off.” While high throughput computing is not as commonly used in biology as it is in fields such as physics or astronomy, there is tremendous potential in this pairing, as HTC allows work that would otherwise take weeks on one centralized computer to be completed overnight. In the case of increasing biological genomes available to researchers like Wright, being able to process data quickly grants biologists the ability to respond quickly to the demands of their workload.</p>
+
+<p>Currently, at the <a href="https://www.pitt.edu/">University of Pittsburgh</a>, Erik Wright is a leading <a href="https://osg-htc.org/projects.html?project=BiomedInfo">user</a> of the OSPool by jobs and continues to adapt his work with the aid of CHTC research facilitators such as <a href="https://www.cs.wisc.edu/staff/koch-christina/">Christina Koch</a>. The OSPool harvests open capacity for its users from the idle space of contributing institutions. For users like Wright, this is beneficial because they can access enormous computing capacity. “I have stuck with the OSPool because the access is unprecedented — the amount of compute time you can get, the number of jobs you can run at a time,” he continued, “We don’t have to ask permission for everything we do with it. We can just do it.”</p>
+
+<p>In total, Wright’s project “BiomedInfo” has run over 25 million jobs, thanks to open capacity provided by 55 institutions sharing capacity with the OSPool. Wright notes that his workflows function best through a large number of short jobs, or “little tiny nutshells that can run in a minute or an hour.” These short jobs have contributed to Wright’s high utilization of the OSPool based on job count compared to other OSPool projects. In two weeks, he estimates that he can run around 120,000 jobs.</p>
+
+<p>A recent effort made by Wright to address the deluge of biological data is the creation of a new algorithm, “<a href="https://pubmed.ncbi.nlm.nih.gov/38589369/">Clusterize</a>,” a tool that clusters biological sequences by their similarities. He says the algorithm is designed to help “reduce the redundancy in the data.” Building Clusterize required searching through different parameters for the best combination – a task ideally suited for HTC. For example, searching through five different values across 10 parameters results in 100,000 combinations. “You need 100,000 hours to try that one search to find the best possible combination,” Wright said. “It would take 1 computer 10 years to compute it, or it could be 1 year across 10 computers, or 3 weeks across the OSPool.”</p>
+
+<p>Because of developments such as Clusterize, Wright has begun sending members of his lab to <a href="https://osg-htc.org/school-2024/">OSG School</a>, a week-long program for attendees to learn more about HTC. He notes that this experience has allowed members of his lab to become more than proficient with the OSPool, even implementing new solutions. One member implemented a Directed Acyclic Graph Manager (<a href="https://portal.osg-htc.org/documentation/htc_workloads/automated_workflows/dagman-workflows/#introduction">DAGMan</a>) which allows current jobs to start new jobs. This is useful for Wright’s research, as new genomes are continuously being added to his files. Wright remarks, “I am addicted to the OSPool, so to speak, and I basically need it for my work.”</p>
+
+<p>In the future, Wright aims to harness the power of growing data in biological research, as the number of genomes continues doubling approximately every few years. With access to OSPool, he hopes to address antibiotic resistance by continuing to work toward the discovery of new small molecules.</p>
+
+<p>More on Erik Wright and his work mining genomes can be found in an <a href="https://chtc.cs.wisc.edu/mining-genomes.html">interview with him</a> in the <a href="https://morgridge.org/wp-content/uploads/Fearless-Science-Mag-Fall-2024-Digital.pdf">Fall 2024 “Fearless Science” magazine</a>, published by <a href="https://morgridge.org/">the Morgridge Institute for Research</a>.</p>
+
 </div>
         </div>
     </div>
 </div>
-
 
 
 </main>
