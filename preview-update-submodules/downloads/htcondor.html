@@ -826,14 +826,24 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.1.1</span> Feature Release</h3>
-        <p>October 31, 2024</p>
+        <h3><span class="text-secondary">24.2.1</span> Feature Release</h3>
+        <p>November 26, 2024</p>
         <div>
             <ul>
-  <li>Can print contents of stored OAuth2 credential with htcondor CLI tool</li>
-  <li>In DAGMan, inline submit descriptions work when not submitting directly</li>
+  <li>Fixed DAGMan’s direct submission of late materialization jobs</li>
+  <li>New <code>primary_unix_group</code> submit command that sets the job’s primary group</li>
+  <li>Initial implementation of broken slot detection and reporting</li>
+  <li>New job attributes <code>FirstJobMatchDate</code> and <code>InitialWaitDuration</code></li>
+  <li><code>condor_ssh_to_job</code> now sets the supplemental groups in Apptainer</li>
+  <li><code>MASTER_NEW_BINARY_RESTART</code> now accepts the <code>FAST</code> parameter</li>
+  <li>Avoid blocking on dead collectors at shutdown</li>
+  <li>IPv6 networking is now fully supported on Windows</li>
+  <li>Add <code>STARTER_ALWAYS_HOLD_ON_OOM</code> to minimize confusion about memory usage</li>
+  <li>Fix bug that caused <code>condor_ssh_to_job</code> <code>sftp</code> and <code>scp</code> modes to fail</li>
+  <li>Fix <code>KeyboardIdle</code> attribute in dynamic slots that could prevent job start</li>
+  <li>No longer signals the OAuth credmon when there is no work to do</li>
+  <li>Fix rare <code>condor_schedd</code> crash when a <code>$$()</code> macro could not be expanded</li>
   <li>By default, put Docker jobs on hold when CPU architecture doesn’t match</li>
-  <li>Detects and deletes invalid checkpoint and reschedules job</li>
 </ul>
 
         </div>
@@ -858,29 +868,16 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.1</span> Long Term Support Release</h3>
-        <p>October 31, 2024</p>
+        <h3><span class="text-secondary">24.0.2</span> Long Term Support Release</h3>
+        <p>November 26, 2024</p>
         <div>
-            <p>Improvements from the HTCondor 23.x feature series</p>
-<ul>
-  <li>Improved tracking and enforcement of disk usage by using LVM</li>
-  <li>Enhancements to the htcondor CLI tool</li>
-  <li>cgroup v2 support for tracking and enforcement of CPU and memory usage</li>
-  <li>Leverage cgroups to hide GPUs not allocated to the job</li>
-  <li>DAGMan can now produce job credentials when using direct submit</li>
-  <li>New submit commands to aid in matching specific GPU requirements</li>
-  <li>New implementation of the Python bindings, htcondor2 and classad2</li>
-  <li>Improved default security configuration</li>
-  <li>Significant reduction in memory and CPU usage on the Central Manager</li>
-</ul>
-
-<p>Additional highlights:</p>
-<ul>
-  <li>Support for GPUs using AMD’s HIP 6 library</li>
-  <li>Fix bugs when -divide or -repeat was used in GPU detection</li>
-  <li>Proper error message and hold when Docker emits multi-line error message</li>
-  <li>Fix issue where an unresponsive libvirtd blocked an EP from starting up</li>
-  <li>The htcondor CLI now works on Windows</li>
+            <ul>
+  <li>Add <code>STARTER_ALWAYS_HOLD_ON_OOM</code> to minimize confusion about memory usage</li>
+  <li>Fix bug that caused <code>condor_ssh_to_job</code> <code>sftp</code> and <code>scp</code> modes to fail</li>
+  <li>Fix <code>KeyboardIdle</code> attribute in dynamic slots that could prevent job start</li>
+  <li>No longer signals the OAuth credmon when there is no work to do</li>
+  <li>Fix rare <code>condor_schedd</code> crash when a <code>$$()</code> macro could not be expanded</li>
+  <li>By default, put Docker jobs on hold when CPU architecture doesn’t match</li>
 </ul>
 
         </div>
