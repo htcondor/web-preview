@@ -4,8 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <meta name="robots" content="noindex">
-
+    
 
     <!-- Favicons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/web-preview/preview-update-submodules/assets/images/favicons/apple-touch-icon.png">
@@ -724,223 +723,167 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    <div class="bg-light mb-4">
-    <hr class="m-0">
-    <div class="container-xxl py-2">
-        <span class="fs-3">Run a Job on Stampede2 Using an Allocation</span>
+    
+
+
+
+    <div class="bg-light">
+    <hr class="my-0">
+    <div class="container-xxl">
+        <div class="row">
+            <div class="col-auto">
+                <div class="d-flex my-2">
+                    <span class="fs-4 my-auto">Software News</span>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/new.html">View all</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news-archive.html">View Archives</a></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
-    <hr class="m-0">
+    <hr class="my-0">
 </div>
-<div class="container-xxl pb-4">
-    <div class="row">
-        <div  class="col-12 col-lg-10 col-xl-9 col-xxl-8">
-            <p>This recipe assumes that you have decided to use your allocation
-for Stampede2 to run one of your HTCondor jobs.  It takes you step by
-step through the process of Bringing Your Own Capacity (BYOC) in the
-form of an allocation to an OSG Connect access point and using that
-resource to run your HTCondor job.  In what follows, we refer to the set
-of resources leased from that allocation as an “annex.”</p>
 
-<p>In this recipe, we assume that the job has not yet been placed at an
-OSG Connect access point when we begin.</p>
+<div class="container-xxl py-4">
+    <div id="news-container" class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
+            <h1>A Spotlight on Cole Bollig: Finding CHTC, Community, and Learning HTCondor</h1>
+            <span class="fs-3 text-muted">November 26, 2024</span>
+            
+            <div class="mt-4 fs-5"><p><strong><em>“As a software developer, I could be working at a large tech firm or at Facebook or Google to create a new obscure feature that a few people interact with and feed the pockets of millionaires. Instead, I’m helping the scientific community. It feels awesome, important, to be a part of something like that” - Cole Bollig</em></strong></p>
 
-<h5 id="ingredients">Ingredients</h5>
+<div class="row justify-content-center">
+<div class="col-12 col-md-6">
+<img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/cole/cole-party.png" class="figure-img img-fluid rounded" alt="Cole at party" />
+</div>
+<div class="col-12 col-md-6">
+<img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/cole/cole-hello.jpg" class="figure-img img-fluid rounded" alt="Fellows" />
+</div>
+</div>
 
-<ul>
-  <li>An OSG Connect account and password</li>
-  <li>An HTCondor job submit file (example.submit).</li>
-  <li>An allocation for Stampede2.</li>
-  <li>Command-line login access to Stampede2
-(see <a href="https://portal.tacc.utexas.edu/user-guides/stampede2#secure-shell-ssh">TACC’s instructions for gaining access</a>).
-We’ll use <code>LOGIN_NAME</code> to refer to your login name on Stampede2.</li>
-  <li>A name for your Stampede2 annex (example).  By convention,
-this is the name of the submit file you want to run, without its extension.</li>
-</ul>
+<p>Graduating in the midst of a pandemic, Cole Bollig, like most young people, had to navigate the trials of finding employment. Hailing from Cross Plains, WI, Cole went to the University of Wisconsin-Whitewater from 2019-2022 and graduated with a degree in Media Arts and Game Development, with a Technological Emphasis.</p>
 
-<h4 id="assumptions">Assumptions</h4>
+<p>Almost three years later, Cole is not only in the midst of his first semester of grad school, but he has been a valued member here at the Center for High Throughput Computing (CHTC) as an HTCondor Core Developer. Just this past Fall, Cole was one of five CHTC staff members to travel to Amsterdam for the HTCondor European Workshop despite being one of the younger members of the team. Cole is known around here for his Dad jokes, cargo shorts, his commitment to the HTCondor Software Suite tool DAGMan, and for organizing group CHTC lunches at UW-Madison nonprofit group, Slow Food.</p>
 
-<ul>
-  <li>You want to run the job described above on Stampede2.</li>
-  <li>The job described above fits within the capabilities of the
-  <a href="https://portal.tacc.utexas.edu/user-guides/stampede2#slurm-partitions-queues">Stampede2 partition (queue)</a>
-  you wish to run it on.</li>
-</ul>
+<p>This past week, I sat down with Cole to learn more about his story, from graduation to his first project and fixation: DAGMan, an HTCondor Software Suite (HTCSS) tool which assists users in automatically managing workflows of HTCondor jobs.</p>
 
-<h4 id="preparation">Preparation</h4>
+<h2 id="interview">Interview</h2>
 
-<p>First, you will need to determine the project ID of your allocation on
-Stampede2.  If you already know your project ID, you can skip this
-section.  If not, log in to <code>stampede2.tacc.utexas.edu</code> in a terminal and run the
-following command.  (Don’t copy the <code>$</code>; in this and other examples
-further down the page, the <code>$</code> just signifies something you type in,
-rather than something that the computer prints out.)</p>
+<p>R: Thanks for taking the time to chat with me today. So, I’m personally a recent graduate; I graduated this past May (2024) and went through the post-graduate panic of unemployment, a short barista stint, and considering grad school before I found this job here at CHTC. I know you’re also a younger member of our team. Tell me the story of how you went from graduation to working here at CHTC. What was that process like? How many places did you apply? How did you feel during all of it?</p>
 
-<pre><code>$ /usr/local/etc/taccinfo
-</code></pre>
+<p>C: Well, first I graduated—yippie! Then I sort of went straight into applying for jobs after that. During that peak time, I was applying to maybe three of four places a day. Just sending stuff out; I was sort of in limbo for a little over half a year following graduation. Based on my degree and my interests, I really wanted to stay here in the Midwest, especially near Madison so I could still be close to my family and still continue to experience the four seasons. Initially, I was applying to all of the game studios in town here. Madison surprisingly has a decent number of them, including Raven Software, they work on Call of Duty. I applied basically everywhere, and didn’t hear back, you know how it goes <em>laughs</em>.</p>
 
-<p>Choose one of the rows in the top half of the table (there may be only
-one row) and remember the entry in the NAME column.  For the rest of
-these instructions, we’ll use <code>PROJECT_ID</code> where you need to put that
-entry.</p>
+<p>So, I decided to run with a backup plan. I had a minor in CS; I figured I could just do normal development. I ended up scoring this weird partial interview at an insurance company, which was just me video recording answers to questions instead of talking to real people. After that, I also applied to Epic.</p>
 
-<h4 id="instructions">Instructions</h4>
+<p>R: As one does.</p>
 
-<h5 id="1-log-into-the-osg-connect-access-point">1. Log into the OSG Connect Access Point</h5>
+<p>C: Right, as one does. I had a phone interview with them where they talked about how they wanted a full stack developer and all I could think during that call was: I don’t want to be a full stack developer. In the end, it was sort of a blessing I didn’t end up there.</p>
 
-<p>Log into an OSG Connect access point (e.g., <code>login04.osgconnect.net</code> or
-<code>login05.osgconnect.net</code>) using your OSG Connect account and password.</p>
+<p>Towards the end of the Summer, I got tired of filling out all these general applications, and I decided to slow down my rate and be more intentional towards applying to places where I thought the work would actually be interesting. When I was doing that, I saw a UW-Madison position here at CHTC. I had no idea what CHTC even was, but I trusted UW-Madison. They were looking for coders with C++ knowledge, and I really like coding in C++. So, I applied.</p>
 
-<h5 id="2-submit-the-job">2. Submit the Job</h5>
+<p>R: You mentioned in the past that you were surprised you got an interview here. How come? What was the interview and hiring process like here?</p>
 
-<p>Submit the job on the access point, indicating that you want it to run
-on your own resource (the Stampede2 allocation, in this case) with the
-<code>--annex-name</code> option:</p>
+<p>C: I have a degree that doesn’t exactly shout computer science, so I was ecstatic when I got an interview. Up until then, I hadn’t even had a real interview yet aside from that video thing and a phone call. It felt nice that this place trusted me and took a shot on getting to know me. Even if this didn’t go anywhere, it felt exciting to make it to that interview stage.</p>
 
-<pre><code>$ htcondor job submit example.submit \
-  --annex-name example
-Job 123 was submitted and will run only on the annex 'example'.
-</code></pre>
+<p>Originally, I was supposed to interview in person, but it was still the tail-end of peak pandemic times. So, we ended up having a zoom interview. It was honestly a bit nerve wracking. It was my first time doing an interview for a professional, full time, adult job. I was interviewed by three people, one of which is now my supervisor, another who is a close colleague, and another who subsequently left after I was hired, but who had five years of industry experience. And all three were watching me code–live! I didn’t even finish my coding project, they let me “do homework” and turn it in later that evening.</p>
 
-<p>Notes on the output of this command:</p>
-<ul>
-  <li>123 is the JOB_ID assigned by the access point to the placed job.</li>
-  <li>Placing the job with the annex name specified means that the job
-won’t run anywhere other than the annex.</li>
-  <li>Note that the annex name does not say anything about Stampede2; it is simply
-a label for the Stampede2 resources we will be provisioning
-in the next step.</li>
-</ul>
+<p>After sending in that homework, I was called back in for a second interview with Miron, the Director here at CHTC, I think this was less about discussing my qualifications more to deduce if I would be a good fit here at CHTC. Later, I got a call from Todd Tannenbaum, HTCondor Softwear Lead, and my supervisor, who offered me the job. I was so excited, I think I screamed and celebrated for about twenty minutes.</p>
 
-<h5 id="3-lease-the-resources">3. Lease the Resources</h5>
+<p>You just graduated with a degree, too, and we both want to do something in our fields; this, for me, really felt like the first step in the right direction.</p>
 
-<p>To run your job on Stampede2, you will need to create an “annex” there;
-an annex is a named set of leased resources.  The following command will
-submit a request to lease an annex named <code>example</code> to the queue named <code>normal</code>
-on Stampede2.  Project <code>PROJECT_ID</code> will be charged for resources used (by
-default, two nodes).  The <strong>text in bold</strong> is emphasized to distinguish
-it from XSEDE’s log-in prompt.</p>
+<p>R: So, you’ve been here just shy of three years, (congratulations by the way!), but backtracking a little to that first year: what was it like at CHTC as a HTCondor developer? Had you heard of HTCondor before?</p>
 
-<pre><code>$ htcondor annex create example normal@stampede2 --project PROJECT_ID --login-name LOGIN_NAME
-<b>This command will access the system named `Stampede 2` via SSH.  To proceed, follow the
-prompts from that system below; to cancel, hit CTRL-C.</b>
-</code></pre>
+<p>C: Oh gosh. When I started I did not know what CHTC was, or what HTCondor was. It’s so strange to think that now, because I look at this code every day and think: this is over a million lines of code. Some of it is even older than I am! <em>laughs</em> No, seriously, there’s comments from my supervisor that are older than me. But those first few months were definitely a lot. I was a fresh graduate trying to prove myself. A lot of those early days were just learning. There is so much HTCondor can do, and I had to know that information on a technical level. I had to know not just what it can do for the user, but how to make that happen for the user. I think what’s always so interesting about being here is that no one developer knows all of HTCondor. We all just have this growing knowledge of it, we get an area of focus and learn to work on it.</p>
 
-<p>You will need to log into Stampede2 at this prompt.</p>
+<p>R: What challenges did you face and how did you overcome them?</p>
 
-<pre><code><b>Thank you.</b>
+<p>C: So it’s actually really funny. On my first day in the office, another developer, Mark Coatsworth, walks into my office to say hello to me. Mark was one of the people who interviewed me. So, he walks in and says, “Hey man, glad to see you here.By the way, I’m leaving in a couple months and you’ll be taking over my responsibilities. And I was like ”No!” <em>laughs</em></p>
 
-Requesting annex named 'example' from queue 'normal' on Stampede 2...
-</code></pre>
+<p>R: Geez, that sounds like a crazy first day.</p>
 
-<p>The tool will display an indented log of the request progress, because
-it may take a while.  Once the request is done, it will display:</p>
+<p>C: Yeah. But I mean I managed, I’m still here… So, I inherited a portion of code called DAGMan, this is a tool users describe their computational jobs to and it produces an ordered workflow.</p>
 
-<pre><code>... requested.
-</code></pre>
+<figure style="float: left; margin: 0 1rem 1rem 0;">
+<img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/cole/cole-conf.jpg" height="420" width="300" class="figure-img img-fluid rounded" alt="Cole Presenting" />
+<figcaption class="figure-caption">Cole Presenting Dagman</figcaption>
+</figure>
 
-<p>It may take some time for Stampede2 to establish the requested annex.</p>
+<p>R: Yeah, I’ve been here a little over two weeks and heard from multiple people you’re really passionate about this project.</p>
 
-<h5 id="4-confirm-that-the-resources-are-available">4. Confirm that the Resources are Available</h5>
+<p>C: I think a lot about DAGMan, at this point I’m definitely a self proclaimed DAGMan expert.</p>
 
-<p>Check on the status of the annex to make sure it has started up correctly.</p>
+<p>R: <em>Laughs.</em> I noticed that! When I reached out to interview you, it was literally your Slack bio. But it makes sense now, you were assigned this on your first day, it’s like your mission.</p>
 
-<pre><code>$ htcondor annex status example
-Annex 'example' is not established.
-You requested 2 nodes for this annex, of which 0 are in established
-annexes.
-There are 0 CPUs in the established nodes, of which 0 are busy.
-1 jobs must run on this annex, and 0 currently are.
-You made 1 resource request(s) for this annex, of which 1 are pending, 0
-are established, and 0 have retired.
-</code></pre>
+<p>C: There is an endless amount of work I want to do to DAGMan, but that’s true for all of HTCondor. It’s been a journey getting to know code, and then getting to know it at an intimate level. DAGMan is just the thing I got to know first.</p>
 
-<p>Give Stampede2 a few more minutes to grant your request and then check again.</p>
+<p>So, in terms of challenges, I think it was just the learning curve. But that’s true anywhere. There was one circumstance where I programmed something to work, but I didn’t do it the proper way. We had to scrap the whole thing and start over, but mistakes are allowed here, especially when you’re still learning.</p>
 
-<pre><code>$ htcondor annex status example
-Annex 'example' is established.
-Its oldest established request is about 0.29 hours old and will retire in
-0.71 hours.
-You requested 2 nodes for this annex, of which 2 are in established
-annexes.
-There are 136 CPUs in the established nodes, of which 0 are busy.
-1 jobs must run on this annex, and 0 currently are.
-You made 1 resource request(s) for this annex, of which 0 are pending, 1
-are established, and 0 have retired.
-</code></pre>
+<p>R: As a young software developer; how have you managed to find your place and community in a place like CHTC?</p>
 
-<h5 id="5-confirm-job-is-running-on-the-resources">5. Confirm Job is Running on the Resources</h5>
+<p>C: I think the tail end of the pandemic definitely affected my adjustment into CHTC socially. The first day I came in there were only 3 or 4 people in the office besides me. But, as more people came in, I think it was actually relatively easy. Especially in the developer team. We’re all a bunch of nerds, and nerds are easy to get along with when you put them in a room together. We joke, we mess around, we spend a lot of time just talking and working on problems in the hallways.</p>
 
-<p>After some time has passed, check the status of the job to make sure
-that it started running.</p>
+<p>I think just getting out there and chatting is important. We play sheepshead at lunch on Fridays, we have lengthy conversations about minecraft. CHTC also has annual events like the OSG School and the HTC Week conference, which is also a great opportunity to meet new people.</p>
 
-<pre><code>$ htcondor job status 123
-Job will only run on your annex named 'example'.
-Job has been running for 0 hour(s), 2 minute(s), and 21 second(s).
-</code></pre>
+<p>R: What’s your favorite part about working at CHTC?</p>
 
-<p>We want to make sure the job is indeed running on the correct annex
-resources.  There are two different ways we could do this.  We could ask
-the annex itself:</p>
+<p>C: I overall really like it here! The coworkers, the organization, all of it is so gratifying. We’re an open source group, which means so many people can use us. As a software engineer, I could be working at a large tech firm or at Facebook or Google to create a new obscure feature that a few people interact with and feed the pockets of millionaires. Instead, I’m helping the scientific community. It feels awesome, important, to be a part of something like that”</p>
 
-<pre><code>$ htcondor annex status example
-Annex 'example' is established.
-Its oldest established request is about 0.69 hours old and will retire in
-0.31 hours.
-You requested 2 nodes for this annex, of which 2 are in established
-annexes.
-There are 136 CPUs in the established nodes, of which 1 are busy.
-1 jobs must run on this annex, and 1 currently are.
-You made 1 resource request(s) for this annex, of which 0 are pending,
-1 are established, and 0 have retired.
-</code></pre>
+<p>Specifically though, one of my favorite things is the HTCWeek that we host here in Madison. We get to go and present all the cool stuff we are doing with HTCondor and then we get a lot of admin who come up here and talk to us. I love hearing users come in and tell us why they use HTCondor. And it’s so funny, a common thing you see is users who will do the math and tell you how much computational time has been saved by HTCondor. It’s so gratifying to sit down with researchers and see how me clicking away directly helps them do so many cool things.</p>
 
-<p>This indicates that the annex is running jobs, but we don’t know for
-sure that it’s the one we just submitted.  Instead, let’s ask the job
-itself what resources it is running on.</p>
+<p>R: You’re a grad student now! What was the decision process behind going back to school here at UW-Madison while working at CHTC?</p>
 
-<pre><code>$ htcondor job resources 123
-Job is using annex 'example', resource slot1_1@c469-033.stampede2.
-tacc.utexas.edu.
-</code></pre>
+<p>C: I guess to start off, when I graduated, I had no desire to go to grad school. I got my degree and I got this job. Plus, I have learned so much just from working here. But, you know, I sat on campus for five days a week for two years…And kept thinking that I had this opportunity right in front of me, so I might as well take it.</p>
 
-<h5 id="6-terminate-the-resource-lease">6. Terminate the Resource Lease</h5>
+<p>My supervisor Todd Tannenbaum actually did the same thing; he worked here and continued school at</p>
 
-<p>At this point we know that our job is running on the correct resources,
-so we can wait for it to finish running.  After some time has passed, we
-ask for its status again:</p>
+<p>at the same time. So that idea had been stewing in my brain for a while. So, now I’m in a Professional Masters Program for Computer Science</p>
 
-<pre><code>$ htcondor job status 123
-Job is completed.
-</code></pre>
+<p>R: How’s grad school going? How are you doing? As a recent undergrad, I know November almost always felt like the most brutal month.</p>
 
-<p>Now that the job has finished running, we want to shut down the annex.
-When the annex finishes shutting down, the resource lease will be
-terminated.  We could just wait for the annex time out automatically
-(after 20 minutes of being idle), but we would rather shut the annex down
-explicitly to avoid wasting our allocation.</p>
+<p>C: Really well actually. I’m taking it all super slowly; I’m actually only taking one class a semester. Right now, that’s CS640: Intro to Networking.  Despite the program only being 30 credits, it will probably take me four or five years to get the degree. Which is fine for me because I’m still working here and in this for the long game.</p>
 
-<pre><code>$ htcondor annex shutdown example
-Shutting down annex 'example'...
-... each resource in 'example' has been commanded to shut down.
-It may take some time for each resource to finish shutting down.
-Annex requests that are still in progress have not been affected.
-</code></pre>
+<p>R: On that note, What’s the future, the next couple of years, look like for you?</p>
 
-<p>At this point our workflow is completed, and our job has run
-successfully on our allocation.</p>
+<p>C: I can honestly see myself going to retirement here. I don’t like changing jobs much and I care a lot about what I do here. Personally, my goals are wanting to graduate, stay working here, and I’m currently saving up for a house. Project wise, there is so much I want to do with DAGMan alone. I want to improve how DAGMan parses workflow files provided by the user.I would love to be able to improve that process and make it more efficient. And that’s just one of many projects, There is no shortage of work or ideas or bugs or personal pet projects here.</p>
 
-<h5 id="reference">Reference</h5>
+<figure style="float: right; margin: 0 1rem 0 1rem;">
+ <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/cole/cole-nerd.jpg" height="420" width="300" class="figure-img img-fluid rounded" alt="Cole dressed up for Halloween" />
+  <figcaption class="figure-caption">Cole Dressed up for Halloween</figcaption>
+</figure>
 
-<p>You can run either of the following commands for an up-to-date summary
-of their corresponding options.</p>
+<p>R: What are your hobbies like outside of work?</p>
 
-<pre><code>$ htcondor job --help
-$ htcondor annex --help
-</code></pre>
+<p>C: Well, not as much nowadays because I’m in school, but I was an avid gamer. I still game, just not as much. I’m also now a nerd with money, so I’ve been getting into retro gaming. Like, I’m in a position right now where I can drop more money than I should on an old pokemon game. <em>Laughs.</em> Why not? I also actually just finished purchasing my collection of handheld Nintendo devices.</p>
 
+<p>R: That’s lovely. What’s something about you that you think people at work would be surprised to know about you?</p>
+
+<p>C: Well, I’m really such an open book at work here. I’ve gotten to know people and let them get to know me. I’m just a social guy in this environment.</p>
+
+<p>R: Right, I’ve noticed you’re pretty active on the Slack.</p>
+
+<p>C: Exactly. So, something that’s not surprising about me is how many dad jokes and puns I make at work. I’m kind of known for it around here.</p>
+
+<p>R: <em>Laughs</em> Well, thanks for taking the time to chat with me today Cole. I know you have class in about thirty minutes, so I’ll let you go.</p>
+
+<p>C: Thank you and welcome to the team.</p>
+</div>
         </div>
     </div>
 </div>
+
+
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">
     <div class="container-xxl">
