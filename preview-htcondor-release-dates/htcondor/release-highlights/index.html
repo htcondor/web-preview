@@ -1025,6 +1025,71 @@
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-2-2">24.2.2</a></b>
+          <span class="px-1">-</span>
+          <span>December  4, 2024</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Prevent the startd from removing all files if EXECUTE is an empty string
+    <ul>
+      <li>This problem first appeared in the withdrawn HTCondor 24.2.1 version</li>
+    </ul>
+  </li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-2-1">24.2.1</a></b>
+          <span class="px-1">-</span>
+          <span>November 26, 2024</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Fixed DAGMan’s direct submission of late materialization jobs</li>
+  <li>New <code>primary_unix_group</code> submit command that sets the job’s primary group</li>
+  <li>Initial implementation of broken slot detection and reporting</li>
+  <li>New job attributes <code>FirstJobMatchDate</code> and <code>InitialWaitDuration</code></li>
+  <li><code>condor_ssh_to_job</code> now sets the supplemental groups in Apptainer</li>
+  <li><code>MASTER_NEW_BINARY_RESTART</code> now accepts the <code>FAST</code> parameter</li>
+  <li>Avoid blocking on dead collectors at shutdown</li>
+  <li>IPv6 networking is now fully supported on Windows</li>
+  <li>Add <code>STARTER_ALWAYS_HOLD_ON_OOM</code> to minimize confusion about memory usage</li>
+  <li>Fix bug that caused <code>condor_ssh_to_job</code> <code>sftp</code> and <code>scp</code> modes to fail</li>
+  <li>Fix <code>KeyboardIdle</code> attribute in dynamic slots that could prevent job start</li>
+  <li>No longer signals the OAuth credmon when there is no work to do</li>
+  <li>Fix rare <code>condor_schedd</code> crash when a <code>$$()</code> macro could not be expanded</li>
+  <li>By default, put Docker jobs on hold when CPU architecture doesn’t match</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-1-1">24.1.1</a></b>
           <span class="px-1">-</span>
           <span>October 31, 2024</span>

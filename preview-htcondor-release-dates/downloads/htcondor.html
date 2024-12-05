@@ -826,14 +826,15 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.1.1</span> Feature Release</h3>
-        <p>October 31, 2024</p>
+        <h3><span class="text-secondary">24.2.2</span> Feature Release</h3>
+        <p>December  4, 2024</p>
         <div>
             <ul>
-  <li>Can print contents of stored OAuth2 credential with htcondor CLI tool</li>
-  <li>In DAGMan, inline submit descriptions work when not submitting directly</li>
-  <li>By default, put Docker jobs on hold when CPU architecture doesn’t match</li>
-  <li>Detects and deletes invalid checkpoint and reschedules job</li>
+  <li>Prevent the startd from removing all files if EXECUTE is an empty string
+    <ul>
+      <li>This problem first appeared in the withdrawn HTCondor 24.2.1 version</li>
+    </ul>
+  </li>
 </ul>
 
         </div>
