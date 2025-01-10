@@ -455,9 +455,9 @@
                     <div class="d-none d-lg-block col-lg-4">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2024-12-20-htc-euro-workshop-24.html">Fostering Community Amongst Developers and Researchers: A Reflection on the 2024 European Autumn HTCondor Workshop</a></h3>
+                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2025-01-01-jan-news-shorts.html">HTC News Shorts: January 2025</a></h3>
                                 <div>
-                                    <span class="text-muted">December 20, 2024</span>
+                                    <span class="text-muted">January  1, 2025</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -976,15 +976,34 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.2.2</span> Feature Release</h3>
-        <p>December  4, 2024</p>
+        <h3><span class="text-secondary">24.3.0</span> Feature Release</h3>
+        <p>January  6, 2025</p>
         <div>
             <ul>
-  <li>Prevent the startd from removing all files if EXECUTE is an empty string
+  <li>Allow local issuer credmon and Vault credmon to coexist</li>
+  <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
+  <li>Advertises when the EP is enforcing disk usage via LVM</li>
+  <li>By default, LVM disk enforcement hides mounts when possible</li>
+  <li>Container Universe jobs can now mount a writable directory under scratch</li>
+  <li>Pass PELICAN_* job environment variables to pelican file transfer plugin</li>
+  <li>Fix HTCondor startup when network interface has no IPv6 address</li>
+  <li>VacateReason is set in the job ad under more circumstances</li>
+  <li>‘htcondor job submit’ now issues credentials like ‘condor_submit’ does</li>
+  <li>Numerous updates in memory tracking with cgroups
     <ul>
-      <li>This problem first appeared in the withdrawn HTCondor 24.2.1 version</li>
+      <li>Fix bug in reporting peak memory</li>
+      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
+      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
+      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
+      <li>Polls cgroups for memory usage more often</li>
+      <li>Can configure to always hold jobs killed by OOM</li>
     </ul>
   </li>
+  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
+  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
+  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
+  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
+  <li>EPs spawned by ‘htcondor annex’ no longer crash on startup</li>
 </ul>
 
         </div>
@@ -1009,16 +1028,25 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.2</span> Long Term Support Release</h3>
-        <p>November 26, 2024</p>
+        <h3><span class="text-secondary">24.0.3</span> Long Term Support Release</h3>
+        <p>January  6, 2025</p>
         <div>
             <ul>
-  <li>Add <code>STARTER_ALWAYS_HOLD_ON_OOM</code> to minimize confusion about memory usage</li>
-  <li>Fix bug that caused <code>condor_ssh_to_job</code> <code>sftp</code> and <code>scp</code> modes to fail</li>
-  <li>Fix <code>KeyboardIdle</code> attribute in dynamic slots that could prevent job start</li>
-  <li>No longer signals the OAuth credmon when there is no work to do</li>
-  <li>Fix rare <code>condor_schedd</code> crash when a <code>$$()</code> macro could not be expanded</li>
-  <li>By default, put Docker jobs on hold when CPU architecture doesn’t match</li>
+  <li>Numerous updates in memory tracking with cgroups
+    <ul>
+      <li>Fix bug in reporting peak memory</li>
+      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
+      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
+      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
+      <li>Polls cgroups for memory usage more often</li>
+      <li>Can configure to always hold jobs killed by OOM</li>
+    </ul>
+  </li>
+  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
+  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
+  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
+  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
+  <li>EPs spawned by ‘htcondor annex’ no longer crash on startup</li>
 </ul>
 
         </div>
