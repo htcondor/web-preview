@@ -452,28 +452,6 @@
                 
                 
                 
-                    <div class="d-none d-lg-block col-lg-4">
-                        <div class="card h-100">
-                            <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2024-12-09-fellows-program.html">Student Fellows Advance Research Computing Infrastructure at CHTC</a></h3>
-                                <div>
-                                    <span class="text-muted">December  9, 2024</span>
-                                </div>
-                                <hr/>
-                                <a href="/web-preview/preview-htcondor-release-dates/new.html">
-                                    <div class="row">
-                                        <div class="col-auto d-flex">
-                                            <img class="my-auto" height="30" src="/web-preview/preview-htcondor-release-dates/assets/images/arrow-up-right-circle.svg" />
-                                        </div>
-                                        <div class="col">
-                                            View All Software News
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                
             </div>
             <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
 
@@ -1030,6 +1008,90 @@
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-4-0">24.4.0</a></b>
+          <span class="px-1">-</span>
+          <span>February  6, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Improved validation and cleanup of EXECUTE directories</li>
+  <li>For batch grid universe, the PATH comes from the job ad and worker node</li>
+  <li>Improved <code>condor_q -better-analyze</code> for pools with partitionable slots</li>
+  <li>The EP advertizes if Singularity is using user namespaces</li>
+  <li>The EP advertizes average and total bytes transferred to and from jobs</li>
+  <li>The <code>condor_credmon</code> now utilizes the shared port daemon</li>
+  <li><code>condor_upgrade_check</code> tests for PASSWORD authentication identity change</li>
+  <li>Fix bug where STARTD_ENFORCE_DISK_LIMITS would excessively save metadata</li>
+  <li>Fix bug where <code>container_service_names</code> did not work</li>
+  <li>Fix rare startd crash when collector queries time out and DNS is slow</li>
+  <li>New <code>arc_data_staging</code> submit command to add DataStaging block to ARC ADL</li>
+  <li>Fix bug where the negotiator could crash when matching offline ads</li>
+  <li>Fix memory leak in SCHEDD_CRON script that produce standard output</li>
+  <li>Fix bug where the schedd could crash if cron script runs during shutdown</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-3-0">24.3.0</a></b>
+          <span class="px-1">-</span>
+          <span>January  6, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Allow local issuer credmon and Vault credmon to coexist</li>
+  <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
+  <li>Advertises when the EP is enforcing disk usage via LVM</li>
+  <li>By default, LVM disk enforcement hides mounts when possible</li>
+  <li>Container Universe jobs can now mount a writable directory under scratch</li>
+  <li>Pass PELICAN_* job environment variables to pelican file transfer plugin</li>
+  <li>Fix HTCondor startup when network interface has no IPv6 address</li>
+  <li>VacateReason is set in the job ad under more circumstances</li>
+  <li>‘htcondor job submit’ now issues credentials like ‘condor_submit’ does</li>
+  <li>Numerous updates in memory tracking with cgroups
+    <ul>
+      <li>Fix bug in reporting peak memory</li>
+      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
+      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
+      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
+      <li>Polls cgroups for memory usage more often</li>
+      <li>Can configure to always hold jobs killed by OOM</li>
+    </ul>
+  </li>
+  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
+  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
+  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
+  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
+  <li>EPs spawned by ‘htcondor annex’ no longer crash on startup</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-2-2">24.2.2</a></b>
           <span class="px-1">-</span>
           <span>December  4, 2024</span>
@@ -1134,6 +1196,72 @@
 
 
 
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/23.x/version-history/feature-versions-23-x.html#version-23-10-20">23.10.20</a></b>
+            <span class="px-1">-</span>
+            <span>February  6, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li><code>condor_upgrade_check</code> tests for PASSWORD authentication identity change</li>
+  <li>Fix bug where STARTD_ENFORCE_DISK_LIMITS would excessively save metadata</li>
+  <li>Fix bug where container_service_names did not work</li>
+  <li>Fix rare startd crash when collector queries time out and DNS is slow</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/23.x/version-history/feature-versions-23-x.html#version-23-10-19">23.10.19</a></b>
+            <span class="px-1">-</span>
+            <span>January  6, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Numerous updates in memory tracking with cgroups
+    <ul>
+      <li>Fix bug in reporting peak memory</li>
+      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
+      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
+      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
+      <li>Polls cgroups for memory usage more often</li>
+      <li>Can configure to always hold jobs killed by OOM</li>
+    </ul>
+  </li>
+  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
+  <li>Avoid OAUTH credmon errors by only signaling it when necessary</li>
+  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
+  <li>Fix rare condor_schedd crash when a $$() macro could not be expanded</li>
+  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
+  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
+</ul>
+
+        </div>
       
         
 
@@ -5716,6 +5844,75 @@ issues are in the Vulnerability Reports:</p>
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html#version-24-0-4">24.0.4</a></b>
+          <span class="px-1">-</span>
+          <span>February  6, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li><code>condor_upgrade_check</code> tests for PASSWORD authentication identity change</li>
+  <li>Fix bug where STARTD_ENFORCE_DISK_LIMITS would excessively save metadata</li>
+  <li>Fix bug where container_service_names did not work</li>
+  <li>Fix rare startd crash when collector queries time out and DNS is slow</li>
+  <li>New <code>arc_data_staging</code> submit command to add DataStaging block to ARC ADL</li>
+  <li>Fix bug where the negotiator could crash when matching offline ads</li>
+  <li>Fix memory leak in SCHEDD_CRON script that produce standard output</li>
+  <li>Fix bug where the schedd could crash if cron script runs during shutdown</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html#version-24-0-3">24.0.3</a></b>
+          <span class="px-1">-</span>
+          <span>January  6, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Numerous updates in memory tracking with cgroups
+    <ul>
+      <li>Fix bug in reporting peak memory</li>
+      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
+      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
+      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
+      <li>Polls cgroups for memory usage more often</li>
+      <li>Can configure to always hold jobs killed by OOM</li>
+    </ul>
+  </li>
+  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
+  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
+  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
+  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
+  <li>EPs spawned by ‘htcondor annex’ no longer crash on startup</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html#version-24-0-2">24.0.2</a></b>
           <span class="px-1">-</span>
           <span>November 26, 2024</span>
@@ -5799,6 +5996,67 @@ issues are in the Vulnerability Reports:</p>
 
 
 
+      
+        
+
+
+
+
+
+
+
+
+
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-23-0.html#version-23-0-20">23.0.20</a></b>
+              <span class="px-1">-</span>
+              <span>February  6, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
+  <li><code>condor_upgrade_check</code> tests for PASSWORD authentication identity change</li>
+</ul>
+
+          </div>
+      
+        
+
+
+
+
+
+
+
+
+
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-23-0.html#version-23-0-19">23.0.19</a></b>
+              <span class="px-1">-</span>
+              <span>January  6, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
+  <li>Numerous updates in memory tracking with cgroups
+    <ul>
+      <li>Fix bug in reporting peak memory</li>
+      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
+      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
+      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
+      <li>Polls cgroups for memory usage more often</li>
+      <li>Can configure to always hold jobs killed by OOM</li>
+    </ul>
+  </li>
+  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
+  <li>Avoid OAUTH credmon errors by only signaling it when necessary</li>
+  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
+  <li>Fix rare condor_schedd crash when a $$() macro could not be expanded</li>
+</ul>
+
+          </div>
       
         
 
