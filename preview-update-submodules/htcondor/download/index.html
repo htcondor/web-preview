@@ -452,28 +452,6 @@
                 
                 
                 
-                    <div class="d-none d-lg-block col-lg-4">
-                        <div class="card h-100">
-                            <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2025-01-01-jan-news-shorts.html">HTC News Shorts: January 2025</a></h3>
-                                <div>
-                                    <span class="text-muted">January  1, 2025</span>
-                                </div>
-                                <hr/>
-                                <a href="/web-preview/preview-update-submodules/new.html">
-                                    <div class="row">
-                                        <div class="col-auto d-flex">
-                                            <img class="my-auto" height="30" src="/web-preview/preview-update-submodules/assets/images/arrow-up-right-circle.svg" />
-                                        </div>
-                                        <div class="col">
-                                            View All Software News
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                
             </div>
             <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
 
@@ -976,34 +954,24 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.3.0</span> Feature Release</h3>
-        <p>January  6, 2025</p>
+        <h3><span class="text-secondary">24.4.0</span> Feature Release</h3>
+        <p>February  6, 2025</p>
         <div>
             <ul>
-  <li>Allow local issuer credmon and Vault credmon to coexist</li>
-  <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
-  <li>Advertises when the EP is enforcing disk usage via LVM</li>
-  <li>By default, LVM disk enforcement hides mounts when possible</li>
-  <li>Container Universe jobs can now mount a writable directory under scratch</li>
-  <li>Pass PELICAN_* job environment variables to pelican file transfer plugin</li>
-  <li>Fix HTCondor startup when network interface has no IPv6 address</li>
-  <li>VacateReason is set in the job ad under more circumstances</li>
-  <li>‘htcondor job submit’ now issues credentials like ‘condor_submit’ does</li>
-  <li>Numerous updates in memory tracking with cgroups
-    <ul>
-      <li>Fix bug in reporting peak memory</li>
-      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
-      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
-      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
-      <li>Polls cgroups for memory usage more often</li>
-      <li>Can configure to always hold jobs killed by OOM</li>
-    </ul>
-  </li>
-  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
-  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
-  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
-  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
-  <li>EPs spawned by ‘htcondor annex’ no longer crash on startup</li>
+  <li>Improved validation and cleanup of EXECUTE directories</li>
+  <li>For batch grid universe, the PATH comes from the job ad and worker node</li>
+  <li>Improved <code>condor_q -better-analyze</code> for pools with partitionable slots</li>
+  <li>The EP advertizes if Singularity is using user namespaces</li>
+  <li>The EP advertizes average and total bytes transferred to and from jobs</li>
+  <li>The <code>condor_credmon</code> now utilizes the shared port daemon</li>
+  <li><code>condor_upgrade_check</code> tests for PASSWORD authentication identity change</li>
+  <li>Fix bug where STARTD_ENFORCE_DISK_LIMITS would excessively save metadata</li>
+  <li>Fix bug where <code>container_service_names</code> did not work</li>
+  <li>Fix rare startd crash when collector queries time out and DNS is slow</li>
+  <li>New <code>arc_data_staging</code> submit command to add DataStaging block to ARC ADL</li>
+  <li>Fix bug where the negotiator could crash when matching offline ads</li>
+  <li>Fix memory leak in SCHEDD_CRON script that produce standard output</li>
+  <li>Fix bug where the schedd could crash if cron script runs during shutdown</li>
 </ul>
 
         </div>
@@ -1028,25 +996,18 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.3</span> Long Term Support Release</h3>
-        <p>January  6, 2025</p>
+        <h3><span class="text-secondary">24.0.4</span> Long Term Support Release</h3>
+        <p>February  6, 2025</p>
         <div>
             <ul>
-  <li>Numerous updates in memory tracking with cgroups
-    <ul>
-      <li>Fix bug in reporting peak memory</li>
-      <li>Made cgroup v1 and v2 memory tracking consistent with each other</li>
-      <li>Fix bug where cgroup v1 usage included disk cache pages</li>
-      <li>Fix bug where cgroup v1 jobs killed by OOM were not held</li>
-      <li>Polls cgroups for memory usage more often</li>
-      <li>Can configure to always hold jobs killed by OOM</li>
-    </ul>
-  </li>
-  <li>Make condor_adstash work with OpenSearch Python Client v2.x</li>
-  <li>Restore case insensitivity to ‘condor_status -subsystem’</li>
-  <li>Fix bug where jobs would match but not start when using KeyboardIdle</li>
-  <li>Fix bug when trying to avoid IPv6 link local addresses</li>
-  <li>EPs spawned by ‘htcondor annex’ no longer crash on startup</li>
+  <li><code>condor_upgrade_check</code> tests for PASSWORD authentication identity change</li>
+  <li>Fix bug where STARTD_ENFORCE_DISK_LIMITS would excessively save metadata</li>
+  <li>Fix bug where container_service_names did not work</li>
+  <li>Fix rare startd crash when collector queries time out and DNS is slow</li>
+  <li>New <code>arc_data_staging</code> submit command to add DataStaging block to ARC ADL</li>
+  <li>Fix bug where the negotiator could crash when matching offline ads</li>
+  <li>Fix memory leak in SCHEDD_CRON script that produce standard output</li>
+  <li>Fix bug where the schedd could crash if cron script runs during shutdown</li>
 </ul>
 
         </div>
