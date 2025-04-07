@@ -1,0 +1,36 @@
+Changes for version 0.9.8: (released 14-Jun-2006)
+
+* The build now uses implicit template instantiation by default. Explicit
+  template instantiation is still available by providing the
+  --use-explicit-templates option to configure.
+
+* Added support for compiling with stlport (known to work with stlport5.0RC6).
+
+* Added SWIG interface for Perl.
+
+* Fixed segmentation fault that occured when evaluating lists that are
+  not within a ClassAd. 
+
+* Added a ClassAdCollection::GetView() function. In combination with
+  the existing view iterators, you can now iterate over an entire
+  view, including the "root" view. 
+
+* Some missing "virtual" keywords were added for virtual destructors
+
+* A bunch of -Wuninitialized warnings were corrected.
+
+* regexprMember has been added.
+
+* The subscript operator now returns error instead of undefined if the
+  argument is out of bounds.
+
+* -0.0 is now handled correctly. 
+
+* You can now do math with booleans. True is 1, False is 0. This lets
+  us do things like:
+
+  Rank = ((other.mips > 4000)*3) + ((other.ram > 1000)*2) +
+         (other.disk>1400)
+
+  This is frequently done in Condor, and we need this functionality in
+  order to be backwards compatible. 
