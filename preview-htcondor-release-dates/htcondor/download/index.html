@@ -954,14 +954,23 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.6.1</span> Feature Release</h3>
-        <p>March 27, 2025</p>
+        <h3><span class="text-secondary">24.7.3</span> Feature Release</h3>
+        <p>April 22, 2025</p>
         <div>
-            <p>This release contains an important fix for a security issue.
-Affected users should update as soon as possible.</p>
+            <ul>
+  <li><code>condor_who</code> now works for Glideins</li>
+  <li>Can add arbitrary credentials to be used by the file transfer plugins</li>
+  <li>Fixed WLCG token generation in the local credmon</li>
+  <li>Can limit the number of times that a job can be released</li>
+  <li>EP administrators can enforce no outbound networking for jobs</li>
+  <li>Add ability to use authentication when fetching Docker images</li>
+  <li><code>condor_watch_q</code> now displays when file transfer is happening</li>
+  <li>To provide more consistency, using swap for jobs is disabled by default</li>
+  <li>With delegated cgroups v2, job out-of-memory no longer affects the pilot</li>
+  <li>HTCondor tarballs now contain Pelican 7.15.1 and Apptainer 1.4.0</li>
+  <li>Fix inflated cgroups v2 memory usage reporting for Docker jobs</li>
+</ul>
 
-<p>More details on the security issue are in the Vulnerability Report:
-https://htcondor.org/security/vulnerabilities/HTCONDOR-2025-0001</p>
 
         </div>
         <hr>
@@ -985,14 +994,14 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2025-0001</p>
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.6</span> Long Term Support Release</h3>
-        <p>March 27, 2025</p>
+        <h3><span class="text-secondary">24.0.7</span> Long Term Support Release</h3>
+        <p>April 22, 2025</p>
         <div>
-            <p>This release contains an important fix for a security issue.
-Affected users should update as soon as possible.</p>
-
-<p>More details on the security issue are in the Vulnerability Report:
-https://htcondor.org/security/vulnerabilities/HTCONDOR-2025-0001</p>
+            <ul>
+  <li>With delegated cgroups v2, job out-of-memory no longer affects the pilot</li>
+  <li>HTCondor tarballs now contain Pelican 7.15.1 and Apptainer 1.4.0</li>
+  <li>Fix inflated cgroups v2 memory usage reporting for Docker jobs</li>
+</ul>
 
         </div>
         <hr>
