@@ -739,17 +739,25 @@
         <div class="row">
             <div class="col-auto">
                 <div class="d-flex my-2">
-                    <span class="fs-4 my-auto">Featured User</span>
+                    <span class="fs-4 my-auto">Software News</span>
                 </div>
             </div>
             <div class="col-auto d-flex">
                 <div class="d-flex my-2">
                     <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/new.html">View Recent</a></span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-auto d-flex">
+                <div class="d-flex my-2">
+                    <div class="mt-auto mb-1">
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news-archive.html">View All</a></span>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
     <hr class="my-0">
 </div>
@@ -757,65 +765,14 @@
 <div class="container-xxl py-4">
     <div id="news-container" class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
-            <h1>Using HTC and HPC Applications to Track the Dispersal of Spruce Budworm Moths</h1>
-            <div class="row justify-content-between">
-                
-                <div class="col-auto">
-                    <span class="fs-4 text-muted">Hannah Cheren</span>
-                </div>
-                
-                <div class="col-auto">
-                    <span class="fs-4 text-muted">July  6, 2022</span>
-                </div>
-            </div>
-
+            <h1>HTC Strikes Again</h1>
+            <span class="fs-3 text-muted">June  9, 2025</span>
             
-            <div class="mt-4 fs-5"><p><strong><em>Matthew Garcia, a Postdoctoral Research Associate in the Department of Forest &amp; Wildlife Ecology at the University of Wisconsin–Madison, discusses how he used the HTCondor Software Suite to combine HTC and HPC capacity to perform simulations that modeled the dispersal of budworm moths.</em></strong></p>
+            <div class="mt-4 fs-5"><h2 id="-how-ai-and-supercomputers-are-revealing-the-secrets-of-black-holes">🔭 How AI and Supercomputers Are Revealing the Secrets of Black Holes</h2>
 
-<figure>
-  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Garcia-card.png" alt="Photo from Matthew Garcia's presentation at HTCondor Week 2022." />
-  <figcaption class="figure-caption">Photo from Matthew Garcia's presentation at <a href="https://agenda.hep.wisc.edu/event/1733/timetable/?view=standard">HTCondor Week 2022.</a><br /></figcaption>
-</figure>
+<p>Astronomers are using cutting-edge AI and high-throughput computing to unlock hidden details in the iconic images of black holes. By training neural networks on millions of simulations, researchers discovered that the black hole at the center of our Milky Way is spinning at nearly top speed—and its energy comes from hot electrons, not jets. This breakthrough, powered by the Center for High Throughput Computing, is reshaping our understanding of the universe’s most mysterious objects.</p>
 
-<p>Spruce budworms are small, caterpillar-like insects that enjoy munching on balsam fir and spruce trees. What the budworms lack in size, they make up for in total forest devastation;  within five to six years, the budworm kills the tree entirely. An example of this can be seen in the image above from eastern Canada, with the brown trees being “pretty much dead.”</p>
-
-<p><a href="http://matthewgarcia.tech/">Matthew Garcia</a>, a Postdoctoral Research Associate in the Department of Forest &amp; Wildlife Ecology at the University of Wisconsin–Madison, examined the flight behavior of these budworm moths. He aims to determine where the budworms disperse to stop them from causing these mass tree deaths. His research combines high throughput computing (HTC) and high-performance computing (HPC) applications.</p>
-
-<figure class="figure float-end" style="margin-left: 1em; width: 230px;">
-  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Garcia-cycle.png" class="figure-img img-fluid rounded" alt="Biological process of budworm moths" width="250px" />
-  <figcaption class="figure-caption">Biological process of budworm moths<br /></figcaption>
-</figure>
-
-<p>Garcia’s project takes a closer look at the biological process of the species. He’s looking at the dispersal of adult spruce budworm moths in the summertime, as this is a process least understood by researchers in the field.</p>
-
-<p>Working with collaborators at the U.S. and Canadian Forest Services, Garcia’s study of budworm dispersal tracks the budworm’s movement from where they grew up defoliating the fir and spruce trees to where they mate and drop their eggs. This biological process is driven mainly by weather and lasts about a year, though the adult phase is the period Garcia has focused on for his work thus far.</p>
-
-<p>In January 2022, Garcia published <a href="https://www.sciencedirect.com/science/article/pii/S0168192322000090">“Modeling weather-driven long-distance dispersal of spruce budworm moths. Part 1: Model Description.”</a> This individual-based model of moth behavior was developed in Python and is heavily dependent on weather model outputs. Garcia is currently working on “Part 2: Parameter calibration and feedback” that will supplement the early model results and compare them with radar observations of moth flight events.</p>
-
-<p>Garcia uses two modeling workflows to obtain the results of his study. He uses a combination of HTC and HPC for the weather modeling workflow, with the main weather model running on the HPC system and numerous pre-and post-processing tasks running on HTC. For the second workflow, he developed a Markov chain Monte Carlo (MCMC) modeling process for the flight simulation currently running at the CHTC.</p>
-
-<p>For the weather modeling workflow, Garcia runs the pre-processing using HTC, which takes in one month of historical weather data at a time and takes just about a day to complete. The pre-processing provides the initial and boundary conditions to the weather simulations. He then runs the Weather Research &amp; Forecasting (WRF) model as an HPC application, feeding the output from the pre-processing as input to the WRF model, which takes a little over six hours to generate one day of high-resolution output. Finally, the WRF model output returns to HTC for post-processing, reducing the data to just the variables needed for the budworm flight model.</p>
-
-<p>For the flight modeling workflow, Garcia runs a pre-processing step using HTC to determine the pool of available moths for the flight simulations; each simulation randomly selects a thousand moths out of the pool. He then uses the post-processed temperature and wind fields from the WRF model output to tell the moths when to fly and where to go in the flight model. Garcia runs ensembles of flight simulations to obtain a good sample of the moth population available on a given night. These simulations then run sequentially over the nights in the seasons when moths are emerging, flying, and laying eggs just about everywhere they land.</p>
-
-<figure class="figure float-end" style="margin-right: 1em; width: 180px;">
-  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Garcia-workflow.png" class="figure-img img-fluid rounded" alt="Garcia's workflow" width="150px" />
-  <figcaption class="figure-caption">Garcia's workflow<br /></figcaption>
-</figure>
-
-<p>“HTCondor developers have been immensely helpful in making sure that I can fit the HPC component into the middle of this larger DAGMan process,” Garcia notes. He uses DAGMan workflow scripts from HTCondor to organize his workflows with mixed submission protocols.</p>
-
-<p>Garcia combines all the collected information and calculates the moths’ survival likelihood. He has demonstrated that adult dispersal is almost entirely weather-driven and occurs almost nightly during summer and that males and females have different flight capabilities.</p>
-
-<p>“I love this because I can easily take that pre-processing part of the DAG and make it its node to build in more biological processes for the daytime part of the model,” Garica remarks. “I can then relatively easily expand the scope of the whole DAG to cover more of the seasonal or annual biological cycle model.”</p>
-
-<p>Garcia concludes, “everything’s going great – there are no pain points, everything is looking good, and my colleagues and I are very excited about the modeling results we’re seeing.”</p>
-
-<p>…</p>
-
-<p><em>Watch a video recording of Matthew Garcia’s talk at <a href="https://agenda.hep.wisc.edu/event/1733/timetable/?view=standard">HTCondor Week 2022</a>, and browse his <a href="https://agenda.hep.wisc.edu/event/1733/contributions/24771/attachments/8319/9623/MGarcia_HTCondorWeek_20220526.pdf">slides</a>.</em></p>
-
-<iframe width="100%" height="315" src="https://www.youtube.com/embed/EFYMwxAnA44" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe>
+<p>👉 <a href="https://morgridge.org/story/throughput-computing-enables-astronomers-to-use-ai-to-decode-iconic-black-holes/">Read the full story</a></p>
 </div>
         </div>
     </div>
