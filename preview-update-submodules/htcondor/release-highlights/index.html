@@ -222,7 +222,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2175/">Throughput Computing 2024</a></li>
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-update-submodules/past_condor_weeks.html">Materials from past Workshops</a></li>
         
@@ -458,7 +458,7 @@
                             <div class="card-body d-flex flex-column">
                                 <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/htc-strikes-again-2025-06-09.html">HTC Strikes Again</a></h3>
                                 <div>
-                                    <span class="text-muted">June  9, 2025</span>
+                                    <span class="text-muted">July 25, 2025</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -545,7 +545,7 @@
             <table>
                 <tr><th>Workshops</th></tr>
                 
-                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2175/">Throughput Computing 2024</a></td></tr>
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></td></tr>
                 
                     <tr><td><a href="/web-preview/preview-update-submodules/past_condor_weeks.html">Materials from past Workshops</a></td></tr>
                 
@@ -1009,6 +1009,84 @@
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-9-2">24.9.2</a></b>
+          <span class="px-1">-</span>
+          <span>June 26, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>New job attribute to report number of input files transferred by protocol</li>
+  <li>Optional <code>condor_schedd</code> history log file</li>
+  <li><code>condor_watch_q</code> can now track DAGMan jobs when using the <code>-clusters</code> option</li>
+  <li>Fix bug that caused claim failure when previous output transfer failed</li>
+  <li>Fix bug where access tokens were not generated from Vault tokens</li>
+  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
+  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
+  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
+  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
+  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
+  <li>DAGMan better handles being unable to write to a full filesystem</li>
+  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-8-1">24.8.1</a></b>
+          <span class="px-1">-</span>
+          <span>June 12, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Fix claim re-use, which was broken in HTCondor version 24.5.1</li>
+  <li>Add support for hierarchic and delegatable v2 cgroups</li>
+  <li>Add the ability to put each HTCondor daemon in its own cgroup</li>
+  <li>Always sets the execute bit on the executable regardless of its origin</li>
+  <li>The EP sets the HOME environment variable to match the <code>/etc/passwd</code> entry</li>
+  <li>Add new ‘halt’ and ‘resume’ verbs to “htcondor dag”</li>
+  <li>Add <code>htcondor2.DAGMan</code> class to send commands to a running DAG</li>
+  <li><code>htcondor ap status</code> now reports the AP’s RecentDaemonCoreDutyCycle</li>
+  <li>Can configure <code>condor_adstash</code> to fetch a custom projection of attributes</li>
+  <li>Fix 24.7.3 bug where cgroup v1 out-of-memory was not properly handled</li>
+  <li>HTCondor tarballs now contain Pelican 7.16.5 and Apptainer 1.4.1
+    <ul>
+      <li>Pelican 7.16.5 now includes end-to-end integrity checks for clients</li>
+    </ul>
+  </li>
+  <li>Add Python wheel for Python 3.13, drop Python wheel for Python 3.7</li>
+  <li>Fix bug where <code>DAGMAN_MAX_JOBS_IDLE</code> was being ignored</li>
+  <li>Fix problems where parallel universe jobs could crash the <code>condor_schedd</code></li>
+  <li>Prevent <code>condor_starter</code> crash when evicting job during input file transfer</li>
+  <li><code>condor_watch_q</code> now properly displays job id ranges by using numeric sort</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/24.x/version-history/feature-versions-24-x.html#version-24-7-3">24.7.3</a></b>
           <span class="px-1">-</span>
           <span>April 22, 2025</span>
@@ -1314,6 +1392,34 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2025-0001</p>
 
 
 
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/23.x/version-history/feature-versions-23-x.html#version-23-10-26">23.10.26</a></b>
+            <span class="px-1">-</span>
+            <span>June 26, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
+  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
+  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
+  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
+  <li>DAGMan better handles being unable to write to a full filesystem</li>
+  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+</ul>
+
+        </div>
       
         
 
@@ -6068,6 +6174,70 @@ issues are in the Vulnerability Reports:</p>
 
       
         <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html#version-24-0-9">24.0.9</a></b>
+          <span class="px-1">-</span>
+          <span>June 26, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
+  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
+  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
+  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
+  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
+  <li>DAGMan better handles being unable to write to a full filesystem</li>
+  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html#version-24-0-8">24.0.8</a></b>
+          <span class="px-1">-</span>
+          <span>June 12, 2025</span>
+        </div>
+      
+      <div class="mt-2">
+        <ul>
+  <li>Fix 24.0.7 bug where cgroup v1 out-of-memory was not properly handled</li>
+  <li>HTCondor tarballs now contain Pelican 7.16.5 and Apptainer 1.4.1
+    <ul>
+      <li>Pelican 7.16.5 now includes end-to-end integrity checks for clients</li>
+    </ul>
+  </li>
+  <li>Add Python wheel for Python 3.13, drop Python wheel for Python 3.7</li>
+  <li>Fix bug where <code>DAGMAN_MAX_JOBS_IDLE</code> was being ignored</li>
+  <li>Fix problems where parallel universe jobs could crash the <code>condor_schedd</code></li>
+  <li>Prevent <code>condor_starter</code> crash when evicting job during input file transfer</li>
+  <li><code>condor_watch_q</code> now properly displays job id ranges by using numeric sort</li>
+</ul>
+
+      </div>
+    
+      
+
+
+
+
+
+
+
+
+
+      
+        <div class="d-flex flex-row">
           <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html#version-24-0-7">24.0.7</a></b>
           <span class="px-1">-</span>
           <span>April 22, 2025</span>
@@ -6299,6 +6469,32 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2025-0001</p>
 
 
 
+      
+        
+
+
+
+
+
+
+
+
+
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-23-0.html#version-23-0-26">23.0.26</a></b>
+              <span class="px-1">-</span>
+              <span>June 26, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
+  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
+  <li>DAGMan better handles being unable to write to a full filesystem</li>
+  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+</ul>
+
+          </div>
       
         
 

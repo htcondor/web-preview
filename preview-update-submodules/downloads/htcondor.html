@@ -222,7 +222,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2175/">Throughput Computing 2024</a></li>
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-update-submodules/past_condor_weeks.html">Materials from past Workshops</a></li>
         
@@ -458,7 +458,7 @@
                             <div class="card-body d-flex flex-column">
                                 <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/htc-strikes-again-2025-06-09.html">HTC Strikes Again</a></h3>
                                 <div>
-                                    <span class="text-muted">June  9, 2025</span>
+                                    <span class="text-muted">July 25, 2025</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -545,7 +545,7 @@
             <table>
                 <tr><th>Workshops</th></tr>
                 
-                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2175/">Throughput Computing 2024</a></td></tr>
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></td></tr>
                 
                     <tr><td><a href="/web-preview/preview-update-submodules/past_condor_weeks.html">Materials from past Workshops</a></td></tr>
                 
@@ -832,23 +832,23 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.7.3</span> Feature Release</h3>
-        <p>April 22, 2025</p>
+        <h3><span class="text-secondary">24.9.2</span> Feature Release</h3>
+        <p>June 26, 2025</p>
         <div>
             <ul>
-  <li><code>condor_who</code> now works for Glideins</li>
-  <li>Can add arbitrary credentials to be used by the file transfer plugins</li>
-  <li>Fixed WLCG token generation in the local credmon</li>
-  <li>Can limit the number of times that a job can be released</li>
-  <li>EP administrators can enforce no outbound networking for jobs</li>
-  <li>Add ability to use authentication when fetching Docker images</li>
-  <li><code>condor_watch_q</code> now displays when file transfer is happening</li>
-  <li>To provide more consistency, using swap for jobs is disabled by default</li>
-  <li>With delegated cgroups v2, job out-of-memory no longer affects the pilot</li>
-  <li>HTCondor tarballs now contain Pelican 7.15.1 and Apptainer 1.4.0</li>
-  <li>Fix inflated cgroups v2 memory usage reporting for Docker jobs</li>
+  <li>New job attribute to report number of input files transferred by protocol</li>
+  <li>Optional <code>condor_schedd</code> history log file</li>
+  <li><code>condor_watch_q</code> can now track DAGMan jobs when using the <code>-clusters</code> option</li>
+  <li>Fix bug that caused claim failure when previous output transfer failed</li>
+  <li>Fix bug where access tokens were not generated from Vault tokens</li>
+  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
+  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
+  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
+  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
+  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
+  <li>DAGMan better handles being unable to write to a full filesystem</li>
+  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
 </ul>
-
 
         </div>
         <hr>
@@ -872,13 +872,17 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.7</span> Long Term Support Release</h3>
-        <p>April 22, 2025</p>
+        <h3><span class="text-secondary">24.0.9</span> Long Term Support Release</h3>
+        <p>June 26, 2025</p>
         <div>
             <ul>
-  <li>With delegated cgroups v2, job out-of-memory no longer affects the pilot</li>
-  <li>HTCondor tarballs now contain Pelican 7.15.1 and Apptainer 1.4.0</li>
-  <li>Fix inflated cgroups v2 memory usage reporting for Docker jobs</li>
+  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
+  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
+  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
+  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
+  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
+  <li>DAGMan better handles being unable to write to a full filesystem</li>
+  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
 </ul>
 
         </div>
