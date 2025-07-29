@@ -1,9 +1,10 @@
-name: HTCondor AP
+name: HTCondor-AP
 order: 1
-short-description: HTCondor AP provides you with the ability to effectively utilize all the computing resources at your disposal.
+short-description: HTCondor-AP provides you with the ability to effectively utilize all the computing resources at your disposal.
 description: |
   HTCondor is a software system that creates a High-Throughput Computing (HTC) environment. It
   effectively uses the computing power of machines connected over a network, be they a single
   cluster, a set of clusters on a campus, cloud resources either standalone or temporarily
   joined to a local cluster, or international grids. Power comes from the ability to effectively
-  harness shared resources with distributed ownership.
+  harness shared resources with distributed ownership. The HTCondor-AP gives accees to the
+  computing resources available to you.
