@@ -887,20 +887,29 @@
         </div>
         <p>The HTCondor-AP software is an Access Point (AP) based on HTCondor that provides an easy way for a user to place jobs into an existing HTCondor Pool or a super computer allocation or expand into the cloud.
 </p>
-<h3 id="what-is-a-access-point">What is an Access Point?</h3>
-<p>An Access Point(AP) is the machine where users place jobs to be run. It provides storage for input/output files. It supports workflow management capabilities like DAGMan and Pegasus.
-</p>
-<h3 id="what-is-htcondor-ap">What is HTCondor-AP?</h3>
-<p>The HTCondor-AP is a special configuration of the HTCondor software design as an Access Point.
-If you are connecting to a local pool, this configuration automatically generates IDTOKEN requests to the target pool. Once the pool's administrator has approved the IDTOKEN(s), the user can place jobs in the pool.
-This software can also be used to place jobs into the cloud or other resources.
-</p>
-<p>Benefits of running HTCondor-AP:
-</p>
-<ul>
-    <li>End users can create an Access Point to place jobs on whatever resources available to them.</li>
-    <li>They have control over files and workflow management on the Access Point.</li>
-</ul>
+
+
+<div class="row justify-content-between">
+    <div class="col-md-8">
+        <h3 id="what-is-a-access-point">What is an Access Point?</h3>
+        <p>An Access Point(AP) is the machine where users place jobs to be run. It provides storage for input/output files. It supports workflow management capabilities like DAGMan and Pegasus.
+        </p>
+        <h3 id="what-is-htcondor-ap">What is HTCondor-AP?</h3>
+        <p>The HTCondor-AP is a special configuration of the HTCondor software design as an Access Point.
+        If you are connecting to a local pool, this configuration automatically generates IDTOKEN requests to the target pool. Once the pool's administrator has approved the IDTOKEN(s), the user can place jobs in the pool.
+        This software can also be used to place jobs into the cloud or other resources.
+        </p>
+        <p>Benefits of running HTCondor-AP:
+        </p>
+        <ul>
+            <li>End users can create an Access Point to place jobs on whatever resources available to them.</li>
+            <li>They have control over files and workflow management on the Access Point.</li>
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <img src="/assets/images/AP-Wheel.png" alt="AP Wheel" class="img-fluid mt-3 mt-md-0" style="max-height:360px" />
+    </div>
+</div>
 
     </div>
 </div>
