@@ -810,22 +810,21 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.9.2</span> Feature Release</h3>
-        <p>June 26, 2025</p>
+        <h3><span class="text-secondary">24.10.2</span> Feature Release</h3>
+        <p>July 28, 2025</p>
         <div>
             <ul>
-  <li>New job attribute to report number of input files transferred by protocol</li>
-  <li>Optional <code>condor_schedd</code> history log file</li>
-  <li><code>condor_watch_q</code> can now track DAGMan jobs when using the <code>-clusters</code> option</li>
-  <li>Fix bug that caused claim failure when previous output transfer failed</li>
-  <li>Fix bug where access tokens were not generated from Vault tokens</li>
-  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
-  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
-  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
-  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
-  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
-  <li>DAGMan better handles being unable to write to a full filesystem</li>
-  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+  <li>Remove support for old JobRouter syntax</li>
+  <li>New <code>condor_dag_checker</code> tool finds syntax and logic errors before run</li>
+  <li>New <code>condor_q -hold-codes</code> produces a summary of held jobs</li>
+  <li><code>condor_status -lvm</code> reports current disk usage by slots on the EPs</li>
+  <li>Fix bug where <code>condor_q</code> would truncate job counts to six digits</li>
+  <li>Fix bug where suspended jobs did not change state to idle when vacated</li>
+  <li>Fix bug where the vacate reason was not propagated back to the user</li>
+  <li>HTCondor tarballs now contain Pelican 7.17.2</li>
+  <li>Fix bug where <code>condor_ssh_to_job</code> failed when EP scratch path is too long</li>
+  <li>Fix incorrect time reported by <code>htcondor status</code> for long running jobs</li>
+  <li>Fix bug where <code>.job.ad</code>, <code>.machine.ad</code> files were missing when LVM is in use</li>
 </ul>
 
         </div>
@@ -850,17 +849,15 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.9</span> Long Term Support Release</h3>
-        <p>June 26, 2025</p>
+        <h3><span class="text-secondary">24.0.10</span> Long Term Support Release</h3>
+        <p>July 28, 2025</p>
         <div>
             <ul>
-  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
-  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
-  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
-  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
-  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
-  <li>DAGMan better handles being unable to write to a full filesystem</li>
-  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+  <li>Fix bug where the vacate reason was not propagated back to the user</li>
+  <li>HTCondor tarballs now contain Pelican 7.17.2</li>
+  <li>Fix bug where <code>condor_ssh_to_job</code> failed when EP scratch path is too long</li>
+  <li>Fix incorrect time reported by <code>htcondor status</code> for long running jobs</li>
+  <li>Fix bug where <code>.job.ad</code>, <code>.machine.ad</code> files were missing when LVM is in use</li>
 </ul>
 
         </div>
