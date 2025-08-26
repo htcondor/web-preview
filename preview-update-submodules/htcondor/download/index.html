@@ -456,9 +456,9 @@
                     <div class="d-none d-lg-block col-lg-4">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2025-07-25-40-years-of-htcondor.html">HTCondor Celebrates 40 Years Powered by Community</a></h3>
+                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2025-08-26-htc-euro-workshop-25.html">HTCondor European Workshop 2025</a></h3>
                                 <div>
-                                    <span class="text-muted">July 25, 2025</span>
+                                    <span class="text-muted">August 26, 2025</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -955,22 +955,19 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.9.2</span> Feature Release</h3>
-        <p>June 26, 2025</p>
+        <h3><span class="text-secondary">24.11.2</span> Feature Release</h3>
+        <p>August 22, 2025</p>
         <div>
             <ul>
-  <li>New job attribute to report number of input files transferred by protocol</li>
-  <li>Optional <code>condor_schedd</code> history log file</li>
-  <li><code>condor_watch_q</code> can now track DAGMan jobs when using the <code>-clusters</code> option</li>
-  <li>Fix bug that caused claim failure when previous output transfer failed</li>
-  <li>Fix bug where access tokens were not generated from Vault tokens</li>
-  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
-  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
-  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
-  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
-  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
-  <li>DAGMan better handles being unable to write to a full filesystem</li>
-  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+  <li>Add job attributes to track why and how often a job is vacated</li>
+  <li>Add the ability to notify a user when their job first starts</li>
+  <li>Can now specify which Vault servers are trusted</li>
+  <li>Added <code>htcondor2.ping()</code> to the Python bindings</li>
+  <li>Initial support for Debian 13 (trixie)</li>
+  <li>Sets exit -code and -signal environment variables for Docker jobs</li>
+  <li>Fix issue where <code>ImageSize</code> was over-reported on the Windows platform</li>
+  <li>HTCondor tarballs now contain Pelican 7.18.1 and Apptainer 1.4.2</li>
+  <li>Fix <code>condor_token_request</code> to accept automatically-approved tokens</li>
 </ul>
 
         </div>
@@ -995,17 +992,15 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.9</span> Long Term Support Release</h3>
-        <p>June 26, 2025</p>
+        <h3><span class="text-secondary">24.0.11</span> Long Term Support Release</h3>
+        <p>August 22, 2025</p>
         <div>
             <ul>
-  <li>Initial support for Enterprise Linux 10, including the <code>x86_64_v2</code> platform</li>
-  <li>In <code>htcondor2</code>, empty configuration keys are now treated as non-existent</li>
-  <li>Fix memory leak in the <code>condor_schedd</code> when using late materialization</li>
-  <li>Fix <code>condor_master</code> start up when file descriptor ulimit was huge</li>
-  <li>Fix ingestion of ads into Elasticsearch under very rare circumstances</li>
-  <li>DAGMan better handles being unable to write to a full filesystem</li>
-  <li><code>kill_sig</code> submit commands are now ignored on the Windows platform</li>
+  <li>Initial support for Debian 13 (trixie)</li>
+  <li>Sets exit -code and -signal environment variables for Docker jobs</li>
+  <li>Fix issue where ImageSize was over-reported on the Windows platform</li>
+  <li>HTCondor tarballs now contain Pelican 7.18.1 and Apptainer 1.4.2</li>
+  <li>Fix <code>condor_token_request</code> to accept automatically-approved token</li>
 </ul>
 
         </div>
