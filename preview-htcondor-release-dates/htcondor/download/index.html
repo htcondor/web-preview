@@ -933,23 +933,34 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.12.4</span> Feature Release</h3>
-        <p>September 23, 2025</p>
+        <h3><span class="text-secondary">25.1.0</span> Feature Release</h3>
+        <p>September 29, 2025</p>
         <div>
-            <ul>
-  <li>Add the ability to enforce memory and CPU limits on local universe jobs</li>
-  <li>Add the ability for <code>condor_chirp</code> to work within a Docker universe job</li>
-  <li><code>condor_watch_q</code> now exits with any keyboard input</li>
-  <li>The <code>shell</code> submit keyword now works with interactive jobs</li>
-  <li>Update <code>condor_upgrade_check</code> to warn about v1 Python bindings retirement</li>
-  <li>Update <code>condor_upgrade_check</code> to look for old syntax job transforms</li>
-  <li>Fix flocking to pools when there are intermittent network issues</li>
-  <li>HTCondor tarballs now contain Pelican 7.19.3
+            <p>Improvements from the HTCondor 24.x feature series</p>
+<ul>
+  <li>New and improved Python bindings: classad2 and htcondor2
     <ul>
-      <li>Prevent overwriting objects on upload</li>
-      <li>Multiple file transfer bug fixes (see release notes)</li>
+      <li>Python code must be migrated to the new bindings</li>
     </ul>
   </li>
+  <li>New condor_dag_checker tool finds syntax and logic errors before run</li>
+  <li>Add the ability to enforce memory and CPU limits on local universe jobs</li>
+  <li>Add job attributes to track why and how often a job is vacated</li>
+  <li>New job attribute to report number of input files transferred by protocol</li>
+  <li>New condor_q -hold-codes produces a summary of held jobs</li>
+  <li>condor_status -lvm reports current disk usage by slots on the EPs</li>
+  <li>Add new ‘halt’ and ‘resume’ verbs to “htcondor dag”</li>
+  <li>htcondor ap status now reports the AP’s RecentDaemonCoreDutyCycle</li>
+  <li>Can limit the number of times that a job can be released</li>
+  <li>condor_watch_q now displays when file transfer is happening</li>
+  <li>Add ability to use authentication when fetching Docker images</li>
+  <li>HTCondor marks slots as broken when the slot resources cannot be released</li>
+  <li>HTCondor now advertises NVIDIA driver version</li>
+  <li>Improved validation and cleanup of EXECUTE directories</li>
+  <li>New primary_unix_group submit command that sets the job’s primary group</li>
+  <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
+  <li>Container Universe jobs can now mount a writable directory under scratch</li>
+  <li>New job attributes FirstJobMatchDate and InitialWaitDuration</li>
 </ul>
 
         </div>
@@ -960,7 +971,7 @@
             HTCondor's latest features.
         </p>
         <p class="">
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-24-x.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-25-x.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
             <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">Installation Guide</a>
@@ -974,19 +985,34 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">24.0.12</span> Long Term Support Release</h3>
-        <p>September 23, 2025</p>
+        <h3><span class="text-secondary">25.0.1</span> Long Term Support Release</h3>
+        <p>September 29, 2025</p>
         <div>
-            <ul>
-  <li>Update <code>condor_upgrade_check</code> to warn about v1 Python bindings retirement</li>
-  <li>Update <code>condor_upgrade_check</code> to look for old syntax job transforms</li>
-  <li>Fix flocking to pools when there are intermittent network issues</li>
-  <li>HTCondor tarballs now contain Pelican 7.19.3
+            <p>Improvements from the HTCondor 24.x feature series</p>
+<ul>
+  <li>New and improved Python bindings: classad2 and htcondor2
     <ul>
-      <li>Prevent overwriting objects on upload</li>
-      <li>Multiple file transfer bug fixes (see release notes)</li>
+      <li>Python code must be migrated to the new bindings</li>
     </ul>
   </li>
+  <li>New condor_dag_checker tool finds syntax and logic errors before run</li>
+  <li>Add the ability to enforce memory and CPU limits on local universe jobs</li>
+  <li>Add job attributes to track why and how often a job is vacated</li>
+  <li>New job attribute to report number of input files transferred by protocol</li>
+  <li>New condor_q -hold-codes produces a summary of held jobs</li>
+  <li>condor_status -lvm reports current disk usage by slots on the EPs</li>
+  <li>Add new ‘halt’ and ‘resume’ verbs to “htcondor dag”</li>
+  <li>htcondor ap status now reports the AP’s RecentDaemonCoreDutyCycle</li>
+  <li>Can limit the number of times that a job can be released</li>
+  <li>condor_watch_q now displays when file transfer is happening</li>
+  <li>Add ability to use authentication when fetching Docker images</li>
+  <li>HTCondor marks slots as broken when the slot resources cannot be released</li>
+  <li>HTCondor now advertises NVIDIA driver version</li>
+  <li>Improved validation and cleanup of EXECUTE directories</li>
+  <li>New primary_unix_group submit command that sets the job’s primary group</li>
+  <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
+  <li>Container Universe jobs can now mount a writable directory under scratch</li>
+  <li>New job attributes FirstJobMatchDate and InitialWaitDuration</li>
 </ul>
 
         </div>
@@ -1011,10 +1037,10 @@
             channels.
         </p>
         <p>
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-24-0.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
-            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/24.0/getting-htcondor/index.html">Installation Guide</a>
+            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/25.0/getting-htcondor/index.html">Installation Guide</a>
             <a class="btn btn-primary" href="/web-preview/preview-htcondor-release-dates/htcondor/release-highlights/index.html#long-term-support-channel">Release Notes</a>
         </div>
     </div>
