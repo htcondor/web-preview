@@ -813,12 +813,34 @@
         <h3><span class="text-secondary">25.1.0</span> Feature Release</h3>
         <p>September 29, 2025</p>
         <div>
-            <ul>
+            <p>Improvements from the HTCondor 24.x feature series</p>
+<ul>
   <li>New and improved Python bindings: classad2 and htcondor2
     <ul>
       <li>Python code must be migrated to the new bindings</li>
     </ul>
   </li>
+  <li>New condor_dag_checker tool finds syntax and logic errors before run</li>
+  <li>Add the ability to enforce memory and CPU limits on local universe jobs</li>
+  <li>Add job attributes to track why and how often a job is vacated</li>
+  <li>New job attribute to report number of input files transferred by protocol</li>
+  <li>New condor_q -hold-codes produces a summary of held jobs</li>
+  <li>condor_status -lvm reports current disk usage by slots on the EPs</li>
+  <li>Add new ‘halt’ and ‘resume’ verbs to “htcondor dag”</li>
+  <li>htcondor ap status now reports the AP’s RecentDaemonCoreDutyCycle</li>
+  <li>Can limit the number of times that a job can be released</li>
+  <li>condor_watch_q now displays when file transfer is happening</li>
+  <li>Add ability to use authentication when fetching Docker images</li>
+  <li>HTCondor marks slots as broken when the slot resources cannot be released</li>
+  <li>HTCondor now advertises NVIDIA driver version</li>
+  <li>Improved validation and cleanup of EXECUTE directories</li>
+  <li>New <code>primary_unix_group</code> submit command that sets the job’s primary group</li>
+  <li>New <code>shell</code> submit command</li>
+  <li>Can create cgroups on glidein EP without having to be root</li>
+  <li>condor_who now works within glideins</li>
+  <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
+  <li>Container Universe jobs can now mount a writable directory under scratch</li>
+  <li>New job attributes FirstJobMatchDate and InitialWaitDuration</li>
 </ul>
 
         </div>
@@ -867,7 +889,10 @@
   <li>HTCondor marks slots as broken when the slot resources cannot be released</li>
   <li>HTCondor now advertises NVIDIA driver version</li>
   <li>Improved validation and cleanup of EXECUTE directories</li>
-  <li>New primary_unix_group submit command that sets the job’s primary group</li>
+  <li>New <code>primary_unix_group</code> submit command that sets the job’s primary group</li>
+  <li>New <code>shell</code> submit command</li>
+  <li>Can create cgroups without having to be root</li>
+  <li>condor_who now works within glideins</li>
   <li>Add Singularity launcher to distinguish runtime failure from job failure</li>
   <li>Container Universe jobs can now mount a writable directory under scratch</li>
   <li>New job attributes FirstJobMatchDate and InitialWaitDuration</li>
