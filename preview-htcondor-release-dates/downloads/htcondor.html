@@ -810,24 +810,14 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.2.1</span> Feature Release</h3>
-        <p>October  9, 2025</p>
+        <h3><span class="text-secondary">25.3.1</span> Feature Release</h3>
+        <p>November  3, 2025</p>
         <div>
             <ul>
-  <li>Support for re-running a job with an increased memory request</li>
-  <li>Several DAGMan Improvements</li>
-  <li>Several local credmon Improvements</li>
-  <li>Fix problem that could prevent logging of hung file transfer plugins</li>
-  <li>Update Python file transfer plugins to use the new Python bindings</li>
-  <li>Fix incorrect environment when using Singularity and nested scratch</li>
-  <li>Fix annoying momentary text status flash in <code>condor_watch_q</code></li>
-  <li>Fix bug that could cause Python job submission to crash</li>
-  <li>HTCondor tarballs now contain Pelican 7.20.2
-    <ul>
-      <li>Pelican now lets HTCondor EP know when an upgrade happens</li>
-      <li>Fixed rare client deadlock in the plugin</li>
-    </ul>
-  </li>
+  <li>Fix interoperability problem between HTCondor-CE 24 and 25 which manifests as a Job Router crash when upgrading the CE to HTCondor 25</li>
+  <li>Fix several issues when submitting jobs with itemdata in the htcondor2 Python bindings</li>
+  <li>Fix bug when using <code>max_idle</code> and <code>transfer_input_files</code> that could result in the <code>container_image</code> to be only transferred with the first job</li>
+  <li>Fix problem running PyTorch jobs on multiple GPUs with newer versions of the CUDA library by providing long GPU IDs in the <code>CUDA_VISIBLE_DEVICES</code> environment variable</li>
 </ul>
 
         </div>
@@ -852,20 +842,14 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.2</span> Long Term Support Release</h3>
-        <p>October  9, 2025</p>
+        <h3><span class="text-secondary">25.0.3</span> Long Term Support Release</h3>
+        <p>November  3, 2025</p>
         <div>
             <ul>
-  <li>Update Python file transfer plugins to use the new Python bindings</li>
-  <li>Fix incorrect environment when using Singularity and nested scratch</li>
-  <li>Fix annoying momentary text status flash in <code>condor_watch_q</code></li>
-  <li>Fix bug that could cause Python job submission to crash</li>
-  <li>HTCondor tarballs now contain Pelican 7.20.2
-    <ul>
-      <li>Pelican now lets HTCondor EP know when an upgrade happens</li>
-      <li>Fixed rare client deadlock in the plugin</li>
-    </ul>
-  </li>
+  <li>Fix interoperability problem between HTCondor-CE 24 and 25 which manifests as a Job Router crash when upgrading the CE to HTCondor 25</li>
+  <li>Fix several issues when submitting jobs with itemdata in the htcondor2 Python bindings</li>
+  <li>Fix bug when using <code>max_idle</code> and <code>transfer_input_files</code> that could result in the <code>container_image</code> to be only transferred with the first job</li>
+  <li>Fix problem running PyTorch jobs on multiple GPUs with newer versions of the CUDA library by providing long GPU IDs in the <code>CUDA_VISIBLE_DEVICES</code> environment variable</li>
 </ul>
 
         </div>
