@@ -41,6 +41,7 @@
 <a id="skip-link" href="#main-copy">Skip to main content.</a>
 
 
+
 <header id="header" class="">
     <div class="container-xxl">
         <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
@@ -810,14 +811,17 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.3.1</span> Feature Release</h3>
-        <p>November  3, 2025</p>
+        <h3><span class="text-secondary">25.4.0</span> Feature Release</h3>
+        <p>November 13, 2025</p>
         <div>
             <ul>
-  <li>Fix interoperability problem between HTCondor-CE 24 and 25 which manifests as a Job Router crash when upgrading the CE to HTCondor 25</li>
-  <li>Fix several issues when submitting jobs with itemdata in the htcondor2 Python bindings</li>
-  <li>Fix bug when using <code>max_idle</code> and <code>transfer_input_files</code> that could result in the <code>container_image</code> to be only transferred with the first job</li>
-  <li>Fix problem running PyTorch jobs on multiple GPUs with newer versions of the CUDA library by providing long GPU IDs in the <code>CUDA_VISIBLE_DEVICES</code> environment variable</li>
+  <li>Job scratch space is now in a sub-directory of the execute directory</li>
+  <li>HTCondor EPs can now refresh credentials during output transfers</li>
+  <li>HTCondor will now create intermediate directories with output remaps</li>
+  <li><code>condor_watch_q</code> now correctly accounts for unmaterialized jobs</li>
+  <li>Now able to control maximum jobs running by user on an AP</li>
+  <li>HTCondor now tracks when jobs are vacated prior to running</li>
+  <li>Disk space allocated to jobs now more closely matches the request</li>
 </ul>
 
         </div>
