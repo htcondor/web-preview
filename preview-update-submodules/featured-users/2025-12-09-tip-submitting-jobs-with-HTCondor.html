@@ -730,31 +730,27 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
+    
+
+
+
     <div class="bg-light">
     <hr class="my-0">
     <div class="container-xxl">
         <div class="row">
             <div class="col-auto">
                 <div class="d-flex my-2">
-                    <span class="fs-4 my-auto">Software News</span>
+                    <span class="fs-4 my-auto">Featured User</span>
                 </div>
             </div>
             <div class="col-auto d-flex">
                 <div class="d-flex my-2">
                     <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/new.html">View Recent</a></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-auto d-flex">
-                <div class="d-flex my-2">
-                    <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/news-archive.html">View All</a></span>
+                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users.html">View all</a></span>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     <hr class="my-0">
 </div>
@@ -762,15 +758,62 @@
 <div class="container-xxl py-4">
     <div id="news-container" class="row justify-content-center">
         <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
-            <h1>Success stories enhanced by HTCondor in the area of brain research</h1>
-            <span class="fs-3 text-muted">September 10, 2013</span>
+            <h1>Tip of the Month - New Feature for Submitting Jobs with HTCondor</h1>
+            <div class="row justify-content-between">
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">Facilitation Team</span>
+                </div>
+                
+                <div class="col-auto">
+                    <span class="fs-4 text-muted">December  9, 2025</span>
+                </div>
+            </div>
+
             
-            <div class="mt-4 fs-5"><p>International Science Grid This Week (ISGTW) reports on two research efforts in the area of brain research. The work of Ned Kalin is highlighted in this article on <a href="http://www.isgtw.org/feature/brain-circuitry-and-mechanisms-underlying-anxiety-uncovered" data-proofer-ignore="">brain circuitry and mechanisms underlying anxiety</a>. And, high throughput computing permits the research of Mike Koenigs in <a href="http://www.isgtw.org/feature/psychopathy-research-ripe-discovery-high-throughput-computing" data-proofer-ignore="">psychopathy</a> to analyze data in days, when without HTC, it might take years.</p>
+            <div class="mt-4 fs-5"><p><strong>There’s a new feature for submitting jobs with HTCondor.</strong> 
+Now you can use shell = <your script=""> instead of using executable and arguments!</your></p>
+
+<blockquote>
+  <p>Before:
+executable = hello-world.sh
+arguments = $(Process)</p>
+</blockquote>
+
+<blockquote>
+  <p>After: 
+shell = ./hello-world.sh $(Process)</p>
+</blockquote>
+
+<p><strong>Notable differences</strong></p>
+
+<ol>
+  <li>
+    <p>You will have to add your executable (i.e., hello-world.sh to your list of files in transfer_input_files), since HTCondor can’t automatically detect your executable.</p>
+  </li>
+  <li>
+    <p>Your executable must have executable permissions. You can achieve this by running the chmod +x command, i.e., chmod +x hello-world.sh. This will prevent a “Permission denied” error.</p>
+  </li>
+  <li>
+    <p>An alternate solution to (2): Use shell = bash hello-world.sh$(Process).</p>
+  </li>
+</ol>
+
+<p><strong>Read more and try it!</strong></p>
+
+<ul>
+  <li>
+    <p>Read about the new shell option in our guides: <a href="https://chtc.cs.wisc.edu/uw-research-computing/htcondor-job-submission#use-shell-or-executablearguments-in-your-submit-file">Practice: Submit HTC Jobs using HTCondor</a></p>
+  </li>
+  <li>
+    <p>Try using shell and let us know how it goes for you! Happy computing!</p>
+  </li>
+</ul>
+
 </div>
         </div>
     </div>
 </div>
-
 
 
 </main>
