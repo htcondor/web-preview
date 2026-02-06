@@ -125,6 +125,8 @@
         
             <li><a class="dropdown-item" href="/web-preview/preview-htcondor-release-dates/downloads/">Download</a></li>
         
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-release-dates/license.html">License</a></li>
+        
     </ul>
     
 </li>
@@ -444,6 +446,8 @@
                 
                     <tr><td><a href="/web-preview/preview-htcondor-release-dates/downloads/">Download</a></td></tr>
                 
+                    <tr><td><a href="/web-preview/preview-htcondor-release-dates/license.html">License</a></td></tr>
+                
             </table>
         </div>
     
@@ -502,6 +506,7 @@
 
 
 
+
                 
                 
                 
@@ -538,6 +543,7 @@
                 <div class="d-none d-md-block col-lg-4 my-2">
                     <a href="/web-preview/preview-htcondor-release-dates/featured-users.html"><b>Featured Users</b></a>
                     
+
 
 
                     
@@ -632,9 +638,9 @@
                 </div>
                 <div class="d-none d-xl-block col-xl-3 my-2">
                     <div class="card h-100">
-                        <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Spectrometer.jpg" class="card-img-top" alt="Card Image">
+                        <img src="" class="card-img-top" alt="Card Image">
                         <div class="card-body d-flex flex-column">
-                            <h5><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-04-25-Natzke.html">Learning and adapting with OSG: Investigating the strong nuclear force</a></h5>
+                            <h5><a class="text-decoration-none" href=""></a></h5>
                             <hr/>
                             <a href="/web-preview/preview-htcondor-release-dates/featured-users.html">
                                 <div class="row">
@@ -811,17 +817,32 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.4.0</span> Feature Release</h3>
-        <p>November 13, 2025</p>
+        <h3><span class="text-secondary">25.6.1</span> Feature Release</h3>
+        <p>January 29, 2026</p>
         <div>
             <ul>
-  <li>Job scratch space is now in a sub-directory of the execute directory</li>
-  <li>HTCondor EPs can now refresh credentials during output transfers</li>
-  <li>HTCondor will now create intermediate directories with output remaps</li>
-  <li><code>condor_watch_q</code> now correctly accounts for unmaterialized jobs</li>
-  <li>Now able to control maximum jobs running by user on an AP</li>
-  <li>HTCondor now tracks when jobs are vacated prior to running</li>
-  <li>Disk space allocated to jobs now more closely matches the request</li>
+  <li>DAGMan now uses the new DAG file parser used by <code>condor_dag_checker</code></li>
+  <li>The condor keyboard daemon now checks idle time via systemd and Mutter</li>
+  <li>Can now specify DAGMan rescue file by name</li>
+  <li>Adminstrators can now require units on <code>retry_request_memory</code></li>
+  <li>Initial support for openSUSE 16</li>
+  <li>Make HTCondor Python wheel usable with the <code>python-slim</code> Docker image</li>
+  <li>Fix problem specifying scope or audience with a Vault-managed credential</li>
+  <li>Fix late materialization bug when job transform sets immutable attribute</li>
+  <li>Fix problem where a backfill slot would refuse claims</li>
+  <li>Fix floating point memory or disk request not fitting into some slots</li>
+  <li>Fix <code>condor_rooster</code> crash when unhibernate rank was not constant</li>
+  <li>Fix memory leak in the <code>htcondor2.JobEventLog.events()</code> Python method</li>
+  <li><code>condor_history -long</code> now prints attributes in alphabetical order</li>
+  <li>Fix LVM setup to not timeout when creating a large volume</li>
+  <li>LVM creation no longer saves meta data which eventually fills the disk</li>
+  <li>HTCondor tarballs now contain Pelican 7.22.0
+    <ul>
+      <li>More robust error classification in the client</li>
+      <li>Fixed authentication loop issue in the client</li>
+    </ul>
+  </li>
+  <li>HTCondor tarballs now contain Apptainer 1.4.5</li>
 </ul>
 
         </div>
@@ -846,14 +867,28 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.3</span> Long Term Support Release</h3>
-        <p>November  3, 2025</p>
+        <h3><span class="text-secondary">25.0.6</span> Long Term Support Release</h3>
+        <p>January 29, 2026</p>
         <div>
             <ul>
-  <li>Fix interoperability problem between HTCondor-CE 24 and 25 which manifests as a Job Router crash when upgrading the CE to HTCondor 25</li>
-  <li>Fix several issues when submitting jobs with itemdata in the htcondor2 Python bindings</li>
-  <li>Fix bug when using <code>max_idle</code> and <code>transfer_input_files</code> that could result in the <code>container_image</code> to be only transferred with the first job</li>
-  <li>Fix problem running PyTorch jobs on multiple GPUs with newer versions of the CUDA library by providing long GPU IDs in the <code>CUDA_VISIBLE_DEVICES</code> environment variable</li>
+  <li>Initial support for openSUSE 16</li>
+  <li>Make HTCondor Python wheel usable with the <code>python-slim</code> Docker image</li>
+  <li>Fix problem specifying scope or audience with a Vault-managed credential</li>
+  <li>Fix late materialization bug when job transform sets immutable attribute</li>
+  <li>Fix problem where a backfill slot would refuse claims</li>
+  <li>Fix floating point memory or disk request not fitting into some slots</li>
+  <li>Fix <code>condor_rooster</code> crash when unhibernate rank was not constant</li>
+  <li>Fix memory leak in the <code>htcondor2.JobEventLog.events()</code> Python method</li>
+  <li><code>condor_history -long</code> now prints attributes in alphabetical order</li>
+  <li>Fix LVM setup to not timeout when creating a large volume</li>
+  <li>LVM creation no longer saves meta data which eventually fills the disk</li>
+  <li>HTCondor tarballs now contain Pelican 7.22.0
+    <ul>
+      <li>More robust error classification in the client</li>
+      <li>Fixed authentication loop issue in the client</li>
+    </ul>
+  </li>
+  <li>HTCondor tarballs now contain Apptainer 1.4.5</li>
 </ul>
 
         </div>

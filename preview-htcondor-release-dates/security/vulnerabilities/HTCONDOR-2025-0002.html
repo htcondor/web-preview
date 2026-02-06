@@ -714,72 +714,101 @@
 </header>
 
 <main id="main-copy" tabindex="-1">
-    
-
-
-
-    <div class="bg-light">
-    <hr class="my-0">
-    <div class="container-xxl">
-        <div class="row">
+    <div class="bg-light mb-4">
+    <hr class="m-0">
+    <div class="container-xxl py-2">
+        <div class="row justify-content-between">
             <div class="col-auto">
-                <div class="d-flex my-2">
-                    <span class="fs-4 my-auto">Software News</span>
-                </div>
+                <h2 class="m-0">HTCONDOR-2025-0002</h2>
             </div>
-            <div class="col-auto d-flex">
-                <div class="d-flex my-2">
-                    <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/new.html">View Recent</a></span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-auto d-flex">
-                <div class="d-flex my-2">
-                    <div class="mt-auto mb-1">
-                        <span class="fs-6 mt-auto"><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/news-archive.html">View All</a></span>
-                    </div>
-                </div>
+            <div class="col-auto">
+                <h2 class="m-0"><a href="https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2025-66433">CVE-2025-66433</a></h2>
             </div>
         </div>
-
     </div>
-    <hr class="my-0">
+    <hr class="m-0">
 </div>
+<div class="container-xxl pb-4">
+    <b>Summary: </b>
+    <p>
+        A user can submit a specially-crafted job that will run as any other
+non-root user after the Access Point (AP) is upgraded to a vulnerable
+version.
 
-<div class="container-xxl py-4">
-    <div id="news-container" class="row justify-content-center">
-        <div class="col-12 col-lg-10 col-xl-9 col-xxl-8">
-            <h1>High-throughput computing: Fostering data science without limits</h1>
-            <span class="fs-3 text-muted">December  6, 2022</span>
-            
-            <div class="mt-4 fs-5"><figure>
-  <img class="w-100" src="https://raw.githubusercontent.com/CHTC/Articles/main/images/research-computing-partnership.jpeg" alt="Conference Room" />
-</figure>
-
-<p>Biology and big data are now completely inseparable.</p>
-
-<p>Most modern biology produces data sets too massive to manage by conventional standards, and the challenge will increase exponentially as the sophistication of the science grows.</p>
-
-<p>The <a href="https://chtc.cs.wisc.edu/">Center for High-Throughput Computing (CHTC)</a>, a joint partnership of UW-Madison School of Computer, Data &amp; Information Sciences and the Morgridge Institute, sees this onslaught of data and says: Bring it on.</p>
-
-<p>“We have established a goal of never letting the amount of data limit the experimental approach of the scientists,” says <a href="https://morgridge.org/profile/miron-livny/">Miron Livny</a>, the founder of high-throughput computing (HTC). Livny has been championing HTC for more than three decades as a UW-Madison computer scientist, and more recently as the Morgridge Institute’s lead investigator of research computing.</p>
-
-<p><a href="https://htcondor.org/">HTCondor</a> is a task-scheduling software approach that essentially breaks a larger computational task into smaller pieces, allowing researchers to analyze more data (hence the term “high throughput”). The team now handles 250-300 projects a year, double that of five years ago, and uses hundreds of millions of hours of computing time.</p>
-
-<p>And that’s just at UW-Madison. The global <a href="https://osg-htc.org/">Open Science Grid</a> provides HTC resources to the world, where it is the backbone system for Nobel Prize-winning projects such as detecting gravitational waves and discovering new subatomic particles. Just this year, it made a splash for its contribution to the discovery of a massive black hole in the center of our galaxy.</p>
-
-<p>This service is gaining adherents on campus because scientists are learning that it is more than someone asking, “What technology do you need?” <a href="https://morgridge.org/research/research-computing/">Research computing</a> is a collaboration, and the people HTC brings to the equation are more important than the technology.</p>
-
-<p>Livny says the HTC Facilitation Team is a great example. The emphasis on facilitators was way ahead of its time, almost unheard of in computer science circles. These are the translators who can work their magic between the technology and the bench experiments — finding the best way to maximize the data for the scientists.</p>
-
-<p>Read the Full Story on the <a href="https://morgridge.org/story/high-throughput-computing-fostering-data-science-without-limits/">Morgridge Website</a>.</p>
-</div>
-        </div>
+    </p>
+    <div class="p-1 my-2 mb-4 bg-light table-responsive">
+        <table class="table">
+            <tr>
+                <th width='20%'>Component</th>
+                <th width='20%'>Vulnerable Versions</th>
+                <th width='20%'>Platform</th>
+                <th width='20%'>Availability</th>
+                <th width='20%'>Fix Available</th>
+            </tr>
+            <tr>
+                <td class='sv'>Schedd daemon</td>
+                <td class='sv'>24.7.3 and above</td>
+                <td class='sv'>All platforms</td>
+                <td class='sv'>Not known to be publicly exploited</td>
+                <td class='sv'>24.12.14, 25.0.3, 25.3.1</td>
+            </tr>
+            <tr>
+                <th width='20%'>Status</th>
+                <th width='20%'>Access Required</th>
+                <th width='20%'>Host Type Required</th>
+                <th width='20%'>Effort Required</th>
+                <th width='20%'>Impact/Consequences</th>
+            </tr>
+            <tr>
+                <td class='sv'>Verified</td>
+                <td class='sv'>WRITE access to Schedd</td>
+                <td class='sv'>Submit host</td>
+                <td class='sv'>Low</td>
+                <td class='sv'>Medium</td>
+            </tr>
+            <tr>
+                <th width='20%'>Fixed Date</th>
+                <th width='20%'>Credit</th>
+            </tr>
+            <tr>
+                <td class='sv'>2025-11-03</td>
+                <td class='sv'>Todd Tannenbaum</td>
+            </tr>
+        </table>
     </div>
+    <b>Access Required: </b><span>WRITE access to Schedd</span>
+    <p>
+        An attacker must be authorized to submit jobs to the schedd.
+
+    </p>
+    <b>Effort Required: </b><span>Low</span>
+    <p>
+        The attacker must submit a specially-crafted job to the schedd, then
+wait for the schedd to be upgraded to a vulnerable version.
+No special tools are required.
+
+    </p>
+    <b>Impact/Consequences Required: </b><span>Medium</span>
+    <p>
+        The attacker's specially-crafted job will be run as if it had been
+submitted by another non-privileged user in the pool (selected by
+the attacker before the upgrade).
+
+    </p>
+    <b>Workaround: </b>
+    <p>
+        An attack cannot be initiated if the AP is already running a vulnerable
+version.
+To check for potential exploit jobs, you can run this command:
+<div style="text-indent: 3em;">
+    <pre>condor_q -all -constraint 'OsUser != Owner'</pre>
 </div>
+You can then use condor_rm to remove any suspicious jobs.
 
-
+    </p>
+    <b>Full Details: </b>
+    <p>Embargoed until future notice.</p>
+</div>
 
 </main>
 <footer id="footer" class="bg-light pt-4 mt-auto">

@@ -125,6 +125,8 @@
         
             <li><a class="dropdown-item" href="/web-preview/preview-htcondor-release-dates/downloads/">Download</a></li>
         
+            <li><a class="dropdown-item" href="/web-preview/preview-htcondor-release-dates/license.html">License</a></li>
+        
     </ul>
     
 </li>
@@ -444,6 +446,8 @@
                 
                     <tr><td><a href="/web-preview/preview-htcondor-release-dates/downloads/">Download</a></td></tr>
                 
+                    <tr><td><a href="/web-preview/preview-htcondor-release-dates/license.html">License</a></td></tr>
+                
             </table>
         </div>
     
@@ -502,6 +506,7 @@
 
 
 
+
                 
                 
                 
@@ -538,6 +543,7 @@
                 <div class="d-none d-md-block col-lg-4 my-2">
                     <a href="/web-preview/preview-htcondor-release-dates/featured-users.html"><b>Featured Users</b></a>
                     
+
 
 
                     
@@ -632,9 +638,9 @@
                 </div>
                 <div class="d-none d-xl-block col-xl-3 my-2">
                     <div class="card h-100">
-                        <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/Spectrometer.jpg" class="card-img-top" alt="Card Image">
+                        <img src="" class="card-img-top" alt="Card Image">
                         <div class="card-body d-flex flex-column">
-                            <h5><a class="text-decoration-none" href="/web-preview/preview-htcondor-release-dates/featured-users/2022-04-25-Natzke.html">Learning and adapting with OSG: Investigating the strong nuclear force</a></h5>
+                            <h5><a class="text-decoration-none" href=""></a></h5>
                             <hr/>
                             <a href="/web-preview/preview-htcondor-release-dates/featured-users.html">
                                 <div class="row">
@@ -1752,7 +1758,7 @@
 
     async function updateCollaborationUsageValues() {
         let usages = await getUsage()
-        let collaborations = [{"name":"CMS","ids":["cms"],"url":"https://cms.cern/"},{"name":"REDTOP","ids":["REDTOP"],"url":"https://redtop.fnal.gov/"},{"name":"IceCube","ids":["IceCube"],"url":"https://icecube.wisc.edu/"},{"name":"IGWN","ids":["ligo"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"South Pole Telescope","ids":["spt.all"],"url":"https://pole.uchicago.edu/"},{"name":"Xenon","ids":["xenon"],"url":"https://xenonexperiment.org/"},{"name":"KOTO","ids":["KOTO"],"url":"https://koto.kek.jp/"},{"name":"CLAS12","ids":["CLAS12"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"GLUEX","ids":["gluex","GLUEX"],"url":"http://www.gluex.org/"},{"name":"EIC","ids":["EIC"],"url":"https://www.bnl.gov/eic/"},{"name":"MOLLER","ids":["MOLLER"],"url":"https://moller.jlab.org/"},{"name":"DUNE","ids":["dune"],"url":"https://www.dunescience.org/"},{"name":"EHT","ids":["eht"],"url":"https://eventhorizontelescope.org/"},{"name":"ePIC","ids":["ePIC"],"url":"https://www.epic-eic.org/public/overview.html"},{"name":"ATLAS","ids":["ATLAS","atlas"],"url":"https://atlas.cern/"}]
+        let collaborations = [{"name":"CMS","ids":["cms"],"url":"https://cms.cern/"},{"name":"REDTOP","ids":["REDTOP"],"url":"https://redtop.fnal.gov/"},{"name":"IceCube","ids":["IceCube"],"url":"https://icecube.wisc.edu/"},{"name":"IGWN","ids":["ligo"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"South Pole Telescope","ids":["spt.all"],"url":"https://pole.uchicago.edu/"},{"name":"Xenon","ids":["xenon"],"url":"https://xenonexperiment.org/"},{"name":"KOTO","ids":["KOTO"],"url":"https://koto.kek.jp/"},{"name":"CLAS12","ids":["CLAS12"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"GLUEX","ids":["gluex","GLUEX"],"url":"http://www.gluex.org/"},{"name":"EIC","ids":["EIC"],"url":"https://www.bnl.gov/eic/"},{"name":"MOLLER","ids":["MOLLER"],"url":"https://moller.jlab.org/"},{"name":"DUNE","ids":["dune"],"url":"https://www.dunescience.org/"},{"name":"EHT","ids":["eht"],"url":"https://eventhorizontelescope.org/"},{"name":"ePIC","ids":["ePIC"],"url":"https://www.epic-eic.org/public/overview.html"},{"name":"ATLAS","ids":["ATLAS","atlas"],"url":"https://atlas.cern/"},{"name":"Total","ids":["cms","REDTOP","IceCube","ligo","spt.all","xenon","KOTO","CLAS12","gluex","GLUEX","EIC","MOLLER","dune","eht","ePIC","ATLAS","atlas"]}]
 
         // Using the usages object get all the usages for the collaborations
         // each collaboration has a list of ids that should be summed for final usage
@@ -1843,12 +1849,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://cms.cern/" class="text-decoration-none" target="_blank">
-                                CMS
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://cms.cern/" class="text-decoration-none" target="_blank">
+                                    CMS
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -1872,12 +1880,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://redtop.fnal.gov/" class="text-decoration-none" target="_blank">
-                                REDTOP
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://redtop.fnal.gov/" class="text-decoration-none" target="_blank">
+                                    REDTOP
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -1901,12 +1911,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://icecube.wisc.edu/" class="text-decoration-none" target="_blank">
-                                IceCube
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://icecube.wisc.edu/" class="text-decoration-none" target="_blank">
+                                    IceCube
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -1930,12 +1942,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://computing.docs.ligo.org/guide/igwn/" class="text-decoration-none" target="_blank">
-                                IGWN
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://computing.docs.ligo.org/guide/igwn/" class="text-decoration-none" target="_blank">
+                                    IGWN
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -1959,12 +1973,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://pole.uchicago.edu/" class="text-decoration-none" target="_blank">
-                                South Pole Telescope
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://pole.uchicago.edu/" class="text-decoration-none" target="_blank">
+                                    South Pole Telescope
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -1988,12 +2004,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://xenonexperiment.org/" class="text-decoration-none" target="_blank">
-                                Xenon
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://xenonexperiment.org/" class="text-decoration-none" target="_blank">
+                                    Xenon
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2017,12 +2035,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://koto.kek.jp/" class="text-decoration-none" target="_blank">
-                                KOTO
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://koto.kek.jp/" class="text-decoration-none" target="_blank">
+                                    KOTO
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2046,12 +2066,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://computing.docs.ligo.org/guide/igwn/" class="text-decoration-none" target="_blank">
-                                CLAS12
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://computing.docs.ligo.org/guide/igwn/" class="text-decoration-none" target="_blank">
+                                    CLAS12
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2075,12 +2097,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="http://www.gluex.org/" class="text-decoration-none" target="_blank">
-                                GLUEX
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="http://www.gluex.org/" class="text-decoration-none" target="_blank">
+                                    GLUEX
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2104,12 +2128,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://www.bnl.gov/eic/" class="text-decoration-none" target="_blank">
-                                EIC
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://www.bnl.gov/eic/" class="text-decoration-none" target="_blank">
+                                    EIC
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2133,12 +2159,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://moller.jlab.org/" class="text-decoration-none" target="_blank">
-                                MOLLER
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://moller.jlab.org/" class="text-decoration-none" target="_blank">
+                                    MOLLER
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2162,12 +2190,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://www.dunescience.org/" class="text-decoration-none" target="_blank">
-                                DUNE
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://www.dunescience.org/" class="text-decoration-none" target="_blank">
+                                    DUNE
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2191,12 +2221,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://eventhorizontelescope.org/" class="text-decoration-none" target="_blank">
-                                EHT
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://eventhorizontelescope.org/" class="text-decoration-none" target="_blank">
+                                    EHT
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2220,12 +2252,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://www.epic-eic.org/public/overview.html" class="text-decoration-none" target="_blank">
-                                ePIC
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://www.epic-eic.org/public/overview.html" class="text-decoration-none" target="_blank">
+                                    ePIC
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2249,12 +2283,14 @@
                 <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
                     <div>
                         <h4 class="text-center fw-bold">
-                            <a href="https://atlas.cern/" class="text-decoration-none" target="_blank">
-                                ATLAS
-                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                  <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                </svg>
-                            </a>
+                            
+                                <a href="https://atlas.cern/" class="text-decoration-none" target="_blank">
+                                    ATLAS
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
+                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
+                                    </svg>
+                                </a>
+                            
                         </h4>
                     </div>
                     <div class="mb-auto">
@@ -2268,6 +2304,32 @@
                                 <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">Jobs</span></div>
                                 <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">CPU Core Hours</span></div>
                                 <div class="fs-6 ATLAS-gpu custom-height" style="display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        
+            <div class="col-12 col-md-6 col-lg-4 col-xl-3 d-flex">
+                <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
+                    <div>
+                        <h4 class="text-center fw-bold">
+                            
+                                <span class="text-secondary">Total</span>
+                            
+                        </h4>
+                    </div>
+                    <div class="mb-auto">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-end">
+                                <div id="Total-jobs" class="fs-3">Loading</div>
+                                <div id="Total-cpu" class="fs-3">Loading</div>
+                                <div id="Total-gpu" class="fs-3 Total-gpu">Loading</div>
+                            </div>
+                            <div class="text-end flex-grow">
+                                <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">Jobs</span></div>
+                                <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">CPU Core Hours</span></div>
+                                <div class="fs-6 Total-gpu custom-height" style="display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
                             </div>
                         </div>
                     </div>
@@ -2733,6 +2795,7 @@
         </div>
     </div>
 </div>
+
 
 
 
