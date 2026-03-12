@@ -962,32 +962,30 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.6.1</span> Feature Release</h3>
-        <p>January 29, 2026</p>
+        <h3><span class="text-secondary">25.7.2</span> Feature Release</h3>
+        <p>March 12, 2026</p>
         <div>
             <ul>
-  <li>DAGMan now uses the new DAG file parser used by <code>condor_dag_checker</code></li>
-  <li>The condor keyboard daemon now checks idle time via systemd and Mutter</li>
-  <li>Can now specify DAGMan rescue file by name</li>
-  <li>Adminstrators can now require units on <code>retry_request_memory</code></li>
-  <li>Initial support for openSUSE 16</li>
-  <li>Make HTCondor Python wheel usable with the <code>python-slim</code> Docker image</li>
-  <li>Fix problem specifying scope or audience with a Vault-managed credential</li>
-  <li>Fix late materialization bug when job transform sets immutable attribute</li>
-  <li>Fix problem where a backfill slot would refuse claims</li>
-  <li>Fix floating point memory or disk request not fitting into some slots</li>
-  <li>Fix <code>condor_rooster</code> crash when unhibernate rank was not constant</li>
-  <li>Fix memory leak in the <code>htcondor2.JobEventLog.events()</code> Python method</li>
-  <li><code>condor_history -long</code> now prints attributes in alphabetical order</li>
-  <li>Fix LVM setup to not timeout when creating a large volume</li>
-  <li>LVM creation no longer saves meta data which eventually fills the disk</li>
-  <li>HTCondor tarballs now contain Pelican 7.22.0
+  <li>Improve schedd performance with large job records by sizing pipe buffers</li>
+  <li><code>condor_watch_q</code> display improvements</li>
+  <li>When a job runs out of memory, report how much memory was provisioned</li>
+  <li>Fix the broken <code>htcondor2.Schedd.refreshGSIProxy()</code> Python method</li>
+  <li>Improve <code>condor_history</code> performance on filesystems with I/O rate limits</li>
+  <li>Improve AMD GPU detection when using RCOM6/HIP libraries</li>
+  <li>Fix for new jobs getting kicked off LVM EP due to quantization mismatch</li>
+  <li><code>condor_submit</code> now reports an error for circular requirement expressions</li>
+  <li><code>condor_status</code> now correctly reports offline GPUs</li>
+  <li>Can use use a string for <code>since</code> with <code>htcondor.Schedd.history()</code></li>
+  <li>Fix for backfill GPUs disappearing on reconfig</li>
+  <li>Enable use of in-memory SciTokens cache, if disk cache not usable</li>
+  <li>Fix <code>condor_submit</code> using different executables with late materialization</li>
+  <li>HTCondor tarballs now contain Pelican 7.23.0
     <ul>
-      <li>More robust error classification in the client</li>
-      <li>Fixed authentication loop issue in the client</li>
+      <li>Can retrieve Pelican configuration variables from HTCondor ClassAds</li>
+      <li>There is now a CacheHit field in transfer output ClassAd</li>
+      <li><code>PELICAN_CLIENT_PREFERREDCACHES</code> environment variable no longer ignored</li>
     </ul>
   </li>
-  <li>HTCondor tarballs now contain Apptainer 1.4.5</li>
 </ul>
 
         </div>
@@ -1012,12 +1010,25 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.7</span> Long Term Support Release</h3>
-        <p>February 13, 2026</p>
+        <h3><span class="text-secondary">25.0.8</span> Long Term Support Release</h3>
+        <p>March 12, 2026</p>
         <div>
             <ul>
-  <li>Fix the broken <code>htcondor2.Schedd.refreshGPIProxy()</code> Python method</li>
-  <li>Improve <code>condor_history</code> performance on filesystems with I/O rate limits</li>
+  <li>Improve AMD GPU detection when using RCOM6/HIP libraries</li>
+  <li>Fix for new jobs getting kicked off LVM EP due to quantization mismatch</li>
+  <li><code>condor_submit</code> now reports an error for circular requirement expressions</li>
+  <li><code>condor_status</code> now correctly reports offline GPUs</li>
+  <li>Can use use a string for <code>since</code> with <code>htcondor.Schedd.history()</code></li>
+  <li>Fix for backfill GPUs disappearing on reconfig</li>
+  <li>Enable use of in-memory SciTokens cache, if disk cache not usable</li>
+  <li>Fix <code>condor_submit</code> using different executables with late materialization</li>
+  <li>HTCondor tarballs now contain Pelican 7.23.0
+    <ul>
+      <li>Can retrieve Pelican configuration variables from HTCondor ClassAds</li>
+      <li>There is now a CacheHit field in transfer output ClassAd</li>
+      <li><code>PELICAN_CLIENT_PREFERREDCACHES</code> environment variable no longer ignored</li>
+    </ul>
+  </li>
 </ul>
 
         </div>
