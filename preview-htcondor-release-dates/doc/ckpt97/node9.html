@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.3.2 Restoring Mapped Segments</TITLE>
+<META NAME="description" CONTENT="3.3.2 Restoring Mapped Segments">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html119" HREF="node10.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html117" HREF="node7.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html113" HREF="node8.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html120" HREF="node10.html">3.4 Files</A>
+<B>Up:</B> <A NAME="tex2html118" HREF="node7.html">3.3 Shared Libraries</A>
+<B> Previous:</B> <A NAME="tex2html114" HREF="node8.html">3.3.1 Checkpointing Mapped Segments</A>
+<BR> <P>
+<H3><A NAME="SECTION00033200000000000000">3.3.2 Restoring Mapped Segments</A></H3>
+<P>
+On restart, Condor must restore all segments in the checkpoint file.
+The data segment is restored as in static checkpointing.  Condor
+restores the stack segment last, and returns to the top of the stack
+as if returning from a signal handler.
+<P>
+To restore the dynamic libraries, Condor first uses the <TT>mmap()</TT>
+function to allocate the necessary mapped segment in the virtual
+address space.  This call maps the file <TT>/dev/zero</TT><A NAME="tex2html1" HREF="footnode.html#123"><IMG  ALIGN=BOTTOM ALT="gif" SRC="http://www.cs.wisc.edu/latex2html//foot_motif.gif"></A> from
+the appropriate start address to end address, to provide an
+initialized segment.  The protection and attribute flags for this new
+segment are set to be those saved in the checkpoint file, except that
+the segment always has write access enabled and the memory is always
+marked as private.  Write access is necessary so that the saved bytes
+in the checkpoint file can be written to the segment.  The memory is
+not shared to ensure that our (possibly different) version of a system
+library does not interfere with other processes on the machine.  Once
+the mapped segment is allocated, the <TT>read()</TT> system call is used
+to overwrite the memory with the saved bytes in the checkpoint file.
+<P>
+Note that the definitions for <TT>mmap()</TT> and <TT>write()</TT> must be
+forced to be static.  Otherwise, we run into the possibility of
+overwriting the shared library text segment in which they are defined
+while we are in a call to either <TT>mmap()</TT> or <TT>write()</TT>, which
+can have disastrous consequences.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
