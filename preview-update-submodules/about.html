@@ -461,9 +461,9 @@
                     <div class="d-none d-lg-block col-lg-4">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-03-10-htc26.html">Registration Open for Throughput Computing Week 2026</a></h3>
+                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-03-27-conversation-with-cannon.html">A Conversation with CHTC Web Developer, Cannon Lock</a></h3>
                                 <div>
-                                    <span class="text-muted">March 10, 2026</span>
+                                    <span class="text-muted">March 27, 2026</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -572,6 +572,28 @@
                     <div class="my-2">
                         
 
+<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-update-submodules/featured-users/2026-03-27-wlcg-collaboration.html">
+
+
+    <div class="card border-0 ">
+        <div class="p-2 d-flex flex-column">
+            <h6 class="text-decoration-none mb-1">
+                Advancing Science Internationally Through Collaboration
+            </h6>
+            <div>
+                <span class="text-muted text-decoration-none">March 27, 2026</span>
+            </div>
+        </div>
+    </div>
+
+
+</a>
+
+                    </div>
+                    
+                    <div class="my-2">
+                        
+
 <a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-update-submodules/featured-users/2025-12-15-using-ospool-to-design-proteins.html">
 
 
@@ -626,28 +648,6 @@
             </h6>
             <div>
                 <span class="text-muted text-decoration-none">November 17, 2025</span>
-            </div>
-        </div>
-    </div>
-
-
-</a>
-
-                    </div>
-                    
-                    <div class="my-2">
-                        
-
-<a class="text-decoration-none d-block hover-border rounded h-100" href="/web-preview/preview-update-submodules/featured-users/2025-04-07-new-frontiers-at-thyme-lab.html">
-
-
-    <div class="card border-0 ">
-        <div class="p-2 d-flex flex-column">
-            <h6 class="text-decoration-none mb-1">
-                Unlocking New Frontiers in Drug Discovery: High Throughput Computing in the Thyme Lab
-            </h6>
-            <div>
-                <span class="text-muted text-decoration-none">April  7, 2025</span>
             </div>
         </div>
     </div>
@@ -1780,7 +1780,7 @@
 
     async function updateCollaborationUsageValues() {
         let usages = await getUsage()
-        let collaborations = [{"name":"CMS","ids":["cms"],"url":"https://cms.cern/"},{"name":"REDTOP","ids":["REDTOP"],"url":"https://redtop.fnal.gov/"},{"name":"IceCube","ids":["IceCube"],"url":"https://icecube.wisc.edu/"},{"name":"IGWN","ids":["ligo"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"South Pole Telescope","ids":["spt.all"],"url":"https://pole.uchicago.edu/"},{"name":"Xenon","ids":["xenon"],"url":"https://xenonexperiment.org/"},{"name":"KOTO","ids":["KOTO"],"url":"https://koto.kek.jp/"},{"name":"CLAS12","ids":["CLAS12"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"GLUEX","ids":["gluex","GLUEX"],"url":"http://www.gluex.org/"},{"name":"EIC","ids":["EIC"],"url":"https://www.bnl.gov/eic/"},{"name":"MOLLER","ids":["MOLLER"],"url":"https://moller.jlab.org/"},{"name":"DUNE","ids":["dune"],"url":"https://www.dunescience.org/"},{"name":"EHT","ids":["eht"],"url":"https://eventhorizontelescope.org/"},{"name":"ePIC","ids":["ePIC"],"url":"https://www.epic-eic.org/public/overview.html"},{"name":"ATLAS","ids":["ATLAS","atlas"],"url":"https://atlas.cern/"},{"name":"Total","ids":["cms","REDTOP","IceCube","ligo","spt.all","xenon","KOTO","CLAS12","gluex","GLUEX","EIC","MOLLER","dune","eht","ePIC","ATLAS","atlas"]}]
+        let collaborations = [{"name":"CMS","ids":["cms"],"url":"https://cms.cern/"},{"name":"REDTOP","ids":["REDTOP"],"url":"https://redtop.fnal.gov/"},{"name":"IceCube","ids":["IceCube"],"url":"https://icecube.wisc.edu/"},{"name":"IGWN","ids":["ligo"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"South Pole Telescope","ids":["spt.all"],"url":"https://pole.uchicago.edu/"},{"name":"Xenon","ids":["xenon"],"url":"https://xenonexperiment.org/"},{"name":"KOTO","ids":["KOTO"],"url":"https://koto.kek.jp/"},{"name":"CLAS12","ids":["CLAS12"],"url":"https://computing.docs.ligo.org/guide/igwn/"},{"name":"GLUEX","ids":["gluex","GLUEX"],"url":"http://www.gluex.org/"},{"name":"EIC","ids":["EIC"],"url":"https://www.bnl.gov/eic/"},{"name":"DUNE","ids":["dune"],"url":"https://www.dunescience.org/"},{"name":"EHT","ids":["eht"],"url":"https://eventhorizontelescope.org/"},{"name":"ePIC","ids":["ePIC"],"url":"https://www.epic-eic.org/public/overview.html"},{"name":"ATLAS","ids":["ATLAS","atlas"],"url":"https://atlas.cern/"},{"name":"Total","ids":["cms","REDTOP","IceCube","ligo","spt.all","xenon","KOTO","CLAS12","gluex","GLUEX","EIC","MOLLER","dune","eht","ePIC","ATLAS","atlas"]}]
 
         // Using the usages object get all the usages for the collaborations
         // each collaboration has a list of ids that should be summed for final usage
@@ -2171,37 +2171,6 @@
                                 <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">Jobs</span></div>
                                 <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">CPU Core Hours</span></div>
                                 <div class="fs-6 EIC-gpu custom-height" style="display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        
-            <div class="col-12 col-md-6 col-lg-4 col-xl-3 d-flex">
-                <div class="rounded bg-white p-2 flex-grow w-100 d-flex flex-column shadow">
-                    <div>
-                        <h4 class="text-center fw-bold">
-                            
-                                <a href="https://moller.jlab.org/" class="text-decoration-none" target="_blank">
-                                    MOLLER
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-right-circle" viewBox="0 0 16 16">
-                                      <path fill-rule="evenodd" d="M1 8a7 7 0 1 0 14 0A7 7 0 0 0 1 8m15 0A8 8 0 1 1 0 8a8 8 0 0 1 16 0M4.5 7.5a.5.5 0 0 0 0 1h5.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3a.5.5 0 0 0 0-.708l-3-3a.5.5 0 1 0-.708.708L10.293 7.5z"/>
-                                    </svg>
-                                </a>
-                            
-                        </h4>
-                    </div>
-                    <div class="mb-auto">
-                        <div class="d-flex justify-content-between">
-                            <div class="text-end">
-                                <div id="MOLLER-jobs" class="fs-3">Loading</div>
-                                <div id="MOLLER-cpu" class="fs-3">Loading</div>
-                                <div id="MOLLER-gpu" class="fs-3 MOLLER-gpu">Loading</div>
-                            </div>
-                            <div class="text-end flex-grow">
-                                <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">Jobs</span></div>
-                                <div class="fs-6 d-flex custom-height"><span class="ms-auto my-auto">CPU Core Hours</span></div>
-                                <div class="fs-6 MOLLER-gpu custom-height" style="display: flex;"><span class="ms-auto my-auto">GPU Hours</span></div>
                             </div>
                         </div>
                     </div>
@@ -2832,6 +2801,26 @@
     <div class="row">
         
         <div class="col-xs-12 col-sm-6 col-md-6 col-xl-4 py-4">
+            <a href="/web-preview/preview-update-submodules/featured-users/2026-03-27-wlcg-collaboration.html">
+    <div class="card h-100">
+        
+            <img alt="" src="" class="card-img-top">
+        
+        <div class="card-body border-top">
+            <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-03-27-wlcg-collaboration.html">Advancing Science Internationally Through Collaboration</a></h3>
+            <div>
+                <span class="text-muted">March 27, 2026</span>
+            </div>
+            <hr/>
+            <p>
+                The Large Hadron Collider (LHC) is the world's largest and most powerful particle accelerator, with two high-energy particle beams traveling at close to the speed of light before they are made to collide. But how do particle collisions go from data plots to groundbreaking scientific advancements, like confirming the existence of the Higgs-Boson Particle?
+            </p>
+        </div>
+    </div>
+</a>
+        </div>
+        
+        <div class="col-xs-12 col-sm-6 col-md-6 col-xl-4 py-4">
             <a href="/web-preview/preview-update-submodules/featured-users/2025-12-15-using-ospool-to-design-proteins.html">
     <div class="card h-100">
         
@@ -2865,26 +2854,6 @@
             <hr/>
             <p>
                 The annual OSG David Swanson Award is presented to University of Nebraska-Lincoln postdoctoral researcher Brandi Pessman, for her engagement with the community, and work using high throughput computing to track spider web-construction behavior.
-            </p>
-        </div>
-    </div>
-</a>
-        </div>
-        
-        <div class="col-xs-12 col-sm-6 col-md-6 col-xl-4 py-4">
-            <a href="/web-preview/preview-update-submodules/featured-users/2025-11-17-ml-in-dairy-farming.html">
-    <div class="card h-100">
-        
-            <img alt="Ariana Negreiro stands with a cow." src="https://raw.githubusercontent.com/CHTC/Articles/main/images/ml-in-dairy-farming-card.jpg" class="card-img-top">
-        
-        <div class="card-body border-top">
-            <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2025-11-17-ml-in-dairy-farming.html">One Researcher’s Leap into Throughput Computing: Bringing Machine Learning to Dairy Farm Management</a></h3>
-            <div>
-                <span class="text-muted">November 17, 2025</span>
-            </div>
-            <hr/>
-            <p>
-                Ariana Negreiro, Ph.D, in the UW-Madison Digital Livestock Lab, discusses her work using images of cows to develop a machine learning application to monitor their health.
             </p>
         </div>
     </div>
