@@ -461,9 +461,9 @@
                     <div class="d-none d-lg-block col-lg-4">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/images/2026-05-12-using-htc-for-ai-training.html">Breaking the GPU Bottleneck: How Distributed Computing is Expanding AI Training</a></h3>
+                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-05-20-htcondor-europe-2026.html">HTCondor European Workshop 2026</a></h3>
                                 <div>
-                                    <span class="text-muted">May 12, 2026</span>
+                                    <span class="text-muted">May 20, 2026</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -962,34 +962,23 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.8.2</span> Feature Release</h3>
-        <p>April 16, 2026</p>
+        <h3><span class="text-secondary">25.10.1</span> Feature Release</h3>
+        <p>May 14, 2026</p>
         <div>
             <ul>
-  <li>Fix detection and reporting of NVIDIA MIG GPU attributes</li>
-  <li>Add <code>--rocm</code> flag to Apptainer GPU jobs to support AMD GPUs</li>
-  <li>Fix bug where jobs went on hold, but should be rerun, when using Pelican</li>
-  <li>Can now use <code>condor_rm -transfer</code> to fetch whatever output is available</li>
-  <li>Can now use <code>condor_q -aaf</code> to append columns to the standard output</li>
-  <li>Can now run <code>condor_top --history</code> to get fast response from stored data</li>
-  <li><code>htcondor dag status</code> now includes information about file transfers</li>
-  <li><code>htcondor job status</code> and <code>condor_q</code> now report cool down state information</li>
-  <li><code>condor_run</code> no longer passes <code>getenv = true</code> to the submit file</li>
-  <li>Fix <code>condor_ssh_to_job</code> for setuid Apptainer or Singularity runtimes</li>
-  <li>The negotiator now knows the user’s floor to avoid improper preemption</li>
-  <li>The <code>condor_shadow</code> now logs information about reconnect attempts</li>
-  <li><code>condor_config_val</code> can now report configuration option’s default value</li>
-  <li>Fix crash when a user provided Docker script produces unexpected output</li>
-  <li>Now properly reports NVIDIA MIG GPU device names</li>
-  <li>Fix performance problem in the htcondor2 Python ClassAd parser</li>
-  <li>Fix <code>AllowedExecuteDuration</code> to be reliably enforced when no file transfer</li>
-  <li>Batch grid universe jobs now tolerate a dot in the username</li>
-  <li>Fix huge reported job execution times when an AP restarts</li>
-  <li>HTCondor tarballs now contain Pelican 7.24.0
-    <ul>
-      <li>Update error classification to provide better error information</li>
-    </ul>
-  </li>
+  <li>Several improvements to throttle and monitor DAGMan resource usage</li>
+  <li>Can now automatically retry a job with a larger disk request</li>
+  <li><code>.chirp.config</code> has been moved out of the job’s scratch directory</li>
+  <li>Disables swap for jobs on cgroup v1 systems by default</li>
+  <li>Can now append columns to <code>condor_(qusers|status|who)</code> output</li>
+  <li>Allow URL style container images when file transfer is off</li>
+  <li>Improvements to handling batch universe jobs</li>
+  <li>Add support for Ubuntu 26.04 (Resolute Raccoon)</li>
+  <li>Fixed Access Point spooled X.509 job proxy refresh</li>
+  <li>Fixed reporting of <code>RemoteUserCPU</code> in parallel universe</li>
+  <li><code>condor_ssh_to_job</code> can now execute one-shot commands when using containers</li>
+  <li><code>condor_ssh_to_job</code> now enters the proper cgroup when using containers</li>
+  <li>HTCondor tarballs now contain Pelican 7.24.2</li>
 </ul>
 
         </div>
@@ -1014,21 +1003,16 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.9</span> Long Term Support Release</h3>
-        <p>April 16, 2026</p>
+        <h3><span class="text-secondary">25.0.10</span> Long Term Support Release</h3>
+        <p>May 14, 2026</p>
         <div>
             <ul>
-  <li>Fix crash when a user provided Docker script produces unexpected output</li>
-  <li>Now properly reports NVIDIA MIG GPU device names</li>
-  <li>Fix performance problem in the htcondor2 Python ClassAd parser</li>
-  <li>Fix <code>AllowedExecuteDuration</code> to be reliably enforced when no file transfer</li>
-  <li>Batch grid universe jobs now tolerate a dot in the username</li>
-  <li>Fix huge reported job execution times when an AP restarts</li>
-  <li>HTCondor tarballs now contain Pelican 7.24.0
-    <ul>
-      <li>Update error classification to provide better error information</li>
-    </ul>
-  </li>
+  <li>Add support for Ubuntu 26.04 (Resolute Raccoon)</li>
+  <li>Fixed Access Point spooled X.509 job proxy refresh</li>
+  <li>Fixed reporting of <code>RemoteUserCPU</code> in parallel universe</li>
+  <li><code>condor_ssh_to_job</code> can now execute one-shot commands when using containers</li>
+  <li><code>condor_ssh_to_job</code> now enters the proper cgroup when using containers</li>
+  <li>HTCondor tarballs now contain Pelican 7.24.2</li>
 </ul>
 
         </div>
