@@ -225,7 +225,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></li>
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2432/">Throughput Computing 2026</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-update-submodules/past_condor_weeks.html">Materials from past Workshops</a></li>
         
@@ -551,7 +551,7 @@
             <table>
                 <tr><th>Workshops</th></tr>
                 
-                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></td></tr>
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2432/">Throughput Computing 2026</a></td></tr>
                 
                     <tr><td><a href="/web-preview/preview-update-submodules/past_condor_weeks.html">Materials from past Workshops</a></td></tr>
                 
@@ -839,23 +839,22 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.10.1</span> Feature Release</h3>
-        <p>May 14, 2026</p>
+        <h3><span class="text-secondary">25.11.0</span> Feature Release</h3>
+        <p>June 11, 2026</p>
         <div>
             <ul>
-  <li>Several improvements to throttle and monitor DAGMan resource usage</li>
-  <li>Can now automatically retry a job with a larger disk request</li>
-  <li><code>.chirp.config</code> has been moved out of the job’s scratch directory</li>
-  <li>Disables swap for jobs on cgroup v1 systems by default</li>
-  <li>Can now append columns to <code>condor_(qusers|status|who)</code> output</li>
-  <li>Allow URL style container images when file transfer is off</li>
-  <li>Improvements to handling batch universe jobs</li>
-  <li>Add support for Ubuntu 26.04 (Resolute Raccoon)</li>
-  <li>Fixed Access Point spooled X.509 job proxy refresh</li>
-  <li>Fixed reporting of <code>RemoteUserCPU</code> in parallel universe</li>
-  <li><code>condor_ssh_to_job</code> can now execute one-shot commands when using containers</li>
-  <li><code>condor_ssh_to_job</code> now enters the proper cgroup when using containers</li>
-  <li>HTCondor tarballs now contain Pelican 7.24.2</li>
+  <li>Prevent one user’s many file transfers from halting matches for all users</li>
+  <li><code>condor_watch_q</code> will gather DAGs that started after it did</li>
+  <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
+  <li>Gangliad can now aggregate deltas of monotonically increasing values</li>
+  <li><code>condor_config_val -trace</code> finds a definition in a complex configuration</li>
+  <li>Now able to set a duration to a user’s running jobs ceiling</li>
+  <li>Multi-call binaries can now be used with DAGMan</li>
+  <li>Initial support for EP health checks</li>
+  <li>Fix rare EP crash when using a custom docker wrapper script</li>
+  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
+  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
+  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
 </ul>
 
         </div>
@@ -880,16 +879,14 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.10</span> Long Term Support Release</h3>
-        <p>May 14, 2026</p>
+        <h3><span class="text-secondary">25.0.11</span> Long Term Support Release</h3>
+        <p>June 11, 2026</p>
         <div>
             <ul>
-  <li>Add support for Ubuntu 26.04 (Resolute Raccoon)</li>
-  <li>Fixed Access Point spooled X.509 job proxy refresh</li>
-  <li>Fixed reporting of <code>RemoteUserCPU</code> in parallel universe</li>
-  <li><code>condor_ssh_to_job</code> can now execute one-shot commands when using containers</li>
-  <li><code>condor_ssh_to_job</code> now enters the proper cgroup when using containers</li>
-  <li>HTCondor tarballs now contain Pelican 7.24.2</li>
+  <li>Fix rare EP crash when using a custom docker wrapper script</li>
+  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
+  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
+  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
 </ul>
 
         </div>
