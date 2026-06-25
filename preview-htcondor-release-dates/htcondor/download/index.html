@@ -225,7 +225,7 @@
     </a>
     <ul class="dropdown-menu" aria-labelledby="-toggle">
         
-            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></li>
+            <li><a class="dropdown-item" href="https://agenda.hep.wisc.edu/event/2432/">Throughput Computing 2026</a></li>
         
             <li><a class="dropdown-item" href="/web-preview/preview-htcondor-release-dates/past_condor_weeks.html">Materials from past Workshops</a></li>
         
@@ -529,7 +529,7 @@
             <table>
                 <tr><th>Workshops</th></tr>
                 
-                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2297">Throughput Computing 2025</a></td></tr>
+                    <tr><td><a href="https://agenda.hep.wisc.edu/event/2432/">Throughput Computing 2026</a></td></tr>
                 
                     <tr><td><a href="/web-preview/preview-htcondor-release-dates/past_condor_weeks.html">Materials from past Workshops</a></td></tr>
                 
@@ -940,34 +940,22 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.8.2</span> Feature Release</h3>
-        <p>April 16, 2026</p>
+        <h3><span class="text-secondary">25.11.0</span> Feature Release</h3>
+        <p>June 11, 2026</p>
         <div>
             <ul>
-  <li>Fix detection and reporting of NVIDIA MIG GPU attributes</li>
-  <li>Add <code>--rocm</code> flag to Apptainer GPU jobs to support AMD GPUs</li>
-  <li>Fix bug where jobs went on hold, but should be rerun, when using Pelican</li>
-  <li>Can now use <code>condor_rm -transfer</code> to fetch whatever output is available</li>
-  <li>Can now use <code>condor_q -aaf</code> to append columns to the standard output</li>
-  <li>Can now run <code>condor_top --history</code> to get fast response from stored data</li>
-  <li><code>htcondor dag status</code> now includes information about file transfers</li>
-  <li><code>htcondor job status</code> and <code>condor_q</code> now report cool down state information</li>
-  <li><code>condor_run</code> no longer passes <code>getenv = true</code> to the submit file</li>
-  <li>Fix <code>condor_ssh_to_job</code> for setuid Apptainer or Singularity runtimes</li>
-  <li>The negotiator now knows the user’s floor to avoid improper preemption</li>
-  <li>The <code>condor_shadow</code> now logs information about reconnect attempts</li>
-  <li><code>condor_config_val</code> can now report configuration option’s default value</li>
-  <li>Fix crash when a user provided Docker script produces unexpected output</li>
-  <li>Now properly reports NVIDIA MIG GPU device names</li>
-  <li>Fix performance problem in the htcondor2 Python ClassAd parser</li>
-  <li>Fix <code>AllowedExecuteDuration</code> to be reliably enforced when no file transfer</li>
-  <li>Batch grid universe jobs now tolerate a dot in the username</li>
-  <li>Fix huge reported job execution times when an AP restarts</li>
-  <li>HTCondor tarballs now contain Pelican 7.24.0
-    <ul>
-      <li>Update error classification to provide better error information</li>
-    </ul>
-  </li>
+  <li>Prevent one user’s many file transfers from halting matches for all users</li>
+  <li><code>condor_watch_q</code> will gather DAGs that started after it did</li>
+  <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
+  <li>Gangliad can now aggregate deltas of monotonically increasing values</li>
+  <li><code>condor_config_val -trace</code> finds a definition in a complex configuration</li>
+  <li>Now able to set a duration to a user’s running jobs ceiling</li>
+  <li>Multi-call binaries can now be used with DAGMan</li>
+  <li>Initial support for EP health checks</li>
+  <li>Fix rare EP crash when using a custom docker wrapper script</li>
+  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
+  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
+  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
 </ul>
 
         </div>
@@ -992,21 +980,14 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.9</span> Long Term Support Release</h3>
-        <p>April 16, 2026</p>
+        <h3><span class="text-secondary">25.0.11</span> Long Term Support Release</h3>
+        <p>June 11, 2026</p>
         <div>
             <ul>
-  <li>Fix crash when a user provided Docker script produces unexpected output</li>
-  <li>Now properly reports NVIDIA MIG GPU device names</li>
-  <li>Fix performance problem in the htcondor2 Python ClassAd parser</li>
-  <li>Fix <code>AllowedExecuteDuration</code> to be reliably enforced when no file transfer</li>
-  <li>Batch grid universe jobs now tolerate a dot in the username</li>
-  <li>Fix huge reported job execution times when an AP restarts</li>
-  <li>HTCondor tarballs now contain Pelican 7.24.0
-    <ul>
-      <li>Update error classification to provide better error information</li>
-    </ul>
-  </li>
+  <li>Fix rare EP crash when using a custom docker wrapper script</li>
+  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
+  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
+  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
 </ul>
 
         </div>
