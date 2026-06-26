@@ -1,0 +1,205 @@
+// Powers the HTCSS User Map
+
+const defaultIconScale = 42
+
+function getIcon(iconScale){
+    let iconSize = [iconScale*2.8, iconScale]
+    let iconConfig = {
+        iconUrl: "/web-preview/preview-update-submodules/assets/images/icons/star_red.svg",
+        iconSize: iconSize,
+        iconAnchor: [iconSize[0]*.5, iconSize[1]],
+        shadowUrl: "/web-preview/preview-update-submodules/assets/images/icons/small_shadow.svg",
+        shadowAnchor: [iconSize[1]/2, (iconSize[1]*.6)/2],
+        shadowSize: [iconSize[0]*.55, iconSize[1]*.3]
+    }
+    return L.icon(iconConfig)
+}
+
+function getScale(zoom){
+    return defaultIconScale * (.5 + (.03*zoom))
+}
+
+function create_marker([latitude, longitude], iconScale, title){
+
+    // Define jitter in degrees, 10 miles is approximately 1/69 degrees of latitude
+    const jitterRangeLat = 10 / 69;
+    // Longitude varies, use the cosine of the latitude (in radians)
+    const jitterRangeLng = jitterRangeLat / Math.cos(latitude * Math.PI / 180);
+
+    // Create an array to hold the markers
+    let markers = [];
+
+    // Adjust this value if you want more or fewer markers
+    const numberOfMarkers = 3; // For example, if you only want one marker per location
+
+    for (let i = 0; i < numberOfMarkers; i++) {
+        // Generate a random jitter within the range for latitude and longitude
+        const jitterLat = (Math.random() - 0.5) * jitterRangeLat;
+        const jitterLng = (Math.random() - 0.5) * jitterRangeLng;
+
+        // Apply jitter and ensure the latitude and longitude are within bounds
+        const newLat = Math.min(Math.max(latitude + jitterLat, -90), 90);
+        const newLng = Math.min(Math.max(longitude + jitterLng, -180), 180);
+
+        // Add points across multiple maps for wide views
+        const finalLng = newLng - (360*Math.floor(numberOfMarkers / 2)) + (360 * i);
+
+        // Create a marker with jitter applied and add it to the array
+        const marker = L.marker(L.latLng([newLat, finalLng]), {icon: getIcon(iconScale)});
+        if(title) {
+            marker.bindPopup(title);
+        }
+        markers.push(marker);
+    }
+
+    // Return the array of markers
+    return markers;
+}
+
+
+async function get_spreadsheet_values(){
+    let res = await fetch("https://chtc.github.io/data-cache/data/htcss_user_registry.csv")
+
+    let text = await res.text()
+
+    let data = Papa.parse(text, {header:true})
+
+    let geocodes = data['data'].map(x => {
+        return {
+            longitude: parseFloat(x['Longitude']),
+            latitude: parseFloat(x['Latitude']),
+            ...x
+        }
+    })
+
+    let cleanGeocodes = geocodes.reduce((p, c) => {
+        if(isNaN(c['latitude']) || isNaN(c['longitude'])) {
+            return p
+        }
+        p.push(c)
+        return p
+    }, [])
+
+    if(cleanGeocodes.length === 0) {
+        console.error("No clean values were returned from the spreadsheet")
+    }
+
+    return cleanGeocodes
+}
+
+async function get_manual_values() {
+    let response = await fetch("/web-preview/preview-update-submodules/assets/data/htcss-users.json")
+
+    let data = await response.json()
+
+    let geocodes = data.map(x => {
+        return {
+            latitude: parseFloat(x[0]),
+            longitude: parseFloat(x[1])
+        }
+    })
+
+    return geocodes
+}
+
+async function updated() {
+
+    try {
+        const parentElement = document.getElementById("update-span")
+        let dateElement = document.getElementById("last-updated")
+
+        let response = await fetch("https://api.github.com/repos/CHTC/data-cache/actions/workflows/58845629/runs?status=success")
+        if (!response.ok) {
+            console.error('Failed to fetch data from GitHub API')
+        } else {
+            let data = await response.json()
+            let lastRun = data['workflow_runs'][0]['updated_at']
+
+            const date = new Date(lastRun).toLocaleString()
+
+            if(date === "Invalid Date") {
+                throw new Error("Invalid Date")
+            }
+
+            dateElement.textContent = new Date(lastRun).toLocaleString()
+            parentElement.style.display = "block"
+        }
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+class UserMap {
+    constructor() {
+        let urlParams = new URLSearchParams(window.location.search)
+        this.zoom = urlParams.get("zoom") ? urlParams.get("zoom") : 3
+        this.viewerLatitude = urlParams.get("latitude") ? urlParams.get("latitude") : 35
+        this.viewerLongitude = urlParams.get("longitude") ? urlParams.get("longitude") : -90
+        this.scrollWheelZoom = urlParams.get("scrollWheelZoom") ? urlParams.get("scrollWheelZoom") !== '0' : true
+        this.style = urlParams.get("style") ? urlParams.get("style") : 'mapbox/streets-v11'
+
+        var map = L.map('map', {scrollWheelZoom: this.scrollWheelZoom}).setView([this.viewerLatitude, this.viewerLongitude], this.zoom);
+
+        L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 17,
+            id: this.style,
+            tileSize: 512,
+            zoomOffset: -1,
+            accessToken: 'pk.eyJ1IjoidGFraW5nZHJha2UiLCJhIjoiY2wya3IyZGNvMDFyOTNsbnhyZjBteHRycSJ9.g6tRaqN8_iJxHgAQKNP6Tw',
+        }).addTo(map);
+
+        this.markerLayer = L.layerGroup()
+        this.markerLayer.addTo(map)
+
+        map.on("zoomend", () => {
+            this.zoom = map.getZoom();
+            this.markerLayer.eachLayer(x => x.setIcon(getIcon(getScale(this.zoom))))
+        })
+
+        this.markerCount = 0
+    }
+
+    updateMarkerCount(numOfNewMarkers) {
+        this.markerCount += numOfNewMarkers
+        for(const element of document.getElementsByClassName("org-count")) {
+            element.textContent = this.markerCount
+        }
+        for(const element of parent.document.getElementsByClassName("org-count")) {
+            element.textContent = this.markerCount
+        }
+    }
+
+    addIcon(coordinates, title) {
+        const markers = create_marker(coordinates, getScale(this.zoom), title)
+        markers.forEach(x => this.markerLayer.addLayer(x))
+    }
+
+
+    async addIcons(getter) {
+        let iconLocations = await getter()
+        iconLocations.forEach(x => this.addIcon([x['latitude'], x['longitude']], x['Organization Name ( Optional: Add if you want displayed ) ']))
+        this.updateMarkerCount(iconLocations.length)
+    }
+}
+
+function main(){
+    const map = new UserMap();
+    map.addIcons(get_spreadsheet_values)
+    map.addIcons(get_manual_values)
+}
+
+function registrationButton() {
+    // If the query parameter iframe is equal to 1, then the button is not shown
+    let url = new URL(window.location);
+    let iFrame = url.searchParams.get("iframe");
+    if (iFrame != "1") {
+        var button = document.getElementById('registration-button');
+        button.style.display = 'block';
+    }
+}
+
+
+updated()
+registrationButton()
+main()
