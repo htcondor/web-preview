@@ -1,0 +1,13 @@
+.results-dropdown {
+    position: absolute;
+}
+
+.result {
+    margin-top: 1px;
+    margin-bottom: 2px;
+    box-shadow: 2px 5px 5px #80808099;
+}
+
+.search-bar {
+    position: relative;
+}
