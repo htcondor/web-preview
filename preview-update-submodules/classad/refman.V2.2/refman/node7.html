@@ -1,0 +1,183 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>YACC Grammar</TITLE>
+<META NAME="description" CONTENT="YACC Grammar">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node8.html">
+<LINK REL="previous" HREF="node6.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node8.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html150"
+  HREF="node8.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html148"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html142"
+  HREF="node6.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html151"
+  HREF="node8.html">XML Document Type Definition</A>
+<B> Up:</B> <A NAME="tex2html149"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html143"
+  HREF="node6.html">Bibliography</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00070000000000000000"></A>
+<A NAME="sec:yacc"></A>
+<BR>
+YACC Grammar
+</H1>
+<PRE>
+%token ERROR
+%token FALSE
+%token IDENTIFIER
+%token INTEGER
+%token LEX_ERROR
+%token REAL
+%token STRING
+%token TRUE
+%token UNDEFINED
+
+%left OP_LOR
+%left OP_LAND
+%left '|'
+%left '^'
+%left '&amp;'
+%left OP_EQ OP_NE OP_IS OP_ISNT
+%left '&lt;' '&gt;' OP_LE OP_GE
+%left OP_SHL OP_SHR OP_SHRR
+%left '+' '-'
+%left '*' '/' '%' 
+%left UNARY
+
+%%
+</PRE>
+<PRE>
+Expression
+    : Expr 
+    | Expr '?' Expression ':' Expression
+    ;
+Expr
+    : Expr OP_LOR Expr 
+    | Expr OP_LAND Expr 
+    | Expr '|' Expr 
+    | Expr '^' Expr 
+    | Expr '&amp;' Expr 
+    | Expr OP_EQ Expr 
+    | Expr OP_NE Expr 
+    | Expr OP_IS Expr 
+    | Expr OP_ISNT Expr 
+    | Expr '&lt;' Expr 
+    | Expr '&gt;' Expr 
+    | Expr OP_LE Expr 
+    | Expr OP_GE Expr 
+    | Expr OP_SHL Expr 
+    | Expr OP_SHR Expr 
+    | Expr OP_SHRR Expr 
+    | Expr '+' Expr 
+    | Expr '-' Expr 
+    | Expr '*' Expr
+    | Expr '/' Expr 
+    | Expr '%' Expr 
+    | PrefixExpr
+    ;
+PrefixExpr
+    : SuffixExpr
+    | '+' PrefixExpr %prec UNARY
+    | '-' PrefixExpr %prec UNARY
+    | '!' PrefixExpr %prec UNARY
+    | '~' PrefixExpr %prec UNARY
+    ;
+SuffixExpr
+    : Atom
+    | SuffixExpr '.' Identifier
+    | SuffixExpr '[' Expression ']'
+    ;
+Atom
+    : Identifier
+    | Literal
+    | List
+    | Record
+    | Call
+    | '(' Expression ')'
+    ;
+List
+    : '{' ListBody ListEnd
+    | '{' ListEnd
+    ;
+ListEnd
+    : '}'
+    | ',' '}'
+    ;
+ListBody
+    : Expression
+    | ListBody ',' Expression
+    ;
+Record
+    : '[' DefinitionList RecordEnd
+            Expr e = (Expr) i.next();
+            if (r.lookup(n) != null)
+    | '[' RecordEnd
+    ;
+RecordEnd
+    : ']'
+    | ';' ']'
+    ;
+DefinitionList
+    : Identifier '=' Expression
+    | DefinitionList ';' Identifier '=' Expression
+    ;
+Call
+    : Identifier '(' ListBody ')'
+    | Identifier '(' ')'
+    ;
+Literal
+    : REAL
+    | Strings
+    | INTEGER
+    | TRUE
+    | FALSE
+    | UNDEFINED
+    | ERROR
+    ;
+Strings
+    : STRING
+    | Strings STRING
+    ;
+Identifier
+    : IDENTIFIER
+    ;
+</PRE>
+
+<P>
+<BR><HR>
+<ADDRESS>
+Alain Roy
+2004-09-30
+</ADDRESS>
+</BODY>
+</HTML>
