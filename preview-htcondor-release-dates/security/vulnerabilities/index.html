@@ -725,6 +725,22 @@
     
 
     
+        <dt><a href="/web-preview/preview-htcondor-release-dates/security/vulnerabilities/HTCONDOR-2026-0001.html">HTCONDOR-2026-0001</a></dt>
+        <dd>
+            A user who has WRITE authorization to an Access Point (i.e. is allowed
+to place jobs) can impersonate the 'condor' user to daemons of that
+Access Point.
+This can allow the user to issue ADMINISTRATOR-level commands, edit any
+attribute in any job ClassAd, and potentially enable the impersonation
+of other user accounts on the AP.
+The user can also obtain an IDToken identifying them as the 'condor' user,
+which can be used at any other machines that have the same IDToken
+signing key(s) as the vulnerable Access Point.
+
+        </dd>
+    
+
+    
         <dt><a href="/web-preview/preview-htcondor-release-dates/security/vulnerabilities/HTCONDOR-2025-0002.html">HTCONDOR-2025-0002</a></dt>
         <dd>
             A user can submit a specially-crafted job that will run as any other
