@@ -461,9 +461,9 @@
                     <div class="d-none d-lg-block col-lg-4">
                         <div class="card h-100">
                             <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-07-16-a-day-of-learning-and-collaboration-at-chtc-for-summer-undergraduate-researchers.html">A Day of Learning and Collaboration at CHTC for Summer Undergraduate Researchers</a></h3>
+                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-07-23-nsf-announces-83m-investment-integrated-data-systems.html">NSF announces $83M investment in integrated data systems and services to advance AI-driven science and strengthen U.S. research infrastructure</a></h3>
                                 <div>
-                                    <span class="text-muted">July 16, 2026</span>
+                                    <span class="text-muted">July 23, 2026</span>
                                 </div>
                                 <hr/>
                                 <a href="/web-preview/preview-update-submodules/new.html">
@@ -839,22 +839,25 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.11.0</span> Feature Release</h3>
-        <p>June 11, 2026</p>
+        <h3><span class="text-secondary">25.12.2</span> Feature Release</h3>
+        <p>July 21, 2026</p>
         <div>
-            <ul>
-  <li>Prevent one user’s many file transfers from halting matches for all users</li>
-  <li><code>condor_watch_q</code> will gather DAGs that started after it did</li>
-  <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
-  <li>Gangliad can now aggregate deltas of monotonically increasing values</li>
-  <li><code>condor_config_val -trace</code> finds a definition in a complex configuration</li>
-  <li>Now able to set a duration to a user’s running jobs ceiling</li>
-  <li>Multi-call binaries can now be used with DAGMan</li>
-  <li>Initial support for EP health checks</li>
-  <li>Fix rare EP crash when using a custom docker wrapper script</li>
-  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
-  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
-  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
+            <p>This release contains an important fix for a security issue.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issue are in the Vulnerability Report:
+https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
+
+<ul>
+  <li>Maintains a job index to speed up condor history queries</li>
+  <li>Can now set a duration for a user’s floor or priority factor</li>
+  <li>DAGMan will go into cool-down if it fails to launch</li>
+  <li>Improved column headers for <code>condor_top</code></li>
+  <li>Audit log is now enabled by default on the Access Point</li>
+  <li>Fix rare job router crash when removing a recently routed job</li>
+  <li>Fix a bug that could cause the <code>arc_gahp</code> to crash</li>
+  <li>Reduce the size of Python wheels by 84% by removing debug symbols</li>
+  <li>Fix issue where tools could infinitely loop when using trust on first use</li>
 </ul>
 
         </div>
@@ -879,14 +882,20 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.11</span> Long Term Support Release</h3>
-        <p>June 11, 2026</p>
+        <h3><span class="text-secondary">25.0.12</span> Long Term Support Release</h3>
+        <p>July 21, 2026</p>
         <div>
-            <ul>
-  <li>Fix rare EP crash when using a custom docker wrapper script</li>
-  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
-  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
-  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
+            <p>This release contains an important fix for a security issue.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issue are in the Vulnerability Report:
+https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
+
+<ul>
+  <li>Fix rare job router crash when removing a recently routed job</li>
+  <li>Fix a bug that could cause the <code>arc_gahp</code> to crash</li>
+  <li>Reduce the size of Python wheels by 84% by removing debug symbols</li>
+  <li>Fix issue where tools could infinitely loop when using trust on first use</li>
 </ul>
 
         </div>
