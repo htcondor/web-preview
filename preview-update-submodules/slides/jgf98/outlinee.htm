@@ -1,0 +1,542 @@
+<HTML>
+<BODY >
+
+<P></P><A HREF="JavaScript:parent.ItemClicked(1, 0)"> Hunter of Idle Workstations </A><br><UL>
+Miron Livny
+</UL><UL>
+Marvin Solomon
+</UL><UL>
+University of Wisconsin-Madison
+</UL><UL>
+Email: condor-admin@cs.wisc.edu
+</UL><UL>
+URL: http://www.cs.wisc.edu/condor
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(2, 0)"> PPT Slide </A><br>
+<P></P><A HREF="JavaScript:parent.ItemClicked(3, 0)"> Outline </A><br><UL>
+<LI>Condor overview
+</UL><UL>
+<LI>Potential uses of Java in Condor
+</UL><UL>
+<LI>Current use of Java in Condor:
+<UL>
+<LI>Classified Advertisements</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(4, 0)"> What is Condor? </A><br><UL>
+<LI>Resource finder
+</UL><UL>
+<LI>Batch queue manager
+</UL><UL>
+<LI>Scheduler
+</UL><UL>
+<LI>Checkpoint/Restart	
+</UL><UL>
+<LI>Process migration
+</UL><UL>
+<LI>Remote system calls</UL></P>
+<P><UL>
+All jobs</UL></P>
+<P><UL>
+Jobs linked
+</UL><UL>
+with the Condor
+</UL><UL>
+library</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(5, 0)"> Condor is Real </A><br><UL>
+<LI>In production use at dozens (hundreds?) of sites
+</UL><UL>
+<LI>In production use for over a decade
+</UL><UL>
+<LI>Basis of commercial products
+<UL>
+<LI>Load leveler
+<LI>LCF
+</UL></UL><UL>
+<LI>Evolving</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(6, 0)"> Condor System Structure </A><br><UL>
+Submit Machine</UL></P>
+<P><UL>
+Execution Machine</UL></P>
+<P><UL>
+Collector</UL></P>
+<P><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...B]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+Negotiator</UL></P>
+<P><UL>
+Customer Agent</UL></P>
+<P><UL>
+Resource Agent</UL></P>
+<P><UL>
+Central Manager</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(7, 0)"> Customer Agent </A><br><UL>
+<LI>Maintains queue of submitted jobs
+</UL><UL>
+<LI>Advertises status
+</UL><UL>
+<LI>Selects jobs to run</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(8, 0)"> Resource Agent </A><br><UL>
+<LI>Monitors system status
+<UL>
+<LI>Load average
+<LI>Keyboard and mouse idle time
+<LI>Memory, disk space, ...
+</UL></UL><UL>
+<LI>Advertises status
+</UL><UL>
+<LI>Listens for requests to run jobs</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(9, 0)"> Central Manager </A><br><UL>
+<LI>Collector
+<UL>
+<LI>Accepts ads from resource agents and customer agents
+</UL></UL><UL>
+<LI>Negotiator
+<UL>
+<LI>Matches customers with resources
+</UL></UL><UL>
+<LI>Accountant
+<UL>
+<LI>Records resource usage by customers</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(10, 0)"> Condor System Structure </A><br><UL>
+Submit Machine</UL></P>
+<P><UL>
+Execution Machine</UL></P>
+<P><UL>
+Collector</UL></P>
+<P><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...B]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+Negotiator</UL></P>
+<P><UL>
+Customer Agent</UL></P>
+<P><UL>
+Resource Agent</UL></P>
+<P><UL>
+Central Manager</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(11, 0)"> Advertising Protocol </A><br><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...B]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+[...N]</UL></P>
+<P><UL>
+[...M]</UL></P>
+<P><UL>
+[...M]</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(12, 0)"> Advertising Protocol </A><br><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...B]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+[...M]</UL></P>
+<P><UL>
+[...N]</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(13, 0)"> Matching Protocol </A><br><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...B]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+[...M]</UL></P>
+<P><UL>
+[...N]</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(14, 0)"> Claiming Protocol </A><br><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+[...S]</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(15, 0)"> Claiming Protocol </A><br><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+[...S]</UL></P>
+<P><UL>
+Job</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(16, 0)"> Remote System Calls </A><br><UL>
+CA</UL></P>
+<P><UL>
+[...A]</UL></P>
+<P><UL>
+[...C]</UL></P>
+<P><UL>
+C</UL></P>
+<P><UL>
+N</UL></P>
+<P><UL>
+RA</UL></P>
+<P><UL>
+[...S]</UL></P>
+<P><UL>
+Job</UL></P>
+<P><UL>
+Shadow</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(17, 0)"> Condor Meets Java </A><br><UL>
+<LI>Java jobs
+</UL><UL>
+<LI>Java for Condor implementation</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(18, 0)"> Running Java Jobs </A><br><UL>
+<LI>Run JVM as “vanilla” job
+<UL>
+<LI>Class files are treated as ordinary jobs
+<LI>Requires uniform environment (same CLASSPATH everywhere)
+<LI>No checkpointing
+</UL></UL><UL>
+<LI>Re-link JVM as “standard” job
+<UL>
+<LI>Remote system calls for class loader
+</UL></UL><UL>
+<LI>Checkpoint/restart of “vanilla” jobs
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(19, 0)"> Java-Aware Condor </A><br><UL>
+<LI>Class file as “job”
+<UL>
+<LI>Requires “pre-installed” JVM, class libraries and/or job “package” (code + files)
+<LI>Also useful for remote compilation
+</UL></UL><UL>
+<LI>Checkpoint JVM state
+</UL><UL>
+<LI>Platform-independent checkpoint</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(20, 0)"> Java for Implementing Condor </A><br>
+<P></P><A HREF="JavaScript:parent.ItemClicked(21, 0)"> Classified Advertisements </A><br><UL>
+<LI>Simple yet powerful
+</UL><UL>
+<LI>Extensible
+</UL><UL>
+<LI>Active matching
+</UL><UL>
+<LI>Symmetric matching
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(22, 0)"> Symmetric Active Matching </A><br><UL>
+<LI>Job requires a workstation
+<UL>
+<LI>X86 architecture
+<LI>Solaris 2.6
+<LI>1 GB memory
+</UL></UL><UL>
+<LI>Resource is only avialable
+<UL>
+<LI>Between 6pm and 6am
+<LI>If the keyboard is idle at least 15 mintues
+<LI>To DOE Contractors
+</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(23, 0)"> The ClassAd Language </A><br><UL>
+<LI>Set of bindings of Attribute Names to Expressions
+</UL><UL>
+<LI>Self-describing (no separate schema)
+</UL><UL>
+<LI>Combine query and data
+</UL><UL>
+<LI>Arbitrarily composed and nested
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(24, 0)"> Examples </A><br><UL>
+[ Type		= "Job";
+</UL><UL>
+  Owner	= "raman";
+</UL><UL>
+  Cmd		= "run_sim";
+</UL><UL>
+  Args		= "-Q 17 3200";
+</UL><UL>
+  Cwd		= "/u/raman";
+</UL><UL>
+  Memory	= 31;
+</UL><UL>
+  Qdate	= 886799469;
+</UL><UL>
+  ...
+</UL><UL>
+  Rank		= other.Kflops...
+</UL><UL>
+  Constraint	=
+</UL><UL>
+	other.Type = ...
+</UL><UL>
+]
+</UL></P>
+<P><UL>
+[ Type		= "Machine";
+</UL><UL>
+  Name	= "xxy.cs. ...";
+</UL><UL>
+  Arch		= "iX86";
+</UL><UL>
+  OpSys	= "Solaris";
+</UL><UL>
+  Mips		= 104;
+</UL><UL>
+  Kflops	= 21893;
+</UL><UL>
+  State		= "Unclaimed";
+</UL><UL>
+  LoadAvg	= 0.042969;
+</UL><UL>
+  ...
+</UL><UL>
+  Rank		= ...;
+</UL><UL>
+  Constraint	= ...;
+</UL><UL>
+]
+</UL><UL>
+
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(25, 0)"> Attribute Expressions </A><br><UL>
+<LI>Constants	104,   0.042969,  "iX86"
+</UL><UL>
+<LI>References	attr, self.attr, other.attr, expr.attr
+</UL><UL>
+<LI>Operators	+, *, &#062&#062, &#060, &#062=, &&, ... 
+</UL><UL>
+<LI>Functions	strcat, substr, floor, member, ...
+</UL><UL>
+<LI>Lists		{ expr, expr, ... }
+</UL><UL>
+<LI>ClassAds	[ name=expr; name=expr; ... ]</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(26, 0)"> Example Attributes </A><br><UL>
+<LI>Descriptive attributes
+<UL>
+<LI>Type = "Job";
+<LI>Owner = "raman";
+<LI>Arch = "iX86";
+<LI>OpSys = "Solaris";
+<LI>Memory = 64;	// megabytes
+<LI>Disk = 323496;	// k bytes</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(27, 0)"> Example Attributes </A><br><UL>
+<LI>Current state
+<UL>
+<LI>Daytime = 36017;		// secs past midnight 
+<LI>KeyboardIdle = 1432;	// seconds
+<LI>State = "Unclaimed";
+<LI>LoadAvg = 0.042969;</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(28, 0)"> Example Attributes </A><br><UL>
+<LI>Parameters
+<UL>
+<LI>ResearchGrp = { "raman", "miron", 						"solomon", "jbasney" };
+<LI>Friends = { "tannenba", "wright" };
+<LI>Untrusted = { "rival", "riffraff" };
+<LI>WantCheckpoint = 1;
+</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(29, 0)"> Complex Attributes </A><br><UL>
+<LI>Derived data</UL></P>
+<P><UL>
+Rank =		// machine's rank for job
+<BR>	10 * member(other.Owner,ResearchGrp)
+<BR>	    + member(other.Owner, Friends);
+<BR>Rank =		// job's rank for machine
+<BR>	Kflops/1E3 + other.Memory/32;
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(30, 0)"> Constraints </A><br><UL>
+<LI>Job constraint </UL></P>
+<P><UL>
+
+</UL><UL>
+Constraint =
+</UL><UL>
+	other.Type = "Machine"
+</UL><UL>
+	&& Arch = "iX86"
+</UL><UL>
+	&& OpsSys = "Solaris"
+</UL><UL>
+	&& Disk &#062 10000
+</UL><UL>
+	&& other.Memory &#062= self.Memory;</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(31, 0)"> Constraints  </A><br><UL>
+<LI>Machine constraint</UL></P>
+<P><UL>
+Constraint =
+</UL><UL>
+    ! member(other.Owner, Untrusted) && Rank &#062= 10
+</UL><UL>
+        ? true
+</UL><UL>
+    : Rank &#062 0
+</UL><UL>
+       ? (LoadAvg &#060 0.3 && KeyboardIdle &#062 15*60)
+</UL><UL>
+    : DayTime &#060 6*60*60 || DayTime &#062 18*60*60;</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(32, 0)"> Matching Algorithm </A><br><UL>
+<LI>To match two ads A and B
+<UL>
+<LI>Set up enironment such that in A
+<UL>
+<LI>self evaluates to A
+<LI>other evaluates to B
+<LI>other attributes are searched for first in A and then in B
+<LI>and vice versa (with A and B interchanged)
+</UL><LI>Check if A.Constraint and B.Constraint both evaluate to true 
+<LI>A.Rank and B.Rank for preferences</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(33, 0)"> Three-valued Logic </A><br><UL>
+other.Memory &#062 32			all
+</UL><UL>
+other.Memory == 32		UNDEFINED
+</UL><UL>
+other.Memory != 32		           if other has no
+</UL><UL>
+!(other.Memory == 32)		"Memory" attribute
+</UL><UL>
+
+</UL><UL>
+other.Mips &#062= 10 || other.Kflps &#062= 1000
+</UL><UL>
+	TRUE	if either attribute exists and
+</UL><UL>
+		satisfies the given condition</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(34, 0)"> Summary </A><br><UL>
+<LI>Distributed resource allocation
+<UL>
+<LI>Distributed clients, servers
+<LI>Heterogeneous resources
+<LI>Distributed ownership
+</UL></UL><UL>
+<LI>Classified advertisements
+<UL>
+<LI>Semi-structured data model
+<LI>Schema, data, and query in one language
+<LI>Separation of matching from claiming</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(35, 0)"> Summary </A><br><UL>
+<LI>ClassAds are currently in use throughout Condor
+<UL>
+<LI>Flexible
+<LI>Robust
+</UL></UL><UL>
+<LI>C++ and Java implementations
+</UL><UL>
+<LI>Freely available as part of Condor and as stand-alone libraries</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(36, 0)"> Future Work </A><br><UL>
+<LI>Get “Java” customers
+</UL><UL>
+<LI>Support “Java” customers
+<UL>
+<LI>Vanilla jobs
+<LI>Standard jobs
+<LI>Java-aware Condor execution engine</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(37, 0)"> Future Work </A><br><UL>
+<LI>Application of ClassAds to other distributed resource-allocation and discovery problems
+</UL><UL>
+<LI>Bulk operations and aggregation
+<UL>
+<LI>Structural regularity
+<LI>Value regularity
+</UL></UL><UL>
+<LI>User interfaces
+</UL><UL>
+<LI>Tools</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(38, 0)"> Information About Condor </A><br><UL>
+<LI>WWW
+<UL>
+<LI>http://www.cs.wisc.edu/condor
+</UL></UL><UL>
+<LI>Email
+<UL>
+<LI>condor-admin@cs.wisc.edu 
+<LI>solomon@cs.wisc.edu 
+</UL></UL></P>
+<P>
+</BODY>
+</HTML>
