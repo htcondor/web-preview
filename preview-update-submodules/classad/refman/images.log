@@ -1,0 +1,247 @@
+This is TeX, Version 3.14159 (Web2C 7.4.5) (format=latex 2003.4.4)  7 MAY 2005 10:04
+**./images.tex
+(./images.tex
+LaTeX2e <2001/06/01>
+Babel <v3.7h> and hyphenation patterns for american, french, german, ngerman, n
+ohyphenation, loaded.
+
+
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/base/article.cl
+s
+Document Class: article 2001/04/21 v1.4e Standard LaTeX document class
+
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/base/size10.clo
+File: size10.clo 2001/04/21 v1.4e Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/base/ifthen.sty
+Package: ifthen 2001/05/26 v1.1c Standard LaTeX ifthen package (DPC)
+) (/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/html/html.sty
+Package: html 1999/07/19 v1.38 hypertext commands for latex2html (nd, hws, rrm)
+
+\c@lpart=\count87
+\c@lchapter=\count88
+\c@chapter=\count89
+\c@lsection=\count90
+\c@lsubsection=\count91
+\c@lsubsubsection=\count92
+\c@lparagraph=\count93
+\c@lsubparagraph=\count94
+\c@lsubsubparagraph=\count95
+\ptrfile=\write3
+)
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/graphics/graphi
+cs.sty
+Package: graphics 2001/07/07 v1.0n Standard LaTeX Graphics (DPC,SPQR)
+
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/graphics/trig.s
+ty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/config/graphics
+.cfg
+File: graphics.cfg 2001/08/31 v1.1 graphics configuration of teTeX/TeXLive
+)
+Package graphics Info: Driver file: dvips.def on input line 80.
+
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/graphics/dvips.
+def
+File: dvips.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/base/latexsym.s
+ty
+Package: latexsym 1998/08/17 v2.2e Standard LaTeX package (lasy symbols)
+\symlasy=\mathgroup4
+LaTeX Font Info:    Overwriting symbol font `lasy' in version `bold'
+(Font)                  U/lasy/m/n --> U/lasy/b/n on input line 42.
+)
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/graphics/color.
+sty
+Package: color 1999/02/16 v1.0i Standard LaTeX Color (DPC)
+
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/config/color.cf
+g
+File: color.cfg 2001/08/31 v1.1 color configuration of teTeX/TeXLive
+)
+Package color Info: Driver file: dvips.def on input line 125.
+
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/graphics/dvipsn
+am.def
+File: dvipsnam.def 1999/02/16 v3.0i Driver-dependant file (DPC,SPQR)
+))
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/base/inputenc.s
+ty
+Package: inputenc 2001/07/10 v0.99a Input encoding file 
+)
+\sizebox=\box26
+\lthtmlwrite=\write4
+(./images.aux)
+\openout1 = `images.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 132.
+LaTeX Font Info:    ... okay on input line 132.
+
+latex2htmlLength hsize=349.0pt
+
+latex2htmlLength vsize=633.0pt
+
+latex2htmlLength hoffset=0.0pt
+
+latex2htmlLength voffset=0.0pt
+
+latex2htmlLength topmargin=0.0pt
+
+latex2htmlLength topskip=0.00003pt
+
+latex2htmlLength headheight=0.0pt
+
+latex2htmlLength headsep=0.0pt
+
+latex2htmlLength parskip=0.0pt plus 1.0pt
+
+latex2htmlLength oddsidemargin=0.0pt
+
+latex2htmlLength evensidemargin=0.0pt
+
+File: example.eps Graphic file (type eps)
+<example.eps>
+l2hSize :tex2html_wrap2156:86.72597pt::0.0pt::349.0pt.
+[1
+
+
+
+]
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <7> on input line 170.
+LaTeX Font Info:    External font `cmex10' loaded for size
+(Font)              <5> on input line 170.
+LaTeX Font Info:    Try loading font information for U+lasy on input line 170.
+(/afs/cs.wisc.edu/s/tetex-2.0.2/i386_rh72/share/texmf/tex/latex/base/ulasy.fd
+File: ulasy.fd 1998/08/17 v2.2e LaTeX symbol font definitions
+)
+l2hSize :tex2html_wrap_inline1402:8.46227pt::8.46227pt::52.82602pt.
+[2
+
+
+]
+l2hSize :tex2html_wrap_inline1732:6.95831pt::6.95831pt::8.27783pt.
+[3
+
+
+]
+l2hSize :tex2html_wrap_inline1794:6.95831pt::6.95831pt::8.27783pt.
+[4
+
+
+]
+l2hSize :tex2html_wrap_inline1796:8.01782pt::8.01782pt::72.72484pt.
+[5
+
+
+]
+l2hSize :tex2html_wrap_inline1818:8.0pt::8.0pt::73.96526pt.
+[6
+
+
+]
+l2hSize :tex2html_wrap_inline1826:8.0pt::8.0pt::74.00578pt.
+[7
+
+
+]
+l2hSize :tex2html_wrap_inline1854:8.0pt::8.0pt::114.26573pt.
+[8
+
+
+]
+l2hSize :tex2html_wrap_inline1856:8.0pt::8.0pt::73.17766pt.
+[9
+
+
+]
+l2hSize :tex2html_wrap_inline1858:8.0pt::8.0pt::116.57999pt.
+[10
+
+
+]
+l2hSize :tex2html_wrap_inline1860:8.0pt::8.0pt::117.03366pt.
+[11
+
+
+]
+l2hSize :tex2html_wrap_inline1862:8.0pt::8.0pt::123.18646pt.
+[12
+
+
+]
+l2hSize :tex2html_wrap_inline1864:8.0pt::8.0pt::201.20541pt.
+[13
+
+
+]
+l2hSize :tex2html_wrap_inline1888:6.95831pt::6.95831pt::8.27783pt.
+[14
+
+
+]
+l2hSize :displaymath1356:14.5pt::0.0pt::349.0pt.
+[15
+
+
+]
+l2hSize :tex2html_wrap_inline1968:8.01782pt::8.01782pt::152.83498pt.
+[16
+
+
+]
+l2hSize :tex2html_wrap_inline1982:8.01782pt::8.01782pt::109.72766pt.
+[17
+
+
+]
+l2hSize :tex2html_wrap_inline1996:8.0pt::8.0pt::134.15009pt.
+[18
+
+
+]
+l2hSize :tex2html_wrap_inline1998:8.01782pt::8.01782pt::73.29294pt.
+[19
+
+
+]
+l2hSize :tex2html_wrap_inline2008:6.95831pt::6.95831pt::42.67113pt.
+[20
+
+
+] (./images.aux) ) 
+Here is how much of TeX's memory you used:
+ 1053 strings out of 95847
+ 14443 string characters out of 1194058
+ 55120 words of memory out of 1000001
+ 4019 multiletter control sequences out of 10000+50000
+ 6433 words of font info for 26 fonts, out of 500000 for 1000
+ 14 hyphenation exceptions out of 1000
+ 23i,5n,19p,185b,218s stack positions out of 1500i,500n,5000p,200000b,5000s
+
+Output written on images.dvi (20 pages, 5692 bytes).
