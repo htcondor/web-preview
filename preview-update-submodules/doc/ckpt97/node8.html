@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.3.1 Checkpointing Mapped Segments</TITLE>
+<META NAME="description" CONTENT="3.3.1 Checkpointing Mapped Segments">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html111" HREF="node9.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html109" HREF="node7.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html103" HREF="node7.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html112" HREF="node9.html">3.3.2 Restoring Mapped Segments</A>
+<B>Up:</B> <A NAME="tex2html110" HREF="node7.html">3.3 Shared Libraries</A>
+<B> Previous:</B> <A NAME="tex2html104" HREF="node7.html">3.3 Shared Libraries</A>
+<BR> <P>
+<H3><A NAME="SECTION00033100000000000000">3.3.1 Checkpointing Mapped Segments</A></H3>
+<P>
+To find all active segments, the checkpoint library uses the <TT>
+ioctl()</TT> interface to the <TT>/proc</TT> file system, available on a
+number of UNIX variants.  In the <TT>/proc</TT> directory, there is a
+file for each running process, named by process-ID, which gives access
+to the process's memory contents.  There is an <TT>ioctl()</TT> call to
+find the number of mapped memory segments in use by a given process
+and another to find information about each segment (virtual start
+address, size of segment in bytes, protection and attribute flags).
+Note that this call returns all process segments, including stack,
+data, and text segments.
+<P>
+On systems where the <TT>/proc</TT> file system is not available or does
+not provide the needed interface, the library could instead record the
+needed information at the time of <TT>mmap()</TT> calls.  The <TT>
+mmap()</TT> function is used by the dynamic linker to create new segments
+and map shared libraries into the segments.  Our method for augmenting
+system calls to record needed information is described below in
+section <A HREF="node11.html#secsyscalls">3.4.1</A>.  Dynamic library support is currently only
+provided on systems which have the needed <TT>/proc</TT> interface.
+<P>
+Once the segment information is obtained, Condor must determine which
+segments are which, because some of the segments must be treated
+specially.  The data and text segments are identified by comparing the
+addresses to the address of a static function (in the Condor
+checkpoint library) and the address of a global variable,
+respectively.  The stack segment(s) are identified by comparing the
+addresses to the stack pointer value and a system defined constant for
+the stack ending address.  All other segments are assumed to contain
+dynamic library text or data.
+<P>
+Once all segments are identified, Condor saves all segments except the
+static text segment (because the text can be retrieved from the <TT>
+a.out</TT> file at restart).  The <TT>write()</TT> system call is used to
+write bytes from addresses in memory to the file.  Note that Condor
+saves the dynamic library text in addition to dynamic library data.
+There are a number of reasons for doing this.  First, this is a simple
+way for Condor to ensure that the library text matches the library
+data on restart when migrating to a new machine which may have
+different versions of system libraries.  If Condor did not ensure
+this, it is possible that library text would look for variables in
+incorrect locations.  A second reason is that Condor must ensure that
+the library text is mapped back into the same location on restart, so
+that dynamic links are still valid.  This behavior negates one of the
+benefits of dynamic linking (smaller executables) by increasing the
+size of the checkpoint file.  However, we felt that this cost was
+acceptable compared to the complexity of comparing library versions on
+the checkpoint and restart machines and only moving libraries when
+necessary.  It should at least be no worse than static checkpointing.
+<P>
+<HR><A NAME="tex2html111" HREF="node9.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html109" HREF="node7.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html103" HREF="node7.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html112" HREF="node9.html">3.3.2 Restoring Mapped Segments</A>
+<B>Up:</B> <A NAME="tex2html110" HREF="node7.html">3.3 Shared Libraries</A>
+<B> Previous:</B> <A NAME="tex2html104" HREF="node7.html">3.3 Shared Libraries</A>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
