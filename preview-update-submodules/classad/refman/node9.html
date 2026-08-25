@@ -1,0 +1,269 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>XML Schema</TITLE>
+<META NAME="description" CONTENT="XML Schema">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node10.html">
+<LINK REL="previous" HREF="node8.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node10.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html170"
+  HREF="node10.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html168"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html162"
+  HREF="node8.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html171"
+  HREF="node10.html">About this document ...</A>
+<B> Up:</B> <A NAME="tex2html169"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html163"
+  HREF="node8.html">XML Document Type Definition</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00090000000000000000"></A>
+<A NAME="sec:schema"></A>
+<BR>
+XML Schema
+</H1>
+<PRE>
+&lt;xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+    Schema for Classified Advertisements (classads) as used in the
+    Condor High Throughput Computing progject.
+  &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+
+  &lt;xsd:element name="classads"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      The root document element.  It is identical to an "l" element
+      except for the tag: Its content is simply a sequence of
+      expressions.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:complexType&gt;
+      &lt;xsd:sequence&gt;
+        &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;xsd:element ref="c"/&gt;
+          &lt;xsd:element ref="l"/&gt;
+          &lt;xsd:element ref="e"/&gt;
+          &lt;xsd:element ref="s"/&gt;
+          &lt;xsd:element ref="i"/&gt;
+          &lt;xsd:element ref="r"/&gt;
+          &lt;xsd:element ref="b"/&gt;
+          &lt;xsd:element ref="er"/&gt;
+          &lt;xsd:element ref="un"/&gt;
+          &lt;xsd:element ref="at"/&gt;
+          &lt;xsd:element ref="rt"/&gt;
+        &lt;/xsd:choice&gt;
+      &lt;/xsd:sequence&gt;
+    &lt;/xsd:complexType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="s" type="xsd:string"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      A string literal.
+      Content is the string itself.  It may contain character entities,
+      such as &amp;amp;lt;.  It may also contain backslash escapes, which
+      are interpreted by the application.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="i" type="xsd:int"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      An integer literal.
+      Content is the value, as a sequence of digits.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="r"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      A real (double-precision floating point) literal.
+      Content is the value in "scientific" notation corresponding to
+      the printf %1.5E format, or one of the special values INF, -INF, or NaN.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:simpleType&gt;
+      &lt;xsd:restriction base="xsd:double"&gt;
+        &lt;xsd:pattern value="-?INF|NaN|-?\d\.\d{15}E(\+|\-)\d{2,3}"/&gt;
+      &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="b"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      A boolean literal.  Represented as an element with empty content
+      and required attribute v="t" or v="f".
+      Content must be empty.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:complexType&gt;
+      &lt;xsd:attribute name="v"&gt;
+        &lt;xsd:simpleType&gt;
+          &lt;xsd:restriction base="xsd:string"&gt;
+            &lt;xsd:enumeration value="t"/&gt;
+            &lt;xsd:enumeration value="f"/&gt;
+          &lt;/xsd:restriction&gt;
+        &lt;/xsd:simpleType&gt;
+      &lt;/xsd:attribute&gt;
+    &lt;/xsd:complexType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="er"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      An error value.  The "a" attribute, if present, is an annotation
+      (reason for the error).
+      Content must be empty.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:complexType&gt;
+      &lt;xsd:attribute name="a" type="xsd:string"/&gt;
+    &lt;/xsd:complexType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="un"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      An undefined value.  The "a" attribute, if present, is an
+      annotation (perhaps the name of the classad attribute that was
+      undefined).
+      Content must be empty.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:complexType&gt;
+      &lt;xsd:attribute name="a" type="xsd:string"/&gt;
+    &lt;/xsd:complexType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="at"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      An absolute time literal.
+      Content is yyyy:mm:ddThh:mm:ssphh:mm where p is + or -, other
+      lower-case letter represent arbitrary digits, and the remaining
+      characters must appear exactly as shown.
+      Note that the time zone is required and it contains a colon.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:simpleType&gt;
+      &lt;xsd:restriction base="xsd:dateTime"&gt;
+        &lt;xsd:pattern value=
+          "\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d[+\-]\d\d:\d\d"/&gt;
+      &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="rt"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      A relative time literal.
+      Content is -PnDTnHnMn.dddS where "n" represents one or more digits
+      and "d" represents one digit.  The leading sign and individual
+      components (nD, nH, etc.) may be omitted, but if present, they
+      must appear in the order indicated. The 'T' is omitted if nD is the
+      only field. The fractional seconds, together with the decimal
+      point, may be omitted, but if present there must be exactly three
+      digits.  Note, the pattern below does not completely specify all the
+      constraints.  For example, the T must be omitted if and only if the 
+      H, M, and S fields are all omitted, and the attribute may not be
+      completely empty.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:simpleType&gt;
+      &lt;xsd:restriction base="xsd:duration"&gt;
+        &lt;xsd:pattern value="-?P(\d+D)?T?(\d+H)?(\d+M)?(\d+(\.\d\d\d)?S)?"/&gt;
+      &lt;/xsd:restriction&gt;
+    &lt;/xsd:simpleType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="e" type="xsd:string"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      An expression.
+      Content is an arbitrary classad expression in the "native syntax".
+      This element should not be used for literals or if the "top-level
+      operator" is list or classad.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="l"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      A list. Content is a sequence of arbitrary expressions.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:complexType&gt;
+      &lt;xsd:sequence&gt;
+        &lt;xsd:choice minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;xsd:element ref="c"/&gt;
+          &lt;xsd:element ref="l"/&gt;
+          &lt;xsd:element ref="e"/&gt;
+          &lt;xsd:element ref="s"/&gt;
+          &lt;xsd:element ref="i"/&gt;
+          &lt;xsd:element ref="r"/&gt;
+          &lt;xsd:element ref="b"/&gt;
+          &lt;xsd:element ref="er"/&gt;
+          &lt;xsd:element ref="un"/&gt;
+          &lt;xsd:element ref="at"/&gt;
+          &lt;xsd:element ref="rt"/&gt;
+        &lt;/xsd:choice&gt;
+      &lt;/xsd:sequence&gt;
+    &lt;/xsd:complexType&gt;
+  &lt;/xsd:element&gt;
+
+  &lt;xsd:element name="c"&gt;
+    &lt;xsd:annotation&gt;&lt;xsd:documentation xml:lang="en"&gt;
+      A "classad" (a record). Content is a sequence of "a" elements.
+    &lt;/xsd:documentation&gt;&lt;/xsd:annotation&gt;
+    &lt;xsd:complexType&gt;
+      &lt;xsd:sequence&gt;
+        &lt;xsd:element name="a" minOccurs="0" maxOccurs="unbounded"&gt;
+          &lt;xsd:complexType&gt;
+            &lt;xsd:sequence&gt;
+              &lt;xsd:choice&gt;
+                &lt;xsd:element ref="c"/&gt;
+                &lt;xsd:element ref="l"/&gt;
+                &lt;xsd:element ref="e"/&gt;
+                &lt;xsd:element ref="s"/&gt;
+                &lt;xsd:element ref="i"/&gt;
+                &lt;xsd:element ref="r"/&gt;
+                &lt;xsd:element ref="b"/&gt;
+                &lt;xsd:element ref="er"/&gt;
+                &lt;xsd:element ref="un"/&gt;
+                &lt;xsd:element ref="at"/&gt;
+                &lt;xsd:element ref="rt"/&gt;
+              &lt;/xsd:choice&gt;
+            &lt;/xsd:sequence&gt;
+            &lt;xsd:attribute name="n" type="xsd:string"/&gt;
+          &lt;/xsd:complexType&gt;
+        &lt;/xsd:element&gt;
+      &lt;/xsd:sequence&gt;
+    &lt;/xsd:complexType&gt;
+    &lt;xsd:unique name="dummy"&gt;
+      &lt;xsd:selector xpath="a"/&gt;
+      &lt;xsd:field xpath="@n"/&gt;
+    &lt;/xsd:unique&gt;
+  &lt;/xsd:element&gt;
+
+&lt;/xsd:schema&gt;
+</PRE>
+
+<P>
+<BR><HR>
+<ADDRESS>
+Marvin Solomon
+2005-05-07
+</ADDRESS>
+</BODY>
+</HTML>
