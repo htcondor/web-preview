@@ -458,28 +458,6 @@
                 
                 
                 
-                    <div class="d-none d-lg-block col-lg-4">
-                        <div class="card h-100">
-                            <div class="card-body d-flex flex-column">
-                                <h3><a class="text-decoration-none" href="/web-preview/preview-update-submodules/featured-users/2026-07-23-nsf-announces-investment-to-shape-the-nations-future-data-backbone.html">NSF announces investment to shape the nation’s future data backbone</a></h3>
-                                <div>
-                                    <span class="text-muted">July 23, 2026</span>
-                                </div>
-                                <hr/>
-                                <a href="/web-preview/preview-update-submodules/new.html">
-                                    <div class="row">
-                                        <div class="col-auto d-flex">
-                                            <img class="my-auto" height="30" src="/web-preview/preview-update-submodules/assets/images/arrow-up-right-circle.svg" />
-                                        </div>
-                                        <div class="col">
-                                            View All Software News
-                                        </div>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                
             </div>
             <div id="help-and-support-desktop-drawer" class="drawer row justify-content-center" hidden>
 
@@ -839,25 +817,22 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.12.2</span> Feature Release</h3>
-        <p>July 21, 2026</p>
+        <h3><span class="text-secondary">25.13.2</span> Feature Release</h3>
+        <p>August 20, 2026</p>
         <div>
-            <p>This release contains an important fix for a security issue.
-Affected users should update as soon as possible.</p>
-
-<p>More details on the security issue are in the Vulnerability Report:
-https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
-
-<ul>
-  <li>Maintains a job index to speed up condor history queries</li>
-  <li>Can now set a duration for a user’s floor or priority factor</li>
-  <li>DAGMan will go into cool-down if it fails to launch</li>
-  <li>Improved column headers for <code>condor_top</code></li>
-  <li>Audit log is now enabled by default on the Access Point</li>
-  <li>Fix rare job router crash when removing a recently routed job</li>
-  <li>Fix a bug that could cause the <code>arc_gahp</code> to crash</li>
-  <li>Reduce the size of Python wheels by 84% by removing debug symbols</li>
-  <li>Fix issue where tools could infinitely loop when using trust on first use</li>
+            <ul>
+  <li>The <code>condor_credmon_oauth</code> now properly handles credentials with handles</li>
+  <li>Improve providing OAuth credentials to all jobs on the Access Point</li>
+  <li>Add WEAK dependencies to DAGman which only require finishing, not success</li>
+  <li>Provides condor_scratch mount for Apptainer jobs with no file transfer</li>
+  <li><code>condor_submit</code> now recommends using <code>condor_watch_q</code> to monitor jobs</li>
+  <li>The CCB can now proxy connections with both ends on private networks</li>
+  <li>Add CCB Tunneling for daemons with no outbound network connectivity</li>
+  <li>Fix bug where <code>condor_q</code> crashes when given <code>-batch</code> and <code>-af</code> arguments</li>
+  <li>Fix bug where FS authentication fails when <code>TCP_FORWARDING_HOST</code> is set</li>
+  <li>Fix bug where <code>condor_history</code> might not find a specific cluster or proc</li>
+  <li>HTCondor tarballs now contain Apptainer 1.5.3 and Pelican 7.26.0</li>
+  <li>Removing Pelican server code reduces tarball size by 10 megabytes</li>
 </ul>
 
         </div>
@@ -882,20 +857,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.12</span> Long Term Support Release</h3>
-        <p>July 21, 2026</p>
+        <h3><span class="text-secondary">25.0.13</span> Long Term Support Release</h3>
+        <p>August 20, 2026</p>
         <div>
-            <p>This release contains an important fix for a security issue.
-Affected users should update as soon as possible.</p>
-
-<p>More details on the security issue are in the Vulnerability Report:
-https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
-
-<ul>
-  <li>Fix rare job router crash when removing a recently routed job</li>
-  <li>Fix a bug that could cause the <code>arc_gahp</code> to crash</li>
-  <li>Reduce the size of Python wheels by 84% by removing debug symbols</li>
-  <li>Fix issue where tools could infinitely loop when using trust on first use</li>
+            <ul>
+  <li>Fix bug where <code>condor_q</code> crashes when given <code>-batch</code> and <code>-af</code> arguments</li>
+  <li>Fix bug where FS authentication fails when <code>TCP_FORWARDING_HOST</code> is set</li>
+  <li>Fix bug where <code>condor_history</code> might not find a specific cluster or proc</li>
+  <li>HTCondor tarballs now contain Apptainer 1.5.3 and Pelican 7.26.0</li>
+  <li>Removing Pelican server code reduces tarball size by 10 megabytes</li>
 </ul>
 
         </div>
