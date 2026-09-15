@@ -1,0 +1,1577 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Evaluation</TITLE>
+<META NAME="description" CONTENT="Evaluation">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node5.html">
+<LINK REL="previous" HREF="node3.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node5.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html108"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html106"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html100"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html109"
+  HREF="node5.html">Acknowledgments</A>
+<B> Up:</B> <A NAME="tex2html107"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html101"
+  HREF="node3.html">Syntax</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html110"
+  HREF="node4.html#SECTION00041000000000000000">Types, Undefined, and Error</A>
+<LI><A NAME="tex2html111"
+  HREF="node4.html#SECTION00042000000000000000">Atomic Expressions</A>
+<LI><A NAME="tex2html112"
+  HREF="node4.html#SECTION00043000000000000000">Composite Expressions</A>
+<UL>
+<LI><A NAME="tex2html113"
+  HREF="node4.html#SECTION00043100000000000000">Boolean Operators</A>
+<LI><A NAME="tex2html114"
+  HREF="node4.html#SECTION00043200000000000000"><B>is</B> and <B>isnt</B></A>
+<LI><A NAME="tex2html115"
+  HREF="node4.html#SECTION00043300000000000000">Comparison Operators</A>
+<LI><A NAME="tex2html116"
+  HREF="node4.html#SECTION00043400000000000000">Arithmetic Operators</A>
+<LI><A NAME="tex2html117"
+  HREF="node4.html#SECTION00043500000000000000">Bitwise Boolean Operators</A>
+<LI><A NAME="tex2html118"
+  HREF="node4.html#SECTION00043600000000000000">Shift Operators</A>
+<LI><A NAME="tex2html119"
+  HREF="node4.html#SECTION00043700000000000000">Select and Subscript</A>
+<LI><A NAME="tex2html120"
+  HREF="node4.html#SECTION00043800000000000000">List and Record Constructors</A>
+<LI><A NAME="tex2html121"
+  HREF="node4.html#SECTION00043900000000000000">Function Calls</A>
+</UL></UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION00040000000000000000"></A>
+<A NAME="sec:evaluation"></A>
+<BR>
+Evaluation
+</H1>
+
+<P>
+This section defines the semantics of the ClassAd language by explaining how
+to <I>evaluate</I> an expression.In this section, ``expression'' means an
+internal-form expression tree.
+In general, a composite expression is evaluated by recursively evaluating its
+component sub-expressions and then using its top-level operator to combine the
+results.
+However, there are situations in which evaluation of an expression <I>E</I> depends
+on parts of a <I>context</I>, which is an expression containing <I>E</I> as a
+sub-expression.
+For example, in the expression
+<PRE>
+    [ a = 3;  b = [ c = a ] ],
+</PRE>
+the second occurrence of <code>a</code> (an attribute reference) is evaluated by
+searching the two containing Record expressions for a definition of <code>a</code>,
+yielding the constant <code>3</code>.
+
+<P>
+More formally, an <I>expression in context</I> (EIC) is a pair (<I>E</I>, <I>C</I>)
+consisting of an expression <I>C</I> (the context) and a designated occurrence of
+a sub-expression <I>E</I> of <I>C</I>.
+The semantics of the ClassAd language is defined by a recursive function
+<I>eval</I> from EICs to EICs.
+A <I>top-level</I> EIC is an EIC of the form (<I>E</I>, <I>E</I>).
+For brevity, we will occasionally abbreviate the top-level EIC (<I>E</I>, <I>E</I>) as <I>E</I>,
+particularly when <I>E</I> is a literal constant.
+For example, the EIC (<B>error</B>, <B>error</B>) may be written as
+<B>error</B>.
+An expression <I>E</I> is evaluated by computing <I>eval(E, E)</I> and extracting
+the sub-expression from the resulting EIC.
+
+<P>
+The set of EICs with context <I>C</I> is partially ordered by the relation
+<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\sqsubseteq$">, defined by <!-- MATH
+ $(E, C) \sqsubseteq (E', C)$
+ -->
+<IMG
+ WIDTH="119" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img5.png"
+ ALT="$(E, C) \sqsubseteq (E', C)$"> iff <I>E</I> is a
+sub-expression of <I>E</I>'.
+When we speak of the ``minimal'' EIC with a given property, we mean the 
+one that is minimal with respect to <IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img4.png"
+ ALT="$\sqsubseteq$">.
+An EIC (<I>E</I>, <I>C</I>) is called a <I>scope</I> if the top-level operator of <I>E</I>
+is RECORD.
+
+<P>
+Define <I>lookup(s, (E, C))</I>, where <I>s</I> is a string and (<I>E</I>, <I>C</I>) is an
+EIC, to be the EIC (<I>E</I>', <I>C</I>'), where
+
+<UL>
+<LI>If <I>s</I> matches<A NAME="tex2html17"
+  HREF="#foot1098"><SUP>14</SUP></A>the string <code>"parent"</code> and
+there is a scope (<I>E</I><SUB><I>p</I></SUB>, <I>C</I>) such that <!-- MATH
+ $(E, C) \sqsubseteq (E_p, C)$
+ -->
+<IMG
+ WIDTH="121" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img6.png"
+ ALT="$(E, C) \sqsubseteq (E_p, C)$">,
+then <!-- MATH
+ $(E', C') = (E_p, C)$
+ -->
+(<I>E</I>', <I>C</I>') = (<I>E</I><SUB><I>p</I></SUB>, <I>C</I>), where (<I>E</I><SUB><I>p</I></SUB>, <I>C</I>) is the minimal such scope.
+</LI>
+<LI>Otherwise, if
+there is a scope (<I>E</I><SUB><I>d</I></SUB>, <I>C</I>) such that <!-- MATH
+ $(E, C) \sqsubseteq (E_d, C)$
+ -->
+<IMG
+ WIDTH="121" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img7.png"
+ ALT="$(E, C) \sqsubseteq (E_d, C)$">
+and <I>E</I><SUB><I>d</I></SUB> contains a definition <I>t</I> = <I>E</I><SUB><I>t</I></SUB>
+such that <I>t</I> matches <I>s</I>,
+let <I>t</I> = <I>E</I><SUB><I>t</I></SUB> be the definition in the minimal such scope.
+Then <!-- MATH
+ $(E', C') = (E_t, C)$
+ -->
+(<I>E</I>', <I>C</I>') = (<I>E</I><SUB><I>t</I></SUB>, <I>C</I>).
+</LI>
+<LI>Otherwise, <!-- MATH
+ $(E', C') = (\mathbf{undefined}, \mathbf{undefined})$
+ -->
+(<I>E</I>', <I>C</I>') = (<B>undefined</B>, <B>undefined</B>).
+</LI>
+</UL>
+
+<P>
+For example, let <I>C</I> be the expression
+<PRE>
+    [ a = x;  b = [ a = y; c = a]; d = a ],
+</PRE>
+and let <I>R</I> denote the inner Record expression.
+<I>C</I> contains two occurrences of the attribute-reference expression <code>a</code>.
+Let <I>E</I><SUB>1</SUB> denote the occurrence inside <I>R</I> and <I>E</I><SUB>2</SUB> the other occurrence.
+Then
+<!-- MATH
+ $(E_1, C) \sqsubseteq (R, C) \sqsubseteq (C, C)$
+ -->
+<IMG
+ WIDTH="185" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img8.png"
+ ALT="$(E_1, C) \sqsubseteq (R, C) \sqsubseteq (C, C)$">,
+<!-- MATH
+ $(E_2, C) \sqsubseteq (C, C)$
+ -->
+<IMG
+ WIDTH="120" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img9.png"
+ ALT="$(E_2, C) \sqsubseteq (C, C)$">,
+<!-- MATH
+ $\mathit{lookup}(\mathtt{a}, (E_1, C)) = (y, C)$
+ -->
+<IMG
+ WIDTH="189" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img10.png"
+ ALT="$\mathit{lookup}(\mathtt{a}, (E_1, C)) = (y, C)$">,
+<!-- MATH
+ $\mathit{lookup}(\mathtt{a}, (E_2, C)) = (x, C)$
+ -->
+<IMG
+ WIDTH="190" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img11.png"
+ ALT="$\mathit{lookup}(\mathtt{a}, (E_2, C)) = (x, C)$">,
+<!-- MATH
+ $\mathit{lookup}(\mathtt{c}, (E_1, C)) = (E_1, C)$
+ -->
+<IMG
+ WIDTH="199" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img12.png"
+ ALT="$\mathit{lookup}(\mathtt{c}, (E_1, C)) = (E_1, C)$">, and
+<!-- MATH
+ $\mathit{lookup}(\mathtt{c}, (E_2, C)) = (\mathbf{undefined},
+\mathbf{undefined})$
+ -->
+<IMG
+ WIDTH="324" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img13.png"
+ ALT="$\mathit{lookup}(\mathtt{c}, (E_2, C)) = (\mathbf{undefined},
+\mathbf{undefined})$">.
+
+<P>
+
+<H2><A NAME="SECTION00041000000000000000">
+Types, Undefined, and Error</A>
+</H2>
+
+<P>
+Each expression has a <I>type</I>, which is one of Integer, Real, String,
+Boolean, AbsTime, RelTime, Undefined, Error, List, or Record.
+The types Integer and Real are collectively called numeric types.
+The types AbsTime and RelTime are collectively called timestamp types.
+Each operator imposes constraints on the types of its operands.
+If these constraints are not met, the value returned by the operator is
+<B>error</B>.
+
+<P>
+An attribute reference with attribute name <I>N</I> evaluates to
+<B>undefined</B> if the reference is not contained in any scope that defines
+<I>N</I>.
+It may also evaluate to <B>undefined</B> in the presence of loops,
+as in
+<PRE>
+    [ a = b; b = a ].
+</PRE>
+
+<P>
+Most operators are ``strict'' with respect to <B>undefined</B> and
+<B>error</B>.
+The only exceptions are the Boolean operators described in
+Section&nbsp;<A HREF="#sec:boolean_ops">4.3.1</A>,
+the operators <B>is</B> and <B>isnt</B> described in
+Section&nbsp;<A HREF="#sec:is_isnt">4.3.2</A>,
+and the LIST and RECORD constructors described in
+Section&nbsp;<A HREF="#sec:list_and_record">4.3.8</A>.
+Strict evaluation obeys the following ordered sequence of rules.
+
+<UL>
+<LI>If the operands do not obey the type restrictions imposed by the
+    operator, the result of the evaluation is <B>error</B>.
+    The following sections list all combinations of types accepted by each
+    operator.
+    None of the strict operators accept operands of type Error, so this rule
+    implies that if any sub-expression evaluates to <B>error</B>, the
+    expression evaluates to <B>error</B>.
+    This rule also catches ``type errors'' such as <TT>"foo" / 3</TT>.
+</LI>
+<LI>Otherwise, if any operand of a strict operator is <B>undefined</B>,
+    the result is <B>undefined</B>.
+</LI>
+<LI>Otherwise, the result is computed from the operands as described in the
+    following sections.
+</LI>
+</UL>
+
+<P>
+
+<H2><A NAME="SECTION00042000000000000000">
+Atomic Expressions</A>
+</H2>
+
+<P>
+A literal constant evaluates to itself.
+More precisely, if <I>c</I> is an occurrence of a literal constant, then
+<I>eval(c, C) = (c, C)</I>.
+
+<P>
+If <I>x</I> is an attribute reference with attribute name <I>N</I>, then
+<I>eval(x, C) = eval(lookup(N, (x, C)))</I>.
+In particular, (<I>x</I>, <I>C</I>) evaluates to <B>undefined</B> if there is no scope
+(<I>R</I>, <I>C</I>) containing the indicated occurrence of <I>x</I> such that <I>R</I> defines <I>N</I>.
+If this recursive definition leads directly or indirectly to a call
+<I>eval(x, C)</I>, the result is <B>undefined</B>.
+
+<P>
+
+<H2><A NAME="SECTION00043000000000000000">
+Composite Expressions</A>
+</H2>
+
+<P>
+List and Record expressions evaluate to themselves.
+More precisely, if <I>E</I> is an expression whose root operator is LIST or
+RECORD, <I>eval(E, C) = (E, C)</I>.
+The operators SELECT and SUBSCRIPT are discussed below.
+For all other operators, evaluation is ``bottom-up'' and the result is
+a ``pure value''.
+More precisely, if <IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$\odot$"> is a binary operator other than
+SELECT, or SUBSCRIPT, then
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+eval(E_1 \odot E_2, C) = (c, c)
+\end{displaymath}
+ -->
+
+<IMG
+ WIDTH="170" HEIGHT="28" BORDER="0"
+ SRC="img15.png"
+ ALT="\begin{displaymath}eval(E_1 \odot E_2, C) = (c, c) \end{displaymath}">
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+eval(E_1, C)  = (E_1', C_1),
+\end{displaymath}
+ -->
+
+<I>eval</I>(<I>E</I><SUB>1</SUB>, <I>C</I>) = (<I>E</I><SUB>1</SUB>', <I>C</I><SUB>1</SUB>),
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+eval(E_2, C)  = (E_2', C_2),
+\end{displaymath}
+ -->
+
+<I>eval</I>(<I>E</I><SUB>2</SUB>, <I>C</I>) = (<I>E</I><SUB>2</SUB>', <I>C</I><SUB>2</SUB>),
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+and <I>c</I> is the (literal constant) result of applying operator <IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img14.png"
+ ALT="$\odot$"> to the
+expressions <I>E</I><SUB>1</SUB>' and <I>E</I><SUB>2</SUB>', as defined in the following sections.
+Similar rules apply to unary and ternary operators.
+
+<P>
+The operators found in C, C++, or Java are generally evaluated according to the
+rules of those languages.
+In cases where the specifications of those languages differ, the ClassAd
+language follows the Java semantics because it is more precise (the C and C++
+specifications occasionally say the results are ``undefined'' or
+``implementation defined'' in unusual situations).
+The only deviations from Java semantics involve exceptions.
+In cases where Java specifies that evaluation throws an exception, the ClassAd
+language returns the constant <B>error</B>.  The constants <B>error</B> and
+<B>undefined</B> also require special treatment when supplied as arguments to
+operators.
+
+<P>
+
+<H3><A NAME="SECTION00043100000000000000"></A>
+<A NAME="sec:boolean_ops"></A>
+<BR>
+Boolean Operators
+</H3>
+The Boolean operators <code>&amp;&amp;</code> and <code>||</code>
+and the ternary operator <code>_?_:_</code> are evaluated ``left to right''
+with respect to <B>error</B>, and ``optimistically'' with respect to
+<B>undefined</B>.
+For example,
+<PRE><TT>
+ <B>true</B> <code>||</code> <I>x</I> = <B>true</B> 
+<BR><B>false</B> &amp;&amp; <I>x</I> = <B>false</B> 
+<BR><B>undefined</B> <code>||</code> <B>true</B> = <B>true</B> 
+<BR><B>true</B> <code>?</code> <I>val</I> <code>:</code> <I>x</I> = <I>val</I> 
+<BR><B>false</B> <code>?</code> <I>x</I> <code>:</code> <I>val</I> = <I>val</I>
+</TT></PRE>
+even if <I>x</I> evaluates to <B>error</B> or <B>undefined</B>.
+
+<P>
+The Boolean operators treat Boolean <B>true</B>, <B>false</B>, and
+<B>undefined</B> as a three-element lattice with
+<BLOCKQUOTE>
+<B>false</B> <code>&lt;</code> <B>undefined</B> <code>&lt;</code> <B>true</B>.
+
+</BLOCKQUOTE>
+With respect to this lattice, <code>&amp;&amp;</code> returns the minimum of its operands,
+<code>||</code> returns the maximum, and <code>!</code> interchanges <B>true</B> and
+<B>false</B>.
+
+<P>
+The complete definition of the operators <code>&amp;&amp;</code>, <code>&amp;&amp;</code>,
+<code>!</code>, and <code>_?_:_</code> is given by the tables
+<PRE>
+          &amp;&amp; | F U T O    || | F U T O    ! |      ?:|
+          ---+--------    ---+--------    --+--   ---+---
+           F | F F F F     F | F U T E    F | T    F | expr3
+           U | F U U E     U | U U T E    U | U    U |  U
+           T | F U T E     T | T T T T    T | F    T | expr2
+           O | E E E E     O | E E E E    O | E    O |  E
+</PRE>
+In these tables, the letters
+<code>T</code>, <code>F</code>, <code>U</code>, and <code>E</code>
+stand for the constants
+<B>true</B>, <B>false</B>, <B>undefined</B>, and <B>error</B>,
+respectively; 
+<code>O</code> stands for any expression other than 
+<B>true</B>, <B>false</B>, or
+<B>undefined</B> (including <B>error</B>);
+and <code>expr2</code> and <code>expr3</code> represent the second and third operands of
+the expression <I>expr</I><SUB>1</SUB> <code>?</code> <I>expr</I><SUB>2</SUB> <code>:</code> <I>expr</I><SUB>3</SUB>.
+
+<P>
+
+<H3><A NAME="SECTION00043200000000000000"></A>
+<A NAME="sec:is_isnt"></A>
+<BR>
+<B>is</B> and <B>isnt</B>
+</H3>
+The expression <I>expr</I><SUB>1</SUB> <B>is</B> <I>expr</I><SUB>2</SUB> evaluates to <B>true</B> if
+<I>expr</I><SUB>1</SUB> and <I>expr</I><SUB>2</SUB> evaluate to ``identical'' values and <B>false</B>
+otherwise.
+The expression <I>expr</I><SUB>1</SUB> <B>isnt</B> <I>expr</I><SUB>2</SUB> evaluates to the negation of
+<I>expr</I><SUB>1</SUB> <B>is</B> <I>expr</I><SUB>2</SUB>.
+These operators are most commonly used to test for <B>undefined</B> or
+<B>error</B> as in
+<PRE>
+    result = (expr is undefined) ? 0 : (expr + 1);
+</PRE>
+but they can be used to compare arbitrary values.
+
+<P>
+For the purposes of this section, the relationship ``identical'' is defined as
+follows.
+
+<UL>
+<LI>Expressions of different types are never identical.
+    Thus <TT>(3 is 3.0)</TT> <TT>(3 is "3")</TT> and <TT>(undefined is
+    error)</TT> all evaluate to <B>false</B>.
+</LI>
+<LI>Two values of type Integer, Real, or RelTime are identical
+    if and only if they are numerically equal constants.
+</LI>
+<LI>Two values of type AbsTime are identical if they represent the same
+    instant in time and the same offset from UTC.
+</LI>
+<LI>Two values of type Boolean are identical if and only if they are both
+    <B>true</B> or both <B>false</B>.
+</LI>
+<LI>Two values of type Undefined or two values of type Error are identical.
+    Thus <TT>((3 * "x") is error)</TT> evaluates to <B>true</B>.
+</LI>
+<LI>Two values of type String are identical if and only if they are identical
+    character by character.  Case <I>is</I> significant.
+    Thus <TT>("One" == "one")</TT> and <TT>("One" isnt "one")</TT>
+    both evaluate to <B>true</B>.
+</LI>
+<LI>Two values of type List or Record are identical if and only if they are
+    created by the same instance of a LIST or RECORD constructor operator.
+    For example, if <code>R</code> is the expression <PRE>
+        [ a = { 1, 2 }; b = { 1, 2 }; c = a is b; d = a is a ],
+</PRE>
+    then <TT>R.c</TT> evaluates to <TT>false</TT>, while <TT>R.d</TT> evaluates
+    to <TT>true</TT>.
+</LI>
+</UL>
+Note that the <B>is</B> and <B>isnt</B> operators always evaluate to
+<B>true</B> or <B>false</B>, never <B>undefined</B> or <B>error</B>.
+
+<P>
+
+<H3><A NAME="SECTION00043300000000000000">
+Comparison Operators</A>
+</H3>
+For the six comparison operators
+<code>&lt;</code>, <code>&lt;=</code>, <code>==</code>, <code>!=</code>, <code>&gt;=</code>, and <code>&gt;</code>,
+both operands must be numeric (Integer or Real), both String, both AbsTime, or
+both RelTime.
+Otherwise, the result is <B>error</B>.
+If one operand is Integer and the other is Real, the Integer argument is
+first converted to Real.
+The results are calculated as in Java&nbsp;[<A
+ HREF="node6.html#JLS">6</A>].
+
+<P>
+If the operands are Strings, they are converted to lower case and compared
+lexicographically.
+
+<P>
+If the operands are AbsTimes, they are equal if they correspond to the same
+instant (according to UTC).  Otherwise, the earlier time is less than the
+later one.  If the operands are RelTimes, they are compared as signed integers.
+
+<P>
+
+<H3><A NAME="SECTION00043400000000000000">
+Arithmetic Operators</A>
+</H3>
+The unary operators
+<code>+</code>,
+<code>-</code>,
+and binary operators
+<code>+</code>,
+<code>-</code>,
+<code>*</code>,
+<code>/</code>,
+<code>%</code>,
+take numeric operands.<A NAME="tex2html18"
+  HREF="#foot1100"><SUP>15</SUP></A>The results are calculated as in Java&nbsp;[<A
+ HREF="node6.html#JLS">6</A>],<A NAME="tex2html19"
+  HREF="#foot1101"><SUP>16</SUP></A>with one exception:
+Integer division or
+remainder when the second operand is zero throws an ArithmeticException in
+Java, but returns <B>error</B> in the ClassAd language.
+In particular, if operands are Integers, the result is an Integer, and if one
+operand of a binary operation is an Integer and the other is a Real, the
+Integer operand is converted to a Real and the result is computed using 64-bit
+floating point arithmetic.
+The integral <code>/</code> operation truncates the result towards zero, and the
+integral <code>%</code> operation generally returns a result with the same sign as
+the dividend (the left operand).
+See the Java language specification&nbsp;[<A
+ HREF="node6.html#JLS">6</A>] for details.
+
+<P>
+The unary and binary operators <code>+</code> and <code>-</code> are also defined for
+certain timestamp operands.
+The unary <code>+</code> operator is applicable to both AbsTime and RelTime operands
+and returns the value of its operand unchanged.
+The unary <code>-</code> operator is applicable only to RelTime operands and returns
+the RelTime value with the same magnitude and opposite sign.
+
+<P>
+The rules for binary operators are summarized in Table&nbsp;<A HREF="#tab:datearith">6</A>.
+If the result of an expression is an AbsTime, its time zone is the same as
+the time zone of the AbsTime argument.
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="724"></A>
+<TABLE>
+<CAPTION><STRONG>Table 6:</STRONG>
+Date and Time Arithmetic</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>Expression</I></TD>
+<TD ALIGN="LEFT"><I>Result type</I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288><I>Result value</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">AbsTime <code>+</code> AbsTime</TD>
+<TD ALIGN="LEFT"><B>error</B></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">AbsTime <code>+</code> RelTime</TD>
+<TD ALIGN="LEFT">AbsTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The AbsTime operand offset by the amount
+                        of the RelTime operand</TD>
+</TR>
+<TR><TD ALIGN="LEFT">RelTime <code>+</code> AbsTime</TD>
+<TD ALIGN="LEFT">AbsTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The AbsTime operand offset by the amount
+                        of the RelTime operand</TD>
+</TR>
+<TR><TD ALIGN="LEFT">RelTime <code>+</code> RelTime</TD>
+<TD ALIGN="LEFT">RelTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The numeric sum of the two operands</TD>
+</TR>
+<TR><TD ALIGN="LEFT">AbsTime <code>-</code> AbsTime</TD>
+<TD ALIGN="LEFT">RelTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The numeric difference
+                        of the two operands</TD>
+</TR>
+<TR><TD ALIGN="LEFT">AbsTime <code>-</code> RelTime</TD>
+<TD ALIGN="LEFT">AbsTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The AbsTime operand offset by the negative
+                        of the RelTime operand</TD>
+</TR>
+<TR><TD ALIGN="LEFT">RelTime <code>-</code> AbsTime</TD>
+<TD ALIGN="LEFT"><B>error</B></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>&nbsp;</TD>
+</TR>
+<TR><TD ALIGN="LEFT">RelTime <code>-</code> RelTime</TD>
+<TD ALIGN="LEFT">RelTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The numeric difference of the two operands</TD>
+</TR>
+</TABLE>
+</DIV>
+
+<A NAME="tab:datearith"></A></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+
+<H3><A NAME="SECTION00043500000000000000">
+Bitwise Boolean Operators</A>
+</H3>
+The bitwise logical unary operator <code>~</code> and binary operators
+<code>|</code>,
+<code>^</code>, and
+<code>&amp;</code> are defined only for Integer and Boolean operands.
+They are defined to return the same results as the corresponding operators in
+Java&nbsp;[<A
+ HREF="node6.html#JLS">6</A>].
+
+<P>
+
+<H3><A NAME="SECTION00043600000000000000">
+Shift Operators</A>
+</H3>
+The shift operators
+<code>&lt;&lt;</code> (left shift),
+<code>&gt;&gt;</code> (right shift with sign extension), and
+<code>&gt;&gt;&gt;</code> (right shift with zero fill) are defined only for Integer
+operands.<A NAME="tex2html21"
+  HREF="#foot1103"><SUP>17</SUP></A>They are defined to return the same results as the corresponding operators in
+Java&nbsp;[<A
+ HREF="node6.html#JLS">6</A>].
+
+<P>
+
+<H3><A NAME="SECTION00043700000000000000">
+Select and Subscript</A>
+</H3>
+The SELECT operator has two operands, the <I>base</I> and the <I>selector</I>,
+where the selector is syntactically constrained to be an attribute name.
+In the native syntax, it is written <I>base</I><code>.</code><I>selector</I>.
+It is semantically equivalent to <I>base</I><code>["</code><I>selector</I><code>"]</code>.
+That is, an instance of SUBSCRIPT operator where the <I>subscript</I> is
+the string value corresponding to the attribute name.
+For example,
+<PRE>    [ rec = [ One = 1; Two = 2 ]; val = rec.one ].val
+</PRE>
+and
+<PRE>    [ rec = [ One = 1; Two = 2 ]; val = rec["one"] ].val
+</PRE>
+both evaluate to <code>1</code>.
+The SELECT syntax is more concise, but the SUBSCRIPT syntax is more flexible,
+because it allows the selector to be computed rather than requiring a literal
+string.
+
+<P>
+The SUBSCRIPT operator has two operands, the <I>base</I> and the
+<I>subscript</I>.
+In the native syntax, it is written
+<I>base</I><code>[</code><I>subscript</I><code>]</code>.
+The subscript expression must have type Integer or String.
+If the subscript is an Integer <I>i</I>, the base expression must have type List and
+the result is the <I>i</I><SUP><I>th</I></SUP> element of the list, counting from zero.
+If the subscript is a String <I>s</I>, the base expression must be a
+Record or List.  If the base expression has type Record,
+the result is computed by searching the base and its containing scopes for an
+attribute definition matching the attribute name <I>s</I>.
+If the base expression is a List, the SUBSCRIPT operator is applied to
+each member of the list and the result is a new ``top-level'' list of the
+results.
+In all other cases, the result is <B>error</B>.
+
+<P>
+More precisely,
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+eval(E_b[E_s], C)  = (E', C'),
+\end{displaymath}
+ -->
+
+<I>eval</I>(<I>E</I><SUB><I>b</I></SUB>[<I>E</I><SUB><I>s</I></SUB>], <I>C</I>) = (<I>E</I>', <I>C</I>'),
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+where <I>E</I>' and <I>C</I>' are defined as follows.
+Let
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+eval(E_b, C) = (E_b', C_b')
+\end{displaymath}
+ -->
+
+<I>eval</I>(<I>E</I><SUB><I>b</I></SUB>, <I>C</I>) = (<I>E</I><SUB><I>b</I></SUB>', <I>C</I><SUB><I>b</I></SUB>')
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+and
+<BR><P></P>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ \begin{displaymath}
+eval(E_s, C) = (E_s', C_s').
+\end{displaymath}
+ -->
+
+<I>eval</I>(<I>E</I><SUB><I>s</I></SUB>, <I>C</I>) = (<I>E</I><SUB><I>s</I></SUB>', <I>C</I><SUB><I>s</I></SUB>').
+</DIV>
+<BR CLEAR="ALL">
+<P></P>
+
+<UL>
+<LI>If <I>E</I><SUB><I>s</I></SUB>' is an Integer with value <I>i</I> and <I>E</I><SUB><I>b</I></SUB>' is a list
+<!-- MATH
+ $\{ E_0, ..., E_{n - 1}\}$
+ -->
+{ <I>E</I><SUB>0</SUB>, ..., <I>E</I><SUB><I>n</I> - 1</SUB>} with <I>n</I> &gt; <I>i</I> members,
+then <!-- MATH
+ $(E', C') = (E_i, C_b')$
+ -->
+(<I>E</I>', <I>C</I>') = (<I>E</I><SUB><I>i</I></SUB>, <I>C</I><SUB><I>b</I></SUB>').
+</LI>
+<LI>If <I>E</I><SUB><I>s</I></SUB>' is a String with value <I>s</I> and <I>E</I><SUB><I>b</I></SUB>' is a Record expression,
+then <!-- MATH
+ $(E', C') = \mathit{eval}(\mathit{lookup}(s, (E_b', C_b')))$
+ -->
+<IMG
+ WIDTH="246" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img16.png"
+ ALT="$(E', C') = \mathit{eval}(\mathit{lookup}(s, (E_b', C_b')))$">.
+</LI>
+<LI>If <I>C</I><SUB>2</SUB> is a String with value <I>s</I> and <I>E</I><SUB><I>b</I></SUB>' is a list
+<!-- MATH
+ $\{ E_0, ..., E_{n - 1}\}$
+ -->
+{ <I>E</I><SUB>0</SUB>, ..., <I>E</I><SUB><I>n</I> - 1</SUB>}, then <I>E</I>' is the list
+<!-- MATH
+ $\{ E_0', ..., E_{n - 1}'\}$
+ -->
+{ <I>E</I><SUB>0</SUB>', ..., <I>E</I><SUB><I>n</I> - 1</SUB>'}, where <!-- MATH
+ $\mathit{eval}(E_i[s], C_b') = (E_i', C_i')$
+ -->
+<IMG
+ WIDTH="178" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img17.png"
+ ALT="$\mathit{eval}(E_i[s], C_b') = (E_i', C_i')$">
+and <I>C</I>' = <I>E</I>' (that is, the result is a ``top-level'' EIC).
+Note that the environments <I>C</I><SUB><I>i</I></SUB>' returned by the recursive calls to
+<I>eval</I> are discarded.
+</LI>
+<LI>In all other cases, the result is <B>error</B>.
+</LI>
+</UL>
+
+<P>
+
+<H3><A NAME="SECTION00043800000000000000"></A>
+<A NAME="sec:list_and_record"></A>
+<BR>
+List and Record Constructors
+</H3>
+The LIST operator takes as operands an arbitrary sequence of values of
+arbitrary types.
+The RECORD operator takes as operands a sequence of definitions of the form
+<!-- MATH
+ $name_i = value_i$
+ -->
+<I>name</I><SUB><I>i</I></SUB> = <I>value</I><SUB><I>i</I></SUB>, where the <I>value</I><SUB><I>i</I></SUB> are arbitrary values.  The result is
+the Record
+<DIV ALIGN="CENTER">
+<code>[</code><!-- MATH
+ $name_0 = value_0;~...~;~name_{n-1} = value_{n-1}$
+ -->
+<I>name</I><SUB>0</SUB> = <I>value</I><SUB>0</SUB>;&nbsp;...&nbsp;;&nbsp;name<SUB><I>n</I>-1</SUB> = <I>value</I><SUB><I>n</I>-1</SUB><code>]</code>
+
+</DIV>
+
+<P>
+List and Record expressions evaluate to themselves.
+That is, <I>eval(E, C) = (E, C)</I> if <I>E</I> is of type List or Record.
+
+<P>
+
+<H3><A NAME="SECTION00043900000000000000"></A>
+<A NAME="sec:functions"></A>
+<BR>
+Function Calls
+</H3>
+The FUNC_CALL operator takes a function name and zero or more operands.
+Function names are matched regardless of case, so that
+<TT>substr("abc",2)</TT>,
+<TT>SubStr("abc",2)</TT>, and
+<TT>SUBSTR("abc",2)</TT> all invoke the same function.
+
+<P>
+Currently, all functions are <I>strict</I> with respect to <B>error</B>
+and <B>undefined</B>, unless otherwise specified.
+In other words, if any argument evaluates to
+<B>error</B> or <B>undefined</B>, the result is
+<B>error</B> or <B>undefined</B>, respectively.
+If arguments of both types are present, the result is <B>error</B>.
+
+<P>
+Currently, all functions return ``top-level'' values that are independent
+of the the context of the call.  That is
+<!-- MATH
+ $\mathit{eval}(f(E_1,...,E_n), C) = (V, V)$
+ -->
+<IMG
+ WIDTH="217" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img18.png"
+ ALT="$\mathit{eval}(f(E_1,...,E_n), C) = (V, V)$">, where
+<!-- MATH
+ $\mathit{eval}(E_i, C) = E_i'$
+ -->
+<IMG
+ WIDTH="120" HEIGHT="31" ALIGN="MIDDLE" BORDER="0"
+ SRC="img19.png"
+ ALT="$\mathit{eval}(E_i, C) = E_i'$"> for <I>i</I> = 1,...,<I>n</I> and <I>V</I> is a value
+computed from <!-- MATH
+ $E_1', ...,  E_n'$
+ -->
+<I>E</I><SUB>1</SUB>', ..., <I>E</I><SUB><I>n</I></SUB>' as described in the following table.
+
+<P>
+The following table lists all functions required by the current version of this
+specification; others may be added in future versions.
+The description of each function is preceded by a prototype indicating
+restrictions on the number and types of arguments and indicating the type of
+the result returned.
+If the restrictions are violated, the result is <B>error</B>.
+In the prototypes, ``const'' stands for any literal constant of type Integer,
+Real, String, Boolean, AbsTime, or RelTime (but not Undefined, Error, List, or
+Record), and ``any'' means any expression.
+A type followed by an asterisk indicates any number
+of arguments of the indicated type, including none.
+Square brackets are used to indicate optional arguments.
+
+<P>
+<DL>
+<DT><STRONG><B>isUndefined</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is the undefined value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isError</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is the error value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isString</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is a string value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isInteger</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is an integer value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isReal</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is a real value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isList</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is a list value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isClassad</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is a record value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isBoolean</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is a boolean value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isAbstime</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is an AbsTime value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>isReltime</B>(<I>any a</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD>Returns <B>true</B> is <I>a</I> is a RelTime value, otherwise
+returns <B>false</B>.
+This function is not strict.
+
+<P>
+</DD>
+<DT><STRONG><B>int</B>(<I>const x</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+The result is <I>x</I> converted to an Integer.
+If <I>x</I> is an Integer, the result is <I>x</I>.
+If <I>x</I> is a Real, it is truncated (towards zero) to an integer.
+If <I>x</I> is <B>true</B> the result is 1.
+If <I>x</I> is <B>false</B> the result is 0.
+If <I>x</I> is an AbsTime, it it converted to the number of seconds since the
+epoch, UTC.
+If <I>x</I> is a RelTime, it it converted to a number of seconds.
+If <I>x</I> is a String, it is parsed according to the native syntax
+for <I>integer_literal</I> or <I>floating_point_literal</I> as in
+Table&nbsp;<A HREF="node3.html#tab:tokens">4</A> and then converted to an Integer as above.
+If <I>x</I> is a String that does not represent a valid integer or
+floating-point literal, the result is <B>error</B>.
+
+<P>
+</DD>
+<DT><STRONG><B>real</B>(<I>const x</I>) <B>returns</B> <I>real</I>.</STRONG></DT>
+<DD><P>
+The result is <I>x</I> converted to a Real.
+If <I>x</I> is a Real, the result is <I>x</I>.
+If <I>x</I> is an Integer, it is converted to Real.
+If <I>x</I> is <B>true</B> the result is 1.0.
+If <I>x</I> is <B>false</B> the result is 0.0.
+If <I>x</I> is an AbsTime, it it converted to the number of seconds since the
+epoch, UTC.
+If <I>x</I> is a RelTime, it it converted to a number of seconds.
+If <I>x</I> is a String, it is parsed according to the native syntax
+for <I>integer_literal</I> or <I>floating_point_literal</I> as in
+Table&nbsp;<A HREF="node3.html#tab:tokens">4</A> and then converted to a Real as above.
+In addition, the strings <B>INF</B>, <B>-INF</B> and <B>NaN</B>
+(in any combination of upper and lower case) are recognized as representing
+the IEEE754 values for positive and negative infinity and not-a-number,
+respectively.
+If <I>x</I> is a String that does not represent a valid integer or
+floating-point literal, the result is <B>error</B>.
+For any other type, <I>x</I> is converted to an Integer as if by ``int'', and
+the result is converted to a Real (or <B>error</B> if the conversion to
+Integer fails).
+
+<P>
+</DD>
+<DT><STRONG><B>string</B>(<I>any x</I>) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is a String, the result is <I>x</I>.
+Otherwise, the result is the canonical unparsing of <I>x</I> (see
+Section&nbsp;<A HREF="node3.html#sec:unparsing">3.3.3</A>).
+
+<P>
+</DD>
+<DT><STRONG><B>floor</B>(<I>const x</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is an Integer, the result is <I>x</I>.
+Otherwise, <I>x</I> is converted to a real by the function ``real'' above,
+and the result is the largest integer not greater than that value (or
+<B>error</B> if the conversion fails).
+
+<P>
+</DD>
+<DT><STRONG><B>ceiling</B>(<I>const x</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is an integer, the result is <I>x</I>.
+Otherwise, <I>x</I> is converted to a real by the function ``real'' above,
+and the result is the smallest integer not less than that value (or
+<B>error</B> if the conversion fails).
+
+<P>
+</DD>
+<DT><STRONG><B>round</B>(<I>const x</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is an integer, the result is <I>x</I>.
+Otherwise, <I>x</I> is converted to a real <I>y</I> by the function ``real''
+above, and the result is the nearest integer to <I>y</I>.  If <I>y</I> is
+midway between two integers, the even integer is returned.  The result is
+<B>error</B> if the conversion fails or the resulting integer does not
+fit in 32 bits.
+
+<P>
+</DD>
+<DT><STRONG><B>random</B>(<I>number x</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is an integer, the result is an integer random number <I>r</I>
+in the range 0 &lt;= <I>r</I> &lt; <I>x</I>. If <I>x</I> is a real number, the result is
+a real random number in the same range.If <I>x</I> is anything else,
+the result is an error.
+
+<P>
+</DD>
+<DT><STRONG><B>strcat</B>(<I>any*</I>) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+Each argument is converted to a string by the
+function ``string'' above.  The result is the concatenation of the strings.
+
+<P>
+</DD>
+<DT><STRONG><B>substr</B>(<I>string s</I>, <I>int offset</I>
+[, <I>int length</I> ]) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD>The result is the substring of <I>s</I> starting
+at the position indicated by <I>offset</I> with the length indicated by
+<I>length</I>.
+The first character of <I>s</I> is at offset 0.
+If <I>offset</I> is negative, it is replaced by length(<I>s</I>) - <I>offset</I>.
+If <I>length</I> is omitted, the substring
+extends to the end of <I>s</I>.  If <I>length</I> is negative, an intermediate 
+result is computed as if length were omitted, and then <I>-length</I>
+characters are deleted from the right end of the result.
+If the resulting substring lies partially
+outside the limits of <I>s</I>, the part that lies withing <I>s</I> is returned.
+If the substring lies entirely outside <I>s</I> or has negative length (because
+of a negative <I>length</I> argument), the result is the null string.
+[<B>Note</B>:  This function is the same as the <TT>substr</TT> function
+of Perl.]
+
+<P>
+</DD>
+<DT><STRONG><B>strcmp</B>(<I>any a</I>, <I>any b</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD>The operands are converted to strings by the ``string''
+function above.  The result is an integer less than, equal to, or greater than
+zero according to whether <I>a</I> is lexicographically less than,
+equal to, or greater than <I>b</I>.
+Note that case <I>is</I> significant in the comparison.
+
+<P>
+</DD>
+<DT><STRONG><B>stricmp</B>(<I>any a</I>, <I>any b</I>) <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+The same as <B>strcmp</B> except that upper and lower case letters are
+considered equivalent.
+
+<P>
+</DD>
+<DT><STRONG><B>toUpper</B>(<I>string s</I>) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+The operands are converted to strings by the ``string''
+function above. The result is a string that is identical to <I>s</I> except that all
+lowercase letters in <I>s</I> will be converted to uppercase.
+
+<P>
+</DD>
+<DT><STRONG><B>toLower</B>(<I>string s</I>) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+The operands are converted to strings by the ``string''
+function above. The result is a string that is identical to <I>s</I> except that all
+uppercase letters in <I>s</I> will be converted to lowercase.
+
+<P>
+</DD>
+<DT><STRONG><B>member</B>(<I>const x</I>, <I>string l</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is not a constant or <I>l</I> is not a list, then the
+result is an error.  Otherwise, if any of the elements is equal to x
+in the sense of the <code>==</code> operator, then the result is true,
+otherwise it is false.
+
+<P>
+</DD>
+<DT><STRONG><B>regexp</B>(<I>string pattern</I>, <I>string target</I>, 
+<I>string options</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD><P>
+If the regular expression <I>pattern</I> matches the <I>target</I>,
+this function returns true, but otherwise returns false. 
+
+<P>
+Unfortunately, the allowed patterns and options cannot be precisely
+defined at this time because different ClassAd implementations use
+different underlying libraries to implement regular expression
+matching. The Java implementation uses Sun's regular expression
+implementation, which is Perl-like. The C++ implementation uses either
+POSIX or Perl-compatible regular expressions, depending on what is
+available at compilation time. This dichotomy is unfortunate, and we
+hope to resolve it in the future. For now, you must either know
+details about your ClassAd implementation, or you must use a subset of
+regular expressions that are POSIX- and Perl- compatible. 
+
+<P>
+The options are specified as a string of letters in any order. Each
+letter indicates a single option. For POSIX regular expression
+matching, the only option is ``i'' for case-insensitive matching. For
+Perl-compatible regular expressions, there are four options: ``i'' for
+case-insensitive matching, ``m'' for multiline matching, ``x'' for
+extended syntax, and ``s'' to cause the dot character (.) to match all
+characters, including newlines.
+
+<P>
+</DD>
+<DT><STRONG><B>identicalMember</B>(<I>const x</I>, <I>string l</I>) <B>returns</B> <I>boolean</I>.</STRONG></DT>
+<DD><P>
+If <I>x</I> is not a constant or <I>l</I> is not a list, then the
+result is an error.  Otherwise, if any of the elements is equal to x
+in the sense of the <code>is</code> operator, then the result is true,
+otherwise it is false.
+
+<P>
+</DD>
+<DT><STRONG><B>time</B>() <B>returns</B> <I>int</I>.</STRONG></DT>
+<DD><P>
+Returns the current Coordinated Universal Time, in seconds
+since midnight January 1, 1970.
+
+<P>
+</DD>
+<DT><STRONG><B>interval</B>(<I>int t</I>) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+The operand <I>t</I> is treated as a number of seconds.
+The result is a string of the form <TT>days+hh:mm:ss</TT>.
+Leading components are omitted if they are zero.  For example, if the
+operand is <!-- MATH
+ $1472523 = 17*24*60*60 + 1*60*60 + 2*60 + 3$
+ -->
+1472523 = 17*24*60*60 + 1*60*60 + 2*60 + 3
+(seventeen days, one hour, two
+minutes, and three seconds), the result is <TT>"17+1:02:03"</TT>;
+if the operand is 67, the result is <TT>"1:07"</TT>.
+
+<P>
+</DD>
+<DT><STRONG><B>absTime</B>(<I>string s</I>) <B>returns</B> <I>AbsTime</I>.</STRONG></DT>
+<DD><P>
+The operand <I>s</I> is parsed as a specification of an instant in time (date and
+time). 
+This function accepts the canonical native representation of AbsTime values,
+but minor variations in format are allowed.
+
+<P>
+The default format is <code>yyyy-mm-ddThh:mm:sszzzzz</code> where zzzzz is a time
+zone in the format <code>+hh:mm</code> or <code>-hh:mm</code>, but variations are allowed.
+
+<UL>
+<LI>Each separator character <code>-</code>, <code>:</code>, or <code>T</code>  may be omitted
+or replaced by any sequence of non-digits.  Note, however, that the
+<code>-</code> in a time zone of the form <code>-hh:mm</code> may not be omitted.
+</LI>
+<LI>The colon between <code>hh</code> and <code>mm</code> in the time zone may be omitted.
+</LI>
+<LI>An arbitrary sequence of non-digit characters may precede <code>zzzzz</code>
+or <code>yyyy</code>.
+</LI>
+<LI>The zone may be replaced by the character <code>z</code> or <code>Z</code>, which is
+equivalent to <code>-00:00</code>.
+</LI>
+<LI>The zone may be omitted, in which case the local time zone is used.
+If the string ends with <code>+dddd</code>, <code>-dddd</code>, <code>z</code>, or
+<code>Z</code>, where each <code>d</code> is a digit, this suffix is considered to be
+the time zone indication.  For example, in <code>2003+1030</code>, the suffix
+<code>1030</code> is interpreted as a time zone 10 hours and 30 minutes east,
+rather than as October 30.
+</LI>
+<LI>The fields <code>ss</code>, <code>mm</code>, <code>hh</code>, etc. may be omitted (from
+right to left), in which case the omitted fields are assumed to be zero.
+</LI>
+</UL>
+More precisely, the string must match the regular expression
+<PRE>
+    D* dddd [D* dd [D* dd [D* dd [D* dd [D* dd D*]]]]] [-dd[:]dd|+dd[:]dd|z|Z]
+</PRE>
+Where <code>d</code> stands for a digit and <code>D</code> stands for a non-digit.
+
+<P>
+For example, in the United States central time zone, an AbsTime
+corresponding to ``9 am Jan 25, 2003 CST'' may be created by any of the
+function calls
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>2003-01-25T09:00:00-06:00</code></TD>
+<TD ALIGN="LEFT">// canonical</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25   09:00:00 -0600</code></TD>
+<TD ALIGN="LEFT">// different separators</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>20030125090000-0600</code></TD>
+<TD ALIGN="LEFT">// compact format</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25 16:00:00 +01:00</code></TD>
+<TD ALIGN="LEFT">// different time zone</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25 15:00Z</code></TD>
+<TD ALIGN="LEFT">// omitted seconds, UTC time zone</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25 09:00:00</code></TD>
+<TD ALIGN="LEFT">// default time zone (local)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25 09</code></TD>
+<TD ALIGN="LEFT">// omitted minutes and seconds</TD>
+</TR>
+</TABLE>
+
+<P>
+and AbsTimes corresponding to ``Jan 25, 2003'' (implicitly midnight, UTC) may
+be written
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>2003-01-24T18:00:00-06:00</code></TD>
+<TD ALIGN="LEFT">// canonical</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25T00:00:00</code></TD>
+<TD ALIGN="LEFT">// default time zone: UTC</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25</code></TD>
+<TD ALIGN="LEFT">// omitted time of day</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003/01/25</code></TD>
+<TD ALIGN="LEFT">// different separators</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>20030125</code></TD>
+<TD ALIGN="LEFT">// compact format</TD>
+</TR>
+</TABLE>
+
+<P>
+The strings <code>2003-01-25T09:00:00-06:00</code> and <code>2003-01-25 15:00Z</code>
+represent the same instant in time, but measured in different time zones.
+
+<P>
+The following strings are invalid.
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>2003-01-25T09:00:00-06</code></TD>
+<TD ALIGN="LEFT">// incomplete time zone</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-01-25T09:00:00- 0600</code></TD>
+<TD ALIGN="LEFT">// space in time zone</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>2003-1-25</code></TD>
+<TD ALIGN="LEFT">// missing digit in dd field</TD>
+</TR>
+</TABLE>
+
+<P>
+</DD>
+<DT><STRONG><B>absTime</B>([<I>const t[, int z]</I></STRONG></DT>
+<DD>)
+<B>returns</B> <I>AbsTime</I>.]
+
+<P>
+Creates an AbsTime value corresponding to time <I>t</I> an time-zone offset <I>z</I>.
+If <I>t</I> is a String, then <I>z</I> must be omitted, and <I>t</I> is parsed as a
+specification as described above.  If <I>t</I> and <I>z</I> are both omitted, the
+result is an AbsTime value representing the time and place where the function
+call is evaluated.
+Otherwise, <I>t</I> is converted to a real by the function ``real'' above,
+and treated as a number of seconds from the epoch, Midnight January 1, 1970
+UTC.  If <I>z</I> is specified, it is treated as a number of seconds <I>east</I>
+of Greenwich.  Otherwise, the offset is calculated from <I>t</I> according to
+the local rules for the place where the function is evaluated.
+
+<P>
+</DD>
+<DT><STRONG><B>relTime</B>(<I>const t</I>) <B>returns</B> <I>RelTime</I>.</STRONG></DT>
+<DD><P>
+If the operand <I>t</I> is a String, it is parsed as a specification of a time
+interval.  This function accepts the canonical native representation of RelTime
+values, but minor variations in format are allowed.
+
+<P>
+Otherwise, <I>t</I> is converted to a real by the function ``real'' above,
+and treated as a number of seconds.
+
+<P>
+The default string format is <code>[-]days+hh:mm:ss.fff</code>, where
+leading components and the fraction <code>.fff</code> are omitted if they are zero.
+In the default syntax, days is a sequence of digits starting with a
+non-zero digit, <code>hh</code>, <code>mm</code>, and <code>ss</code> are strings of exactly two
+digits (padded on the left with zeros if necessary) with values less than 24,
+60, and 60, respectively and <code>fff</code> is a string of exactly three digits.
+In the relaxed syntax,
+
+<P>
+
+<UL>
+<LI>Whitespace may be added anywhere except inside the numeric fields
+<code>days</code>, <code>hh</code>, etc.
+</LI>
+<LI>Numeric fields may have any number of digits and any non-negative value.
+</LI>
+<LI>The <code>+</code> may be replaced by <code>d</code> or <code>D</code>.
+</LI>
+<LI>The first <code>:</code> may be replaced by <code>h</code> or <code>H</code>.
+</LI>
+<LI>The second <code>:</code> may be replaced by <code>m</code> or <code>M</code>.
+</LI>
+<LI>The letter <code>s</code> or <code>S</code> may follow the last numeric field.
+</LI>
+<LI>If field <I>i</I> is terminated with one of the letters <code>dDhHmMsS</code> and
+the value of field <I>i</I>-1 is zero, field <I>i</I>-1, together with its
+terminating field name (<code>+</code>, <code>:</code>, <code>h</code>, etc.) may be omitted even
+if field <I>i</I>-2 is not omitted.
+</LI>
+<LI>The fraction <code>.fff</code> may have any number of digits.  If it has no
+digits, the preceding decimal point may be omitted.
+</LI>
+</UL>
+
+<P>
+For example, one day, two minutes and three milliseconds may have any of
+the forms
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>1+00:02:00.003</code></TD>
+<TD ALIGN="LEFT">// the result of relTimeToString</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>1d0h2m0.003s</code></TD>
+<TD ALIGN="LEFT">// similar to ISO 8601</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>1d 2m 0.003s</code></TD>
+<TD ALIGN="LEFT">// add spaces, omit hours field</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>1d 00:02:00.003</code></TD>
+<TD ALIGN="LEFT">// mixed representations</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>1d 00:00:120.003</code></TD>
+<TD ALIGN="LEFT">// number of seconds greater than 59</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>86520.002991</code></TD>
+<TD ALIGN="LEFT">// seconds, excess precision in fraction</TD>
+</TR>
+</TABLE>
+
+<P>
+</DD>
+<DT><STRONG><B>splitTime</B>(<I>RelTime</I>) <B>returns</B> <I>ClassAd</I>.</STRONG></DT>
+<DD><P>
+Creates a ClassAd with each component of the time as an element of the
+ClassAd. The ClassAd has five attributes:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>Type</code></TD>
+<TD ALIGN="LEFT">// ``RelativeTime''</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Days</code></TD>
+<TD ALIGN="LEFT">// the number of days</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Hours</code></TD>
+<TD ALIGN="LEFT">// the number hours</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Minutes</code></TD>
+<TD ALIGN="LEFT">// the number of minutes</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Seconds</code></TD>
+<TD ALIGN="LEFT">// the number of seconds</TD>
+</TR>
+</TABLE>
+
+<P>
+</DD>
+<DT><STRONG><B>splitTime</B>(<I>AbsTime</I>) <B>returns</B> <I>ClassAd</I>.</STRONG></DT>
+<DD><P>
+Creates a ClassAd with each component of the time as an element of the
+ClassAd. The ClassAd has five attributes:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT"><code>Type</code></TD>
+<TD ALIGN="LEFT">// ``AbsoluteTime''</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Year</code></TD>
+<TD ALIGN="LEFT">// the year</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Month</code></TD>
+<TD ALIGN="LEFT">// the month, from 1 (January) through 12 (December)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Day</code></TD>
+<TD ALIGN="LEFT">// the day, from 1 through 31</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Hours</code></TD>
+<TD ALIGN="LEFT">// the number of hours</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Minutes</code></TD>
+<TD ALIGN="LEFT">// the number of minutes</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Seconds</code></TD>
+<TD ALIGN="LEFT">// the number of seconds</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>Offset</code></TD>
+<TD ALIGN="LEFT">// the timezone offset in seconds</TD>
+</TR>
+</TABLE>
+
+<P>
+</DD>
+<DT><STRONG><B>formatTime</B>(<I>AbsTime t</I>[, <I>string s</I>]) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+This function creates a formatted string that is a representation of
+the absolute time <I>t</I>. 
+
+<P>
+The string is similar to the ANSI C strftime function. It consists of
+arbitary text plus placeholders for elements of the time. These
+placeholders are percent signs (%) followed by a single letter. To
+have a percent sign in your output, you must use a double percent sign
+(%%). 
+
+<P>
+Because an implementation may use strftime() to implement this, and
+some versions implement extra, non-ANSI C options, the exact options
+available to an implementation may vary. An implementation is only
+required to implement the ANSI C options, which are:
+
+<P>
+<TABLE CELLPADDING=3>
+<TR><TD ALIGN="LEFT">%a</TD>
+<TD ALIGN="LEFT">// abbreviated weekday name</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%A</TD>
+<TD ALIGN="LEFT">// full weekday name</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%b</TD>
+<TD ALIGN="LEFT">// abbreviated month name</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%B</TD>
+<TD ALIGN="LEFT">// full month name</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%c</TD>
+<TD ALIGN="LEFT">// local date and time representation</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%d</TD>
+<TD ALIGN="LEFT">// day of the month (01-31)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%H</TD>
+<TD ALIGN="LEFT">// hour in the 24-hour clock (0-23)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%I</TD>
+<TD ALIGN="LEFT">// hour in the 12-hour clock (01-12)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%j</TD>
+<TD ALIGN="LEFT">// day of the year (001-366)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%m</TD>
+<TD ALIGN="LEFT">// month (01-12)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%M</TD>
+<TD ALIGN="LEFT">// minute (00-59)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%p</TD>
+<TD ALIGN="LEFT">// local equivalent of AM or PM</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%S</TD>
+<TD ALIGN="LEFT">// second (00-59)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%U</TD>
+<TD ALIGN="LEFT">// week number of the year (Sunday as first day of week) (00-53)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%w</TD>
+<TD ALIGN="LEFT">// weekday (0-6, Sunday is 0)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%W</TD>
+<TD ALIGN="LEFT">// week number of the year (Monday as first day of week) (00-53)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%x</TD>
+<TD ALIGN="LEFT">// local date representation</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%X</TD>
+<TD ALIGN="LEFT">// local time representation</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%y</TD>
+<TD ALIGN="LEFT">// year without century (00-99)</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%Y</TD>
+<TD ALIGN="LEFT">// year with century</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%Z</TD>
+<TD ALIGN="LEFT">// time zone name, if any</TD>
+</TR>
+<TR><TD ALIGN="LEFT">%</TD>
+<TD ALIGN="LEFT">// %</TD>
+</TR>
+</TABLE>
+
+<P>
+Note that names may be locale-dependent, if the underlying operating
+system supports locales. Also note that some ClassAd implementations
+may have difficulty with time zone names for non-local time zones,
+since the names may vary.
+
+<P>
+</DD>
+<DT><STRONG><B>formatTime</B>(<I>int i</I>[, <I>string s</I>]) <B>returns</B> <I>string</I>.</STRONG></DT>
+<DD><P>
+This version of formatTime converts <I>i</I> to an absolute time, then
+behaves identically to the other version of formatTime.
+
+<P>
+</DD>
+</DL>
+
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot1098">... matches</A><A
+ HREF="node4.html#tex2html17"><SUP>14</SUP></A></DT>
+<DD>We are using the term ``match'' here as defined in
+    Section&nbsp;<A HREF="node3.html#sec:abstract_syntax">3.1</A>:  Two strings match if they are identical
+    except for differences in case.
+
+</DD>
+<DT><A NAME="foot1100">... operands.</A><A
+ HREF="node4.html#tex2html18"><SUP>15</SUP></A></DT>
+<DD>Unlike Java, the <TT>+</TT> operator is not
+overloaded to accept String operands.
+
+</DD>
+<DT><A NAME="foot1101">...JLS,</A><A
+ HREF="node4.html#tex2html19"><SUP>16</SUP></A></DT>
+<DD>The
+<TT>%</TT> operator is defined for floating point operands according to the
+Java programming language specification, not according C.
+Some C implementations may not support <TT>%</TT> with floating point operands,
+so users concerned with portability should avoid this special case until all
+implementations are brought into compliance.
+
+</DD>
+<DT><A NAME="foot1103">...
+operands.</A><A
+ HREF="node4.html#tex2html21"><SUP>17</SUP></A></DT>
+<DD>Note that C and C++ have no <TT>&#187;&gt;</TT> operator.  These
+languages perform a similar operation when the operands are declared to be
+unsigned.
+There are no unsigned types in Java or the ClassAd language.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html108"
+  HREF="node5.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html106"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html100"
+  HREF="node3.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html109"
+  HREF="node5.html">Acknowledgments</A>
+<B> Up:</B> <A NAME="tex2html107"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html101"
+  HREF="node3.html">Syntax</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Alain Roy
+2004-09-30
+</ADDRESS>
+</BODY>
+</HTML>

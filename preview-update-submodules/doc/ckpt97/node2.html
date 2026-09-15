@@ -1,0 +1,70 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>2 Checkpoint and Migration of a UNIX Process</TITLE>
+<META NAME="description" CONTENT="2 Checkpoint and Migration of a UNIX Process">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html40" HREF="node3.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html38" HREF="ckpt97.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html32" HREF="node1.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html41" HREF="node3.html">3 Components of a </A>
+<B>Up:</B> <A NAME="tex2html39" HREF="ckpt97.html">Checkpoint and Migration of </A>
+<B> Previous:</B> <A NAME="tex2html33" HREF="node1.html">1 Introduction</A>
+<BR> <P>
+<H1><A NAME="SECTION00020000000000000000">2 Checkpoint and Migration of a UNIX Process</A></H1>
+<P>
+One of the major components of Condor is its facility for
+transparently checkpointing and restarting a process, possibly on a
+different machine.  By ``transparent'' we mean that the user code is
+not specially written to accommodate the checkpoint/restart or
+migration and generally has no knowledge that such an event has taken
+place.  This mechanism is implemented entirely at user level, with
+absolutely no modifications to the UNIX kernel.  While implementing
+checkpoint/restart and migration at user level is great for
+portability, it should be pointed out from the beginning that our
+method does have some limitations.  These are discussed in detail is
+section <A HREF="node16.html#seclimitations">4.2</A>.
+<P>
+Process checkpoint/restart can enable process migration.
+Checkpointing and restarting generally implies that the state of a
+process is saved in stable storage using the file system.  Note
+however that in an environment where processes can access files from
+any of a group of machines, (possibly via AFS or NFS cross mounting of
+file systems), then by transporting a checkpoint file to another
+machine we accomplish process migration.  In this article we use the
+term ``checkpoint'' almost synonymously with ``migrate''.  Not all
+systems which implement process migration however also provide the
+safety of checkpointing, because they may not allow ``migrating'' a
+process into a file.  Condor provides access to files across machines,
+even in environments where files are not generally available by NFS or
+AFS, with a mechanism called ``remote system calls''.  These are
+discussed in section <A HREF="node15.html#secremote">4.1</A>.
+<P>
+Our general method for checkpointing is to write all of the process's
+state information to a file (or socket) at checkpoint time, then use
+the information in that file (or read from a socket) to restore the
+process's state (as much as possible) at restart time.  From the point
+of view of the operating system, the process is not restarted or
+migrated at all - we simply create a new process, and manipulate its
+state so as to emulate the state of the old process as accurately as
+possible.  The checkpointing process is invoked by a signal, and at
+restart time, things are manipulated so that it appears to the user
+code that the process has just returned from that signal handler.  The
+code contained in the signal handler, the code required to install the
+handler, and the code used to record information about the process's
+state as it evolves, are all contained in the Condor checkpointing
+library.
+<P>
+<HR><A NAME="tex2html40" HREF="node3.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html38" HREF="ckpt97.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html32" HREF="node1.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html41" HREF="node3.html">3 Components of a </A>
+<B>Up:</B> <A NAME="tex2html39" HREF="ckpt97.html">Checkpoint and Migration of </A>
+<B> Previous:</B> <A NAME="tex2html33" HREF="node1.html">1 Introduction</A>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

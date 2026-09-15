@@ -1,0 +1,45 @@
+Changes for version 0.9.6:  (released 07-Oct-2004)
+* Can optionally use PCRE for the regexp() ClassAd function. On Unix,
+  specify --use-pcre <dir>. We have tested with PCRE 4.5 and 5.0. 
+
+* Added ClassAd functions: splitTime(), formatTime(), and random()
+
+* Added ClassAd functions strcmp() and stricmp().
+
+* Renamed the little used function isMember to identicalMember().
+
+* Fixed bugs in the internal representation of times.
+
+* Added classad_functional_tester, which is a significantly better
+  than the old test_classads. 
+
+* Added classad_unit_tester, which does lower-level tests than
+  classad_functional_tester. This test program is incomplete, but well
+  on its way. 
+
+* Remove test_classads.
+
+* Added classad_version program, which reports the version. 
+
+* Fixed bugs in ExprList that were exposed by classad_unit_tester
+
+* Fixed ClassAd functions real() and string() to work correctly. 
+
+* Fixed bugs in XML parsing.
+
+* Fixed a bug where the parser would choke on any input ending in a quotation
+  mark because the lexer wasn't consuming the entire string token.
+
+* Fixed a bug where the lexer would choke on any string ending in a backslash.
+  Now it will only choke if the string ends in an odd number of backslashes. 
+
+* Fixed bug that sometimes caused Flatten() to return an expression
+  with a bad pointer.
+
+* operator<<() now takes any ExprTree instead of just a ClassAd.
+
+* Fixed a bug in the configure script that caused inappropriate
+  parsing of arguments.
+
+* Fixed numerous little bugs.
+
