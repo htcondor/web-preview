@@ -1,0 +1,63 @@
+# LaTeX2HTML 96.1 (Feb 5, 1996)
+# Associate sections original text with physical files.
+
+$key = q/0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '0%:%ckpt97.html%:%Checkpoint and Migration of UNIX Processes in the Condor Distributed Processing System' unless ($section_info{$key}); 
+$done{"ckpt97.html"} = 1;
+$key = q/0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '3%:%node1.html%:%1 Introduction' unless ($section_info{$key}); 
+$done{"node1.html"} = 1;
+$key = q/0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '3%:%node2.html%:%2 Checkpoint and Migration of a UNIX Process' unless ($section_info{$key}); 
+$done{"node2.html"} = 1;
+$key = q/0 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '3%:%node3.html%:%3 Components of a Process' unless ($section_info{$key}); 
+$done{"node3.html"} = 1;
+$key = q/0 0 0 3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node4.html%:%3.1 Text and Data Areas' unless ($section_info{$key}); 
+$done{"node4.html"} = 1;
+$key = q/0 0 0 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '3%:%node14.html%:%4 Summary of Checkpoint and Restart' unless ($section_info{$key}); 
+$done{"node14.html"} = 1;
+$key = q/0 0 0 3 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node5.html%:%3.2 Stack' unless ($section_info{$key}); 
+$done{"node5.html"} = 1;
+$key = q/0 0 0 4 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node15.html%:%4.1 Remote File Access' unless ($section_info{$key}); 
+$done{"node15.html"} = 1;
+$key = q/0 0 0 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '3%:%node17.html%:%5 Conclusion' unless ($section_info{$key}); 
+$done{"node17.html"} = 1;
+$key = q/0 0 0 3 2 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '5%:%node6.html%:%3.2.1 Manipulating the Stack' unless ($section_info{$key}); 
+$done{"node6.html"} = 1;
+$key = q/0 0 0 3 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node7.html%:%3.3 Shared Libraries' unless ($section_info{$key}); 
+$done{"node7.html"} = 1;
+$key = q/0 0 0 4 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node16.html%:%4.2 Limitations' unless ($section_info{$key}); 
+$done{"node16.html"} = 1;
+$key = q/0 0 0 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '3%:%node18.html%:%  About this document ... ' unless ($section_info{$key}); 
+$done{"node18.html"} = 1;
+$key = q/0 0 0 3 3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '5%:%node8.html%:%3.3.1 Checkpointing Mapped Segments' unless ($section_info{$key}); 
+$done{"node8.html"} = 1;
+$key = q/0 0 0 3 4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node10.html%:%3.4 Files' unless ($section_info{$key}); 
+$done{"node10.html"} = 1;
+$key = q/0 0 0 3 3 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '5%:%node9.html%:%3.3.2 Restoring Mapped Segments' unless ($section_info{$key}); 
+$done{"node9.html"} = 1;
+$key = q/0 0 0 3 4 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '5%:%node11.html%:%3.4.1 Augmenting System Calls' unless ($section_info{$key}); 
+$done{"node11.html"} = 1;
+$key = q/0 0 0 3 5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node12.html%:%3.5 Signals' unless ($section_info{$key}); 
+$done{"node12.html"} = 1;
+$key = q/0 0 0 3 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0/;
+$section_info{$key} = '4%:%node13.html%:%3.6 Processor State' unless ($section_info{$key}); 
+$done{"node13.html"} = 1;
+
+1;
+

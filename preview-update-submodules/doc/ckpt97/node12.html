@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.5 Signals</TITLE>
+<META NAME="description" CONTENT="3.5 Signals">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html148" HREF="node13.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html146" HREF="node3.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html140" HREF="node11.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html149" HREF="node13.html">3.6 Processor State</A>
+<B>Up:</B> <A NAME="tex2html147" HREF="node3.html">3 Components of a </A>
+<B> Previous:</B> <A NAME="tex2html141" HREF="node11.html">3.4.1 Augmenting System Calls</A>
+<BR> <P>
+<H2><A NAME="SECTION00035000000000000000">3.5 Signals</A></H2>
+<P>
+An interesting part of a process's state is its collection of signal
+handling attributes.  In UNIX processes, signals may be blocked,
+ignored, take default action, or invoke a programmer defined signal
+handler.  At checkpoint time a table is built, again in the process's
+data segment, which records the handling status for each possible
+signal.  The set of blocked signals is obtained from the <TT>
+sigprocmask()</TT> system call, and the handling of individual signals is
+obtained from the <TT>sigaction()</TT> system call.  An interesting
+situation results if a a signal has been sent to a process, but that
+process has the signal blocked.  Such a signal is said to be
+``pending''.  If a signal is pending at checkpoint time, the same
+situation must be re-created at restart time.  We determine the set of
+pending signals with the <TT>sigispending()</TT> system call.  At restart
+time the process will first block each pending signal, then send
+itself an instance of each such signal.  This ensures that if the user
+code later unblocks the signal, it will be delivered.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

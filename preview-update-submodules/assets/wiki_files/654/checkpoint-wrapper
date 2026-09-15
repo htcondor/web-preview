@@ -1,0 +1,180 @@
+#! /usr/bin/perl -w
+#***************************************************************
+#*
+#* Copyright (C) 2012, Condor Team, Computer Sciences Department,
+#* University of Wisconsin-Madison, WI.
+#*
+#* Licensed under the Apache License, Version 2.0 (the "License"); you
+#* may not use this file except in compliance with the License.  You may
+#* obtain a copy of the License at
+#*
+#*    http://www.apache.org/licenses/LICENSE-2.0
+#*
+#* Unless required by applicable law or agreed to in writing, software
+#* distributed under the License is distributed on an "AS IS" BASIS,
+#* WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#* See the License for the specific language governing permissions and
+#* limitations under the License.
+#*
+#***************************************************************
+
+
+# See
+# https://condor-wiki.cs.wisc.edu/index.cgi/wiki?p=CondorSyscallLibCommandLine
+# for more on what this script is doing and why.
+
+
+use strict;
+use Config;
+
+my $CHECKPOINT_LOG = 'checkpoint.log';
+
+my $pid;
+
+if(@ARGV < 1) {
+	mydie("$0 (checkpoint-wrapper) requires at least one argument: the actual standard universe job to run");  
+}
+
+hook_prepare();
+
+# Periodic checkpoint signal. Not currently supported, but present
+# to support future work.
+$SIG{USR2} = \&checkpoint_continue;
+
+# Final checkpoint signal.
+$SIG{TERM} = \&checkpoint_final;
+
+# Final checkpoint signal.  Not the default in vanilla universe,
+# but it is in the standard universe and so implementing for
+# potential compatibility.
+$SIG{TSTP} = \&checkpoint_final;
+
+mylog("About to fork and start @ARGV");
+$pid = fork();
+if(not defined $pid) { mydie ("Unable to fork: $!"); }
+
+if($pid == 0) { # Child
+	my(@prefix) = get_job_prefix();
+	my(@cmd) = (@prefix, @ARGV);
+	my $ckpt = "$ARGV[0].ckpt";
+	if(-f $ckpt) { push @cmd, '-_condor_relocatable', '-_condor_restart'; }
+	else { push @cmd, '-_condor_ckpt'; }
+	push @cmd, $ckpt;
+	mylog("exec(@cmd)");
+	exec(@cmd);
+	die("Failed to exec @cmd: $!");
+} 
+
+# Parent
+mylog("Waiting for $pid (@ARGV) to finish");
+my $status;
+while(1) {
+	my $exitpid = wait;
+	$status = $?;
+	if($exitpid == $pid) {
+		last;
+	}
+	mylog("Unexpected child exit of pid $exitpid");
+}
+
+my($signal, $return);
+if($status & 127) {
+	$signal = $status & 127;
+	mylog("$pid died with signal $signal");
+} else {
+	$return = $status >> 8;
+	mylog("$pid exited with value $return");
+}
+
+hook_finished($return, $signal);
+
+if($signal) {
+	$SIG{TSTP} = 'DEFAULT';
+	$SIG{TERM} = 'DEFAULT';
+	$SIG{USR2} = 'DEFAULT';
+	mylog("Killing self with same signal $signal");
+	kill $signal, $$;
+	mydie("Failed to kill myself with signal $signal.");
+} else {
+	mylog("Exiting with same result $return");
+	exit($return);
+}
+
+
+# When called, initiate a checkpoint and exit.
+sub checkpoint_final {
+	if(not defined $pid) {
+		mydie("Checkpoint and exit requested, but the job hasn't started. Fatal error");
+	}
+	mylog("Checkpointing and exiting $pid.");
+	kill 'TSTP', $pid or die "$!";
+}
+
+# When called, initiate a checkpoint, but continue
+sub checkpoint_continue {
+	if(not defined $pid) {
+		mylog("Checkpoint and continue requested, but the job hasn't started. Ignoring.");
+		return;
+	}
+	mylog("Checkpointing and continuing $pid.");
+	kill 'USR2', $pid;
+}
+
+
+# Simple logging so we don't pollute the job's stdout/stderr with our chatter.
+sub mylog {
+	open my $log, '>>', $CHECKPOINT_LOG
+		or die "Unable to open $CHECKPOINT_LOG for appending: $!";
+	print $log scalar(localtime), ": $$: @_\n";
+	close $log;
+}
+
+# Simple wrapper to log the death message, then die
+sub mydie {
+	mylog(@_);
+	die(@_);
+}
+
+# What command line arguments should be prefixed onto the command line.
+# Returns an array, potentially empty.
+sub get_job_prefix {
+	if($Config{archname} =~ /^i\d86-linux/) {
+		return qw(setarch i386 -L -B -R);
+	} elsif($Config{archname} =~ /^x86_64-linux/) {
+		return qw(setarch x86_64 -L -B -R);
+	} else {
+		mydie("Unable to identify correct prefix (setarch) to use on this platform. $Config{archname} is neither i686-linux nor x86_64");
+	}
+
+}
+
+# Called before starting the job.
+sub hook_prepare {
+	mylog("Doing initial setup.");
+
+	# If you need to do any initial setup, notably including
+	# downloading your files, this is where you do it.
+
+	# Of use might be the file .job.ad and .machine.ad, which
+	# contain copies of the ClassAds for the job and slot respectively.
+
+	mylog("Finished initial setup.");
+}
+
+# Called after the job exits, for any reason, including checkpointing.
+sub hook_finished {
+	# If the job exited cleanly, $return is the exit code, otherwise undef
+	# If the job exited by a signal, $signal is the signal, otherwise undef
+	my($return, $signal) = @_;
+	mylog("Doing final cleanup.");
+
+	# If you need to do any final cleanup, notably including sending
+	# your output somewhere other than the schedd you submitted from,
+	# this is where you do it.
+
+	# Of use might be the file .job.ad and .machine.ad, which
+	# contain copies of the ClassAds for the job and slot respectively.
+
+	mylog("Finished final cleanup.");
+}
+

@@ -1,0 +1,7 @@
+name: HTCondor-CE
+order: 2
+short-description: The entry point to remote computing resources.
+description: |
+  The CE exposes an API allowing remote users and entities to submit and manage ‘resource allocation requests’.
+  These requests are transformed to a local batch system job that starts an EP.  It is commonly used to
+  integrate SLURM-based resources into a HTCondor pool.

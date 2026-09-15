@@ -1,0 +1,96 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Basic Concepts</TITLE>
+<META NAME="description" CONTENT="Basic Concepts">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node3.html">
+<LINK REL="previous" HREF="node1.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node3.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html80"
+  HREF="node3.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html78"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html72"
+  HREF="node1.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html81"
+  HREF="node3.html">Syntax</A>
+<B> Up:</B> <A NAME="tex2html79"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html73"
+  HREF="node1.html">Overview</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00020000000000000000">
+Basic Concepts</A>
+</H1>
+
+<P>
+An expression is either <I>atomic</I>, consisting of a <I>literal constant</I>
+or <I>attribute reference</I>, or it is a <I>composite</I> expression, composed
+of an <I>operator</I> applied to one or more <I>operands</I>.  A literal
+constant is an
+<I>integer</I>,
+<I>real</I>,
+<I>string</I>,
+<I>absolute time</I>,
+or <I>relative time</I> literal,
+or one of the values
+<B>true</B>,
+<B>false</B>,
+<B>error</B>, or
+<B>undefined</B>.
+An attribute reference has an associated character string,
+such as <TT>size</TT> or <TT>n123</TT>, called an <I>attribute name</I>.
+Operators include the familiar arithmetic, logical, and comparison operators of
+C, C++, or Java (such as <TT>+</TT>, <TT>&amp;&amp;</TT>, and <TT>&lt;=</TT>), calls to
+functions (such as <TT>substring(x, 1, 3)</TT> or <TT>member(x,l)</TT>),
+operators for constructing lists:
+<!-- MATH
+ $\mathtt{\{}expr_1 , ... , expr_n \mathtt{\}}$
+ -->
+<TT>{</TT><I>expr</I><SUB>1</SUB> , ... , <I>expr</I><SUB><I>n</I></SUB> <TT>}</TT>,
+and
+records: <!-- MATH
+ $\mathtt{[} name_1 = expr_1 ; ... ; name_n = expr_n \mathtt{]}$
+ -->
+<TT>[</TT> <I>name</I><SUB>1</SUB> = <I>expr</I><SUB>1</SUB> ; ... ; <I>name</I><SUB><I>n</I></SUB> = <I>expr</I><SUB><I>n</I></SUB> <TT>]</TT>, the
+subscript operator: <!-- MATH
+ $expr_1 \mathtt{[} expr_2 \mathtt{]}$
+ -->
+<I>expr</I><SUB>1</SUB> <TT>[</TT> <I>expr</I><SUB>2</SUB> <TT>]</TT>, and the
+attribute-selection operator: <I>expr</I> . <I>name</I>.
+
+<P>
+<BR><HR>
+<ADDRESS>
+Alain Roy
+2004-09-30
+</ADDRESS>
+</BODY>
+</HTML>
