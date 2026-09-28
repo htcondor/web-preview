@@ -41,7 +41,6 @@
 <a id="skip-link" href="#main-copy">Skip to main content.</a>
 
 
-
 <header id="header" class="">
     <div class="container-xxl">
         <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
@@ -744,6 +743,22 @@
 <dl>
 
 
+    
+
+    
+        <dt><a href="/web-preview/preview-update-submodules/security/vulnerabilities/HTCONDOR-2026-0002.html">HTCONDOR-2026-0002</a></dt>
+        <dd>
+            A user who has WRITE authorization to an Access Point (i.e. is allowed
+to place jobs) can execute arbitrary code as the 'condor' user on that
+Access Point.
+This can allow the user to issue ADMINISTRATOR-level commands, edit any
+attribute in any job ClassAd, and enable the impersonation
+of other user accounts on the AP.
+The user can also obtain an IDToken identifying them as the 'condor' user,
+which can be used at any other machines that have the same IDToken
+signing key(s) as the vulnerable Access Point.
+
+        </dd>
     
 
     
