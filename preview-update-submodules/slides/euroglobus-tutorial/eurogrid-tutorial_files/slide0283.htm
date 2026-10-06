@@ -1,0 +1,201 @@
+<html>
+
+<head>
+<meta http-equiv=Content-Type content="text/html; charset=windows-1252">
+<meta name=ProgId content=PowerPoint.Slide>
+<meta name=Generator content="Microsoft PowerPoint 9">
+<title>Condor Tutorial - First EuroGlobus Workshop June 2001</title>
+<meta name=Description content="27-Jun-01: Condor Daemon Layout">
+<link rel=next href=slide0285.htm>
+<![if !ppt]>
+<script>
+<!--
+function Update()
+{
+  if( window.name == "PPTSld" )
+    parent.SlideUpdated('slide0283.htm');   
+  else
+    parent.location.href = "../eurogrid-tutorial.html";
+}
+
+function NoHref() {}
+//-->
+</script>
+<![endif]>
+</head>
+
+<body background="slide0283_background.gif" bgcolor=white alink="#3333cc"
+link="#ccccff" vlink="#b2b2b2" text=black topmargin=0 leftmargin=0
+onload="Update()">
+
+<table border=0 valign=top width=475 height=356 cellpadding=0 cellspacing=0>
+ <tr>
+  <td width=7 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=62 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=67 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=27 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=49 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=30 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=15 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=31 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=2 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=24 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=12 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=9 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=13 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=19 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=1 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=40 height=0 nowrap><img src=space.gif border=0></td>
+  <td width=11 height=0 nowrap><img src=space.gif border=0></td>
+ </tr>
+ <tr>
+  <td width=475 height=16 colspan=20></td>
+ </tr>
+ <tr>
+  <td width=69 height=41 colspan=2></td>
+  <td width=351 height=41 colspan=15>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=351 height=41 align=center><font face="Comic Sans MS"
+    color="#3333cc" size=5><b>Condor Daemon Layout</b></font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=55 height=41 colspan=3></td>
+ </tr>
+ <tr>
+  <td width=475 height=9 colspan=20></td>
+ </tr>
+ <tr>
+  <td width=7 height=16></td>
+  <td width=129 height=16 colspan=2><img src="slide0283_image089.gif" border=0
+  width=129 height=16></td>
+  <td width=339 height=16 colspan=17></td>
+ </tr>
+ <tr>
+  <td width=475 height=6 colspan=20></td>
+ </tr>
+ <tr>
+  <td width=163 height=19 colspan=4></td>
+  <td width=237 height=19 colspan=11>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=237 height=19 align=center><font face="Comic Sans MS" size=1>Personal
+    Condor / Central Manager</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=75 height=19 colspan=5></td>
+ </tr>
+ <tr>
+  <td width=475 height=30 colspan=20></td>
+ </tr>
+ <tr>
+  <td width=254 height=19 colspan=7></td>
+  <td width=48 height=19 colspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=48 height=19 align=center><font face="Comic Sans MS" size=1>master</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=173 height=19 colspan=10></td>
+ </tr>
+ <tr>
+  <td width=300 height=20 colspan=9></td>
+  <td width=38 height=75 colspan=3 rowspan=6><img src="slide0283_image090.gif"
+  border=0 width=38 height=75></td>
+  <td width=137 height=20 colspan=8></td>
+ </tr>
+ <tr>
+  <td width=300 height=6 colspan=9></td>
+  <td width=9 height=6></td>
+  <td width=72 height=19 colspan=3 rowspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=72 height=19 align=center><font face="Comic Sans MS" size=1>negotiator</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=56 height=6 colspan=4></td>
+ </tr>
+ <tr>
+  <td width=224 height=13 colspan=6></td>
+  <td width=45 height=19 colspan=2 rowspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=45 height=19 align=center><font face="Comic Sans MS" size=1>startd</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=31 height=13></td>
+  <td width=9 height=13></td>
+  <td width=56 height=13 colspan=4></td>
+ </tr>
+ <tr>
+  <td width=224 height=6 colspan=6></td>
+  <td width=31 height=6></td>
+  <td width=137 height=6 colspan=8></td>
+ </tr>
+ <tr>
+  <td width=300 height=19 colspan=9></td>
+  <td width=137 height=19 colspan=8></td>
+ </tr>
+ <tr>
+  <td width=163 height=11 colspan=4></td>
+  <td width=49 height=19 rowspan=3>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=49 height=19 align=center><font face="Comic Sans MS" size=1>schedd</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=88 height=11 colspan=4></td>
+  <td width=137 height=11 colspan=8></td>
+ </tr>
+ <tr>
+  <td width=163 height=2 colspan=4></td>
+  <td width=263 height=2 colspan=15></td>
+ </tr>
+ <tr>
+  <td width=163 height=6 colspan=4></td>
+  <td width=114 height=6 colspan=6></td>
+  <td width=61 height=19 colspan=3 rowspan=2>
+  <table border=0 valign=top cellpadding=0 cellspacing=0>
+   <tr>
+    <td width=61 height=19 align=center><font face="Comic Sans MS" size=1>collector</font><br>
+    </td>
+   </tr>
+  </table>
+  </td>
+  <td width=88 height=6 colspan=6></td>
+ </tr>
+ <tr>
+  <td width=326 height=13 colspan=11></td>
+  <td width=88 height=13 colspan=6></td>
+ </tr>
+ <tr>
+  <td width=475 height=83 colspan=20></td>
+ </tr>
+ <tr>
+  <td width=460 height=11 colspan=18></td>
+  <td width=11 height=11><img src="master03_image091.gif" border=0 width=11
+  height=11></td>
+  <td width=4 height=11></td>
+ </tr>
+ <tr>
+  <td width=475 height=10 colspan=20></td>
+ </tr>
+</table>
+
+</body>
+
+</html>
