@@ -1,0 +1,77 @@
+#!/bin/bash
+# this script prints out private memory stats for a pid
+# by totaling private pages from /proc/[pid]/smaps
+
+# set this to 1 to include data from /proc/[pid]/statm in output
+#include_statm=1
+
+function smap_sum_terse {
+  if [[ $include_statm ]]; then
+    statm=$(awk '{printf "VmSize=%d VmRss=%d VmShare=%d VmText=%d VmData=%d",$1,$2,$3,$4,$6}' /proc/$1/statm)
+    #echo "statm is $statm"
+  fi
+
+  egrep -n '(Private_(Dirty|Clean): *[1-9])|r[w-][x-]p' /proc/$1/smaps | awk '
+    /r[w-][x-]p/{a=$2;n=$6; if (n!~/\.so/ && n~/condor_/) exe=$6; }
+    /Private_Clean/{tt+=$2}
+    /Private_Dirty/{
+      t+=$2;
+      if(a=="r--p")tf+=$2;
+      if(n=="")tn+=$2;
+      if(n!="") {
+        if(n=="[heap]")th+=$2; 
+        else if(n=="[stack]")ts+=$2;
+        else if(a=="rw-p")td+=$2;
+        if (n~/condor_util/)tu+=$2;
+        else if (n~/condor_/)tp+=$2;
+        else if (n~/condor/) { if (n~/globus|voms/)tg+=$2; else tc+=$2; }
+        else if (n~/lib/)to+=$2;
+      } 
+      # print accumulated libdata
+      if (verbose && n!="" && a=="rw-p") printf "%10.10s %4d %4d %s %s\n", fn,$2,td,a,n;
+    } 
+    END { 
+      # assume exe ends with condorVER/sbin/condor_DAEMON, extract VER and DAEMON and use them as the name
+      if (length(exe) > 0) {
+         nam = exe;
+         ver = exe; gsub(/\/sbin\/condor_.*/, "", ver); gsub(/.*\//, "", ver); gsub(/condor/,"", ver);
+         pid = fn; gsub(/.*\//, "", nam); gsub(/condor_/, "", nam); fn = (pid ":" nam ver);
+      }
+      printf "%-22.22s %5d %7d %6d %4d %5d  %5d %7d %6d %5d %6d %6d %6d %6d", fn, t, th+ts+tn, th,ts,tn, tf,td, tp,tu,tc,tg,to, tt;
+      if (length(VmSize) > 0) {
+         printf " %6d %5d %7d %5d %5d", VmSize,VmRss,VmShare,VmText,VmData;
+      }
+      printf "\n";
+    }
+  ' fn=$1 verbose=$verbose $statm
+}
+
+hdr='Process                Total Dynamic =(Heap+Stack+Anon) LibRO LibData =(Exec+Utils+Clasad+Globus+System) Clean'
+if [[ $include_statm ]]; then
+  hdr+=' VmSize VmRss VmShare VmText VmData'
+fi
+
+# if args is a list of pids, print each one.
+#
+if [[ $# -gt 1 ]]; then
+  for p in "$@"
+  do
+    if [[ $p == "-h" ]]; then
+      IFS='%'; echo $hdr; unset IFS
+    else
+      if [[ $p == "-v" ]]; then
+        verbose=1
+      else
+        smap_sum_terse $p
+      fi
+    fi
+  done
+  exit 0
+fi
+
+# if no arguments, print all condor processes
+#
+IFS='%'; echo $hdr; unset IFS
+top -b -n 1 | grep condor_ | awk '{print $1}' | while read p; do smap_sum_terse $p; done
+
+
