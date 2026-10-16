@@ -771,8 +771,8 @@
             
             <div class="mt-4 fs-5"><p>Four years ago the ATLAS and CMS experiments at the LHC successfully found the Higgs particle. In the US, most processing was performed on resources owned by the LHC collaborations, knit together and managed as part of the Open Science Grid. Since then the LHC experiments continue to explore the properties of the Higgs, and expand their studies beyond it. Alas, the budgets for maintaining dedicated data centers are flat or falling, but the scientific need for compute power remains.</p>
 
-<figure>
-<img style="max-width:100%" src="https://raw.githubusercontent.com/CHTC/Articles/main/images/osg-run203602_evt82614360_ID_LAR_Atlantis_hres.png" alt="run203602_evt82614360_ID_LAR_Atlantis_hres" />
+<figure class="figure float-end" style="margin-left: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/osg-run203602_evt82614360_ID_LAR_Atlantis_hres.png" class="figure-img img-fluid rounded" alt="ATLAS event display" width="350px" />
 </figure>
 
 <p>Three technical barriers have stood in the way of ATLAS economically using commercial clouds.</p>
@@ -789,9 +789,9 @@
 
 <p>Second, to avoid causing data flows between BNL and Amazon to travel over the public internet (which is costly for Amazon), ESNet has put in place high bandwidth (20-100GB), direct network peering between the DOE research network and AWS. Because usage of these peering points is not costing Amazon extra, they are willing to waive the customary egress charges as long as substantial compute resources are being purchased.</p>
 
-<figure>
-<img style="max-width:100%" src="https://raw.githubusercontent.com/CHTC/Articles/main/images/osg-EC2-Data-Movement-OSG1.png" alt="EC2 Data Movement OSG" />
-<figcaption>ATLAS EC2 Data Movement</figcaption>
+<figure class="figure float-start" style="margin-right: 1em">
+  <img src="https://raw.githubusercontent.com/CHTC/Articles/main/images/osg-EC2-Data-Movement-OSG1.png" class="figure-img img-fluid rounded" alt="ATLAS EC2 data movement" width="350px" />
+  <figcaption class="figure-caption">ATLAS EC2 Data Movement<br /></figcaption>
 </figure>
 
 <p>Last September, RACF and ATLAS performed a ~40,000-core, 7-day scaling run (~5000 8-core VMs). This run performed useful ATLAS analysis, using real data, on the EC2 Eastern region, on two instance types.</p>
