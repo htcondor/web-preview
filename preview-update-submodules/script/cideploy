@@ -1,0 +1,38 @@
+#!/bin/bash
+set -x
+set -e
+
+: "${BRANCH:=main}"
+: "${TARGET_REPO=htcondor/htcondor.github.io.git}"
+JEKYLL_OUTPUT_FOLDER=_site
+
+echo "$GITHUB_EVENT_NAME"
+
+commitmessage=$(mktemp)
+trap 'rm -f "$commitmessage"' EXIT
+
+git log -1 --pretty=format:"GHA $GITHUB_RUN_NUMBER: \"%s\" by %an [%h] pushed to GitHub Pages
+
+%b" > "$commitmessage"
+
+echo -e "Starting to deploy to Github Pages\n"
+
+if [[ $GITHUB_ACTIONS == true ]]; then
+    git config --global user.email "actions@github.com"
+    git config --global user.name "GitHub Actions"
+fi
+
+#using token clone target repository
+git clone --quiet --branch=$BRANCH git@github.com:$TARGET_REPO built_website > /dev/null
+#go into directory and copy data we're interested in to that directory
+mkdir -p built_website
+cd built_website
+rsync -av --delete --include-from=../script/rsync_include_list --exclude-from=../script/rsync_exclude_list "../$JEKYLL_OUTPUT_FOLDER/" .
+#add, commit and push files
+git add -f -A
+# If there were no build changes, allow an empty commit.
+git commit --allow-empty -F "$commitmessage"
+if [[ -z $NO_PUSH ]]; then
+    git push -fq origin $BRANCH > /dev/null
+fi
+echo -e "Deploy completed\n"
