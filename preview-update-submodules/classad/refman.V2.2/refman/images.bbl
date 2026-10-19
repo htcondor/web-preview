@@ -1,0 +1,75 @@
+\begin{thebibliography}{10}
+
+\bibitem{CLASSAD_HOME}
+Classified {A}dvertisements.
+\newblock Available online at \htmladdnormallink
+  {http://www.cs.wisc.edu/condor/classad}
+  {http://www.cs.wisc.edu/condor/classad}.
+
+\bibitem{CONDOR_HOME}
+Condor: {H}igh {T}hroughput {C}omputing.
+\newblock Available online at \htmladdnormallink
+  {http://www.cs.wisc.edu/condor} {http://www.cs.wisc.edu/condor}.
+
+\bibitem{XSD-2}
+Paul~V. Biron and Ashok Malhotra.
+\newblock {XML} {S}chema {P}art 2: {D}atatypes, 2001.
+\newblock Available online at \htmladdnormallink
+  {http://www.w3.org/TR/xmlschema-2} {http://www.w3.org/TR/xmlschema-2}.
+
+\bibitem{XML}
+Tim Bray, Jean Paoli, C.~M. Sperberg-McQueen, and Eve Maler.
+\newblock {E}xtensible {M}arkup {L}anguage ({XML}) 1.0 (second edition), 2000.
+\newblock Available online at \htmladdnormallink {http://www.w3.org/TR/REC-xml}
+  {http://www.w3.org/TR/REC-xml}.
+
+\bibitem{XSD-0}
+David~C. Fallside.
+\newblock {XML} {S}chema {P}art 0: {P}rimer, 2001.
+\newblock Available online at \htmladdnormallink
+  {http://www.w3.org/TR/xmlschema-0} {http://www.w3.org/TR/xmlschema-0}.
+
+\bibitem{JLS}
+Bill Joy~(Editor), Guy Steele, James Gosling, and Gilad Bracha.
+\newblock {\em The Java Language Specification (Second Edition)}.
+\newblock Addison--Wesley Pub Co., 2000.
+\newblock Available online at \htmladdnormallink
+  {http://www.java.sun.com/docs/books/jls/index.html}
+  {http://www.java.sun.com/docs/books/jls/index.html}.
+
+\bibitem{CONDOR_EXP}
+M.~J. Litzkow and M.~Livny.
+\newblock {E}xperience with the {C}ondor {D}istributed {B}atch {S}ystem.
+\newblock {\em IEEE Workshop on Experimental Distributed Systems}, 1990.
+
+\bibitem{CONDOR_HUNT}
+M.~J. Litzkow, M.~Livny, and M.~W. Mutka.
+\newblock {C}ondor---{A} {H}unter of {I}dle {W}orkstations.
+\newblock In {\em Proc. of the 8th Int'l Conf. on Distributed Computing
+  Systems}, pages 104--111, 1988.
+
+\bibitem{RAMAN_THESIS}
+Rajesh Raman.
+\newblock {\em Matchmaking Frameworks for Distributed Resource Management}.
+\newblock PhD thesis, University of Wisconsin---Madision, October 2000.
+\newblock Available online at \htmladdnormallink
+  {http://www.cs.wisc.edu/condor/doc/rajesh.dissert.pdf}
+  {http://www.cs.wisc.edu/condor/doc/rajesh.dissert.pdf}.
+
+\bibitem{CLASSAD_ALPHA}
+Rajesh Raman, Miron Livny, James Pruyne, and Wieru Cai.
+\newblock {C}lassified {A}dvertisements: {O}fficial {S}pecification {V}ersion
+  {A}lpha, April 1997.
+\newblock Unpublished Manuscript.
+
+\bibitem{HPDC}
+Rajesh Raman, Miron Livny, and Marvin Solomon.
+\newblock Matchmaking: Distributed resource management for high throughput
+  computing.
+\newblock In {\em Proceedings of the Seventh IEEE International Symposium on
+  High Performance Distributed Computing}, July 1998.
+\newblock Available online at \htmladdnormallink
+  {http://www.cs.wisc.edu/condor/doc/hpdc98.ps}
+  {http://www.cs.wisc.edu/condor/doc/hpdc98.ps}.
+
+\end{thebibliography}

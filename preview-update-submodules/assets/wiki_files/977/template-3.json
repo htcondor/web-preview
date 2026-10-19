@@ -1,0 +1,133 @@
+{
+   "Resources" : {
+      "LeaseFunctionPermissions" : {
+         "DependsOn" : "LeaseFunction",
+         "Type" : "AWS::Lambda::Permission",
+         "Properties" : {
+            "SourceArn" : {
+               "Fn::Join" : [
+                  ":",
+                  [
+                     "arn:aws:events",
+                     {
+                        "Ref" : "AWS::Region"
+                     },
+                     {
+                        "Ref" : "AWS::AccountId"
+                     },
+                     "*"
+                  ]
+               ]
+            },
+            "Action" : "lambda:InvokeFunction",
+            "FunctionName" : {
+               "Fn::GetAtt" : [
+                  "LeaseFunction",
+                  "Arn"
+               ]
+            },
+            "Principal" : "events.amazonaws.com"
+         }
+      },
+      "LeaseFunction" : {
+         "DependsOn" : "LeaseFunctionRole",
+         "Type" : "AWS::Lambda::Function",
+         "Properties" : {
+            "Code" : {
+               "S3Key" : "lease-3.zip",
+               "S3Bucket" : {
+                  "Fn::Join" : [
+                     "-",
+                     [
+                        "condor-annex",
+                        {
+                           "Ref" : "AWS::Region"
+                        }
+                     ]
+                  ]
+               }
+            },
+            "Handler" : "lease.handler",
+            "Role" : {
+               "Fn::GetAtt" : [
+                  "LeaseFunctionRole",
+                  "Arn"
+               ]
+            },
+            "Runtime" : "nodejs4.3",
+            "Timeout" : 60
+         }
+      },
+      "LeaseFunctionRole" : {
+         "Type" : "AWS::IAM::Role",
+         "Properties" : {
+            "AssumeRolePolicyDocument" : {
+               "Version" : "2012-10-17",
+               "Statement" : [
+                  {
+                     "Effect" : "Allow",
+                     "Action" : [
+                        "sts:AssumeRole"
+                     ],
+                     "Principal" : {
+                        "Service" : [
+                           "lambda.amazonaws.com"
+                        ]
+                     }
+                  }
+               ]
+            },
+            "Policies" : [
+               {
+                  "PolicyDocument" : {
+                     "Version" : "2012-10-17",
+                     "Statement" : [
+                        {
+                           "Effect" : "Allow",
+                           "Resource" : "arn:aws:logs:*:*:*",
+                           "Action" : [
+                              "logs:CreateLogGroup",
+                              "logs:CreateLogStream",
+                              "logs:PutLogEvents"
+                           ]
+                        }
+                     ]
+                  },
+                  "PolicyName" : "lambda_basic_execution"
+               },
+               {
+                  "PolicyDocument" : {
+                     "Version" : "2012-10-17",
+                     "Statement" : [
+                        {
+                           "Effect" : "Allow",
+                           "Resource" : "*",
+                           "Action" : [
+                              "events:*",
+                              "ec2:CancelSpotFleetRequests",
+                              "ec2:DescribeSpotFleetRequests",
+                              "ec2:DescribeInstances",
+                              "ec2:TerminateInstances"
+                           ]
+                        }
+                     ]
+                  },
+                  "PolicyName" : "LambdaLeasePolicy"
+               }
+            ]
+         }
+      }
+   },
+   "AWSTemplateFormatVersion" : "2010-09-09",
+   "Outputs" : {
+      "LeaseFunctionARN" : {
+         "Value" : {
+            "Fn::GetAtt" : [
+               "LeaseFunction",
+               "Arn"
+            ]
+         }
+      }
+   },
+   "Description" : "HTCondor Annex Lease Implementation"
+}

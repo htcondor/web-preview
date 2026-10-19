@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.2.1 Manipulating the Stack</TITLE>
+<META NAME="description" CONTENT="3.2.1 Manipulating the Stack">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html89" HREF="node7.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html87" HREF="node5.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html83" HREF="node5.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html90" HREF="node7.html">3.3 Shared Libraries</A>
+<B>Up:</B> <A NAME="tex2html88" HREF="node5.html">3.2 Stack</A>
+<B> Previous:</B> <A NAME="tex2html84" HREF="node5.html">3.2 Stack</A>
+<BR> <P>
+<H3><A NAME="SECTION00032100000000000000">3.2.1 Manipulating the Stack</A></H3>
+<P>
+A clever assembler programmer could come up with code to accomplish
+these ``tricks'', but that would require different assembler modules
+for each machine architecture we wanted to run Condor on.  Instead we
+<TT>use setjmp()</TT> and <TT>longjmp()</TT> for this purpose, and reduce
+the machine dependency to a single macro (one line of ``C'' code).  To
+see how this works, first consider the actions of setjmp/longjmp in
+more mundane circumstances.  One calls <TT>setjmp()</TT> with a pointer
+to a system defined type called a <TT>JMP_BUF</TT>.  The <TT>setjmp()</TT>
+routine saves the current ``context'' into the <TT>JMP_BUF</TT>, and
+returns 0.  The content of the <TT>JMP_BUF</TT> is generally considered
+to be opaque to the programmer, but it does contain all the
+information needed to return to the current point in the stack from
+any other procedure which is called by this one - possibly after many
+nested procedure calls.  If somewhere in the called procedure <TT>
+longjmp()</TT> is called with a pointer to the <TT>JMP_BUF</TT> and some
+value other than 0, then we return to the point where the original
+<TT>setjmp()</TT> call was made.  This time the return value is the one
+specified at the <TT>longjmp()</TT> call, i.e. something other than 0.
+Of course one of the contents of the <TT>JMP_BUF</TT> is the stack
+pointer as of the time of the <TT>setjmp()</TT> call.  The single line of
+machine specific code mentioned earlier is a macro which places a
+value into the location corresponding to the stack pointer within a
+<TT>JMP_BUF</TT>.
+<P>
+To call the procedure <TT>restore_stack()</TT> we do a <TT>setjmp()</TT>,
+use the macro to switch the stack pointer stored in the <TT>JMP_BUF</TT>
+to a location in the data area, and then execute the corresponding
+<TT>longjmp()</TT>.  It should be noted that this idea was not invented
+by us, and is in fact used for switching virtual stacks by a number of
+popular user-level threads packages.  The return from the <TT>
+restore_stack()</TT> routine is similar.  In this case the call to <TT>
+longjmp()</TT> uses a <TT>JMP_BUF</TT> which was saved in the data area at
+checkpoint time.  Recall that the data area is restored before the
+stack, so the content of the <TT>JMP_BUF</TT> is valid at this time.
+<P>
+<HR><A NAME="tex2html89" HREF="node7.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html87" HREF="node5.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html83" HREF="node5.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html90" HREF="node7.html">3.3 Shared Libraries</A>
+<B>Up:</B> <A NAME="tex2html88" HREF="node5.html">3.2 Stack</A>
+<B> Previous:</B> <A NAME="tex2html84" HREF="node5.html">3.2 Stack</A>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
