@@ -1,0 +1,59 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>4 Summary of Checkpoint and Restart</TITLE>
+<META NAME="description" CONTENT="4 Summary of Checkpoint and Restart">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html166" HREF="node15.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html164" HREF="ckpt97.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html158" HREF="node13.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html167" HREF="node15.html">4.1 Remote File Access</A>
+<B>Up:</B> <A NAME="tex2html165" HREF="ckpt97.html">Checkpoint and Migration of </A>
+<B> Previous:</B> <A NAME="tex2html159" HREF="node13.html">3.6 Processor State</A>
+<BR> <P>
+<H1><A NAME="SECTION00040000000000000000">4 Summary of Checkpoint and Restart</A></H1>
+<P>
+Now that we've seen some of the details, we can look at the ``big
+picture'' of how checkpoint/restart is accomplished.  When our
+original process is born, condor code installs a handler for the
+checkpointing signal, initializes its data structures, then calls the
+user's <TT>main()</TT> routine.  At some arbitrary point during execution
+of the user code, the checkpoint signal is delivered invoking the <TT>
+checkpoint()</TT> routine.  This routine records information about open
+files and our current location on the stack in the data area, writes
+the data, shared library, and stack areas into a checkpoint file, then
+the process either immediately exits or returns from the signal
+handler and continues processing (depending on whether the checkpoint
+signal was a <EM>vacate</EM> signal or a <EM>periodic</EM> checkpoint
+signal).  At restart time condor executes the same program with a
+special set of arguments.  The special arguments cause the <TT>
+restart()</TT> routine to be called instead of the user's <TT>main()</TT>.
+The <TT>restart()</TT> routine overwrites its own data segment with that
+stored in the checkpoint file.  Now it has the list of open files,
+signal handlers, etc. in its own data space, and restores those parts
+of the state.  Next, it switches its stack to a temporary location in
+the data space, and overwrites its own process's stack with that saved
+in the checkpoint file.  The <TT>restart()</TT> routine then returns to
+the stack location that was current at the time of the <TT>
+checkpoint()</TT>, i.e. the <TT>restart()</TT> routine returns to the <TT>
+checkpoint()</TT> routine.  Now the <TT>checkpoint()</TT> routine returns,
+but recall that this routine is a signal handler - it therefore
+returns to the user code that was interrupted by the checkpoint
+signal.  The user code resumes from where it left off, and is none the
+wiser.
+<P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME="tex2html168" HREF="node15.html#SECTION00041000000000000000">4.1 Remote File Access</A>
+<LI> <A NAME="tex2html169" HREF="node16.html#SECTION00042000000000000000">4.2 Limitations</A>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
