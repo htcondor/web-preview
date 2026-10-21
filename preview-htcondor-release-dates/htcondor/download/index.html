@@ -42,6 +42,7 @@
 
 
 
+
 <header id="header" class="">
     <div class="container-xxl">
         <nav id="mobile-header" class="py-3 d-flex d-lg-none navbar navBar navbar-expand-lg navbar-light w-100">
@@ -940,22 +941,20 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.11.0</span> Feature Release</h3>
-        <p>June 11, 2026</p>
+        <h3><span class="text-secondary">25.14.1</span> Feature Release</h3>
+        <p>September 24, 2026</p>
         <div>
             <ul>
-  <li>Prevent one user’s many file transfers from halting matches for all users</li>
-  <li><code>condor_watch_q</code> will gather DAGs that started after it did</li>
-  <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
-  <li>Gangliad can now aggregate deltas of monotonically increasing values</li>
-  <li><code>condor_config_val -trace</code> finds a definition in a complex configuration</li>
-  <li>Now able to set a duration to a user’s running jobs ceiling</li>
-  <li>Multi-call binaries can now be used with DAGMan</li>
-  <li>Initial support for EP health checks</li>
-  <li>Fix rare EP crash when using a custom docker wrapper script</li>
-  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
-  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
-  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
+  <li>HTCondor no longer accepts multiple <code>queue</code> statements in a submit file</li>
+  <li>The credmon can now obtain and renew OAuth2 access tokens from Pelican</li>
+  <li>HTCondor now detects AMD GPUs that use ROCM 7</li>
+  <li>Container universe adds the detected GPU flag the container command line</li>
+  <li>New self-service annex mode that works with any Slurm cluster</li>
+  <li>New metric daemon that can export metrics to Prometheus and Ganglia</li>
+  <li>Improvements to <code>condor_adstash</code> (see version history)</li>
+  <li><code>condor_rm</code> now accepts the <code>-held</code> option</li>
+  <li><code>condor_watch_q</code> now restores the terminal after exiting</li>
+  <li>Fix <code>condor_q</code> crash when using both <code>-batch</code> and <code>-af</code></li>
 </ul>
 
         </div>
@@ -980,14 +979,17 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.11</span> Long Term Support Release</h3>
-        <p>June 11, 2026</p>
+        <h3><span class="text-secondary">25.0.14</span> Long Term Support Release</h3>
+        <p>September 23, 2026</p>
         <div>
-            <ul>
-  <li>Fix rare EP crash when using a custom docker wrapper script</li>
-  <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
-  <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
-  <li>HTCondor tarballs now contain Pelican 7.25.0</li>
+            <p>This release contains an important fix for a security issue.
+Affected users should update as soon as possible.</p>
+
+<p>More details on the security issue are in the Vulnerability Report:
+https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
+
+<ul>
+  <li>Fix <code>condor_q</code> crash when using both <code>-batch</code> and <code>-af</code></li>
 </ul>
 
         </div>
@@ -1070,16 +1072,8 @@
         </div>
         <div class="row my-4 justify-content-center">
             <div class="col-auto d-flex">
-                <a class="d-block m-auto" href="https://ls.wisc.edu/">
-                    
-
-<div style="height:75px;">
-    <picture>
-        <source type="image/webp" srcset="/web-preview/preview-htcondor-release-dates/assets/images/UW_Madison_Logo.webp">
-        <img class="h-100" src="/web-preview/preview-htcondor-release-dates/assets/images/UW_Madison_Logo.png" alt="UW-Madison Logo">
-    </picture>
-</div>
-
+                <a class="d-block m-auto" href="https://cai.wisc.edu/">
+                    <img class="" height="54" src="/web-preview/preview-htcondor-release-dates/assets/images/cai_logo.png" alt="UW-Madison College of Computing and Artificial Intelligence logo" />
                 </a>
             </div>
             <div class="col-auto d-flex">
@@ -1106,6 +1100,11 @@
                 </a>
             </div>
             <div class="col-auto d-flex">
+                <a class="d-block m-auto" href="https://fabaid.io/">
+                    <img class="" height="40" src="/web-preview/preview-htcondor-release-dates/assets/images/FabAID_Logo.svg" alt="FabAID logo" />
+                </a>
+            </div>
+            <div class="col-auto d-flex">
                 <a class="d-block m-auto" href="https://morgridge.org/">
                     <img class="" height="40" src="/web-preview/preview-htcondor-release-dates/assets/images/Morgridge_Logo.svg" alt="Morgridge Logo" />
                 </a>
@@ -1121,7 +1120,7 @@
             <div class="col text-center">
                 For comments or questions about this website, please email
                 <a href="mailto:htcondor-admin@cs.wisc.edu">htcondor-admin@cs.wisc.edu</a><br />
-                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> under Cooperative Agreement <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> as part of the <a href="https://path-cc.io/">PATh Project</a>. <br />
+                This work is supported by <a href="https://www.nsf.gov/div/index.jsp?div=OAC">NSF</a> Cooperative Agreements <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2030508">OAC-2030508</a> (<a href="https://path-cc.io/">PATh Project</a>) and <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2609485">OAC-2609485</a> (<a href="https://fabaid.io/">FabAID Project</a>). <br />
             </div>
         </div>
         <div class="row justify-content-center pb-4">
