@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3 Components of a Process</TITLE>
+<META NAME="description" CONTENT="3 Components of a Process">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html50" HREF="node4.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html48" HREF="ckpt97.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html42" HREF="node2.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html51" HREF="node4.html">3.1 Text and Data </A>
+<B>Up:</B> <A NAME="tex2html49" HREF="ckpt97.html">Checkpoint and Migration of </A>
+<B> Previous:</B> <A NAME="tex2html43" HREF="node2.html">2 Checkpoint and Migration </A>
+<BR> <P>
+<H1><A NAME="SECTION00030000000000000000">3 Components of a Process</A></H1>
+<P>
+To checkpoint and restart a process, one must consider all the
+components which make up a process's state.  UNIX processes consist
+generally of an address space, (generally divided into text, data, and
+stack), and ``other'' information about the process which is
+maintained by the kernel.  The state of the process's registers, any
+special handling requested for various signals, and the status of open
+files fall into this category.
+<P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME="tex2html52" HREF="node4.html#SECTION00031000000000000000">3.1 Text and Data Areas</A>
+<LI> <A NAME="tex2html53" HREF="node5.html#SECTION00032000000000000000">3.2 Stack</A>
+<UL> 
+<LI> <A NAME="tex2html54" HREF="node6.html#SECTION00032100000000000000">3.2.1 Manipulating the Stack</A>
+</UL> 
+<LI> <A NAME="tex2html55" HREF="node7.html#SECTION00033000000000000000">3.3 Shared Libraries</A>
+<UL> 
+<LI> <A NAME="tex2html56" HREF="node8.html#SECTION00033100000000000000">3.3.1 Checkpointing Mapped Segments</A>
+<LI> <A NAME="tex2html57" HREF="node9.html#SECTION00033200000000000000">3.3.2 Restoring Mapped Segments</A>
+</UL> 
+<LI> <A NAME="tex2html58" HREF="node10.html#SECTION00034000000000000000">3.4 Files</A>
+<UL> 
+<LI> <A NAME="tex2html59" HREF="node11.html#SECTION00034100000000000000">3.4.1 Augmenting System Calls</A>
+</UL> 
+<LI> <A NAME="tex2html60" HREF="node12.html#SECTION00035000000000000000">3.5 Signals</A>
+<LI> <A NAME="tex2html61" HREF="node13.html#SECTION00036000000000000000">3.6 Processor State</A>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
