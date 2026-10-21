@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.1 Text and Data Areas</TITLE>
+<META NAME="description" CONTENT="3.1 Text and Data Areas">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html70" HREF="node5.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html68" HREF="node3.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html62" HREF="node3.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html71" HREF="node5.html">3.2 Stack</A>
+<B>Up:</B> <A NAME="tex2html69" HREF="node3.html">3 Components of a </A>
+<B> Previous:</B> <A NAME="tex2html63" HREF="node3.html">3 Components of a </A>
+<BR> <P>
+<H2><A NAME="SECTION00031000000000000000">3.1 Text and Data Areas</A></H2>
+<P>
+Processes which are statically linked are born with their entire text
+loaded into virtual memory by the kernel, generally beginning at
+address 0.  Since we use exactly the same executable file for both the
+original invocation and when restarting a process, we don't have to do
+anything special to save and restore the text.  (Note that modern
+programming practice requires that text be loaded ``read-only'', so
+there is no chance that the text will be modified at run time.)
+<P>
+The ``data'' space of a UNIX process generally consists of 3 areas -
+initialized data, uninitialized data, and the heap.  Initialized data
+is that data given values by the programmer at compile time.
+Uninitialized data is space allocated at compile time, but not given
+values by the programmer (the kernel will zero fill this area at load
+time).  The heap is data allocated at run time by the <TT>brk()</TT> or
+<TT>sbrk()</TT> system calls (these are the system calls which underlie
+<TT>malloc()</TT>).  A process's data generally begins at some pagesize
+boundary above the text, and is a contiguous area of memory.  That is,
+the initialized data begins at the first pagesize boundary above the
+text, the uninitialized data comes next, followed by the heap which
+grows toward higher addresses at run time.  Note that once the process
+begins execution, the initialized data may be overwritten, and thus at
+restart time, we cannot depend on the information in the executable
+file for this area.  Instead the entire data segment is written to the
+checkpoint file at checkpoint time, and read into the address space at
+restart time.  All one needs to know to accomplish this are the
+starting and ending addresses of the data segment.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

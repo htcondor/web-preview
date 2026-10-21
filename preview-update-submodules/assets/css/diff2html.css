@@ -1,0 +1,63 @@
+/* Formatting for the diff2html.py script output */
+/* "ponct" refers to visible whitespace.  It's generated because it's
+sometimes useful, but hidden using CSS in most cases because it's 
+incredibly noisy. */
+table.diff { 
+	border:0px; 
+	border-collapse:collapse; 
+	width: 100%; 
+}
+table.diff td {
+	vertical-align: top;
+}
+td.diffline { 
+	color:#888;
+	font-size: 80%;
+}
+table.diff th { 
+	background: black; 
+	color: white;
+	font-size: 125%;
+}
+tr.diffunmodified td { /*background: #D0D0E0 */ }
+tr.diffhunk td { 
+	font-style: italic;
+	color: #888;
+	padding-top: 0.5em;
+}
+tr.diffadded, tr.diffdeleted, tr.diffchanged, tr.diffunmodified {
+	font-family: monospace;
+}
+td.diffpresent {
+	border-left: 2px solid white;
+}
+td.diffpresent {
+	padding-left: 0.5em;
+}
+tr.diffadded td.diffpresent { 
+	background: #BFB;
+	border-left: 2px solid #0A0;
+}
+tr.diffadded span.diffponct { color: #BFB } /* hide */
+tr.diffdeleted td.diffpresent {
+	background: #FCC;
+	border-left: 2px solid #F00;
+}
+tr.diffdeleted span.diffponct { color: #FCC } /* hide */
+tr.diffchanged td.diffpresent { 
+	background: #FFA;
+	border-left: 2px solid #AA0;
+}
+tr.diffchanged span.diffponct { color: #FFA } /* hide */
+span.diffchanged2 { 
+	text-decoration: underline;
+}
+span.diffponct { color: white } /* hide */
+span.diffchanged2 span.diffponct {
+	color: #777;
+}
+tr.diffmisc td { 
+	padding-top: 0.5em;
+	font-style: italic;
+	color:#888;
+}
