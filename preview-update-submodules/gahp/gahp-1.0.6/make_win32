@@ -1,0 +1,59 @@
+# The only things you should have to tweak are the MSVS_PATH and GLOBUS_PATH.
+# Also make sure your Globus lib directory is in the search path, or gahp
+# will complain about missing DLL's.
+# Requires Microsoft Visual Studio .NET
+# Questions: Colin Stolley<stolley@cs.wisc.edu>
+#
+MSVS_PATH = C:\Program Files\Microsoft Visual Studio .NET
+GLOBUS_PATH = C:\globus\WinGlobus2.0_Alpha3
+CC = cl.exe
+LINK = link.exe
+INCLUDE = /I "$(GLOBUS_PATH)\include" \
+   	/I "$(GLOBUS_PATH)\include\threaded" \
+	/I "$(MSVS_PATH)\Vc7\PlatformSDK\Include" \
+	/I "$(MSVS_PATH)\Vc7\include" 
+LIBPATH = /LIBPATH:"$(GLOBUS_PATH)\lib" \
+   	/LIBPATH:"$(MSVS_PATH)\Vc7\PlatformSDK\lib" \
+   	/LIBPATH:"$(MSVS_PATH)\Vc7\lib" 
+
+LIB = ws2_32.lib mswsock.lib globus_common_win32dbgthr.lib globus_oldgaa.lib \
+   	globus_sslutils.lib globus_opensslmodule.lib globus_gssapi.lib \
+   	globus_gss_assist.lib globus_io_win32dbgthr.lib \
+   	globus_gridftp_control_win32dbgthr.lib \
+	globus_gridftp_client_win32dbgthr.lib \
+	globus_gass_transfer_win32dbgthr.lib \
+	globus_gass_copy_win32dbgthr.lib \
+	globus_gass_server_ez_win32dbgthr.lib \
+	globus_gram_protocol_win32dbgthr.lib \
+	globus_gram_client_win32dbgthr.lib \
+	libeay32.lib ssleay32.lib  kernel32.lib \
+	user32.lib gdi32.lib winspool.lib comdlg32.lib \
+   	advapi32.lib shell32.lib ole32.lib oleaut32.lib \
+	uuid.lib odbc32.lib odbccp32.lib \
+	globus_common_win32dbgthr.lib globus_oldgaa.lib \
+	globus_sslutils.lib globus_opensslmodule.lib \
+	globus_gssapi.lib globus_gss_assist.lib \
+	globus_io_win32dbgthr.lib \
+	globus_gridftp_control_win32dbgthr.lib \
+	globus_gridftp_client_win32dbgthr.lib \
+	globus_gass_transfer_win32dbgthr.lib \
+	globus_gass_copy_win32dbgthr.lib \
+	globus_gass_server_ez_win32dbgthr.lib \
+	globus_gram_protocol_win32dbgthr.lib \
+	globus_gram_client_win32dbgthr.lib \
+	libeay32.lib ssleay32.lib
+COMPILER_OPTIONS = /D "WIN32" /D "_CONSOLE" /EHsc /MD /GS /W3 /nologo /c /Wp64 /Z7
+
+all: gahp_server
+
+gahp_server: gahp_server.obj
+	$(LINK) /OUT:"gahp.exe" $(LIBPATH) /NOLOGO /SUBSYSTEM:CONSOLE /MACHINE:IX86 $(LIB) gahp_server.obj
+
+gahp_server.obj: pre-build
+	$(CC) $(INCLUDE) $(COMPILER_OPTIONS) gahp_server.c
+
+pre-build:
+	call "$(MSVS_PATH)\Common7\Tools\vsvars32.bat"
+
+clean:
+	del *.obj gahp.exe
