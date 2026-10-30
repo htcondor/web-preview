@@ -1,0 +1,60 @@
+#! /usr/bin/perl -w
+
+my $EXPECTED_FILE = './src/condor_utils/MyString.h';
+my $SUBMIT_HOST = 'submit-3.batlab.org';
+my $GIT = 'git';
+my $SSH = 'ssh';
+my $SSH_AGENT = 'ssh-agent';
+my $SSH_ADD = 'ssh-add';
+
+if( ! -e $EXPECTED_FILE) {
+	die "FATAL ERROR: This doesn't look like an HTCondor workspace. Couldn't find \"$EXPECTED_FILE\"\n";
+}
+
+if(exists $ENV{SUBMIT_WORKSPACE} && not exists $ENV{SSH_AUTH_SOCK}) {
+	die "Tried to recurse to launch ssh-agent, but the agent doesn't seen to be running."
+}
+if(not exists $ENV{SSH_AUTH_SOCK}) {
+	$ENV{SUBMIT_WORKSPACE} = 1;
+	exec($SSH_AGENT, $0, $@);
+	die "Unable to exec $SSH_AGENT: $!";
+} else {
+	submit_workspace(@_);
+}
+
+sub submit_workspace {
+
+	chomp(my $branch = `$GIT rev-parse --abbrev-ref HEAD`);
+
+	my ($sec,$min,$hour,$mday,$mon,$year) = localtime(time);
+	my $timestamp = sprintf("%04d-%02d-%02dT%02d-%02d-%02d", $year+1900, $mon+1, $mday, $hour, $min, $sec);
+
+	my $remote_workspace = "$branch-$timestamp";
+
+	system($SSH_ADD) and
+		die "Unable to add SSH credentials";
+
+	print "Making remote directory\n";
+	ssh_system($SSH, $SUBMIT_HOST, 'mkdir', $remote_workspace);
+	print "Sending workspace\n";
+	ssh_system("tar cf - * | ssh submit-3.batlab.org cd '$remote_workspace' '&&' tar xf -");
+	print "Submitting job\n";
+	ssh_system("ssh submit-3.batlab.org cd '$remote_workspace/nmi_tools' '&&' ./condor_nmi_submit --build --git --workspace=../ --platforms=all --notify-fail-only --desc='$remote_workspace'");
+}
+
+
+
+sub ssh_system {
+	my(@args) = @_;
+	my $ret = system(@args);
+	if($ret == -1) {
+		die "FATAL ERROR: Problem running command at all: @args\n";
+	}
+	if($ret == 255) {
+		die "FATAL ERROR: Command returned 255; probably an SSH problem. @args\n";
+	}
+	if($ret != 0) {
+		die "FATAL ERROR: Command returned $ret instead of 0; probably an SSH problem. @args\n";
+	}
+	return 0;
+}
