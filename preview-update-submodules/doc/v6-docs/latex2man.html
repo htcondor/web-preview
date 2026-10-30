@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 3.2//EN//">
+<! Manual page created with latex2man on Wed Jan 14 08:57:03 CET 1998>
+<! NOTE: This file is generated, DO NOT EDIT.>
+<html>
+<head><title>LATEX2MAN</title></head>
+<body bgcolor="#FFFFFF">
+<h1><center>LATEX2MAN</center></h1>
+<h4><center>Documentation Tools </center></h4>
+<h4><center>Dr.&nbsp;Jürgen Vollmer </center></h4>
+<h4><center>1998/01/14</center></h4>
+<h4><center>Version 1.1</center></h4>
+<tt>Latex2man</tt>
+is a tool to translate UNIX manual pages written with LaTeX into a 
+format understood by the UNIX <em>man</em>(1)-command.
+Alternatively HTML code or TexInfo 
+code can be produced too. 
+<h3>Table of Contents</h3>
+<ul>
+<li><a href="#section_1">Synopsis </a></li>
+<li><a href="#section_2">Description </a></li>
+<li><a href="#section_3">Options </a></li>
+<li><a href="#section_4">Files </a></li>
+<li><a href="#section_5">See Also </a></li>
+<li><a href="#section_6">LaTeX commands</a></li>
+<ul>
+<li><a href="#section_7">Package Options </a></li>
+<li><a href="#section_8">Package Specific Environments </a></li>
+<li><a href="#section_9">Accepted LaTeX Environments</a></li>
+<li><a href="#section_10">Package Specific Macros </a></li>
+<li><a href="#section_11">Accepted Macros from the ``rcsinfo'' Package </a></li>
+<li><a href="#section_12">Accepted LaTeX Macros</a></li>
+<li><a href="#section_13">Translation of User Defined Macros </a></li>
+<li><a href="#section_14">General Remarks </a></li>
+</ul>
+<li><a href="#section_15">Version </a></li>
+<li><a href="#section_16">Copyright </a></li>
+<li><a href="#section_17">Author </a></li>
+</ul>
+<p>
+<a name="section_1"><h2>Synopsis</h2></a>
+<p>
+<tt>latex2man</tt>
+[ <b>-t</b><i>transfile</i> ]
+[ <b>-H</b> ]
+[ <b>-M</b> ]
+[ <b>-T</b> ]
+[ <b>-h</b> ]
+[ <b>-V</b> ]
+<i>infile</i>
+<i>outfile</i>
+<p>
+<a name="section_2"><h2>Description</h2></a>
+<tt>Latex2man</tt>
+reads the file <i>infile</i>
+and writes <i>outfile</i>.
+The input must be 
+a LaTeX document using the <tt>latex2man</tt>
+LaTeX package. <tt>Latex2man</tt>
+translates that document into the <em>troff</em>(1)
+format using the <b>-man</b>
+macro 
+package. 
+<p>
+Using the <b>-H</b>
+option, HTML code can be produced, instead of <em>troff</em>(1).
+<p>
+Using the <b>-T</b>
+option, TexInfo code can be produced, instead of <em>troff</em>(1).
+<p>
+<a name="section_3"><h2>Options</h2></a>
+<dl compact>
+<dt><b>-t</b><i>transfile</i>
+<dd> Translation for user defined LaTeX macros. 
+</dd>
+<dt><b>-M</b>
+<dd> Produce output suitable for the <em>man</em>(1)
+command (default). 
+</dd>
+<dt><b>-H</b>
+<dd> Instead of producing output suitable for the <em>man</em>(1)
+command, HTML 
+code is produced (despite of the name of the command). 
+</dd>
+<dt><b>-T</b>
+<dd> Instead of producing output suitable for the <em>man</em>(1)
+command, 
+TexInfo code is produced (despite of the name of the command). The generated 
+<tt>.texi</tt>-file
+may be processed with <em>makeinfo</em>(1)
+(to produce an 
+<tt>.info</tt>-file)
+which in turn may be installed using <em>install-info</em>(1).
+The 
+Info tags <tt>@dircategory</tt> and <tt>@direntry</tt> are provided. 
+</dd>
+<dt><b>-h</b>
+<dd> Show a help text. 
+</dd>
+<dt><b>-V</b>
+<dd> Show version information. 
+</dl>
+<p>
+<a name="section_4"><h2>Files</h2></a>
+<p>
+<dl compact>
+<dt><tt>latex2man.tex</tt>
+<dd> The LaTeX file containing this Man-page. 
+</dd>
+<dt><tt>latex2man.sty</tt>
+<dd> The LaTeX package defining the environments and commands. 
+</dd>
+<dt><tt>latex2man.trans</tt>
+<dd> File containing example translations of user defined 
+LaTeX macros. 
+</dd>
+<dt><tt>fancyheadings.sty</tt>
+<dd> A LaTeX package used to typeset head- and foot lines. 
+</dd>
+<dt><tt>rcsinfo.sty</tt>
+<dd> A LaTeX package used to extract and use of RCS version 
+control information in LaTeX documents. 
+</dl>
+<p>
+<a name="section_5"><h2>See Also</h2></a>
+<p>
+LaTeX,TexInfo, <em>troff</em>(1),
+<em>groff</em>(1),
+<em>makeinfo</em>(1).
+<p>
+<a name="section_6"><h2>LaTeX commands</h2></a>
+<p>
+The LaTeX package <tt>latex2man</tt>
+is used to write the Man-pages with LaTeX.
+Since we translate into other text formats, not all LaTeX stuff can be translated. 
+<p>
+<a name="section_7"><h4>Package Options</h4></a>
+The <tt>latex2man</tt>
+package accepts the following options: 
+<p>
+<dl compact>
+<dt>fancy
+<dd> use the LaTeX package <tt>fancyheadings</tt>
+(default). 
+</dd>
+<dt>nofancy
+<dd> don't use the LaTeX package <tt>fancyheadings</tt>.
+</dl>
+<p>
+<a name="section_8"><h4>Package Specific Environments</h4></a>
+<p>
+The following environments are provided by the package: 
+<dl compact>
+<dt>\begin{Name}{chapter}{name}{author}{info} 
+<dd> The <tt>Name</tt>
+environment takes four arguments: 1.  the Man-page chapter, 2.  the name of the 
+Man-page, 3.  the author, 4.  some short information about the tool. The 
+<tt>Name</tt>
+environment must be the first environment in the document. Processing 
+starts with this environment. Any text before this is ignored (exception: 
+the <tt>setversion</tt> and <tt>setDate</tt> commands). 
+</dd>
+<dt>\begin{Table}{columns}
+<dd> The <tt>Table</tt>
+environment takes one argument: 
+the number of columns. 
+For example: 
+<p>
+<tt>\begin{Table}{3}</tt> <br>
+<tt> Here & am & I \\\hline</tt> <br>
+<tt> A 1 & A 2 & A 3 \\</tt> <br>
+<tt> B 1 & B 2 & B 3 \\</tt> <br>
+<tt>\end{Table}</tt> 
+<p>
+will be typeset as: 
+<p>
+<table>
+<tr>
+<td>Here </td>
+<td> am </td>
+<td> I </td>
+</tr>
+<tr>
+<td>A 1 </td>
+<td> A 2 </td>
+<td> A 3 </td>
+</tr>
+<tr>
+<td>B 1 </td>
+<td> B 2 </td>
+<td> B 3 </td>
+</tr>
+</table>
+<p>
+<tt>\hline</tt> may be used. All entries are typeset left justified. 
+</dl>
+<p>
+<a name="section_9"><h4>Accepted LaTeX Environments</h4></a>
+<p>
+The following environments are accepted: 
+<ul compact>
+<li>
+<tt>description</tt>
+<li>
+<tt>enumeration</tt>
+<li>
+<tt>itemize</tt>
+</ul>
+<p>
+<a name="section_10"><h4>Package Specific Macros</h4></a>
+<p>
+The following commands are provided: 
+<dl compact>
+<dt>\Opt{option}
+<dd> <tt>\Opt{-o}</tt> will be typeset as <b>-o</b>.
+</dd>
+<dt>\Arg{argument}
+<dd> <tt>\Arg{filename}</tt> will be typeset as <i>filename</i>.
+</dd>
+<dt>\OptArg{option}{argument}
+<dd> <tt>\OptArg{-o}{filename}</tt> will be typeset as 
+<b>-o</b><i>filename</i>.
+</dd>
+<dt>\oOpt{option}
+<dd> Optional option, e.g.  <tt>\oOpt{-o}</tt> will be typeset as 
+[ <b>-o</b> ].
+</dd>
+<dt>\oArg{argument}
+<dd> Optional argument, e.g.  <tt>\oArg{filename}</tt> will be 
+typeset as [ <i>filename</i> ].
+</dd>
+<dt>\oOptArg{option}{argument}
+<dd> Optional option with argument, e.g.<br>
+<tt>\oOptArg{-o}{filename}</tt> will be typeset as [ <b>-o</b><i>filename</i> ].
+</dd>
+<dt>\File{filename}
+<dd> used to typeset filenames, e.g.  
+<tt>\File{filename}</tt> will be typeset as <tt>filename</tt>.
+</dd>
+<dt>\Prog{prog}
+<dd> used to typeset program names, e.g.  
+<tt>\Prog{latex2man}</tt> will be typeset as <tt>latex2man</tt>.
+</dd>
+<dt>\Cmd{command}{chapter}
+<dd> used to typeset references to other commands, 
+e.g.  <tt>\Cmd{latex2man}{1}</tt> will be typeset as <em>latex2man</em>(1).
+</dd>
+<dt>\Bar
+<dd> is typeset as |.
+</dd>
+<dt>\Bs
+<dd> (BackSlash) is typeset as \.
+</dd>
+<dt>\Tilde
+<dd> is typeset as a ~.
+</dd>
+<dt>\Dots
+<dd> is typeset as ...
+</dd>
+<dt>\setVersion{..}
+<dd> set <tt>..</tt> as version information. 
+</dd>
+<dt>\Version
+<dd> returns the version information. 
+</dd>
+<dt>\setDate{..}
+<dd> sets <tt>..</tt> as date information. 
+</dd>
+<dt>\Date
+<dd> returns the date information. 
+</dd>
+<dt>\Email{..}
+<dd> use to mark an Email address:<br>
+<tt>\Email{Juergen.Vollmer@acm.org}</tt> is typeset as:<br>
+<a href ="mailto:Juergen.Vollmer@acm.org"><tt>Juergen.Vollmer@acm.org</tt></a>.
+</dd>
+<dt>\URL{..}
+<dd> use to mark an URL: 
+<tt>\URL{http://www.cocolab.de/vollmer}</tt> is typeset as 
+<a href ="http://www.cocolab.de/vollmer"><tt>http://www.cocolab.de/vollmer</tt></a>.
+</dd>
+<dt>\LatexManEnd
+<dd> the input file is read and processed until reading end-of-file or 
+<tt>\LatexManEnd</tt> (at the beginning of a line). LaTeX ignores this 
+command. 
+</dl>
+<p>
+<a name="section_11"><h4>Accepted Macros from the ``rcsinfo'' Package</h4></a>
+<p>
+<dl compact>
+<dt>\rcsInfo $Id ...$
+<dd> if the LaTeX package <tt>rcsinfo</tt>
+is used, this command 
+is used to extract the date of the Man-page. 
+</dd>
+<dt>\rcsInfoLongDate
+<dd> if the LaTeX package <tt>rcsinfo</tt>
+is used, this command 
+is used to typeset the date coded in the <tt>$Id ..$</tt> string. 
+</dl>
+<p>
+<a name="section_12"><h4>Accepted LaTeX Macros</h4></a>
+<p>
+The following standard LaTeX commands are accepted: 
+<dl compact>
+<dt>\section{..}
+<dd> The <tt>section</tt>
+macro takes one argument: the name of the 
+Man-page section. Each Man-page consists of several sections. Usually there are the 
+following sections in a Man-page: <em>Name</em>
+(special handling as environment, 
+c.f.  above), <em>Synopis</em>,
+<em>Description</em>,
+<em>Options</em>,
+<em>Files</em>,
+<em>See Also</em>,
+<em>Diagnostics</em>,
+<em>Return Values</em>,
+<em>Bugs</em>,
+<em>Author</em>,
+<em>version</em>,
+etc. 
+<p>
+<em>Synopsis</em>
+must be the first section after the <tt>Name</tt>
+environment. 
+</dd>
+<dt>\subsection{..}
+<dd> 
+</dd>
+<dt>\emph{..}
+<dd> <tt>\emph{example}</tt> is typeset as <em>example</em>.
+</dd>
+<dt>\textbf{..}
+<dd> <tt>\textbf{example}</tt> is typeset as <strong>example</strong>.
+</dd>
+<dt>\texttt{..}
+<dd><tt>\textt{example}</tt> is typeset as <tt>example</tt>.
+</dd>
+<dt>\underline{..}
+<dd><tt>\underline{example}</tt> is typeset as <u>example</u>.
+</dd>
+<dt>\date{..}
+<dd> uses <tt>..</tt> as date. 
+</dd>
+<dt>\verb+..+
+<dd> but only + is allowed as delimiter 
+</dd>
+<dt>$&lt;$
+<dd> is typeset as &lt;. 
+</dd>
+<dt>$&gt;$
+<dd> is typeset as &gt;. 
+</dd>
+<dt>\{
+<dd> is typeset as {. 
+</dd>
+<dt>\}
+<dd> is typeset as }. 
+</dd>
+<dt>\$
+<dd> is typeset as $. 
+</dd>
+<dt>\_
+<dd> is typeset as _. 
+</dd>
+<dt>\&
+<dd> is typeset as &. 
+</dd>
+<dt>\#
+<dd> is typeset as #. 
+</dd>
+<dt>\\
+<dd> is typeset as a linebreak or marks the end of a column in the 
+<tt>Table</tt>
+environment. 
+</dd>
+<dt>\
+<dd> (a \ followed by a blank) is typeset as a blank. 
+</dd>
+<dt>~
+<dd> is typeset as a blank. 
+</dd>
+<dt>\copyright
+<dd> is typeset as &copy;.
+</dd>
+<dt>\Circum
+<dd> is typeset as ^.
+</dd>
+<dt>\Lbr, \Rbr
+<dd> is typeset as [ and ](these variants are needed only 
+somtimes like in <tt>item[FooBar\LBr xx \Lbr]</tt>. Usually <tt>[ ]</tt> will work. 
+</dd>
+<dt>\Percent
+<dd> is typeset as %.
+</dd>
+<dt>\noindent
+<dd> 
+</dd>
+<dt>\hline
+<dd> inside a <tt>Table</tt>
+environment. 
+</dd>
+<dt>\item
+<dd> inside a <tt>itemize</tt>,
+<tt>enumerate</tt>,
+or <tt>description</tt>
+environment. 
+</dd>
+<dt>\today
+<dd> 14 January 1998 (see also the <tt>rcsinfo</tt>
+LaTeX package). 
+</dl>
+<p>
+<a name="section_13"><h4>Translation of User Defined Macros</h4></a>
+<p>
+The user macro translation file (given by the [ <b>-t</b><i>transfile</i> ])
+contains <tt>Perl</tt>
+commands specifying the translation of LaTeX macros defined by the 
+user. These macros may have none, one or two arguments. The following code is expected: 
+<p>
+<ul compact>
+<li>
+Comments start with a # up to the end of the line. 
+<li>
+For a macro <tt>\foo</tt> with no arguments, the following code must be specified:<br>
+<tt>$manMacro{'foo'} = '...';</tt> <br>
+<tt>$htmlMacro{'foo'} = '...';</tt> <br>
+<tt>$texiMacro{'foo'} = '...';</tt> <br>
+where <tt>...</tt> is the translation. The first assignment is used for translation 
+into the Man-page format, the second is used for the translation into HTML code, the 
+third is used for texInfo. 
+<p>
+<li>
+For a macro <tt>\foo{..}</tt> with one argument, the following code must be 
+specified:<br>
+<tt>$manMacro1a{'foo'} = '...';</tt><br>
+<tt>$manMacro1b{'foo'} = '...';</tt> 
+<p>
+<tt>$htmlMacro1a{'foo'} = '...';</tt><br>
+<tt>$htmlMacro1b{'foo'} = '...';</tt> 
+<p>
+<tt>$texiMacro1a{'foo'} = '...';</tt><br>
+<tt>$texiMacro1b{'foo'} = '...';</tt> 
+<p>
+where <tt>...</tt> is the translation. The <tt>1a</tt> code is used before the argument, 
+while <tt>1b</tt> is typeset after the argument is set. 
+<p>
+<li>
+For a macro <tt>\foo{..}{..}</tt> with two arguments, the following code must be 
+specified:<br>
+<tt>$manMacro2a{'foo'} = '...';</tt><br>
+<tt>$manMacro2b{'foo'} = '...';</tt><br>
+<tt>$manMacro2c{'foo'} = '...';</tt> 
+<p>
+<tt>$htmlMacro2a{'foo'} = '...';</tt><br>
+<tt>$htmlMacro2b{'foo'} = '...';</tt><br>
+<tt>$htmlMacro2c{'foo'} = '...';</tt> 
+<p>
+<tt>$texiMacro2a{'foo'} = '...';</tt><br>
+<tt>$texiMacro2b{'foo'} = '...';</tt><br>
+<tt>$texiMacro2c{'foo'} = '...';</tt> 
+<p>
+where <tt>...</tt> is the translation. The <tt>2a</tt> code is used before the first 
+argument, <tt>2b</tt> between the two arguments and <tt>2c</tt> is typeset after the 
+second argument is set. 
+<li>
+The file <tt>latex2man.trans</tt>
+contains some example code. 
+</ul>
+<p>
+<a name="section_14"><h4>General Remarks</h4></a>
+<p>
+<ol compact>
+<li value =1>
+Empty lines are typeset as paragraph separators. 
+<li value =2>
+The arguments of the LaTeX commands must not be split over several lines. 
+<li value =3>
+Do not nest calls to macros or environments. 
+<li value =4>
+Except the mentioned environment and macros, the usage of other LaTeX 
+environments or macros are not translated. Their usage will cause garbage in the 
+output. 
+</ol>
+<p>
+<a name="section_15"><h2>Version</h2></a>
+<p>
+Version: 1.1 of 1998/01/14.
+<p>
+<a name="section_16"><h2>Copyright</h2></a>
+<p>
+Copyright &copy; 1998, Jürgen Vollmer.<br>
+This is <em>PostCardWare</em>,
+which means 
+<ul compact>
+<li>
+You may use this software without a fee, as it is, and at your own risk. 
+<li>
+You may distribute this software only without any changes and complete 
+(i.e. with this copyright notice and the following files 
+<tt>latex2man.sty</tt>
+<tt>latex2man</tt>,
+<tt>latex2man.tex</tt>,
+<tt>latex2man.trans</tt>,
+<tt>Makefile</tt>,
+<tt>README</tt>,
+and <tt>INSTALL</tt>).
+<li>
+You may not sell this software. 
+<li>
+If you have bug fixes, enhancements, new ideas, etc. send them to me. 
+<li>
+If you find this software useful, send me a postcard. 
+</ul>
+<p>
+<a name="section_17"><h2>Author</h2></a>
+<p>
+Dr.&nbsp;Jürgen Vollmer <br>
+Viktoriastraße 15 <br>
+D-76133 Karlsruhe <br>
+Email: <a href ="mailto:Juergen.Vollmer@acm.org"><tt>Juergen.Vollmer@acm.org</tt></a>
+<br>
+WWW: <a href ="http://www.cocolab.de/vollmer"><tt>http://www.cocolab.de/vollmer</tt></a>.
+</body>
+</html>
+<! NOTE: This file is generated, DO NOT EDIT.>
