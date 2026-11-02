@@ -1,0 +1,127 @@
+Condor_dbq defines the following packages (indented lines show the functions in
+the package):
+
+CondorUserLog
+	(constructor)
+	FileExists
+	Open
+	Close
+	SetPosition
+	(destructor)
+	ReadFileChunk
+	GetNextRecord
+
+CondorWork
+	(constructor)
+	<regular expressions to handle userlog entries>
+	Print
+	RestoreJobs
+	MakeCondorId
+	IsTerminalState
+	SetPosition
+	NumIncompleteJobs
+	ParseRecordToEvent
+	GetNextEvent
+	GetNewEvents
+	AddCondorIdsFromLog
+	PrintEvent
+	RemoveAlreadyTerminatedJobEvents
+	ApplyJobUpdates
+	ProcessNewEvents
+
+CondorActiveWork
+	(constructor)
+	AddWork
+	NumWork
+	NumIncompleteJobs
+	ProcessWork
+	CheckIfWorkSubmitted
+	RecoverChosenWork
+	RestoreStateFromDatabase
+	Recover
+
+In main::, there are SQL statements to set up tables: InitializeSqlStmts sets
+up a hash table with the following entries:
+		createWorkTable
+		createJobsTable
+		createWorkSeq
+		createWorkFunction
+		createWorkTrigger
+		createJobsFunction
+		createJobsTrigger
+		createSubmitUser
+
+	Permissions?
+		grantSubmitUserWorkTable
+		grantSubmitUserJobsTable
+		grantSubmitUserWorkSeq
+		createExecuteUser
+		grantExecuteUserWorkTable
+		grantExecuteUserJobsTable
+		revokePublicSchemaCreate
+		createLangPlpgsql
+
+	Updates?
+		updateWorkToChosen
+		selectChosenWork
+		updateWorkToInBatch
+		updateWorkToTmpFailed
+		updateWorkToFailed
+		insertJob
+		updateJob
+		updateWorkJobs
+		updateWorkComplete
+		updateWorkJobsError
+		getChosenWork
+		updateWorkToInitial
+		updateAllChosenWorkToInitial
+		getInBatchWork
+		getInBatchJobs
+
+	GetDbConnectionInfo
+	ConnectToDb
+	ExecuteDbOperation
+	GetPreparedStmt
+	DoCreateLangPlpgsql
+	DoRevokePublicSchemaCreate
+	DoInitDb
+	DoCreateSubmitUser
+	DoCreateWorkUser
+	Log
+	LogAndExit
+	Usage
+		Prints out command line options
+		
+	ProcessOptions
+		Calls on GetOptions to read the command line
+		On error, calls on Usage
+
+	Initialize
+		First thing that runs.  Sets up everything with ProcessOptions and
+		InitializeSqlStmts
+
+	CheckCondorSubmitRunning
+	GetFileContents
+	ShellQuoteArg
+	ExecuteCommand
+	SubmitToCondor
+	DoAdminCmds
+	DoSubmit
+	DoGrabWork
+	DoSubmitWork
+	DoProcessQueue
+	Main 
+		Program runs in one of three modes:
+			Admin
+		Submitting
+		Processing the Queue
+
+Submitting is easy: Jobs are inserted into the 'work' table.  condor_dbq
+then checks that rows were entered.
+
+The Processing is a bit more complicated.  Condor_dbq gets a list of jobs it is
+to look at.  It runs a query over the jobs it needs to look at.  Then it
+iterates over the jobs to find jobs it has successfully submitted and failed to
+submit. Jobs that are successfully submitted are moved to the 'jobs' table.
+When the job completes it sets the state field of the job in 'work' to
+'complete' or 'failed'. To determine the status of jobs, it reads the userlogs.

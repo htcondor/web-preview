@@ -1,0 +1,758 @@
+<html>
+<head>
+<title>Fermilab Condor-G Hands-On</title>
+<style type="text/css"><!--
+body {
+	color: black;
+}
+pre {
+	margin-left: 3em;
+	margin-right: 2em;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+	padding: 0.5em;
+	border: 1px solid #999;
+	background-color: #DDD;
+}
+em.delta {
+	background-color: #FF9;
+}
+em.type {
+	font-weight: bold;
+}
+em.replace {
+	color: F00;
+	font-weight: bold;
+}
+td {
+	vertical-align: top;
+}
+table {
+	border-collapse: collapse;
+	margin-top: 1em;
+	margin-left: 3em;
+	margin-right: 2em;
+}
+th,td {
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+}
+th {
+	background-color: #99F;
+}
+tr.odd {
+}
+tr.even {
+	background-color: #DDD;
+}
+h2 {
+	margin-top: 3em;
+}
+--></style>
+</head>
+<body>
+<h1>Fermilab Condor-G Hands-On</h1>
+
+<p>fnpcsrv1.fnal.gov has been configured for these hands-on exercises.  You should be able to log in with your normal Fermilab Kerberos credentials.  We'll need your Kerberos credential on fnpcsrv1.fnal.gov, so be sure to pass "-f" to kinit to create a forwardable credential.
+
+<h2>Notation</h2>
+
+<table>
+
+<tr>
+<td><pre>Example text</pre></td>
+<td>What you see on your screen.</td>
+</tr>
+
+<tr>
+<td><pre><em class="type">condor_q</em></pre></td>
+<td>Something to type in.</td>
+</tr>
+
+<tr>
+<td><pre><em class="type">[Ctrl+D]</em></pre></td>
+<td>Instead of typing these characters in, instead press Ctrl and
+D together.</td>
+</tr>
+
+<tr>
+<td><pre><em class="delta">universe = grid</em></pre></td>
+<td>Marks a change from something seen before for
+comparison.</td>
+</tr>
+
+<tr>
+<td><pre><em class="replace">adesmet</em></pre></td>
+<td>Replace this as documented above the example.</td>
+</tr>
+
+
+</table>
+
+<h2>Generating an x509 proxy</h2>
+
+<p>Before you can do anything, you need an "x509 proxy" to identify yourself to grid resources.  Some organizations, like the DOE, might have you register with them and their Certificate Authority will issue you an x509 certificate.  But Fermilab maintains their own system that can issue x509 certificates using the Kerberos system.
+
+<h3>Summary</h3>
+
+<pre>
+<em class="type">kx509
+kxlist -p
+source /usr/local/vdt/setup.sh
+voms-proxy-init -noregen -voms fermilab:/fermilab</em>
+</pre>
+
+<h3>What is going on</h3>
+
+<p>First, we'll set up the VDT (Virtual Data Toolkit) tools. This gives us access to the voms-proxy-* tools that we'll use later:
+
+<pre>
+$ <em class="type">source /usr/local/vdt/setup.sh</em>
+</pre>
+
+<p>Note that if you're using csh, tsch, or another csh derived shell, you will instead use this command:
+
+<pre>
+$ <em class="type">source /usr/local/vdt/setup.csh</em>
+</pre>
+
+<p>Now that we're set up, let's see what Keberos credentials we have.
+
+<pre>
+$ <em class="type">klist</em>
+Ticket cache: /tmp/krb5cc_10389_e15383
+Default principal: adesmet@FNAL.GOV
+
+Valid starting     Expires            Service principal
+07/23/10 22:19:03  07/25/10 00:08:40  krbtgt/FNAL.GOV@FNAL.GOV
+        renew until 07/30/10 22:08:40
+07/23/10 22:19:04  07/25/10 00:08:40  afs@FNAL.GOV
+        renew until 07/30/10 22:08:40
+</pre>
+
+<p>Now we generate an x509 certificate:
+<pre>
+$ <em class="type">kx509</em>
+</pre>
+
+<p>And let's check to see what changed:
+<pre>
+$ <em class="type">klist</em>
+Ticket cache: /tmp/krb5cc_10389_e15383
+Default principal: adesmet@FNAL.GOV
+
+Valid starting     Expires            Service principal
+07/23/10 22:19:03  07/25/10 00:08:40  krbtgt/FNAL.GOV@FNAL.GOV
+        renew until 07/30/10 22:08:40
+07/23/10 22:19:04  07/25/10 00:08:40  afs@FNAL.GOV
+        renew until 07/30/10 22:08:40
+<em class="delta">07/23/10 22:19:19  07/25/10 00:08:40  kca_service/winserver.fnal.gov@FNAL.GOV
+        renew until 07/30/10 22:08:40
+07/22/10 22:19:19  07/30/10 22:08:40  kx509/certificate@FNAL.GOV</em>
+</pre>
+
+<p>We can look at the x509 certificate that was generated.
+<pre>
+$ <em class="type">kxlist</em>
+Service kx509/certificate
+ issuer= /DC=gov/DC=fnal/O=Fermilab/OU=Certificate Authorities/CN=Kerberized CA HSM
+ subject= /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+ serial=01C05555
+ hash=e7635e83
+</pre>
+
+<p>voms-proxy-info gives us information about our x509 proxy.  At the moment we don't have anything:
+
+<pre>
+$ <em class="type">voms-proxy-info</em>
+
+Couldn't find a valid proxy.
+
+</pre>
+
+<p>We generated an x509 certificate, but it's in your Kerberos cache, which isn't useful to us.  Fortunately, kxlist can generate a proxy for us:
+
+<pre>
+$ <em class="type">kxlist -p</em>
+Service kx509/certificate
+ issuer= /DC=gov/DC=fnal/O=Fermilab/OU=Certificate Authorities/CN=Kerberized CA HSM
+ subject= /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+ serial=01C05555
+ hash=e7635e83
+</pre>
+
+<p>We can now look at it:
+
+<pre>
+$ <em class="type">voms-proxy-info -all</em>
+WARNING: Unable to verify signature! Server certificate possibly not installed.
+Error: VOMS extension not found!
+subject   : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+issuer    : /DC=gov/DC=fnal/O=Fermilab/OU=Certificate Authorities/CN=Kerberized CA HSM
+identity  : /DC=gov/DC=fnal/O=Fermilab/OU=Certificate Authorities/CN=Kerberized CA HSM
+type      : unknown
+strength  : 1024 bits
+path      : /tmp/x509up_u10389
+timeleft  : 167:48:40
+</pre>
+
+<p>"VOMS extension not found!"  That's no good.  It doesn't have the VOMS information associated with it.  Fortunately we can use this proxy to create a new one with the VOMS information.  "-noregen" means "use my existing proxy to make the new one."
+
+<pre>
+$ <em class="type">voms-proxy-init -noregen -voms fermilab:/fermilab</em>
+Your identity: /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+Contacting  voms.fnal.gov:15001 [/DC=org/DC=doegrids/OU=Services/CN=http/voms.fnal.gov] "fermilab" Done
+Creating proxy ............................................................... Done
+Your proxy is valid until Sat Jul 24 10:20:13 2010
+</pre>
+
+<p>We now have a proxy with the VOMS information attached!
+
+<pre>
+$ <em class="type">voms-proxy-info -all</em>
+WARNING: Unable to verify signature! Server certificate possibly not installed.
+Error: Cannot verify AC signature!
+subject   : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet/CN=proxy
+issuer    : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+identity  : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+type      : proxy
+strength  : 1024 bits
+path      : /tmp/x509up_u10389
+timeleft  : 11:59:54
+=== VO fermilab extension information ===
+VO        : fermilab
+subject   : /DC=gov/DC=fnal/O=Fermilab/OU=People/CN=Alan A. De smet/CN=UID:adesmet
+issuer    : /DC=org/DC=doegrids/OU=Services/CN=http/voms.fnal.gov
+attribute : /fermilab/Role=NULL/Capability=NULL
+attribute : /fermilab/nees/Role=NULL/Capability=NULL
+timeleft  : 11:59:53
+uri       : voms.fnal.gov:15001
+</pre>
+
+
+<h2>Testing Globus</h2>
+
+<p>We can use globusrun to test if a Globus gatekeeper is responding and willing to accept our proxy:
+
+<pre>
+$ <em class="type">globusrun -a -r fgitbgkc2.fnal.gov/jobmanager-condor</em>
+
+GRAM Authentication test successful
+</pre>
+
+<p>We can use globus-job-run to run executables on the remote server.  Note that the executable we want to run must already be on the remote server.  globus-job-run will block until the executable finishes, returning the output.
+
+<pre>
+$ <em class="type">globus-job-run fgitbgkc2.fnal.gov/jobmanager-fork /bin/date</em>
+Fri Jul 23 22:47:09 CDT 2010
+$ <em class="type">globus-job-run fgitbgkc2.fnal.gov/jobmanager-fork /bin/hostname</em>
+fgitbgkc2.fnal.gov
+</pre>
+
+<h2>Running Jobs By Hand</h2>
+
+<p>Feel free to try this later, but right now it's not recommended.  The final step can take a long time to finish.
+
+<p>First, submit our job.  The output is an identifier for our job.
+
+<pre>
+$ <em class="type">globus-job-submit fgitbgkc2.fnal.gov/jobmanager-condor /bin/date </em>
+https://fgitbgkc2.fnal.gov:47738/29075/1279943334/
+</pre>
+
+<p>Now call globus-job-status every once in a while until it is "DONE".   Replace the URL below with the URL returned by globus-job-submit.
+
+<pre>
+$ <em class="type">globus-job-status <em class="replace">https://fgitbgkc2.fnal.gov:47738/29075/1279943334/</em></em>
+PENDING
+$ <em class="type">globus-job-status <em class="replace">https://fgitbgkc2.fnal.gov:47738/29075/1279943334/</em></em>
+PENDING
+$ <em class="type">globus-job-status <em class="replace">https://fgitbgkc2.fnal.gov:47738/29075/1279943334/</em></em>
+ACTIVE
+$ <em class="type">globus-job-status <em class="replace">https://fgitbgkc2.fnal.gov:47738/29075/1279943334/</em></em>
+DONE
+</pre>
+
+<p>When it's done, we can fetch the output back:
+<pre>
+$ <em class="type">globus-job-get-output <em class="replace">https://fgitbgkc2.fnal.gov:47738/29075/1279943334/</em></em>
+Fri Jul 23 22:48:55 CDT 2010
+</pre>
+
+<p>Finally, we should free up the resources we have allocated on the remote server.  Note that this step can take a long time!
+
+<pre>
+$ <em class="type">globus-job-clean <em class="replace">https://fgitbgkc2.fnal.gov:47738/29075/1279943334/</em></em>
+
+    WARNING: Cleaning a job means:
+        - Kill the job if it still running, and
+        - Remove the cached output on the remote resource
+
+    Are you sure you want to cleanup the job now (Y/N) ?
+<em class="type">y</em>
+Cleanup successful.
+</pre>
+
+<p>This example doesn't send your executable or any data files over, and doesn't retrieve any output files.  Doing so adds even more complexity.
+Condor-G can worry about those details for you!
+
+
+<h2>Running a "vanilla" Condor job</h2>
+
+<p>Make a scratch directory for this work:
+
+<pre>
+$ <em class="type">mkdir condor-test</em>
+$ <em class="type">cd condor-test</em>
+</pre>
+
+<p>Create a test executable.  Note that where is says "<em
+class="type">[Ctrl+D]</em>", you need to hit Ctrl+D, not type
+those words.
+
+<pre>
+$ <em class="type">cat &gt; sample-job</em>
+<em class="type">#! /bin/sh
+/bin/date
+/bin/hostname
+/bin/echo Sleeping for $1 seconds
+/bin/sleep $1
+/bin/cat sample-input &gt; sample-output
+/bin/echo Done
+[Ctrl+D]</em>
+$ <em class="type">chmod a+x sample-job</em>
+</pre>
+
+<p>Create a sample input file.
+
+<pre>
+$ <em class="type">echo This is a test file &gt; sample-input</em>
+</pre>
+
+<p>Verify that it works:
+
+<pre>
+$ <em class="type">./sample-job 1</em>
+Fri Jul 23 22:57:31 CDT 2010
+fnpcsrv1.fnal.gov
+Done
+$ <em class="type">cat sample-output</em>
+This is a test file
+</pre>
+
+<p>And clean up:
+
+<pre>
+$ <em class="type">rm sample-output</em>
+</pre>
+
+<p>Describe our job for Condor.  The spaces lining everything up are optional.
+<pre>
+$ <em class="type">cat &gt; sample-submit
+universe     = scheduler
+notification = never
+executable   = sample-job
+arguments    = 60
+output       = sample-out
+error        = sample-err
+log          = sample-log
+transfer_input_files = sample-input
+when_to_transfer_output = ON_EXIT
+queue
+[Ctrl+D]</em>
+</pre> 
+
+<p>What's going on in that submit file?
+
+<table>
+<tr>
+<th colspan="2">Command</td>
+<th>Description</th>
+</tr>
+<tr class="odd">
+<td>universe</td>
+<td>=&nbsp;scheduler</td>
+<td>
+We specified "universe=scheduler".  Normally you will want "universe=vanilla".  vanilla jobs will run as normal on your Condor cluster.   Depending on how busy your cluster is, that may take a while,  Furthermore, for this hands-on, we're not actually connected to a full cluster, so vanilla jobs won't ever run.  So we're use "scheduler", which is a simplified version that runs on the local computer immediately.  <em>Do not normally use the scheduler universe!</em> If not specified you get the "standard" universe, which has very special requirements.</td>
+</tr>
+
+<tr class="even">
+<td>notification</td>
+<td>=&nbsp;never</td>
+<td>Don't send us email about how our job is doing. If not specified, Condor will try to send you email if you job completes or has a problem.</td>
+</tr>
+
+<tr class="odd">
+<td>executable</td>
+<td>=&nbsp;sample-job</td>
+<td>Required. The name of the executable we want to run</td>
+</tr>
+
+<tr class="even">
+<td>arguments</td>
+<td>=&nbsp;60</td>
+<td>Command line arguments to pass to the executable. If not
+specified, no arguments will be passed in.</td>
+</tr>
+
+<tr class="odd">
+<td>output       </td>
+<td>=&nbsp;sample-out</td>
+<td>Anything written to standard output will be placed into this file.  If not specified, output will be discarded.</td>
+</tr>
+
+<tr class="even">
+<td>error        </td>
+<td>=&nbsp;sample-err</td>
+<td>Anything written to standard error will be placed into this file.  If not specified, error messages will be discarded.</td>
+</tr>
+
+<tr class="odd">
+<td>log          </td>
+<td>=&nbsp;sample-log</td>
+<td>Write notes about how your job is doing to this file.  If not specified, you don't get these log messages.   This is highly recommended, as the log file can help diagnose problems.</td>
+</tr>
+
+<tr class="even">
+<td>transfer_input_files </td>
+<td>=&nbsp;sample-input</td>
+<td>These files will be copied to the execute computer and made available to your program.  If not specified, no files are copied over.</td>
+</tr>
+
+<tr class="odd">
+<td>when_to_transfer_output </td>
+<td>= ON_EXIT</td>
+<td>Required if transfer_input_files is specified.  Tells Condor that when the job is done.</td>
+</tr>
+
+<tr class="even">
+<td>queue</td>
+<td></td>
+<td>Required. Tells Condor you're done.</td>
+</tr>
+</table>
+
+
+<p>So, tell Condor about our job!
+
+<pre>
+$ <em class="type">condor_submit sample-submit</em>
+Submitting job(s).
+1 job(s) submitted to cluster 3256325.
+</pre>
+
+<p>You can check the status of your jobs with condor_q.
+Be sure
+to replace <em class="replace">adesmet</em> with your own username.  If you omit
+the username, you'll see everyone's jobs.  This might take a few seconds; the computer you are using is a busy submit node.
+
+<pre>
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256325.0   adesmet         7/23 23:15   0+00:00:08 R  0   0.0  sample-job        
+
+1 jobs; 1 idle, 0 running, 0 held
+</pre>
+
+<p>The "ST" or "State" of "R" indicates your job is running.  Other states include:
+
+<table>
+<tr>
+<th>Short</th>
+<th>Long</th>
+<th>Explanation</th>
+</tr>
+
+<tr>
+<td>I</td>
+<td>Idle</td>
+<td>The job is waiting for an available computer to run on</td>
+</tr>
+
+<tr>
+<td>R</td>
+<td>Running</td>
+<td>The job is running</td>
+</tr>
+
+<tr>
+<td>C</td>
+<td>Completed</td>
+<td>The job is done</td>
+
+</table>
+
+<p>When you job finishes, it will disappear from the list:
+
+<pre>
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+
+0 jobs; 0 idle, 0 running, 0 held
+
+</pre>
+
+<p>It's not gone, it's just moved to the history.  The "cluster" or "ID" you saw above listed for your job can be used to ask about the old job:
+
+<pre>
+$ <em class="type">condor_history <em class="replace">3256325</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone
+ ID      OWNER            SUBMITTED     RUN_TIME ST   COMPLETED CMD            
+3256325.0   adesmet         7/24 20:18   0+00:01:00 C   7/24 20:19 /home/adesmet/c
+</pre>
+
+<p>As you can see, your job is "C", completed and it ran for 1 minute.
+
+<p>By the way, the 3256325?  That indicates that this computer has had 
+3,256,325 Condor jobs submitted since Condor was installed.  This computer
+has managed a lot of work!
+
+<p>You can examine sample-output and sample-out to see the
+output.  You can examine sample-log to see the progress your job
+made.
+
+<pre>
+$ <em class="type">cat sample-out</em>
+Sat Jul 24 20:18:18 CDT 2010
+fnpcsrv1.fnal.gov
+Sleeping for 60 seconds
+Done
+$ <em class="type">cat sample-output</em>
+This is a test file
+$ <em class="type">cat sample-log</em>
+000 (3256539.000.000) 07/24 20:18:18 Job submitted from host: &lt;131.225.167.44:65528&gt;
+...
+001 (3256539.000.000) 07/24 20:18:18 Job executing on host: &lt;131.225.167.44:65528&gt;
+...
+005 (3256539.000.000) 07/24 20:19:18 Job terminated.
+	(1) Normal termination (return value 0)
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Run Local Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Remote Usage
+		Usr 0 00:00:00, Sys 0 00:00:00  -  Total Local Usage
+	0  -  Run Bytes Sent By Job
+	0  -  Run Bytes Received By Job
+	0  -  Total Bytes Sent By Job
+	0  -  Total Bytes Received By Job
+...
+</pre>
+
+
+<p>Clean up our output files before going on:
+
+<pre>
+$ <em class="type">rm sample-out sample-output sample-log sample-err</em>
+</pre>
+
+
+
+
+<h2>Moving your job to the Grid</h2>
+
+<p>We can submit the same job to the grid with a few simple
+changes.   We'll need a new submit file with a few changes. The
+changes  have been <em>marked</em> below:
+<pre>
+$ <em class="type">cat &gt; sample-submit-grid
+universe     = <em class="delta">grid</em>
+<em class="delta">grid_resource = gt2 fgitbgkc2.fnal.gov/jobmanager-fork</em>
+notification = never
+executable   = sample-job
+arguments    = 60
+output       = sample-out
+error        = sample-err
+log          = sample-log
+transfer_input_files = sample-input
+when_to_transfer_output = ON_EXIT
+<em class="delta">transfer_output_files = sample-output</em>
+queue
+[Ctrl+D]</em>
+</pre> 
+
+<p>What did we change?
+<table>
+<tr>
+<th colspan="2">Command</td>
+<th>Description</th>
+</tr>
+<tr class="odd">
+<td>universe</td>
+<td>=&nbsp;grid</td>
+<td>
+This tells Condor we want to submit to another batch system,
+probably on a different computer.  If specified, grid_resource
+becomes mandatory.
+</tr>
+
+<tr class="even">
+<td>grid_resource</td>
+<td>=&nbsp;gt2&nbsp;fgitbgkc2.fnal.gov/jobmanager-fork</td>
+<td>Required if the universe=grid.  Specifies that we want to hand
+our job off to a Globus Toolkit version 2 gatekeeper (gt2).  The
+gatekeeper is known as "fgitbgkc2.fnal.gov/jobmanager-fork".
+We are using jobmanager-fork to speed things up for this hands-on.  You
+would typically use a different name assigned by the Globus site's maintainer.  For example, "fgitbgkc2.fnal.gov/jobmanager-condor" is where jobs would normally go on fgitbgk2.
+<em>Do not use jobmanager-fork for real work!</em>
+</td>
+</tr>
+
+<tr class="odd">
+<td>transfer_output_files</td>
+<td>=&nbsp;sample-ouput</td>
+<td>Normally Condor will identify any files created by your job
+and will bring them back.  For the Grid universe, this is no
+longer true.  You must explicitly list any files you want
+back when your job finishes.  Be warned, if you specify a file
+and it's not there, your job will fail!</td>
+</tr>
+
+</table>
+
+
+<p>Submit it, same as before.
+
+<pre>
+$ <em class="type">condor_submit sample-submit-grid</em>
+Submitting job(s).
+Logging submit event(s).
+1 job(s) submitted to cluster 3256541.
+</pre>
+
+<p>Watch it until it finishes.
+
+<pre>
+$ <em class="type">condor_q adesmet</em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256541.0   adesmet         7/24 20:46   0+00:00:48 R  0   0.0  sample-job 60     
+
+1 jobs; 0 idle, 1 running, 0 held
+-bash-3.00$ <em class="type">condor_q adesmet</em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256541.0   adesmet         7/24 20:46   0+00:01:16 R  0   0.0  sample-job 60     
+
+1 jobs; 0 idle, 1 running, 0 held
+-bash-3.00$ <em class="type">condor_q adesmet</em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+
+0 jobs; 0 idle, 0 running, 0 held
+</pre>
+
+<p>And check that you got your output:
+
+<pre>
+$ <em class="type">cat sample-out</em>
+Sat Jul 24 20:46:57 CDT 2010
+fgitbgkc2.fnal.gov
+Sleeping for 60 seconds
+Done
+$ <em class="type">cat sample-output</em>
+This is a test file
+</pre>
+
+<p>That's it!
+
+
+<h2>Other Useful Commands</h2>
+
+<p>You can resubmit your job and try these other commands on it.  Submit a job to experiment on.  You might want to edit sample-submit to increase the argument to 600 so you have plenty of time to experiment before the job finishes.
+
+<pre>
+$ <em class="type">condor_submit sample-submit</em>
+Submitting job(s).
+Logging submit event(s).
+1 job(s) submitted to cluster 3256545.
+</pre>
+
+<p>We can pause the job with condor_hold.
+
+<pre>
+$ <em class="type">condor_hold <em class="replace">3256545</em></em>
+Cluster 3256545 held.
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256545.0   adesmet         7/24 20:56   0+00:00:17 R  0   0.0  sample-job 60     
+
+1 jobs; 0 idle, 1 running, 0 held
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256545.0   adesmet         7/24 20:56   0+00:00:10 H  0   0.0  sample-job 60     
+
+1 jobs; 0 idle, 0 running, 1 held
+</pre>
+
+<p>Normally condor_hold is nearly instantaneous.  However this submit host is very busy and is using a Condor extension called "Quill" to help manage the load.  A side effect of Quill is that updates can take a little bit.
+
+<p>Once a job is on hold, you can release it with condor_release.
+
+<pre>
+$ <em class="type">condor_release <em class="replace">3266545</em></em>
+Cluster 3256545 released.
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256545.0   adesmet         7/24 20:56   0+00:00:10 H  0   0.0  sample-job 60     
+
+1 jobs; 0 idle, 0 running, 1 held
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : &lt;131.225.167.44:5432&gt; : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+3256545.0   adesmet         7/24 20:56   0+00:00:30 R  0   0.0  sample-job 60     
+
+1 jobs; 0 idle, 1 running, 0 held
+</pre>
+
+<p>Finally, you can cancel a job entirely with condor_rm.
+
+<pre>
+$ <em class="type">condor_rm <em class="replace">3266545</em></em>
+Cluster 3256545 has been marked for removal.
+$ <em class="type">condor_q <em class="replace">adesmet</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : <131.225.167.44:5432> : quillone : 
+ ID      OWNER            SUBMITTED     RUN_TIME ST PRI SIZE CMD               
+
+0 jobs; 0 idle, 0 running, 0 held
+$ <em class="type">condor_history <em class="replace">3266545</em></em>
+
+
+-- Quill: quillone@fnpcsrv1.fnal.gov : <131.225.167.44:5432> : quillone
+ ID      OWNER            SUBMITTED     RUN_TIME ST   COMPLETED CMD            
+3256545.0   adesmet         7/24 20:56   0+00:00:36 X   ???        /home/adesmet/c
+</pre>
+
+<p>The "X" indicates that the job was removed.
+
+
+
+<h2>The End</h2>
+
+</body>
+</html>
