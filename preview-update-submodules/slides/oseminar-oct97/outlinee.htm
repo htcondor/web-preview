@@ -1,0 +1,432 @@
+<HTML>
+<BODY >
+
+<P></P><A HREF="JavaScript:parent.ItemClicked(1, 0)"> PPT Slide </A><br><UL>
+Mechanisms for Matchmaking and Parallel High Throughput Computing in 
+<BR></UL><UL>
+the Condor Distributed System
+</UL><UL>
+
+</UL><UL>
+Rajesh Raman, raman@cs.wisc.edu
+</UL><UL>
+Todd Tannenbaum, tannenba@cs.wisc.edu
+</UL><UL>
+
+</UL><UL>
+http://www.cs.wisc.edu/condor
+</UL><UL>
+Oct 27, 1997</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(2, 0)"> Condor Project </A><br><UL>
+<LI>Overview
+<UL>
+<LI>What is Condor ?
+<LI>Projects  and Collaborations
+<LI>High Throughput Computing
+<LI>ClassAds and MatchMaking
+<LI>Parallel Computing with Condor</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(3, 0)"> What is Condor ? </A><br><UL>
+<LI>High Throughput Computing
+</UL><UL>
+<LI>Distributed Resources
+<UL>
+<LI>Physically distributed
+<LI> Distributed ownership
+</UL></UL><UL>
+<LI> Resource Management
+<UL>
+<LI>Increase utilization of resources
+<LI> Simple interface to execution environment
+<UL>
+<LI>User level interface
+<LI> Application level interface</UL></UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(4, 0)"> Important Mechanisms </A><br><UL>
+<LI>Matchmaking
+</UL><UL>
+<LI>Checkpointing (and migration)
+<UL>
+<LI>Owner policies require resource reclamation
+<LI> Need to save (resumable) state of application 
+</UL></UL><UL>
+<LI>Remote System Calls
+<UL>
+<LI>Preserves submission environment in execution  environment.
+</UL></UL><UL>
+<LI> Sandboxing
+<UL>
+<LI>Security concerns</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(5, 0)"> The Condor Team </A><br><UL>
+<LI>Prof. Miron Livny, PI
+</UL><UL>
+<LI>Research Staff
+<UL>
+<LI>Todd Tannenbaum
+<LI>Derek Wright
+<LI>Adding 2 more...</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(6, 0)"> Condor Team, cont. </A><br><UL>
+<LI>Graduate Students 
+<UL>
+<LI>Rajesh Raman (MatchMaking)
+<LI>Jim Basney (Split Execution)
+<LI>Shrinivas Ashwin (Mr. Parallel)
+<LI>Adiel Yoaz (Accounting)
+</UL></UL><UL>
+<LI>Undergraduate Students
+<UL>
+<LI>Tom Stanis</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(7, 0)"> Condor Almuni </A><br><UL>
+<LI>Mike Litzkow
+<LI>David Dewitt
+<LI>Marvin Solomon
+<LI>Many others… (Produced XXX Masters and XXX PhDs]</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(8, 0)"> Current Collaborators and Projects </A><br><UL>
+<LI>NCSA
+<UL>
+<LI>PACI
+<LI>National Grid
+</UL></UL><UL>
+<LI>UW-Flock
+<UL>
+<LI>Intel Sponsorship: $4.2 Million 
+<LI>Graduate School, Engineering
+</UL></UL><UL>
+<LI>metaNEOS: metacomputing environments for optimization
+<UL>
+<LI>with Prof. Michael Ferris</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(9, 0)"> Condor Pool Installations </A><br><UL>
+<LI>Universites
+<UL>
+<LI>U of Wisconsin, U of Illinois, U of Michigan, Dartmouth, Duke, U of Washington, U of Virginia, U of California-Berkeley
+</UL></UL><UL>
+<LI>Government
+<UL>
+<LI>NCSA, Nasa, US Navy, NSA, NIKHEF (Amsterdam), INFN (Italy)
+</UL></UL><UL>
+<LI>Commercial
+<UL>
+<LI>Hewlett-Packard Labs, J.P. Morgan, Mercedez-Benz, Dragon Systems</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(10, 0)"> Power of Computing Environments </A><br><UL>
+<LI>Power = Work / Time
+</UL><UL>
+<LI>High Performance Computing
+<UL>
+<LI>Fixed amount of work; how much time?
+<LI> Response time/latency oriented
+<LI>Traditional Performance metrics:  FLOPS, MIPS
+</UL></UL><UL>
+<LI> High Throughput Computing
+<UL>
+<LI>Fixed amount of time; how much work?
+<LI> Throughput oriented
+<LI> Application specific performance metrics</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(11, 0)"> Distributed Ownership of Resources </A><br><UL>
+<LI>Commodity resources
+<UL>
+<LI>Underutilized:  70% of a pool's cycles are not utilized
+<LI>Fragmented:  owned by different people
+</UL></UL><UL>
+<LI> Can provide HTC with these cycles, BUT
+<UL>
+<LI>Must not impact QOS to owner
+</UL></UL><UL>
+<LI> Owners specify access policy
+<UL>
+<LI>Expressed with control expressions
+<UL>
+<LI>The current state of the resource (e.g., load average)
+<LI> Characteristics of the request (e.g., who wants to use it?)
+<LI> Time of day, random numbers, etc</UL></UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(12, 0)"> Condor Architecture </A><br><UL>
+<LI>Startds ( Represent owners of resources)
+<UL>
+<LI> Implement owner's access control policy
+</UL></UL><UL>
+<LI>Schedds( Represent customers of the system)
+<UL>
+<LI> Maintain persistent queues of resource requests
+</UL></UL><UL>
+<LI>Manager
+<UL>
+<LI> Collector:  Database of resources
+<LI> Negotiator: Matchmaker
+<LI> Accountant: Priority maintenance</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(13, 0)"> Condor Architecture, cont. </A><br>
+<P></P><A HREF="JavaScript:parent.ItemClicked(14, 0)"> Matchmaking </A><br><UL>
+<LI>Customers 
+<UL>
+<LI>Require resources with certain characteristics
+<LI>Discriminating customers
+<LI>Requests place constraints on resources
+</UL></UL><UL>
+<LI> Distributed ownership
+<UL>
+<LI>Resources service requests which match owner's policy
+<LI> Discriminating resources
+<LI> Resource offers place constraints on customers
+</UL></UL><UL>
+<LI> Matchmaking is symmetric</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(15, 0)"> Matchmaking with Classified Advertisements </A><br><UL>
+<LI>Parties requiring matchmaking advertise
+<UL>
+<LI>Characteristics and requirements (i.e., constraints)
+</UL></UL><UL>
+<LI>Advertisements matched by a Matchmaker
+</UL><UL>
+<LI>Matched parties contact each other to "claim”
+<UL>
+<LI>Communication, authentication, constraint verification, negotiation of terms, etc.
+<LI> Claiming does not involve the Matchmaker
+</UL></UL><UL>
+<LI>Method is symmetric
+<UL>
+<LI>No client/server relation imposed</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(16, 0)"> Classified Advertisement Matchmaking Framework </A><br><UL>
+<LI>Expression and evaluation of characteristics
+<UL>
+<LI>ClassAd, Closure, EvaluationContext
+</UL></UL><UL>
+<LI> Advertising Protocol
+<UL>
+<LI>Contents of advertisements
+<LI> Publication protocol
+</UL></UL><UL>
+<LI> Matchmaking Algorithm
+<UL>
+<LI>Relates ad contents to matching process 
+<LI>Priority schemes, Ranking schemes, etc.</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(17, 0)"> Classified Advertisement Matchmaking Framework (contd.) </A><br><UL>
+<LI> Matchmaking Protocol
+<UL>
+<LI>How are relevant parties informed of a successful match?
+<LI>What information are they given?
+</UL></UL><UL>
+<LI> Claiming Protocol
+<UL>
+<LI>How do matched parties claim each other to cooperate?</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(18, 0)"> ClassAd:  Mechanism for expressing characteristics </A><br><UL>
+<LI>A ClassAd is a set of names, each of which is bound to an expression.  e.g.,   [      Name =&#062 "Joe Hacker" ; Height =&#062 182 ; Sex =&#062 "Male" ;      Disposition  =&#062 (TimeOfDay() &#060 600) ? "Sour" : UNDEFINED ;     Requirements =&#062 (other.Height &#060 Height) && (other.Sex ==       	"Female")  ]
+</UL><UL>
+<LI> Expressions
+<UL>
+<LI>Constants, attribute references, function calls</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(19, 0)"> ClassAd (contd.) </A><br><UL>
+<LI> Attribute references may refer to attributes in other ads
+<UL>
+<LI>Attribute references "trigger" expression evaluation
+<LI>Scope resolution
+<LI>Evaluates to UNDEFINED if no such expression exists
+</UL></UL><UL>
+<LI> Values 
+<UL>
+<LI>String, integer, real, UNDEFINED and ERROR types
+<LI>Operators are total (i.e., defined over all values)</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(20, 0)"> Closure:  Evaluation Environment for a ClassAd </A><br><UL>
+<LI>Determines which ClassAd's attributes to lookup
+</UL><UL>
+<LI> Closure is
+<UL>
+<LI> ClassAd and an ordered mapping of (scope-name, closure) pairs
+<LI>No name may be repeated</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(21, 0)"> EvaluationContext:  Evaluation Environment for several ClassAds </A><br><UL>
+<LI> A set of closures which is self-contained
+<UL>
+<LI>No closure reference leaves the context
+<LI> Condor's "Standard Context" is a bit more complex
+<UL>
+<LI>Includes closures for a matchmaker "advertisement”</UL></UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(22, 0)"> Matchmaking in Condor </A><br><UL>
+<LI>Opportunistic Resource Exploitation
+<UL>
+<LI>Resource availability is unpredictable
+<UL>
+<LI>Exploit resources as soon as they are available
+<LI> Return resources as soon as they are unavailable
+</UL><LI> Matchmaking performed continuously
+</UL></UL><UL>
+<LI> Attractive for malleable parallel applications
+<UL>
+<LI>Request more resources after execution commences
+<UL>
+<LI>Granted immediately if resources are available, or
+<LI>As soon as resources become available</UL></UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(23, 0)"> Matchmaking in Condor (contd.) </A><br><UL>
+<LI>Advertising protocol
+<UL>
+<LI> Startd's, Schedd's send classads to Collector
+<LI>Must contain a "Requirements” expression
+<UL>
+<LI>Optionally contain a"Rank” and “CurrentRank” expressions
+</UL><LI>Startds send a "private ad" containing a capability
+</UL></UL><UL>
+<LI>Matchmaking protocol
+<UL>
+<LI>Give the matched Startd and Schedd the capability from the startd's private ad</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(24, 0)"> Matchmaking in Condor (contd.) </A><br><UL>
+<LI>Matchmaking Algorithm
+<UL>
+<LI>Request ad A matched with offer ad B “iff”
+<UL>
+<LI>A's "Requirements" expression evaluates to TRUE, and
+<LI>B's "Requirements" expression evaluates to TRUE, and
+<LI>B‘s"Rank" expression value is greater than "CurrentRank", and
+<LI>A’s  "Rank" expression value is  its greatest when evaluated against B
+</UL></UL></UL><UL>
+<LI>Claiming protocol
+<UL>
+<LI>Negotiate "heartbeat" frequency,  checkpoint transfer, etc.</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(25, 0)"> Condor Parallelism </A><br><UL>
+<LI>Job Level
+<UL>
+<LI>Condor clusters of  processes
+<LI>DagMan
+</UL></UL><UL>
+<LI>Task Level
+<UL>
+<LI>Interfacing Condor and PVM
+<UL>
+<LI>PVM: Message Passing
+<LI>Condor: Resource Management
+</UL><LI>PVM Resource Manager Interface
+<UL>
+<LI>pvm_reg_rm()</UL></UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(26, 0)"> Interfacing Condor and PVM, cont. </A><br>
+<P></P><A HREF="JavaScript:parent.ItemClicked(27, 0)"> Interfacing Condor and PVM, cont. </A><br><UL>
+<LI>CARMI -vs- PVM 
+<UL>
+<LI>Resource Requests
+<UL>
+<LI>PVM: Synchronous
+<LI>CARMI: Asynchronous
+</UL><LI>Resource Request Mechanism
+<UL>
+<LI>PVM: Hostname and Type String
+<LI>CARMI: ClassAd
+<UL>
+<LI>CARMI Resource Class
+</UL><LI>Task Management
+<UL>
+<LI>CARMI: Additional Notifications
+<LI>CARMI: Additional Operations
+</UL><LI>
+<UL>
+<LI>
+</UL></UL></UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(28, 0)"> Master-Worker Model </A><br><UL>
+<LI>A good fit for an opportunistic environment
+</UL><UL>
+<LI>Master
+<UL>
+<LI>Runs on Submit Machine
+<LI>Manages pool of tasks
+</UL></UL><UL>
+<LI>Worker
+<UL>
+<LI>Runs on remote machines
+<LI>Receives pieces of work from the Master, returns answer</UL></UL></P>
+<P><UL>
+Shadow<BR></UL></P>
+<P><UL>
+Master<BR></UL></P>
+<P><UL>
+PVMd<BR></UL></P>
+<P><UL>
+Starter<BR></UL></P>
+<P><UL>
+PVMd<BR></UL></P>
+<P><UL>
+Worker<BR></UL></P>
+<P><UL>
+Starter<BR></UL></P>
+<P><UL>
+PVMd<BR></UL></P>
+<P><UL>
+Worker<BR></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(29, 0)"> Additional Condor/PVM Frameworks </A><br><UL>
+<LI>CoCheck
+<UL>
+<LI>Checkpoint a Worker or set of Workers
+<LI>Requirements for a consistent checkpoint
+<UL>
+<LI>Synchronize all processes
+<LI>Flush PVM messages in transit
+<LI>Perform Checkpoint (save image)
+<LI>Remap TIDs
+</UL></UL></UL><UL>
+<LI>WoDi
+<UL>
+<LI>A framework for Master-Worker applications
+<LI>Performs optimizations</UL></UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(30, 0)"> Future Work </A><br><UL>
+<LI>Debug
+</UL><UL>
+<LI>Port
+</UL><UL>
+<LI>Debug
+</UL><UL>
+<LI>Port
+</UL><UL>
+<LI>Debug
+</UL><UL>
+<LI>Port
+</UL><UL>
+<LI>Debug
+</UL><UL>
+<LI>Port…..
+</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(31, 0)"> Future Work Part II </A><br><UL>
+<LI>Matchmaking
+<UL>
+<LI>Aggregate Resources/Requests
+</UL></UL><UL>
+<LI>Accounting
+<UL>
+<LI>Authentication
+</UL></UL><UL>
+<LI>Flocking
+</UL><UL>
+<LI>Java Universe
+</UL><UL>
+<LI>Split Execution</UL></P>
+<P>
+<P></P><A HREF="JavaScript:parent.ItemClicked(32, 0)"> Summary </A><br><UL>
+<LI>Condor is an implementation of a High Throughput Computing system in an opportunistic environment.
+</UL><UL>
+<LI>Major Mechanisms to achieve HTC:
+<UL>
+<LI>Matchmaking
+<LI>Checkpointing
+<LI>Remote system calls
+<LI>Sandboxing
+</UL></UL><UL>
+<LI>Questions ?     </UL></P>
+<P>
+</BODY>
+</HTML>

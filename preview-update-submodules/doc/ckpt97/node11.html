@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.4.1 Augmenting System Calls</TITLE>
+<META NAME="description" CONTENT="3.4.1 Augmenting System Calls">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html138" HREF="node12.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html136" HREF="node10.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html132" HREF="node10.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html139" HREF="node12.html">3.5 Signals</A>
+<B>Up:</B> <A NAME="tex2html137" HREF="node10.html">3.4 Files</A>
+<B> Previous:</B> <A NAME="tex2html133" HREF="node10.html">3.4 Files</A>
+<BR> <P>
+<A NAME="secsyscalls">&#160;</A><H3><A NAME="SECTION00034100000000000000">3.4.1 Augmenting System Calls</A></H3>
+<P>
+As described above, we need to record information from system calls
+such as <TT>open()</TT> without any modification of the user code.  We do
+this by providing our own version of <TT>open()</TT> which records the
+information then calls the system provided <TT>open()</TT> routine.  A
+straightforward implementation of this would result in a naming
+conflict, i.e. our <TT>open()</TT> routine would cover up the system <TT>
+open()</TT> routine.
+<P>
+The UNIX man pages make a distinction between ``system calls'' and ``C
+library routines'' (system calls are described in section 2, and
+library routines are described in section 3).  However, from the
+programmer's point of view, these two items appear to be very similar.
+There may seem to be no fundamental difference between a call to <TT>
+write()</TT> and a call to <TT>printf()</TT> - each is simply a procedure call
+requesting some service provided by ``the system''.  To see the
+difference, consider the plight of a programmer who wants to alter the
+functionality of each of these calls, but doesn't want to change their
+names.  Keeping the names the same will be crucial if one wants to
+link the altered <TT>write()</TT> and <TT>printf()</TT> routines with
+existing code which should not be aware of the change.  The programmer
+wanting to change <TT>printf()</TT> has at his or her disposal all the
+tools and routines available to the original designer of printf, but
+the programmer wanting to change <TT>write()</TT> has a problem.  How can
+one get the kernel to transfer data to the disk without calling <TT>
+write()</TT>?  We cannot call <TT>write()</TT> from within a routine called
+<TT>write()</TT> - that would be recursion, and definitely not what is
+wanted here.  The solution is a little known routine called <TT>
+syscall()</TT>.  Every UNIX system call is associated with a number
+(defined by a macro in <code>&lt;syscall.h&gt;</code>).  One can replace an
+invocation of a system call with a call to the syscall routine.  In
+this case the first argument is the system call number, and the
+remaining arguments are just the normal arguments to the system call.
+The following <TT>write()</TT> routine simply counts the number of times
+<TT>write()</TT> was called in the program, but otherwise acts exactly
+like the normal <TT>write()</TT>.
+<P>
+<PRE>int	number_of_writes = 0;
+write( int fd, void *buf, size_t len )
+{
+	number_of_writes++;
+	return syscall( SYS_write, fd, buf, len );
+}</PRE>
+<P>
+Interestingly, this trick works even if the user code never calls <TT>
+write()</TT> directly, but only indirectly - for example via <TT>
+printf()</TT>.  The condor checkpointing code uses this mechanism to
+augment the functionality of a number of system calls.  For example,
+we augment the <TT>open()</TT> system call so that it records the name of
+the file being opened, and the file descriptor number returned.  This
+information is later used to re-open the file at restart time.
+<P>
+<HR><A NAME="tex2html138" HREF="node12.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html136" HREF="node10.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html132" HREF="node10.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html139" HREF="node12.html">3.5 Signals</A>
+<B>Up:</B> <A NAME="tex2html137" HREF="node10.html">3.4 Files</A>
+<B> Previous:</B> <A NAME="tex2html133" HREF="node10.html">3.4 Files</A>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>
