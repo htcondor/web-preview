@@ -1,0 +1,204 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Overview</TITLE>
+<META NAME="description" CONTENT="Overview">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node2.html">
+<LINK REL="previous" HREF="refman.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node2.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html70"
+  HREF="node2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html68"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html62"
+  HREF="refman.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html71"
+  HREF="node2.html">Basic Concepts</A>
+<B> Up:</B> <A NAME="tex2html69"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html63"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+
+<H1><A NAME="SECTION00010000000000000000">
+Overview</A>
+</H1>
+
+<P>
+This document provides a formal specification of the syntax and
+semantics of the <I>ClassAd</I> (Classified Advertisement) language.
+The name of the language derives from its origin in the Condor distributed
+computing system&nbsp;[<A
+ HREF="node6.html#CONDOR_EXP">7</A>,<A
+ HREF="node6.html#CONDOR_HUNT">8</A>], where it is used for discovery
+and allocation of resources.  Providers of computing resources submit
+advertisements describing their capabilities and declaring constraints and
+preferences for jobs they are willing to run.  Consumers submit ads
+describing their jobs.  Like the provider ads, these ads may impose constraints
+and express preferences regarding execution sites.  A <I>matchmaker</I> process
+matches the producer and consumer ads.  All policy considerations are contained
+in the ads themselves; the matchmaker merely supplies the mechanism for
+interpreting the policies expressed in the ClassAd language.  The present
+document only defines the language. This introduction hints at how the language
+can be used to express a variety of scheduling policies, but a full discussion
+of this issue is beyond the scope of this document.
+
+<P>
+The ClassAd language is a functional language.  The basic unit is the
+<I>expression</I>, and execution entails <I>evaluation</I> of expressions,
+replacing an expression with its <I>normal form</I> or <I>value</I>.  There are
+no side-effects: Evaluation has no effect other than calculating the value of
+an expression.
+The language is carefully designed to allow efficient evaluation.  In
+particular, an expression can be evaluated in time proportional to the size of
+the expression.<A NAME="tex2html1"
+  HREF="#foot29"><SUP>1</SUP></A>
+<P>
+The most important type of expression is a <I>record expression</I> (sometimes
+called a ``classad''), which is a set of name/value pairs.  The ``value'' in
+each pair may be an arbitrarily complex expression, including nested record
+expressions and lists of expressions.  An example is
+<PRE>
+    [
+        type = "gizmo";
+        components = {
+            [ type = "widget"; part_number = 12394 ],
+            [ type = "widget"; part_number = 92348 ]
+        };
+        main_component = components[0];
+        main_part = main_component.part_number;
+    ]
+</PRE>
+
+<P>
+ClassAd expressions are strongly but dynamically typed.   Supported types
+include integral and floating-point numbers, Boolean values (<B>true</B> and
+<B>false</B>), character strings, timestamps, and time intervals.  During the
+evaluation, invalid sub-expressions evaluate to the value <B>error</B>.  For
+example, <code>1/0</code>, <code>3 * "abc"</code>, <code>{1, 2, 3}[5]</code>, and <code>27[5]</code>
+all evaluate to <B>error</B>.  Attribute references (occurrences of
+identifiers on the right-hand side of attribute definitions) are replaced by
+their definitions.  Attribute names with no definition or circular definitions
+evaluate to <B>undefined</B>.  Attribute lookup is ``block structured'':  An
+attribute reference is resolved by searching all record expressions containing
+the reference, from innermost outward, for a matching definition (this matching
+is case-insensitive).  For example, the expression
+<PRE>
+    [
+        a = 1; b = c;
+        d = [ f = g; i = a; j = c; k = l; a = 2; ]
+        l = d.k; c = 3;
+    ]
+</PRE>
+evaluates to
+<PRE>
+    [
+        a = 1; b = 3;
+        d = [ f = undefined; i = 2; j = 3; k = undefined; a = 2; ]
+        l = undefined; c = 3
+    ]
+</PRE>
+
+<P>
+There are currently two implementations of the ClassAd language, one in C++ and
+one in Java.  Both implementations should have identical external behavior
+conforming to this specification.<A NAME="tex2html2"
+  HREF="#foot42"><SUP>2</SUP></A>  In both implementations, ClassAd
+expressions are tree-structured objects.  Each implementation provides methods
+for constructing expressions, navigating through them, and evaluating them, as
+well as methods for translating between the internal data structures and
+character strings using either of two <I>concrete syntaxes</I>, the ``native
+representation'' used in the examples above and XML&nbsp;[<A
+ HREF="node6.html#XML">4</A>].
+
+<P>
+An important application of ClassAds is <I>matchmaking</I>.  Matchmaking is
+applied to a pair <I>A</I>, <I>B</I> of record expressions, each of which is expected to
+have a ``top-level'' definition of the attribute <TT>Requirements</TT>.  The
+<TT>Requirements</TT> attribute of <I>A</I> is evaluated in an
+environment in which the attribute reference <TT>other</TT> evaluates to <I>B</I>,
+and <TT>B.Requirements</TT> is evaluated in an environment in which
+<TT>other</TT> evaluates to <I>A</I>,
+If both <TT>Requirements</TT> attributes evaluate to the specific value
+<B>true</B> (not <B>undefined</B>, <B>error</B>, or a value of some
+non-Boolean type), the expressions <I>A</I> and <I>B</I> are said to <I>match</I>.  In
+Condor, matchmaking is used to match <I>job</I> and <I>machine</I> ads.  A
+machine ad describes the characteristics and current state of a machine.  It
+also has a <TT>Requirements</TT> attribute to restrict the set of jobs it is
+willing to run and a <TT>Rank</TT> attribute to indicate how much it ``likes''
+an individual job.  <TT>Rank</TT> should evaluate to a non-negative integer,
+with higher values indicating preferred jobs.  Similarly, a job ad has
+descriptive attributes, a <TT>Requirements</TT> attribute to constrain the set
+of acceptable machines, and a <TT>Rank</TT> attribute to express preferences.
+The Condor matchmaker uses these attributes to match jobs with machines.
+
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="foot29">... expression.</A><A
+ HREF="node1.html#tex2html1"><SUP>1</SUP></A></DT>
+<DD>Actually, this statement is only true if
+each function call completes within a time bound proportional to the length
+of its arguments.
+All ``built-in'' functions have this property.
+
+</DD>
+<DT><A NAME="foot42">... specification.</A><A
+ HREF="node1.html#tex2html2"><SUP>2</SUP></A></DT>
+<DD>Of course, this is an idealized
+goal.  As of this writing, there are several ways in which the
+two implementations differ from each other and from this specification.  An
+effort is underway to improve conformance.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html70"
+  HREF="node2.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html68"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html62"
+  HREF="refman.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html71"
+  HREF="node2.html">Basic Concepts</A>
+<B> Up:</B> <A NAME="tex2html69"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html63"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Marvin Solomon
+2005-05-07
+</ADDRESS>
+</BODY>
+</HTML>

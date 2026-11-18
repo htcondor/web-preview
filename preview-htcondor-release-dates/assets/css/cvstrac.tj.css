@@ -1,0 +1,16 @@
+pre.term {    background-color: #EEE;    border: 1px solid #666;    padding-left: 0.5em;    overflow: auto;
+ }
+
+pre.termout {    background-color: #FFF;    left-border: 1px solid #666; right-border: 1px solid #666;   padding-left: 0.5em;    overflow: auto;
+ }
+
+pre.sniplabel {    margin-bottom: 0;    background-color: #FFE;  padding-left: 0.5em;    overflow: auto;
+ font-style: italic; }
+pre.snip {    margin-top: 0;    background-color: #EED;    border: 1px solid #666;    padding-left: 0.5em;    overflow: auto;
+ }
+
+pre.filelabel {    margin-bottom: 0;  background-color: #EFE;  padding-left: 0.5em;    overflow: auto;
+ font-style: italic; }
+pre.file {    margin-top: 0;    background-color: #DED;    border: 1px solid #666;    padding-left: 0.5em;    overflow: auto;
+ }
+
