@@ -1,0 +1,1726 @@
+%!
+% nup.pre.ps -- Prelude for n-up printing. $Revision: 1.1.1.1 $
+/$Nup
+75
+dict
+def
+$Nup
+begin/spots
+2
+def/reverse?
+true
+def/startspot
+0
+def
+gsave/transforms[/ind
+0
+def[2
+4
+8
+16]{spots
+eq{exit}if/ind
+ind
+1
+add
+def}forall/upright?[false
+true
+false
+true]ind
+get
+def/numwide[2
+2
+4
+4]ind
+get
+def/sfactor[0.5833
+0.4444
+0.2916
+0.2222]ind
+get
+def/pwidth
+sfactor
+612
+mul
+def/pheight
+sfactor
+792
+mul
+def
+upright?{/width
+544
+def/height
+704
+def}{/width
+714
+def/height
+462
+def}ifelse
+reverse?{spots
+1
+sub
+-1
+0}{0
+1
+spots
+1
+sub}ifelse{/p
+exch
+def
+initmatrix
+upright?{34
+44
+translate}{537
+39
+translate
+90
+rotate}ifelse
+p
+numwide
+mod
+pwidth
+mul
+height
+p
+numwide
+idiv
+1
+add
+pheight
+mul
+sub
+translate
+sfactor
+dup
+scale
+matrix
+currentmatrix}for]def
+grestore/spot
+startspot
+def/pods[/showpage/copypage/erasepage/initgraphics/initmatrix/initclip/defaultmatrix
+/currentmatrix/setmatrix/restore/gsave/grestore/grestoreall]def/+s
+128
+string
+dup
+0(+)putinterval
+def/-s
+128
+string
+dup
+0(-)putinterval
+def/namestr
+128
+string
+def
+pods{dup
+namestr
+cvs
+dup
+length/l
+exch
+def
+-s
+exch
+1
+exch
+putinterval
+systemdict
+exch
+get
+-s
+0
+l
+1
+add
+getinterval
+exch
+def}forall/psave{-gsave[/newpath
+load{/moveto
+load}{/lineto
+load}{/curveto
+load}{/closepath
+load}pathforall]-grestore}def/prestore{cvx
+exec}def
+gsave
+initgraphics
+clippath/page-clip
+psave
+def
+grestore/astr
+128
+string
+def/numstr
+10
+string
+def/$arrays
+50
+dict
+def/a2s{/l
+0
+def{100
+mul
+cvi
+numstr
+cvs
+astr
+exch
+l
+exch
+dup
+length
+l
+add/l
+exch
+def
+putinterval
+astr
+l(:)putinterval/l
+l
+1
+add
+def}forall
+astr
+0
+l
+1
+sub
+getinterval}def/arrdef{exch
+a2s
+exch
+$arrays
+3
+1
+roll
+put}def/arrload{a2s
+$arrays
+exch
+2
+copy
+known{get
+true}{false}ifelse}def/m
+matrix
+def/m2
+matrix
+def/m3
+matrix
+def/fix-gstate{psave
+clippath
+psave
+4
+2
+roll
+fix-trans
+-initclip
+prestore
+clip
+prestore}def/fix-trans{/newspot
+exch
+def/oldspot
+exch
+def
+m
+-currentmatrix
+transforms
+oldspot
+get
+m2
+invertmatrix
+m3
+concatmatrix
+transforms
+newspot
+get
+m
+concatmatrix
+-setmatrix}def/page-edges{-gsave
++initgraphics
+-initclip
+0.0
+setlinewidth
+newpath
+0
+0
+moveto
+0
+792
+lineto
+612
+792
+lineto
+612
+0
+lineto
+closepath
+stroke
+-grestore}def/+defaultmatrix{transforms
+spot
+get
+exch
+copy}def/+initmatrix{m
++defaultmatrix
+-setmatrix}def/+initgraphics{-initgraphics
++initmatrix
++initclip}def/+initclip{psave
+m
+-currentmatrix
+-initclip
++defaultmatrix
+page-clip
+prestore
+clip
+-setmatrix
+prestore}def/+showpage{+copypage
++erasepage
++initgraphics}def/+copypage{page-edges
+spot
+1
+add
+dup
+spots
+eq{-copypage
+-erasepage
+pop
+0}if/spot
+exch
+def}def/+erasepage{-gsave
++initgraphics
+page-clip
+prestore
+1
+setgray
+fill
+-grestore}def/+restore{spot
+exch
+-restore
+dup
+spot
+ne{dup
+spot
+exch
+fix-gstate/spot
+exch
+def}{pop}ifelse}def/+gsave{-gsave
+m
+-currentmatrix
+spot
+arrdef}def/+grestore{-grestore
+m
+-currentmatrix
+arrload{spot
+fix-gstate}if}def/+grestoreall{-grestoreall
+m
+-currentmatrix
+arrload{spot
+fix-gstate}if}def/+currentmatrix{-currentmatrix
+dup
+spot
+arrdef}def/+setmatrix{dup
+-setmatrix
+dup
+arrload{spot
+fix-trans
+pop}{(bad setmatrix: )print
+==}ifelse}def
+pods{/pod
+exch
+def
+userdict
+pod[$Nup/begin
+load
+pod
+namestr
+cvs
+dup
+length/l
+exch
+def
++s
+exch
+1
+exch
+putinterval
++s
+0
+l
+1
+add
+getinterval
+cvn
+cvx/end
+load]cvx
+put}forall
+end
+initgraphics
+%!PS-Adobe-2.0
+%%Creator: dvipsk 5.58f Copyright 1986, 1994 Radical Eye Software
+%%Title: classad-talk.dvi
+%%Pages: 20
+%%PageOrder: Ascend
+%%Orientation: Landscape
+%%BoundingBox: 0 0 612 792
+%%DocumentFonts: Helvetica Helvetica-Bold Courier Helvetica-Oblique
+%%DocumentPaperSizes: Letter
+%%EndComments
+%DVIPSCommandLine: dvips classad-talk.dvi
+%DVIPSParameters: dpi=600, comments removed
+%DVIPSSource:  TeX output 1998.09.16:0809
+%%BeginProcSet: tex.pro
+/TeXDict 250 dict def TeXDict begin /N{def}def /B{bind def}N /S{exch}N
+/X{S N}B /TR{translate}N /isls false N /vsize 11 72 mul N /hsize 8.5 72
+mul N /landplus90{false}def /@rigin{isls{[0 landplus90{1 -1}{-1 1}
+ifelse 0 0 0]concat}if 72 Resolution div 72 VResolution div neg scale
+isls{landplus90{VResolution 72 div vsize mul 0 exch}{Resolution -72 div
+hsize mul 0}ifelse TR}if Resolution VResolution vsize -72 div 1 add mul
+TR[matrix currentmatrix{dup dup round sub abs 0.00001 lt{round}if}
+forall round exch round exch]setmatrix}N /@landscape{/isls true N}B
+/@manualfeed{statusdict /manualfeed true put}B /@copies{/#copies X}B
+/FMat[1 0 0 -1 0 0]N /FBB[0 0 0 0]N /nn 0 N /IE 0 N /ctr 0 N /df-tail{
+/nn 8 dict N nn begin /FontType 3 N /FontMatrix fntrx N /FontBBox FBB N
+string /base X array /BitMaps X /BuildChar{CharBuilder}N /Encoding IE N
+end dup{/foo setfont}2 array copy cvx N load 0 nn put /ctr 0 N[}B /df{
+/sf 1 N /fntrx FMat N df-tail}B /dfs{div /sf X /fntrx[sf 0 0 sf neg 0 0]
+N df-tail}B /E{pop nn dup definefont setfont}B /ch-width{ch-data dup
+length 5 sub get}B /ch-height{ch-data dup length 4 sub get}B /ch-xoff{
+128 ch-data dup length 3 sub get sub}B /ch-yoff{ch-data dup length 2 sub
+get 127 sub}B /ch-dx{ch-data dup length 1 sub get}B /ch-image{ch-data
+dup type /stringtype ne{ctr get /ctr ctr 1 add N}if}B /id 0 N /rw 0 N
+/rc 0 N /gp 0 N /cp 0 N /G 0 N /sf 0 N /CharBuilder{save 3 1 roll S dup
+/base get 2 index get S /BitMaps get S get /ch-data X pop /ctr 0 N ch-dx
+0 ch-xoff ch-yoff ch-height sub ch-xoff ch-width add ch-yoff
+setcachedevice ch-width ch-height true[1 0 0 -1 -.1 ch-xoff sub ch-yoff
+.1 sub]{ch-image}imagemask restore}B /D{/cc X dup type /stringtype ne{]}
+if nn /base get cc ctr put nn /BitMaps get S ctr S sf 1 ne{dup dup
+length 1 sub dup 2 index S get sf div put}if put /ctr ctr 1 add N}B /I{
+cc 1 add D}B /bop{userdict /bop-hook known{bop-hook}if /SI save N @rigin
+0 0 moveto /V matrix currentmatrix dup 1 get dup mul exch 0 get dup mul
+add .99 lt{/QV}{/RV}ifelse load def pop pop}N /eop{SI restore userdict
+/eop-hook known{eop-hook}if showpage}N /@start{userdict /start-hook
+known{start-hook}if pop /VResolution X /Resolution X 1000 div /DVImag X
+/IE 256 array N 0 1 255{IE S 1 string dup 0 3 index put cvn put}for
+65781.76 div /vsize X 65781.76 div /hsize X}N /p{show}N /RMat[1 0 0 -1 0
+0]N /BDot 260 string N /rulex 0 N /ruley 0 N /v{/ruley X /rulex X V}B /V
+{}B /RV statusdict begin /product where{pop product dup length 7 ge{0 7
+getinterval dup(Display)eq exch 0 4 getinterval(NeXT)eq or}{pop false}
+ifelse}{false}ifelse end{{gsave TR -.1 .1 TR 1 1 scale rulex ruley false
+RMat{BDot}imagemask grestore}}{{gsave TR -.1 .1 TR rulex ruley scale 1 1
+false RMat{BDot}imagemask grestore}}ifelse B /QV{gsave newpath transform
+round exch round exch itransform moveto rulex 0 rlineto 0 ruley neg
+rlineto rulex neg 0 rlineto fill grestore}B /a{moveto}B /delta 0 N /tail
+{dup /delta X 0 rmoveto}B /M{S p delta add tail}B /b{S p tail}B /c{-4 M}
+B /d{-3 M}B /e{-2 M}B /f{-1 M}B /g{0 M}B /h{1 M}B /i{2 M}B /j{3 M}B /k{
+4 M}B /w{0 rmoveto}B /l{p -4 w}B /m{p -3 w}B /n{p -2 w}B /o{p -1 w}B /q{
+p 1 w}B /r{p 2 w}B /s{p 3 w}B /t{p 4 w}B /x{0 S rmoveto}B /y{3 2 roll p
+a}B /bos{/SS save N}B /eos{SS restore}B end
+%%EndProcSet
+%%BeginProcSet: pstricks.pro
+% PostScript prologue for pstricks.tex.
+% Created 1993/3/12. Source file was pstricks.doc
+% Version 0.93a, 93/03/12.
+% For use with Rokicki's dvips.
+/tx@Dict 200 dict def tx@Dict begin
+/ADict 25 dict def
+/CM { matrix currentmatrix } bind def
+/SLW /setlinewidth load def
+/CLW /currentlinewidth load def
+/CP /currentpoint load def
+/ED { exch def } bind def
+/L /lineto load def
+/T /translate load def
+/Atan { /atan load stopped { pop pop 0 } if } def
+/Div { dup 0 eq { pop } { div } ifelse } def
+/NET { neg exch neg exch T } def
+/Pyth { dup mul exch dup mul add sqrt } def
+/PtoC { 2 copy cos mul 3 1 roll sin mul } def
+/PathLength@ { /z z y y1 sub x x1 sub Pyth add def /y1 y def /x1 x def }
+def
+/PathLength { flattenpath /z 0 def { /y1 ED /x1 ED /y2 y1 def /x2 x1 def
+} { /y ED /x ED PathLength@ } {} { /y y2 def /x x2 def PathLength@ }
+pathforall z } def
+/STP { .996264 dup scale } def
+/STV { SDict begin normalscale end STP  } def
+/DashLine { dup 0 gt { /a .5 def PathLength exch div } { pop /a 1 def
+PathLength } ifelse /b ED /x ED /y ED /z y x add def b a .5 sub 2 mul y
+mul sub z Div round z mul a .5 sub 2 mul y mul add b exch Div dup y mul
+/y ED x mul /x ED x 0 eq y 0 eq and { /x 1 def /y 1 def } if [ y x ] 1 a
+sub y mul setdash stroke } def
+/DotLine { /b PathLength def /a ED /z ED /y CLW def /z y z add def a 0 gt
+{ /b b a div def } { a 0 eq { /b b y sub def } { a -3 eq { /b b y add
+def } if } ifelse } ifelse [ 0 b b z Div round Div dup 0 le { pop 1 } if
+] a 0 gt { 0 } { y 2 div a -2 gt { neg } if } ifelse setdash 1
+setlinecap stroke } def
+/LineFill { abs CLW add /a ED gsave clip pathbbox a Div ceiling /y2 ED
+/x2 ED a Div floor /y1 ED /x1 ED /n y2 y1 sub 1 add cvi def /y1 a y1 mul
+def newpath 2 setlinecap n { currentstrokeadjust == x1 y1 moveto x2 y1 L
+stroke /y1 y1 a add def } repeat grestore } def
+/LineFill { abs CLW add /a ED gsave clip pathbbox a Div ceiling /y2 ED
+/x2 ED a Div floor /y1 ED /x1 ED /n y2 y1 sub 1 add cvi def /y1 a y1 mul
+def newpath 2 setlinecap systemdict /currentstrokeadjust known {
+currentstrokeadjust } { false } ifelse { /t { } def } { /t { transform
+0.25 sub round 0.25 add exch 0.25 sub round 0.25 add exch itransform }
+bind def } ifelse n { x1 y1 t moveto x2 y1 t L stroke /y1 y1 a add def }
+repeat grestore } def
+/BeginArrow { ADict begin /@mtrx CM def gsave 2 copy T 2 index sub neg
+exch 3 index sub exch Atan rotate newpath } def
+/EndArrow { @mtrx setmatrix CP grestore end } def
+/Arrow { CLW mul add dup 2 div /w ED mul dup /h ED mul /a ED { 0 h T 1 -1
+scale } if w neg h moveto 0 0 L w h L w neg a neg rlineto gsave fill
+grestore } def
+/Tbar { CLW mul add /z ED z -2 div CLW 2 div moveto z 0 rlineto stroke 0
+CLW moveto } def
+/Bracket { CLW mul add dup CLW sub 2 div /x ED mul CLW add /y ED /z CLW 2
+div def x neg y moveto x neg CLW 2 div L x CLW 2 div L x y L stroke 0
+CLW moveto } def
+/RoundBracket { CLW mul add dup 2 div /x ED mul /y ED /mtrx CM def 0 CLW
+2 div T x y mul 0 ne { x y scale } if 1 1 moveto .85 .5 .35 0 0 0
+curveto -.35 0 -.85 .5 -1 1 curveto mtrx setmatrix stroke 0 CLW moveto }
+def
+/Shadow { [ { /moveto load } { /lineto load } { /curveto load } {
+/closepath load } pathforall ] cvx newpath 3 1 roll T exec } def
+/SD { 0 360 arc fill } def
+/SQ { /r ED r r moveto r r neg L r neg r neg L r neg r L fill } def
+/ST { /y ED /x ED x y moveto x neg y L 0 x L fill } def
+/SP { /r ED gsave 0 r moveto 4 { 72 rotate 0 r L } repeat fill grestore }
+def
+/NArray { aload length 2 div dup dup cvi eq not { exch pop } if /n exch
+cvi def } def
+/NArray { /f ED counttomark 2 div dup cvi /n ED n eq not { exch pop } if
+f { ] aload /Points ED } { n 2 mul 1 add -1 roll pop } ifelse } def
+/Line { NArray n 0 eq not { n 1 eq { 0 0 /n 2 def } if ArrowA /n n 2 sub
+def n { Lineto } repeat CP 4 2 roll ArrowB L pop pop } if } def
+/Arcto { /a [ 6 -2 roll ] cvx def a r /arcto load stopped { 5 } { 4 }
+ifelse { pop } repeat a } def
+/CheckClosed { dup n 2 mul 1 sub index eq 2 index n 2 mul 1 add index eq
+and { pop pop /n n 1 sub def } if } def
+/Polygon { NArray n 2 eq { 0 0 /n 3 def } if n 3 lt { n { pop pop }
+repeat } { n 3 gt { CheckClosed } if n 2 mul -2 roll /y0 ED /x0 ED /y1
+ED /x1 ED x1 y1 /x1 x0 x1 add 2 div def /y1 y0 y1 add 2 div def x1 y1
+moveto /n n 2 sub def n { Lineto } repeat x1 y1 x0 y0 6 4 roll Lineto
+Lineto pop pop closepath } ifelse } def
+/CCA { /y ED /x ED 2 copy y sub /dy1 ED x sub /dx1 ED /l1 dx1 dy1 Pyth
+def } def
+/CCA { /y ED /x ED 2 copy y sub /dy1 ED x sub /dx1 ED /l1 dx1 dy1 Pyth
+def } def
+/CC { /l0 l1 def /x1 x dx sub def /y1 y dy sub def /dx0 dx1 def /dy0 dy1
+def CCA /dx dx0 l1 c exp mul dx1 l0 c exp mul add def /dy dy0 l1 c exp
+mul dy1 l0 c exp mul add def /m dx0 dy0 Atan dx1 dy1 Atan sub 2 div cos
+abs b exp a mul dx dy Pyth Div 2 div def /x2 x l0 dx mul m mul sub def
+/y2 y l0 dy mul m mul sub def /dx l1 dx mul m mul neg def /dy l1 dy mul
+m mul neg def } def
+/IC { /c c 1 add def c 0 lt { /c 0 def } { c 3 gt { /c 3 def } if }
+ifelse /a a 2 mul 3 div 45 cos b exp div def CCA /dx 0 def /dy 0 def }
+def
+/BOC { IC CC x2 y2 x1 y1 ArrowA CP 4 2 roll x y curveto } def
+/NC { CC x1 y1 x2 y2 x y curveto } def
+/EOC { x dx sub y dy sub 4 2 roll ArrowB 2 copy curveto } def
+/BAC { IC CC x y moveto CC x1 y1 CP ArrowA } def
+/NAC { x2 y2 x y curveto CC x1 y1 } def
+/EAC { x2 y2 x y ArrowB curveto pop pop } def
+/OpenCurve { NArray n 3 lt { n { pop pop } repeat } { BOC /n n 3 sub def
+n { NC } repeat EOC } ifelse } def
+/AltCurve { { false NArray n 2 mul 2 roll [ n 2 mul 3 sub 1 roll ] aload
+/Points ED n 2 mul -2 roll } { false NArray } ifelse n 4 lt { n { pop
+pop } repeat } { BAC /n n 4 sub def n { NAC } repeat EAC } ifelse } def
+/ClosedCurve { NArray n 3 lt { n { pop pop } repeat } { n 3 gt {
+CheckClosed } if 6 copy n 2 mul 6 add 6 roll IC CC x y moveto n { NC }
+repeat closepath pop pop } ifelse } def
+/EndDot { { /z DS def } { /z 0 def } ifelse /b ED 0 z DS SD b { 0 z DS
+CLW sub SD } if 0 DS z add CLW 4 div sub moveto } def
+/Rect { x1 y1 y2 add 2 div moveto x1 y2 lineto x2 y2 lineto x2 y1 lineto
+x1 y1 lineto closepath } def
+/OvalFrame { x1 x2 eq y1 y2 eq or { pop pop x1 y1 moveto x2 y2 L } { y1
+y2 sub abs x1 x2 sub abs 2 copy gt { exch pop } { pop } ifelse 2 div
+exch { dup 3 1 roll mul exch } if 2 copy lt { pop } { exch pop } ifelse
+/b ED x1 y1 y2 add 2 div moveto x1 y2 x2 y2 b arcto x2 y2 x2 y1 b arcto
+x2 y1 x1 y1 b arcto x1 y1 x1 y2 b arcto 16 { pop } repeat closepath }
+ifelse } def
+/Frame { CLW mul /a ED 3 -1 roll 2 copy gt { exch } if a sub /y2 ED a add
+/y1 ED 2 copy gt { exch } if a sub /x2 ED a add /x1 ED 1 index 0 eq {
+pop pop Rect } { OvalFrame } ifelse } def
+/Parab { /y0 exch def /x0 exch def /y1 exch def /x1 exch def /dx x0 x1
+sub 3 div def /dy y0 y1 sub 3 div def x0 dx sub y0 dy add x1 y1 ArrowA
+x0 dx add y0 dy add x0 2 mul x1 sub y1 ArrowB curveto /Points [ x1 y1 x0
+y0 x0 2 mul x1 sub y1 ] def } def
+/Grid { /a 4 string def /b ED /d ED /n ED cvi dup 1 lt { pop 1 } if /c ED
+c div dup 0 eq { pop 1 } if /cy ED c div dup 0 eq { pop 1 } if /cx ED cy
+div cvi /y ED cx div cvi /x ED cy div cvi /y2 ED cx div cvi /x2 ED cy
+div cvi /y1 ED cx div cvi /x1 ED /h y2 y1 sub 0 gt { 1 } { -1 } ifelse
+def /w x2 x1 sub 0 gt { 1 } { -1 } ifelse def b 0 gt { /z1 b 4 div CLW 2
+div add def /Helvetica findfont b scalefont setfont /b b .95 mul CLW 2
+div add def } if gsave n 0 gt { 1 setlinecap [ 0 cy n div ] 0 setdash }
+{ 2 setlinecap } ifelse /c x1 def /i 500 w mul x1 add def /e y cy mul
+def /f y1 cy mul def /g y2 cy mul def x1 cx mul 0 T { newpath 0 e moveto
+b 0 gt { gsave d c a cvs dup stringwidth pop /z2 ED w 0 gt {z1} {z1 z2
+add neg} ifelse h 0 gt {b neg} {z1} ifelse rmoveto show grestore } if 0
+f moveto 0 g L stroke cx w mul 0 T c x2 eq c i eq or {exit} if /c c w
+add def } loop grestore gsave n 0 gt { 1 setlinecap [ 0 cx n div ] 0
+setdash } { 2 setlinecap } ifelse /c y1 def /i 500 h mul y1 add def /e x
+cx mul def /f x1 cx mul def /g x2 cx mul def 0 y1 cy mul T { newpath e 0
+moveto b 0 gt { gsave d c a cvs dup stringwidth pop /z2 ED w 0 gt {z1 z2
+add neg} {z1} ifelse h 0 gt {z1} {b neg} ifelse rmoveto show grestore }
+if f 0 moveto g 0 L stroke 0 cy h mul T c y2 eq c i eq or {exit} if /c c
+h add def } loop grestore } def
+/ArcArrow { /d ED /b ED /a ED gsave newpath 0 -1000 moveto clip newpath 0
+1 0 0 b grestore c mul /e ED pop pop pop r a e d PtoC y add exch x add
+exch r a PtoC y add exch x add exch b pop pop pop pop a e d CLW 8 div c
+mul neg d } def
+/Ellipse { /mtrx CM def T scale 0 0 1 5 3 roll arc mtrx setmatrix } def
+/Rot { CP CP translate 3 -1 roll neg rotate NET  } def
+/PutCoor { gsave CP T CM STV exch exec moveto setmatrix CP grestore } def
+/PutBegin { /lmtrx [ tx@Dict /lmtrx known { lmtrx aload pop } if CM ] def
+CP 4 2 roll T moveto } def
+/PutEnd { CP /lmtrx [ lmtrx aload pop setmatrix ] def moveto } def
+/Uput { /a ED add 2 div /h ED 2 div /w ED /s a sin def /c a cos def /b s
+abs c abs 2 copy gt dup /q ED { pop } { exch pop } ifelse def /w1 c b
+div w mul def /h1 s b div h mul def q { w1 abs w sub dup c mul abs } {
+h1 abs h sub dup s mul abs } ifelse } def
+/UUput { /z ED abs /y ED /x ED q { x s div c mul abs y gt } { x c div s
+mul abs y gt } ifelse { x x mul y y mul sub z z mul add sqrt z add } { q
+{ x s div } { x c div } ifelse abs } ifelse a PtoC h1 add exch w1 add
+exch } def
+/BeginOL { dup (all) eq exch TheOL eq or { IfVisible not { CP OLUnit T
+moveto /IfVisible true def } if } { IfVisible { CP OLUnit NET moveto
+/IfVisible false def } if } ifelse } def
+/InitOL { /OLUnit [ gsave CM STV 2890.79999 dup moveto setmatrix CP
+grestore ] cvx def /BOL { BeginOL } def /IfVisible true def } def
+end
+%%EndProcSet
+%%BeginFont: Helvetica
+% @@psencodingfile@{
+%   author = "S. Rahtz, P. MacKay, Alan Jeffrey, B. Horn, K. Berry",
+%   version = "0.6",
+%   date = "22 June 1996",
+%   filename = "8r.enc",
+%   email = "kb@@mail.tug.org",
+%   address = "135 Center Hill Rd. // Plymouth, MA 02360",
+%   codetable = "ISO/ASCII",
+%   checksum = "119     662    4424",
+%   docstring = "Encoding for TrueType or Type 1 fonts to be used with TeX."
+% @}
+% 
+% Idea is to have all the characters normally included in Type 1 fonts
+% available for typesetting. This is effectively the characters in Adobe
+% Standard Encoding + ISO Latin 1 + extra characters from Lucida.
+% 
+% Character code assignments were made as follows:
+% 
+% (1) the Windows ANSI characters are almost all in their Windows ANSI
+% positions, because some Windows users cannot easily reencode the
+% fonts, and it makes no difference on other systems. The only Windows
+% ANSI characters not available are those that make no sense for
+% typesetting -- rubout (127 decimal), nobreakspace (160), softhyphen
+% (173). quotesingle and grave are moved just because it's such an
+% irritation not having them in TeX positions.
+% 
+% (2) Remaining characters are assigned arbitrarily to the lower part
+% of the range, avoiding 0, 10 and 13 in case we meet dumb software.
+% 
+% (3) Y&Y Lucida Bright includes some extra text characters; in the
+% hopes that other PostScript fonts, perhaps created for public
+% consumption, will include them, they are included starting at 0x12.
+% 
+% (4) Remaining positions left undefined are for use in (hopefully)
+% upward-compatible revisions, if someday more characters are generally
+% available.
+% 
+% (5) hyphen appears twice for compatibility with both ASCII and Windows.
+% 
+/TeXBase1Encoding [
+% 0x00 (encoded characters from Adobe Standard not in Windows 3.1)
+  /.notdef /dotaccent /fi /fl
+  /fraction /hungarumlaut /Lslash /lslash
+  /ogonek /ring /.notdef
+  /breve /minus /.notdef 
+% These are the only two remaining unencoded characters, so may as
+% well include them.
+  /Zcaron /zcaron 
+% 0x10
+ /caron /dotlessi 
+% (unusual TeX characters available in, e.g., Lucida Bright)
+ /dotlessj /ff /ffi /ffl 
+ /.notdef /.notdef /.notdef /.notdef
+ /.notdef /.notdef /.notdef /.notdef
+ % very contentious; it's so painful not having quoteleft and quoteright
+ % at 96 and 145 that we move the things normally found there down to here.
+ /grave /quotesingle 
+% 0x20 (ASCII begins)
+ /space /exclam /quotedbl /numbersign
+ /dollar /percent /ampersand /quoteright
+ /parenleft /parenright /asterisk /plus /comma /hyphen /period /slash
+% 0x30
+ /zero /one /two /three /four /five /six /seven
+ /eight /nine /colon /semicolon /less /equal /greater /question
+% 0x40
+ /at /A /B /C /D /E /F /G /H /I /J /K /L /M /N /O
+% 0x50
+ /P /Q /R /S /T /U /V /W
+ /X /Y /Z /bracketleft /backslash /bracketright /asciicircum /underscore
+% 0x60
+ /quoteleft /a /b /c /d /e /f /g /h /i /j /k /l /m /n /o
+% 0x70
+ /p /q /r /s /t /u /v /w
+ /x /y /z /braceleft /bar /braceright /asciitilde
+ /.notdef % rubout; ASCII ends
+% 0x80
+ /.notdef /.notdef /quotesinglbase /florin
+ /quotedblbase /ellipsis /dagger /daggerdbl
+ /circumflex /perthousand /Scaron /guilsinglleft
+ /OE /.notdef /.notdef /.notdef
+% 0x90
+ /.notdef /.notdef /.notdef /quotedblleft
+ /quotedblright /bullet /endash /emdash
+ /tilde /trademark /scaron /guilsinglright
+ /oe /.notdef /.notdef /Ydieresis
+% 0xA0
+ /.notdef % nobreakspace
+ /exclamdown /cent /sterling
+ /currency /yen /brokenbar /section
+ /dieresis /copyright /ordfeminine /guillemotleft
+ /logicalnot
+ /hyphen % Y&Y (also at 45); Windows' softhyphen
+ /registered
+ /macron
+% 0xD0
+ /degree /plusminus /twosuperior /threesuperior
+ /acute /mu /paragraph /periodcentered
+ /cedilla /onesuperior /ordmasculine /guillemotright
+ /onequarter /onehalf /threequarters /questiondown
+% 0xC0
+ /Agrave /Aacute /Acircumflex /Atilde /Adieresis /Aring /AE /Ccedilla
+ /Egrave /Eacute /Ecircumflex /Edieresis
+ /Igrave /Iacute /Icircumflex /Idieresis
+% 0xD0
+ /Eth /Ntilde /Ograve /Oacute
+ /Ocircumflex /Otilde /Odieresis /multiply
+ /Oslash /Ugrave /Uacute /Ucircumflex
+ /Udieresis /Yacute /Thorn /germandbls
+% 0xE0
+ /agrave /aacute /acircumflex /atilde
+ /adieresis /aring /ae /ccedilla
+ /egrave /eacute /ecircumflex /edieresis
+ /igrave /iacute /icircumflex /idieresis
+% 0xF0
+ /eth /ntilde /ograve /oacute
+ /ocircumflex /otilde /odieresis /divide
+ /oslash /ugrave /uacute /ucircumflex
+ /udieresis /yacute /thorn /ydieresis
+] def
+%%EndFont
+%%BeginProcSet: texps.pro
+TeXDict begin /rf{findfont dup length 1 add dict begin{1 index /FID ne 2
+index /UniqueID ne and{def}{pop pop}ifelse}forall[1 index 0 6 -1 roll
+exec 0 exch 5 -1 roll VResolution Resolution div mul neg 0 0]/Metrics
+exch def dict begin Encoding{exch dup type /integertype ne{pop pop 1 sub
+dup 0 le{pop}{[}ifelse}{FontMatrix 0 get div Metrics 0 get div def}
+ifelse}forall Metrics /Metrics currentdict end def[2 index currentdict
+end definefont 3 -1 roll makefont /setfont load]cvx def}def
+/ObliqueSlant{dup sin S cos div neg}B /SlantFont{4 index mul add}def
+/ExtendFont{3 -1 roll mul exch}def /ReEncodeFont{/Encoding exch def}def
+end
+%%EndProcSet
+%%BeginProcSet: special.pro
+TeXDict begin /SDict 200 dict N SDict begin /@SpecialDefaults{/hs 612 N
+/vs 792 N /ho 0 N /vo 0 N /hsc 1 N /vsc 1 N /ang 0 N /CLIP 0 N /rwiSeen
+false N /rhiSeen false N /letter{}N /note{}N /a4{}N /legal{}N}B
+/@scaleunit 100 N /@hscale{@scaleunit div /hsc X}B /@vscale{@scaleunit
+div /vsc X}B /@hsize{/hs X /CLIP 1 N}B /@vsize{/vs X /CLIP 1 N}B /@clip{
+/CLIP 2 N}B /@hoffset{/ho X}B /@voffset{/vo X}B /@angle{/ang X}B /@rwi{
+10 div /rwi X /rwiSeen true N}B /@rhi{10 div /rhi X /rhiSeen true N}B
+/@llx{/llx X}B /@lly{/lly X}B /@urx{/urx X}B /@ury{/ury X}B /magscale
+true def end /@MacSetUp{userdict /md known{userdict /md get type
+/dicttype eq{userdict begin md length 10 add md maxlength ge{/md md dup
+length 20 add dict copy def}if end md begin /letter{}N /note{}N /legal{}
+N /od{txpose 1 0 mtx defaultmatrix dtransform S atan/pa X newpath
+clippath mark{transform{itransform moveto}}{transform{itransform lineto}
+}{6 -2 roll transform 6 -2 roll transform 6 -2 roll transform{
+itransform 6 2 roll itransform 6 2 roll itransform 6 2 roll curveto}}{{
+closepath}}pathforall newpath counttomark array astore /gc xdf pop ct 39
+0 put 10 fz 0 fs 2 F/|______Courier fnt invertflag{PaintBlack}if}N
+/txpose{pxs pys scale ppr aload pop por{noflips{pop S neg S TR pop 1 -1
+scale}if xflip yflip and{pop S neg S TR 180 rotate 1 -1 scale ppr 3 get
+ppr 1 get neg sub neg ppr 2 get ppr 0 get neg sub neg TR}if xflip yflip
+not and{pop S neg S TR pop 180 rotate ppr 3 get ppr 1 get neg sub neg 0
+TR}if yflip xflip not and{ppr 1 get neg ppr 0 get neg TR}if}{noflips{TR
+pop pop 270 rotate 1 -1 scale}if xflip yflip and{TR pop pop 90 rotate 1
+-1 scale ppr 3 get ppr 1 get neg sub neg ppr 2 get ppr 0 get neg sub neg
+TR}if xflip yflip not and{TR pop pop 90 rotate ppr 3 get ppr 1 get neg
+sub neg 0 TR}if yflip xflip not and{TR pop pop 270 rotate ppr 2 get ppr
+0 get neg sub neg 0 S TR}if}ifelse scaleby96{ppr aload pop 4 -1 roll add
+2 div 3 1 roll add 2 div 2 copy TR .96 dup scale neg S neg S TR}if}N /cp
+{pop pop showpage pm restore}N end}if}if}N /normalscale{Resolution 72
+div VResolution 72 div neg scale magscale{DVImag dup scale}if 0 setgray}
+N /psfts{S 65781.76 div N}N /startTexFig{/psf$SavedState save N userdict
+maxlength dict begin /magscale true def normalscale currentpoint TR
+/psf$ury psfts /psf$urx psfts /psf$lly psfts /psf$llx psfts /psf$y psfts
+/psf$x psfts currentpoint /psf$cy X /psf$cx X /psf$sx psf$x psf$urx
+psf$llx sub div N /psf$sy psf$y psf$ury psf$lly sub div N psf$sx psf$sy
+scale psf$cx psf$sx div psf$llx sub psf$cy psf$sy div psf$ury sub TR
+/showpage{}N /erasepage{}N /copypage{}N /p 3 def @MacSetUp}N /doclip{
+psf$llx psf$lly psf$urx psf$ury currentpoint 6 2 roll newpath 4 copy 4 2
+roll moveto 6 -1 roll S lineto S lineto S lineto closepath clip newpath
+moveto}N /endTexFig{end psf$SavedState restore}N /@beginspecial{SDict
+begin /SpecialSave save N gsave normalscale currentpoint TR
+@SpecialDefaults count /ocount X /dcount countdictstack N}N /@setspecial
+{CLIP 1 eq{newpath 0 0 moveto hs 0 rlineto 0 vs rlineto hs neg 0 rlineto
+closepath clip}if ho vo TR hsc vsc scale ang rotate rwiSeen{rwi urx llx
+sub div rhiSeen{rhi ury lly sub div}{dup}ifelse scale llx neg lly neg TR
+}{rhiSeen{rhi ury lly sub div dup scale llx neg lly neg TR}if}ifelse
+CLIP 2 eq{newpath llx lly moveto urx lly lineto urx ury lineto llx ury
+lineto closepath clip}if /showpage{}N /erasepage{}N /copypage{}N newpath
+}N /@endspecial{count ocount sub{pop}repeat countdictstack dcount sub{
+end}repeat grestore SpecialSave restore end}N /@defspecial{SDict begin}
+N /@fedspecial{end}B /li{lineto}B /rl{rlineto}B /rc{rcurveto}B /np{
+/SaveX currentpoint /SaveY X N 1 setlinecap newpath}N /st{stroke SaveX
+SaveY moveto}N /fil{fill SaveX SaveY moveto}N /ellipse{/endangle X
+/startangle X /yrad X /xrad X /savematrix matrix currentmatrix N TR xrad
+yrad scale 0 0 1 startangle endangle arc savematrix setmatrix}N end
+%%EndProcSet
+%%BeginProcSet: color.pro
+TeXDict begin /setcmykcolor where{pop}{/setcmykcolor{dup 10 eq{pop
+setrgbcolor}{1 sub 4 1 roll 3{3 index add neg dup 0 lt{pop 0}if 3 1 roll
+}repeat setrgbcolor pop}ifelse}B}ifelse /TeXcolorcmyk{setcmykcolor}def
+/TeXcolorrgb{setrgbcolor}def /TeXcolorgrey{setgray}def /TeXcolorgray{
+setgray}def /TeXcolorhsb{sethsbcolor}def /currentcmykcolor where{pop}{
+/currentcmykcolor{currentrgbcolor 10}B}ifelse /DC{exch dup userdict exch
+known{pop pop}{X}ifelse}B /GreenYellow{0.15 0 0.69 0 setcmykcolor}DC
+/Yellow{0 0 1 0 setcmykcolor}DC /Goldenrod{0 0.10 0.84 0 setcmykcolor}
+DC /Dandelion{0 0.29 0.84 0 setcmykcolor}DC /Apricot{0 0.32 0.52 0
+setcmykcolor}DC /Peach{0 0.50 0.70 0 setcmykcolor}DC /Melon{0 0.46 0.50
+0 setcmykcolor}DC /YellowOrange{0 0.42 1 0 setcmykcolor}DC /Orange{0
+0.61 0.87 0 setcmykcolor}DC /BurntOrange{0 0.51 1 0 setcmykcolor}DC
+/Bittersweet{0 0.75 1 0.24 setcmykcolor}DC /RedOrange{0 0.77 0.87 0
+setcmykcolor}DC /Mahogany{0 0.85 0.87 0.35 setcmykcolor}DC /Maroon{0
+0.87 0.68 0.32 setcmykcolor}DC /BrickRed{0 0.89 0.94 0.28 setcmykcolor}
+DC /Red{0 1 1 0 setcmykcolor}DC /OrangeRed{0 1 0.50 0 setcmykcolor}DC
+/RubineRed{0 1 0.13 0 setcmykcolor}DC /WildStrawberry{0 0.96 0.39 0
+setcmykcolor}DC /Salmon{0 0.53 0.38 0 setcmykcolor}DC /CarnationPink{0
+0.63 0 0 setcmykcolor}DC /Magenta{0 1 0 0 setcmykcolor}DC /VioletRed{0
+0.81 0 0 setcmykcolor}DC /Rhodamine{0 0.82 0 0 setcmykcolor}DC /Mulberry
+{0.34 0.90 0 0.02 setcmykcolor}DC /RedViolet{0.07 0.90 0 0.34
+setcmykcolor}DC /Fuchsia{0.47 0.91 0 0.08 setcmykcolor}DC /Lavender{0
+0.48 0 0 setcmykcolor}DC /Thistle{0.12 0.59 0 0 setcmykcolor}DC /Orchid{
+0.32 0.64 0 0 setcmykcolor}DC /DarkOrchid{0.40 0.80 0.20 0 setcmykcolor}
+DC /Purple{0.45 0.86 0 0 setcmykcolor}DC /Plum{0.50 1 0 0 setcmykcolor}
+DC /Violet{0.79 0.88 0 0 setcmykcolor}DC /RoyalPurple{0.75 0.90 0 0
+setcmykcolor}DC /BlueViolet{0.86 0.91 0 0.04 setcmykcolor}DC /Periwinkle
+{0.57 0.55 0 0 setcmykcolor}DC /CadetBlue{0.62 0.57 0.23 0 setcmykcolor}
+DC /CornflowerBlue{0.65 0.13 0 0 setcmykcolor}DC /MidnightBlue{0.98 0.13
+0 0.43 setcmykcolor}DC /NavyBlue{0.94 0.54 0 0 setcmykcolor}DC
+/RoyalBlue{1 0.50 0 0 setcmykcolor}DC /Blue{1 1 0 0 setcmykcolor}DC
+/Cerulean{0.94 0.11 0 0 setcmykcolor}DC /Cyan{1 0 0 0 setcmykcolor}DC
+/ProcessBlue{0.96 0 0 0 setcmykcolor}DC /SkyBlue{0.62 0 0.12 0
+setcmykcolor}DC /Turquoise{0.85 0 0.20 0 setcmykcolor}DC /TealBlue{0.86
+0 0.34 0.02 setcmykcolor}DC /Aquamarine{0.82 0 0.30 0 setcmykcolor}DC
+/BlueGreen{0.85 0 0.33 0 setcmykcolor}DC /Emerald{1 0 0.50 0
+setcmykcolor}DC /JungleGreen{0.99 0 0.52 0 setcmykcolor}DC /SeaGreen{
+0.69 0 0.50 0 setcmykcolor}DC /Green{1 0 1 0 setcmykcolor}DC
+/ForestGreen{0.91 0 0.88 0.12 setcmykcolor}DC /PineGreen{0.92 0 0.59
+0.25 setcmykcolor}DC /LimeGreen{0.50 0 1 0 setcmykcolor}DC /YellowGreen{
+0.44 0 0.74 0 setcmykcolor}DC /SpringGreen{0.26 0 0.76 0 setcmykcolor}
+DC /OliveGreen{0.64 0 0.95 0.40 setcmykcolor}DC /RawSienna{0 0.72 1 0.45
+setcmykcolor}DC /Sepia{0 0.83 1 0.70 setcmykcolor}DC /Brown{0 0.81 1
+0.60 setcmykcolor}DC /Tan{0.14 0.42 0.56 0 setcmykcolor}DC /Gray{0 0 0
+0.50 setcmykcolor}DC /Black{0 0 0 1 setcmykcolor}DC /White{0 0 0 0
+setcmykcolor}DC end
+%%EndProcSet
+TeXDict begin 52099146 40258431 2074 600 600 (classad-talk.dvi)
+@start /Fa 138[71 2[71 2[71 71 4[71 2[71 71 71 100[{
+ TeXBase1Encoding ReEncodeFont }8 119.168660 /Courier
+rf /Fb 103[122 15[122 10[122 122 122 122 1[122 2[122
+122 122 122 1[122 122 122 122 122 2[122 1[122 122 122
+122 122 122 122 3[122 1[122 7[122 122 4[122 122 2[122
+5[122 1[122 1[122 122 122 122 122 122 122 122 122 1[122
+122 122 122 122 122 122 122 122 122 122 122 122 122 1[122
+122 2[122 122 33[{ TeXBase1Encoding ReEncodeFont }60
+204.289126 /Courier rf /Fc 134[85 85 1[85 94 47 85 56
+1[94 94 94 141 38 85 1[38 94 94 47 94 94 85 94 94 19[141
+7[113 1[122 17[94 94 47 47 56 47 99 1[56 56 40[{
+ TeXBase1Encoding ReEncodeFont }34 170.069522 /Helvetica-Oblique
+rf /Fd 130[81 81 81 1[81 1[81 81 81 81 81 81 1[81 81
+81 81 81 81 81 81 81 81 81 81 81 81 81 81 3[81 1[81 5[81
+81 81 81 2[81 81 81 81 81 1[81 1[81 81 81 81 81 1[81
+1[81 81 81 81 81 81 81 81 81 81 81 81 81 81 81 81 81
+81 1[81 81 81 81 81 1[81 3[81 81 33[{ TeXBase1Encoding ReEncodeFont }70
+136.192748 /Courier rf /Fe 133[92 92 1[92 1[92 92 92
+92 92 92 92 92 92 92 92 1[92 92 1[92 92 92 92 1[92 3[92
+1[92 5[92 92 92 92 2[92 92 92 92 2[92 92 92 92 92 1[92
+92 92 1[92 92 92 92 92 92 92 1[92 92 92 1[92 92 92 92
+92 92 92 1[92 1[92 92 1[92 3[92 92 33[{ TeXBase1Encoding ReEncodeFont }
+62 153.216845 /Courier rf /Ff 4 104 df<000000003FFC0000000000000007FFFF
+E00000000000003FFFFFFC000000000000FFFFFFFF000000000003FFFFFFFFC000000000
+0FFFFFFFFFF0000000003FFFFFFFFFFC000000007FFFFFFFFFFE00000000FFFFFFFFFFFF
+00000003FFFFFFFFFFFFC0000007FFFFFFFFFFFFE000000FFFFFFFFFFFFFF000001FFFFF
+FFFFFFFFF800003FFFFFFFFFFFFFFC00007FFFFFFFFFFFFFFE0000FFFFFFFFFFFFFFFF00
+00FFFFFFFFFFFFFFFF0001FFFFFFFFFFFFFFFF8003FFFFFFFFFFFFFFFFC003FFFFFFFFFF
+FFFFFFC007FFFFFFFFFFFFFFFFE00FFFFFFFFFFFFFFFFFF00FFFFFFFFFFFFFFFFFF00FFF
+FFFFFFFFFFFFFFF01FFFFFFFFFFFFFFFFFF81FFFFFFFFFFFFFFFFFF83FFFFFFFFFFFFFFF
+FFFC3FFFFFFFFFFFFFFFFFFC3FFFFFFFFFFFFFFFFFFC3FFFFFFFFFFFFFFFFFFC7FFFFFFF
+FFFFFFFFFFFE7FFFFFFFFFFFFFFFFFFE7FFFFFFFFFFFFFFFFFFE7FFFFFFFFFFFFFFFFFFE
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF7FFFFFFFFFFFFFFFFFFE7FFFFFFF
+FFFFFFFFFFFE7FFFFFFFFFFFFFFFFFFE7FFFFFFFFFFFFFFFFFFE3FFFFFFFFFFFFFFFFFFC
+3FFFFFFFFFFFFFFFFFFC3FFFFFFFFFFFFFFFFFFC3FFFFFFFFFFFFFFFFFFC1FFFFFFFFFFF
+FFFFFFF81FFFFFFFFFFFFFFFFFF80FFFFFFFFFFFFFFFFFF00FFFFFFFFFFFFFFFFFF00FFF
+FFFFFFFFFFFFFFF007FFFFFFFFFFFFFFFFE003FFFFFFFFFFFFFFFFC003FFFFFFFFFFFFFF
+FFC001FFFFFFFFFFFFFFFF8000FFFFFFFFFFFFFFFF0000FFFFFFFFFFFFFFFF00007FFFFF
+FFFFFFFFFE00003FFFFFFFFFFFFFFC00001FFFFFFFFFFFFFF800000FFFFFFFFFFFFFF000
+0007FFFFFFFFFFFFE0000003FFFFFFFFFFFFC0000000FFFFFFFFFFFF000000007FFFFFFF
+FFFE000000003FFFFFFFFFFC000000000FFFFFFFFFF00000000003FFFFFFFFC000000000
+00FFFFFFFF0000000000003FFFFFFC00000000000007FFFFE0000000000000003FFC0000
+0000505175DB67>15 D<0000000000000000000000000007F80000000000000000000000
+000000000000000000000FF80000000000000000000000000000000000000000000FFC00
+000000000000000000000000000000000000000007FC0000000000000000000000000000
+0000000000000007FE00000000000000000000000000000000000000000003FE00000000
+000000000000000000000000000000000003FF0000000000000000000000000000000000
+0000000001FF00000000000000000000000000000000000000000001FF80000000000000
+000000000000000000000000000000FFC000000000000000000000000000000000000000
+0000FFC00000000000000000000000000000000000000000007FE0000000000000000000
+0000000000000000000000003FE00000000000000000000000000000000000000000003F
+F00000000000000000000000000000000000000000001FF8000000000000000000000000
+0000000000000000001FF80000000000000000000000000000000000000000000FFC0000
+0000000000000000000000000000000000000007FE000000000000000000000000000000
+00000000000007FF00000000000000000000000000000000000000000003FF0000000000
+0000000000000000000000000000000001FF800000000000000000000000000000000000
+00000001FFC0000000000000000000000000000000000000000000FFE000000000000000
+00000000000000000000000000007FF00000000000000000000000000000000000000000
+003FF80000000000000000000000000000000000000000001FF800000000000000000000
+00000000000000000000001FFC0000000000000000000000000000000000000000000FFE
+00000000000000000000000000000000000000000007FF00000000000000000000000000
+000000000000000003FF80000000000000000000000000000000000000000001FFC00000
+00000000000000000000000000000000000000FFE000000000003FFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFF000000000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC0000000000
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE0000000000FFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFF0000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000000000FFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFF0000000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000000001FFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFFE0000000000000000000000000000000000000000003FFF
+0000000000000000000000000000000000000000000FFF80000000000000000000000000
+000000000000000007FFE0000000000000000000000000000000000000000003FFF80000
+00000000000000000000000000000000000000FFFC000000000000000000000000000000
+0000000000007FFF0000000000000000000000000000000000000000003FFFC000000000
+000000000000000000000000000000000FFFF00000000000000000000000000000000000
+00000007FFFC000000000000000000000000000000000000000001FFFF80000000000000
+00000000000000000000000000007FFFE000000000000000000000000000000000000000
+003FFFFC00000000000000000000000000000000000000000FFFFF800000000000000000
+000000000000000000000003FFFFF00000000000000000000000000000000000000000FF
+FFFE00000000000000000000000000000000000000003FFFFF0000000000000000000000
+0000000000000000000FFFFF00000000000000000000000000000000000000003FFFFF00
+00000000000000000000000000000000000000FFFFFE0000000000000000000000000000
+000000000003FFFFF0000000000000000000000000000000000000000FFFFF8000000000
+0000000000000000000000000000003FFFFC000000000000000000000000000000000000
+00007FFFE00000000000000000000000000000000000000001FFFF800000000000000000
+000000000000000000000007FFFC00000000000000000000000000000000000000000FFF
+F000000000000000000000000000000000000000003FFFC0000000000000000000000000
+00000000000000007FFF000000000000000000000000000000000000000000FFFC000000
+000000000000000000000000000000000003FFF800000000000000000000000000000000
+0000000007FFE000000000000000000000000000000000000000000FFF80000000000000
+00000000000000000000000000003FFF000000001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+FFFFFE000000007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF800000000FFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFFFFFFFFF000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC0
+00000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF8000000000FFFFFFFFFFFFFFFFFF
+FFFFFFFFFFFFFFFFFF0000000000FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFE00000000
+007FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFC00000000003FFFFFFFFFFFFFFFFFFFFFFF
+FFFFFFFFFFF0000000000000000000000000000000000000000000FFE000000000000000
+0000000000000000000000000001FFC00000000000000000000000000000000000000000
+03FF80000000000000000000000000000000000000000007FF0000000000000000000000
+000000000000000000000FFE0000000000000000000000000000000000000000001FFC00
+00000000000000000000000000000000000000001FF80000000000000000000000000000
+000000000000003FF80000000000000000000000000000000000000000007FF000000000
+0000000000000000000000000000000000FFE00000000000000000000000000000000000
+00000001FFC0000000000000000000000000000000000000000001FF8000000000000000
+0000000000000000000000000003FF000000000000000000000000000000000000000000
+07FF00000000000000000000000000000000000000000007FE0000000000000000000000
+000000000000000000000FFC0000000000000000000000000000000000000000001FF800
+00000000000000000000000000000000000000001FF80000000000000000000000000000
+000000000000003FF00000000000000000000000000000000000000000003FE000000000
+00000000000000000000000000000000007FE00000000000000000000000000000000000
+00000000FFC0000000000000000000000000000000000000000000FFC000000000000000
+0000000000000000000000000001FF800000000000000000000000000000000000000000
+01FF00000000000000000000000000000000000000000003FF0000000000000000000000
+0000000000000000000003FE00000000000000000000000000000000000000000007FE00
+000000000000000000000000000000000000000007FC0000000000000000000000000000
+000000000000000FFC0000000000000000000000000000000000000000000FF800000000
+000000000000000000000000000000000007F80000000000000000B87375ECCF>41
+D[<0000000000000003FF8000000000000000FFFFC000000000000007FFFFC000000000
+00003FFFFFC0000000000001FFFFFF80000000000007FFFFC00000000000001FFFFC0000
+00000000003FFFE000000000000000FFFF8000000000000001FFFE0000000000000003FF
+F80000000000000007FFF0000000000000000FFFE0000000000000001FFFC00000000000
+00003FFF80000000000000007FFF00000000000000007FFE0000000000000000FFFE0000
+000000000000FFFC0000000000000001FFFC0000000000000001FFF80000000000000001
+FFF80000000000000003FFF80000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000007FFF0
+0000000000000007FFE00000000000000007FFE0000000000000000FFFE0000000000000
+000FFFC0000000000000000FFFC0000000000000001FFF80000000000000003FFF800000
+00000000003FFF00000000000000007FFE0000000000000000FFFC0000000000000001FF
+F80000000000000003FFF0000000000000000FFFE0000000000000001FFFC00000000000
+00007FFF8000000000000001FFFE000000000000000FFFFC00000000000001FFFFF00000
+000000007FFFFF80000000000000FFFFFE00000000000000FFFFE000000000000000FFFF
+FE000000000000007FFFFF8000000000000001FFFFF0000000000000000FFFFC00000000
+00000001FFFE00000000000000007FFF80000000000000001FFFC0000000000000000FFF
+E00000000000000003FFF00000000000000001FFF80000000000000000FFFC0000000000
+0000007FFE00000000000000003FFF00000000000000003FFF80000000000000001FFF80
+000000000000000FFFC0000000000000000FFFC0000000000000000FFFE0000000000000
+0007FFE00000000000000007FFE00000000000000007FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF80000000000000001FFF80000000000000001FFF800000000
+00000001FFFC0000000000000000FFFC0000000000000000FFFE00000000000000007FFE
+00000000000000007FFF00000000000000003FFF80000000000000001FFFC00000000000
+00000FFFE00000000000000007FFF00000000000000003FFF80000000000000001FFFE00
+00000000000000FFFF80000000000000003FFFE0000000000000001FFFFC000000000000
+0007FFFFC000000000000001FFFFFF800000000000003FFFFFC000000000000007FFFFC0
+00000000000000FFFFC00000000000000003FF80>74 207 114 282
+103 102 D[<7FF00000000000000000FFFFC000000000000000FFFFF800000000000000
+FFFFFF000000000000007FFFFFE000000000000000FFFFF8000000000000000FFFFE0000
+000000000001FFFF00000000000000007FFFC0000000000000001FFFE000000000000000
+07FFF00000000000000003FFF80000000000000001FFFC0000000000000000FFFE000000
+00000000007FFF00000000000000003FFF80000000000000001FFF80000000000000001F
+FFC0000000000000000FFFC0000000000000000FFFE00000000000000007FFE000000000
+00000007FFE00000000000000007FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF80000000000000001FFF80000000000000001FFF80000000000000001FFFC0000
+000000000000FFFC0000000000000000FFFC00000000000000007FFE0000000000000000
+7FFF00000000000000003FFF00000000000000001FFF80000000000000000FFFC0000000
+0000000007FFE00000000000000003FFF00000000000000001FFFC0000000000000000FF
+FE00000000000000007FFF80000000000000001FFFE0000000000000000FFFFC00000000
+00000003FFFFE0000000000000007FFFFF800000000000001FFFFFC000000000000001FF
+FFC00000000000001FFFFFC00000000000007FFFFF80000000000003FFFFE00000000000
+000FFFFC000000000000001FFFE0000000000000007FFF8000000000000000FFFE000000
+0000000001FFFC0000000000000003FFF00000000000000007FFE0000000000000000FFF
+C0000000000000001FFF80000000000000003FFF00000000000000007FFF000000000000
+00007FFE0000000000000000FFFC0000000000000000FFFC0000000000000001FFFC0000
+000000000001FFF80000000000000001FFF80000000000000003FFF80000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF0
+0000000000000003FFF00000000000000003FFF00000000000000003FFF0000000000000
+0003FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF00000
+000000000003FFF00000000000000003FFF00000000000000003FFF00000000000000003
+FFF00000000000000003FFF00000000000000003FFF00000000000000003FFF000000000
+00000003FFF00000000000000007FFF00000000000000007FFE00000000000000007FFE0
+000000000000000FFFE0000000000000000FFFC0000000000000001FFFC0000000000000
+001FFF80000000000000003FFF80000000000000007FFF0000000000000000FFFE000000
+0000000001FFFC0000000000000003FFF80000000000000007FFF0000000000000001FFF
+E0000000000000007FFFC000000000000001FFFF000000000000000FFFFE000000000000
+00FFFFF80000000000007FFFFFE0000000000000FFFFFF00000000000000FFFFF8000000
+00000000FFFFC0000000000000007FF00000000000000000>74 207
+114 282 103 I E /Fg 104[169 2[56 56 24[85 85 85 122 85
+94 47 85 56 94 94 94 94 141 38 85 1[38 94 94 47 94 94
+85 94 94 3[47 1[47 3[160 113 122 104 113 122 1[113 132
+122 141 94 113 85 47 2[104 113 122 122 113 113 172 2[99
+1[47 47 94 94 94 94 94 94 94 94 94 94 47 47 56 47 99
+1[56 56 38 113 4[47 29[85 85 2[{ TeXBase1Encoding ReEncodeFont }76
+170.069522 /Helvetica rf /Fh 139[27 1[33 1[55 55 55 82
+7[55 55 1[55 55 12[60 66 15[71 9[55 55 55 55 55 55 55
+55 55 55 3[27 44[{ TeXBase1Encoding ReEncodeFont }24
+99.207222 /Helvetica rf /Fi 105[94 1[85 85 25[94 94 132
+94 104 56 94 66 1[104 104 104 151 47 1[47 47 104 104
+56 94 104 94 104 94 9[160 1[122 104 113 122 1[113 132
+122 141 104 3[122 1[104 113 122 122 1[122 165 5[56 94
+94 1[94 2[94 94 94 1[47 47 56 47 2[56 56 37[104 2[{
+ TeXBase1Encoding ReEncodeFont }57 170.069522 /Helvetica-Bold
+rf /Fj 137[122 1[68 122 81 3[136 203 54 2[54 3[136 136
+2[136 29[176 1[163 62[122 2[{ TeXBase1Encoding ReEncodeFont }14
+244.900060 /Helvetica rf end
+%%EndProlog
+%%BeginSetup
+%%Feature: *Resolution 600dpi
+TeXDict begin
+%%PaperSize: Letter
+ @landscape
+%%EndSetup
+%%Page: 1 1
+1 0 bop Black 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+BrickRed MidnightBlue 1295 977 a Fj(Classi\002ed)67 b(Adv)-6
+b(er)10 b(tisements)p BrickRed Black 2170 1358 a Fi(Presented)47
+b(b)m(y)2116 1618 y(Rajesh)h(Raman)1831 1879 y(\(raman@cs.wisc.edu\))
+762 2139 y(Condor)e(T)-10 b(eam,)46 b(Univer)m(sity)j(of)e
+(Wisconsin\226Madison)1437 2660 y(http://www)-7 b(.cs.wisc.edu/condor/)
+1909 3045 y(September)47 b(16,)g(1998)5250 3840 y
+ 0 setgray
+ 5250
+3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2183 b(September)27
+b(16,)h(1998)2155 b(1)p eop
+%%Page: 2 2
+2 1 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1332 476 2667 7 v 1332 709 7 233 v MidnightBlue 1391
+653 a Fi(ClassAds:)59 b(Historical)49 b(Motiv)m(ation)p
+Black 3992 709 V 1332 716 2667 7 v 3995 784 73 247 v
+1401 784 2667 73 v 150 1186 a Fg(The)e(Condor)i(system)d(required)j(a)e
+(mechanism)h(to)p Red 230 1615 a Ff(\017)71 b Fg(Represent)p
+Black 49 w(resources)48 b(and)f(customers)h(of)f(the)h(system)437
+1969 y Fi(\226)71 b Fg(Expressiv)l(e)46 b(enough)j(to)e(descr)s(ibe)g
+(entities)g(and)g(their)h(policies)437 2255 y Fi(\226)71
+b Fg(Simple)47 b(enough)h(to)f(be)h(gener)n(al)g(and)g(ef\002cient)p
+Red 230 2610 a Ff(\017)71 b Fg(Identify)p Black 47 w(compatib)m(le)47
+b(matches)h(betw)n(een)h(resources)f(and)f(customers)p
+Red 230 2965 a Ff(\017)71 b Fg(Rank)p Black 48 w(compatib)m(le)47
+b(matches)150 3393 y(Resource)h(allocation)f(in)g(Condor)h(is)f(perf)-5
+b(or)t(med)49 b(b)m(y)e(matching)g(classads)m(.)5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2183
+b(September)27 b(16,)h(1998)2155 b(2)p eop
+%%Page: 3 3
+3 2 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1773 67 1786 7 v 1773 300 7 233 v MidnightBlue 1831 244
+a Fi(ClassAds:)60 b(De\002nition)p Black 3551 300 V 1773
+307 1786 7 v 3555 375 73 247 v 1842 375 1786 73 v 150
+761 a Fg(The)47 b(classad)g(mechanism)g(is)f(a)h(language)i(f)-5
+b(or)47 b(e)-5 b(xpressing)48 b(and)150 975 y(e)-5 b(v)l(aluating)47
+b(attr)s(ib)m(utes)m(.)230 1349 y Ff(\017)71 b Fg(A)p
+Red 47 w(classad)p Black 47 w(is)46 b(a)h(set)h(of)f(named)h(e)-5
+b(xpressions)230 1680 y Ff(\017)71 b Fg(Each)47 b(named)h(e)-5
+b(xpression)48 b(is)e(called)h(an)p Red 47 w(attr)s(ib)m(ute)p
+Black 230 2011 a Ff(\017)71 b Fg(Expressions)47 b(similar)f(to)i(those)
+f(f)-5 b(ound)48 b(in)f(C/C++)437 2331 y Fi(\226)71 b
+Fg(Liter)n(als)47 b(\(boolean,)i(integer)-8 b(,)47 b(real,)h(str)s
+(ing,)f(unde\002ned,)h(error\))437 2604 y Fi(\226)71
+b Fg(Agg)n(regates)49 b(\(classad,)e(list\))437 2876
+y Fi(\226)71 b Fg(Oper)n(ators)49 b(\(ar)s(ithmetic)m(,)e(logical,)g
+(compar)s(ison,)g(bitwise\))437 3149 y Fi(\226)71 b Fg(Attr)s(ib)m(ute)
+47 b(ref)-5 b(erences)437 3421 y Fi(\226)71 b Fg(Calls)46
+b(to)i(in-b)m(uilt)e(functions)230 3742 y Ff(\017)71
+b Fg(Some)48 b(e)-5 b(xtr)n(a)48 b(f)-5 b(eatures)5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2183
+b(September)27 b(16,)h(1998)2155 b(3)p eop
+%%Page: 4 4
+4 3 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1862 723 1607 7 v 1862 987 7 265 v MidnightBlue 1921
+900 a Fi(ClassAd:)59 b(Example)p Black 3462 987 V 1862
+994 1607 7 v 3465 1063 73 279 v 1931 1063 1607 73 v 150
+1440 a Fe([)2656 b([)242 1611 y(MyType)89 b(=)i("Apartment";)819
+b(MyType="Apartment)o(Re)o(nt)o(er")o(;)242 1781 y(SquareArea)87
+b(=)k(3500;)1097 b(UnderGrad)88 b(=)j(False;)242 1952
+y(RentOffer)c(=)92 b(1000;)1188 b(RentOffer)88 b(=)j(900;)242
+2122 y(HeatIncluded)86 b(=)91 b(False;)822 b(Rank)90
+b(=)h(1/\(other.RentOffe)o(r)242 2293 y(OnBusLine)c(=)92
+b(True;)1371 b(+)92 b(100.0\))242 2463 y(Rank)e(=)h(other.RentOffer)o
+(+)818 b(+other.HeatInclud)o(ed)o(?50)o(:0)o(;)883 2634
+y(other.UnderGrad)o(?0:)o(10)o(;)177 b(Constraint=other.)o(On)o(Bu)o
+(sLi)o(ne)242 2804 y(Constraint)87 b(=)k(self.RentOffer)452
+b(&&)91 b(other.SquareArea)o(>27)o(00)516 2975 y(-)h(150)e(<)h
+(other.RentOffer)543 b(SquareArea)88 b(>)j(2700)150 3145
+y(])2656 b(])5250 3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28
+b(T)-12 b(eam)2183 b(September)27 b(16,)h(1998)2155 b(4)p
+eop
+%%Page: 5 5
+5 4 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1525 67 2282 7 v 1525 331 7 265 v MidnightBlue 1583 244
+a Fi(ClassAd:)60 b(Another)46 b(e)m(xample)p Black 3799
+331 V 1525 338 2282 7 v 3803 407 73 279 v 1593 407 2282
+73 v 150 737 a Fd([)313 883 y(Type)571 b(=)82 b("Machine";)313
+1029 y(Activity)247 b(=)82 b("Idle";)313 1176 y(DayTime)328
+b(=)82 b(36107;)247 b(//)82 b(current)i(time)f(\(secs)h(since)f
+(midnight\))313 1322 y(KbdIdle)328 b(=)82 b(1432;)328
+b(//)82 b(seconds)313 1468 y(Disk)571 b(=)82 b(323496;)166
+b(//)82 b(kbytes)313 1614 y(Memory)409 b(=)82 b(64;)490
+b(//)82 b(megabytes)313 1760 y(State)490 b(=)82 b("Unclaimed";)313
+1906 y(LoadAvg)328 b(=)82 b(0.042969;)313 2052 y(Arch)571
+b(=)82 b("INTEL";)313 2198 y(OpSys)490 b(=)82 b("SOLARIS251";)313
+2344 y(Name)571 b(=)82 b("leonardo.cs.wis)q(c.)q(edu)q(";)313
+2490 y(RsrchGrp)247 b(=)82 b({)g("raman",)j("miron",)f("solomon",)i
+("jbasney")f(};)313 2636 y(Friends)328 b(=)82 b({)g("tannenba",)k
+("wright")f(};)313 2782 y(Untrusted)166 b(=)82 b({)g("rival",)j
+("riffraff")g(};)313 2928 y(Rank)571 b(=)82 b(member\(other.Own)q(er)q
+(,)87 b(RsrchGroup\))f(?)c(10)g(:)g(0)1453 3074 y(+)f(member\(other.Ow)
+q(ner)q(,)88 b(Friends\))c(?)e(1)g(:)g(0;)313 3221 y(Constraint)j(=)d
+(!member\(other.Ow)q(ne)q(r,)88 b(Untrusted\))1453 3367
+y(&&)82 b(\(Rank)h(==)f(10)h(?)f(true)1534 3513 y(:)g(Rank)h(>)f(0)f(?)
+h(\(LoadAvg)j(<)d(0.3)g(&&)h(KbdIdle)h(>)e(15*60\))1534
+3659 y(:)g(\(DayTime)i(<)e(8*60*60)j(||)d(DayTime)i(>)e(18*60*60\)\)\))
+150 3805 y(])5250 3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28
+b(T)-12 b(eam)2183 b(September)27 b(16,)h(1998)2155 b(5)p
+eop
+%%Page: 6 6
+6 5 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1214 67 2904 7 v 1214 333 7 266 v MidnightBlue 1272 244
+a Fi(Features)47 b(of)g(the)h(ClassAd)g(Langua)n(g)r(e)p
+Black 4111 333 V 1214 340 2904 7 v 4114 408 73 280 v
+1282 408 2904 73 v 230 881 a Ff(\017)71 b Fg(Le)-5 b(xical)46
+b(scoping)437 1197 y Fi(\226)71 b Fg(Suppor)7 b(ts)48
+b(hier)n(archical)f(name)h(spaces)437 1468 y Fi(\226)71
+b Fg(Similar)47 b(to)g(\(b)m(ut)h(more)g(po)m(w)n(erful)h(than\))f
+(C/C++')-8 b(s)47 b(le)-5 b(xical)45 b(scoping)437 1739
+y Fi(\226)71 b Fg(All)46 b(e)-5 b(xpressions)47 b(are)h(e)-5
+b(v)l(aluated)47 b(in)g(the)h(\223conte)-5 b(xt\224)48
+b(of)g(a)f(unique)p Red 602 1953 a Fc(top-le)-5 b(v)l(el)p
+Black 47 w(classad)230 2268 y Ff(\017)71 b Fg(Dynamic)47
+b(typing)437 2584 y Fi(\226)71 b Fg(Unlik)m(e)46 b(C/C++)i
+Fc(v)l(ar)s(iab)m(les)e Fg(do)h(not)h(ha)m(v)l(e)f(types;)g(only)g
+Fc(v)l(alues)f Fg(do)437 2855 y Fi(\226)71 b Fg(Similar)47
+b(to)g(LISP/Scheme)230 3171 y Ff(\017)71 b Fg(Concrete)49
+b(types)m(,)e(representations)i(and)f(semantics)e(f)-5
+b(or)48 b(e)-5 b(xceptional)404 3385 y(v)l(alues)47 b(\(i.e)m(.,)h
+Fb(undefined)p Fg(,)g Fb(error)p Fg(\))230 3712 y Ff(\017)71
+b Fg(Agg)n(regations)49 b(\(i.e)m(.,)f(lists)e(and)i(classads\))e(are)i
+(or)7 b(thogonal)5250 3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a
+Fh(Condor)28 b(T)-12 b(eam)2183 b(September)27 b(16,)h(1998)2155
+b(6)p eop
+%%Page: 7 7
+7 6 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+2306 67 720 7 v 2306 295 7 229 v MidnightBlue 2364 242
+a Fi(Literals)p Black 3018 295 V 2306 302 720 7 v 3022
+371 73 243 v 2374 371 720 73 v 150 746 a Fg(Liter)n(als)47
+b(are)h(one)g(of)g(the)p Red 47 w(atoms)p Black 48 w(of)f(the)h
+(classad)e(language)m(.)230 1087 y Ff(\017)71 b Fg(Integer)49
+b(\(e)m(.g.,)f Fb(314)p Fg(,)g Fb(-17)p Fg(,)f Fb(0)p
+Fg(,)h(etc.\))437 1386 y Fi(\226)71 b Fg(32-bit,)48 b(signed,)f(2')-8
+b(s)46 b(complement)437 1650 y Fi(\226)71 b Fg(Ma)-5
+b(y)47 b(be)g(e)-5 b(xpressed)48 b(in)f(he)-5 b(x)47
+b(or)h(octal)f(\(e)m(.g.,)h Fb(0xff)p Fg(,)g Fb(0777)p
+Fg(,)g(etc.\))230 1949 y Ff(\017)71 b Fg(Real)48 b(\(e)m(.g.,)g
+Fb(3.14159)p Fg(,)g Fb(2.781)p Fg(,)g(etc.\))437 2248
+y Fi(\226)71 b Fg(IEEE-754)48 b(64-bit)g(doub)m(le)f(precision)g
+(\003oating)h(point)f(n)n(umbers)230 2546 y Ff(\017)71
+b Fg(Str)s(ing)47 b(\(e)m(.g.,)i Fb("foo")p Fg(,)f Fb("bar")p
+Fg(,)g(etc.\))437 2845 y Fi(\226)71 b Fg(Ma)-5 b(y)47
+b(also)g(include)g(escaped)g(sequences)h(\(see)f(K&R,)h(p)-6
+b(.38\))230 3144 y Ff(\017)71 b Fg(Boolean)48 b(\()p
+Fb(true)p Fg(,)g Fb(false)p Fg(\))230 3460 y Ff(\017)71
+b Fg(Unde\002ned)49 b(\()p Fb(undefined)p Fg(\))230 3776
+y Ff(\017)71 b Fg(Error)49 b(\()p Fb(error)p Fg(\))5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2183
+b(September)27 b(16,)h(1998)2155 b(7)p eop
+%%Page: 8 8
+8 7 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+2203 256 925 7 v 2203 521 7 265 v MidnightBlue 2262 433
+a Fi(Operator)m(s)p Black 3121 521 V 2203 528 925 7 v
+3124 596 73 279 v 2272 596 925 73 v 150 998 a Fg(Almost)47
+b(all)f(oper)n(ators)k(from)d(C/C++)h(and)g(J)m(a)m(v)l(a)e(are)i
+(suppor)7 b(ted)230 1427 y Ff(\017)71 b Fg(Ar)s(ithmetic:)58
+b Fb(+,)123 b(-,)f(*,)g(/,)h(\045,)47 b Fg(\(unar)5 b(y\))p
+Fb(+,)49 b Fg(\(unar)5 b(y\))p Fb(-)230 1781 y Ff(\017)71
+b Fg(Logical:)180 b Fb(&&,)123 b(||,)f(!)230 2140 y Ff(\017)71
+b Fg(Bitwise:)180 b Fb(&,)123 b(|,)f(\230,)g(\210,)h(<<,)f(>>,)h(>>>)
+230 2495 y Ff(\017)71 b Fg(Compar)s(ison:)59 b Fb(<,)123
+b(<=,)f(==,)h(!=,)f(>=,)h(>)230 2849 y Ff(\017)71 b Fg(Others:)59
+b Fb(.,)122 b(?:,)h([])p Fg(,)47 b(and)h(then)g(some)f(.)28
+b(.)g(.)150 3278 y(Notab)m(ly)-17 b(,)47 b(no)h(pointer)g(or)g
+(assignment)f(oper)n(ators)p Red 191 3591 a(ClassAd)f(e)-5
+b(xpressions)47 b(cannot)h Fc(side-aff)-5 b(ect)p Fg(;)48
+b(the)f(language)i(is)d Fc(functional)p Black Fg(.)5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2183
+b(September)27 b(16,)h(1998)2155 b(8)p eop
+%%Page: 9 9
+9 8 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1869 67 1593 7 v 1869 331 7 265 v MidnightBlue 1928 244
+a Fi(Operator)m(s)47 b(\(contd.\))p Black 3455 331 V
+1869 338 1593 7 v 3458 407 73 279 v 1938 407 1593 73
+v 230 886 a Ff(\017)71 b Fg(Oper)n(ators)49 b(in)e(the)g(language)i
+(are)e Fc(total)h(functions)437 1206 y Fi(\226)71 b Fg(i.e)m(.,)48
+b(the)m(y)e(are)i(de\002ned)g(o)m(v)l(er)g(all)f(v)l(alues)f(in)h(the)h
+(language)230 1525 y Ff(\017)71 b Fg(Almost)47 b(all)g(oper)n(ators)i
+(are)f Fc(str)s(ict)e Fg(on)h Fb(undefined)i Fg(and)e
+Fb(error)437 1845 y Fi(\226)71 b Fg(If)47 b(an)h(oper)n(and)h(is)d
+Fb(undefined)i Fg(\()p Fb(error)p Fg(\),)h(the)e(result)h(is)602
+2059 y Fb(undefined)g Fg(\()p Fb(error)p Fg(\))437 2331
+y Fi(\226)71 b Fb(10)122 b(+)g(undefined)i Ff(\))d Fb(undefined)437
+2604 y Fi(\226)71 b Fb(error)123 b(/)f(3.14)g Ff(\))g
+Fb(error)230 2923 y Ff(\017)71 b Fg(In)48 b(addition,)f(an)h(e)-5
+b(xpression)47 b(e)-5 b(v)l(aluates)47 b(to)g Fb(error)h
+Fg(if)f(the)g(oper)n(ands)404 3137 y(are)h(not)g(in)f(the)g(pr)s(imar)5
+b(y)48 b(domain)f(of)h(the)f(oper)n(ator)437 3457 y Fi(\226)71
+b Fb(10)122 b(*)g("foo")h Ff(\))f Fb(error)437 3729 y
+Fi(\226)71 b Fb(17)122 b(/)g(0)h Ff(\))e Fb(error)5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2183
+b(September)27 b(16,)h(1998)2155 b(9)p eop
+%%Page: 10 10
+10 9 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+999 67 3334 7 v 999 331 7 265 v MidnightBlue 1057 244
+a Fi(Operator)m(s)48 b(\(contd.\):)59 b(Non-strict)48
+b(operator)m(s)p Black 4325 331 V 999 338 3334 7 v 4329
+407 73 279 v 1068 407 3334 73 v 230 906 a Ff(\017)71
+b Fg(Logical-AND)48 b(\(&&\))g(and)g(Logical-OR)f(e)-5
+b(xhibit)47 b(\223don't)h(care\224)g(semantics)611 1141
+y(AND)p 1068 1219 7 261 v 212 w(F)220 b(T)c(U)207 b(E)p
+507 1226 1862 7 v 738 1408 a(F)p 1068 1487 7 261 v 338
+w(F)220 b(F)225 b(F)220 b(F)738 1669 y(T)p 1068 1747
+V 338 w(F)g(T)c(U)207 b(E)728 1929 y(U)p 1068 2007 V
+330 w(F)k(U)c(U)g(E)733 2190 y(E)p 1068 2268 V 329 w(E)k(E)216
+b(E)c(E)2679 1141 y(OR)p 3033 1219 V 216 w(F)220 b(T)211
+b(U)c(E)p 2576 1226 1758 7 v 2754 1408 a(F)p 3033 1487
+7 261 v 291 w(F)220 b(T)211 b(U)c(E)2754 1669 y(T)p 3033
+1747 V 291 w(T)220 b(T)h(T)f(T)2745 1929 y(U)p 3033 2007
+V 273 w(U)211 b(T)g(U)c(E)2749 2190 y(E)p 3033 2268 V
+282 w(E)212 b(E)f(E)g(E)230 2530 y Ff(\017)71 b Fg(The)47
+b(conditional)g(oper)n(ator)j(is)c(not)i(str)s(ict)e(f)-5
+b(or)48 b(the)f(tw)n(o)h(consequents)404 2745 y Fb(true?10:undefined)h
+Fg(e)-5 b(v)l(aluates)47 b(to)h(10,)f(and)404 2960 y
+Fb(false?error:"foo")i Fg(e)-5 b(v)l(aluates)47 b(to)h(\224f)-5
+b(oo\224)230 3298 y Ff(\017)71 b Fg(The)47 b(special)g(compar)s(ison)g
+(oper)n(ators)i Fb(is)e Fg(and)h Fb(isnt)g Fg(are)f(not)h(str)s(ict)404
+3513 y Fb(undefined)123 b(is)g(10)47 b Fg(e)-5 b(v)l(aluates)47
+b(to)g(f)-5 b(alse)m(,)48 b(while)404 3729 y Fb(error)123
+b(is)f(error)48 b Fg(e)-5 b(v)l(aluates)47 b(to)g(tr)s(ue)m(.)5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155
+b(September)28 b(16,)g(1998)2127 b(10)p eop
+%%Page: 11 11
+11 10 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1676 100 1980 7 v 1676 365 7 266 v MidnightBlue 1734
+277 a Fi(Ag)n(gregates)48 b(\(ClassAds\))p Black 3648
+365 V 1676 372 1980 7 v 3652 441 73 280 v 1745 441 1980
+73 v 150 843 a Fg(The)d(tw)n(o)h(agg)n(regate)h(str)s(uctures)e(in)g
+(the)g(language)h(are)p Red 46 w(classads)p Black 44
+w(and)p Red 45 w(lists)p Black(.)150 1060 y(ClassAds)h(are)h(created)g
+(b)m(y)e(the)i(classad)e(constr)s(uction)h(oper)n(ator)p
+Red 50 w([)g(])p Black 230 1488 a Ff(\017)71 b Fg(A)47
+b(sequence)h(of)f(z)m(ero)i(or)e(more)p Red 48 w(attr)s(ib)m(utes)p
+Black 47 w(separ)n(ated)i(b)m(y)e(semi-colons)404 1705
+y Fb([)g Fc(name0)h Fg(=)f Fc(e)-5 b(xpr0)48 b Fg(;)f
+Fc(name1)h Fg(=)g Fc(e)-5 b(xpr1)47 b Fg(;)h(.)28 b(.)g(.)g(;)47
+b Fc(namei)h Fg(=)f Fc(e)-5 b(xpr)s(i)47 b Fb(])230 2060
+y Ff(\017)71 b Fg(Each)47 b(classad)g(de\002nes)g(a)p
+Blue 48 w(scope)p Black 47 w(from)h(which)f(attr)s(ib)m(utes)g(ma)-5
+b(y)47 b(be)404 2277 y(look)m(ed)g(up)230 2631 y Ff(\017)71
+b Fg(Ma)-5 b(y)47 b(be)h(arbitr)n(ar)s(ily)f(nested)437
+2986 y Fi(\226)71 b Fg(e)m(.g.,)48 b Fb([)122 b(foo=10;)h(bar=[baz=20;)
+h(foo=30])f(])230 3341 y Ff(\017)71 b Fg(Leads)48 b(to)f(a)g(natur)n
+(al)p Blue 49 w(le)-5 b(xical)46 b(scoping)p Black 47
+w(str)s(ucture)150 3769 y(More)i(on)g(the)f(le)-5 b(xical)46
+b(scoping)h(proper)7 b(ties)48 b(of)f(ClassAds)g(shor)7
+b(tly)-17 b(.)5250 3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28
+b(T)-12 b(eam)2155 b(September)28 b(16,)g(1998)2127 b(11)p
+eop
+%%Page: 12 12
+12 11 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1864 320 1603 7 v 1864 584 7 264 v MidnightBlue 1923
+495 a Fi(Ag)n(gregates)47 b(\(Lists\))p Black 3460 584
+V 1864 591 1603 7 v 3463 660 73 278 v 1933 660 1603 73
+v 150 1061 a Fg(Lists)f(are)i(created)h(b)m(y)d(the)i(list)e(constr)s
+(uction)h(oper)n(ator)p Red 49 w Ff(f)h(g)p Black 230
+1490 a(\017)71 b Fg(A)47 b(sequence)h(of)f(z)m(ero)i(or)e(more)h(e)-5
+b(xpressions)47 b(separ)n(ated)i(b)m(y)e(commas)404 1707
+y Fb({)g Fc(e)-5 b(xpr0)p Fg(,)48 b Fc(e)-5 b(xpr1)p
+Fg(,)48 b(.)28 b(.)g(.)g(,)48 b Fc(e)-5 b(xpr)s(i)p Fb(})230
+2061 y Ff(\017)71 b Fc(Ma)-5 b(y)47 b(be)h(arbitr)n(ar)s(ily)f(nested)
+437 2416 y Fi(\226)71 b Fc(e)m(.g.,)48 b Fb({)122 b(10,)h([foo={10}],)g
+({17,)g([bar=3]})g(})230 2771 y Ff(\017)71 b Fc(Ma)-5
+b(y)47 b(be)h(treated)g(as)f(an)h(arr)n(a)-5 b(y)48 b(through)h(use)e
+(of)g(the)h Fg(subscr)s(ipt)f(oper)n(ator)437 3125 y
+Fi(\226)71 b Fc(Elements)47 b(n)n(umbered)i(from)f(0)g(\(lik)m(e)e
+(C/C++\))437 3411 y Fi(\226)71 b Fc(e)m(.g.,)48 b Fb({10,)123
+b(17*2,)f(30}[1])48 b Ff(\))f Fb(34)5250 3840 y
+ 0 setgray
+ 5250
+3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155 b(September)28
+b(16,)g(1998)2127 b(12)p eop
+%%Page: 13 13
+13 12 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1776 67 1779 7 v 1776 295 7 229 v MidnightBlue 1835 242
+a Fi(Attrib)m(ute)47 b(Ref)n(erences)p Black 3548 295
+V 1776 302 1779 7 v 3551 371 73 243 v 1845 371 1779 73
+v 150 753 a Fg(Attr)s(ib)m(ute)g(ref)-5 b(erences)49
+b(are)f(\223similar\224)f(to)g(v)l(ar)s(iab)m(le)f(ref)-5
+b(erences)49 b(in)e(C)192 1115 y(1.)71 b(If)47 b(the)h(ref)-5
+b(erence)49 b(is)d Fc(attr)p Fg(,)i(\002nd)f(the)h(e)-5
+b(xpression)47 b(bound)h(to)g Fc(attr)g Fg(in)f(the)404
+1328 y(closest)g(enclosing)f(scope;)i(the)f(v)l(alue)g(of)g(the)h(attr)
+s(ib)m(ute)f(ref)-5 b(erence)49 b(is)404 1542 y(the)f(v)l(alue)f(of)g
+(this)g(e)-5 b(xpression)192 1868 y(2.)71 b(If)47 b(the)h(ref)-5
+b(erence)49 b(is)d Fc(.attr)p Fg(,)i(\002nd)g(the)f(e)-5
+b(xpression)47 b(bound)i(to)e Fc(attr)h Fg(in)f(the)404
+2081 y Fc(top-le)-5 b(v)l(el)47 b Fg(ad;)h(the)f(v)l(alue)g(of)h(the)f
+(attr)s(ib)m(ute)h(ref)-5 b(erence)48 b(is)f(the)g(v)l(alue)g(of)404
+2295 y(this)g(e)-5 b(xpression)192 2620 y(3.)71 b(If)47
+b(the)h(ref)-5 b(erence)49 b(is)d Fc(e)-5 b(xpr)d(.attr)p
+Fg(,)48 b(e)-5 b(v)l(aluate)48 b Fc(e)-5 b(xpr)47 b Fg(and)h(proceed)g
+(to)f(lookup)404 2834 y Fc(attr)h Fg(as)f(in)g(case)g(1,)g(using)g(the)
+h(v)l(alue)f(of)g Fc(e)-5 b(xpr)48 b Fg(as)f(the)g(initial)f(scope)i
+(to)404 3048 y(search)g(from.)59 b(\(If)48 b Fc(e)-5
+b(xpr)47 b Fg(does)h(not)f(e)-5 b(v)l(aluate)48 b(to)f(a)g(classad)g
+(\(or)404 3261 y Fb(undefined)p Fg(\),)i(the)e(v)l(alue)g(of)h(the)f
+(attr)s(ib)m(ute)h(ref)-5 b(erence)48 b(is)f Fb(error)p
+Fg(.\))150 3623 y(In)g(all)g(cases)m(,)g(if)g(no)g(attr)s(ib)m(ute)h
+(named)g Fc(attr)g Fg(can)f(be)h(f)-5 b(ound,)48 b(the)f(v)l(alue)g(of)
+g(the)150 3837 y(attr)s(ib)m(ute)g(ref)-5 b(erence)49
+b(is)e Fb(undefined)p Fg(.)5250 3840 y
+ 0 setgray
+ 5250 3840 a -240
+4236 a Fh(Condor)28 b(T)-12 b(eam)2155 b(September)28
+b(16,)g(1998)2127 b(13)p eop
+%%Page: 14 14
+14 13 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+297 101 4737 7 v 297 365 7 265 v MidnightBlue 356 278
+a Fi(Attrib)m(ute)47 b(Ref)n(erences)i(\(contd.\):)59
+b(Examples)47 b(of)g(Cases)h(1)g(and)e(2)p Black 5027
+365 V 297 372 4737 7 v 5030 441 73 279 v 366 441 4737
+73 v 150 889 5202 7 v 2359 1071 a Fg(T)-20 b(op-le)-5
+b(v)l(el)46 b(ClassAd)h(\(Case)h(1\))p 4500 1149 7 261
+v 207 w(V)-12 b(alue)p 150 1156 5202 7 v 3184 1338 a
+Fb([a=1;b=)p 4038 1199 240 7 v 4038 1393 7 195 v 59 w(a)p
+4271 1393 V 4038 1400 240 7 v 59 w(])p 4500 1417 7 261
+v 207 w Fg(1)2207 1599 y Fb([a=2;b=[c=1;d=)p 3915 1459
+240 7 v 3915 1653 7 195 v 60 w(a)p 4149 1653 V 3915 1660
+240 7 v 59 w(]])p 4500 1677 7 261 v 207 w Fg(2)864 1864
+y Fb([a=2;b=[c=1;d=)p 2572 1684 484 7 v 2572 1919 7 235
+v 60 w(a+f)p 3050 1919 V 2572 1926 484 7 v 59 w(];e=[f=10]])p
+4500 1942 7 266 v 208 w Fa(undefined)742 2125 y Fb
+([a=3;b=[c=1;d=[e=5;f=)p 3304 1977 728 7 v 3304 2179
+7 202 v 61 w(a+c+e)p 4027 2179 V 3304 2186 728 7 v 59
+w(]]])p 4500 2203 7 261 v 207 w Fg(9)253 2385 y Fb
+([a=3;b=[a=2;c=1;d=[e=5;f=)p 3303 2237 728 7 v 3303 2439
+7 202 v 62 w(a+c+e)p 4027 2439 V 3303 2446 728 7 v 59
+w(]]])p 4500 2463 7 261 v 207 w Fg(8)253 2650 y Fb
+([a=3;b=[a=2;c=1;d=[e=5;f=)p 3303 2470 728 7 v 3303 2705
+7 235 v 62 w(a+b+c)p 4027 2705 V 3303 2712 728 7 v 59
+w(]]])p 4500 2729 7 266 v 207 w Fa(error)p 150 2735 5202
+7 v 2359 2918 a Fg(T)-20 b(op-le)-5 b(v)l(el)46 b(ClassAd)h(\(Case)h
+(2\))p 4500 2996 7 261 v 207 w(V)-12 b(alue)p 150 3003
+5202 7 v 2085 3185 a Fb([a=2;b=[a=1;d=)p 3793 3045 362
+7 v 3793 3239 7 195 v 60 w(.a)p 4149 3239 V 3793 3246
+362 7 v 59 w(]])p 4500 3263 7 261 v 207 w Fg(2)864 3445
+y Fb([a=3;b=[a=1;d=[a=5;f=)p 3426 3298 606 7 v 3426 3499
+7 202 v 61 w(a+.a)p 4027 3499 V 3426 3506 606 7 v 59
+w(]]])p 4500 3523 7 261 v 207 w Fg(8)2085 3706 y Fb([a=2;b=[c=1;d=)p
+3793 3566 362 7 v 3793 3760 7 195 v 60 w(.c)p 4149 3760
+V 3793 3767 362 7 v 59 w(]])p 4500 3784 7 261 v 207 w
+Fa(undefined)5250 3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28
+b(T)-12 b(eam)2155 b(September)28 b(16,)g(1998)2127 b(14)p
+eop
+%%Page: 15 15
+15 14 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+542 301 4247 7 v 542 565 7 265 v MidnightBlue 601 478
+a Fi(Attrib)m(ute)47 b(Ref)n(erences)i(\(contd.\):)59
+b(Examples)47 b(of)g(Cases)h(3)p Black 4782 565 V 542
+572 4247 7 v 4786 641 73 279 v 611 641 4247 73 v 209
+872 4982 7 v 2418 1054 a Fg(T)-20 b(op-le)-5 b(v)l(el)46
+b(ClassAd)h(\(Case)h(3\))p 4559 1132 7 261 v 207 w(V)-12
+b(alue)p 209 1139 4982 7 v 2511 1323 a Fb([a=1;b=)p 3365
+1146 972 7 v 3365 1397 7 251 v 59 w([c=5].c)p 4330 1397
+V 3365 1404 972 7 v 59 w(])p 4559 1404 7 265 v 207 w
+Fg(5)2511 1587 y Fb([a=1;b=)p 3365 1411 972 7 v 3365
+1661 7 251 v 59 w([c=5].a)p 4330 1661 V 3365 1668 972
+7 v 59 w(])p 4559 1668 7 265 v 207 w Fg(1)557 1855 y
+Fb([a=1;b=[a=2;c=[b=.a]];d=)p 3485 1675 850 7 v 3485
+1910 7 235 v 61 w(.b.c.a)p 4330 1910 V 3485 1917 850
+7 v 59 w(])p 4559 1934 7 266 v 207 w Fg(2)557 2121 y
+Fb([a=1;b=[a=2;c=[b=.a]];d=)p 3485 1940 850 7 v 3485
+2175 7 235 v 61 w(.b.c.b)p 4330 2175 V 3485 2182 850
+7 v 59 w(])p 4559 2199 7 266 v 207 w Fg(1)679 2386 y
+Fb([a=1;b=[a=2;c=[b=a]];d=)p 3485 2206 850 7 v 3485 2441
+7 235 v 61 w(.b.c.b)p 4330 2441 V 3485 2448 850 7 v 59
+w(])p 4559 2465 7 266 v 207 w Fg(2)312 2652 y Fb
+([a=1;b=[a=2;c=[b=.a]];d=)p 3240 2471 1095 7 v 3240 2706
+7 235 v 62 w(.a.b.a.b)p 4330 2706 V 3240 2713 1095 7
+v 59 w(])p 4559 2730 7 266 v 207 w Fa(error)p Red 150
+3136 a Fg(Note:)p Black 59 w(Remember)49 b(to)f(use)f(the)g(le)-5
+b(xical)46 b(scoping)h(of)g(the)h(e)-5 b(v)l(aluated)150
+3353 y(e)g(xpression)46 b(and)g(not)g(the)h(le)-5 b(xical)44
+b(scoping)h(of)h(the)h(attr)s(ib)m(ute)f(ref)-5 b(erence)47
+b(\(i.e)m(.,)150 3570 y(the)h(bo)-5 b(x\)!!)5250 3840
+y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155
+b(September)28 b(16,)g(1998)2127 b(15)p eop
+%%Page: 16 16
+16 15 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+286 297 4759 7 v 286 561 7 265 v MidnightBlue 345 474
+a Fi(Attrib)m(ute)48 b(Ref)n(erences)g(\(contd.\):)59
+b(Example)47 b(T)-14 b(op-le)m(vel)48 b(ClassAd)p Black
+5038 561 V 286 568 4759 7 v 5041 637 73 279 v 355 637
+4759 73 v 150 1014 a Fe([)333 1185 y(adl=[)90 b(other)f(=)i(.adr.self;)
+883 1355 y(self)f(=)h([)g(Owner)e(=)j("Ms.)e(Foo";)1707
+1526 y(Arch)g(=)h("INTEL";)1707 1696 y(MemorySize)c(=)92
+b(32M;)1707 1867 y(Constraint)87 b(=)92 b(other.Owner)87
+b(!=)j("foo")1615 2037 y(];)700 2207 y(];)333 2378 y(adr=[)g(other)f(=)
+i(.adl.self;)883 2548 y(self)f(=)h([)g(Owner)e(=)j("Mr.)e(Bar";)1707
+2719 y(MemorySize)d(=)92 b(16M;)1707 2889 y(Constraint)87
+b(=)92 b(\(other.Arch=="I)o(NTE)o(L\))85 b(&&)1890 3060
+y(\(other.MemorySize)g(>)91 b(self.MemorySize\))1615
+3230 y(])700 3401 y(])150 3571 y(])5250 3840 y
+ 0 setgray
+ 5250 3840
+a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155 b(September)28
+b(16,)g(1998)2127 b(16)p eop
+%%Page: 17 17
+17 16 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+535 67 4262 7 v 535 329 7 263 v MidnightBlue 593 242
+a Fi(Attrib)m(ute)48 b(Ref)n(erences)g(\(contd.\):)59
+b(The)47 b(\223super\224)f(attrib)m(ute)p Black 4790
+329 V 535 336 4262 7 v 4793 405 73 277 v 603 405 4262
+73 v 150 782 a Fg(Str)s(ict)h(le)-5 b(xical)45 b(scoping)i(can)g(be)h
+(changed)g(with)f(the)h Fb(super)g Fg(attr)s(ib)m(ute)230
+1128 y Ff(\017)71 b Fg(A)47 b(classad)g(ma)-5 b(y)47
+b(ha)m(v)l(e)g(an)g(attr)s(ib)m(ute)h(named)g Fb(super)p
+Fg(,)f(which)h(will)404 1341 y(\(upon)g(e)-5 b(v)l(aluation)48
+b(to)f(a)g(classad\))g(be)h(treated)g(as)f(the)h(parent)g(scope)f(of)
+404 1554 y(the)h(ad.)59 b(F)-5 b(or)47 b(e)-5 b(xample)m(,)p
+404 1610 3781 7 v 404 1873 7 264 v 463 1790 a Fb
+([a=1;b=[c=2];d=[super=.b]].d.c)p 4178 1873 V 404 1880
+3781 7 v 109 w Fg(e)g(v)l(aluates)47 b(to)404 2013 y(2)230
+2331 y Ff(\017)71 b Fg(The)47 b Fb(super)h Fg(attr)s(ib)m(ute)f(ma)-5
+b(y)47 b(also)g(be)h(used)f(as)g(attr)s(ib)m(ute)h(ref)-5
+b(erences)404 2544 y(in)47 b(e)-5 b(xpressions)437 2847
+y Fi(\226)71 b Fg(If)47 b(an)h(e)-5 b(xplicit)45 b Fb(super)j
+Fg(attr)s(ib)m(ute)g(is)e(not)i(supplied,)f(the)g(ref)-5
+b(erence)602 3060 y(e)g(v)l(aluates)47 b(to)g(the)h(natur)n(al)g
+(parent)h(scope)e(of)g(the)h(e)-5 b(xpression')d(s)602
+3272 y(scope)437 3538 y Fi(\226)71 b Fg(F)-5 b(or)47
+b(e)-5 b(xample)m(,)48 b Fb([a=1;b=[a=7;c=)p 3333 3398
+972 7 v 3333 3621 7 223 v 60 w(super.a)p 4299 3621 V
+3333 3628 972 7 v 59 w(]])602 3764 y Fg(e)-5 b(v)l(aluates)47
+b(to)g(1)5250 3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28
+b(T)-12 b(eam)2155 b(September)28 b(16,)g(1998)2127 b(17)p
+eop
+%%Page: 18 18
+18 17 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+897 647 3538 7 v 897 911 7 265 v MidnightBlue 955 824
+a Fi(Attrib)m(ute)48 b(Ref)n(erences)h(\(contd.\):)59
+b(Cir)m(cularities)p Black 4427 911 V 897 918 3538 7
+v 4431 987 73 279 v 966 987 3538 73 v 150 1389 a Fg(The)47
+b(ClassAd)g(language)h(requires)g(that)g(circular)s(ities)e(be)h
+(detected)h(dur)s(ing)150 1606 y(e)-5 b(v)l(aluation)230
+2034 y Ff(\017)71 b Fg(Circular)s(ities)47 b(in)f(e)-5
+b(xpression)48 b(e)-5 b(v)l(aluation)p 404 2094 2071
+7 v 404 2349 7 255 v 463 2275 a Fb([b)122 b(=)g(a;)h(a)f(=)g(b].a)p
+2468 2349 V 404 2356 2071 7 v 106 w Fg(e)-5 b(v)l(aluates)47
+b(to)h Fb(undefined)230 2635 y Ff(\017)71 b Fg(Circular)s(ities)47
+b(in)f(scoping)p 404 2697 3781 7 v 404 2961 7 264 v 463
+2878 a Fb([a=[super=.b];)123 b(b=[super=.a]].x)p 4178
+2961 V 404 2968 3781 7 v 108 w Fg(e)-5 b(v)l(aluates)47
+b(to)404 3120 y Fb(undefined)5250 3840 y
+ 0 setgray
+ 5250 3840 a
+-240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155 b(September)28
+b(16,)g(1998)2127 b(18)p eop
+%%Page: 19 19
+19 18 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+2023 67 1285 7 v 2023 300 7 233 v MidnightBlue 2082 244
+a Fi(Function)45 b(Calls)p Black 3301 300 V 2023 307
+1285 7 v 3304 375 73 247 v 2092 375 1285 73 v 150 750
+a Fg(Expressions)i(ma)-5 b(y)47 b(also)g(consist)f(of)i(calls)d(to)j
+(inb)m(uilt)e(functions)m(.)230 1091 y Ff(\017)71 b Fg(The)47
+b(ar)s(ity)g(and)h(semantics)e(of)i(a)f(call)f(depends)i(on)g(the)f
+(function)230 1407 y Ff(\017)71 b Fg(The)47 b(f)-5 b(ollo)m(wing)48
+b(functions)f(are)h(currently)g(suppor)7 b(ted)p 404
+1464 4930 7 v 507 1647 a Fb(isString\(e\))p 2195 1725
+7 261 v 453 w Fg(T)-20 b(r)s(ue)46 b(iff)h Fb(e)g Fg(e)-5
+b(v)l(aluates)47 b(to)h(a)f(str)s(ing)507 1907 y Fb(isInteger\(e\))p
+2195 1985 V 331 w Fg(T)-20 b(r)s(ue)46 b(iff)h Fb(e)g
+Fg(e)-5 b(v)l(aluates)47 b(to)h(a)f(integer)507 2167
+y Fb(isReal\(e\))p 2195 2246 V 697 w Fg(T)-20 b(r)s(ue)46
+b(iff)h Fb(e)g Fg(e)-5 b(v)l(aluates)47 b(to)h(a)f(real)507
+2428 y Fb(isClassAd\(e\))p 2195 2506 V 331 w Fg(T)-20
+b(r)s(ue)46 b(iff)h Fb(e)g Fg(e)-5 b(v)l(aluates)47 b(to)h(a)f(classad)
+507 2688 y Fb(isList\(e\))p 2195 2766 V 697 w Fg(T)-20
+b(r)s(ue)46 b(iff)h Fb(e)g Fg(e)-5 b(v)l(aluates)47 b(to)h(a)f(list)507
+2948 y Fb(isMember\(l,e\))p 2195 3027 V 209 w Fg(T)-20
+b(r)s(ue)46 b(iff)h Fb(e)g Fg(equals)h(a)f(member)h(of)g(the)f(list)g
+Fb(l)507 3209 y(isMember\(l,e\))p 2195 3287 V 209 w Fg(T)-20
+b(r)s(ue)46 b(iff)h Fb(e)g(is)h Fg(a)f(member)h(of)g(the)f(list)g
+Fb(l)230 3527 y Ff(\017)71 b Fg(Will)46 b(add)i(more)g(\(type)g(con)m
+(v)l(ersions)m(,)f(mathematical)g(functions)m(,)h(str)s(ing)404
+3740 y(functions)m(,)g(patter)t(n)h(matching,)e(time)m(,)h(etc.\))5250
+3840 y
+ 0 setgray
+ 5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155
+b(September)28 b(16,)g(1998)2127 b(19)p eop
+%%Page: 20 20
+20 19 bop 150 3840 a @beginspecial @setspecial
+ tx@Dict begin STP newpath 0.48215 SLW 0. setgray  14.22636 false 10.93567
+neg 10.93567 neg 307.11629 230.45787 .5 Frame  gsave 0.48215 SLW 0.
+setgray 0 setlinecap stroke  grestore end
+ 
+@endspecial
+1548 426 2236 7 v 1548 691 7 265 v MidnightBlue 1606
+604 a Fi(Status)48 b(of)f(implementations)p Black 3776
+691 V 1548 698 2236 7 v 3780 767 73 279 v 1617 767 2236
+73 v 230 1306 a Ff(\017)71 b Fg(The)47 b(J)m(a)m(v)l(a)f
+(implementation)i(is)e(complete)230 1661 y Ff(\017)71
+b Fg(The)47 b(C++)h(implementation)f(is)g(undergoing)i(\002nal)d
+(touches)437 2015 y Fi(\226)71 b Fg(Will)46 b(be)h(complete)h(coming)f
+(monda)-5 b(y)48 b(\(Sep)g(21\))437 2301 y Fi(\226)71
+b Fg(Some)47 b(aspects)g(of)h(the)f(libr)n(ar)5 b(y)48
+b(\(such)g(as)f(memor)5 b(y)48 b(management\))602 2518
+y(require)g(testing)f(\227)h(y)m(ou)f(are)h(the)f(guinea)h(pigs!)58
+b(Send)48 b(b)m(ug)f(repor)7 b(ts)602 2735 y(to)47 b(me)h(\(r)n
+(aman@cs)m(.wisc.edu\))230 3090 y Ff(\017)71 b Fg(W)-7
+b(atch)48 b(http://www)-10 b(.cs)m
+(.wisc.edu/condor/classad/classad.html)49 b(f)-5 b(or)404
+3307 y(ne)m(w)48 b(de)-5 b(v)l(elopments)5250 3840 y
+ 0 setgray
+
+5250 3840 a -240 4236 a Fh(Condor)28 b(T)-12 b(eam)2155
+b(September)28 b(16,)g(1998)2127 b(20)p eop
+%%Trailer
+end
+userdict /end-hook known{end-hook}if
+%%EOF
+% nup.post.ps -- Postlude for n-up printing. $Revision: 1.1.1.1 $
+$Nup
+begin
+spot
+0
+ne{-showpage}if
+end

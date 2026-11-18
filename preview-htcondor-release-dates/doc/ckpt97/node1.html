@@ -1,0 +1,44 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>1 Introduction</TITLE>
+<META NAME="description" CONTENT="1 Introduction">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html30" HREF="node2.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html28" HREF="ckpt97.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html22" HREF="ckpt97.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html31" HREF="node2.html">2 Checkpoint and Migration </A>
+<B>Up:</B> <A NAME="tex2html29" HREF="ckpt97.html">Checkpoint and Migration of </A>
+<B> Previous:</B> <A NAME="tex2html23" HREF="ckpt97.html">Checkpoint and Migration of </A>
+<BR> <P>
+<H1><A NAME="SECTION00010000000000000000">1 Introduction</A></H1>
+<P>
+Condor is a distributed batch processing system for UNIX developed
+at the University of Wisconsin.  This system schedules jobs on idle
+workstations in a network, resulting in more efficient resource
+utilization.  It is of primary importance in Condor to ensure that the
+owner of a workstation does not pay a penalty for adding his or her
+workstation to the Condor pool of workstations.  So, a job must have
+the ability to immediately vacate a workstation when the owner begins
+to use it, and either migrate to another idle workstation or queue
+until one becomes idle.
+<P>
+To allow migrating jobs to make progress, Condor must be able to start
+the vacated job from where it left off.  Condor does this by writing a
+checkpoint of the process's state before vacating.  A checkpoint file
+contains the process's data and stack segments, as well as information
+about open files, pending signals, and CPU state.  Condor gives a
+program the ability to checkpoint itself by providing a checkpointing
+library.  Programs submitted to be run by the Condor system are
+re-linked (but not re-compiled) to include this library.
+<P>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.2 Stack</TITLE>
+<META NAME="description" CONTENT="3.2 Stack">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html80" HREF="node6.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html78" HREF="node3.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html72" HREF="node4.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html81" HREF="node6.html">3.2.1 Manipulating the Stack</A>
+<B>Up:</B> <A NAME="tex2html79" HREF="node3.html">3 Components of a </A>
+<B> Previous:</B> <A NAME="tex2html73" HREF="node4.html">3.1 Text and Data </A>
+<BR> <P>
+<H2><A NAME="SECTION00032000000000000000">3.2 Stack</A></H2>
+<P>
+The stack is that part of the address space allocated at run time to
+accommodate the information needed by the procedure call mechanism,
+procedure call arguments, and automatic variables and arrays.  The
+size of the stack varies at run time whenever a procedure is entered
+or exited.  On some systems the stack begins at a fixed address near
+the top of virtual memory and grows toward lower addresses, while on
+others it begins at an address in the middle of virtual memory (to
+allow space for heap allocation), and grows toward higher numbered
+addresses.  Special care is taken to detect if the stack resides in
+the data area (for example, if a user-level threads package is in use
+by the program) and to locate all stack frames successfully if in this
+case.  In any case, the stack can be written to a file provided only
+that one knows its beginning and ending addresses.  Restoring the
+stack requires a bit more of a trick.  The problem is that if the
+saved stack information were to overwrite the call frame of the
+procedure doing the restart, not only its local variables but also all
+information regarding what to do at the conclusion of this procedure
+would be lost.  To avoid this, we use a pre-defined area in the data
+space as a temporary stack when executing that part of the restart
+code which restores the stack.
+<P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME="tex2html82" HREF="node6.html#SECTION00032100000000000000">3.2.1 Manipulating the Stack</A>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

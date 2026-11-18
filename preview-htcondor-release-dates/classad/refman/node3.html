@@ -1,0 +1,1640 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 3.2 Final//EN">
+
+<!--Converted with LaTeX2HTML 2002-2-1 (1.70)
+original version by:  Nikos Drakos, CBLU, University of Leeds
+* revised and updated by:  Marcus Hennecke, Ross Moore, Herb Swan
+* with significant contributions from:
+  Jens Lippmann, Marek Rouchal, Martin Wilck and others -->
+<HTML>
+<HEAD>
+<TITLE>Syntax</TITLE>
+<META NAME="description" CONTENT="Syntax">
+<META NAME="keywords" CONTENT="refman">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+
+<META NAME="Generator" CONTENT="LaTeX2HTML v2002-2-1">
+<META HTTP-EQUIV="Content-Style-Type" CONTENT="text/css">
+
+<LINK REL="STYLESHEET" HREF="refman.css">
+
+<LINK REL="next" HREF="node4.html">
+<LINK REL="previous" HREF="node2.html">
+<LINK REL="up" HREF="refman.html">
+<LINK REL="next" HREF="node4.html">
+</HEAD>
+
+<BODY >
+<!--Navigation Panel-->
+<A NAME="tex2html90"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html88"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html82"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html91"
+  HREF="node4.html">Evaluation</A>
+<B> Up:</B> <A NAME="tex2html89"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html83"
+  HREF="node2.html">Basic Concepts</A>
+<BR>
+<BR>
+<!--End of Navigation Panel-->
+<!--Table of Child-Links-->
+<A NAME="CHILD_LINKS"><STRONG>Subsections</STRONG></A>
+
+<UL>
+<LI><A NAME="tex2html92"
+  HREF="node3.html#SECTION00031000000000000000">Abstract Syntax</A>
+<LI><A NAME="tex2html93"
+  HREF="node3.html#SECTION00032000000000000000">Escaped Strings</A>
+<LI><A NAME="tex2html94"
+  HREF="node3.html#SECTION00033000000000000000">Native Syntax.</A>
+<UL>
+<LI><A NAME="tex2html95"
+  HREF="node3.html#SECTION00033100000000000000">Tokens.</A>
+<LI><A NAME="tex2html96"
+  HREF="node3.html#SECTION00033200000000000000">Grammar.</A>
+<LI><A NAME="tex2html97"
+  HREF="node3.html#SECTION00033300000000000000">Unparsing.</A>
+</UL>
+<BR>
+<LI><A NAME="tex2html98"
+  HREF="node3.html#SECTION00034000000000000000">Old ClassAd Syntax</A>
+<LI><A NAME="tex2html99"
+  HREF="node3.html#SECTION00035000000000000000">XML Syntax</A>
+</UL>
+<!--End of Table of Child-Links-->
+<HR>
+
+<H1><A NAME="SECTION00030000000000000000">
+Syntax</A>
+</H1>
+
+<P>
+The ClassAd language has both an <I>abstract</I> syntax and several
+<I>concrete</I> syntaxes.  The abstract syntax describes each expression as an
+abstract data structure called its <I>internal form</I>.
+Each concrete syntax maps an
+expression to a string of ASCII characters called its <I>external form</I> or
+<I>representation</I>.  There are currently three concrete syntaxes defined:
+the <I>native</I> syntax, the <I>old classad</I> syntax, and the <I>xml</I>
+syntax.  Each implementation should provide an application programming-language
+interface (API) for manipulating internal-form expressions as data structures
+in the host programming language and converting between representations:
+<I>parsing</I> to convert from external to internal form, and <I>unparsing</I>
+to convert from internal to external form.
+
+<P>
+Figure&nbsp;<A HREF="#fig:example1">1</A> shows a sample expression in abstract, native, and
+XML syntaxes.
+
+<P>
+
+<DIV ALIGN="CENTER"><A NAME="fig:example1"></A><A NAME="121"></A>
+<TABLE>
+<CAPTION ALIGN="BOTTOM"><STRONG>Figure 1:</STRONG>
+Example ClassAd Expression</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<!-- MATH
+ $\resizebox{!}{1.2in}{\includegraphics{example.eps}}$
+ -->
+<IMG
+ WIDTH="401" HEIGHT="136" ALIGN="BOTTOM" BORDER="0"
+ SRC="img1.png"
+ ALT="\resizebox{!}{1.2in}{\includegraphics{example.eps}}">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+<BR>
+(a) Abstract Syntax
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+<BR>
+<code>[ a = 1; b = a + 1.5; c = { a, "xxx" }; d = c[3] ]</code>
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+<BR>
+(b) Native Syntax
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+<BR>
+</DIV><TABLE  WIDTH="403">
+<TR><TD>
+<PRE>
+&lt;c&gt;&lt;a name="a"&gt;&lt;i&gt;1&lt;/i&gt;&lt;/a&gt;
+    &lt;a name="b"&gt;&lt;e&gt;a+1.5&lt;/e&gt;&lt;/a&gt;
+    &lt;a name="c"&gt;&lt;l&gt;&lt;e&gt;a&lt;e&gt;&lt;s&gt;xxx&lt;/s&gt;&lt;/l&gt;&lt;/a&gt;
+    &lt;a name="d"&gt;&lt;e&gt;c[3]&lt;/e&gt;&lt;/a&gt;&lt;/c&gt;
+</PRE></TD></TR>
+</TABLE>
+<DIV ALIGN="CENTER">
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+<BR>
+(c) XML Syntax
+</DIV>
+<P>
+<DIV ALIGN="CENTER">
+</DIV></TD></TR>
+</TABLE>
+</DIV>
+
+<P>
+
+<H2><A NAME="SECTION00031000000000000000"></A>
+<A NAME="sec:abstract_syntax"></A>
+<BR>
+Abstract Syntax
+</H2>
+
+<P>
+An internal-form expression is an ordered tree:  Each node is either a
+<I>leaf</I> or an <I>internal node</I> with a sequence of <I>child</I> nodes.
+There is a unique <I>root</I> node; every other node has a unique
+<I>parent</I>.  The leaves of an expression tree are <I>literal constants</I>
+and <I>references</I>.  Each internal node contains an <I>operator</I>.  Its
+children are called <I>operands</I>.
+
+<P>
+A literal constant is
+an <I>integer</I>, <I>real</I>, <I>string</I>, <I>boolean</I>,
+<I>absolute time</I>,
+<I>relative time</I>,
+<I>error</I>, or <I>undefined</I>.
+All literal constants have <I>values</I> as indicated in
+Table&nbsp;<A HREF="#tab:literals">1</A>.
+The value of an error literal is the unique value <B>error</B> of type Error.
+An error literal also has an <I>annotation</I>, which is a sequence
+of zero or more non-null ASCII characters meant for human consumption.
+Similarly, an undefined literal has the value <B>undefined</B> and an
+annotation.
+Two literals are <I>equivalent</I> if and only if they have the same value.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="158"></A>
+<TABLE>
+<CAPTION><STRONG>Table 1:</STRONG>
+Literal Constants</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>Type</I></TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288><I>Value or annotation</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Integer</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>32-bit signed, two's complement integer</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Real</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>64-bit IEEE 754 double-precision floating point number</TD>
+</TR>
+<TR><TD ALIGN="LEFT">String</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>Zero or more non-null characters<A NAME="footfnm3"
+ HREF="#fnm3"><SUP>3</SUP></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Boolean</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>The value <B>true</B> or <B>false</B></TD>
+</TR>
+<TR><TD ALIGN="LEFT">AbsTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>An indication of an instant in time and the time zone where this
+            time was measured<A NAME="footfnm4"
+ HREF="#fnm4"><SUP>4</SUP></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT">RelTime</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>Interval between two absolute times<A NAME="footfnm5"
+ HREF="#fnm5"><SUP>5</SUP></A></TD>
+</TR>
+<TR><TD ALIGN="LEFT">Error</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>Zero or more non-null ASCII characters providing a human-readable
+            explanation</TD>
+</TR>
+<TR><TD ALIGN="LEFT">Undefined</TD>
+<TD ALIGN="LEFT" VALIGN="TOP" WIDTH=288>Zero or more non-null ASCII characters providing a human-readable
+            explanation</TD>
+</TR>
+</TABLE>
+
+<A NAME="tab:literals"></A>
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+A reference contains an <I>attribute name</I>, which is a sequence of zero or
+more non-null characters, or the reserved word <TT>parent</TT>.
+Two attribute names <I>match</I> if the
+character sequences are the same length and corresponding characters are the
+same except for differences in case.  The following words are <I>reserved</I>,
+meaning that they may not be used as attribute names.
+<PRE>
+    error false is isnt parent true undefined
+</PRE>
+Recognition of reserved words is independent of case.  For example,
+<TT>false</TT>, <TT>FALSE</TT>, and <TT>False</TT> are all reserved words.
+
+<P>
+An internal node consists of an <I>operator</I> and a sequence of child nodes
+called its <I>operands</I>.
+Each operator has an <I>arity</I> constraining the number of operands it may
+have.
+Operators are classified as <I>unary</I> (one operand), <I>binary</I> (two
+operands), <I>ternary</I> (three operands), or <I>varargs</I> (any number of
+operands).
+The operators and their arities are listed in the Table&nbsp;<A HREF="#tab:operators">2</A>.
+Table&nbsp;<A HREF="#tab:operators">2</A> also indicates the symbol used to represent each
+operator in the native syntax described in the following section.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="209"></A>
+<TABLE>
+<CAPTION><STRONG>Table 2:</STRONG>
+Operators</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>Arity</I></TD>
+<TD ALIGN="LEFT"><I>Symbol</I></TD>
+<TD ALIGN="LEFT"><I>Name</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">1</TD>
+<TD ALIGN="LEFT"><code>+</code></TD>
+<TD ALIGN="LEFT">UPLUS</TD>
+</TR>
+<TR><TD ALIGN="LEFT">1</TD>
+<TD ALIGN="LEFT"><code>-</code></TD>
+<TD ALIGN="LEFT">UMINUS</TD>
+</TR>
+<TR><TD ALIGN="LEFT">1</TD>
+<TD ALIGN="LEFT"><code>~</code></TD>
+<TD ALIGN="LEFT">BIT_COMPLEMENT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">1</TD>
+<TD ALIGN="LEFT"><code>!</code></TD>
+<TD ALIGN="LEFT">NOT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>||</code></TD>
+<TD ALIGN="LEFT">OR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&amp;&amp;</code></TD>
+<TD ALIGN="LEFT">AND</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>|</code></TD>
+<TD ALIGN="LEFT">BITOR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>^</code></TD>
+<TD ALIGN="LEFT">BITXOR</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&amp;</code></TD>
+<TD ALIGN="LEFT">BITAND</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>==</code></TD>
+<TD ALIGN="LEFT">EQUAL</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>!=</code></TD>
+<TD ALIGN="LEFT">NOT_EQUAL</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>is</code></TD>
+<TD ALIGN="LEFT">SAME</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>isnt</code></TD>
+<TD ALIGN="LEFT">DIFFERENT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&lt;</code></TD>
+<TD ALIGN="LEFT">LESS</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&gt;</code></TD>
+<TD ALIGN="LEFT">GREATER</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&lt;=</code></TD>
+<TD ALIGN="LEFT">LESS_EQ</TD>
+</TR>
+</TABLE></TD>
+<TD ALIGN="LEFT"><TABLE CELLPADDING=3 BORDER="1" ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>Arity</I></TD>
+<TD ALIGN="LEFT"><I>Symbol</I></TD>
+<TD ALIGN="LEFT"><I>Name</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&gt;=</code></TD>
+<TD ALIGN="LEFT">GREATER_EQ</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&lt;&lt;</code></TD>
+<TD ALIGN="LEFT">LEFT_SHIFT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&gt;&gt;</code></TD>
+<TD ALIGN="LEFT">RIGHT_SHIFT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>&gt;&gt;&gt;</code></TD>
+<TD ALIGN="LEFT">URIGHT_SHIFT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>+</code></TD>
+<TD ALIGN="LEFT">PLUS</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>-</code></TD>
+<TD ALIGN="LEFT">MINUS</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>*</code></TD>
+<TD ALIGN="LEFT">TIMES</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>/</code></TD>
+<TD ALIGN="LEFT">DIV</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>%</code></TD>
+<TD ALIGN="LEFT">MOD</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>[]</code></TD>
+<TD ALIGN="LEFT">SUBSCRIPT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">2</TD>
+<TD ALIGN="LEFT"><code>.</code></TD>
+<TD ALIGN="LEFT">SELECT</TD>
+</TR>
+<TR><TD ALIGN="LEFT">3</TD>
+<TD ALIGN="LEFT"><code>?:</code></TD>
+<TD ALIGN="LEFT">COND</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>var</I></TD>
+<TD ALIGN="LEFT"><code>{ ... }</code></TD>
+<TD ALIGN="LEFT">LIST</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>var</I></TD>
+<TD ALIGN="LEFT"><code>[ ... ]</code></TD>
+<TD ALIGN="LEFT">RECORD</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>var</I></TD>
+<TD ALIGN="LEFT"><code>name(...)</code></TD>
+<TD ALIGN="LEFT">FUNCTION_CALL</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;</TD>
+</TR>
+</TABLE></TD>
+</TR>
+</TABLE>
+
+<A NAME="tab:operators"></A>
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+With the exception of the binary operator SELECT and the varags operators
+RECORD and FUNCTION_CALL, the operands may be arbitrary
+expressions.<A NAME="tex2html6"
+  HREF="#foot1198"><SUP>6</SUP></A> The second operand of the SELECT operator,
+called the <I>selector</I>, is an attribute name.
+The first operand of the FUNCTION_CALL operator, the <I>function name</I>, is
+a non-empty sequence of letters, digits, and underscores not starting with
+a digit; the remaining operands are called <I>actual parameters</I>.
+Section&nbsp;<A HREF="node4.html#sec:functions">4.3.9</A> lists a set of <I>built-in functions</I> that
+must be provided by all implementations.<A NAME="tex2html7"
+  HREF="#foot220"><SUP>7</SUP></A>The RECORD operator has zero or more operands, called <I>attribute
+definitions</I>.
+Each attribute definition is an ordered pair consisting of an attribute name
+and an arbitrary expression.
+The attribute names must be distinct (ignoring case)<A NAME="tex2html8"
+  HREF="#foot222"><SUP>8</SUP></A>We say that the attribute definition <I>N</I> = <I>E</I> <I>defines</I> the attribute name
+<I>N</I>' if <I>N</I> and <I>N</I>' match.
+
+<P>
+
+<H2><A NAME="SECTION00032000000000000000"></A>
+<A NAME="sec:escape"></A>
+<BR>
+Escaped Strings
+</H2>
+
+<P>
+Each of the concrete syntaxes represents an attribute name or string literal
+as a sequence of printable ASCII characters (characters with values in the
+range 32 - 126 inclusive).<A NAME="tex2html9"
+  HREF="#foot226"><SUP>9</SUP></A>  The translation from concrete to abstract form (parsing)
+and from abstract to concrete form (unparsing) in each case shares the
+following two algorithms.
+
+<P>
+In the concrete representation, a backslash may be followed by one of the
+characters
+<PRE>
+            b  t  n  f  r  "  '  \  0  1  2  3  4  5  6  7
+</PRE>
+In the value of the resulting String or attribute name, the backslash and
+one or more following characters are replaced by a single ASCII character as
+indicated by Table&nbsp;<A HREF="#tab:backslash">3</A>.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="238"></A>
+<TABLE>
+<CAPTION><STRONG>Table 3:</STRONG>
+Backslash escapes</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>Escape Sequence</I></TD>
+<TD ALIGN="LEFT"><I>Value (decimal)</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\b</code></TD>
+<TD ALIGN="LEFT">8 (Backspace)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\t</code></TD>
+<TD ALIGN="LEFT">9 (Horizontal Tab)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\n</code></TD>
+<TD ALIGN="LEFT">10 (Linefeed)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\f</code></TD>
+<TD ALIGN="LEFT">12 (Formfeed)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\r</code></TD>
+<TD ALIGN="LEFT">13 (Carriage Return)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\\</code></TD>
+<TD ALIGN="LEFT">92 (Backslash)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\"</code></TD>
+<TD ALIGN="LEFT">34 (Quote)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\'</code></TD>
+<TD ALIGN="LEFT">39 (Apostrophe)</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><code>\</code><!-- MATH
+ $octal\_digit^+$
+ -->
+<IMG
+ WIDTH="87" HEIGHT="33" ALIGN="MIDDLE" BORDER="0"
+ SRC="img2.png"
+ ALT="$octal\_digit^+$"></TD>
+<TD ALIGN="LEFT"><I>value of octal constant</I></TD>
+</TR>
+</TABLE>
+
+<A NAME="tab:backslash"></A>
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+If the character following the backslash is an octal digit, the octal constant
+consists of three digits if the first digit is 0, 1, 2, or 3 and two digits
+otherwise.  However, the constant is terminated by the first character that is
+not an octal digit.  The string is ill-formed if a backslash is followed by any
+character other than those listed in Table&nbsp;<A HREF="#tab:backslash">3</A>, or if the value
+of an octal constant following a backslash is zero.
+
+<P>
+Multiple canonical representations may parse to the sequence of characters, any
+of which may be considered an ``unparsing'' of that sequence.
+The <I>canonical unparsing</I> of a sequence of characters is defined relative
+to an optional <I>delimiter</I> chararacter, which may be quote (34),
+apostrophe (39), or neither.
+Printable ASCII characters (in the range 32 - 126 inclusive) are represented
+as themselves,  with the exception that each backslash (92) or delimiter
+character (if any) is preceded by an extra backslash.
+Each character with the value 8, 9, 10, 12, or 13 is replaced by a backslash
+followed by the character <code>b</code>, <code>t</code>, <code>n</code>, <code>f</code>, or <code>r</code>,
+respectively.
+Any other character is replaced by a backslash followed by a three-digit octal
+representation of its value.
+
+<P>
+For example, the strings
+<PRE>
+    a'\n
+    a\'\n
+    a\47\012
+    \141\047\012
+</PRE>
+all parse to the three-character sequence consisting of a lower-case <code>a</code>,
+an apostrophe, and a newline (97, 39, 10 decimal).  The canonical unparsing
+is the second of these if apostrophe is the delimiter, and the first otherwise.
+
+<P>
+
+<H2><A NAME="SECTION00033000000000000000"></A>
+<A NAME="sec:native_syntax"></A>
+<BR>
+Native Syntax.
+</H2>
+
+<P>
+The native syntax of the ClassAd language is quite similar to C, C++, or Java.
+The external representation of an expression consists of a sequence of
+<I>tokens</I> separated by optional white space and/or comments.  Comments are
+as in C++ or Java:  The string <TT>//</TT> introduces a comment that continues
+until the end of the current line, and <TT>/*</TT> introduces a comment that
+continues until the next occurrence of <TT>*/</TT> (such comments do not nest).
+
+<P>
+
+<H3><A NAME="SECTION00033100000000000000">
+Tokens.</A>
+</H3>
+Tokens include <I>reserved words</I>, <I>integer</I>, <I>floating-point</I>,
+and <I>string literals</I>, <I>attribute names</I>, <I>operators</I>, and the
+additional lexical
+tokens
+equal sign (<TT>=</TT>),
+parentheses (<TT>(&nbsp;)</TT>),
+braces (<code>{ }</code>),
+brackets (<TT>[&nbsp;]</TT>),
+comma (<TT>,</TT>), and
+semicolon (<TT>;</TT>).
+The operators are shown in Table&nbsp;<A HREF="#tab:operators">2</A> in the previous section.
+The syntax of literals and attribute names is shown in Table&nbsp;<A HREF="#tab:tokens">4</A>.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="366"></A>
+<TABLE>
+<CAPTION><STRONG>Table 4:</STRONG>
+Names and Literals</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>token</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>attribute_name</I>
+&nbsp;<TT>|</TT>&nbsp;<I>literal</I>
+&nbsp;<TT>|</TT>&nbsp;<I>operator</I>
+&nbsp;<TT>|</TT>&nbsp;<I>punctuation</I>
+&nbsp;<TT>|</TT>&nbsp;<I>reserved_word</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>attribute_name</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>unquoted_name</I>&nbsp;<TT>|</TT>&nbsp;<I>quoted_name</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>literal</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>integer_literal</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>floating_point_literal</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>string_literal</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>punctuation</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{=} '$
+ -->
+' <TT>=</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{(} '$
+ -->
+' <TT>(</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{)} '$
+ -->
+' <TT>)</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{\{} '$
+ -->
+' <TT>{</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{\}} '$
+ -->
+' <TT>}</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{[} '$
+ -->
+' <TT>[</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{]} '$
+ -->
+' <TT>]</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{,} '$
+ -->
+' <TT>,</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{;} '$
+ -->
+' <TT>;</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>unquoted_name</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT">(&nbsp; <I>letter</I>&nbsp;<TT>|</TT>&nbsp;'<code>_</code>'&nbsp;)
+&nbsp; (&nbsp;  <I>letter</I>
+&nbsp;<TT>|</TT>&nbsp;<I>decimal_digit</I>
+&nbsp;<TT>|</TT>&nbsp;'<code>_</code>'
+&nbsp;)<SUP>*</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>quoted_name</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT">'<code>'</code>'
+        (&nbsp; <I>non_quote</I>&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{"} '$
+ -->
+' <TT>"</TT> '&nbsp;)<SUP>+</SUP> '<code>'</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>integer_literal</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>nonzero_digit</I>&nbsp; <I>decimal_digit</I><SUP>*</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{0} '$
+ -->
+' <TT>0</TT> '&nbsp; <I>octal_digit</I><SUP>*</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{0} '$
+ -->
+' <TT>0</TT> '&nbsp; (&nbsp; <!-- MATH
+ $' \mathtt{x} '$
+ -->
+' <TT>x</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{X} '$
+ -->
+' <TT>X</TT> '&nbsp;)&nbsp; <I>hex_digit</I><SUP>+</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>floating_point_literal</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>digit</I><SUP>+</SUP>&nbsp; <!-- MATH
+ $' \mathtt{.} '$
+ -->
+' <TT>.</TT> '&nbsp; <I>digit</I><SUP>*</SUP>&nbsp; <I>exponent</I><SUP>?</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{.} '$
+ -->
+' <TT>.</TT> '&nbsp; <I>digit</I><SUP>+</SUP>&nbsp; <I>exponent</I><SUP>?</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>digit</I><SUP>+</SUP>&nbsp; <I>exponent</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>exponent</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT">(&nbsp; <!-- MATH
+ $' \mathtt{e} '$
+ -->
+' <TT>e</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{E} '$
+ -->
+' <TT>E</TT> '&nbsp;)
+&nbsp; (&nbsp; '+'&nbsp;<TT>|</TT>&nbsp;'<TT>-</TT>'&nbsp;) <SUP>?</SUP>
+&nbsp; <I>decimal_digit</I><SUP>+</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>string_literal</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{"} '$
+ -->
+' <TT>"</TT> '&nbsp; (&nbsp; <I>non_quote</I>&nbsp;<TT>|</TT>&nbsp;'<code>'</code>'&nbsp;)<SUP>*</SUP>
+&nbsp; <!-- MATH
+ $' \mathtt{"} '$
+ -->
+' <TT>"</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>letter</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{a} '$
+ -->
+' <TT>a</TT> '...<!-- MATH
+ $' \mathtt{z} '$
+ -->
+' <TT>z</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{A} '$
+ -->
+' <TT>A</TT> '...<!-- MATH
+ $' \mathtt{Z} '$
+ -->
+' <TT>Z</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>non_quote</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT">'<code>\</code>'&nbsp; <I>escaped_char</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>\</code>'&nbsp; <I>octal_digit</I>&nbsp; <I>octal_digit</I><SUP>?</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>\</code>'&nbsp; (&nbsp; <!-- MATH
+ $' \mathtt{0} '$
+ -->
+' <TT>0</TT> '...<!-- MATH
+ $' \mathtt{3} '$
+ -->
+' <TT>3</TT> '&nbsp;)&nbsp; <I>octal_digit</I>
+&nbsp; <I>octal_digit</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>other_character</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>escaped_char</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{n} '$
+ -->
+' <TT>n</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{t} '$
+ -->
+' <TT>t</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{b} '$
+ -->
+' <TT>b</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{r} '$
+ -->
+' <TT>r</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{f} '$
+ -->
+' <TT>f</TT> '
+&nbsp;<TT>|</TT>&nbsp;'<code>\</code>'
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{"} '$
+ -->
+' <TT>"</TT> '&nbsp;<TT>|</TT>&nbsp;'<code>'</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>decimal_digit</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{0} '$
+ -->
+' <TT>0</TT> '...<!-- MATH
+ $' \mathtt{9} '$
+ -->
+' <TT>9</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>nonzero_digit</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{1} '$
+ -->
+' <TT>1</TT> '...<!-- MATH
+ $' \mathtt{9} '$
+ -->
+' <TT>9</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>octal_digit</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{0} '$
+ -->
+' <TT>0</TT> '...<!-- MATH
+ $' \mathtt{7} '$
+ -->
+' <TT>7</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>hex_digit</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>decimal_digit</I>
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{a} '$
+ -->
+' <TT>a</TT> '...<!-- MATH
+ $' \mathtt{f} '$
+ -->
+' <TT>f</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{A} '$
+ -->
+' <TT>A</TT> '...<!-- MATH
+ $' \mathtt{F} '$
+ -->
+' <TT>F</TT> '</TD>
+</TR>
+</TABLE>
+</DIV>
+<DIV ALIGN="CENTER">
+<A NAME="tab:tokens"></A>
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+In Table&nbsp;<A HREF="#tab:tokens">4</A>, parentheses are used for grouping, literal
+characters are enclosed in single quotes, and the postfix
+meta-operators *, +, and ? are used to denote zero or more
+repetitions, one or more repetitions, and zero or one repetitions, respectively.
+The name <code>other_character</code> denotes any ASCII character other than
+Quote (34)<A NAME="tex2html12"
+  HREF="#foot371"><SUP>10</SUP></A>apostrophe (39),
+backslash (92),
+linefeed (10),
+carriage-return (13),
+or null (0).
+The name <code>reserved_word</code> denotes any of the  strings
+<PRE>
+    error false is isnt parent true undefined
+</PRE>
+in any combination of upper or lower case letters.
+
+<P>
+A ClassAd expression consists of a sequence of tokens, separated by whitespace.
+Whitespace consists of one or more occurrences of the ASCII characters
+Space (32),
+Horizontal Tab (9),
+Linefeed (10),
+Vertical Tab (11),
+Formfeed (12), or
+Carriage Return (13).<A NAME="tex2html13"
+  HREF="#foot1199"><SUP>11</SUP></A>Whitespace is only required between two tokens if the first character of the
+second token could be construed as an extension of the first token according to
+the rules in Table&nbsp;<A HREF="#tab:tokens">4</A>.  Two consecutive
+<TT>string_literal</TT>s separated by whitespace are equivalent to a single
+literal whose value is the concatenation of the values of the two literals.
+
+<P>
+A <code>string_literal</code> or <code>quoted_name</code> is parsed according to the
+common rules for Escaped Strings in Section&nbsp;<A HREF="#sec:escape">3.2</A>.
+The <code>quoted_name</code> syntax allows an attribute name to be any sequence of
+non-null ASCII characters.  If the sequence conforms to the syntax of
+<code>unquoted_name</code>, the attribute name may be represented using either
+syntax.  For example, the following are three representations in the native
+syntax of the <I>same</I> attribute name:
+<PRE>
+    _abc        '_abc'       '_ab\143'
+</PRE>
+
+<P>
+
+<H3><A NAME="SECTION00033200000000000000">
+Grammar.</A>
+</H3>
+The native syntax is defined by the context-free grammar in
+Table&nbsp;<A HREF="#tab:grammar">5</A>.
+
+<P>
+<BR><P></P>
+<DIV ALIGN="CENTER"><A NAME="462"></A>
+<TABLE>
+<CAPTION><STRONG>Table 5:</STRONG>
+Native Expression Grammar</CAPTION>
+<TR><TD>
+<DIV ALIGN="CENTER">
+<TABLE CELLPADDING=3 ALIGN="CENTER">
+<TR><TD ALIGN="LEFT"><I>expression</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>binary_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>binary_expression</I>
+                <!-- MATH
+ $' \mathtt{?} '$
+ -->
+' <TT>?</TT> ' <I>expression</I>  <!-- MATH
+ $' \mathtt{:} '$
+ -->
+' <TT>:</TT> ' <I>expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>binary_expression</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>binary_expression</I>
+        <I>binary_operator</I>
+        <I>prefix_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>prefix_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>binary_operator</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT">'<code>||</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>&amp;&amp;</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{|} '$
+ -->
+' <TT>|</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>^</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>&amp;</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>==</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>!=</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>is</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>isnt</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{<} '$
+ -->
+' <TT>&lt;</TT> '
+&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{>} '$
+ -->
+' <TT>&gt;</TT> '
+&nbsp;<TT>|</TT>&nbsp;'<code>&lt;=</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>&gt;=</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>&lt;&lt;</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>&gt;&gt;</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>&gt;&gt;&gt;</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{+} '$
+ -->
+' <TT>+</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{-} '$
+ -->
+' <TT>-</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{*} '$
+ -->
+' <TT>*</TT> '&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{/} '$
+ -->
+' <TT>/</TT> '&nbsp;<TT>|</TT>&nbsp;'<code>%</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>prefix_expression</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>suffix_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>unary_operator</I> <I>suffix_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>unary_operator</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{+} '$
+ -->
+' <TT>+</TT> '&nbsp;<TT>|</TT>&nbsp;'<code>-</code>'&nbsp;<TT>|</TT>&nbsp;'<code>~</code>'&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{!} '$
+ -->
+' <TT>!</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>suffix_expression</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>atom</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>suffix_expression</I> <!-- MATH
+ $' \mathtt{.} '$
+ -->
+' <TT>.</TT> ' <I>attribute_name</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>suffix_expression</I> <!-- MATH
+ $' \mathtt{[} '$
+ -->
+' <TT>[</TT> ' <I>expression</I> <!-- MATH
+ $' \mathtt{]} '$
+ -->
+' <TT>]</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>atom</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>attribute_name</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;'<code>error</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>false</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>true</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>undefined</code>'
+&nbsp;<TT>|</TT>&nbsp;'<code>parent</code>'</TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>integer_literal</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>floating_point_literal</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>string_literal</I><SUP>+</SUP></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>list_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>record_expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<I>function_call</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT">&nbsp;</TD>
+<TD ALIGN="CENTER">&nbsp;</TD>
+<TD ALIGN="LEFT">&nbsp;<TT>|</TT>&nbsp;<!-- MATH
+ $' \mathtt{(} '$
+ -->
+' <TT>(</TT> ' <I>expression</I> <!-- MATH
+ $' \mathtt{)} '$
+ -->
+' <TT>)</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>list_expression</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{\{} '$
+ -->
+' <TT>{</TT> '
+        (&nbsp; <I>expression</I>  (&nbsp; <!-- MATH
+ $' \mathtt{,} '$
+ -->
+' <TT>,</TT> ' <I>expression</I>&nbsp;)<SUP>*</SUP>
+                                <!-- MATH
+ $' \mathtt{,} '$
+ -->
+' <TT>,</TT> '<SUP>?</SUP>&nbsp;)<SUP>?</SUP>
+        <!-- MATH
+ $' \mathtt{\}} '$
+ -->
+' <TT>}</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>record_expression</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><!-- MATH
+ $' \mathtt{[} '$
+ -->
+' <TT>[</TT> '
+         (&nbsp; <I>attribute_definition</I>
+                (&nbsp; <!-- MATH
+ $' \mathtt{;} '$
+ -->
+' <TT>;</TT> ' <I>attribute_definition</I>&nbsp;)<SUP>*</SUP>
+                <!-- MATH
+ $' \mathtt{;} '$
+ -->
+' <TT>;</TT> '<SUP>?</SUP>&nbsp;)<SUP>?</SUP>
+    <!-- MATH
+ $' \mathtt{]} '$
+ -->
+' <TT>]</TT> '</TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>attribute_definition</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>attribute_name</I> <!-- MATH
+ $' \mathtt{=} '$
+ -->
+' <TT>=</TT> ' <I>expression</I></TD>
+</TR>
+<TR><TD ALIGN="LEFT"><I>function_call</I></TD>
+<TD ALIGN="CENTER">::=</TD>
+<TD ALIGN="LEFT"><I>unquoted_name</I> <!-- MATH
+ $' \mathtt{(} '$
+ -->
+' <TT>(</TT> ' (&nbsp; <I>expression</I>
+        (&nbsp; <!-- MATH
+ $' \mathtt{,} '$
+ -->
+' <TT>,</TT> ' <I>expression</I>&nbsp;)<SUP>*</SUP>&nbsp;)<SUP>?</SUP> <!-- MATH
+ $' \mathtt{)} '$
+ -->
+' <TT>)</TT> '</TD>
+</TR>
+</TABLE>
+
+<A NAME="tab:grammar"></A>
+</DIV></TD></TR>
+</TABLE>
+</DIV><P></P>
+<BR>
+
+<P>
+To simplify the grammar, productions enforcing the precedence of operators
+have been omitted.
+The actual precedences are indicated by the order in which operators are
+listed.
+Operators are listed in order of increasing precedence (most tightly binding
+last), with operators on the
+same line having equal precedence.
+All binary operators are left-associative.
+Unary operators have higher precedence than binary operators other than
+subscripting and attribute selection.
+The meta-syntactic symbols <code>()+?</code> are used as in the definition in the
+previous section.
+A complete YACC grammar for the ClassAd language is contained in
+Appendix&nbsp;<A HREF="node7.html#sec:yacc">A</A>.
+
+<P>
+
+<H3><A NAME="SECTION00033300000000000000"></A>
+<A NAME="sec:unparsing"></A>
+<BR>
+Unparsing.
+</H3>
+Parsing associates with each <I>expression</I>, <I>binary_expression</I>,
+<I>prefix_expression</I>, or <I>suffix_expression</I> a node in the
+internal representation of an expression.  For example, a
+<I>binary_expression</I> of the form <!-- MATH
+ $expr_1 + expr_2$
+ -->
+<I>expr</I><SUB>1</SUB> + <I>expr</I><SUB>2</SUB> parses to an internal
+expression with operator PLUS and operands that are the results of parsing
+<I>expr</I><SUB>1</SUB> and <I>expr</I><SUB>2</SUB>.
+Multiple distinct strings may parse to the same internal form, due to presence
+of optional comments, whitespace, and parentheses.  To support
+certain built-in functions such as <B>string</B>, we define for each
+expression a <I>canonical unparsing</I>, which parses to that expression.
+
+<P>
+The canonical unparsing of an expression is completely parenthesized and has no
+comments and no whitespace outside of string literals
+or attribute names.  For example, the strings ``<code>-x + 3 * (y + 1)</code>'' and
+``<code>((-x)+(3*(y+1)))</code>'' both parse to the same internal form.
+The second string is the canonical unparsing.
+
+<P>
+The canonical unparsing of an attribute name is simply the name itself if it
+conforms to the syntax of <I>unquoted_name</I> in Table&nbsp;<A HREF="#tab:tokens">4</A>.
+Otherwise, an attribute name is unparsed using the <I>quoted_name</I> syntax.
+A string literal is unparsed as a <I>string</I>.
+Inside a <I>quoted_name</I> or <I>string</I>, the unparsing uses the rules
+defined in Section&nbsp;<A HREF="#sec:escape">3.2</A>, with apostrophe as the delimiter for a
+<I>quoted_name</I> and quote as the delimter for a <I>string</I>.
+
+<P>
+The literals
+<B>true</B>,
+<B>false</B>,
+<B>undefined</B>, and
+<B>error</B>
+unparse to
+<TT>true</TT>,
+<TT>false</TT>,
+<TT>undefined</TT>, and
+<TT>error</TT>,
+respectively.  The annotation of an Error or Undefined literal is not
+included in the canonical unparsing.
+
+<P>
+The canonical unparsing of an integer literal is the decimal representation of
+its value, with no leading zeros unless the value is exactly zero and no sign
+unless the value is negative.
+
+<P>
+The canonical unparsing of a real literal is one of the strings
+<code>0.0</code>, <code>-0.0</code>, <code>real("INF")</code>, <code>real("-INF")</code>, or
+<code>real("NaN")</code>, or a normalized ``scientific'' representation such as
+<code>6.02E24</code> or <code>3.14159265E0</code>, with one non-zero digit before the
+decimal point and as many digits following the decimal point as necessary
+to represent the value exactly (but at least one digit must follow the decimal
+point).
+For details, see Section&nbsp;<A HREF="#sec:xml_syntax">3.5</A> on the XML representation for
+details.
+
+<P>
+The canonical unparsing of an absolute time literal has the form
+<TT>absTime("yyyy-mm-ddThh:mm:ss<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\pm$">zz:zz")</TT> where the argument is a string
+representation of the time and date in ISO 8601 syntax, including the local
+time zone as hours and minutes from the prime
+meridian (negative for west).
+The canonical unparsing of a relative time has the form
+<TT>relTime("d+hh:mm:ss.mmm")</TT> where the argument is a string representation
+of the duration in days, hours, minutes, seconds, and
+milliseconds.<A NAME="tex2html15"
+  HREF="#foot496"><SUP>12</SUP></A>The suffix <TT>.mmm</TT> is omitted if the number of milliseconds is zero,
+and leading fields are omitted, together with the following punctuation, if
+their values are zero.  Leading digits of the first non-zero field are also
+omitted.  The string begins with a minus sign if the value
+is negative.  Examples are <TT>absTime("1949-03-11T08:17:00-06:00")</TT>,
+<TT>relTime("-5:00")</TT>, and <TT>relTime("0")</TT>.
+
+<P>
+The canonical unparsing of a list or record expression omits the optional comma
+or semicolon following the last item.  In particular, the empty record
+unparses as <code>[]</code> and the empty list unparses as <code>{}</code>.
+
+<P>
+
+<H2><A NAME="SECTION00034000000000000000"></A>
+<A NAME="sec:old_syntax"></A>
+<BR>
+Old ClassAd Syntax
+</H2>
+
+<P>
+The so-called ``old'' classad syntax is used in some versions of Condor to
+transmit classads (Record Expressions) over a network connection.  It is
+deprecated.  Not all expressions can be represented in the old syntax.  To be
+so represented, an expression must satisfy the following
+conditions.<A NAME="tex2html16"
+  HREF="#foot503"><SUP>13</SUP></A>
+<UL>
+<LI>The operator at the root node of the tree is RECORD.
+</LI>
+<LI>The root node has two attribute definitions that define
+attribute names <TT>MyType</TT> and <TT>TargetType</TT> (ignoring case).
+</LI>
+<LI>All attribute names conform to the syntax of <I>unquoted_name</I> in
+Table&nbsp;<A HREF="#tab:tokens">4</A>.
+</LI>
+</UL>
+
+<P>
+If the root RECORD node has <I>N</I> children, the representation consists of 4
+bytes representing the binary value <I>N</I>, most significant byte first, followed
+by <I>N</I> strings of ASCII characters, each terminated by a null character.  The
+last two strings are representations, in the native syntax, of the expressions
+in the attribute definitions corresponding to attribute names <TT>MyType</TT>
+and <TT>TargetType</TT>, in that order.  The remaining <I>N</I>-2 strings correspond
+to the other <I>N</I>-2 operands of the RECORD operator.  Each of these strings has
+the form <code>"</code><I>name</I> = <I>expr</I><code>"</code>, where <I>name</I> is the attribute name of
+the definition, and <I>expr</I> is a representation, using the native syntax, of the
+corresponding expression.
+
+<P>
+
+<H2><A NAME="SECTION00035000000000000000"></A>
+<A NAME="sec:xml_syntax"></A>
+<BR>
+XML Syntax
+</H2>
+
+<P>
+A Document Type Definition (DTD) for the XML representation may be found in
+Appendix&nbsp;<A HREF="node8.html#sec:dtd">B</A>, and a schema definition compliant with
+the XML Schema standarad&nbsp;[<A
+ HREF="node6.html#XSD-0">5</A>] is in Appendix&nbsp;<A HREF="node9.html#sec:schema">C</A>.
+
+<P>
+In the following paragraphs, <I>xml_escape(string)</I> denotes a string
+of printing ASCII characters that results from the following two steps,
+excuted in order.  First, the <I>string</I> is replaced by its canonical
+unparsing, as defined in Section&nbsp;<A HREF="#sec:escape">3.2</A>.  Then, each occurrence
+of <code>&lt;</code>, <code>&amp;</code>, or <code>&gt;</code> is replaced by <code>&amp;lt;</code>, <code>&amp;amp;</code>,
+or <code>&amp;gt;</code>, respectively.  The function <I>xml_escape_attr</I> is
+defined similarly, except that in the second step, <code>"</code> is also
+replaced by <code>&amp;quot;</code>.
+
+<P>
+The canonical XML representation of an expression depends on the operator at
+the root of the expression.  All ``simple'' (atomic) values conform to types
+defined in <I>XML Schema Part 2: Datatypes</I>&nbsp;[<A
+ HREF="node6.html#XSD-2">3</A>].
+In this section, these types are referenced as if they were in the namespace
+<code>xsd</code>, e.g., <code>xsd:string</code>, where
+<code>xmlns:xsd=http://www.w3.org/2001/XMLSchema</code>.
+A complete XML Schema is provided in Appendix&nbsp;<A HREF="node9.html#sec:schema">C</A>.
+
+<P>
+A string literal is represented as <code>&lt;s&gt;</code><I>xml_escape(s)</I><code>&lt;/s&gt;</code>,
+where <I>s</I> is the value of the literal.
+The content of an <code>&lt;s&gt;</code> element has type <code>xsd:string</code>.
+
+<P>
+An integer literal is represented as <code>&lt;i&gt;</code><I>dddd</I><code>&lt;/i&gt;</code>, where
+<I>dddd</I> is the decimal representation of its value, with no excess leading
+zeros (that is, the first digit is zero if and only if the value is zero),
+preceded by a minus sign if the value is negative.
+The content of an <code>&lt;i&gt;</code> element has type <code>xsd:int</code>.
+
+<P>
+A real literal is represented as <code>&lt;r&gt;</code><I>s</I><code>&lt;/r&gt;</code>, where
+<I>s</I> is the representation of the value of the literal in ``scientific''
+notation, for example, <code>&lt;r&gt;3.141592653589793E+00&lt;/r&gt;</code>.
+More specifically
+
+<UL>
+<LI>The values positive and negative infinity and not-a-number are
+    represented by
+    <code>INF</code>,
+    <code>-INF</code>,
+    and
+    <code>NaN</code>,
+    respectively.
+</LI>
+<LI>Any other value is represented by the concatenation of the
+    the following strings, with no characters between them:
+    
+<UL>
+<LI>an optional leading minus sign (omitted if the value is
+            positive),
+</LI>
+<LI>a ``mantissa'' of the form <code>d.f</code>, where
+            <code>d</code> is a digit and <code>f</code> is a sequence of 15 digits,
+</LI>
+<LI>an upper-case letter <code>E</code>,
+</LI>
+<LI>a plus or minus sign, and
+</LI>
+<LI>an integer exponent of two or three digits.
+    
+</LI>
+</UL>
+    The first digit of the mantissa must be non-zero unless the value being
+    represented is zero.  If the exponent is three digits, the first digit
+    must not be zero.  Note that a sign is required in the exponent.
+</LI>
+</UL>
+The content of an <code>&lt;i&gt;</code> element has type <code>xsd:double</code>.
+Except for the representations for positive and negative infinity and
+not-a-number, which conform to the specification of <code>xsd:double</code>,
+this representation is meant to conform to the <TT>printf</TT> format
+<code>%1.15E</code>.
+
+<P>
+A true or false boolean literal is represented by <code>&lt;b v="t"/&gt;</code>
+or <code>&lt;b v="f"/&gt;</code>, respectively.
+
+<P>
+An Error literal with non-empty annotation <I>a</I> is represented by the string
+<code>&lt;er a="</code><I>annot</I><code>"/&gt;</code>, where <I>annot</I> is
+<I>xml_escape_attr(a)</I>.  If the annotation is empty, the representation is
+<code>&lt;er/&gt;</code>.
+
+<P>
+An Undefined literal with non-empty annotation <I>a</I> is represented by the string
+<code>&lt;un a="</code><I>annot</I><code>"/&gt;</code>, where <I>annot</I> is
+<I>xml_escape_attr(a)</I>.  If the annotation is empty, the representation is
+<code>&lt;un/&gt;</code>.
+
+<P>
+An absolute time literal is represented as
+<TT>&lt;at&gt;yyyy-mm-ddThh:mm:ss<IMG
+ WIDTH="16" HEIGHT="28" ALIGN="MIDDLE" BORDER="0"
+ SRC="img3.png"
+ ALT="$\pm$">zz:zz&lt;/at&gt;</TT>, where the element content is a
+string representation of the time and date in a restricted ISO 8601 syntax,
+including the local time zone as hours and minutes from the prime
+meridian (negative for west).
+The content of an <code>&lt;at&gt;</code> element has type <code>xsd:dateTime</code>.
+An example is <code>&lt;at&gt;2003-01-25T09:00:00-06:00&lt;/at&gt;</code>.
+
+<P>
+A relative time literal is represented as <TT>&lt;rt&gt;sPnDTnHnMn.mmmS&lt;/rt&gt;</TT>,
+where <TT>s</TT> is <TT>-</TT> for negative values and omitted for positive
+values, each <TT>n</TT> is a non-negative integer, representing
+days, hours, minutes, and seconds, <TT>mmm</TT> represents a number
+of milliseconds, and the letters <code>PDTHMS</code> are included verbatim.
+The suffixes represent scale factors: <code>DT</code> for days (24*60*60),
+<code>H</code> for hours (60*60), <code>M</code> for minutes (60) and <code>S</code> for
+seconds (1).  A field (including its following scale factor)
+may be omitted if its value is zero.  If the value is an integral number of
+seconds, the number of milliseconds, along with the preceding decimal point,
+may be omitted, but if present, it must be represented as exactly three
+digits.  Finally, the letter <code>T</code> is omitted if the <code>H</code>, <code>M</code>,
+and <code>S</code> fields are all omitted.
+Note that these rules permit multiple representation of the same value. 
+For example,
+<TT>&lt;rt&gt;PT1H2S&lt;/rt&gt;</TT>,
+<TT>&lt;rt&gt;PT60M2S&lt;/rt&gt;</TT>, and
+<TT>&lt;rt&gt;PT3602.000S&lt;/rt&gt;</TT> represent the same value.
+The <I>canonical</I> representation is defined by the limitation that the
+number of hours is less than 24, and the numbers of minutes and seconds are
+each less than 60.  Moreover, each field (including milliseonds) is omitted if
+its value is zero.  However as a special case, the value zero is represented as 
+<TT>&lt;rt&gt;PT0S&lt;/rt&gt;</TT>.  Thus the first of the three examples above is the
+canonical representation of a duration of 3602 seconds.
+The content of an <code>&lt;rt&gt;</code> element has type <code>xsd:duration</code>.
+
+<P>
+If the root operator is LIST, the XML representation consists of the string
+<code>&lt;l&gt;</code> followed by the concatenation of the representations of its 
+operands (in order), followed by the string <code>&lt;/l&gt;</code>.
+The content of an <code>&lt;l&gt;</code> element is a sequence of elements of any the
+types listed in this section except <code>&lt;a&gt;</code>.
+
+<P>
+If the root operator is RECORD, the XML representation consists of the string
+<code>&lt;c&gt;</code> followed by the concatenation of the representations of its 
+constituent definitions, followed by the string <code>&lt;/c&gt;</code>.
+The representation of an attribute definition <I>name</I>&nbsp;=&nbsp;expr consists of the
+string <code>&lt;a n = "</code><I>xml_escape_attr(name)</I><code>"&gt;</code> followed by the
+XML representation of <I>expr</I> followed by the string <code>&lt;/a&gt;</code>.
+The content of a <code>&lt;c&gt;</code> element is a sequence of <code>&lt;a&gt;</code> elements.
+The content of an <code>&lt;a&gt;</code> element is an element of any of the types
+listed in this section except <code>&lt;a&gt;</code>.
+
+<P>
+In all other cases, the XML representation of an expression consists
+of <code>&lt;e&gt;</code><I>xml_escape(s)</I><code>&lt;/e&gt;</code>,
+where <I>s</I> is the canonical unparsing of the expression in the native syntax.
+The content of an <code>&lt;e&gt;</code> element has type <code>xsd:string</code>.
+
+<P>
+Non-canonical XML representations may differ from the canonical representation
+in the following ways:
+
+<UL>
+<LI>Additional whitespace may be added to all elements other <code>&lt;s&gt;</code>
+or <code>&lt;r&gt;</code> elements, provided the results are syntactically valid.
+(For example, spaces may not be placed between the digits of an <code>&lt;i&gt;</code>
+element.)
+</LI>
+<LI>Additional whitespace may be added to tags, but not inside attributes in
+tags.
+</LI>
+<LI>The content of an <code>&lt;r&gt;</code> element may use an unnormalized
+representation (more or fewer digits before or after the decimal point),
+the <code>E</code> and the following exponent may be omitted (implying an exponent
+of zero), the decimal point may be omitted if the fractional part of the
+mantissa is empty, and any combination of upper and lower case letters may
+be used for the strings <code>E</code>, <code>INF</code>, and <code>NaN</code>.
+</LI>
+<LI>The content of an <code>&lt;at&gt;</code> element may be any string which is a valid
+argument to the <B>absTime</B> built-in function.
+</LI>
+<LI>The content of an <code>&lt;rt&gt;</code> element may be any string which is a valid
+argument to the <B>relTime</B> built-in function.
+</LI>
+<LI>Any expression <I>e</I> may be represented by
+<code>&lt;e&gt;</code><I>xml_escape(s)</I> <code>&lt;/e&gt;</code>, where <I>s</I> is any string that
+parses to <I>e</I> according to the native syntax.
+</LI>
+</UL>
+For example, 
+<PRE>
+    &lt;c&gt;&lt;a n="the value"&gt;&lt;e&gt;b&lt;/e&gt;&lt;/a&gt;&lt;a n="b"&gt;&lt;r&gt;3.14E0&lt;\r&gt;&lt;/a&gt;&lt;c&gt;
+    &lt;c&gt;
+        &lt;a n="the value"&gt; &lt;e&gt;   b&lt;/e&gt; &lt;/a&gt;
+        &lt;a         n="b"&gt; &lt;e&gt;3.14&lt;/e&gt; &lt;/a&gt;
+    &lt;c&gt;
+    &lt;e&gt;[ 'the value' = b; b = 3.14 ]&lt;/e&gt;
+</PRE>
+are three XML representations of the same expression; the first is the
+canonical representation.
+
+<P>
+<BR><HR><H4>Footnotes</H4>
+<DL>
+<DT><A NAME="fnm3">... characters</A><A
+ HREF="node3.html#footfnm3"><SUP>3</SUP></A></DT>
+<DD>Character values are currently limited to the range 1 - 255
+(decimal).  Future versions of this specification may use Unicode for
+representing attribute names and string literals.
+
+</DD>
+<DT><A NAME="fnm4">... measured</A><A
+ HREF="node3.html#footfnm4"><SUP>4</SUP></A></DT>
+<DD>This document does not specify the precision or range of values
+supported by absolute time literals.  The Java implementation currently stores
+the time as a signed, 64-bit offset in milliseconds from the epoch,
+while the C++ implementation uses a signed 32-bit offset in seconds
+(though this may be platform-dependent).  Both
+implementations use an epoch of 00:00, January 1, 1970, Universal Coordinated
+Time.  The time zone is recorded as an offset from UTC.
+
+</DD>
+<DT><A NAME="fnm5">... times</A><A
+ HREF="node3.html#footfnm5"><SUP>5</SUP></A></DT>
+<DD>This document does not specify the precision or range of values
+supported by relative time literals.  The Java implementation currently stores
+relative times as signed, 64-bit integer indicating milliseconds, while the C++
+implementation uses a signed 32-bit offset indicating seconds.
+
+</DD>
+<DT><A NAME="foot1198">...
+expressions.</A><A
+ HREF="node3.html#tex2html6"><SUP>6</SUP></A></DT>
+<DD>The ClassAd language is a dynamically typed language.
+Mis-typed expressions such as <TT>3/"foo"</TT> are allowed by the syntax, but
+will evaluate to <B>error</B>.
+
+</DD>
+<DT><A NAME="foot220">... implementations.</A><A
+ HREF="node3.html#tex2html7"><SUP>7</SUP></A></DT>
+<DD>Other functions may be
+provided by an extension mechanism to be defined in a subsequent version of
+this specification.
+
+</DD>
+<DT><A NAME="foot222">... case)</A><A
+ HREF="node3.html#tex2html8"><SUP>8</SUP></A></DT>
+<DD>The set of
+attribute names in a RECORD expression is logically a set of distinct
+case-independent strings, but the original ordering and case may be retained
+by an implementation so that the ``unparsing'' of an parsed expression more
+closely resembles the original.
+
+</DD>
+<DT><A NAME="foot226">... inclusive).</A><A
+ HREF="node3.html#tex2html9"><SUP>9</SUP></A></DT>
+<DD>In this section, all characters codes are
+given in decimal.
+
+</DD>
+<DT><A NAME="foot371">... (34)</A><A
+ HREF="node3.html#tex2html12"><SUP>10</SUP></A></DT>
+<DD>In this section, all characters codes are given in
+decimal.
+
+</DD>
+<DT><A NAME="foot1199">... (13).</A><A
+ HREF="node3.html#tex2html13"><SUP>11</SUP></A></DT>
+<DD>This definition of whitespace corresponds
+to the C and C++ programming languages.  The Java Language Specification
+(Second Edition) defines whitespace similarly, but omits 
+Vertical Tab.  The latter definition also corresponds to the (deprecated) method
+<TT>Character.isSpace</TT> in the standard Java API.  The API documentation
+recommends replacing <TT>Character.isSpace</TT> with
+<TT>Character.isWhitespace</TT>, which adds Vertical Tab as well as characters
+with codes 28-31 decimal (FS, GS, RS, and US) and several Unicode characters
+with codes greater than 256.
+
+</DD>
+<DT><A NAME="foot496">...
+milliseconds.</A><A
+ HREF="node3.html#tex2html15"><SUP>12</SUP></A></DT>
+<DD>For this conversion, leap seconds and daylight savings
+time transitions are not taken into account.  Every minute is 60
+seconds, and every day is 24 hours.
+
+</DD>
+<DT><A NAME="foot503">...
+conditions.</A><A
+ HREF="node3.html#tex2html16"><SUP>13</SUP></A></DT>
+<DD>The ``old''" classad language had many more restrictions
+than those listed here.  An expression that meets these conditions can be
+represented in the Old syntax for transmission over a connection, but it may
+not be intelligible to a legacy application receiving the transmission.
+
+</DD>
+</DL><HR>
+<!--Navigation Panel-->
+<A NAME="tex2html90"
+  HREF="node4.html">
+<IMG WIDTH="37" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="next" SRC="next.png"></A> 
+<A NAME="tex2html88"
+  HREF="refman.html">
+<IMG WIDTH="26" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="up" SRC="up.png"></A> 
+<A NAME="tex2html82"
+  HREF="node2.html">
+<IMG WIDTH="63" HEIGHT="24" ALIGN="BOTTOM" BORDER="0" ALT="previous" SRC="prev.png"></A>   
+<BR>
+<B> Next:</B> <A NAME="tex2html91"
+  HREF="node4.html">Evaluation</A>
+<B> Up:</B> <A NAME="tex2html89"
+  HREF="refman.html">The ClassAd Language Reference</A>
+<B> Previous:</B> <A NAME="tex2html83"
+  HREF="node2.html">Basic Concepts</A>
+<!--End of Navigation Panel-->
+<ADDRESS>
+Marvin Solomon
+2005-05-07
+</ADDRESS>
+</BODY>
+</HTML>
