@@ -818,20 +818,16 @@
 
 <div id="feature-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.14.1</span> Feature Release</h3>
-        <p>September 24, 2026</p>
+        <h3><span class="text-secondary">26.1.0</span> Feature Release</h3>
+        <p>November 12, 2026</p>
         <div>
-            <ul>
-  <li>HTCondor no longer accepts multiple <code>queue</code> statements in a submit file</li>
-  <li>The credmon can now obtain and renew OAuth2 access tokens from Pelican</li>
-  <li>HTCondor now detects AMD GPUs that use ROCM 7</li>
-  <li>Container universe adds the detected GPU flag the container command line</li>
-  <li>New self-service annex mode that works with any Slurm cluster</li>
-  <li>New metric daemon that can export metrics to Prometheus and Ganglia</li>
-  <li>Improvements to <code>condor_adstash</code> (see version history)</li>
-  <li><code>condor_rm</code> now accepts the <code>-held</code> option</li>
-  <li><code>condor_watch_q</code> now restores the terminal after exiting</li>
-  <li>Fix <code>condor_q</code> crash when using both <code>-batch</code> and <code>-af</code></li>
+            
+<ul>
+  <li>Add <code>htcondor cluster</code> tool to profile jobs and identify problems</li>
+  <li><code>condor_gpu_discovery</code> identifies integrated GPUs that share host memory</li>
+  <li>The DAGMan Node Status file can be written in JSON format</li>
+  <li>Can now limit job’s usage of compressed swap (zswap) on newer platforms</li>
+  <li>All changes from the recent 26.0.1 release</li>
 </ul>
 
         </div>
@@ -842,7 +838,7 @@
             HTCondor's latest features.
         </p>
         <p class="">
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-25-x.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-26-x.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
             <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/latest/getting-htcondor/">Installation Guide</a>
@@ -856,17 +852,32 @@
 </div>
 <div id="long-term-support-channel" class="mb-4 card">
     <div class="card-body">
-        <h3><span class="text-secondary">25.0.14</span> Long Term Support Release</h3>
-        <p>September 23, 2026</p>
+        <h3><span class="text-secondary">26.0.1</span> Long Term Support Release</h3>
+        <p>November 12, 2026</p>
         <div>
-            <p>This release contains an important fix for a security issue.
-Affected users should update as soon as possible.</p>
-
-<p>More details on the security issue are in the Vulnerability Report:
-https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
-
+            
+<p>Improvements from the HTCondor 25.x feature series:</p>
 <ul>
-  <li>Fix <code>condor_q</code> crash when using both <code>-batch</code> and <code>-af</code></li>
+  <li>Initial implementation of the common files feature, where immutable files may only be transferred once when jobs run on the same execution point</li>
+  <li>New self-service annex mode that works with any Slurm cluster</li>
+  <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
+  <li>Several improvements to throttle and monitor DAGMan resource usage</li>
+  <li>New DAGMan <code>TOLERANCE</code> which gives fine control over what is a failure</li>
+  <li>Added weak dependencies to DAGMan</li>
+  <li>HTCondor now detects AMD GPUs that use ROCM 7</li>
+  <li>Container universe adds the detected GPU flag to the container command line</li>
+  <li>Several improvements to the <code>condor_credmon</code></li>
+  <li>Administrators can now require units on memory and disk requests</li>
+  <li>Can now append columns to <code>condor_(q|qusers|status|who)</code> output</li>
+  <li>Can now automatically retry a job with a larger disk request</li>
+  <li>Initial support for EP health checks</li>
+  <li><code>condor_config_val --trace</code> finds a definition in a complex configuration</li>
+  <li>Can now set a duration for a user’s ceiling, floor, or priority factor</li>
+  <li>New metric daemon that can export metrics to Prometheus and Ganglia</li>
+  <li>Add CCB Tunneling for daemons with no outbound network connectivity</li>
+  <li>The CCB can now proxy connections with both ends on private networks</li>
+  <li>Can now maintain a job index to speed up common <code>condor_history</code> queries</li>
+  <li><code>condor_rm</code> now accepts the <code>-held</code> option</li>
 </ul>
 
         </div>
@@ -891,10 +902,10 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
             channels.
         </p>
         <p>
-            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html">Detailed Notes</a> recommended prior to upgrading.
+            Consultation of the <a href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-26-0.html">Detailed Notes</a> recommended prior to upgrading.
         </p>
         <div>
-            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/25.0/getting-htcondor/index.html">Installation Guide</a>
+            <a class="btn btn-primary me-3" href="https://htcondor.readthedocs.io/en/26.0/getting-htcondor/index.html">Installation Guide</a>
             <a class="btn btn-primary" href="/web-preview/preview-htcondor-release-dates/htcondor/release-highlights/index.html#long-term-support-channel">Release Notes</a>
         </div>
     </div>

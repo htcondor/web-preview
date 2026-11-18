@@ -949,7 +949,7 @@
         <h3>Feature Channel</h3>
       </div>
       <div class="col-auto d-flex ps-sm-0">
-        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-25-x.html">Detailed Notes &#11023;</a></b>
+        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/latest/version-history/feature-versions-26-x.html">Detailed Notes &#11023;</a></b>
       </div>
     </div>
     <div class="my-2">
@@ -995,13 +995,99 @@
 
       
         <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-14-1">25.14.1</a></b>
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/26.x/version-history/feature-versions-26-x.html#version-26-1-0">26.1.0</a></b>
           <span class="px-1">-</span>
-          <span>September 24, 2026</span>
+          <span>November 12, 2026</span>
         </div>
       
       <div class="mt-2">
-        <ul>
+        
+<ul>
+  <li>Add <code>htcondor cluster</code> tool to profile jobs and identify problems</li>
+  <li><code>condor_gpu_discovery</code> identifies integrated GPUs that share host memory</li>
+  <li>The DAGMan Node Status file can be written in JSON format</li>
+  <li>Can now limit job’s usage of compressed swap (zswap) on newer platforms</li>
+  <li>All changes from the recent 26.0.1 release</li>
+</ul>
+
+      </div>
+    
+
+    <div class="collapse" id="old-feature-release-highlights">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-15-15">25.15.15</a></b>
+            <span class="px-1">-</span>
+            <span>November 12, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          
+<ul>
+  <li>Initial implementation of the common files feature, where immutable files may only be transferred once when jobs run on the same execution point</li>
+  <li>Client tools fail over quickly in High Availability installations</li>
+  <li>Checkpointed jobs do not consider claim work-life when restarting</li>
+  <li>Fix <code>condor_adstash</code> to not crash when it sees an unknown field type</li>
+  <li>Fix <code>HOOK_JOB_EXIT</code> to not fail the job and requeue it</li>
+  <li>Fix <code>condor_ssh_to_job</code> with using SELinux and LVM disk enforcement</li>
+  <li>Fix issue where the <code>condor_defrag</code> daemon might not be able to drain EPs</li>
+  <li>Fix enforcement of execute duration for scheduler(DAGMan) and local jobs</li>
+</ul>
+
+        </div>
+      
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-14-1">25.14.1</a></b>
+            <span class="px-1">-</span>
+            <span>September 24, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>HTCondor no longer accepts multiple <code>queue</code> statements in a submit file</li>
   <li>The credmon can now obtain and renew OAuth2 access tokens from Pelican</li>
   <li>HTCondor now detects AMD GPUs that use ROCM 7</li>
@@ -1014,53 +1100,53 @@
   <li>Fix <code>condor_q</code> crash when using both <code>-batch</code> and <code>-af</code></li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-13-3">25.13.3</a></b>
-          <span class="px-1">-</span>
-          <span>September 23, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <p>This release contains an important fix for a security issue.
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-13-3">25.13.3</a></b>
+            <span class="px-1">-</span>
+            <span>September 23, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>This release contains an important fix for a security issue.
 Affected users should update as soon as possible.</p>
 
 <p>More details on the security issue are in the Vulnerability Report:
 https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-13-2">25.13.2</a></b>
-          <span class="px-1">-</span>
-          <span>August 20, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-13-2">25.13.2</a></b>
+            <span class="px-1">-</span>
+            <span>August 20, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>The <code>condor_credmon_oauth</code> now properly handles credentials with handles</li>
   <li>Improve providing OAuth credentials to all jobs on the Access Point</li>
   <li>Add WEAK dependencies to DAGman which only require finishing, not success</li>
@@ -1075,27 +1161,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
   <li>Removing Pelican server code reduces tarball size by 10 megabytes</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-12-2">25.12.2</a></b>
-          <span class="px-1">-</span>
-          <span>July 21, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <p>This release contains an important fix for a security issue.
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-12-2">25.12.2</a></b>
+            <span class="px-1">-</span>
+            <span>July 21, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>This release contains an important fix for a security issue.
 Affected users should update as soon as possible.</p>
 
 <p>More details on the security issue are in the Vulnerability Report:
@@ -1113,27 +1199,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>Fix issue where tools could infinitely loop when using trust on first use</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-11-1">25.11.1</a></b>
-          <span class="px-1">-</span>
-          <span>July 21, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <p>This release contains an important fix for a security issue.
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-11-1">25.11.1</a></b>
+            <span class="px-1">-</span>
+            <span>July 21, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>This release contains an important fix for a security issue.
 Affected users should update as soon as possible.</p>
 
 <p>More details on the security issue are in the Vulnerability Report:
@@ -1143,27 +1229,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>Fixed 25.11.0 bug that causes unbounded growth in the accountant log</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-11-0">25.11.0</a></b>
-          <span class="px-1">-</span>
-          <span>June 11, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-11-0">25.11.0</a></b>
+            <span class="px-1">-</span>
+            <span>June 11, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Prevent one user’s many file transfers from halting matches for all users</li>
   <li><code>condor_watch_q</code> will gather DAGs that started after it did</li>
   <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
@@ -1178,27 +1264,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>HTCondor tarballs now contain Pelican 7.25.0</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-10-1">25.10.1</a></b>
-          <span class="px-1">-</span>
-          <span>May 14, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-10-1">25.10.1</a></b>
+            <span class="px-1">-</span>
+            <span>May 14, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Several improvements to throttle and monitor DAGMan resource usage</li>
   <li>Can now automatically retry a job with a larger disk request</li>
   <li><code>.chirp.config</code> has been moved out of the job’s scratch directory</li>
@@ -1214,27 +1300,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>HTCondor tarballs now contain Pelican 7.24.2</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-8-2">25.8.2</a></b>
-          <span class="px-1">-</span>
-          <span>April 16, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-8-2">25.8.2</a></b>
+            <span class="px-1">-</span>
+            <span>April 16, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Fix detection and reporting of NVIDIA MIG GPU attributes</li>
   <li>Add <code>--rocm</code> flag to Apptainer GPU jobs to support AMD GPUs</li>
   <li>Fix bug where jobs went on hold, but should be rerun, when using Pelican</li>
@@ -1261,27 +1347,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   </li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-7-2">25.7.2</a></b>
-          <span class="px-1">-</span>
-          <span>March 12, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-7-2">25.7.2</a></b>
+            <span class="px-1">-</span>
+            <span>March 12, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Improve schedd performance with large job records by sizing pipe buffers</li>
   <li><code>condor_watch_q</code> display improvements</li>
   <li>When a job runs out of memory, report how much memory was provisioned</li>
@@ -1304,27 +1390,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   </li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-6-1">25.6.1</a></b>
-          <span class="px-1">-</span>
-          <span>January 29, 2026</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-6-1">25.6.1</a></b>
+            <span class="px-1">-</span>
+            <span>January 29, 2026</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>DAGMan now uses the new DAG file parser used by <code>condor_dag_checker</code></li>
   <li>The condor keyboard daemon now checks idle time via systemd and Mutter</li>
   <li>Can now specify DAGMan rescue file by name</li>
@@ -1349,27 +1435,27 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>HTCondor tarballs now contain Apptainer 1.4.5</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-5-1">25.5.1</a></b>
-          <span class="px-1">-</span>
-          <span>December 15, 2025</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-5-1">25.5.1</a></b>
+            <span class="px-1">-</span>
+            <span>December 15, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>The negotiator can now use its own concept of slot weight (not the EP’s)</li>
   <li>A stuck LVM logical volume will cause the EP slot to be broken and
 then later unbroken if and when the logical volume cleanup succeeds</li>
@@ -1386,27 +1472,27 @@ then later unbroken if and when the logical volume cleanup succeeds</li>
   <li>HTCondor tarballs now contain Apptainer 1.4.4</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-4-0">25.4.0</a></b>
-          <span class="px-1">-</span>
-          <span>November 13, 2025</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-4-0">25.4.0</a></b>
+            <span class="px-1">-</span>
+            <span>November 13, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Job scratch space is now in a sub-directory of the execute directory</li>
   <li>HTCondor EPs can now refresh credentials during output transfers</li>
   <li>HTCondor will now create intermediate directories with output remaps</li>
@@ -1416,54 +1502,54 @@ then later unbroken if and when the logical volume cleanup succeeds</li>
   <li>Disk space allocated to jobs now more closely matches the request</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-3-1">25.3.1</a></b>
-          <span class="px-1">-</span>
-          <span>November  3, 2025</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-3-1">25.3.1</a></b>
+            <span class="px-1">-</span>
+            <span>November  3, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Fix interoperability problem between HTCondor-CE 24 and 25 which manifests as a Job Router crash when upgrading the CE to HTCondor 25</li>
   <li>Fix several issues when submitting jobs with itemdata in the htcondor2 Python bindings</li>
   <li>Fix bug when using <code>max_idle</code> and <code>transfer_input_files</code> that could result in the <code>container_image</code> to be only transferred with the first job</li>
   <li>Fix problem running PyTorch jobs on multiple GPUs with newer versions of the CUDA library by providing long GPU IDs in the <code>CUDA_VISIBLE_DEVICES</code> environment variable</li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-2-1">25.2.1</a></b>
-          <span class="px-1">-</span>
-          <span>October  9, 2025</span>
         </div>
       
-      <div class="mt-2">
-        <ul>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-2-1">25.2.1</a></b>
+            <span class="px-1">-</span>
+            <span>October  9, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <ul>
   <li>Support for re-running a job with an increased memory request</li>
   <li>Several DAGMan Improvements</li>
   <li>Several local credmon Improvements</li>
@@ -1480,27 +1566,27 @@ then later unbroken if and when the logical volume cleanup succeeds</li>
   </li>
 </ul>
 
-      </div>
-    
-      
-
-
-
-
-
-
-
-
-
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-1-0">25.1.0</a></b>
-          <span class="px-1">-</span>
-          <span>September 29, 2025</span>
         </div>
       
-      <div class="mt-2">
-        <p>Improvements from the HTCondor 24.x feature series</p>
+        
+
+
+
+
+
+
+
+
+
+        
+          <div class="d-flex flex-row">
+            <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/25.x/version-history/feature-versions-25-x.html#version-25-1-0">25.1.0</a></b>
+            <span class="px-1">-</span>
+            <span>September 29, 2025</span>
+          </div>
+          
+        <div class="mt-2">
+          <p>Improvements from the HTCondor 24.x feature series</p>
 <ul>
   <li>New and improved Python bindings: classad2 and htcondor2
     <ul>
@@ -1530,32 +1616,7 @@ then later unbroken if and when the logical volume cleanup succeeds</li>
   <li>New job attributes FirstJobMatchDate and InitialWaitDuration</li>
 </ul>
 
-      </div>
-    
-
-    <div class="collapse" id="old-feature-release-highlights">
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        </div>
       
         
 
@@ -7227,7 +7288,7 @@ issues are in the Vulnerability Reports:</p>
         <h3>Long Term Support Channel</h3>
       </div>
       <div class="col-auto d-flex ps-sm-0">
-        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html">Detailed Notes &#11023;</a></b>
+        <b class="my-auto"><a class="text-secondary" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-26-0.html">Detailed Notes &#11023;</a></b>
       </div>
     </div>
     <div class="my-2">
@@ -7287,13 +7348,110 @@ issues are in the Vulnerability Reports:</p>
 
       
         <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-14">25.0.14</a></b>
+          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-26-0.html#version-26-0-1">26.0.1</a></b>
           <span class="px-1">-</span>
-          <span>September 23, 2026</span>
+          <span>November 12, 2026</span>
         </div>
       
       <div class="mt-2">
-        <p>This release contains an important fix for a security issue.
+        
+<p>Improvements from the HTCondor 25.x feature series:</p>
+<ul>
+  <li>Initial implementation of the common files feature, where immutable files may only be transferred once when jobs run on the same execution point</li>
+  <li>New self-service annex mode that works with any Slurm cluster</li>
+  <li><code>condor_dag_checker</code> can now check submit files, sub-DAGs, and scripts</li>
+  <li>Several improvements to throttle and monitor DAGMan resource usage</li>
+  <li>New DAGMan <code>TOLERANCE</code> which gives fine control over what is a failure</li>
+  <li>Added weak dependencies to DAGMan</li>
+  <li>HTCondor now detects AMD GPUs that use ROCM 7</li>
+  <li>Container universe adds the detected GPU flag to the container command line</li>
+  <li>Several improvements to the <code>condor_credmon</code></li>
+  <li>Administrators can now require units on memory and disk requests</li>
+  <li>Can now append columns to <code>condor_(q|qusers|status|who)</code> output</li>
+  <li>Can now automatically retry a job with a larger disk request</li>
+  <li>Initial support for EP health checks</li>
+  <li><code>condor_config_val --trace</code> finds a definition in a complex configuration</li>
+  <li>Can now set a duration for a user’s ceiling, floor, or priority factor</li>
+  <li>New metric daemon that can export metrics to Prometheus and Ganglia</li>
+  <li>Add CCB Tunneling for daemons with no outbound network connectivity</li>
+  <li>The CCB can now proxy connections with both ends on private networks</li>
+  <li>Can now maintain a job index to speed up common <code>condor_history</code> queries</li>
+  <li><code>condor_rm</code> now accepts the <code>-held</code> option</li>
+</ul>
+
+      </div>
+    
+
+    <div class="collapse" id="old-lts-release-highlights">
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+      
+        
+
+
+
+
+
+
+
+
+
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-15">25.0.15</a></b>
+              <span class="px-1">-</span>
+              <span>November 12, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            
+<ul>
+  <li>Fix <code>condor_ssh_to_job</code> with using SELinux and LVM disk enforcement</li>
+  <li>Fix issue where the <code>condor_defrag</code> daemon might not be able to drain EPs</li>
+  <li>Fix enforcement of execute duration for scheduler(DAGMan) and local jobs</li>
+</ul>
+
+          </div>
+      
+        
+
+
+
+
+
+
+
+
+
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-14">25.0.14</a></b>
+              <span class="px-1">-</span>
+              <span>September 23, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <p>This release contains an important fix for a security issue.
 Affected users should update as soon as possible.</p>
 
 <p>More details on the security issue are in the Vulnerability Report:
@@ -7303,9 +7461,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
   <li>Fix <code>condor_q</code> crash when using both <code>-batch</code> and <code>-af</code></li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7315,15 +7473,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-13">25.0.13</a></b>
-          <span class="px-1">-</span>
-          <span>August 20, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-13">25.0.13</a></b>
+              <span class="px-1">-</span>
+              <span>August 20, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Fix bug where <code>condor_q</code> crashes when given <code>-batch</code> and <code>-af</code> arguments</li>
   <li>Fix bug where FS authentication fails when <code>TCP_FORWARDING_HOST</code> is set</li>
   <li>Fix bug where <code>condor_history</code> might not find a specific cluster or proc</li>
@@ -7331,9 +7489,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
   <li>Removing Pelican server code reduces tarball size by 10 megabytes</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7343,15 +7501,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0002</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-12">25.0.12</a></b>
-          <span class="px-1">-</span>
-          <span>July 21, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>This release contains an important fix for a security issue.
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-12">25.0.12</a></b>
+              <span class="px-1">-</span>
+              <span>July 21, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <p>This release contains an important fix for a security issue.
 Affected users should update as soon as possible.</p>
 
 <p>More details on the security issue are in the Vulnerability Report:
@@ -7364,9 +7522,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>Fix issue where tools could infinitely loop when using trust on first use</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7376,24 +7534,24 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-11">25.0.11</a></b>
-          <span class="px-1">-</span>
-          <span>June 11, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-11">25.0.11</a></b>
+              <span class="px-1">-</span>
+              <span>June 11, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Fix rare EP crash when using a custom docker wrapper script</li>
   <li>Fix rare issue where <code>condor_dagman</code> would abort after a system reboot</li>
   <li>HTCondor tarballs now contain Apptainer 1.5.0</li>
   <li>HTCondor tarballs now contain Pelican 7.25.0</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7403,15 +7561,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-10">25.0.10</a></b>
-          <span class="px-1">-</span>
-          <span>May 14, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-10">25.0.10</a></b>
+              <span class="px-1">-</span>
+              <span>May 14, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Add support for Ubuntu 26.04 (Resolute Raccoon)</li>
   <li>Fixed Access Point spooled X.509 job proxy refresh</li>
   <li>Fixed reporting of <code>RemoteUserCPU</code> in parallel universe</li>
@@ -7420,9 +7578,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>HTCondor tarballs now contain Pelican 7.24.2</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7432,15 +7590,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-9">25.0.9</a></b>
-          <span class="px-1">-</span>
-          <span>April 16, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-9">25.0.9</a></b>
+              <span class="px-1">-</span>
+              <span>April 16, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Fix crash when a user provided Docker script produces unexpected output</li>
   <li>Now properly reports NVIDIA MIG GPU device names</li>
   <li>Fix performance problem in the htcondor2 Python ClassAd parser</li>
@@ -7454,9 +7612,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   </li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7466,15 +7624,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-8">25.0.8</a></b>
-          <span class="px-1">-</span>
-          <span>March 12, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-8">25.0.8</a></b>
+              <span class="px-1">-</span>
+              <span>March 12, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Improve AMD GPU detection when using RCOM6/HIP libraries</li>
   <li>Fix for new jobs getting kicked off LVM EP due to quantization mismatch</li>
   <li><code>condor_submit</code> now reports an error for circular requirement expressions</li>
@@ -7492,9 +7650,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   </li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7504,22 +7662,22 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-7">25.0.7</a></b>
-          <span class="px-1">-</span>
-          <span>February 13, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-7">25.0.7</a></b>
+              <span class="px-1">-</span>
+              <span>February 13, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Fix the broken <code>htcondor2.Schedd.refreshGPIProxy()</code> Python method</li>
   <li>Improve <code>condor_history</code> performance on filesystems with I/O rate limits</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7529,15 +7687,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-6">25.0.6</a></b>
-          <span class="px-1">-</span>
-          <span>January 29, 2026</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-6">25.0.6</a></b>
+              <span class="px-1">-</span>
+              <span>January 29, 2026</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Initial support for openSUSE 16</li>
   <li>Make HTCondor Python wheel usable with the <code>python-slim</code> Docker image</li>
   <li>Fix problem specifying scope or audience with a Vault-managed credential</li>
@@ -7558,9 +7716,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>HTCondor tarballs now contain Apptainer 1.4.5</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7570,15 +7728,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-5">25.0.5</a></b>
-          <span class="px-1">-</span>
-          <span>December 15, 2025</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-5">25.0.5</a></b>
+              <span class="px-1">-</span>
+              <span>December 15, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Initial support for Ubuntu 24.04 on the ARM64 platform</li>
   <li><code>condor_submit</code> checks that <code>output_destination</code> is properly specified</li>
   <li>Fix bug where AP would fail to read job credential files</li>
@@ -7591,9 +7749,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>HTCondor tarballs now contain Apptainer 1.4.4</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7603,24 +7761,24 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-3">25.0.3</a></b>
-          <span class="px-1">-</span>
-          <span>November  3, 2025</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-3">25.0.3</a></b>
+              <span class="px-1">-</span>
+              <span>November  3, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Fix interoperability problem between HTCondor-CE 24 and 25 which manifests as a Job Router crash when upgrading the CE to HTCondor 25</li>
   <li>Fix several issues when submitting jobs with itemdata in the htcondor2 Python bindings</li>
   <li>Fix bug when using <code>max_idle</code> and <code>transfer_input_files</code> that could result in the <code>container_image</code> to be only transferred with the first job</li>
   <li>Fix problem running PyTorch jobs on multiple GPUs with newer versions of the CUDA library by providing long GPU IDs in the <code>CUDA_VISIBLE_DEVICES</code> environment variable</li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7630,15 +7788,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-2">25.0.2</a></b>
-          <span class="px-1">-</span>
-          <span>October  9, 2025</span>
-        </div>
-      
-      <div class="mt-2">
-        <ul>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-2">25.0.2</a></b>
+              <span class="px-1">-</span>
+              <span>October  9, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <ul>
   <li>Update Python file transfer plugins to use the new Python bindings</li>
   <li>Fix incorrect environment when using Singularity and nested scratch</li>
   <li>Fix annoying momentary text status flash in <code>condor_watch_q</code></li>
@@ -7651,9 +7809,9 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   </li>
 </ul>
 
-      </div>
-    
+          </div>
       
+        
 
 
 
@@ -7663,15 +7821,15 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
 
 
 
-      
-        <div class="d-flex flex-row">
-          <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-1">25.0.1</a></b>
-          <span class="px-1">-</span>
-          <span>September 29, 2025</span>
-        </div>
-      
-      <div class="mt-2">
-        <p>Improvements from the HTCondor 24.x feature series</p>
+          
+            <div class="d-flex flex-row">
+              <b><a class="text-decoration-none" href="https://htcondor.readthedocs.io/en/lts/version-history/lts-versions-25-0.html#version-25-0-1">25.0.1</a></b>
+              <span class="px-1">-</span>
+              <span>September 29, 2025</span>
+            </div>
+          
+          <div class="mt-2">
+            <p>Improvements from the HTCondor 24.x feature series</p>
 <ul>
   <li>New and improved Python bindings: classad2 and htcondor2
     <ul>
@@ -7701,32 +7859,7 @@ https://htcondor.org/security/vulnerabilities/HTCONDOR-2026-0001</p>
   <li>New job attributes FirstJobMatchDate and InitialWaitDuration</li>
 </ul>
 
-      </div>
-    
-
-    <div class="collapse" id="old-lts-release-highlights">
-      
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+          </div>
       
         
 
