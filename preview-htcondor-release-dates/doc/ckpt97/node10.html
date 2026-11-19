@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+<!--Converted with LaTeX2HTML 96.1 (Feb 5, 1996) by Nikos Drakos (nikos@cbl.leeds.ac.uk), CBLU, University of Leeds -->
+<HTML>
+<HEAD>
+<TITLE>3.4 Files</TITLE>
+<META NAME="description" CONTENT="3.4 Files">
+<META NAME="keywords" CONTENT="ckpt97">
+<META NAME="resource-type" CONTENT="document">
+<META NAME="distribution" CONTENT="global">
+<LINK REL=STYLESHEET HREF="ckpt97.css">
+</HEAD>
+<BODY LANG="EN">
+ <A NAME="tex2html129" HREF="node11.html"><IMG WIDTH=37 HEIGHT=24 ALIGN=BOTTOM ALT="next" SRC="http://www.cs.wisc.edu/latex2html//next_motif.gif"></A> <A NAME="tex2html127" HREF="node3.html"><IMG WIDTH=26 HEIGHT=24 ALIGN=BOTTOM ALT="up" SRC="http://www.cs.wisc.edu/latex2html//up_motif.gif"></A> <A NAME="tex2html121" HREF="node9.html"><IMG WIDTH=63 HEIGHT=24 ALIGN=BOTTOM ALT="previous" SRC="http://www.cs.wisc.edu/latex2html//previous_motif.gif"></A>   <BR>
+<B> Next:</B> <A NAME="tex2html130" HREF="node11.html">3.4.1 Augmenting System Calls</A>
+<B>Up:</B> <A NAME="tex2html128" HREF="node3.html">3 Components of a </A>
+<B> Previous:</B> <A NAME="tex2html122" HREF="node9.html">3.3.2 Restoring Mapped Segments</A>
+<BR> <P>
+<H2><A NAME="SECTION00034000000000000000">3.4 Files</A></H2>
+<P>
+Any files which are held open by a process at checkpoint time should
+be re-opened with the same ``attributes'' at restart time.  The
+attributes of an open file include its file descriptor number, the
+mode in which it is opened, (e.g. read, write, or read-write), the
+offset to which it is positioned, and whether or not it is a duplicate
+of another file descriptor.  Since much of this information is not
+made available to user code by the kernel, we record several
+attributes at the time the file descriptor is created via an <TT>
+open()</TT> or <TT>dup()</TT> system call.  Information recorded includes the
+pathname of the file, the file descriptor number, the mode, and (if it
+is a dup) the base file descriptor number.  The offset to which the
+file is positioned is captured at checkpoint time by use of the <TT>
+lseek()</TT> system call.  All of this information is kept in a table in
+the process's data space, which is of course restored early in the
+restart process.  Later in the restart process, we walk through the
+table and re-open and re-position all the files as they were at
+checkpoint time.  Of course an important part of a file's state is its
+content - we assume that that this is stored safely in the file
+system, and that nobody tampers with it between checkpoint and restart
+times.
+<P>
+<BR> <HR>
+<UL> 
+<LI> <A NAME="tex2html131" HREF="node11.html#SECTION00034100000000000000">3.4.1 Augmenting System Calls</A>
+</UL>
+<BR> <HR>
+<P><ADDRESS>
+condor-admin@cs.wisc.edu
+</ADDRESS>
+</BODY>
+</HTML>

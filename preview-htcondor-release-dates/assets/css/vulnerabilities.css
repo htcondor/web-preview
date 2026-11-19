@@ -1,0 +1,70 @@
+h1 {
+    text-align: center;
+}
+h2 {
+    font-weight: bold;
+    font-size: 100%;
+    line-height: 200%;
+}
+p {
+    margin-left: 1em;
+}
+p.sv {
+    line-height: 100%;
+    margin-top: 12px;
+    margin-left: 0;
+    margin-bottom: 0;
+}
+p.sv2 {
+    line-height: 100%;
+    margin-left: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+p.v, p.h {
+    line-height: 100%;
+    margin-left: 0;
+    margin-top: 18px;
+    margin-bottom: 6px;
+}
+p.h {
+    font-weight: bold;
+}
+img.noborder {
+    border: none;
+}
+#uwlogo {
+    float: left;
+    width: 160px;
+}
+#sdsclogo {
+    float: right;
+    width: 160px;
+    text-align: right;
+}
+hr {
+    clear: both;
+}
+dl {
+    margin-left: 2em;
+}
+dt {
+    font-weight: bold;
+    font-style: italic;
+}
+.sumtable {
+    text-align: center;
+}
+.confidential {
+    text-align: center;
+    left-margin: 0;
+    font-size: 80%;
+    font-weight: bold;
+}
+th {
+    background-color: #EEE;
+    vertical-align: baseline;
+}
+td {
+    vertical-align: baseline;
+}
